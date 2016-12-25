@@ -78,18 +78,18 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   fileprivate var statusBarHidden = true
-  override var prefersStatusBarHidden : Bool {
+  override var prefersStatusBarHidden: Bool {
     return self.statusBarHidden
   }
 
-  override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
     return .slide
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.statusBarHidden = false
-    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() }) 
+    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() })
   }
 
   internal override func viewDidLoad() {

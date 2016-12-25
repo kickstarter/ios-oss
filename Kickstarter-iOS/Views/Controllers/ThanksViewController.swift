@@ -203,7 +203,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   fileprivate func showGamesNewsletterAlert() {
     self.present(
       UIAlertController.games(
-        subscribeHandler: { [weak self] action in
+        subscribeHandler: { [weak self] _ in
           self?.viewModel.inputs.gamesNewsletterSignupButtonTapped()
       }),
       animated: true,

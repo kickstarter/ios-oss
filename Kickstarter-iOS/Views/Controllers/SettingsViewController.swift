@@ -419,8 +419,8 @@ internal final class SettingsViewController: UIViewController {
 
     let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
     let userId = AppEnvironment.current.currentUser?.id ?? 0
-    let version = AppEnvironment.current.mainBundle.version 
-    let shortVersion = AppEnvironment.current.mainBundle.shortVersionString 
+    let version = AppEnvironment.current.mainBundle.version
+    let shortVersion = AppEnvironment.current.mainBundle.shortVersionString
     let device = UIDevice.current
 
     let controller = MFMailComposeViewController()

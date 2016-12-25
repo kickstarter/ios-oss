@@ -15,7 +15,7 @@ internal final class DashboardViewControllerTests: TestCase {
     AppEnvironment.pushEnvironment(
       apiService: MockService(
         fetchProjectsResponse: [project],
-        
+
         fetchProjectStatsResponse: .template
           |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats
           |> ProjectStatsEnvelope.lens.referralDistribution .~ referrerStats

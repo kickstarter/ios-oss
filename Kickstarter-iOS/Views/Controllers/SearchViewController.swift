@@ -143,7 +143,7 @@ internal final class SearchViewController: UITableViewController {
         self.searchTextField.resignFirstResponder()
       }
       self.view.layoutIfNeeded()
-    }) 
+    })
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

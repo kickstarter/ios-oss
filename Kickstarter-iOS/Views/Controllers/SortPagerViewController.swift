@@ -138,7 +138,7 @@ internal final class SortPagerViewController: UIViewController {
 
   fileprivate func createSortButtons(_ sorts: [DiscoveryParams.Sort]) {
     _ = self.sortsStackView
-      |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, sort in
+      |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, _ in
           UIButton()
             |> UIButton.lens.tag .~ idx
             |> UIButton.lens.targets .~ [
@@ -177,7 +177,7 @@ internal final class SortPagerViewController: UIViewController {
       } else if leftSort < 0.0 {
         self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
       }
-    }) 
+    })
   }
 
   fileprivate func updateSortStyle(forCategoryId categoryId: Int?,

@@ -52,7 +52,7 @@ internal final class ResetPasswordViewController: UIViewController {
       .observeValues { [weak self] message in
         self?.present(UIAlertController.alert(
           message: message,
-          handler: { alert in
+          handler: { _ in
             self?.viewModel.inputs.confirmResetButtonPressed()
           }), animated: true, completion: nil)
       }

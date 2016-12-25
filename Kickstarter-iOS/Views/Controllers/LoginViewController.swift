@@ -90,7 +90,7 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
-      .observeValues { [weak self] visible in
+      .observeValues { [weak self] _ in
         self?.dismissKeyboard()
     }
 

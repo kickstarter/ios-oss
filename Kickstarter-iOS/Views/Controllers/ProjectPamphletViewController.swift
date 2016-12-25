@@ -23,11 +23,11 @@ internal final class ProjectPamphletViewController: UIViewController {
       return vc
   }
 
-  internal override var prefersStatusBarHidden : Bool {
+  internal override var prefersStatusBarHidden: Bool {
     return self.viewModel.outputs.prefersStatusBarHidden
   }
 
-  internal override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+  internal override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
     return .fade
   }
 

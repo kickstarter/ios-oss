@@ -309,7 +309,6 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
       let file = URL(string: caches)?.appendingPathComponent("\(image.hash).jpg")
       else { fatalError() }
 
-
     // FIXME
 //    imageData.writeToFile(file.absoluteString, atomically: true)
 
@@ -326,7 +325,7 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
 
 private func after(_ seconds: TimeInterval,
                    queue: DispatchQueue = DispatchQueue.main,
-                   body: @escaping () -> ()) {
+                   body: @escaping () -> Void) {
 
   queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: body)
 }

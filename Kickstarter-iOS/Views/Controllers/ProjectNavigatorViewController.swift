@@ -51,7 +51,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
-               options: [UIPageViewControllerOptionInterPageSpacingKey : Styles.grid(5)])
+               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(5)])
   }
 
   internal required init?(coder: NSCoder) {
@@ -110,11 +110,11 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     }
   }
 
-  internal override var childViewControllerForStatusBarStyle : UIViewController? {
+  internal override var childViewControllerForStatusBarStyle: UIViewController? {
     return self.viewControllers?.first
   }
 
-  internal override var childViewControllerForStatusBarHidden : UIViewController? {
+  internal override var childViewControllerForStatusBarHidden: UIViewController? {
     return self.viewControllers?.first
   }
 
