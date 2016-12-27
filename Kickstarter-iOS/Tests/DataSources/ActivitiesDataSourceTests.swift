@@ -9,7 +9,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testSurvey() {
-    let section = ActivitiesDataSource.Section.surveys.rawValue
+    let section = ActivitiesDataSource.Section.surveys.rawValue 
 
     self.dataSource.load(surveys: [.template])
 
