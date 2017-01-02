@@ -48,7 +48,12 @@ public final class ReferralChartView: UIView {
 
     UIColor.ksr_orange_400.set()
     context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
-    context.addLine(to: CGPoint(x: self.bounds.width/2 + self.bounds.width/2 * cos(internalPercentageAngle), y: self.bounds.height/2 + self.bounds.height/2 * sin(internalPercentageAngle)))
+    context.addLine(
+      to: CGPoint(
+        x: self.bounds.width/2 + self.bounds.width/2 * cos(internalPercentageAngle),
+        y: self.bounds.height/2 + self.bounds.height/2 * sin(internalPercentageAngle)
+      )
+    )
     context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
                    radius: self.bounds.width/2,
                    startAngle: CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI),
@@ -59,9 +64,12 @@ public final class ReferralChartView: UIView {
 
     UIColor.ksr_violet_500.set()
     context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
-    context.addLine(to: CGPoint(x: self.bounds.width/2 + self.bounds.width/2 *
-                              cos(internalAndExternalPercentageAngle), y: self.bounds.height/2 + self.bounds.height/2 *
-                              sin(internalAndExternalPercentageAngle)))
+    context.addLine(
+      to: CGPoint(
+        x: self.bounds.width/2 + self.bounds.width/2 * cos(internalAndExternalPercentageAngle),
+        y: self.bounds.height/2 + self.bounds.height/2 * sin(internalAndExternalPercentageAngle)
+      )
+    )
     context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
                    radius: self.bounds.height/2,
                    startAngle: CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),

@@ -19,13 +19,13 @@ public final class RootTabBarViewController: UITabBarController {
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.userUpdated), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
     }
 

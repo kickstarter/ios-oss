@@ -139,7 +139,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -687,11 +687,12 @@ extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelega
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
-      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error as NSError?) {
-        completion(status)
-      } else {
-        completion(.failure)
-      }
+      // FIXME: dont use NSError
+//      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error) {
+//        completion(status)
+//      } else {
+//        completion(.failure)
+//      }
     }
   }
 
