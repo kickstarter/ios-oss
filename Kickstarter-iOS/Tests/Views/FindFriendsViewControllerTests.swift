@@ -1,4 +1,3 @@
-// FIXME
 import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi

@@ -160,21 +160,18 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushLoginViewController() {
     self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushTwoFactorViewController(facebookAccessToken token: String) {
     let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
@@ -182,14 +179,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {

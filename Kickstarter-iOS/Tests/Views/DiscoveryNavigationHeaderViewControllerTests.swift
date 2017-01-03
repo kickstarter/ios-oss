@@ -1,4 +1,3 @@
-// FIXME
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -6,9 +5,8 @@ import Prelude
 import Result
 import XCTest
 
-// swiftlint:disable type_name
+// swiftlint:disable:next type_name
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
-// swiftlint:ensable type_name
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true

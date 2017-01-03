@@ -105,7 +105,7 @@ internal final class UpdateViewController: WebViewController {
 
   fileprivate func showShareSheet(_ activityController: UIActivityViewController) {
 
-    // FIXME
+    // FIXME: problem with completion handler type signature
 //    activityController.completionWithItemsHandler = { [weak self] in
 //      self?.shareViewModel.inputs.shareActivityCompletion(
 //        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)

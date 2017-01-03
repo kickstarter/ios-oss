@@ -1,4 +1,3 @@
-// FIXME
 import Library
 @testable import Kickstarter_Framework
 
@@ -9,7 +8,6 @@ internal final class SignupViewControllerTests: TestCase {
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
-  // FIXME
   func testView() {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {

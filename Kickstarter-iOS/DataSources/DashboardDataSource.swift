@@ -15,10 +15,9 @@ internal final class DashboardDataSource: ValueCellDataSource {
   internal func load(project: Project) {
     self.clearValues()
 
-    // FIXME
-//    self.set(values: [project], cellClass: DashboardContextCell.self, section: Section.context.rawValue)
-//
-//    self.set(values: [project], cellClass: DashboardActionCell.self, section: Section.action.rawValue)
+    self.set(values: [project], cellClass: DashboardContextCell.self, inSection: Section.context.rawValue)
+
+    self.set(values: [project], cellClass: DashboardActionCell.self, inSection: Section.action.rawValue)
   }
 
   internal func load(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats], project: Project) {
@@ -46,9 +45,7 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(videoStats: ProjectStatsEnvelope.VideoStats) {
-
-    // FIXME
-//    self.set(values: [videoStats], cellClass: DashboardVideoCell.self, section: Section.video.rawValue)
+    self.set(values: [videoStats], cellClass: DashboardVideoCell.self, inSection: Section.video.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

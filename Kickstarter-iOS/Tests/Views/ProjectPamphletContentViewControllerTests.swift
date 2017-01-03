@@ -1,4 +1,3 @@
-// FIXME
 // swiftlint:disable type_name
 import Prelude
 import Result

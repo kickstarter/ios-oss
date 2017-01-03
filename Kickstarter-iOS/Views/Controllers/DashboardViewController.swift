@@ -149,8 +149,7 @@ internal final class DashboardViewController: UITableViewController {
     let vc = ProjectActivitiesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
 
-    // FIXME
-//    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -192,7 +191,7 @@ internal final class DashboardViewController: UITableViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    // FIXME
+    // FIXME: problem with completion handler types
 //    controller.completionWithItemsHandler = { [weak self] in
 //      self?.shareViewModel.inputs.shareActivityCompletion(
 //        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
