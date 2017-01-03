@@ -39,7 +39,7 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call to open a url that was sent to the app
   func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
-                                      annotation: Any) -> Bool
+                          annotation: Any) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)

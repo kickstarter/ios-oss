@@ -314,10 +314,11 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertTrue(self.facebookAppDelegate.didFinishLaunching)
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                      url: URL(string: "http://www.fb.com")!,
-                                      sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: "http://www.fb.com")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
 
     XCTAssertTrue(self.facebookAppDelegate.openedUrl)
   }
@@ -328,10 +329,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-                                      sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
 
     XCTAssertEqual(["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
                    self.trackingClient.events)
@@ -366,48 +368,48 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertValues([])
 
-      let projectUrl =
-        rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                        url: URL(string: projectUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1 as AnyObject)
+      let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      var result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                     url: URL(string: projectUrl)!,
+                                                     sourceApplication: nil,
+                                                     annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1])
 
-      let commentsUrl =
-        projectUrl + "/comments"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                        url: URL(string: commentsUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1 as AnyObject)
+      let commentsUrl = projectUrl + "/comments"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: commentsUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2])
 
-      let updatesUrl =
-        projectUrl + "/posts"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                        url: URL(string: updatesUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1 as AnyObject)
+      let updatesUrl = projectUrl + "/posts"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updatesUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2])
 
-      let updateUrl =
-        projectUrl + "/posts/1399396"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                        url: URL(string: updateUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1 as AnyObject)
+      let updateUrl = projectUrl + "/posts/1399396"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updateUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2])
 
-      let updateCommentsUrl =
-        updateUrl + "/comments"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                        url: URL(string: updateCommentsUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1 as AnyObject)
+      let updateCommentsUrl = updateUrl + "/comments"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updateCommentsUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2, 3])
     }
@@ -419,10 +421,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToActivity.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/activity")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToActivity.assertValueCount(1)
   }
@@ -434,10 +437,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDashboard.assertValueCount(0)
 
     let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: url)!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToDashboard.assertValueCount(1)
   }
@@ -448,10 +452,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDiscovery.assertValues([])
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
@@ -464,10 +469,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDiscovery.assertValues([])
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/discover")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToDiscovery.assertValues([nil])
   }
@@ -479,10 +485,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([])
 
     let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: url,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.scheduler.advance()
 
@@ -496,10 +503,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToLogin.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/authorize")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToLogin.assertValueCount(1)
   }
@@ -510,10 +518,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToProfile.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/profile/me")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToProfile.assertValueCount(1)
   }
@@ -524,10 +533,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToSearch.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: URL(string: "https://www.kickstarter.com/search")!,
                                       sourceApplication: nil,
-                                      annotation: 1 as AnyObject)
+                                      annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToSearch.assertValueCount(1)
   }
@@ -858,7 +868,8 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.vm.inputs.applicationContinueUserActivity(userActivity)
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertTrue(result)
 
     self.goToActivity.assertValueCount(1)
     XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
@@ -872,7 +883,8 @@ final class AppDelegateViewModelTests: TestCase {
     let userActivity = NSUserActivity(activityType: "Other")
 
     self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
-    self.vm.inputs.applicationContinueUserActivity(userActivity)
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertFalse(result)
 
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
