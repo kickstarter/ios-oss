@@ -44,8 +44,6 @@
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
-		017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */; };
-		017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */; };
 		018421F31D2C0DB700CA7566 /* DashboardDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018421F21D2C0DB700CA7566 /* DashboardDataSourceTests.swift */; };
 		018422BB1D2C483000CA7566 /* DashboardTitleViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018422B81D2C482900CA7566 /* DashboardTitleViewViewModel.swift */; };
 		018422BD1D2C484200CA7566 /* DashboardProjectsDrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */; };
@@ -1039,7 +1037,6 @@
 		017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModelTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityViewController.swift; sourceTree = "<group>"; };
 		018421F21D2C0DB700CA7566 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
 		018422841D2C47A400CA7566 /* DashboardTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardTitleView.swift; sourceTree = "<group>"; };
 		018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerCell.swift; sourceTree = "<group>"; };
@@ -2301,7 +2298,6 @@
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
 				0151AEAD1C8F61870067F1BE /* Styles.swift */,
-				017E88B91CD2A609003FE5D6 /* UIActivityViewController.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
@@ -3252,7 +3248,6 @@
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionProtocol.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
-				017E88BA1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
@@ -3454,7 +3449,6 @@
 				A72C3A9C1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				9DA4E2FC1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */,
 				A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */,
-				017E88BB1CD2A609003FE5D6 /* UIActivityViewController.swift in Sources */,
 				01FD71871D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
 				A7830D161D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift in Sources */,
 				A712EB921E0C2B7300614340 /* DispatchTimeInterval-Extensions.swift in Sources */,

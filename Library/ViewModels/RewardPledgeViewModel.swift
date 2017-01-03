@@ -1032,18 +1032,11 @@ private func updatePledge(
     .mapError { PledgeError.other($0) }
     .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
 
-      // FIXME: why doesnt this work?
-//      let request = env.newCheckoutUrl
-//        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
-//        .map(URLRequest.init(url:))
-
-      let url = env.newCheckoutUrl
+      let request = env.newCheckoutUrl
         .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
-      if let url = url {
-        return SignalProducer(value: URLRequest(url: url))
-      } else {
-        return SignalProducer(value: nil)
-      }
+        .map { URLRequest(url: $0) }
+
+      return SignalProducer(value: request)
   }
 }
 
@@ -1092,15 +1085,9 @@ private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest,
     return AppEnvironment.current.apiService.changePaymentMethod(project: project)
       .mapError { PledgeError.other($0) }
       .map { env -> URLRequest? in
-        // FIXME: why doesnt this work?
-//        env.newCheckoutUrl
-//          .flatMap(URL.init(string:))
-//          .map(URLRequest.init(url:)) // "Type 'URLRequest" has no member init(url:)
-
-        guard let url = env.newCheckoutUrl.flatMap(URL.init(string:)) else {
-          return nil
-        }
-        return URLRequest(url: url)
+        env.newCheckoutUrl
+          .flatMap(URL.init(string:))
+          .map { URLRequest(url: $0) }
       }
       .skipNil()
 }
