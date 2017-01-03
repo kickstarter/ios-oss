@@ -50,13 +50,13 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter
       .default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -211,7 +211,8 @@ internal final class ProjectNavBarViewController: UIViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    // FIXME
+    // FIXME: the completion handler has some type signature problems
+
 //    controller.completionWithItemsHandler = { [weak self] in
 //      self?.shareViewModel.inputs.shareActivityCompletion(
 //        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)

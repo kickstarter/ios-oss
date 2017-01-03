@@ -48,8 +48,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
+    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
 
         withEnvironment(apiService: MockService(fetchActivitiesResponse: [],
           fetchDiscoveryResponse: discoveryResponse), currentUser: User.template, language: language) {

@@ -39,7 +39,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.fbLoginManager.logOut()
 
     NotificationCenter.default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 

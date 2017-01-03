@@ -4,7 +4,8 @@ import Prelude
 import UIKit
 
 internal final class DashboardReferrerRowStackView: UIStackView {
-  fileprivate let viewModel: DashboardReferrerRowStackViewViewModelType = DashboardReferrerRowStackViewViewModel()
+  fileprivate let viewModel: DashboardReferrerRowStackViewViewModelType
+    = DashboardReferrerRowStackViewViewModel()
 
   fileprivate let backersLabel: UILabel = UILabel()
   fileprivate let pledgedLabel: UILabel = UILabel()

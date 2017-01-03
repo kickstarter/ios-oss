@@ -628,8 +628,11 @@ AppDelegateViewModelOutputs {
 
 private func deviceToken(fromData data: Data) -> String {
 
-  // FIXME
-  return UnsafeBufferPointer<UInt8>(start: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count), count: data.count)
+  // FIXME: what's the deal with NSData?
+  return UnsafeBufferPointer<UInt8>(
+    start: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count),
+    count: data.count
+    )
     .map { String(format: "%02hhx", $0) }
     .joined(separator: "")
 }
@@ -783,7 +786,7 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
 private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String:String] {
 
   let queryItems = urlComponents.queryItems ?? []
-  return Dictionary<String, String?>.keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
+  return [String: String?].keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
 }
 
 extension ShortcutItem {

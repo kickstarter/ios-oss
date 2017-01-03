@@ -340,7 +340,8 @@ extension DiscoveryNavigationHeaderViewController: DiscoveryFiltersViewControlle
     self.viewModel.inputs.titleButtonTapped()
   }
 
-  internal func discoveryFilters(_ viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow) {
+  internal func discoveryFilters(_ viewController: DiscoveryFiltersViewController,
+                                 selectedRow: SelectableRow) {
     self.viewModel.inputs.filtersSelected(row: selectedRow)
   }
 }

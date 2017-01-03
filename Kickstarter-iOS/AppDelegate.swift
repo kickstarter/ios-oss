@@ -24,8 +24,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   // swiftlint:disable function_body_length
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
@@ -130,7 +131,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
       .observeValues {
-        AppEnvironment.current.ubiquitousStore.synchronize()
+        _ = AppEnvironment.current.ubiquitousStore.synchronize()
     }
 
     self.viewModel.outputs.setApplicationShortcutItems
@@ -139,15 +140,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
+    let startedNote = NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted)
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
+    let endedNote = NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded)
     NotificationCenter
       .default
-      .addObserver(forName: NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: endedNote, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 

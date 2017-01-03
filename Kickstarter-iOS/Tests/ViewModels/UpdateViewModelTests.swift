@@ -79,7 +79,7 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValues(
         [
           "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\(prevUpdateUrl.absoluteString)" + "?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
+          "\(prevUpdateUrl.absoluteString)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
         ]
       )
 

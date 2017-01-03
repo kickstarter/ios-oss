@@ -99,8 +99,9 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
+    let startedNote = Notification.Name(rawValue: CurrentUserNotifications.sessionStarted)
     NotificationCenter.default
-      .addObserver(forName: Notification.Name(rawValue: CurrentUserNotifications.sessionStarted), object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
@@ -189,7 +190,11 @@ extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
-      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error as NSError?) {
+      // FIXME: fix the NSError cast
+      let status = self?.viewModel.inputs.stripeCreatedToken(
+        stripeToken: token?.tokenId, error: error as NSError?
+      )
+      if let status = status {
         completion(status)
       } else {
         completion(.failure)

@@ -688,11 +688,14 @@ extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelega
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
       // FIXME: dont use NSError
-//      if let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error) {
-//        completion(status)
-//      } else {
-//        completion(.failure)
-//      }
+      let status = self?.viewModel.inputs.stripeCreatedToken(
+        stripeToken: token?.tokenId, error: error as? NSError
+      )
+      if let status = status {
+        completion(status)
+      } else {
+        completion(.failure)
+      }
     }
   }
 
@@ -706,7 +709,8 @@ extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelega
 }
 
 extension RewardPledgeViewController: RewardShippingPickerViewControllerDelegate {
-  internal func rewardShippingPickerViewControllerCancelled(_ controller: RewardShippingPickerViewController) {
+  internal func rewardShippingPickerViewControllerCancelled(
+    _ controller: RewardShippingPickerViewController) {
     controller.dismiss(animated: true, completion: nil)
   }
 

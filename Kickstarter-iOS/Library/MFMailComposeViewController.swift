@@ -13,7 +13,7 @@ internal extension MFMailComposeViewController {
 
     mcvc.setToRecipients([Strings.support_email_to()])
 
-    let app: AnyObject = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as AnyObject? ?? "" as AnyObject
+    let app = Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? ""
     let os = UIDevice.current.systemVersion
     let user = (AppEnvironment.current.currentUser?.id).flatMap(String.init) ?? "Logged out"
 
