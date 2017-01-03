@@ -8,7 +8,7 @@ import UIKit
 internal final class ResetPasswordViewController: UIViewController {
   @IBOutlet private weak var emailTextFieldBackgroundView: UIView!
   @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var resetPasswordButton: BorderButton!
+  @IBOutlet private weak var resetPasswordButton: UIButton!
   @IBOutlet private weak var rootStackView: UIStackView!
 
   private let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()

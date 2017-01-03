@@ -7,13 +7,6 @@ internal final class ProfileDataSource: ValueCellDataSource {
 
   internal enum Section: Int {
     case projects
-    case emptyState
-  }
-
-  internal func emptyState(visible visible: Bool) {
-//    self.set(values: visible ? [()] : [],
-//             cellClass: ProfileEmptyStateCell.self,
-//             inSection: Section.emptyState.rawValue)
   }
 
   internal func load(user user: User) {
@@ -28,8 +21,6 @@ internal final class ProfileDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProfileProjectCell, value as Project):
       cell.configureWith(value: value)
-    case (is ProfileEmptyStateCell, is Void):
-      return
     default:
       fatalError("Unrecognized (\(cell), \(value)) combo.")
     }
@@ -48,8 +39,6 @@ internal final class ProfileDataSource: ValueCellDataSource {
     default:
       fatalError("Unrecognized header \(view).")
     }
-
-    view.hidden = indexPath.section == Section.emptyState.rawValue
 
     return view
   }

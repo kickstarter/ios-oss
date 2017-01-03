@@ -37,14 +37,11 @@
                                                 <constraint firstAttribute="width" secondItem="0LS-yN-fEe" secondAttribute="height" multiplier="16:9" id="bQB-Ae-Qs7"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1" verticalCompressionResistancePriority="1000" text="Cosmic Surgery" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mO1-3d-Tt7" userLabel="Name label" customClass="StyledLabel" customModule="Library">
-                                            <rect key="frame" x="20" y="112" width="139" height="86.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1" verticalCompressionResistancePriority="1000" text="Cosmic Surgery" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mO1-3d-Tt7" userLabel="Name label">
+                                            <rect key="frame" x="20" y="112" width="139" height="86"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PHh-Xu-HR1" userLabel="Progress view">
                                             <rect key="frame" x="14" y="204" width="151" height="4"/>
@@ -64,16 +61,13 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ASr-Vr-VPm" userLabel="State banner view">
-                                            <rect key="frame" x="8" y="210" width="163" height="28.5"/>
+                                            <rect key="frame" x="8" y="210" width="163" height="29"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Successful" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iHM-Xe-0Cd" userLabel="State label" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="6" y="4" width="151" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Successful" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iHM-Xe-0Cd" userLabel="State label">
+                                                    <rect key="frame" x="6" y="4" width="151" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.16862745100000001" green="0.87058823529999996" blue="0.45098039220000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -136,69 +130,13 @@
                                     <outlet property="stateLabel" destination="iHM-Xe-0Cd" id="TeN-dO-o1h"/>
                                 </connections>
                             </collectionViewCell>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileEmptyStateCell" id="e1L-mz-POh" userLabel="Empty state" customClass="ProfileEmptyStateCell" customModule="Kickstarter_iOS">
-                                <rect key="frame" x="47.5" y="451" width="280" height="247"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="280" height="247"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qIt-gq-bcu">
-                                            <rect key="frame" x="8" y="72" width="264" height="71"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="752" misplaced="YES" text="No projects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVi-yY-KXp" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="88" y="0.0" width="89" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Title3"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ei-VO-rwv" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="7" y="29" width="251" height="82"/>
-                                                    <string key="text">You haven't backed any projects yet. 
-
-Let's change that!</string>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Body"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="profile.projects.empty_state_message"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xue-81-Cvh" customClass="BorderButton" customModule="Library">
-                                                    <rect key="frame" x="45" y="118" width="175" height="26"/>
-                                                    <inset key="contentEdgeInsets" minX="16" minY="4" maxX="16" maxY="4"/>
-                                                    <state key="normal" title="Explore new projects"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="Green"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_borderColor" value="Clear"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleColorNormal" value="White"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_titleFontStyle" value="Body"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstItem="qIt-gq-bcu" firstAttribute="leading" secondItem="e1L-mz-POh" secondAttribute="leadingMargin" id="4WU-Vb-OtI"/>
-                                    <constraint firstItem="qIt-gq-bcu" firstAttribute="top" secondItem="e1L-mz-POh" secondAttribute="topMargin" constant="64" id="Rpx-Ot-JyO"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="qIt-gq-bcu" secondAttribute="trailing" id="V81-t4-O6f"/>
-                                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="qIt-gq-bcu" secondAttribute="bottom" id="gML-lN-qha"/>
-                                </constraints>
-                                <size key="customSize" width="280" height="247"/>
-                            </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Header" id="kiW-44-X4L" userLabel="Header view" customClass="ProfileHeaderView" customModule="Kickstarter_Framework" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="192"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="FHW-q0-EhZ">
-                                    <rect key="frame" x="8" y="8" width="359" height="176"/>
+                                    <rect key="frame" x="8" y="8" width="359" height="174"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="752" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="f0V-Kr-pO4" userLabel="User avatar" customClass="CircleAvatarImageView" customModule="Library">
                                             <rect key="frame" x="120" y="0.0" width="120" height="120"/>
@@ -207,30 +145,30 @@ Let's change that!</string>
                                                 <constraint firstAttribute="width" constant="120" id="MzI-ya-Wox"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" misplaced="YES" text="Zack Sears" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TsA-lB-HRW" userLabel="User name">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="Zack Sears" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TsA-lB-HRW" userLabel="User name">
                                             <rect key="frame" x="137" y="126" width="86" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="a4h-s9-Mer">
-                                            <rect key="frame" x="27" y="153" width="305" height="24"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="a4h-s9-Mer">
+                                            <rect key="frame" x="27" y="153" width="305" height="21"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Created projects 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJ5-cI-TXe">
-                                                    <rect key="frame" x="0.0" y="0.0" width="142" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created projects 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJ5-cI-TXe">
+                                                    <rect key="frame" x="0.0" y="0.0" width="142" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dm4-Oz-Zr4" userLabel="Divider view">
-                                                    <rect key="frame" x="154" y="0.0" width="1" height="24"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dm4-Oz-Zr4" userLabel="Divider view">
+                                                    <rect key="frame" x="154" y="0.0" width="1" height="21"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="1" id="gDE-mK-VRL"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Backed projects 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKI-Ud-kde">
-                                                    <rect key="frame" x="167" y="0.0" width="138" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backed projects 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKI-Ud-kde">
+                                                    <rect key="frame" x="167" y="0.0" width="138" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>

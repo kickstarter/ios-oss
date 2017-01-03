@@ -33,26 +33,26 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="a69-hw-39E" userLabel="Project image">
                                             <rect key="frame" x="8" y="8" width="384" height="197"/>
                                         </imageView>
-                                        <view alpha="0.95999999999999996" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-M3-UVc" userLabel="Text Background View">
-                                            <rect key="frame" x="8" y="-255" width="384" height="460"/>
+                                        <view alpha="0.95999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-M3-UVc" userLabel="Text Background View">
+                                            <rect key="frame" x="8" y="130" width="384" height="75"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="YhF-yP-wuS">
-                                                    <rect key="frame" x="8" y="8" width="368" height="58"/>
+                                                    <rect key="frame" x="8" y="8" width="368" height="59"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bd-l0-V3a" userLabel="Project name">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Bjork Swan Dress " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bd-l0-V3a" userLabel="Project name">
                                                             <rect key="frame" x="0.0" y="0.0" width="368" height="26"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-rb-rXg" userLabel="Funding Stack View">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-rb-rXg" userLabel="Funding Stack View">
                                                             <rect key="frame" x="0.0" y="38" width="368" height="21"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OZd-cW-cLB">
-                                                                    <rect key="frame" x="0.0" y="10" width="71" height="2"/>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OZd-cW-cLB">
+                                                                    <rect key="frame" x="0.0" y="10" width="250" height="2"/>
                                                                     <subviews>
-                                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPQ-gl-gFU">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="70.5" height="2"/>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FPQ-gl-gFU">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="250" height="2"/>
                                                                             <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                         </view>
                                                                     </subviews>
@@ -65,8 +65,8 @@
                                                                         <constraint firstAttribute="height" constant="2" id="u1X-fQ-arM"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" misplaced="YES" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jH5-2y-qF0">
-                                                                    <rect key="frame" x="89" y="0.0" width="279" height="21"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jH5-2y-qF0">
+                                                                    <rect key="frame" x="268" y="0.0" width="100" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -85,11 +85,11 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AX7-E6-u6H">
-                                            <rect key="frame" x="16" y="-4" width="175.5" height="33"/>
+                                            <rect key="frame" x="16" y="-4" width="176" height="33"/>
                                             <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Successfully Funded!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ENh-bG-4l9">
-                                            <rect key="frame" x="22" y="2" width="163.5" height="21"/>
+                                            <rect key="frame" x="22" y="2" width="164" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -160,7 +160,7 @@
                                                     <rect key="frame" x="8" y="8" width="352" height="52"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="O8h-S0-xe1" userLabel="Friend avatar" customClass="CircleAvatarImageView" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="13.5" width="25" height="25.5"/>
+                                                            <rect key="frame" x="0.0" y="14" width="25" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="25" id="1lv-4r-paz"/>
                                                                 <constraint firstAttribute="width" secondItem="O8h-S0-xe1" secondAttribute="height" multiplier="1:1" id="gm8-5C-MEX"/>
@@ -254,26 +254,26 @@
                                                         <constraint firstAttribute="height" constant="197" id="SIV-De-YBZ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view alpha="0.55000000000000004" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kb-aJ-VGs">
-                                                    <rect key="frame" x="0.0" y="144" width="384" height="96"/>
+                                                <view alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kb-aJ-VGs">
+                                                    <rect key="frame" x="0.0" y="140" width="384" height="101"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="aKf-SO-ukE">
-                                                            <rect key="frame" x="8" y="8" width="368" height="84"/>
+                                                            <rect key="frame" x="8" y="8" width="368" height="85"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" misplaced="YES" text="Bjork Swan Dress was successfully funded!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbb-oQ-LmI" userLabel="Project name">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Bjork Swan Dress was successfully funded!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbb-oQ-LmI" userLabel="Project name">
                                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="52"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-eM-Rwq" userLabel="Funding Stack View">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-eM-Rwq" userLabel="Funding Stack View">
                                                                     <rect key="frame" x="0.0" y="64" width="368" height="21"/>
                                                                     <subviews>
-                                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u08-la-LL2">
-                                                                            <rect key="frame" x="0.0" y="10" width="251" height="2"/>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u08-la-LL2">
+                                                                            <rect key="frame" x="0.0" y="10" width="250" height="2"/>
                                                                             <subviews>
-                                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8FT-hR-bC3">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="256" height="2"/>
+                                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8FT-hR-bC3">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="2"/>
                                                                                     <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 </view>
                                                                             </subviews>
@@ -286,8 +286,8 @@
                                                                                 <constraint firstAttribute="bottom" secondItem="8FT-hR-bC3" secondAttribute="bottom" id="tLE-Qk-iub"/>
                                                                             </constraints>
                                                                         </view>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" misplaced="YES" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tad-xW-b6K">
-                                                                            <rect key="frame" x="269" y="0.0" width="100" height="21"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="1000" text="120% funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tad-xW-b6K">
+                                                                            <rect key="frame" x="268" y="0.0" width="100" height="21"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -371,8 +371,8 @@
                                             <rect key="frame" x="8" y="8" width="384" height="364"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G9B-h5-vdo" userLabel="Container View">
-                                            <rect key="frame" x="8" y="8" width="384" height="351.5"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G9B-h5-vdo" userLabel="Container View">
+                                            <rect key="frame" x="8" y="8" width="384" height="352"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-km-DyF">
                                                     <rect key="frame" x="296" y="8" width="80" height="45"/>
@@ -381,15 +381,11 @@
                                                         <constraint firstAttribute="width" constant="80" id="vCB-Xb-z6f"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="peK-ts-qtm" customClass="StyledLabel" customModule="Library">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="peK-ts-qtm">
                                                     <rect key="frame" x="8" y="22" width="276" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_fontStyle" value="Subhead"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="_color" value="TextDarkGray"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1L-AK-J7o" userLabel="Divider">
                                                     <rect key="frame" x="0.0" y="65" width="384" height="1"/>
@@ -404,8 +400,8 @@
                                                         <action selector="tappedProjectImage" destination="Wv6-wT-OF6" eventType="touchUpInside" id="YQY-qk-5Bt"/>
                                                     </connections>
                                                 </button>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillProportionally" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQE-cC-7qh">
-                                                    <rect key="frame" x="8" y="84" width="368" height="259"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQE-cC-7qh">
+                                                    <rect key="frame" x="8" y="84" width="368" height="260"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update #26 posted 1 day ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qj0-jB-Zve">
                                                             <rect key="frame" x="0.0" y="0.0" width="368" height="14"/>
@@ -419,8 +415,8 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pH-Zs-dun">
-                                                            <rect key="frame" x="0.0" y="71" width="368" height="188"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pH-Zs-dun">
+                                                            <rect key="frame" x="0.0" y="72" width="368" height="188"/>
                                                             <string key="text">alert! alert! here are important odds &amp; ends to note as we dive into shipping your rewards! -  please do not worry or ask us about the whereabouts of your rewards... at least not until the middle of april or something... especially if you do not live in the USA. it will take time to put together 4500 packages and international orders will take an additional week or two in transit. clogging our inbox</string>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -507,13 +503,13 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="352" height="88"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9b-Qe-5eB">
-                                                                    <rect key="frame" x="86" y="0.0" width="182" height="21"/>
+                                                                    <rect key="frame" x="85" y="0.0" width="182" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="Connect with Facebook to follow your friends and get notified whenever they launch or back a new project." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9R-7T-nhY">
-                                                                    <rect key="frame" x="2" y="27" width="350" height="61"/>
+                                                                    <rect key="frame" x="1" y="27" width="350" height="61"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -521,7 +517,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9G-oS-Rvz">
-                                                            <rect key="frame" x="0.0" y="100" width="352" height="3"/>
+                                                            <rect key="frame" x="0.0" y="100" width="352" height="2"/>
                                                             <state key="normal" title="Connect with Facebook"/>
                                                         </button>
                                                     </subviews>
@@ -618,7 +614,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="352" height="68"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Discover more projects." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSV-9t-IRL">
-                                                                    <rect key="frame" x="86" y="0.0" width="182" height="21"/>
+                                                                    <rect key="frame" x="85" y="0.0" width="182" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -632,7 +628,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voe-Sf-Dp0">
-                                                            <rect key="frame" x="118" y="80" width="116" height="23"/>
+                                                            <rect key="frame" x="118" y="80" width="116" height="22"/>
                                                             <state key="normal" title="Find your friends"/>
                                                         </button>
                                                     </subviews>

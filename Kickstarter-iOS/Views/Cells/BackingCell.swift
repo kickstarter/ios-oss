@@ -4,13 +4,28 @@ import Prelude
 import ReactiveExtensions
 import UIKit
 
+internal protocol BackingCellDelegate: class {
+  /// Call when should navigate to Backing Info.
+  func backingCellGoToBackingInfo()
+}
+
 internal final class BackingCell: UITableViewCell, ValueCell {
   private let viewModel: BackingCellViewModelType = BackingCellViewModel()
 
+  @IBOutlet private weak var backingInfoButton: UIButton!
   @IBOutlet private weak var deliveryLabel: UILabel!
   @IBOutlet private weak var pledgedLabel: UILabel!
   @IBOutlet private weak var rewardLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
+
+  internal weak var delegate: BackingCellDelegate?
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.backingInfoButton.addTarget(self, action: #selector(backingInfoButtonTapped),
+                                     forControlEvents: .TouchUpInside)
+  }
 
   internal func configureWith(value value: (Backing, Project)) {
     self.viewModel.inputs.configureWith(backing: value.0, project: value.1)
@@ -26,6 +41,12 @@ internal final class BackingCell: UITableViewCell, ValueCell {
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : layoutMargins
     }
+
+    self.backingInfoButton
+      |> borderButtonStyle
+      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.backing_info_info_button() }
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3),
+                                                  leftRight: Styles.gridHalf(5))
   }
 
   internal override func bindViewModel() {
@@ -36,5 +57,9 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     self.deliveryLabel.rac.text = self.viewModel.outputs.delivery
     self.deliveryLabel.rac.accessibilityLabel = self.viewModel.outputs.deliveryAccessibilityLabel
     self.rootStackView.rac.alignment = self.viewModel.outputs.rootStackViewAlignment
+  }
+
+  @objc private func backingInfoButtonTapped() {
+    self.delegate?.backingCellGoToBackingInfo()
   }
 }

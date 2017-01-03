@@ -63,13 +63,6 @@ internal final class ProfileViewController: UICollectionViewController {
       .observeNext { [weak self] _ in
         self?.goToSettings()
     }
-
-    self.viewModel.outputs.showEmptyState
-      .observeForUI()
-      .observeNext { [weak self] visible in
-        self?.dataSource.emptyState(visible: visible)
-        self?.collectionView?.reloadData()
-    }
   }
 
   internal override func bindStyles() {

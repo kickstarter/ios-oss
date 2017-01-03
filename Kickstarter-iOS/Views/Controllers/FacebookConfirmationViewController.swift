@@ -1,11 +1,11 @@
-import Foundation
-import UIKit
-import ReactiveExtensions
-import ReactiveCocoa
-import Library
-import Prelude
 import FBSDKCoreKit
+import Foundation
+import Library
 import MessageUI
+import Prelude
+import ReactiveCocoa
+import ReactiveExtensions
+import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
@@ -19,8 +19,8 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var newsletterSwitch: UISwitch!
   @IBOutlet private weak var rootStackView: UIStackView!
 
-  private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
   private let helpViewModel = HelpViewModel()
+  private let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
 
   internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
     -> FacebookConfirmationViewController {
@@ -36,7 +36,15 @@ internal final class FacebookConfirmationViewController: UIViewController,
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.createAccountButton.addTarget(self, action: #selector(createAccountButtonPressed),
+                                       forControlEvents: .TouchUpInside)
+
     self.helpButton.addTarget(self, action: #selector(helpButtonPressed), forControlEvents: .TouchUpInside)
+
+    self.loginButton.addTarget(self, action: #selector(loginButtonPressed), forControlEvents: .TouchUpInside)
+
+    self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
+                                    forControlEvents: .ValueChanged)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -152,19 +160,19 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.presentViewController(helpSheet, animated: true, completion: nil)
   }
 
-  @IBAction private func newsletterSwitchChanged(sender: UISwitch) {
+  @objc private func newsletterSwitchChanged(sender: UISwitch) {
     self.viewModel.inputs.sendNewslettersToggled(sender.on)
   }
 
-  @IBAction private func createAccountButtonPressed(sender: AnyObject) {
+  @objc private func createAccountButtonPressed() {
     self.viewModel.inputs.createAccountButtonPressed()
   }
 
-  @IBAction private func loginButtonPressed(sender: BorderButton) {
+  @objc private func loginButtonPressed() {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @objc private func helpButtonPressed(sender: AnyObject) {
+  @objc private func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
