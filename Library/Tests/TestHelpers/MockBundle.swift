@@ -63,7 +63,7 @@ internal struct MockBundle: NSBundleType {
     return self.store[key] ?? value ?? key
   }
 
-  internal  var infoDictionary: [String : Any]? {
+  internal var infoDictionary: [String : Any]? {
     var result: [String:Any] = [:]
     result["CFBundleIdentifier"] = self.bundleIdentifier
     result["CFBundleVersion"] = "1234567890"
