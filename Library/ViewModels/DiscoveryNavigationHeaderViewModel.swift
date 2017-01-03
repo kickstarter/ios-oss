@@ -226,7 +226,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
         !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
-      .on(event: { _ in
+      .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })

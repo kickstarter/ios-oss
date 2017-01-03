@@ -10,9 +10,7 @@ extension UIScrollView {
     if let tableView = self as? UITableView,
       tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
 
-      tableView.scrollToRow(at: .init(row: 0, section: 0),
-                                       at: .top,
-                                       animated: true)
+      tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
 
     } else {
       self.setContentOffset(CGPoint(x: 0.0, y: -self.contentInset.top), animated: true)

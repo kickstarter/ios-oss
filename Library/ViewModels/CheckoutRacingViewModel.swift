@@ -49,11 +49,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
             }
           }
           .retry(upTo: 9)
-          .timeout(
-            after: 10,
-            raising: CheckoutRetryError(),
-            on: AppEnvironment.current.scheduler
-          )
+          .timeout(after: 10, raising: CheckoutRetryError(), on: AppEnvironment.current.scheduler)
       }
       .materialize()
 
