@@ -39,7 +39,7 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call to open a url that was sent to the app
   func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
-                                      annotation: AnyObject) -> Bool
+                                      annotation: Any) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
@@ -573,13 +573,13 @@ AppDelegateViewModelOutputs {
     application: UIApplication?,
     url: URL,
     sourceApplication: String?,
-    annotation: AnyObject
+    annotation: Any
   )
   fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
   public func applicationOpenUrl(application: UIApplication?,
                                              url: URL,
                                              sourceApplication: String?,
-                                             annotation: AnyObject) -> Bool {
+                                             annotation: Any) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
     return self.facebookOpenURLReturnValue.value
   }

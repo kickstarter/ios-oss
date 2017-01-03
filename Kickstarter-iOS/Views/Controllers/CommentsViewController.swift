@@ -27,9 +27,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
-    let startedNote = Notification.Name(rawValue: CurrentUserNotifications.sessionStarted)
     NotificationCenter.default
-      .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 

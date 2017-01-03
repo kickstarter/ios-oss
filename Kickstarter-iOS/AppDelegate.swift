@@ -56,9 +56,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         AppEnvironment.logout()
-        NotificationCenter.default.post(
-          Notification(name: Notification.Name(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
-        )
+        NotificationCenter.default.post(.init(name: .ksr_sessionEnded, object: nil))
     }
 
     self.viewModel.outputs.updateConfigInEnvironment
@@ -140,17 +138,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
-    let startedNote = NSNotification.Name(rawValue: CurrentUserNotifications.sessionStarted)
-    NotificationCenter
-      .default
+    let startedNote = NSNotification.Name.ksr_sessionStarted
+    NotificationCenter.default
       .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    let endedNote = NSNotification.Name(rawValue: CurrentUserNotifications.sessionEnded)
-    NotificationCenter
-      .default
-      .addObserver(forName: endedNote, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: NSNotification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -177,8 +172,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
-  func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?,
-                   annotation: AnyObject) -> Bool {
+  func application(_ application: UIApplication,
+                   open url: URL,
+                   sourceApplication: String?,
+                   annotation: Any) -> Bool {
 
     return self.viewModel.inputs.applicationOpenUrl(application: application,
                                                     url: url,

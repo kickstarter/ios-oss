@@ -17,15 +17,13 @@ internal final class ActivitiesViewController: UITableViewController {
   internal required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
-    let startedNote = Notification.Name(rawValue: CurrentUserNotifications.sessionStarted)
     NotificationCenter.default
-      .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    let endedNote = Notification.Name(rawValue: CurrentUserNotifications.sessionEnded)
     NotificationCenter.default
-      .addObserver(forName: endedNote, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
   }
