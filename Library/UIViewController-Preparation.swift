@@ -7,6 +7,7 @@ private func swizzle(_ vc: UIViewController.Type) {
 
   [
     (#selector(vc.viewDidLoad), #selector(vc.ksr_viewDidLoad)),
+    (#selector(vc.viewWillAppear(_:)), #selector(vc.ksr_viewWillAppear(_:))),
     (#selector(vc.traitCollectionDidChange(_:)), #selector(vc.ksr_traitCollectionDidChange(_:))),
     ].forEach { original, swizzled in
 
@@ -41,6 +42,11 @@ extension UIViewController {
   internal func ksr_viewDidLoad() {
     self.ksr_viewDidLoad()
     self.bindViewModel()
+  }
+
+  internal func ksr_viewWillAppear(_ animated: Bool) {
+    self.ksr_viewWillAppear(animated)
+    self.bindStyles()
   }
 
   /**
