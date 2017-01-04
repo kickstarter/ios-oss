@@ -27,11 +27,23 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     self
       |> baseTableViewCellStyle()
-      |> MessageCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> MessageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : layoutMargins
+          : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
     }
+
+    self.bodyTextView
+      |> UITextView.lens.textColor .~ .ksr_navy_700
+      |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
+
+    self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+
+    self.timestampLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_caption1()
   }
 
   internal override func bindViewModel() {

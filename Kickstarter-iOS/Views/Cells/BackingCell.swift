@@ -36,10 +36,10 @@ internal final class BackingCell: UITableViewCell, ValueCell {
 
     self
       |> baseTableViewCellStyle()
-      |> BackingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> BackingCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : layoutMargins
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
     }
 
     self.backingInfoButton
@@ -47,6 +47,18 @@ internal final class BackingCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.backing_info_info_button() }
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3),
                                                   leftRight: Styles.gridHalf(5))
+
+    self.deliveryLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_caption1()
+
+    self.pledgedLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline()
+
+    self.rewardLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_subhead()
   }
 
   internal override func bindViewModel() {
