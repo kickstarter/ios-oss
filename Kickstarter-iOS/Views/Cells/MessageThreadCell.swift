@@ -10,6 +10,7 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var avatarImageView: UIImageView!
   @IBOutlet private weak var bodyLabel: UILabel!
   @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet private weak var dividerView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var projectNameLabel: UILabel!
   @IBOutlet private weak var replyIndicator: UIView?
@@ -28,8 +29,27 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : layoutMargins
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
+
+    self.bodyLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
+
+    self.dateLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_caption1()
+
+    self.dividerView
+      |> separatorStyle
+
+    self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+
+    self.projectNameLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 15.0)
   }
 
   internal override func bindViewModel() {

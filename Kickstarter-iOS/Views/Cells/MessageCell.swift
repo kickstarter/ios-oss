@@ -30,7 +30,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       |> MessageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
 
     self.bodyTextView
