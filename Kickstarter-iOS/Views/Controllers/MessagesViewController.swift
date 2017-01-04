@@ -93,7 +93,8 @@ internal final class MessagesViewController: UITableViewController {
     }
   }
 
-  internal override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
+                                   forRowAtIndexPath indexPath: NSIndexPath) {
     if let cell = cell as? BackingCell where cell.delegate == nil {
       cell.delegate = self
     }
