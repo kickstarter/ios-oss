@@ -5,7 +5,7 @@ import UIKit
 
 internal final class MessageThreadEmptyStateCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet private weak var titleLabel: UILabel!
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -18,4 +18,3 @@ internal final class MessageThreadEmptyStateCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value value: Void) {}
 }
-
