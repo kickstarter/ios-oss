@@ -152,7 +152,7 @@
                                     <outlet property="unreadIndicatorView" destination="3ZH-YI-NS3" id="4oG-x3-AkS"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageThreadsEmptyState" rowHeight="240" id="vqA-cz-Nls" customClass="StaticTableViewCell" customModule="Library">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageThreadsEmptyState" rowHeight="240" id="vqA-cz-Nls" customClass="MessageThreadEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="236" width="600" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqA-cz-Nls" id="IB1-HW-4CI">
@@ -179,6 +179,9 @@
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="20" left="16" bottom="20" right="16"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="PxH-QE-tWd" id="Wsi-RZ-lAD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -192,8 +195,8 @@
                             <rect key="frame" x="61" y="6" width="478" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="djz-c8-ji0">
-                                    <rect key="frame" x="212" y="0.0" width="57" height="33"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="djz-c8-ji0">
+                                    <rect key="frame" x="211" y="0.0" width="57" height="33"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znl-pP-aP1" userLabel="Inbox">
                                             <rect key="frame" x="0.0" y="6" width="42" height="21"/>
@@ -206,8 +209,8 @@
                                         </imageView>
                                     </subviews>
                                 </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DR-RI-47z" userLabel="Button overlay">
-                                    <rect key="frame" x="212" y="0.0" width="55" height="33"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DR-RI-47z" userLabel="Button overlay">
+                                    <rect key="frame" x="211" y="0.0" width="57" height="33"/>
                                     <connections>
                                         <action selector="mailboxButtonPressed" destination="yFB-aB-OIQ" eventType="touchUpInside" id="ORI-4T-IEv"/>
                                     </connections>
@@ -372,6 +375,7 @@
                                 <connections>
                                     <outlet property="backingInfoButton" destination="LMM-Dq-icR" id="K0F-jf-fXK"/>
                                     <outlet property="deliveryLabel" destination="Mu8-4u-cQG" id="aiz-yX-N2f"/>
+                                    <outlet property="dividerView" destination="zmT-ss-9s7" id="NQJ-pg-7sw"/>
                                     <outlet property="pledgedLabel" destination="hiD-lc-kis" id="OsV-yR-BpX"/>
                                     <outlet property="rewardLabel" destination="PSG-vO-xho" id="6h9-FB-QSj"/>
                                     <outlet property="rootStackView" destination="B3F-ed-Vcy" id="VQa-Hi-Fod"/>
@@ -452,6 +456,7 @@
                                 <connections>
                                     <outlet property="avatarImageView" destination="VSK-GU-slE" id="DFW-5f-eCs"/>
                                     <outlet property="bodyTextView" destination="kdj-gb-c9F" id="abF-8U-jbn"/>
+                                    <outlet property="dividerView" destination="6eM-fG-YW9" id="ERI-Rg-Beg"/>
                                     <outlet property="nameLabel" destination="VYT-5C-ilX" id="Zhr-BM-VS7"/>
                                     <outlet property="timestampLabel" destination="Zy4-NP-7pr" id="PKh-Qx-jfT"/>
                                 </connections>
@@ -568,7 +573,7 @@
                                     <outlet property="avatarImageView" destination="ucU-Uw-YzA" id="seI-2b-gTe"/>
                                     <outlet property="bodyLabel" destination="qID-4n-SSH" id="Gai-Bq-Sk3"/>
                                     <outlet property="dateLabel" destination="ZDP-QP-pKb" id="cSW-xI-qj7"/>
-                                    <outlet property="dividerView" destination="gAa-cM-dtE" id="G3H-rH-72N"/>
+                                    <outlet property="dividerView" destination="gAa-cM-dtE" id="bca-6V-kiz"/>
                                     <outlet property="nameLabel" destination="SoJ-cd-iop" id="6mG-xS-C7S"/>
                                     <outlet property="projectNameLabel" destination="v7h-H9-QHo" id="igg-A6-enF"/>
                                 </connections>
@@ -735,7 +740,7 @@
                                 <constraint firstItem="YX8-K6-gvD" firstAttribute="top" secondItem="W5r-p4-1V6" secondAttribute="top" id="giX-fh-5Xm"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" id="9ac-Ox-Glu">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send" id="9ac-Ox-Glu">
                             <connections>
                                 <action selector="postButtonPressed" destination="jog-Ml-2Gw" id="cQb-6U-Jxl"/>
                             </connections>
@@ -748,6 +753,7 @@
                         <outlet property="loadingView" destination="Lyc-i3-lJV" id="Q1P-Sw-nvn"/>
                         <outlet property="nameLabel" destination="mxd-lZ-Kbx" id="1vA-5n-SZw"/>
                         <outlet property="postButton" destination="9ac-Ox-Glu" id="PXV-cT-NC8"/>
+                        <outlet property="titleLabel" destination="GyW-fS-Zc7" id="7g6-Sz-8v8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WPG-8y-6ZY" userLabel="First Responder" sceneMemberID="firstResponder"/>

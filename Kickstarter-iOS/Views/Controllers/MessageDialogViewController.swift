@@ -1,5 +1,6 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import ReactiveExtensions
 import UIKit
 
@@ -12,11 +13,12 @@ internal final class MessageDialogViewController: UIViewController {
   private let viewModel: MessageDialogViewModelType = MessageDialogViewModel()
   internal weak var delegate: MessageDialogViewControllerDelegate?
 
+  @IBOutlet private weak var bodyTextView: UITextView!
+  @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var loadingView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var postButton: UIBarButtonItem!
-  @IBOutlet private weak var bodyTextView: UITextView!
-  @IBOutlet private weak var loadingView: UIView!
-  @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var titleLabel: UILabel!
 
   internal static func configuredWith(messageSubject messageSubject: MessageSubject,
                                       context: Koala.MessageDialogContext) -> MessageDialogViewController {
@@ -56,6 +58,21 @@ internal final class MessageDialogViewController: UIViewController {
     self.viewModel.outputs.showAlertMessage
       .observeForControllerAction()
       .observeNext { [weak self] in self?.presentError($0) }
+  }
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+
+    self.postButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_send() }
+
+    self.titleLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
   }
 
   @IBAction private func cancelButtonPressed () {

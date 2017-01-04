@@ -14,6 +14,7 @@ internal final class BackingCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var backingInfoButton: UIButton!
   @IBOutlet private weak var deliveryLabel: UILabel!
+  @IBOutlet private weak var dividerView: UIView!
   @IBOutlet private weak var pledgedLabel: UILabel!
   @IBOutlet private weak var rewardLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
@@ -51,6 +52,9 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     self.deliveryLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ UIFont.ksr_caption1()
+
+    self.dividerView
+      |> separatorStyle
 
     self.pledgedLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

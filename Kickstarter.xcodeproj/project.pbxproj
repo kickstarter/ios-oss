@@ -18,6 +18,7 @@
 		014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */; };
 		014A8E191CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */; };
 		014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */; };
+		01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */; };
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		0156B1AF1D072CD1000C4252 /* CacheProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */; };
 		0156B1FC1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */; };
@@ -1121,6 +1122,7 @@
 		014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSource.swift; sourceTree = "<group>"; };
 		014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectCell.swift; sourceTree = "<group>"; };
 		014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCell.swift; sourceTree = "<group>"; };
+		01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadEmptyStateCell.swift; sourceTree = "<group>"; };
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		0156B1AC1D072CB8000C4252 /* CacheProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProtocolTests.swift; sourceTree = "<group>"; };
 		0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1956,10 +1958,10 @@
 			children = (
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
+				A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */,
 				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
 				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
 				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
-				A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */,
 				A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */,
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
@@ -1985,6 +1987,7 @@
 				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
+				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
@@ -3754,6 +3757,7 @@
 				A7CC143C1D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift in Sources */,
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
+				01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
 				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,

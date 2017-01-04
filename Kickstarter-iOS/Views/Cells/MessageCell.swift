@@ -8,6 +8,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   private let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
   @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var dividerView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var timestampLabel: UILabel!
   @IBOutlet private weak var bodyTextView: UITextView!
@@ -36,6 +37,9 @@ internal final class MessageCell: UITableViewCell, ValueCell {
     self.bodyTextView
       |> UITextView.lens.textColor .~ .ksr_navy_700
       |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
+
+    self.dividerView
+      |> separatorStyle
 
     self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
