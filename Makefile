@@ -28,7 +28,7 @@ test-all:
 	PLATFORM=iOS "$(MAKE)" test
 	PLATFORM=iOS TARGET=Library "$(MAKE)" test
 
-test: dependencies
+test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 clean:
@@ -37,10 +37,12 @@ clean:
 dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
-	brew update
+	sudo xcode-select -s /Applications/Xcode-8.2.app
+	brew update || brew update
 	brew unlink swiftlint || true
 	brew install swiftlint
 	brew link --overwrite swiftlint
+	sudo xcode-select -s /Applications/Xcode-7.3.app
 
 submodules:
 	git submodule sync --recursive || true
@@ -77,14 +79,16 @@ deploy:
 	git branch -d $(DIST_BRANCH)
 
 lint:
+	sudo xcode-select -s /Applications/Xcode-8.2.app
 	swiftlint lint --reporter json
+	sudo xcode-select -s /Applications/Xcode-7.3.app
 
 strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-	-rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
-	-git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
 	then \
 		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \

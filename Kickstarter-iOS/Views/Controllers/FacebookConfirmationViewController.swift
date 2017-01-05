@@ -134,17 +134,21 @@ internal final class FacebookConfirmationViewController: UIViewController,
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     helpTypes.forEach { helpType in
-      helpSheet.addAction(UIAlertAction(title: helpType.title, style: .default, handler: {
-        [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.helpTypeButtonTapped(helpType)
-      }))
+      helpSheet.addAction(
+        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+          helpVM?.inputs.helpTypeButtonTapped(helpType)
+        }
+      )
     }
 
-    helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
-      style: .cancel,
-      handler: { [weak helpVM = self.helpViewModel] _ in
+    helpSheet.addAction(
+      UIAlertAction(
+        title: Strings.login_tout_help_sheet_cancel(),
+        style: .Cancel
+      ) { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }))
+      }
+    )
 
     //iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
