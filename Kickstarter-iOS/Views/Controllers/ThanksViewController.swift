@@ -221,7 +221,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
     // FIXME: problem with the completion handler type signature
-    
+
 //    controller.completionWithItemsHandler = { [weak self] in
 //      self?.shareViewModel.inputs.shareActivityCompletion(
 //        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
