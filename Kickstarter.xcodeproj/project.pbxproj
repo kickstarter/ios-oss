@@ -485,12 +485,6 @@
 		A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */; };
 		A7BA54A01E1E4A9E00E54377 /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */; };
 		A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */; };
-		A7BA54A21E1E4A9E00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548D1E1E4A9E00E54377 /* LiveStreamEvent.CreatorLenses.swift */; };
-		A7BA54A31E1E4A9E00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548E1E1E4A9E00E54377 /* LiveStreamEvent.FirebaseLenses.swift */; };
-		A7BA54A41E1E4A9E00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548F1E1E4A9E00E54377 /* LiveStreamEvent.OpenTokLenses.swift */; };
-		A7BA54A51E1E4A9E00E54377 /* LiveStreamEvent.StreamLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54901E1E4A9E00E54377 /* LiveStreamEvent.StreamLenses.swift */; };
-		A7BA54A61E1E4A9E00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54911E1E4A9E00E54377 /* LiveStreamEvent.UserLenses.swift */; };
-		A7BA54A71E1E4A9E00E54377 /* LiveStreamEventLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54921E1E4A9E00E54377 /* LiveStreamEventLenses.swift */; };
 		A7BA54A81E1E4A9E00E54377 /* LiveStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54951E1E4A9E00E54377 /* LiveStreamViewController.swift */; };
 		A7BA54A91E1E4A9E00E54377 /* LiveVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54961E1E4A9E00E54377 /* LiveVideoViewController.swift */; };
 		A7BA54AA1E1E4A9E00E54377 /* HLSPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54971E1E4A9E00E54377 /* HLSPlayerView.swift */; };
@@ -532,6 +526,13 @@
 		A7BA54E61E1E4BE200E54377 /* LiveStreamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54E31E1E4BE200E54377 /* LiveStreamViewModelTests.swift */; };
 		A7BA54E71E1E4BE200E54377 /* LiveVideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */; };
 		A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54F21E1E4D5A00E54377 /* Secrets.swift */; };
+		A7BA55001E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */; };
+		A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */; };
+		A7BA55021E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */; };
+		A7BA55031E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FD1E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift */; };
+		A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */; };
+		A7BA55051E1E9D4B00E54377 /* LiveStreamEventLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FF1E1E9D4B00E54377 /* LiveStreamEventLenses.swift */; };
+		A7BA55071E1E9DEE00E54377 /* LiveStreamEventTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */; };
 		A7C5C4F81DF881190048D14C /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4501DF87CAC0048D14C /* KsApi.framework */; };
 		A7C5C5331DF893110048D14C /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4D41DF87CEB0048D14C /* Prelude.framework */; };
 		A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4DC1DF87CEB0048D14C /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1701,12 +1702,6 @@
 		A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypes.swift; sourceTree = "<group>"; };
 		A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTokExtensions.swift; sourceTree = "<group>"; };
-		A7BA548D1E1E4A9E00E54377 /* LiveStreamEvent.CreatorLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.CreatorLenses.swift; sourceTree = "<group>"; };
-		A7BA548E1E1E4A9E00E54377 /* LiveStreamEvent.FirebaseLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.FirebaseLenses.swift; sourceTree = "<group>"; };
-		A7BA548F1E1E4A9E00E54377 /* LiveStreamEvent.OpenTokLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.OpenTokLenses.swift; sourceTree = "<group>"; };
-		A7BA54901E1E4A9E00E54377 /* LiveStreamEvent.StreamLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.StreamLenses.swift; sourceTree = "<group>"; };
-		A7BA54911E1E4A9E00E54377 /* LiveStreamEvent.UserLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.UserLenses.swift; sourceTree = "<group>"; };
-		A7BA54921E1E4A9E00E54377 /* LiveStreamEventLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventLenses.swift; sourceTree = "<group>"; };
 		A7BA54951E1E4A9E00E54377 /* LiveStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewController.swift; sourceTree = "<group>"; };
 		A7BA54961E1E4A9E00E54377 /* LiveVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewController.swift; sourceTree = "<group>"; };
 		A7BA54971E1E4A9E00E54377 /* HLSPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLSPlayerView.swift; sourceTree = "<group>"; };
@@ -1738,6 +1733,13 @@
 		A7BA54E31E1E4BE200E54377 /* LiveStreamViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModelTests.swift; sourceTree = "<group>"; };
 		A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModelTests.swift; sourceTree = "<group>"; };
 		A7BA54F21E1E4D5A00E54377 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = SOURCE_ROOT; };
+		A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.CreatorLenses.swift; sourceTree = "<group>"; };
+		A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.FirebaseLenses.swift; sourceTree = "<group>"; };
+		A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.OpenTokLenses.swift; sourceTree = "<group>"; };
+		A7BA54FD1E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.StreamLenses.swift; sourceTree = "<group>"; };
+		A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.UserLenses.swift; sourceTree = "<group>"; };
+		A7BA54FF1E1E9D4B00E54377 /* LiveStreamEventLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventLenses.swift; sourceTree = "<group>"; };
+		A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventTemplates.swift; sourceTree = "<group>"; };
 		A7BE4EEB1D05C10200353EF9 /* Argo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Argo.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Argo/Argo.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Curry.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Curry/Curry.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
@@ -2594,7 +2596,6 @@
 				A7BA549E1E1E4A9E00E54377 /* KsLive.swift */,
 				A7BA54F21E1E4D5A00E54377 /* Secrets.swift */,
 				A7BA54881E1E4A9E00E54377 /* Extensions */,
-				A7BA548C1E1E4A9E00E54377 /* Lenses */,
 				A7BA54991E1E4A9E00E54377 /* Models */,
 				A7BA54831E1E497300E54377 /* Tests */,
 				A7BA549B1E1E4A9E00E54377 /* ViewModels */,
@@ -2623,19 +2624,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		A7BA548C1E1E4A9E00E54377 /* Lenses */ = {
-			isa = PBXGroup;
-			children = (
-				A7BA548D1E1E4A9E00E54377 /* LiveStreamEvent.CreatorLenses.swift */,
-				A7BA548E1E1E4A9E00E54377 /* LiveStreamEvent.FirebaseLenses.swift */,
-				A7BA548F1E1E4A9E00E54377 /* LiveStreamEvent.OpenTokLenses.swift */,
-				A7BA54901E1E4A9E00E54377 /* LiveStreamEvent.StreamLenses.swift */,
-				A7BA54911E1E4A9E00E54377 /* LiveStreamEvent.UserLenses.swift */,
-				A7BA54921E1E4A9E00E54377 /* LiveStreamEventLenses.swift */,
-			);
-			path = Lenses;
-			sourceTree = "<group>";
-		};
 		A7BA54931E1E4A9E00E54377 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2659,6 +2647,8 @@
 			isa = PBXGroup;
 			children = (
 				A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */,
+				A7BA54F91E1E9D2200E54377 /* lenses */,
+				A7BA54F81E1E9CDD00E54377 /* templates */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2687,6 +2677,27 @@
 				A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A7BA54F81E1E9CDD00E54377 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
+		A7BA54F91E1E9D2200E54377 /* lenses */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */,
+				A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */,
+				A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */,
+				A7BA54FD1E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift */,
+				A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */,
+				A7BA54FF1E1E9D4B00E54377 /* LiveStreamEventLenses.swift */,
+			);
+			path = lenses;
 			sourceTree = "<group>";
 		};
 		A7C5C41E1DF87C8E0048D14C /* Products */ = {
@@ -4262,22 +4273,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7BA55021E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */,
 				A7BA54A91E1E4A9E00E54377 /* LiveVideoViewController.swift in Sources */,
+				A7BA55071E1E9DEE00E54377 /* LiveStreamEventTemplates.swift in Sources */,
+				A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */,
 				A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */,
+				A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
 				A7BA54AA1E1E4A9E00E54377 /* HLSPlayerView.swift in Sources */,
-				A7BA54A61E1E4A9E00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */,
-				A7BA54A41E1E4A9E00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */,
+				A7BA55031E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift in Sources */,
 				A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */,
-				A7BA54A71E1E4A9E00E54377 /* LiveStreamEventLenses.swift in Sources */,
+				A7BA55001E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */,
 				A7BA54AE1E1E4A9E00E54377 /* LiveVideoViewModel.swift in Sources */,
-				A7BA54A21E1E4A9E00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */,
+				A7BA55051E1E9D4B00E54377 /* LiveStreamEventLenses.swift in Sources */,
 				A7BA54A81E1E4A9E00E54377 /* LiveStreamViewController.swift in Sources */,
 				A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */,
 				A7BA54AF1E1E4A9E00E54377 /* KsLive.swift in Sources */,
 				A7BA54AD1E1E4A9E00E54377 /* LiveStreamViewModel.swift in Sources */,
-				A7BA54A31E1E4A9E00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
 				A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */,
-				A7BA54A51E1E4A9E00E54377 /* LiveStreamEvent.StreamLenses.swift in Sources */,
 				A7BA54AC1E1E4A9E00E54377 /* LiveStreamEvent.swift in Sources */,
 				A7BA54A01E1E4A9E00E54377 /* LiveStreamTypes.swift in Sources */,
 			);

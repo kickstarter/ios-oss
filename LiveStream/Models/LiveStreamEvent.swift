@@ -2,12 +2,11 @@ import Argo
 import Curry
 
 public struct LiveStreamEvent: Equatable {
-  // FIXME: Alphabetize
-  public let id: Int
-  public let stream: Stream
   public let creator: Creator
   public let firebase: Firebase
+  public let id: Int
   public let openTok: OpenTok
+  public let stream: Stream
   public let user: User
 
   public struct Stream {
@@ -60,13 +59,11 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
 extension LiveStreamEvent: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent> {
     return curry(LiveStreamEvent.init)
-      <^> json <| "id"
+      <^> json <| "creator"
+      <*> json <| "firebase"
+      <*> json <| "id"
+      <*> json <| "opentok"
       <*> json <| "stream"
-      // FIXME: can just use `json <| "key"` on all of these
-      <*> Creator.decode(json)
-      <*> Firebase.decode(json)
-      <*> OpenTok.decode(json)
-//      <*> User.decode(json)
       <*> json <| "user" <|> .Success(User(isSubscribed: false))
   }
 }
@@ -99,31 +96,30 @@ extension LiveStreamEvent.Stream: Decodable {
 extension LiveStreamEvent.Creator: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Creator> {
     return curry(LiveStreamEvent.Creator.init)
-      // FIXME: can get rid of the `"creator"` key prefix
-      <^> json <| ["creator", "creator_name"]
-      <*> json <| ["creator", "creator_avatar"]
+      <^> json <| "creator_name"
+      <*> json <| "creator_avatar"
   }
 }
 
 extension LiveStreamEvent.Firebase: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
     return curry(LiveStreamEvent.Firebase.init)
-      <^> json <| ["firebase", "firebase_project"]
-      <*> json <| ["firebase", "firebase_api_key"]
-      <*> json <| ["firebase", "hls_url_path"]
-      <*> json <| ["firebase", "green_room_path"]
-      <*> json <| ["firebase", "number_people_watching_path"]
-      <*> json <| ["firebase", "scale_number_people_watching_path"]
-      <*> json <| ["firebase", "chat_path"]
+      <^> json <| "firebase_project"
+      <*> json <| "firebase_api_key"
+      <*> json <| "hls_url_path"
+      <*> json <| "green_room_path"
+      <*> json <| "number_people_watching_path"
+      <*> json <| "scale_number_people_watching_path"
+      <*> json <| "chat_path"
   }
 }
 
 extension LiveStreamEvent.OpenTok: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.OpenTok> {
     return curry(LiveStreamEvent.OpenTok.init)
-      <^> json <| ["opentok", "app"]
-      <*> json <| ["opentok", "session"]
-      <*> json <| ["opentok", "token"]
+      <^> json <| "app"
+      <*> json <| "session"
+      <*> json <| "token"
   }
 }
 
@@ -132,48 +128,6 @@ extension LiveStreamEvent.User: Decodable {
     return curry(LiveStreamEvent.User.init)
       <^> json <| "is_subscribed"
   }
-}
-
-// FIXME: Add to `Models/Templates/LiveStreamEventTemplates.swift` and maybe for some of the other models too
-extension LiveStreamEvent {
-  internal static let template = LiveStreamEvent(
-    id: 123,
-    stream: Stream(
-      name: "Test LiveStreamEvent",
-      description: "Test LiveStreamEvent",
-      hlsUrl: "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8",
-      liveNow: false,
-      startDate: NSDate(),
-      backgroundImageUrl: "",
-      maxOpenTokViewers: 300,
-      webUrl: "",
-      projectWebUrl: "",
-      projectName: "Test Project",
-      isRtmp: false,
-      isScale: false,
-      hasReplay: false,
-      replayUrl: nil
-    ),
-    creator: Creator(
-      name: "Creator Name",
-      avatar: "https://www.kickstarter.com/creator-avatar.jpg"
-    ),
-    firebase: Firebase(
-      project: "",
-      apiKey: "",
-      hlsUrlPath: "",
-      greenRoomPath: "",
-      numberPeopleWatchingPath: "",
-      scaleNumberPeopleWatchingPath: "",
-      chatPath: ""
-    ),
-    openTok: OpenTok(
-      appId: "123",
-      sessionId: "123",
-      token: "123"
-    ),
-    user: User(isSubscribed: false)
-  )
 }
 
 private let dateFormatter: NSDateFormatter = {
