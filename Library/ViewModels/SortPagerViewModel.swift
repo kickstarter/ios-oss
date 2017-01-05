@@ -82,7 +82,7 @@ SortPagerViewModelOutputs {
     self.setSelectedButton = Signal.merge(
       pageIndex.take(1),
       self.sortButtonTappedIndexProperty.signal.ignoreNil(),
-      selectedPage.map { index, total in index }
+      selectedPage.map { index, _ in index }
       )
       .skipRepeats(==)
 

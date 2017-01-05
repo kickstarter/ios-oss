@@ -51,7 +51,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
     super.init(transitionStyle: .Scroll,
                navigationOrientation: .Horizontal,
-               options: [UIPageViewControllerOptionInterPageSpacingKey : Styles.grid(5)])
+               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(5)])
   }
 
   internal required init?(coder: NSCoder) {

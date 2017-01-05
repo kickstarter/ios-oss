@@ -287,7 +287,7 @@ private func hasNotSeen(activity activity: Activity) -> Bool {
   return activity.id != AppEnvironment.current.userDefaults.lastSeenActivitySampleId
 }
 
-private func saveSeen(activities activities: [Activity]) -> () {
+private func saveSeen(activities activities: [Activity]) -> Void {
   activities.forEach { activity in
     AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
   }

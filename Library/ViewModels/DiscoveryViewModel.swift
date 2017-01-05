@@ -101,7 +101,7 @@ DiscoveryViewModelOutputs {
       )
       .skipRepeats(==)
       .combinePrevious((sort: .magic, ignore: true))
-      .filter { previous, next in !next.ignore }
+      .filter { _, next in !next.ignore }
       .map { previous, next in
         (next.sort, sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
     }

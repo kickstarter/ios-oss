@@ -824,7 +824,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
                                                  launchOptions: [:])
 
-    categories.enumerate().forEach { idx, state in
+    categories.enumerate().forEach { _, state in
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 

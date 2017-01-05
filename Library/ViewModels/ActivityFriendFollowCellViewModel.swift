@@ -93,7 +93,7 @@ private func cached(friend friend: User) -> User {
 
 private func cache(friend friend: User, isFriend: Bool) {
   AppEnvironment.current.cache[activityFriendFollowCacheKey] =
-    AppEnvironment.current.cache[activityFriendFollowCacheKey] ?? [Int:Bool]()
+    AppEnvironment.current.cache[activityFriendFollowCacheKey] ?? [Int: Bool]()
 
   var cache = AppEnvironment.current.cache[activityFriendFollowCacheKey] as? [Int:Bool]
   cache?[friend.id] = isFriend

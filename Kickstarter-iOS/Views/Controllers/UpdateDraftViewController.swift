@@ -324,7 +324,7 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
 
 private func after(seconds: NSTimeInterval,
                    queue: dispatch_queue_t = dispatch_get_main_queue(),
-                   body: () -> ()) {
+                   body: () -> Void) {
 
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC))), queue, body)
 }

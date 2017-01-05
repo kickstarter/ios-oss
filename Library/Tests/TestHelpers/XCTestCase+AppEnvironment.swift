@@ -9,7 +9,7 @@ import KsApi
 extension XCTestCase {
 
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
-  func withEnvironment(env: Environment, @noescape body: () -> ()) {
+  func withEnvironment(env: Environment, @noescape body: () -> Void) {
     AppEnvironment.pushEnvironment(env)
     body()
     AppEnvironment.popEnvironment()
@@ -41,7 +41,7 @@ extension XCTestCase {
                timeZone: NSTimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
-               @noescape body: () -> ()) {
+               @noescape body: () -> Void) {
 
     withEnvironment(
       Environment(
