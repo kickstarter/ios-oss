@@ -18,7 +18,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
-    self.vm.outputs.goToUpdate.map { project, update in update.id }.observe(self.goToUpdateId.observer)
+    self.vm.outputs.goToUpdate.map { _, update in update.id }.observe(self.goToUpdateId.observer)
     self.vm.outputs.goToUpdateComments.map { $0.id }.observe(self.goToUpdateCommentId.observer)
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }

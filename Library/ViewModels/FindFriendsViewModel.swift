@@ -77,7 +77,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     let followAll = self.confirmFollowAllFriendsProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.followAllFriends()
-          .on(next: { _ in AppEnvironment.current.cache[findFriendsCacheKey] = [Int:Bool]() })
+          .on(next: { _ in AppEnvironment.current.cache[findFriendsCacheKey] = [Int: Bool]() })
           .demoteErrors()
       }
 
