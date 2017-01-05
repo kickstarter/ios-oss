@@ -1163,7 +1163,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 }
 
-private let backingForCreatorPushData = [
+private let backingForCreatorPushData: [String: Any] = [
   "aps": [
     "alert": "HEYYYY"
   ],
