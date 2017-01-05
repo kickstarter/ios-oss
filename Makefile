@@ -27,7 +27,7 @@ test-all:
 	PLATFORM=iOS "$(MAKE)" test
 	PLATFORM=iOS TARGET=Library "$(MAKE)" test
 
-test: dependencies
+test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 clean:
