@@ -13,7 +13,7 @@ internal protocol LiveStreamViewModelInputs {
   // FIXME: add comments
 
   func configureWith(app app: FirebaseAppType, event: LiveStreamEvent)
-  func setFirebaseDatabaseRef(ref ref: FirebaseDatabaseRefType)
+  func setFirebaseDatabaseRef(ref ref: FirebaseDatabaseReferenceType)
   func setGreenRoomActive(active active: Bool)
   func setHLSUrl(hlsUrl: String)
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
@@ -32,11 +32,11 @@ internal protocol LiveStreamViewModelOutputs {
 
   // FIXME: update outputs to described exactly what is happening, i.e. observedGreenRoomOffChange
 
-  var createGreenRoomObservers: Signal<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError> { get }
-  var createHLSObservers: Signal<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError> { get }
-  var createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseRefType,
+  var createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
+  var createHLSObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
+  var createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError> { get }
-  var createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseRefType,
+  var createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError> { get }
   var createVideoViewController: Signal<LiveStreamType, NoError> { get }
   // FIXME: can remove?
@@ -44,7 +44,7 @@ internal protocol LiveStreamViewModelOutputs {
   // FIXME: rename output to better describe what the view should do
   var firebaseApp: Signal<FirebaseAppType, NoError> { get }
   // FIXME: remove all references of this
-//  var firebaseDatabaseRef: Signal<FirebaseDatabaseRefType, NoError> { get }
+//  var firebaseDatabaseRef: Signal<FirebaseDatabaseReferenceType, NoError> { get }
   // FIXME: can remove?
   var greenRoomActive: Signal<Bool, NoError> { get }
   var isReplayState: Signal<Bool, NoError> { get }
@@ -241,8 +241,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.configData.value = (app, event)
   }
 
-  private let configureFirebaseDatabaseRefProperty = MutableProperty<FirebaseDatabaseRefType?>(nil)
-  internal func configureFirebaseDatabaseRef(ref ref: FirebaseDatabaseRefType) {
+  private let configureFirebaseDatabaseRefProperty = MutableProperty<FirebaseDatabaseReferenceType?>(nil)
+  internal func configureFirebaseDatabaseRef(ref ref: FirebaseDatabaseReferenceType) {
     self.configureFirebaseDatabaseRefProperty.value = ref
   }
 
@@ -251,8 +251,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.forceUseHLSProperty.value = ()
   }
 
-  private let firebaseDatabaseRef = MutableProperty<FirebaseDatabaseRefType?>(nil)
-  internal func setFirebaseDatabaseRef(ref ref: FirebaseDatabaseRefType) {
+  private let firebaseDatabaseRef = MutableProperty<FirebaseDatabaseReferenceType?>(nil)
+  internal func setFirebaseDatabaseRef(ref ref: FirebaseDatabaseReferenceType) {
     self.firebaseDatabaseRef.value = ref
   }
 
@@ -296,16 +296,16 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.viewDidLoadProperty.value = ()
   }
 
-  internal let createGreenRoomObservers: Signal<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>
-  internal let createHLSObservers: Signal<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>
-  internal let createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseRefType,
+  internal let createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
+  internal let createHLSObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
+  internal let createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>
-  internal let createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseRefType,
+  internal let createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>
   internal let createVideoViewController: Signal<LiveStreamType, NoError>
   internal let error: Signal<LiveVideoPlaybackError, NoError>
   internal let firebaseApp: Signal<FirebaseAppType, NoError>
-//  internal let firebaseDatabaseRef: Signal<FirebaseDatabaseRefType, NoError>
+//  internal let firebaseDatabaseRef: Signal<FirebaseDatabaseReferenceType, NoError>
   internal let greenRoomActive: Signal<Bool, NoError>
   internal let isReplayState: Signal<Bool, NoError>
   internal let liveStreamViewControllerState: Signal<LiveStreamViewControllerState, NoError>

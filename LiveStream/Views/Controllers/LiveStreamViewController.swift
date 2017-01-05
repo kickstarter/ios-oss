@@ -196,7 +196,7 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   }
 }
 
-private func prepare(databaseReference ref: FirebaseDatabaseRefType, config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
+private func prepare(databaseReference ref: FirebaseDatabaseReferenceType, config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
 
   guard let ref = ref as? FIRDatabaseReference else { return nil }
   return (ref, config)

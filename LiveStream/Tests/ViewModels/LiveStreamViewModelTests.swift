@@ -7,21 +7,21 @@ import Prelude
 @testable import ReactiveExtensions_TestHelpers
 
 private struct TestFirebaseAppType: FirebaseAppType {}
-private struct TestFirebaseDatabaseRefType: FirebaseDatabaseRefType {}
+private struct TestFirebaseDatabaseReferenceType: FirebaseDatabaseReferenceType {}
 
 internal final class LiveStreamViewModelTests: XCTestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
 
-  private let createGreenRoomObservers = TestObserver<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>()
-  private let createHLSObservers = TestObserver<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>()
-  private let createNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseRefType,
+  private let createGreenRoomObservers = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
+  private let createHLSObservers = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
+  private let createNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>()
-  private let createScaleNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseRefType,
+  private let createScaleNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>()
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
   private let firebaseApp = TestObserver<FirebaseAppType, NoError>()
-  private let firebaseDatabaseRef = TestObserver<FirebaseDatabaseRefType, NoError>()
+  private let firebaseDatabaseRef = TestObserver<FirebaseDatabaseReferenceType, NoError>()
   private let greenRoomActive = TestObserver<Bool, NoError>()
   private let layoutVideoView = TestObserver<UIView, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
@@ -194,7 +194,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.firebaseApp.assertValueCount(1)
 
     // Step 2: Configure the firebase database reference
-    let dbRef = TestFirebaseDatabaseRefType()
+    let dbRef = TestFirebaseDatabaseReferenceType()
     self.vm.inputs.setFirebaseDatabaseRef(ref: dbRef)
 
     // All observer creation signals should only emit once
