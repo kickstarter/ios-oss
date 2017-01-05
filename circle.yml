@@ -3,8 +3,6 @@ machine:
     version: 7.3
 dependencies:
   pre:
-    - brew update || brew update
-    - brew install swiftlint
     - system_profiler SPSoftwareDataType
     - security list-keychains
     - security find-identity -p codesigning
