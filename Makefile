@@ -36,10 +36,7 @@ clean:
 dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
-	brew update
-	brew unlink swiftlint || true
-	brew install swiftlint
-	brew link --overwrite swiftlint
+
 
 submodules:
 	git submodule sync --recursive || true
