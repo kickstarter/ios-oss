@@ -40,7 +40,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        activityTitleLabel
+        _ = activityTitleLabel
           |> projectActivityTitleLabelStyle
     }
 
@@ -60,7 +60,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       UILabel.lens.font .~ .ksr_caption1(size: 12)
         <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityUpdateCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular

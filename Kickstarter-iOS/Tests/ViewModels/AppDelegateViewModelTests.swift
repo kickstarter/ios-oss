@@ -1173,7 +1173,7 @@ private let backingForCreatorPushData = [
     "project_id": 1
   ],
   "for_creator": true
-] as [String : Any]
+]
 
 private let friendBackingPushData = [
   "aps": [

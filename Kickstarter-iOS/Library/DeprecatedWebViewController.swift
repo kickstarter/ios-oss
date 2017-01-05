@@ -39,16 +39,16 @@ internal class DeprecatedWebViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.activityIndicator
+    _ = self.activityIndicator
       |> UIActivityIndicatorView.lens.translatesAutoresizingMaskIntoConstraints .~ false
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
-    self.loadingOverlayView
+    _ = self.loadingOverlayView
       |> UIView.lens.translatesAutoresizingMaskIntoConstraints .~ false
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.8)
 
-    self.webView
+    _ = self.webView
       |> UIWebView.lens.suppressesIncrementalRendering .~ true
       |> UIWebView.lens.translatesAutoresizingMaskIntoConstraints .~ false
       |> UIWebView.lens.scrollView.decelerationRate .~ UIScrollViewDecelerationRateNormal
