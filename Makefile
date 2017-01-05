@@ -82,8 +82,8 @@ strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-	-rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
-	-git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
 	then \
 		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
