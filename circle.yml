@@ -14,9 +14,7 @@ test:
     - xcrun instruments -w 'iPhone 6 (9.3)' || true
     - sleep 15
   override:
-    - set -o pipefail &&
-      swiftlint lint --strict --reporter json |
-      tee $CIRCLE_ARTIFACTS/swiftlint-report.json
+    - make lint
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
   post:
