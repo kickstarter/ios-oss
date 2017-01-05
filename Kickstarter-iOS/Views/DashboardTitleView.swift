@@ -21,7 +21,7 @@ internal final class DashboardTitleView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.titleButton
+    _ = self.titleButton
       |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
       |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_900
@@ -30,9 +30,9 @@ internal final class DashboardTitleView: UIView {
       |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
       |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .touchUpInside)]
 
-    self.titleLabel |> dashboardTitleViewTextStyle
+    _ = self.titleLabel |> dashboardTitleViewTextStyle
 
-    self.arrowImageView
+    _ = self.arrowImageView
       |> UIImageView.lens.hidden .~ true
       |> UIImageView.lens.tintColor .~ .ksr_navy_700
 
@@ -49,7 +49,7 @@ internal final class DashboardTitleView: UIView {
           _self.arrowImageView.isHidden = hide
         }
         if !hide {
-          _self.titleButton |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+          _ = _self.titleButton |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraitButton
         }
     }
 
@@ -70,7 +70,7 @@ internal final class DashboardTitleView: UIView {
       .observeValues { [weak self] isEnabled in
         guard let _titleLabel = self?.titleLabel else { return }
         if isEnabled {
-          _titleLabel |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 14.0).bolded
+          _ = _titleLabel |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 14.0).bolded
         }
     }
   }
