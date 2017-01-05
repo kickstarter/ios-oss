@@ -47,11 +47,11 @@ public final class LiveStreamViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         self?.videoViewController?.destroy()
-        // FIXME: remove child? self?.videoViewController?.removeFromParentViewController()
+        self?.videoViewController?.removeFromParentViewController()
         self?.videoViewController = nil
     }
 
-    self.viewModel.outputs.firebaseApp
+    self.viewModel.outputs.createFirebaseAppAndConfigureDatabaseReference
       .observeNext { [weak self] in
         guard let firebaseRef = ($0 as? FIRApp).map({
           FIRDatabase.database(app: $0).reference()
@@ -61,9 +61,8 @@ public final class LiveStreamViewController: UIViewController {
         self?.viewModel.inputs.setFirebaseDatabaseRef(ref: firebaseRef)
     }
 
-    self.viewModel.outputs.numberOfPeopleWatching.observeNext { [weak self] in
+    self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observeNext { [weak self] in
       guard let _self = self else { return }
-      _self.forceHLSTimerProducer?.dispose()// FIXME: this can be removed with the delay thing in the VM
       _self.delegate?.numberOfPeopleWatchingChanged(_self, numberOfPeople: $0)
     }
 
@@ -88,13 +87,7 @@ public final class LiveStreamViewController: UIViewController {
       .observeNext { [weak self] in
         self?.createFirebaseScaleNumberOfPeopleWatchingObservers($0, refConfig: $1) }
 
-    // FIXME: doesnt seem this needs to be an output if it just feeds back into the VM
-    self.viewModel.outputs.isReplayState
-      .observeNext { [weak self] in
-        if $0 { self?.viewModel.inputs.setGreenRoomActive(active: false) }
-    }
-
-    self.viewModel.outputs.liveStreamViewControllerState.observeNext { [weak self] in
+    self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged.observeNext { [weak self] in
       guard let _self = self else { return }
       self?.delegate?.liveStreamStateChanged(_self, state: $0)
     }
@@ -135,7 +128,7 @@ public final class LiveStreamViewController: UIViewController {
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       guard let value = snapshot.value as? Bool else { return }
-      self?.viewModel.inputs.setGreenRoomActive(active: !value)
+      self?.viewModel.inputs.observedGreenRoomActiveChanged(active: !value)
     })
   }
 
@@ -146,7 +139,7 @@ public final class LiveStreamViewController: UIViewController {
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       guard let value = snapshot.value as? String else { return }
-      self?.viewModel.inputs.setHLSUrl(value)
+      self?.viewModel.inputs.observedHlsUrlChanged(value)
     })
   }
 
@@ -156,7 +149,7 @@ public final class LiveStreamViewController: UIViewController {
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       guard let value = snapshot.value as? NSDictionary else { return }
-      self?.viewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: value.allKeys.count)
+      self?.viewModel.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: value.allKeys.count)
     })
   }
 
@@ -166,7 +159,7 @@ public final class LiveStreamViewController: UIViewController {
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       guard let value = snapshot.value as? Int else { return }
-      self?.viewModel.inputs.setScaleNumberOfPeopleWatching(numberOfPeople: value)
+      self?.viewModel.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: value)
     })
   }
 
@@ -196,8 +189,9 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   }
 }
 
-private func prepare(databaseReference ref: FirebaseDatabaseReferenceType, config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
-
+private func prepare(databaseReference
+  ref: FirebaseDatabaseReferenceType,
+  config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
   guard let ref = ref as? FIRDatabaseReference else { return nil }
   return (ref, config)
 }
