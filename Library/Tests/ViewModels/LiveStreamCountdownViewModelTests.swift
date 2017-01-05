@@ -3,7 +3,7 @@ import ReactiveCocoa
 import Result
 import XCTest
 @testable import KsApi
-@testable import KsLive
+@testable import LiveStream
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 

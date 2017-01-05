@@ -1,5 +1,5 @@
 import KsApi
-import KsLive
+import LiveStream
 
 /**
  An enumeration of all the place a share flow can be started.

@@ -2,7 +2,7 @@ import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
-import KsLive
+import LiveStream
 
 internal protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(controller: ProjectPamphletContentViewController, imageIsVisible: Bool)

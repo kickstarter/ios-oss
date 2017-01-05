@@ -612,12 +612,9 @@
 		A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
-		D0247B3F1DFAA28600D7A7C1 /* KsLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0247A701DF9EF2100D7A7C1 /* KsLive.framework */; };
-		D0247B401DFAA28600D7A7C1 /* KsLive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0247A701DF9EF2100D7A7C1 /* KsLive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D033D8761E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */; };
 		D049C8D71DFFFACE00349FE6 /* LiveStreamCountdownViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
-		D04F492F1E03155700EDC98A /* KsLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0247A701DF9EF2100D7A7C1 /* KsLive.framework */; };
 		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
 		D08A81761DFAACAD000128DB /* LiveStream.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D08A81751DFAACAD000128DB /* LiveStream.storyboard */; };
@@ -871,6 +868,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7DB1D391C9F355E008244DA;
 			remoteInfo = "ReactiveExtensions-TestHelpers-iOS";
+		};
+		A7BA54F61E1E51F800E54377 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7BA54281E1E493500E54377;
+			remoteInfo = LiveStream;
 		};
 		A7C5C4271DF87C8E0048D14C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1208,27 +1212,6 @@
 			remoteGlobalIDString = A7DB1D391C9F355E008244DA;
 			remoteInfo = "ReactiveExtensions-TestHelpers-iOS";
 		};
-		D0247A6F1DF9EF2100D7A7C1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D08607201D6B8283004DFD5E;
-			remoteInfo = KsLive;
-		};
-		D0247A711DF9EF2100D7A7C1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D086072A1D6B8283004DFD5E;
-			remoteInfo = KsLiveTests;
-		};
-		D0247B411DFAA28600D7A7C1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D086071F1D6B8283004DFD5E;
-			remoteInfo = KsLive;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1246,7 +1229,6 @@
 				A7C5C54E1DF895050048D14C /* KsApi.framework in Embed Frameworks */,
 				A7C5C5461DF894F50048D14C /* Result.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
-				D0247B401DFAA28600D7A7C1 /* KsLive.framework in Embed Frameworks */,
 				A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7C5C53A1DF894E00048D14C /* Prelude.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
@@ -1853,7 +1835,6 @@
 		A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTitleCell.swift; sourceTree = "<group>"; };
 		A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
-		D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KsLive.xcodeproj; path = Frameworks/KsLive/KsLive.xcodeproj; sourceTree = "<group>"; };
 		D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewModel.swift; sourceTree = "<group>"; };
 		D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModel.swift; sourceTree = "<group>"; };
 		D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -1877,7 +1858,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D04F492F1E03155700EDC98A /* KsLive.framework in Frameworks */,
 				A7C5C5331DF893110048D14C /* Prelude.framework in Frameworks */,
 				A7C5C4F81DF881190048D14C /* KsApi.framework in Frameworks */,
 				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
@@ -1957,7 +1937,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0247B3F1DFAA28600D7A7C1 /* KsLive.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
@@ -2998,7 +2977,6 @@
 				A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */,
 				A73778921D819736004C2A9B /* FBSnapshotTestCase.xcodeproj */,
 				A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */,
-				D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */,
 				A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */,
 				A76E0AAF1D00D02300EC525A /* ReactiveCocoa.xcodeproj */,
 				A76E0AC51D00D05F00EC525A /* ReactiveExtensions.xcodeproj */,
@@ -3141,15 +3119,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		D0247A441DF9EF2100D7A7C1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D0247A701DF9EF2100D7A7C1 /* KsLive.framework */,
-				D0247A721DF9EF2100D7A7C1 /* KsLiveTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3190,6 +3159,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7BA54F71E1E51F800E54377 /* PBXTargetDependency */,
 				A7C5C5541DF895880048D14C /* PBXTargetDependency */,
 				A7C5C5521DF895850048D14C /* PBXTargetDependency */,
 			);
@@ -3293,7 +3263,6 @@
 			);
 			dependencies = (
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
-				D0247B421DFAA28600D7A7C1 /* PBXTargetDependency */,
 				A7BA543D1E1E493600E54377 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
@@ -3413,10 +3382,6 @@
 				{
 					ProductGroup = A7C5C4491DF87CAC0048D14C /* Products */;
 					ProjectRef = A7D1F8E41C84FB55000D41D5 /* KsApi.xcodeproj */;
-				},
-				{
-					ProductGroup = D0247A441DF9EF2100D7A7C1 /* Products */;
-					ProjectRef = D0247A431DF9EF2100D7A7C1 /* KsLive.xcodeproj */;
 				},
 				{
 					ProductGroup = A7C5C4C91DF87CEB0048D14C /* Products */;
@@ -3881,20 +3846,6 @@
 			fileType = wrapper.cfbundle;
 			path = "Prelude-UIKit-tvOSTests.xctest";
 			remoteRef = A7C5C4E11DF87CEB0048D14C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D0247A701DF9EF2100D7A7C1 /* KsLive.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KsLive.framework;
-			remoteRef = D0247A6F1DF9EF2100D7A7C1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D0247A721DF9EF2100D7A7C1 /* KsLiveTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = KsLiveTests.xctest;
-			remoteRef = D0247A711DF9EF2100D7A7C1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4637,6 +4588,11 @@
 			name = "ReactiveExtensions-TestHelpers-iOS";
 			targetProxy = A7BA54F41E1E4DE400E54377 /* PBXContainerItemProxy */;
 		};
+		A7BA54F71E1E51F800E54377 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7BA54281E1E493500E54377 /* LiveStream */;
+			targetProxy = A7BA54F61E1E51F800E54377 /* PBXContainerItemProxy */;
+		};
 		A7C5C5521DF895850048D14C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Prelude-UIKit-iOS";
@@ -4656,11 +4612,6 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveExtensions-TestHelpers-iOS";
 			targetProxy = A7C5C5581DF895BA0048D14C /* PBXContainerItemProxy */;
-		};
-		D0247B421DFAA28600D7A7C1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = KsLive;
-			targetProxy = D0247B411DFAA28600D7A7C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5041,7 +4992,6 @@
 				);
 				INFOPLIST_FILE = LiveStream/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5077,7 +5027,6 @@
 				);
 				INFOPLIST_FILE = LiveStream/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5112,7 +5061,6 @@
 				);
 				INFOPLIST_FILE = LiveStream/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
 				PRODUCT_NAME = "$(TARGET_NAME)";

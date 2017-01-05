@@ -1,6 +1,6 @@
 #if os(iOS)
 import KsApi
-import KsLive
+import LiveStream
 import Prelude
 import ReactiveCocoa
 import Result

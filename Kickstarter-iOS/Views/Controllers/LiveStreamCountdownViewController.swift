@@ -3,7 +3,7 @@ import Library
 import Prelude
 import ReactiveCocoa
 import UIKit
-import KsLive
+import LiveStream
 
 internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!

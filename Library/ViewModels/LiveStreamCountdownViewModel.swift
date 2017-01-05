@@ -3,7 +3,7 @@ import ReactiveCocoa
 import ReactiveExtensions
 import Result
 import Prelude
-import KsLive
+import LiveStream
 
 public protocol LiveStreamCountdownViewModelType {
   var inputs: LiveStreamCountdownViewModelInputs { get }

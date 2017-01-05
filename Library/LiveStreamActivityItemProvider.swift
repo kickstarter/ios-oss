@@ -1,7 +1,7 @@
 #if os(iOS)
   import KsApi
   import UIKit
-  import KsLive
+  import LiveStream
 
   public final class LiveStreamActivityItemProvider: UIActivityItemProvider {
 

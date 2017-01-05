@@ -1,5 +1,5 @@
 import KsApi
-import KsLive
+import LiveStream
 import ReactiveCocoa
 import ReactiveExtensions
 import Result

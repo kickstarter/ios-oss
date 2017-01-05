@@ -5,7 +5,7 @@ import Prelude
 import ReactiveCocoa
 import Result
 import UIKit
-import KsLive
+import LiveStream
 
 //swiftlint:disable type_body_length
 internal final class LiveStreamContainerViewController: UIViewController {

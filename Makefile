@@ -33,7 +33,7 @@ test: dependencies
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets opentok
+dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
 	brew update
