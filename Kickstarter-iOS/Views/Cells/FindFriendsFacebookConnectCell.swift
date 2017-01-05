@@ -117,8 +117,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   private func attemptFacebookLogin() {
     self.fbLoginManager.logInWithReadPermissions(
       ["public_profile", "email", "user_friends"],
-      fromViewController: nil) {
-        (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
+      fromViewController: nil) { (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
         if error != nil {
           self.viewModel.inputs.facebookLoginFail(error: error)
         } else if !result.isCancelled {
