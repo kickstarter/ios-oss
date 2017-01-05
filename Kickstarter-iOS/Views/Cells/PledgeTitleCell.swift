@@ -29,7 +29,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { margins, cell in
         .init(top: Styles.grid(3),
@@ -38,7 +38,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
               right: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.right * 2)
       }
 
-    self.pledgeTitleLabel
+    _ = self.pledgeTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
 
   }

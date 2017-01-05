@@ -69,10 +69,10 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.numberOfLines .~ 4
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font %~~ { _, label in
@@ -81,39 +81,39 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
             : UIFont.ksr_body(size: 14)
       }
 
-    self.commentsCountImageView
+    _ = self.commentsCountImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_600
 
-    self.commentsCountLabel
+    _ = self.commentsCountLabel
       |> statLabel
 
-    self.commentsStackView
+    _ = self.commentsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.containerStackView
+    _ = self.containerStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.contentAndFooterStackView
+    _ = self.contentAndFooterStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.footerDividerView
+    _ = self.footerDividerView
       |> projectActivityDividerViewStyle
 
-    self.likeAndCommentsCountStackView
+    _ = self.likeAndCommentsCountStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.likesCountImageView
+    _ = self.likesCountImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_600
 
-    self.likesCountLabel
+    _ = self.likesCountLabel
       |> statLabel
 
-    self.likesStackView
+    _ = self.likesStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.updateTitleLabel
+    _ = self.updateTitleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

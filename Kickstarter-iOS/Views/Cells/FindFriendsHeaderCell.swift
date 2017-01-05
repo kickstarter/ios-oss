@@ -40,26 +40,26 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> feedTableViewCellStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
-    self.subtitleLabel
+    _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Follow_your_Facebook_friends_and_get_notified() }
 
-    self.closeButton
+    _ = self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_navy_700
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
@@ -68,7 +68,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
         Strings.social_following_header_accessibility_button_close_find_friends_header_label()
     }
 
-    self.findFriendsButton
+    _ = self.findFriendsButton
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .touchUpInside)]

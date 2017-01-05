@@ -40,7 +40,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        titleLabel
+        _ = titleLabel
           |> projectActivityStateChangeLabelStyle
           |> UILabel.lens.textColor .~ .white
     }
@@ -49,7 +49,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivitySuccessCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -60,11 +60,11 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
         Strings.Opens_project()
     }
 
-    self.cardView
+    _ = self.cardView
       |> roundedStyle()
       |> UIView.lens.layoutMargins .~ .init(all: 24.0)
 
-    self.dropShadowView
+    _ = self.dropShadowView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ .white
       |> dropShadowStyle()

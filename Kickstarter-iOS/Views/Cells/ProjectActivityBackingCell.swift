@@ -35,10 +35,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.backingButton
+    _ = self.backingButton
       |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
 
-    self.sendMessageButton
+    _ = self.sendMessageButton
       |> UIButton.lens.targets .~ [(self, #selector(sendMessageButtonPressed), .touchUpInside)]
   }
 
@@ -106,7 +106,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        rewardLabel
+        _ = rewardLabel
           |> UILabel.lens.numberOfLines .~ 0
           |> UILabel.lens.textColor .~ .ksr_text_navy_600
     }
@@ -120,7 +120,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        titleLabel |> projectActivityTitleLabelStyle
+        _ = titleLabel |> projectActivityTitleLabelStyle
     }
   }
   // swiftlint:enable function_body_length
@@ -128,7 +128,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityBackingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -137,48 +137,48 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_pledge_info() }
 
-    self.backingButton
+    _ = self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
-    self.bulletSeparatorView
+    _ = self.bulletSeparatorView
       |> projectActivityBulletSeparatorViewStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.footerDividerView
+    _ = self.footerDividerView
       |> projectActivityDividerViewStyle
 
-    self.footerStackView
+    _ = self.footerStackView
       |> projectActivityFooterStackViewStyle
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.headerDividerView
+    _ = self.headerDividerView
       |> projectActivityDividerViewStyle
 
-    self.headerStackView
+    _ = self.headerStackView
       |> projectActivityHeaderStackViewStyle
 
-    self.pledgeAmountLabel
+    _ = self.pledgeAmountLabel
       |> UILabel.lens.textColor .~ .ksr_text_green_700
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
 
-    self.pledgeAmountLabelsStackView
+    _ = self.pledgeAmountLabelsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.pledgeDetailsStackView
+    _ = self.pledgeDetailsStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.previousPledgeAmountLabel
+    _ = self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
       |> UILabel.lens.textColor .~ .ksr_navy_500
 
-    self.previousPledgeStrikethroughView
+    _ = self.previousPledgeStrikethroughView
       |> UIView.lens.backgroundColor .~ .ksr_navy_500
 
-    self.sendMessageButton
+    _ = self.sendMessageButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
   }

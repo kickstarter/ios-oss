@@ -43,14 +43,14 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self |> baseTableViewCellStyle()
+    _ = self |> baseTableViewCellStyle()
     self.isAccessibilityElement = false
     self.accessibilityElements = [self.activityButton, self.messagesButton, self.postUpdateButton]
-    self.activityButton |> dashboardActivityButtonStyle
-    self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
-    self.messagesButton |> dashboardMessagesButtonStyle
-    self.postUpdateButton |> postUpdateButtonStyle
-    self.separatorView |> separatorStyle
+    _ = self.activityButton |> dashboardActivityButtonStyle
+    _ = self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
+    _ = self.messagesButton |> dashboardMessagesButtonStyle
+    _ = self.postUpdateButton |> postUpdateButtonStyle
+    _ = self.separatorView |> separatorStyle
   }
 
   internal override func bindViewModel() {

@@ -31,11 +31,11 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.nameLabel |> settingsSectionLabelStyle
-    self.separatorView |> separatorStyle
+    _ = self.nameLabel |> settingsSectionLabelStyle
+    _ = self.separatorView |> separatorStyle
   }
 
   internal override func bindViewModel() {

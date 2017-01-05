@@ -23,54 +23,54 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> CommentCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
-    self.bodyTextView
+    _ = self.bodyTextView
       |> UITextView.lens.scrollEnabled .~ false
       |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
       |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
 
-    self.authorAndTimestampStackView
+    _ = self.authorAndTimestampStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
-    self.authorStackView
+    _ = self.authorStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
-    self.commentStackView
+    _ = self.commentStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.creatorLabel
+    _ = self.creatorLabel
       |> authorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_creator() }
 
-    self.creatorView
+    _ = self.creatorView
       |> authorBadgeViewStyle
       |> UIView.lens.backgroundColor .~ .ksr_navy_700
 
-    self.nameLabel
+    _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 16.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.separatorView
+    _ = self.separatorView
       |> separatorStyle
 
-    self.timestampLabel
+    _ = self.timestampLabel
       |> UILabel.lens.font .~ .ksr_body(size: 12.0)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self.youLabel
+    _ = self.youLabel
       |> authorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_you() }
 
-    self.youView
+    _ = self.youView
       |> authorBadgeViewStyle
       |> UIView.lens.backgroundColor .~ .ksr_green_500
   }

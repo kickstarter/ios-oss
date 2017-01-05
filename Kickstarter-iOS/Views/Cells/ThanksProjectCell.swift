@@ -12,13 +12,13 @@ internal final class ThanksProjectCell: UICollectionViewCell, ValueCell {
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
 
   func configureWith(value project: Project) {
-    self
+    _ = self
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityLabel %~ { _ in project.name }
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.text .~ project.name
       |> UILabel.lens.font .~ .ksr_callout()
       |> UILabel.lens.textColor .~ .white

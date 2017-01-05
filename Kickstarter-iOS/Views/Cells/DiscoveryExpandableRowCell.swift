@@ -15,11 +15,11 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> discoveryFilterRowMarginStyle
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
-    self.projectsCountLabel
+    _ = self.projectsCountLabel
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
@@ -43,15 +43,15 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak filterTitleLabel] expandableRow, categoryId in
         guard let filterTitleLabel = filterTitleLabel else { return }
-        filterTitleLabel
-        |>  discoveryFilterLabelStyle(categoryId: categoryId, isSelected: expandableRow.isExpanded)
+        _ = filterTitleLabel
+          |>  discoveryFilterLabelStyle(categoryId: categoryId, isSelected: expandableRow.isExpanded)
     }
 
     self.viewModel.outputs.filterIsExpanded
       .observeForUI()
       .observeValues { [weak filterTitleLabel] filterIsExpanded in
         guard let filterTitleLabel = filterTitleLabel else { return }
-        filterTitleLabel |> discoveryFilterLabelFontStyle(isSelected: filterIsExpanded)
+        _ = filterTitleLabel |> discoveryFilterLabelFontStyle(isSelected: filterIsExpanded)
     }
   }
 

@@ -11,7 +11,7 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> MostPopularCell.lens.backgroundColor .~ .clear
       |> MostPopularCell.lens.contentView.layoutMargins %~~ { _, cell in
@@ -20,7 +20,7 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    self.mostPopularLabel
+    _ = self.mostPopularLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.search_most_popular() }

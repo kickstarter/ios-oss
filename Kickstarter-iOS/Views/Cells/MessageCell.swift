@@ -25,7 +25,9 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self
+    super.bindStyles()
+    
+    _ = self
       |> baseTableViewCellStyle()
       |> MessageCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
