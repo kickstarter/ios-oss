@@ -781,13 +781,6 @@
 			remoteGlobalIDString = A7BA54281E1E493500E54377;
 			remoteInfo = LiveStream;
 		};
-		A7BA54361E1E493600E54377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
-			remoteInfo = "Kickstarter-iOS";
-		};
 		A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -3000,7 +2993,6 @@
 			);
 			dependencies = (
 				A7BA54351E1E493600E54377 /* PBXTargetDependency */,
-				A7BA54371E1E493600E54377 /* PBXTargetDependency */,
 			);
 			name = LiveStreamTests;
 			productName = LiveStreamTests;
@@ -4335,11 +4327,6 @@
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
 			targetProxy = A7BA54341E1E493600E54377 /* PBXContainerItemProxy */;
 		};
-		A7BA54371E1E493600E54377 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
-			targetProxy = A7BA54361E1E493600E54377 /* PBXContainerItemProxy */;
-		};
 		A7BA543D1E1E493600E54377 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
@@ -4812,7 +4799,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
@@ -4829,7 +4816,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
@@ -4846,7 +4833,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
