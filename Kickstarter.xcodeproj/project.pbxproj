@@ -573,8 +573,6 @@
 		D08A817A1DFAACF8000128DB /* LiveStreamEventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */; };
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
-		D08A817E1DFAAE11000128DB /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08A817D1DFAAE11000128DB /* OpenTok.framework */; };
-		D08A817F1DFAAE11000128DB /* OpenTok.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D08A817D1DFAAE11000128DB /* OpenTok.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0A9CC321E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
@@ -1138,7 +1136,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A7C5C55C1DF899B80048D14C /* ReactiveExtensions.framework in Embed Frameworks */,
-				D08A817F1DFAAE11000128DB /* OpenTok.framework in Embed Frameworks */,
 				A7C5C5421DF894ED0048D14C /* Curry.framework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
@@ -1600,6 +1597,16 @@
 		A7B694291C87A04C00C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		A7B694301C87A07100C49A4F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		A7B694321C87A07100C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		A7BA53E61E1E47F400E54377 /* OpenTok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenTok.framework; path = Frameworks/OpenTok/OpenTok.framework; sourceTree = "<group>"; };
+		A7BA53E91E1E482E00E54377 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		A7BA53EA1E1E482E00E54377 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		A7BA53EB1E1E482E00E54377 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
+		A7BA53EC1E1E482E00E54377 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
+		A7BA53ED1E1E482E00E54377 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = "<group>"; };
+		A7BA53EF1E1E482E00E54377 /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = "<group>"; };
+		A7BA53F01E1E482E00E54377 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleNetworkingUtilities.framework; sourceTree = "<group>"; };
+		A7BA53F11E1E482E00E54377 /* GoogleParsingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleParsingUtilities.framework; sourceTree = "<group>"; };
+		A7BA53F31E1E482E00E54377 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = "<group>"; };
 		A7BE4EEB1D05C10200353EF9 /* Argo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Argo.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Argo/Argo.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Curry.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Curry/Curry.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
@@ -1710,7 +1717,6 @@
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
 		D08A81751DFAACAD000128DB /* LiveStream.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStream.storyboard; sourceTree = "<group>"; };
-		D08A817D1DFAAE11000128DB /* OpenTok.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenTok.framework; path = Frameworks/KsLive/Frameworks/OpenTok.framework; sourceTree = "<group>"; };
 		D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModelTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1759,7 +1765,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0247B3F1DFAA28600D7A7C1 /* KsLive.framework in Frameworks */,
-				D08A817E1DFAAE11000128DB /* OpenTok.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
@@ -1989,10 +1994,11 @@
 		A7424F421C84F43300FDC1E4 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D08A817D1DFAAE11000128DB /* OpenTok.framework */,
 				01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */,
 				01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */,
+				A7BA53E61E1E47F400E54377 /* OpenTok.framework */,
 				A75F71621D897E4C0091258A /* Stripe.framework */,
+				A7BA53E71E1E482E00E54377 /* Firebase */,
 				A7B694261C87A04C00C49A4F /* HockeySDK.embeddedframework */,
 			);
 			name = iOS;
@@ -2364,6 +2370,47 @@
 				A7B694321C87A07100C49A4F /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		A7BA53E71E1E482E00E54377 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA53E81E1E482E00E54377 /* Analytics */,
+				A7BA53EE1E1E482E00E54377 /* Auth */,
+				A7BA53F21E1E482E00E54377 /* Database */,
+			);
+			name = Firebase;
+			path = Frameworks/Firebase;
+			sourceTree = "<group>";
+		};
+		A7BA53E81E1E482E00E54377 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA53E91E1E482E00E54377 /* FirebaseAnalytics.framework */,
+				A7BA53EA1E1E482E00E54377 /* FirebaseInstanceID.framework */,
+				A7BA53EB1E1E482E00E54377 /* GoogleInterchangeUtilities.framework */,
+				A7BA53EC1E1E482E00E54377 /* GoogleSymbolUtilities.framework */,
+				A7BA53ED1E1E482E00E54377 /* GoogleUtilities.framework */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		A7BA53EE1E1E482E00E54377 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA53EF1E1E482E00E54377 /* FirebaseAuth.framework */,
+				A7BA53F01E1E482E00E54377 /* GoogleNetworkingUtilities.framework */,
+				A7BA53F11E1E482E00E54377 /* GoogleParsingUtilities.framework */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A7BA53F21E1E482E00E54377 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA53F31E1E482E00E54377 /* FirebaseDatabase.framework */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		A7C5C41E1DF87C8E0048D14C /* Products */ = {

@@ -1,0 +1,20 @@
+framework module FirebaseAuth {
+  umbrella header "FirebaseAuth.h"
+
+  export *
+
+  header "FIRAuth.h"
+  header "FIRAuthCredential.h"
+  header "FIRAuthErrors.h"
+  header "FIREmailPasswordAuthProvider.h"
+  header "FIRFacebookAuthProvider.h"
+  header "FIRGitHubAuthProvider.h"
+  header "FIRGoogleAuthProvider.h"
+  header "FIRTwitterAuthProvider.h"
+  header "FIRUser.h"
+  header "FIRUserInfo.h"
+
+  link framework "Security"
+
+  use FirebaseAnalytics
+}
