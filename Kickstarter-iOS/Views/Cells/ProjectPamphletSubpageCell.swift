@@ -73,7 +73,6 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> UIView.lens.backgroundColor .~ .ksr_navy_300
-      |> roundedStyle()
 
     _ = self.countLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -100,6 +99,10 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
-    self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
+
+    // FIXME: why doesnt this work?!
+    // self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
+    self.countContainerView.layer.cornerRadius = 14
+    self.countContainerView.layer.masksToBounds = true
   }
 }
