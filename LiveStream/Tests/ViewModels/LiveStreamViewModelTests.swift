@@ -22,6 +22,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
   private let createFirebaseAppAndConfigureDatabaseReference = TestObserver<FirebaseAppType, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
+  private let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = TestObserver<Int, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -38,11 +39,28 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       self.createNumberOfPeopleWatchingObservers.observer)
     self.vm.outputs.createScaleNumberOfPeopleWatchingObservers.observe(
       self.createScaleNumberOfPeopleWatchingObservers.observer)
+    self.vm.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observe(
+      self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observer)
   }
 
   func testOpenTokStreamBeforeScale() {
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
+
+    let dictionary300 = NSMutableDictionary()
+    Array(1...300).forEach { dictionary300.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary200 = NSMutableDictionary()
+    Array(1...200).forEach { dictionary200.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary250 = NSMutableDictionary()
+    Array(1...250).forEach { dictionary250.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary350 = NSMutableDictionary()
+    Array(1...350).forEach { dictionary350.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary400 = NSMutableDictionary()
+    Array(1...400).forEach { dictionary400.setValue(Int($0), forKey: String($0)) }
 
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
@@ -51,11 +69,11 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
-    self.vm.inputs.observedGreenRoomActiveChanged(active: false)
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
 
     // Step 3: Only once the number of people watching is set and its within the scale threshold
     // should the video view controller be created, it should be an OpenTok stream
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 250)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary250)
 
     let openTokStreamType = LiveStreamType.openTok(sessionConfig:
       OpenTokSessionConfig(
@@ -69,7 +87,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     // Step 4: Update the number of people watching above 300
     // This should not cause the video view controller to be recreated
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 400)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary400)
 
     self.createVideoViewController.assertValueCount(1)
     self.removeVideoViewController.assertValueCount(0)
@@ -79,6 +97,15 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
 
+    let dictionary200 = NSMutableDictionary()
+    Array(1...200).forEach { dictionary200.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary250 = NSMutableDictionary()
+    Array(1...250).forEach { dictionary250.setValue(Int($0), forKey: String($0)) }
+
+    let dictionary350 = NSMutableDictionary()
+    Array(1...350).forEach { dictionary350.setValue(Int($0), forKey: String($0)) }
+
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
@@ -86,11 +113,11 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
-    self.vm.inputs.observedGreenRoomActiveChanged(active: false)
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
 
     // Step 3: Only once the number of people watching is set and its within the scale threshold
     // should the video view controller be created, it should be an HLS stream due to being above threshold
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 350)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary350)
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
 
@@ -99,8 +126,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     // Step 4: Update the number of people watching to a number below the threshold
     // This should never cause the video view controller to be recreated
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 250)
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 200)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary250)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary200)
 
     self.createVideoViewController.assertValue(hlsStreamType)
     self.createVideoViewController.assertValueCount(1)
@@ -118,7 +145,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
-    self.vm.inputs.observedGreenRoomActiveChanged(active: false)
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
 
     // Step 3: Number of people is not determined in time so if we wait long enough it should create an HLS
     // stream
@@ -137,7 +164,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.removeVideoViewController.assertValueCount(0)
 
     // Step 5: Setting the hlsUrl again should remove the existing video view controller and create a new one
-    self.vm.inputs.observedHlsUrlChanged("http://www.kickstarter.com")
+    self.vm.inputs.observedHlsUrlChanged(hlsUrl: "http://www.kickstarter.com")
 
     let newHLSStreamType = LiveStreamType.hlsStream(hlsStreamUrl: "http://www.kickstarter.com")
 
@@ -158,18 +185,18 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     // Step 2: Deactivate green room
     // One video view controller of type HLS should be created
-    self.vm.inputs.observedGreenRoomActiveChanged(active: false)
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
     self.createVideoViewController.assertValue(hlsStreamType)
     self.createVideoViewController.assertValueCount(1)
 
     // Step 3: Activate green room
     // Video view controller should be removed
-    self.vm.inputs.observedGreenRoomActiveChanged(active: true)
+    self.vm.inputs.observedGreenRoomOffChanged(off: false)
     self.removeVideoViewController.assertValueCount(1)
 
     // Step 4: Deactivate green room
     // A new HLS video view controller should be created
-    self.vm.inputs.observedGreenRoomActiveChanged(active: false)
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
     self.createVideoViewController.assertValues([hlsStreamType, hlsStreamType])
   }
 
@@ -188,7 +215,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.setFirebaseDatabaseRef(ref: dbRef)
 
     // All observer creation signals should only emit once
-//    self.firebaseDatabaseRef.assertValueCount(1)
     self.createGreenRoomObservers.assertValueCount(1)
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)

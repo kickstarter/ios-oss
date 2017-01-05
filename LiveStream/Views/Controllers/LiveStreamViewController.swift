@@ -118,19 +118,15 @@ public final class LiveStreamViewController: UIViewController {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
-      guard let value = snapshot.value as? Bool else { return }
-      self?.viewModel.inputs.observedGreenRoomActiveChanged(active: !value)
+      self?.viewModel.inputs.observedGreenRoomOffChanged(off: snapshot.value)
     })
   }
 
   private func createFirebaseHLSObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
-
-    // FIXME: make the inputs take `AnyObject?` and do all the casting/logic work there
-
+    
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
-      guard let value = snapshot.value as? String else { return }
-      self?.viewModel.inputs.observedHlsUrlChanged(value)
+      self?.viewModel.inputs.observedHlsUrlChanged(hlsUrl: snapshot.value)
     })
   }
 
@@ -139,8 +135,7 @@ public final class LiveStreamViewController: UIViewController {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
-      guard let value = snapshot.value as? NSDictionary else { return }
-      self?.viewModel.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: value.allKeys.count)
+      self?.viewModel.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
     })
   }
 
@@ -149,8 +144,7 @@ public final class LiveStreamViewController: UIViewController {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
-      guard let value = snapshot.value as? Int else { return }
-      self?.viewModel.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: value)
+      self?.viewModel.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
     })
   }
 
