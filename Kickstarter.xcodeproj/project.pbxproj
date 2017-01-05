@@ -478,6 +478,11 @@
 		A7B1EBB11D901DE800BEE8B3 /* ProjectPamphletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1EBB01D901DE800BEE8B3 /* ProjectPamphletViewModel.swift */; };
 		A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7BA542C1E1E493600E54377 /* LiveStream.h in Headers */ = {isa = PBXBuildFile; fileRef = A7BA542B1E1E493600E54377 /* LiveStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7BA54331E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
+		A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
+		A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7BA54871E1E497300E54377 /* LiveStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54851E1E497300E54377 /* LiveStreamTests.swift */; };
 		A7C5C4F81DF881190048D14C /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4501DF87CAC0048D14C /* KsApi.framework */; };
 		A7C5C5331DF893110048D14C /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4D41DF87CEB0048D14C /* Prelude.framework */; };
 		A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4DC1DF87CEB0048D14C /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -768,6 +773,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
 			remoteInfo = "Kickstarter-iOS";
+		};
+		A7BA54341E1E493600E54377 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7BA54281E1E493500E54377;
+			remoteInfo = LiveStream;
+		};
+		A7BA54361E1E493600E54377 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
+			remoteInfo = "Kickstarter-iOS";
+		};
+		A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7BA54281E1E493500E54377;
+			remoteInfo = LiveStream;
 		};
 		A7C5C4271DF87C8E0048D14C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1139,6 +1165,7 @@
 				A7C5C5421DF894ED0048D14C /* Curry.framework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
+				A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */,
 				A7C5C54E1DF895050048D14C /* KsApi.framework in Embed Frameworks */,
 				A7C5C5461DF894F50048D14C /* Result.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
@@ -1607,6 +1634,12 @@
 		A7BA53F01E1E482E00E54377 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleNetworkingUtilities.framework; sourceTree = "<group>"; };
 		A7BA53F11E1E482E00E54377 /* GoogleParsingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleParsingUtilities.framework; sourceTree = "<group>"; };
 		A7BA53F31E1E482E00E54377 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = "<group>"; };
+		A7BA54291E1E493500E54377 /* LiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7BA542B1E1E493600E54377 /* LiveStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStream.h; sourceTree = "<group>"; };
+		A7BA542D1E1E493600E54377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7BA54841E1E497300E54377 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7BA54851E1E497300E54377 /* LiveStreamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTests.swift; sourceTree = "<group>"; };
 		A7BE4EEB1D05C10200353EF9 /* Argo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Argo.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Argo/Argo.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Curry.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Curry/Curry.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
@@ -1747,6 +1780,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7BA54251E1E493500E54377 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7BA542F1E1E493600E54377 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7BA54331E1E493600E54377 /* LiveStream.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7C7959A1C873A870081977F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1766,6 +1814,7 @@
 			files = (
 				D0247B3F1DFAA28600D7A7C1 /* KsLive.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
 				A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */,
@@ -2413,6 +2462,25 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
+		A7BA542A1E1E493600E54377 /* LiveStream */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA54831E1E497300E54377 /* Tests */,
+				A7BA542B1E1E493600E54377 /* LiveStream.h */,
+				A7BA542D1E1E493600E54377 /* Info.plist */,
+			);
+			path = LiveStream;
+			sourceTree = "<group>";
+		};
+		A7BA54831E1E497300E54377 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A7BA54841E1E497300E54377 /* Info.plist */,
+				A7BA54851E1E497300E54377 /* LiveStreamTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		A7C5C41E1DF87C8E0048D14C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2647,10 +2715,11 @@
 			isa = PBXGroup;
 			children = (
 				A7C795C71C873B800081977F /* Kickstarter-iOS.playground */,
-				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				802800561C88F62500141235 /* Configs */,
+				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				A7C725771C85D36D005A016B /* Library */,
+				A7BA542A1E1E493600E54377 /* LiveStream */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
 			indentWidth = 2;
@@ -2666,6 +2735,8 @@
 				A755113C1C8642B3005355CF /* Library.framework */,
 				A75511451C8642B3005355CF /* Library-iOSTests.xctest */,
 				A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */,
+				A7BA54291E1E493500E54377 /* LiveStream.framework */,
+				A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2841,6 +2912,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7BA54261E1E493500E54377 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7BA542C1E1E493600E54377 /* LiveStream.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7C7959B1C873A870081977F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2891,6 +2970,43 @@
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A7BA54281E1E493500E54377 /* LiveStream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7BA54811E1E493600E54377 /* Build configuration list for PBXNativeTarget "LiveStream" */;
+			buildPhases = (
+				A7BA54241E1E493500E54377 /* Sources */,
+				A7BA54251E1E493500E54377 /* Frameworks */,
+				A7BA54261E1E493500E54377 /* Headers */,
+				A7BA54271E1E493500E54377 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LiveStream;
+			productName = LiveStream;
+			productReference = A7BA54291E1E493500E54377 /* LiveStream.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A7BA54311E1E493600E54377 /* LiveStreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7BA54821E1E493600E54377 /* Build configuration list for PBXNativeTarget "LiveStreamTests" */;
+			buildPhases = (
+				A7BA542E1E1E493600E54377 /* Sources */,
+				A7BA542F1E1E493600E54377 /* Frameworks */,
+				A7BA54301E1E493600E54377 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A7BA54351E1E493600E54377 /* PBXTargetDependency */,
+				A7BA54371E1E493600E54377 /* PBXTargetDependency */,
+			);
+			name = LiveStreamTests;
+			productName = LiveStreamTests;
+			productReference = A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7C795B11C873A870081977F /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOS" */;
@@ -2926,6 +3042,7 @@
 			dependencies = (
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
 				D0247B421DFAA28600D7A7C1 /* PBXTargetDependency */,
+				A7BA543D1E1E493600E54377 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -2970,6 +3087,14 @@
 					A75511441C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 0800;
+					};
+					A7BA54281E1E493500E54377 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 48YBP49Y5N;
+					};
+					A7BA54311E1E493600E54377 = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
 					A7C7959D1C873A870081977F = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -3065,6 +3190,8 @@
 				A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */,
 				A75511441C8642B3005355CF /* Library-iOSTests */,
 				A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */,
+				A7BA54281E1E493500E54377 /* LiveStream */,
+				A7BA54311E1E493600E54377 /* LiveStreamTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3536,6 +3663,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7BA54271E1E493500E54377 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7BA54301E1E493600E54377 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7C7959C1C873A870081977F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3914,6 +4055,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7BA54241E1E493500E54377 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7BA542E1E1E493600E54377 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7BA54871E1E497300E54377 /* LiveStreamTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7C795991C873A870081977F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4173,6 +4329,21 @@
 			isa = PBXTargetDependency;
 			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
 			targetProxy = A782B4931D2D36440069D10E /* PBXContainerItemProxy */;
+		};
+		A7BA54351E1E493600E54377 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7BA54281E1E493500E54377 /* LiveStream */;
+			targetProxy = A7BA54341E1E493600E54377 /* PBXContainerItemProxy */;
+		};
+		A7BA54371E1E493600E54377 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
+			targetProxy = A7BA54361E1E493600E54377 /* PBXContainerItemProxy */;
+		};
+		A7BA543D1E1E493600E54377 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7BA54281E1E493500E54377 /* LiveStream */;
+			targetProxy = A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */;
 		};
 		A7C5C5521DF895850048D14C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4557,6 +4728,134 @@
 			};
 			name = Release;
 		};
+		A7BA54401E1E493600E54377 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = LiveStream/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A7BA54411E1E493600E54377 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = LiveStream/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A7BA54421E1E493600E54377 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kickstarter of New York";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kickstarter of New York";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = LiveStream/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Hockey;
+		};
+		A7BA54431E1E493600E54377 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
+			};
+			name = Debug;
+		};
+		A7BA54441E1E493600E54377 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
+			};
+			name = Release;
+		};
+		A7BA54451E1E493600E54377 /* Hockey */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				INFOPLIST_FILE = LiveStreamTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
+			};
+			name = Hockey;
+		};
 		A7C795A71C873A870081977F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4861,6 +5160,24 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A7BA54811E1E493600E54377 /* Build configuration list for PBXNativeTarget "LiveStream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7BA54401E1E493600E54377 /* Debug */,
+				A7BA54411E1E493600E54377 /* Release */,
+				A7BA54421E1E493600E54377 /* Hockey */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A7BA54821E1E493600E54377 /* Build configuration list for PBXNativeTarget "LiveStreamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7BA54431E1E493600E54377 /* Debug */,
+				A7BA54441E1E493600E54377 /* Release */,
+				A7BA54451E1E493600E54377 /* Hockey */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		A7C795B11C873A870081977F /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOS" */ = {
 			isa = XCConfigurationList;

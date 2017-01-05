@@ -49,6 +49,16 @@
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7BA54311E1E493600E54377"
+               BuildableName = "LiveStreamTests.xctest"
+               BlueprintName = "LiveStreamTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
