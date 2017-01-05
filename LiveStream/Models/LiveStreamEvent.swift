@@ -2,6 +2,7 @@ import Argo
 import Curry
 
 public struct LiveStreamEvent: Equatable {
+  // FIXME: Alphabetize
   public let id: Int
   public let stream: Stream
   public let creator: Creator
@@ -12,7 +13,7 @@ public struct LiveStreamEvent: Equatable {
   public struct Stream {
     public let name: String
     public let description: String
-    public let hlsUrl: String
+    public let hlsUrl: String // TODO: ask justin if this is guaranteed?
     public let liveNow: Bool
     public let startDate: NSDate
     public let backgroundImageUrl: String
@@ -60,11 +61,13 @@ extension LiveStreamEvent: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent> {
     return curry(LiveStreamEvent.init)
       <^> json <| "id"
-      <*> LiveStreamEvent.Stream.decode(json)
+      <*> json <| "stream"
+      // FIXME: can just use `json <| "key"` on all of these
       <*> Creator.decode(json)
       <*> Firebase.decode(json)
       <*> OpenTok.decode(json)
-      <*> User.decode(json)
+//      <*> User.decode(json)
+      <*> json <| "user" <|> .Success(User(isSubscribed: false))
   }
 }
 
@@ -72,22 +75,22 @@ extension LiveStreamEvent.Stream: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Stream> {
     let create = curry(LiveStreamEvent.Stream.init)
     let tmp1 = create
-      <^> json <| ["stream", "name"]
-      <*> json <| ["stream", "description"]
-      <*> json <| ["stream", "hls_url"]
-      <*> json <| ["stream", "live_now"]
-      <*> (json <| ["stream", "start_date"] >>- toDate)
-      <*> json <| ["stream", "background_image_url"]
-      <*> json <| ["stream", "max_opentok_viewers"]
+      <^> json <| "name"
+      <*> json <| "description"
+      <*> json <| "hls_url"
+      <*> json <| "live_now"
+      <*> (json <| "start_date" >>- toDate)
+      <*> json <| "background_image_url"
+      <*> json <| "max_opentok_viewers"
 
     let tmp2 = tmp1
-      <*> json <| ["stream", "web_url"]
-      <*> json <| ["stream", "project_web_url"]
-      <*> json <| ["stream", "project_name"]
-      <*> json <| ["stream", "is_rtmp"]
-      <*> json <| ["stream", "is_scale"]
-      <*> json <| ["stream", "has_replay"]
-      <*> json <|? ["stream", "replay_url"]
+      <*> json <| "web_url"
+      <*> json <| "project_web_url"
+      <*> json <| "project_name"
+      <*> json <| "is_rtmp"
+      <*> json <| "is_scale"
+      <*> json <| "has_replay"
+      <*> json <|? "replay_url"
 
     return tmp2
   }
@@ -96,6 +99,7 @@ extension LiveStreamEvent.Stream: Decodable {
 extension LiveStreamEvent.Creator: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Creator> {
     return curry(LiveStreamEvent.Creator.init)
+      // FIXME: can get rid of the `"creator"` key prefix
       <^> json <| ["creator", "creator_name"]
       <*> json <| ["creator", "creator_avatar"]
   }
@@ -126,10 +130,11 @@ extension LiveStreamEvent.OpenTok: Decodable {
 extension LiveStreamEvent.User: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.User> {
     return curry(LiveStreamEvent.User.init)
-      <^> json <| ["user", "is_subscribed"] <|> .Success(false)
+      <^> json <| "is_subscribed"
   }
 }
 
+// FIXME: Add to `Models/Templates/LiveStreamEventTemplates.swift` and maybe for some of the other models too
 extension LiveStreamEvent {
   internal static let template = LiveStreamEvent(
     id: 123,
@@ -171,12 +176,17 @@ extension LiveStreamEvent {
   )
 }
 
-private func toDate(dateString: String) -> Decoded<NSDate> {
+private let dateFormatter: NSDateFormatter = {
   let dateFormatter = NSDateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-  if let date = dateFormatter.dateFromString(dateString) {
-    return .Success(date)
+  return dateFormatter
+}()
+
+private func toDate(dateString: String) -> Decoded<NSDate> {
+
+  guard let date = dateFormatter.dateFromString(dateString) else {
+    return .Failure(DecodeError.Custom("Unable to parse date format"))
   }
 
-  return .Failure(DecodeError.Custom("Unable to parse date format"))
+  return .Success(date)
 }

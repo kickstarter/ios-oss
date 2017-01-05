@@ -7,31 +7,29 @@ internal protocol HLSPlayerViewDelegate: class {
 }
 
 internal final class HLSPlayerView: UIView {
-  private var hlsPlayerLayer: AVPlayerLayer!
-  private var hlsPlayer: AVPlayer!
+  private let hlsPlayerLayer: AVPlayerLayer
   private weak var delegate: HLSPlayerViewDelegate?
 
   internal init(hlsStreamUrl: NSURL, delegate: HLSPlayerViewDelegate?) {
     self.delegate = delegate
-
-    super.init(frame: CGRect())
 
     /// Required for audio to play even if phone is set to silent
     do {
       try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: [])
     } catch {}
 
-    self.backgroundColor = UIColor.blackColor()
-
     let playerItem = AVPlayerItem(URL: hlsStreamUrl)
-    self.hlsPlayer = AVPlayer(playerItem: playerItem)
-    self.hlsPlayerLayer = AVPlayerLayer(player: self.hlsPlayer)
+    self.hlsPlayerLayer = AVPlayerLayer(player: AVPlayer(playerItem: playerItem))
     self.hlsPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-    self.layer.addSublayer(self.hlsPlayerLayer)
-    self.hlsPlayer.play()
 
+    super.init(frame: CGRect())
+
+    self.backgroundColor = .blackColor()
+
+    self.layer.addSublayer(self.hlsPlayerLayer)
     self.delegate?.playbackStatedChanged(self, state: .Unknown)
 
+    // FIXME: maybe we should just use regular KVO
     DynamicProperty(object: playerItem, keyPath: "status").signal.observeNext { [weak self] in
       guard
         let i = $0 as? Int,
@@ -39,15 +37,19 @@ internal final class HLSPlayerView: UIView {
         let _self = self
         else { return }
 
-      self?.delegate?.playbackStatedChanged(_self, state: s)
+      _self.delegate?.playbackStatedChanged(_self, state: s)
     }
+
+    self.hlsPlayerLayer.player?.play()
   }
 
   /// AVPlayer must be set to nil to be sure it will be released
+  // FIXME: we may have broken this retain cycle by getting rid of hlsPlayer
   internal func destroy() {
-    self.hlsPlayer = nil
+    self.hlsPlayerLayer.player = nil
     self.hlsPlayerLayer.removeFromSuperlayer()
-    self.hlsPlayerLayer = nil
+    // FIXME: remove after looking at retain cycles
+//    self.hlsPlayerLayer = nil
     self.removeFromSuperview()
   }
 

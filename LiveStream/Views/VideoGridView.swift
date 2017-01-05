@@ -25,10 +25,11 @@ public final class VideoGridView: UIView {
 
   public func destroy() {
     self.removeAllVideoViews()
+    // FIXME: shouldn't be necessary, check again when looking at retain cycles
     self.removeFromSuperview()
   }
 
-  //swiftlint:disable cyclomatic_complexity
+  //swiftlint:disable:next cyclomatic_complexity
   public override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -59,5 +60,4 @@ public final class VideoGridView: UIView {
       }
     }
   }
-  //swiftlint:enable cyclomatic_complexity
 }

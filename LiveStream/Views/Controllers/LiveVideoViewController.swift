@@ -2,12 +2,13 @@ import ReactiveExtensions
 import OpenTok
 
 public protocol LiveVideoViewControllerDelegate: class {
+  // FIXME: prefix this with liveVideoView...
   func playbackStateChanged(controller: LiveVideoViewController, state: LiveVideoPlaybackState)
 }
 
 public final class LiveVideoViewController: UIViewController {
   private let viewModel: LiveVideoViewModelType = LiveVideoViewModel()
-  private var session: OTSession!
+  private weak var session: OTSession?
   private var subscribers: [OTSubscriber] = []
   public weak var delegate: LiveVideoViewControllerDelegate?
 
@@ -15,12 +16,13 @@ public final class LiveVideoViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     self.delegate = delegate
-    self.bindVM()
+
+    // FIXME: (low priority) configureWith could just take the LiveStreamType
     switch liveStreamType {
     case .hlsStream(let hlsStreamUrl):
-      self.viewModel.inputs.configureWith(hlsStreamUrl: hlsStreamUrl)
+      self.viewModel.inputs.configureWith(hlsStreamOrSessionConfig: .left(hlsStreamUrl))
     case .openTok(let sessionConfig):
-      self.viewModel.inputs.configureWith(sessionConfig: sessionConfig)
+      self.viewModel.inputs.configureWith(hlsStreamOrSessionConfig: .right(sessionConfig))
     }
   }
 
@@ -28,17 +30,21 @@ public final class LiveVideoViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // FIXME: we may be able to move this to deinit
   public func destroy() {
-    let subscribers = self.subscribers
-    subscribers.forEach {
-      self.removeSubscriber(subscriber: $0)
-    }
-    if !subscribers.isEmpty { self.session.disconnect(nil) }
+    self.session?.disconnect(nil)
+    self.subscribers.forEach(self.removeSubscriber(subscriber:))
     self.videoGridView.destroy()
+  }
+
+  deinit {
+    // FIXME: check for retain cycle
+    print("did this get called?")
   }
 
   public override func viewDidLoad() {
     super.viewDidLoad()
+    self.bindVM()
 
     self.view.backgroundColor = .blackColor()
     self.view.addSubview(self.videoGridView)
@@ -55,6 +61,7 @@ public final class LiveVideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.createAndConfigureSessionWithConfig
+      .observeForUI()
       .observeNext { [weak self] in
         self?.createAndConfigureSession(sessionConfig: $0)
     }
@@ -73,9 +80,10 @@ public final class LiveVideoViewController: UIViewController {
         self?.removeSubscriberForStream(stream: stream)
     }
 
-    self.viewModel.outputs.playbackState.observeNext { [weak self] in
-      guard let _self = self else { return }
-      self?.delegate?.playbackStateChanged(_self, state: $0)
+    self.viewModel.outputs.notifyDelegateOfPlaybackStateChange
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.playbackStateChanged(_self, state: $0)
     }
   }
   //swiftlint:enable function_body_length
@@ -92,12 +100,15 @@ public final class LiveVideoViewController: UIViewController {
     self.session = OTSession(
       apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self
     )
-    self.session.connectWithToken(sessionConfig.token, error: nil)
+    self.session?.connectWithToken(sessionConfig.token, error: nil)
   }
 
   private func addAndConfigureSubscriber(stream stream: OTStream) {
     let subscriber = OTSubscriber(stream: stream, delegate: nil)
-    self.session.subscribe(subscriber, error: nil)
+
+    // FIXME: possibly a retain cycle with subscribers > subscriber > view > videoGrid
+
+    self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)
 
     self.addVideoView(subscriber.view)
@@ -112,16 +123,15 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func removeSubscriberForStream(stream stream: OTStream) {
-    guard let subscriber = self.subscribers.filter({ $0.stream.streamId == stream.streamId }).first
-      else { return }
-
-    self.removeSubscriber(subscriber: subscriber)
+    self.subscribers.filter({ $0.stream.streamId == stream.streamId })
+      .first
+      .doIfSome(self.removeSubscriber(subscriber:))
   }
 
   private func removeSubscriber(subscriber subscriber: OTSubscriber) {
     self.removeVideoView(subscriber.view)
-    self.session.unsubscribe(subscriber, error: nil)
-    _ = self.subscribers.indexOf(subscriber).flatMap { self.subscribers.removeAtIndex($0) }
+    self.session?.unsubscribe(subscriber, error: nil)
+    self.subscribers.indexOf(subscriber).doIfSome { self.subscribers.removeAtIndex($0) }
   }
 
   // MARK: Actions
@@ -149,11 +159,7 @@ extension LiveVideoViewController: OTSessionDelegate {
     self.viewModel.inputs.sessionDidConnect()
   }
 
-  public func sessionDidReconnect(session: OTSession!) {}
-
   public func sessionDidDisconnect(session: OTSession!) {}
-
-  public func sessionDidBeginReconnecting(session: OTSession!) {}
 
   public func session(session: OTSession!, streamCreated stream: OTStream!) {
     self.viewModel.inputs.sessionStreamCreated(stream: stream)
@@ -166,15 +172,4 @@ extension LiveVideoViewController: OTSessionDelegate {
   public func session(session: OTSession!, didFailWithError error: OTError!) {
     self.viewModel.inputs.sessionDidFailWithError(error: error)
   }
-
-  public func session(session: OTSession!, archiveStoppedWithId archiveId: String!) {}
-
-  public func session(session: OTSession!, connectionCreated connection: OTConnection!) {}
-
-  public func session(session: OTSession!, connectionDestroyed connection: OTConnection!) {}
-
-  public func session(session: OTSession!, archiveStartedWithId archiveId: String!, name: String!) {}
-
-  public func session(session: OTSession!, receivedSignalType type: String!,
-                      fromConnection connection: OTConnection!, withString string: String!) {}
 }

@@ -24,8 +24,7 @@ public final class LiveStreamViewController: UIViewController {
 
     self.delegate = delegate
     self.bindVM()
-    self.viewModel.inputs.configureWith(event: event)
-    self.viewModel.inputs.configureFirebaseApp(app: KsLiveApp.firebaseApp())
+    self.viewModel.inputs.configureWith(app: KsLiveApp.firebaseApp(), event: event)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -47,55 +46,52 @@ public final class LiveStreamViewController: UIViewController {
     self.viewModel.outputs.removeVideoViewController
       .observeForUI()
       .observeNext { [weak self] in
-      self?.videoViewController?.destroy()
-      self?.videoViewController = nil
+        self?.videoViewController?.destroy()
+        // FIXME: remove child? self?.videoViewController?.removeFromParentViewController()
+        self?.videoViewController = nil
     }
 
-    self.viewModel.outputs.firebaseApp.observeNext { [weak self] in
-      guard let firebaseRef = ($0 as? FIRApp).flatMap({
-        FIRDatabase.database(app: $0).reference()
-      }) else { return }
+    self.viewModel.outputs.firebaseApp
+      .observeNext { [weak self] in
+        guard let firebaseRef = ($0 as? FIRApp).map({
+          FIRDatabase.database(app: $0).reference()
+        }) else { return }
 
-      firebaseRef.keepSynced(true)
-      self?.viewModel.inputs.configureFirebaseDatabaseRef(ref: firebaseRef)
-    }
-
-    let refMapClosure: ((FirebaseDatabaseRefType, FirebaseRefConfig) ->
-      (FIRDatabaseReference, FirebaseRefConfig)?) = {
-        (ref, refConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? in
-        guard let ref = ref as? FIRDatabaseReference else { return nil }
-        return (ref, refConfig)
+        firebaseRef.keepSynced(true)
+        self?.viewModel.inputs.setFirebaseDatabaseRef(ref: firebaseRef)
     }
 
     self.viewModel.outputs.numberOfPeopleWatching.observeNext { [weak self] in
       guard let _self = self else { return }
-      _self.forceHLSTimerProducer?.dispose()
+      _self.forceHLSTimerProducer?.dispose()// FIXME: this can be removed with the delay thing in the VM
       _self.delegate?.numberOfPeopleWatchingChanged(_self, numberOfPeople: $0)
     }
 
     self.viewModel.outputs.createGreenRoomObservers
-      .map(refMapClosure)
+      .map(prepare(databaseReference:config:))
       .ignoreNil()
       .observeNext { [weak self] in self?.createFirebaseGreenRoomObservers($0, refConfig: $1) }
 
     self.viewModel.outputs.createHLSObservers
-      .map(refMapClosure)
+      .map(prepare(databaseReference:config:))
       .ignoreNil()
       .observeNext { [weak self] in self?.createFirebaseHLSObservers($0, refConfig: $1) }
 
     self.viewModel.outputs.createNumberOfPeopleWatchingObservers
-      .map(refMapClosure)
+      .map(prepare(databaseReference:config:))
       .ignoreNil()
       .observeNext { [weak self] in self?.createFirebaseNumberOfPeopleWatchingObservers($0, refConfig: $1) }
 
     self.viewModel.outputs.createScaleNumberOfPeopleWatchingObservers
-      .map(refMapClosure)
+      .map(prepare(databaseReference:config:))
       .ignoreNil()
       .observeNext { [weak self] in
         self?.createFirebaseScaleNumberOfPeopleWatchingObservers($0, refConfig: $1) }
 
-    self.viewModel.outputs.isReplayState.observeNext { [weak self] in
-      if $0 { self?.viewModel.inputs.setGreenRoomActive(active: false) }
+    // FIXME: doesnt seem this needs to be an output if it just feeds back into the VM
+    self.viewModel.outputs.isReplayState
+      .observeNext { [weak self] in
+        if $0 { self?.viewModel.inputs.setGreenRoomActive(active: false) }
     }
 
     self.viewModel.outputs.liveStreamViewControllerState.observeNext { [weak self] in
@@ -103,12 +99,13 @@ public final class LiveStreamViewController: UIViewController {
       self?.delegate?.liveStreamStateChanged(_self, state: $0)
     }
 
-    self.forceHLSTimerProducer = timer(10, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
-      .take(1)
-      .startWithNext { [weak self] in
-        _ = $0
-        self?.viewModel.inputs.forceUseHLS()
-    }
+    // FIXME: move all of this logic to the VM
+//    self.forceHLSTimerProducer = timer(10, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
+//      .take(1)
+//      .startWithNext { [weak self] in
+//        _ = $0
+//        self?.viewModel.inputs.forceUseHLS()
+//    }
   }
   //swiftlint:enable function_body_length
 
@@ -144,6 +141,8 @@ public final class LiveStreamViewController: UIViewController {
 
   private func createFirebaseHLSObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
+
+    // FIXME: make the inputs take `AnyObject?` and do all the casting/logic work there
 
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       guard let value = snapshot.value as? String else { return }
@@ -184,8 +183,7 @@ public final class LiveStreamViewController: UIViewController {
   }
 
   private func createVideoViewController(liveStreamType: LiveStreamType) {
-    let videoViewController = LiveVideoViewController(
-      liveStreamType: liveStreamType, delegate: self)
+    let videoViewController = LiveVideoViewController(liveStreamType: liveStreamType, delegate: self)
 
     self.videoViewController = videoViewController
     self.addChildVideoViewController(videoViewController)
@@ -196,4 +194,10 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   public func playbackStateChanged(controller: LiveVideoViewController, state: LiveVideoPlaybackState) {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
+}
+
+private func prepare(databaseReference ref: FirebaseDatabaseRefType, config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
+
+  guard let ref = ref as? FIRDatabaseReference else { return nil }
+  return (ref, config)
 }

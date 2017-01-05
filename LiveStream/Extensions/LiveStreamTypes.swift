@@ -6,18 +6,25 @@ public enum LiveVideoPlaybackError {
 }
 
 public enum LiveVideoPlaybackState: Equatable {
+  // FIXME: alpha
   case loading
   case playing
   case error(error: LiveVideoPlaybackError)
+
+  public var isError: Bool {
+    if case .error = self {
+      return true
+    }
+    return false
+  }
 }
 
 public func == (lhs: LiveVideoPlaybackState, rhs: LiveVideoPlaybackState) -> Bool {
   switch (lhs, rhs) {
   case (.loading, .loading): return true
   case (.playing, .playing): return true
-  case (.error(let lhsError), .error(let rhsError))
-    where lhsError == rhsError:
-    return true
+  case (.error(let lhsError), .error(let rhsError)):
+    return lhsError == rhsError
   default:
     return false
   }
@@ -30,18 +37,14 @@ public enum LiveStreamType: Equatable {
 
 public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
   switch (lhs, rhs) {
-  case (.hlsStream(let lhsHLSStreamUrl), .hlsStream(let rhsHLSStreamUrl))
-    where
-    lhsHLSStreamUrl == rhsHLSStreamUrl:
+  case (.hlsStream(let lhsHLSStreamUrl), .hlsStream(let rhsHLSStreamUrl)):
+    return lhsHLSStreamUrl == rhsHLSStreamUrl
 
-    return true
-  case (.openTok(let lhsSessionConfig), .openTok(let rhsSessionConfig))
-    where
-    lhsSessionConfig.apiKey == rhsSessionConfig.apiKey &&
-      lhsSessionConfig.sessionId == rhsSessionConfig.sessionId &&
-      lhsSessionConfig.token == rhsSessionConfig.token:
+  case (.openTok(let lhsSessionConfig), .openTok(let rhsSessionConfig)):
+    return lhsSessionConfig.apiKey == rhsSessionConfig.apiKey
+      && lhsSessionConfig.sessionId == rhsSessionConfig.sessionId
+      && lhsSessionConfig.token == rhsSessionConfig.token
 
-    return true
   default:
     return false
   }
@@ -60,6 +63,7 @@ public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControlle
   case (.loading, .loading): return true
   case (.greenRoom, .greenRoom): return true
   case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime))
+    // FIXME: change where's to just return the bool
     where
     lhsPlaybackState == rhsPlaybackState &&
     lhsStartTime == rhsStartTime:

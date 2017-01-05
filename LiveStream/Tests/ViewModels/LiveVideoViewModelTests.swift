@@ -14,7 +14,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
   private let addAndConfigureSubscriber = TestObserver<OTStreamType, NoError>()
   private let addAndConfigureHLSPlayerWithStreamUrl = TestObserver<String, NoError>()
   private let createAndConfigureSessionWithConfig = TestObserver<OpenTokSessionConfig, NoError>()
-  private let playbackState = TestObserver<LiveVideoPlaybackState, NoError>()
+  private let notifyDelegateOfPlaybackStateChange = TestObserver<LiveVideoPlaybackState, NoError>()
   private let removeAllVideoViews = TestObserver<(), NoError>()
   private let removeSubscriber = TestObserver<OTStreamType, NoError>()
 
@@ -25,7 +25,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
       self.createAndConfigureSessionWithConfig.observer)
     self.vm.outputs.addAndConfigureHLSPlayerWithStreamUrl.observe(
       self.addAndConfigureHLSPlayerWithStreamUrl.observer)
-    self.vm.outputs.playbackState.observe(self.playbackState.observer)
+    self.vm.outputs.notifyDelegateOfPlaybackStateChange.observe(self.notifyDelegateOfPlaybackStateChange.observer)
     self.vm.outputs.removeAllVideoViews.observe(self.removeAllVideoViews.observer)
     self.vm.outputs.removeSubscriber.observe(self.removeSubscriber.observer)
   }
@@ -39,7 +39,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     // Step 1: Configure the HLS stream url
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(hlsStreamUrl: streamUrl)
+    self.vm.inputs.configureWith(hlsStreamOrSessionConfig: .left(streamUrl))
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
 
     // Step 2: Test state changes
@@ -49,7 +49,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     let errorState = LiveVideoPlaybackState.error(error: .failedToConnect)
 
-    self.playbackState.assertValues([.loading, .playing, errorState])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
     self.removeAllVideoViews.assertValueCount(1)
   }
 
@@ -58,13 +58,13 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     // Step 1: Configure the OpenTok session, playback state should become loading
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(sessionConfig: sessionConfig)
+    self.vm.inputs.configureWith(hlsStreamOrSessionConfig: .right(sessionConfig))
     self.createAndConfigureSessionWithConfig.assertValue(sessionConfig)
-    self.playbackState.assertValue(.loading)
+    self.notifyDelegateOfPlaybackStateChange.assertValue(.loading)
 
     // Step 2: Connect the session, playback state should change to playing
     self.vm.inputs.sessionDidConnect()
-    self.playbackState.assertValues([.loading, .playing])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
 
     // Step 3: A stream is created and a subscriber view should be configured
     let testStream1 = TestStreamType()
@@ -96,7 +96,9 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     // Step 7: The stream encounters an error, all video views should be removed
     let testError = TestErrorType(domain: "", code: 0, userInfo: nil)
     self.vm.inputs.sessionDidFailWithError(error: testError)
-    self.playbackState.assertValues([.loading, .playing, errorState])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
     self.removeAllVideoViews.assertValueCount(1)
   }
+
+  // FIXME: write a test for the case of the configureWith(hlsUrl) being called multiple times.
 }

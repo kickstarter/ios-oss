@@ -10,7 +10,8 @@ private struct TestFirebaseAppType: FirebaseAppType {}
 private struct TestFirebaseDatabaseRefType: FirebaseDatabaseRefType {}
 
 internal final class LiveStreamViewModelTests: XCTestCase {
-  private let vm: LiveStreamViewModelType = LiveStreamViewModel()
+  private let scheduler = TestScheduler()
+  private var vm: LiveStreamViewModelType!
 
   private let createGreenRoomObservers = TestObserver<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>()
   private let createHLSObservers = TestObserver<(FirebaseDatabaseRefType, FirebaseRefConfig), NoError>()
@@ -30,11 +31,13 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm = LiveStreamViewModel(scheduler: scheduler)
+
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
     self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
     self.vm.outputs.greenRoomActive.observe(self.greenRoomActive.observer)
     self.vm.outputs.firebaseApp.observe(self.firebaseApp.observer)
-    self.vm.outputs.firebaseDatabaseRef.observe(self.firebaseDatabaseRef.observer)
+//    self.vm.outputs.firebaseDatabaseRef.observe(self.firebaseDatabaseRef.observer)
     self.vm.outputs.createGreenRoomObservers.observe(self.createGreenRoomObservers.observer)
     self.vm.outputs.createHLSObservers.observe(self.createHLSObservers.observer)
     self.vm.outputs.createNumberOfPeopleWatchingObservers.observe(
@@ -50,7 +53,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
@@ -85,7 +88,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
@@ -117,7 +120,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
@@ -125,12 +128,16 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     // Step 3: Number of people is not determined in time so we force HLS
     // this should create an HLS stream type
-    self.vm.inputs.forceUseHLS()
+    // FIXME: write separate test using TestScheduler to make sure that after 10 seconds HLS is forced
+//    self.vm.inputs.forceUseHLS()
+
+    self.createVideoViewController.assertValues([])
+
+    self.scheduler.advanceByInterval(10)
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
 
-    self.createVideoViewController.assertValue(hlsStreamType)
-    self.createVideoViewController.assertValueCount(1)
+    self.createVideoViewController.assertValues([hlsStreamType])
 
     // Step 4: Update the number of people watching above 300
     // This should not cause the view video controller to be recreated
@@ -155,7 +162,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.isRtmp .~ true
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
 
@@ -182,18 +189,16 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let event = LiveStreamEvent.template
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureFirebaseApp(app: app)
-    self.vm.inputs.configureFirebaseApp(app: app)
-    self.vm.inputs.configureWith(event: event)
+    self.vm.inputs.configureWith(app: app, event: event)
 
     self.firebaseApp.assertValueCount(1)
 
     // Step 2: Configure the firebase database reference
     let dbRef = TestFirebaseDatabaseRefType()
-    self.vm.inputs.configureFirebaseDatabaseRef(ref: dbRef)
+    self.vm.inputs.setFirebaseDatabaseRef(ref: dbRef)
 
     // All observer creation signals should only emit once
-    self.firebaseDatabaseRef.assertValueCount(1)
+//    self.firebaseDatabaseRef.assertValueCount(1)
     self.createGreenRoomObservers.assertValueCount(1)
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
