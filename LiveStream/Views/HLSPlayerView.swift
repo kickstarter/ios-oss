@@ -2,11 +2,14 @@ import UIKit
 import AVFoundation
 import ReactiveCocoa
 
+private let statusKeyPath = "status"
+
 internal protocol HLSPlayerViewDelegate: class {
   func playbackStatedChanged(playerView: HLSPlayerView, state: AVPlayerItemStatus)
 }
 
 internal final class HLSPlayerView: UIView {
+  private let playerItem: AVPlayerItem
   private let hlsPlayerLayer: AVPlayerLayer
   private weak var delegate: HLSPlayerViewDelegate?
 
@@ -18,8 +21,8 @@ internal final class HLSPlayerView: UIView {
       try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: [])
     } catch {}
 
-    let playerItem = AVPlayerItem(URL: hlsStreamUrl)
-    self.hlsPlayerLayer = AVPlayerLayer(player: AVPlayer(playerItem: playerItem))
+    self.playerItem = AVPlayerItem(URL: hlsStreamUrl)
+    self.hlsPlayerLayer = AVPlayerLayer(player: AVPlayer(playerItem: self.playerItem))
     self.hlsPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
 
     super.init(frame: CGRect())
@@ -29,16 +32,7 @@ internal final class HLSPlayerView: UIView {
     self.layer.addSublayer(self.hlsPlayerLayer)
     self.delegate?.playbackStatedChanged(self, state: .Unknown)
 
-    // FIXME: maybe we should just use regular KVO
-    DynamicProperty(object: playerItem, keyPath: "status").signal.observeNext { [weak self] in
-      guard
-        let i = $0 as? Int,
-        let s = AVPlayerItemStatus(rawValue: i),
-        let _self = self
-        else { return }
-
-      _self.delegate?.playbackStatedChanged(_self, state: s)
-    }
+    self.playerItem.addObserver(self, forKeyPath: statusKeyPath, options: .New, context: nil)
 
     self.hlsPlayerLayer.player?.play()
   }
@@ -61,5 +55,19 @@ internal final class HLSPlayerView: UIView {
     super.layoutSubviews()
 
     self.hlsPlayerLayer.frame = self.bounds
+  }
+
+  deinit {
+    self.playerItem.removeObserver(self, forKeyPath: statusKeyPath)
+  }
+
+  internal override func observeValueForKeyPath(keyPath: String?,
+                                                ofObject object: AnyObject?,
+                                                change: [String : AnyObject]?,
+                                                context: UnsafeMutablePointer<Void>) {
+
+    if keyPath == statusKeyPath {
+      self.delegate?.playbackStatedChanged(self, state: self.playerItem.status)
+    }
   }
 }

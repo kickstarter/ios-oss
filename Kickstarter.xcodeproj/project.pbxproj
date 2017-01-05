@@ -5443,6 +5443,7 @@
 				A7BA54421E1E493600E54377 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7BA54821E1E493600E54377 /* Build configuration list for PBXNativeTarget "LiveStreamTests" */ = {
 			isa = XCConfigurationList;
@@ -5452,6 +5453,7 @@
 				A7BA54451E1E493600E54377 /* Hockey */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7C795B11C873A870081977F /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOS" */ = {
 			isa = XCConfigurationList;
