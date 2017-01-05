@@ -36,7 +36,12 @@ clean:
 dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
-
+	sudo xcode-select -s /Applications/Xcode-8.2.app
+	brew update || brew update
+	brew unlink swiftlint || true
+	brew install swiftlint
+	brew link --overwrite swiftlint
+	sudo xcode-select -s /Applications/Xcode-7.3.app
 
 submodules:
 	git submodule sync --recursive || true
