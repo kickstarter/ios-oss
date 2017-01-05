@@ -46,7 +46,7 @@ public final class LiveStreamViewController: UIViewController {
       .observeForUI()
       .observeNext { [weak self] in
         self?.videoViewController?.destroy()
-        // FIXME: remove child? self?.videoViewController?.removeFromParentViewController()
+        self?.videoViewController?.removeFromParentViewController()
         self?.videoViewController = nil
     }
 
