@@ -33,7 +33,7 @@ test: dependencies
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets
+dependencies: submodules configs secrets opentok
 
 bootstrap: hooks dependencies
 	brew update
@@ -92,6 +92,7 @@ secrets:
 	fi
 
 opentok:
+	mkdir Frameworks/OpenTok
 	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.9.1 \
 		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.9.1/OpenTok.framework
 
