@@ -126,17 +126,13 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     // Step 2: Deactivate green room
     self.vm.inputs.setGreenRoomActive(active: false)
 
-    // Step 3: Number of people is not determined in time so we force HLS
-    // this should create an HLS stream type
-    // FIXME: write separate test using TestScheduler to make sure that after 10 seconds HLS is forced
-//    self.vm.inputs.forceUseHLS()
+    // Step 3: Number of people is not determined in time so if we wait long enough it should create an HLS
+    // stream
 
     self.createVideoViewController.assertValues([])
-
     self.scheduler.advanceByInterval(10)
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
-
     self.createVideoViewController.assertValues([hlsStreamType])
 
     // Step 4: Update the number of people watching above 300
