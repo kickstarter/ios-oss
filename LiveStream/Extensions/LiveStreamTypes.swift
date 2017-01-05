@@ -32,6 +32,20 @@ public func == (lhs: LiveVideoPlaybackState, rhs: LiveVideoPlaybackState) -> Boo
 public enum LiveStreamType: Equatable {
   case hlsStream(hlsStreamUrl: String)
   case openTok(sessionConfig: OpenTokSessionConfig)
+
+  public var hlsStreamUrl: String? {
+    switch self {
+    case let .hlsStream(url): return url
+    default:                  return nil
+    }
+  }
+
+  public var openTokSessionConfig: OpenTokSessionConfig? {
+    switch self {
+    case let .openTok(sessionConfig):  return sessionConfig
+    default:                            return nil
+    }
+  }
 }
 
 public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {

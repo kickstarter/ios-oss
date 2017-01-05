@@ -16,14 +16,7 @@ public final class LiveVideoViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     self.delegate = delegate
-
-    // FIXME: (low priority) configureWith could just take the LiveStreamType
-    switch liveStreamType {
-    case .hlsStream(let hlsStreamUrl):
-      self.viewModel.inputs.configureWith(hlsStreamOrSessionConfig: .left(hlsStreamUrl))
-    case .openTok(let sessionConfig):
-      self.viewModel.inputs.configureWith(hlsStreamOrSessionConfig: .right(sessionConfig))
-    }
+    self.viewModel.inputs.configureWith(liveStreamType: liveStreamType)
   }
 
   public required init?(coder aDecoder: NSCoder) {

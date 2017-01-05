@@ -39,7 +39,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     // Step 1: Configure the HLS stream url
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(hlsStreamOrSessionConfig: .left(streamUrl))
+    self.vm.inputs.configureWith(liveStreamType: .hlsStream(hlsStreamUrl: streamUrl))
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
 
     // Step 2: Test state changes
@@ -58,7 +58,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     // Step 1: Configure the OpenTok session, playback state should become loading
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(hlsStreamOrSessionConfig: .right(sessionConfig))
+    self.vm.inputs.configureWith(liveStreamType: .openTok(sessionConfig: sessionConfig))
     self.createAndConfigureSessionWithConfig.assertValue(sessionConfig)
     self.notifyDelegateOfPlaybackStateChange.assertValue(.loading)
 
