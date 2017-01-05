@@ -6,10 +6,9 @@ public enum LiveVideoPlaybackError {
 }
 
 public enum LiveVideoPlaybackState: Equatable {
-  // FIXME: alpha
+  case error(error: LiveVideoPlaybackError)
   case loading
   case playing
-  case error(error: LiveVideoPlaybackError)
 
   public var isError: Bool {
     if case .error = self {
@@ -31,8 +30,8 @@ public func == (lhs: LiveVideoPlaybackState, rhs: LiveVideoPlaybackState) -> Boo
 }
 
 public enum LiveStreamType: Equatable {
-  case openTok(sessionConfig: OpenTokSessionConfig)
   case hlsStream(hlsStreamUrl: String)
+  case openTok(sessionConfig: OpenTokSessionConfig)
 }
 
 public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
@@ -51,36 +50,29 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
 }
 
 public enum LiveStreamViewControllerState: Equatable {
-  case loading
+  case error(error: LiveVideoPlaybackError)
   case greenRoom
   case live(playbackState: LiveVideoPlaybackState, startTime: NSTimeInterval)
+  case loading
   case replay(playbackState: LiveVideoPlaybackState, replayAvailable: Bool, duration: NSTimeInterval)
-  case error(error: LiveVideoPlaybackError)
 }
 
 public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControllerState) -> Bool {
   switch (lhs, rhs) {
   case (.loading, .loading): return true
   case (.greenRoom, .greenRoom): return true
-  case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime))
-    // FIXME: change where's to just return the bool
-    where
-    lhsPlaybackState == rhsPlaybackState &&
-    lhsStartTime == rhsStartTime:
-
-    return true
+  case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime)):
+    return lhsPlaybackState == rhsPlaybackState && lhsStartTime == rhsStartTime
   case (.replay(let lhsPlaybackState, let lhsReplayAvailable, let lhsDuration), .replay(
-    let rhsPlaybackState, let rhsReplayAvailable, let rhsDuration))
-    where
-    lhsPlaybackState == rhsPlaybackState &&
-    lhsReplayAvailable == rhsReplayAvailable &&
-    lhsDuration == rhsDuration:
+    let rhsPlaybackState, let rhsReplayAvailable, let rhsDuration)):
 
-    return true
-  case (.error(let lhsError), .error(let rhsError))
-    where lhsError == rhsError:
+    return lhsPlaybackState == rhsPlaybackState &&
+      lhsReplayAvailable == rhsReplayAvailable &&
+      lhsDuration == rhsDuration
 
-    return true
+  case (.error(let lhsError), .error(let rhsError)):
+
+    return lhsError == rhsError
   default:
     return false
   }
