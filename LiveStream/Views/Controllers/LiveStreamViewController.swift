@@ -17,7 +17,6 @@ public final class LiveStreamViewController: UIViewController {
   private var firebaseRef: FIRDatabaseReference?
   private var videoViewController: LiveVideoViewController?
   public weak var delegate: LiveStreamViewControllerDelegate?
-  private var forceHLSTimerProducer: Disposable?
 
   public init(event: LiveStreamEvent, delegate: LiveStreamViewControllerDelegate) {
     super.init(nibName: nil, bundle: nil)
@@ -91,14 +90,6 @@ public final class LiveStreamViewController: UIViewController {
       guard let _self = self else { return }
       self?.delegate?.liveStreamStateChanged(_self, state: $0)
     }
-
-    // FIXME: move all of this logic to the VM
-//    self.forceHLSTimerProducer = timer(10, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
-//      .take(1)
-//      .startWithNext { [weak self] in
-//        _ = $0
-//        self?.viewModel.inputs.forceUseHLS()
-//    }
   }
   //swiftlint:enable function_body_length
 

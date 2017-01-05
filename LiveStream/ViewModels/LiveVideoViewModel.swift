@@ -4,26 +4,46 @@ import Prelude
 import ReactiveCocoa
 import Result
 
-internal typealias HlsStreamOrSessionConfig = Either<String, OpenTokSessionConfig>
-
 internal protocol LiveVideoViewModelInputs {
-  // FIXME: document these inputs
-  func configureWith(hlsStreamOrSessionConfig hlsStreamOrSessionConfig: HlsStreamOrSessionConfig)
+  /// Call with the live stream given to the view.
+  func configureWith(liveStreamType liveStreamType: LiveStreamType)
+
+  /// Call when the HLS player's state changes.
   func hlsPlayerStateChanged(state state: AVPlayerItemStatus)
+
+  /// Call when the OpenTok session connects.
   func sessionDidConnect()
+
+  /// Call when the OpenTok session fails.
   func sessionDidFailWithError(error error: OTErrorType)
+
+  /// Call when the OpenTok session stream is created.
   func sessionStreamCreated(stream stream: OTStreamType)
+
+  /// Call when the OpenTok session is destroy.
   func sessionStreamDestroyed(stream stream: OTStreamType)
+
+  /// Call when the view loads.
   func viewDidLoad()
 }
 
 internal protocol LiveVideoViewModelOutputs {
-  // FIXME: document these outputs
+  /// Emits when the HLS player should be created and configured.
   var addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError> { get }
+
+  /// Emits a OpenTok stream when a subscriber should be created and added to the stream.
   var addAndConfigureSubscriber: Signal<OTStreamType, NoError> { get }
+
+  /// Emits an OpenTok session configuration when a session should be created and configured.
   var createAndConfigureSessionWithConfig: Signal<OpenTokSessionConfig, NoError> { get }
+
+  /// Emits a playback state when the view should notify its delegate that the state changed.
   var notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError> { get }
+
+  /// Emits when all of the video views should be removed.
   var removeAllVideoViews: Signal<(), NoError> { get }
+
+  /// Emits a stream when the subscriber of that stream should be removed.
   var removeSubscriber: Signal<OTStreamType, NoError> { get }
 }
 
@@ -36,12 +56,12 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   LiveVideoViewModelOutputs {
 
   internal init() {
-    let sessionConfig = self.configData.signal.ignoreNil()
-      .map { $0.right }
+    let sessionConfig = self.liveStreamTypeProperty.signal.ignoreNil()
+      .map { $0.openTokSessionConfig }
       .ignoreNil()
 
-    self.addAndConfigureHLSPlayerWithStreamUrl = self.configData.signal.ignoreNil()
-      .map { $0.left }
+    self.addAndConfigureHLSPlayerWithStreamUrl = self.liveStreamTypeProperty.signal.ignoreNil()
+      .map { $0.hlsStreamUrl }
       .ignoreNil()
 
     self.createAndConfigureSessionWithConfig = combineLatest(
@@ -69,9 +89,9 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
     )
   }
 
-  private let configData = MutableProperty<Either<String, OpenTokSessionConfig>?>(nil)
-  internal func configureWith(hlsStreamOrSessionConfig hlsStreamOrSessionConfig: HlsStreamOrSessionConfig) {
-    self.configData.value = hlsStreamOrSessionConfig
+  private let liveStreamTypeProperty = MutableProperty<LiveStreamType?>(nil)
+  internal func configureWith(liveStreamType liveStreamType: LiveStreamType) {
+    self.liveStreamTypeProperty.value = liveStreamType
   }
 
   private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItemStatus?>(nil)
