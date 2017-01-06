@@ -12,6 +12,7 @@ public final class KSCache {
     }
     set {
       if let newValue = newValue {
+        // FIXME: can this anyobject be any?
         self.cache.setObject(newValue as AnyObject, forKey: key as NSString)
       } else {
         self.cache.removeObject(forKey: key as NSString)

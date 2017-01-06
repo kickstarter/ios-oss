@@ -226,7 +226,7 @@ internal final class ActivitiesViewController: UITableViewController {
   fileprivate func deleteFacebookSection() {
     self.tableView.beginUpdates()
 
-    self.tableView.deleteRows(at: self.dataSource.removeFacebookConnectRows() as [IndexPath], with: .top)
+    self.tableView.deleteRows(at: self.dataSource.removeFacebookConnectRows(), with: .top)
 
     self.tableView.endUpdates()
   }
@@ -234,7 +234,7 @@ internal final class ActivitiesViewController: UITableViewController {
   fileprivate func deleteFindFriendsSection() {
     self.tableView.beginUpdates()
 
-    self.tableView.deleteRows(at: self.dataSource.removeFindFriendsRows() as [IndexPath], with: .top)
+    self.tableView.deleteRows(at: self.dataSource.removeFindFriendsRows(), with: .top)
 
     self.tableView.endUpdates()
   }

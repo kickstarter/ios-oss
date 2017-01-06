@@ -150,6 +150,7 @@ internal final class VideoViewController: UIViewController {
       queue: DispatchQueue.main) { [weak self] _ in
         self?.viewModel.inputs.crossedCompletionThreshold()
     } as AnyObject?
+    // FIXME: ^can we get rid of anyobject?
   }
 
   internal func configurePlayer(withURL url: URL) {
