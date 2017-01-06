@@ -5,27 +5,29 @@ import Result
 @testable import ReactiveExtensions_TestHelpers
 @testable import LiveStream
 
-private struct TestStreamType: OTStreamType {}
-private class TestErrorType: NSError, OTErrorType {}
+private struct TestOTStreamType: OTStreamType {
+  private let streamId: String!
+}
+private class TestOTErrorType: NSError, OTErrorType {}
 
 internal final class LiveVideoViewModelTests: XCTestCase {
   private let vm: LiveVideoViewModelType = LiveVideoViewModel()
 
-  private let addAndConfigureSubscriber = TestObserver<OTStreamType, NoError>()
+  private let addAndConfigureSubscriberStreamId = TestObserver<String, NoError>()
   private let addAndConfigureHLSPlayerWithStreamUrl = TestObserver<String, NoError>()
   private let createAndConfigureSessionWithConfig = TestObserver<OpenTokSessionConfig, NoError>()
   private let notifyDelegateOfPlaybackStateChange = TestObserver<LiveVideoPlaybackState, NoError>()
-  private let removeSubscriber = TestObserver<OTStreamType, NoError>()
+  private let removeSubscriberStreamId = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.addAndConfigureSubscriber.observe(self.addAndConfigureSubscriber.observer)
+    self.vm.outputs.addAndConfigureSubscriber.map { $0.streamId }.observe(self.addAndConfigureSubscriberStreamId.observer)
     self.vm.outputs.createAndConfigureSessionWithConfig.observe(
       self.createAndConfigureSessionWithConfig.observer)
     self.vm.outputs.addAndConfigureHLSPlayerWithStreamUrl.observe(
       self.addAndConfigureHLSPlayerWithStreamUrl.observer)
     self.vm.outputs.notifyDelegateOfPlaybackStateChange.observe(self.notifyDelegateOfPlaybackStateChange.observer)
-    self.vm.outputs.removeSubscriber.observe(self.removeSubscriber.observer)
+    self.vm.outputs.removeSubscriber.map { $0.streamId }.observe(self.removeSubscriberStreamId.observer)
   }
 
   override func tearDown() {
@@ -69,32 +71,30 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
 
     // Step 3: A stream is created and a subscriber view should be configured
-    let testStream1 = TestStreamType()
+    let testStream1 = TestOTStreamType(streamId: "1")
     self.vm.inputs.sessionStreamCreated(stream: testStream1)
-    self.addAndConfigureSubscriber.assertValues([testStream1])
+    self.addAndConfigureSubscriberStreamId.assertValues(["1"])
 
     // Step 4: Another stream is created and a subscriber view should be configured
-    let testStream2 = TestStreamType()
+    let testStream2 = TestOTStreamType(streamId: "2")
     self.vm.inputs.sessionStreamCreated(stream: testStream2)
-    self.addAndConfigureSubscriber.assertValueCount(2)
+    self.addAndConfigureSubscriberStreamId.assertValues(["1", "2"])
 
     // Step 5: A stream is destroyed, subscriber view should be removed
     self.vm.inputs.sessionStreamDestroyed(stream: testStream1)
-    XCTAssertNotNil(self.removeSubscriber.lastValue)
-    XCTAssertTrue(self.removeSubscriber.lastValue is TestStreamType)
-    self.removeSubscriber.assertValueCount(1)
+    self.removeSubscriberStreamId.assertValues(["1"])
 
     // Step 6: Another stream is destroyed, subscriber view should be removed
     self.vm.inputs.sessionStreamDestroyed(stream: testStream2)
-    XCTAssertNotNil(self.removeSubscriber.lastValue)
-    XCTAssertTrue(self.removeSubscriber.lastValue is TestStreamType)
-    self.removeSubscriber.assertValueCount(2)
-
-    let errorState = LiveVideoPlaybackState.error(error: .sessionInterrupted)
+    self.removeSubscriberStreamId.assertValues(["1", "2"])
 
     // Step 7: The stream encounters an error, all video views should be removed
-    let testError = TestErrorType(domain: "", code: 0, userInfo: nil)
-    self.vm.inputs.sessionDidFailWithError(error: testError)
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
+    self.vm.inputs.sessionDidFailWithError(error: TestOTErrorType(domain: "", code: 0, userInfo: nil))
+    self.notifyDelegateOfPlaybackStateChange.assertValues(
+      [.loading, .playing, .error(error: .sessionInterrupted)]
+    )
+
+    self.addAndConfigureSubscriberStreamId.assertValues(["1", "2"])
+    self.removeSubscriberStreamId.assertValues(["1", "2"])
   }
 }

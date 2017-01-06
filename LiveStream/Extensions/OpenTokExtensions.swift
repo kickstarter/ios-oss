@@ -18,7 +18,9 @@ public func == (lhs: OpenTokSessionConfig, rhs: OpenTokSessionConfig) -> Bool {
     lhs.token == rhs.token
 }
 
-internal protocol OTStreamType {}
+internal protocol OTStreamType {
+  var streamId: String! { get }
+}
 extension OTStream: OTStreamType {}
 internal protocol OTErrorType {}
 extension OTError: OTErrorType {}
