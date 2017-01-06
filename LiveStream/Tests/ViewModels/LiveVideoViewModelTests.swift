@@ -15,7 +15,6 @@ internal final class LiveVideoViewModelTests: XCTestCase {
   private let addAndConfigureHLSPlayerWithStreamUrl = TestObserver<String, NoError>()
   private let createAndConfigureSessionWithConfig = TestObserver<OpenTokSessionConfig, NoError>()
   private let notifyDelegateOfPlaybackStateChange = TestObserver<LiveVideoPlaybackState, NoError>()
-  private let removeAllVideoViews = TestObserver<(), NoError>()
   private let removeSubscriber = TestObserver<OTStreamType, NoError>()
 
   override func setUp() {
@@ -26,7 +25,6 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.vm.outputs.addAndConfigureHLSPlayerWithStreamUrl.observe(
       self.addAndConfigureHLSPlayerWithStreamUrl.observer)
     self.vm.outputs.notifyDelegateOfPlaybackStateChange.observe(self.notifyDelegateOfPlaybackStateChange.observer)
-    self.vm.outputs.removeAllVideoViews.observe(self.removeAllVideoViews.observer)
     self.vm.outputs.removeSubscriber.observe(self.removeSubscriber.observer)
   }
 
@@ -50,7 +48,6 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     let errorState = LiveVideoPlaybackState.error(error: .failedToConnect)
 
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
-    self.removeAllVideoViews.assertValueCount(1)
   }
 
   func testOpentokSessionConfig() {
@@ -97,6 +94,5 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     let testError = TestErrorType(domain: "", code: 0, userInfo: nil)
     self.vm.inputs.sessionDidFailWithError(error: testError)
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
-    self.removeAllVideoViews.assertValueCount(1)
   }
 }
