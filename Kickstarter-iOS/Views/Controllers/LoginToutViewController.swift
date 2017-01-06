@@ -194,7 +194,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     helpTypes.forEach { helpType in
       helpSheet.addAction(
-        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
           helpVM?.inputs.helpTypeButtonTapped(helpType)
         }
       )
@@ -203,7 +203,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     helpSheet.addAction(
       UIAlertAction(
         title: Strings.login_tout_help_sheet_cancel(),
-        style: .Cancel
+        style: .cancel
       ) { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
       }
@@ -216,16 +216,16 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   // MARK: Facebook Login
+  
   fileprivate func attemptFacebookLogin() {
     self.fbLoginManager
       .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
-      fromViewController: self
-    ) { (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
-      if error != nil {
-        self.viewModel.inputs.facebookLoginFail(error: error)
-      } else if !result.isCancelled {
-        self.viewModel.inputs.facebookLoginSuccess(result: result)
-      }
+        if let error = error {
+          // FIXME: get rid of this NSError
+          self.viewModel.inputs.facebookLoginFail(error: error as NSError?)
+        } else if let result = result, !result.isCancelled {
+          self.viewModel.inputs.facebookLoginSuccess(result: result)
+        }
     }
   }
 

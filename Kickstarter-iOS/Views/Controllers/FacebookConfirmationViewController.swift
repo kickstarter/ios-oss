@@ -135,7 +135,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     helpTypes.forEach { helpType in
       helpSheet.addAction(
-        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
           helpVM?.inputs.helpTypeButtonTapped(helpType)
         }
       )
@@ -144,7 +144,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     helpSheet.addAction(
       UIAlertAction(
         title: Strings.login_tout_help_sheet_cancel(),
-        style: .Cancel
+        style: .cancel
       ) { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
       }

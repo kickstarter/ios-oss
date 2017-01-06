@@ -171,7 +171,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     helpTypes.forEach { helpType in
       helpSheet.addAction(
-        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
           helpVM?.inputs.helpTypeButtonTapped(helpType)
         }
       )
