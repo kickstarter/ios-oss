@@ -86,8 +86,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       if case .greenRoom = $0 { return localizedString(
         key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
       }
-      if case .replay(playbackState: .loading, _, _) = $0 { return localizedString(
-        key: "The_replay_will_start_soon", defaultValue: "The replay will start soon")
+      if case .replay(playbackState: .loading, _, _) = $0 {
+        Strings.The_replay_will_start_soon()
       }
 
       return localizedString(key: "Loading", defaultValue: "Loading")
