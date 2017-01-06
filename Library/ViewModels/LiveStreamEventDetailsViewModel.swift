@@ -33,14 +33,14 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
-  var retrieveEventInfo: Signal<String, NoError> { get }
+  var retrieveEventInfo: Signal<(String, Int?), NoError> { get }
   var showActivityIndicator: Signal<Bool, NoError> { get }
   var showSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
   var subscribed: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
-  var toggleSubscribe: Signal<(String, Bool), NoError> { get }
+  var toggleSubscribe: Signal<(String, Int, Bool), NoError> { get }
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
 }
 
@@ -188,7 +188,11 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.retrieveEventInfo = combineLatest(
       project.map { $0.liveStreams.first }.ignoreNil().map { $0.id },
       self.fetchLiveStreamEventProperty.signal
-    ).map(first)
+      )
+      .map(first)
+      .map {
+        ($0, AppEnvironment.current.currentUser?.id)
+    }
 
     self.subscribeButtonImage = self.subscribed.map {
       $0 ? UIImage(named: "postcard-checkmark") : nil
@@ -219,7 +223,13 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.toggleSubscribe = combineLatest(
       event.map { String($0.id) },
       self.subscribed
-    ).takeWhen(self.subscribeButtonTappedProperty.signal)
+      )
+      .takeWhen(self.subscribeButtonTappedProperty.signal)
+      .map { eventId, subscribed -> (String, Int, Bool)? in
+        guard let userId = AppEnvironment.current.currentUser?.id else { return nil }
+        return (eventId, userId, subscribed)
+      }
+      .ignoreNil()
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
       .map { String($0) }
@@ -300,14 +310,14 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
-  public let retrieveEventInfo: Signal<String, NoError>
+  public let retrieveEventInfo: Signal<(String, Int?), NoError>
   public let showActivityIndicator: Signal<Bool, NoError>
   public let showSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let subscribeButtonText: Signal<String, NoError>
   public let subscribeButtonImage: Signal<UIImage?, NoError>
   public let subscribed: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
-  public let toggleSubscribe: Signal<(String, Bool), NoError>
+  public let toggleSubscribe: Signal<(String, Int, Bool), NoError>
   public let upcomingIntroText: Signal<NSAttributedString, NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }

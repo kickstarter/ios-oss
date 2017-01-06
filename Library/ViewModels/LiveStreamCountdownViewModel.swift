@@ -26,7 +26,6 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var minutesString: Signal<(String, String), NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var retrieveEventInfo: Signal<String, NoError> { get }
   var secondsString: Signal<(String, String), NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
 }
@@ -104,8 +103,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       localizedString(key: "Live_stream_countdown", defaultValue: "Live stream countdown")
     )
 
-    self.retrieveEventInfo = project.map { $0.liveStreams.first }.ignoreNil().map { $0.id }
-
     self.pushLiveStreamViewController = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.liveStreamEventProperty.signal.ignoreNil(),
@@ -148,7 +145,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let minutesString: Signal<(String, String), NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
   public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
-  public let retrieveEventInfo: Signal<String, NoError>
   public let secondsString: Signal<(String, String), NoError>
   public let viewControllerTitle: Signal<String, NoError>
 

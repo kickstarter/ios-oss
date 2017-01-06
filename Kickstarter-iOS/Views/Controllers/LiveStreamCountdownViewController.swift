@@ -214,12 +214,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       self?.subscribeButton.setImage($0, forState: .Normal)
     }
 
-    self.viewModel.outputs.retrieveEventInfo
+    self.eventDetailsViewModel.outputs.retrieveEventInfo
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] in
-        guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.retrieveEvent($0, uid: userId).startWithResult {
+        KsLiveApp.retrieveEvent($0, uid: $1).startWithResult {
           switch $0 {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
@@ -244,8 +243,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeNext { [weak self] in
-        guard let userId = AppEnvironment.current.currentUser?.id else { return }
-        KsLiveApp.subscribe($0.0, uid: userId, subscribe: $0.1).startWithResult {
+        KsLiveApp.subscribe($0.0, uid: $0.1, subscribe: $0.2).startWithResult {
           switch $0 {
           case .Success(let result):
             self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
