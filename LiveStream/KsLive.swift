@@ -56,9 +56,11 @@ public class KsLiveApp {
     -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
+        let uidString = uid
+          .flatMap { "?uid=\($0)" }
+          .coalesceWith("")
 
-        // FIXME: gotta unwrap the optional otherwise it shows up as "?uid=Optional(1520421473)"
-        let urlString = "\(KsLiveApp.apiUrl())/\(eventId)\(uid != nil ? "?uid=\(uid)" : "")"
+        let urlString = "\(KsLiveApp.apiUrl())/\(eventId)\(uidString)"
         guard let url = NSURL(string: urlString) else {
           observer.sendFailed(.invalidEventId)
           return
