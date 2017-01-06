@@ -4,32 +4,41 @@ import ReactiveCocoa
 import Result
 import Argo
 
+public enum LiveApiError: ErrorType {
+  case genericFailure
+  case invalidEventId
+  case invalidJson
+}
+
 public class KsLiveApp {
 
-  public static func start() {
+  private static func start() {
     let options =
-      FIROptions(googleAppID: Secrets.Firebase.Huzza.googleAppID,
-                 bundleID: Secrets.Firebase.Huzza.bundleID,
-                 GCMSenderID: Secrets.Firebase.Huzza.gcmSenderID,
-                 APIKey: Secrets.Firebase.Huzza.apiKey,
-                 clientID: Secrets.Firebase.Huzza.clientID,
+      FIROptions(googleAppID: Secrets.Firebase.Huzza.Demo.googleAppID,
+                 bundleID: Secrets.Firebase.Huzza.Demo.bundleID,
+                 GCMSenderID: Secrets.Firebase.Huzza.Demo.gcmSenderID,
+                 APIKey: Secrets.Firebase.Huzza.Demo.apiKey,
+                 clientID: Secrets.Firebase.Huzza.Demo.clientID,
                  trackingID: "",
                  androidClientID: "",
-                 databaseURL: Secrets.Firebase.Huzza.databaseURL,
-                 storageBucket: Secrets.Firebase.Huzza.storageBucket,
+                 databaseURL: Secrets.Firebase.Huzza.Demo.databaseURL,
+                 storageBucket: Secrets.Firebase.Huzza.Demo.storageBucket,
                  deepLinkURLScheme: "")
 
-    FIRApp.configureWithName(Secrets.Firebase.Huzza.appName, options: options)
-    if let app = FIRApp(named: Secrets.Firebase.Huzza.appName) {
-      FIRDatabase.database(app: app).persistenceEnabled = true
-    }
+    FIRApp.configureWithName(Secrets.Firebase.Huzza.Demo.appName, options: options)
+
+    // FIXME: make sure we can get rid of this:
+//    if let app = FIRApp(named: Secrets.Firebase.Huzza.appName) {
+//      FIRDatabase.database(app: app).persistenceEnabled = true
+//    }
   }
 
   //swiftlint:disable force_unwrapping
+  // FIXME: make this return optional and have the views/vms handle the `nil` case to show an error
   public static func firebaseApp() -> FIRApp {
-    guard let app = FIRApp(named: Secrets.Firebase.Huzza.appName) else {
+    guard let app = FIRApp(named: Secrets.Firebase.Huzza.Demo.appName) else {
       self.start()
-      return FIRApp(named: Secrets.Firebase.Huzza.appName)!
+      return FIRApp(named: Secrets.Firebase.Huzza.Demo.appName)!
     }
 
     return app
@@ -40,108 +49,92 @@ public class KsLiveApp {
     return Secrets.LiveStreams.endpoint
   }
 
-  public static func appBundle() -> NSBundle {
-    return NSBundle(forClass: KsLiveApp.self)
-  }
-
   // MARK: LiveStreamEvent object
 
-  public static func retrieveEvent(eventId: String, uid: Int?) ->
-    SignalProducer<LiveStreamEvent, NSError> {
-    return SignalProducer { (observer, disposable) in
+  // FIXME: use a custom error type insteadof NSError
+  public static func retrieveEvent(eventId: String, uid: Int?)
+    -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
-      guard let url = NSURL(
-        string: "\(KsLiveApp.apiUrl())/\(eventId)\(uid != nil ? "?uid=\(uid)" : "")") else {
-          observer.sendFailed(NSError(domain: "", code: 0,
-            userInfo: [NSLocalizedDescriptionKey: "Invalid LiveStreamEvent ID"]))
+      return SignalProducer { (observer, disposable) in
+
+        let urlString = "\(KsLiveApp.apiUrl())/\(eventId)\(uid != nil ? "?uid=\(uid)" : "")"
+        guard let url = NSURL(string: urlString) else {
+          observer.sendFailed(.invalidEventId)
           return
-      }
+        }
 
-      let urlSession = NSURLSession(
-        configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
-      let task = urlSession.dataTaskWithURL(url,
-        completionHandler: { (data, _, error) in
-          if let error = error {
-            observer.sendFailed(error)
-          } else {
-            let eventJson = data.flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
-            let eventDecode = eventJson.flatMap({ (json) -> LiveStreamEvent? in
-              let event = LiveStreamEvent.decode(JSON.init(json))
-              switch event {
-              case .Success(let event):
-                return event
-              case .Failure(let error):
-                observer.sendFailed(NSError(domain: "", code: 0,
-                  userInfo: [NSLocalizedDescriptionKey: error.description]))
-              }
-
-              return nil
-            })
-
-            guard let event = eventDecode else {
-              observer.sendFailed(NSError(domain: "", code: 0,
-                userInfo: [NSLocalizedDescriptionKey: "Error retrieving LiveStreamEvent info"]))
-              return
-            }
-
-            observer.sendNext(event)
-            observer.sendCompleted()
+        let task = urlSession.dataTaskWithURL(url) { data, _, error in
+          guard error != nil else {
+            observer.sendFailed(.genericFailure)
+            return
           }
-      })
 
-      task.resume()
+          let event = data
+            .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+            .map(JSON.init)
+            .map(LiveStreamEvent.decode)
+            .flatMap { $0.value }
+            .map(Event<LiveStreamEvent, LiveApiError>.Next)
+            .coalesceWith(.Failed(.genericFailure))
 
-      disposable.addDisposable({
-        task.cancel()
-        observer.sendInterrupted()
-      })
-    }
+          observer.action(event)
+          observer.sendCompleted()
+        }
+
+        task.resume()
+
+        disposable.addDisposable({
+          task.cancel()
+          observer.sendInterrupted()
+        })
+      }
   }
 
-  public static func subscribe(eventId: String, uid: Int, subscribe: Bool) ->
-    SignalProducer<Bool, NSError> {
-    return SignalProducer { (observer, disposable) in
+  // FIXME: apply some of the ideas of the above to clean this up
+  public static func subscribe(eventId: String, uid: Int, subscribe: Bool)
+    -> SignalProducer<Bool, LiveApiError> {
 
-      guard let url = NSURL(
-        string: "\(KsLiveApp.apiUrl())/\(eventId)/subscribe") else {
-          observer.sendFailed(NSError(domain: "", code: 0,
-            userInfo: [NSLocalizedDescriptionKey: "Invalid LiveStreamEvent ID"]))
-          return
-      }
+      return SignalProducer { (observer, disposable) in
 
-      let urlSession = NSURLSession(
-        configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        guard let url = NSURL(
+          string: "\(KsLiveApp.apiUrl())/\(eventId)/subscribe") else {
+            observer.sendFailed(.invalidEventId)
+            return
+        }
 
-      let request = NSMutableURLRequest(URL: url)
-      request.HTTPMethod = "POST"
-      request.HTTPBody = "uid=\(uid)&subscribe=\(String(!subscribe))"
-        .dataUsingEncoding(NSUTF8StringEncoding)
+        let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
-      let task = urlSession.dataTaskWithRequest(request,
-        completionHandler: { (data, _, error) in
-          if let error = error {
-            observer.sendFailed(error)
-          } else {
-            guard let _ = data.flatMap ({ try? NSJSONSerialization.JSONObjectWithData($0, options: []) })
-            else {
-              observer.sendNext(subscribe)
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.HTTPBody = "uid=\(uid)&subscribe=\(String(!subscribe))"
+          .dataUsingEncoding(NSUTF8StringEncoding)
+
+        let task = urlSession.dataTaskWithRequest(request,
+          completionHandler: { (data, _, error) in
+            if let _ = error {
+              observer.sendFailed(.genericFailure)
+            } else {
+              guard let _ = data.flatMap ({ try? NSJSONSerialization.JSONObjectWithData($0, options: []) })
+                else {
+                  observer.sendNext(subscribe)
+                  observer.sendCompleted()
+
+                  return
+              }
+
+              observer.sendNext(!subscribe)
               observer.sendCompleted()
-
-              return
             }
+        })
 
-            observer.sendNext(!subscribe)
-            observer.sendCompleted()
-          }
-      })
-
-      task.resume()
-
-      disposable.addDisposable({
-        task.cancel()
-        observer.sendInterrupted()
-      })
-    }
+        task.resume()
+        
+        disposable.addDisposable({
+          task.cancel()
+          observer.sendInterrupted()
+        })
+      }
   }
 }

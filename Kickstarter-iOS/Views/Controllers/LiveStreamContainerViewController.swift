@@ -265,6 +265,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.retrieveEventInfo
       .observeNext { [weak self] in
+        // FIXME: make this output emit the user id so that you dont have to use the environment
         KsLiveApp.retrieveEvent($0, uid: AppEnvironment.current.currentUser?.id).startWithResult {
           switch $0 {
           case .Success(let event):
