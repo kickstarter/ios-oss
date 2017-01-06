@@ -169,7 +169,8 @@ public final class LiveStreamViewController: UIViewController {
 }
 
 extension LiveStreamViewController: LiveVideoViewControllerDelegate {
-  public func playbackStateChanged(controller: LiveVideoViewController, state: LiveVideoPlaybackState) {
+  public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
+                                            state: LiveVideoPlaybackState) {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }

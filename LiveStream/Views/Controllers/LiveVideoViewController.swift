@@ -2,8 +2,8 @@ import ReactiveExtensions
 import OpenTok
 
 public protocol LiveVideoViewControllerDelegate: class {
-  // FIXME: prefix this with liveVideoView...
-  func playbackStateChanged(controller: LiveVideoViewController, state: LiveVideoPlaybackState)
+  func liveVideoViewControllerPlaybackStateChanged(
+    controller: LiveVideoViewController, state: LiveVideoPlaybackState)
 }
 
 public final class LiveVideoViewController: UIViewController {
@@ -76,7 +76,7 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.outputs.notifyDelegateOfPlaybackStateChange
       .observeNext { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.playbackStateChanged(_self, state: $0)
+        self?.delegate?.liveVideoViewControllerPlaybackStateChanged(_self, state: $0)
     }
   }
   //swiftlint:enable function_body_length
