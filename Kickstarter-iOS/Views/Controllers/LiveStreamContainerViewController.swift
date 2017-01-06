@@ -486,11 +486,11 @@ internal final class LiveStreamContainerViewController: UIViewController {
 //swiftlint:enable type_body_length
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  internal func numberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {
+  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
-  internal func liveStreamStateChanged(controller: LiveStreamViewController,
+  internal func liveStreamViewControllerStateChanged(controller: LiveStreamViewController,
                                        state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)

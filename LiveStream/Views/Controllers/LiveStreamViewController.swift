@@ -7,9 +7,11 @@ import Result
 import UIKit
 
 public protocol LiveStreamViewControllerDelegate: class {
-  func liveStreamStateChanged(controller: LiveStreamViewController, state: LiveStreamViewControllerState)
+  func liveStreamViewControllerStateChanged(controller: LiveStreamViewController,
+                                            state: LiveStreamViewControllerState)
 
-  func numberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int)
+  func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController,
+                                                             numberOfPeople: Int)
 }
 
 public final class LiveStreamViewController: UIViewController {
@@ -62,7 +64,7 @@ public final class LiveStreamViewController: UIViewController {
 
     self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observeNext { [weak self] in
       guard let _self = self else { return }
-      _self.delegate?.numberOfPeopleWatchingChanged(_self, numberOfPeople: $0)
+      _self.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(_self, numberOfPeople: $0)
     }
 
     self.viewModel.outputs.createGreenRoomObservers
@@ -88,7 +90,7 @@ public final class LiveStreamViewController: UIViewController {
 
     self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged.observeNext { [weak self] in
       guard let _self = self else { return }
-      self?.delegate?.liveStreamStateChanged(_self, state: $0)
+      self?.delegate?.liveStreamViewControllerStateChanged(_self, state: $0)
     }
   }
   //swiftlint:enable function_body_length
