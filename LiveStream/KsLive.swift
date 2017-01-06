@@ -26,11 +26,6 @@ public class KsLiveApp {
                  deepLinkURLScheme: "")
 
     FIRApp.configureWithName(Secrets.Firebase.Huzza.Production.appName, options: options)
-
-    // FIXME: make sure we can get rid of this:
-//    if let app = FIRApp(named: Secrets.Firebase.Huzza.appName) {
-//      FIRDatabase.database(app: app).persistenceEnabled = true
-//    }
   }
 
   //swiftlint:disable force_unwrapping
@@ -114,23 +109,15 @@ public class KsLiveApp {
         request.HTTPBody = "uid=\(uid)&subscribe=\(String(!subscribe))"
           .dataUsingEncoding(NSUTF8StringEncoding)
 
-        let task = urlSession.dataTaskWithRequest(request,
-          completionHandler: { (data, _, error) in
-            if let _ = error {
-              observer.sendFailed(.genericFailure)
-            } else {
-              guard let _ = data.flatMap ({ try? NSJSONSerialization.JSONObjectWithData($0, options: []) })
-                else {
-                  observer.sendNext(subscribe)
-                  observer.sendCompleted()
+        let task = urlSession.dataTaskWithRequest(request) { data, _, error in
+            let result = data
+              .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+              .map { _ in !subscribe }
+              .coalesceWith(subscribe)
 
-                  return
-              }
-
-              observer.sendNext(!subscribe)
-              observer.sendCompleted()
-            }
-        })
+            observer.sendNext(result)
+            observer.sendCompleted()
+        }
 
         task.resume()
         
