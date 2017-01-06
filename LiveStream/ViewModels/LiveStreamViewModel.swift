@@ -82,7 +82,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let everySecondTimer = self.viewDidLoadProperty.signal.flatMap { timer(1, onScheduler: scheduler) }
 
     let liveStreamEndedWithTimeout = combineLatest(liveStreamEvent, everySecondTimer)
-      .map { event, _ in !event.stream.liveNow && !event.stream.hasReplay && isExpired(event: event) }
+      .map { event, _ in
+        !event.stream.liveNow
+          && !event.stream.hasReplay
+          && isExpired(event: event)
+    }
 
     let liveStreamEndedNormally = liveStreamEvent
       .map { event in
