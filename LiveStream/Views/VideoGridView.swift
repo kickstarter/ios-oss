@@ -13,22 +13,6 @@ public final class VideoGridView: UIView {
     self.setNeedsLayout()
   }
 
-  public func removeAllVideoViews() {
-    self.subviews.forEach {
-      if let view = $0 as? HLSPlayerView {
-        view.destroy()
-      } else {
-        $0.removeFromSuperview()
-      }
-    }
-  }
-
-  public func destroy() {
-    self.removeAllVideoViews()
-    // FIXME: shouldn't be necessary, check again when looking at retain cycles
-    self.removeFromSuperview()
-  }
-
   //swiftlint:disable:next cyclomatic_complexity
   public override func layoutSubviews() {
     super.layoutSubviews()
