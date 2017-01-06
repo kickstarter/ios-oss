@@ -271,7 +271,7 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     return localizedString(
       key: "Creator_name_is_streaming_live_on_Kickstarter",
       defaultValue: "%{creator_name} is streaming live on Kickstarter",
-      substitutions: ["creator_name" : liveStreamEvent.creator.name]
+      substitutions: ["creator_name": liveStreamEvent.creator.name]
     )
   }
 
@@ -279,7 +279,7 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     return localizedString(
       key: "Creator_name_was_streaming_live_on_Kickstarter",
       defaultValue: "%{creator_name} was streaming live on Kickstarter",
-      substitutions: ["creator_name" : liveStreamEvent.creator.name]
+      substitutions: ["creator_name": liveStreamEvent.creator.name]
     )
   }
 
@@ -287,8 +287,8 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     key: "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration",
     defaultValue: "%{creator_name} will be streaming live on Kickstarter %{in_duration}",
     substitutions: [
-      "creator_name" : liveStreamEvent.creator.name,
-      "in_duration" : Format.relative(
+      "creator_name": liveStreamEvent.creator.name,
+      "in_duration": Format.relative(
         secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970)
     ]
   )

@@ -61,7 +61,7 @@ public class KsLiveApp {
         configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
 
       let task = urlSession.dataTaskWithURL(url,
-        completionHandler: { (data, response, error) in
+        completionHandler: { (data, _, error) in
           if let error = error {
             observer.sendFailed(error)
           } else {
@@ -119,7 +119,7 @@ public class KsLiveApp {
         .dataUsingEncoding(NSUTF8StringEncoding)
 
       let task = urlSession.dataTaskWithRequest(request,
-        completionHandler: { (data, response, error) in
+        completionHandler: { (data, _, error) in
           if let error = error {
             observer.sendFailed(error)
           } else {

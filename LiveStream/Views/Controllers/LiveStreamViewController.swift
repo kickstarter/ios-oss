@@ -126,7 +126,7 @@ public final class LiveStreamViewController: UIViewController {
 
   private func createFirebaseHLSObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
-    
+
     query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
       self?.viewModel.inputs.observedHlsUrlChanged(hlsUrl: snapshot.value)
     })

@@ -22,7 +22,7 @@
           return localizedString(
             key: "Creator_name_is_streaming_live_on_Kickstarter",
             defaultValue: "%{creator_name} is streaming live on Kickstarter",
-            substitutions: ["creator_name" : liveStreamEvent.creator.name]
+            substitutions: ["creator_name": liveStreamEvent.creator.name]
           )
         } else if activityType == UIActivityTypeCopyToPasteboard ||
           activityType == UIActivityTypePostToFacebook {

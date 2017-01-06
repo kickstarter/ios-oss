@@ -337,8 +337,8 @@ private func attributedCountdownString(prefix: String, suffix: String) -> NSAttr
     .fontDescriptor()
     .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
 
-  let prefixAttributes = [NSFontAttributeName : UIFont(descriptor: fontDescriptor, size: 24)]
-  let suffixAttributes = [NSFontAttributeName : UIFont.ksr_headline(size: 14)]
+  let prefixAttributes = [NSFontAttributeName: UIFont(descriptor: fontDescriptor, size: 24)]
+  let suffixAttributes = [NSFontAttributeName: UIFont.ksr_headline(size: 14)]
 
   let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
   let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)

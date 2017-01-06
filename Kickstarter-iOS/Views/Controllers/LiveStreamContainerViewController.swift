@@ -405,7 +405,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
-    coordinator.animateAlongsideTransition({ (context) in
+    coordinator.animateAlongsideTransition({ (_) in
       if let view = self.liveStreamViewController?.view { self.layoutLiveStreamView(view) }
       }, completion: { _ in
         self.navigationController?.setNavigationBarHidden(self.isLandscape(), animated: true)

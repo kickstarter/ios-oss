@@ -22,18 +22,18 @@ final class LiveStreamEventTests: XCTestCase {
         "start_date": "2016-12-01T00:00:00.000-00:00",
         "web_url": "http://www.kickstarter.com",
         "project_web_url": "http://www.kickstarter.com",
-        "project_name" : "Live Stream Project Name",
+        "project_name": "Live Stream Project Name",
         "is_rtmp": false,
         "max_opentok_viewers": 300,
         "hls_url": "http://www.kickstarter.com",
         "live_now": true,
-        "is_scale" : false,
+        "is_scale": false,
         "has_replay": true,
         "replay_url": "http://www.kickstarter.com"
       ],
       "creator": [
-        "creator_name" : "Creator Name",
-        "creator_avatar" : "http://www.kickstarter.com"
+        "creator_name": "Creator Name",
+        "creator_avatar": "http://www.kickstarter.com"
       ],
       "firebase": [
         "firebase_project": "huzza-web",
@@ -50,7 +50,7 @@ final class LiveStreamEventTests: XCTestCase {
         "token": "T1==cGFydG5lcl9pZD00="
       ],
       "user": [
-        "is_subscribed" : true
+        "is_subscribed": true
       ]
     ])
 

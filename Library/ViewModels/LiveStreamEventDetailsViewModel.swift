@@ -85,18 +85,18 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
       let baseAttributes = [
         NSFontAttributeName: UIFont.ksr_body(size: 13),
-        NSForegroundColorAttributeName : UIColor.whiteColor()
+        NSForegroundColorAttributeName: UIColor.whiteColor()
       ]
       let boldAttributes = [
         NSFontAttributeName: UIFont.ksr_headline(size: 13),
-        NSForegroundColorAttributeName : UIColor.whiteColor()
+        NSForegroundColorAttributeName: UIColor.whiteColor()
       ]
 
       if case .live = state {
         let text = localizedString(
           key: "Creator_name_is_live_now",
           defaultValue: "<b>%{creator_name}</b> is live now",
-          substitutions: ["creator_name" : event.creator.name]
+          substitutions: ["creator_name": event.creator.name]
         )
 
         return text.simpleHtmlAttributedString(
@@ -110,8 +110,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           key: "Creator_name_was_live_time_ago",
           defaultValue: "<b>%{creator_name}</b> was live %{time_ago}",
           substitutions: [
-            "creator_name" : event.creator.name,
-            "time_ago" : (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+            "creator_name": event.creator.name,
+            "time_ago": (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
               abbreviate: true))
           ]
         )
@@ -133,20 +133,20 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
       let baseAttributes = [
         NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-        NSForegroundColorAttributeName : UIColor.ksr_navy_600,
-        NSParagraphStyleAttributeName : paragraphStyle
+        NSForegroundColorAttributeName: UIColor.ksr_navy_600,
+        NSParagraphStyleAttributeName: paragraphStyle
       ]
 
       let boldAttributes = [
         NSFontAttributeName: UIFont.ksr_headline(size: 14),
-        NSForegroundColorAttributeName : UIColor.ksr_navy_700,
-        NSParagraphStyleAttributeName : paragraphStyle
+        NSForegroundColorAttributeName: UIColor.ksr_navy_700,
+        NSParagraphStyleAttributeName: paragraphStyle
       ]
 
       let text = localizedString(
         key: "Upcoming_with_creator_name",
         defaultValue: "Upcoming with<br/><b>%{creator_name}</b>",
-        substitutions: ["creator_name" : event.creator.name]
+        substitutions: ["creator_name": event.creator.name]
       )
 
       return text.simpleHtmlAttributedString(
@@ -171,8 +171,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           key: "Available_to_watch_for_time_more_units",
           defaultValue: "Available to watch for %{time} more %{units}",
           substitutions: [
-            "time" : time,
-            "units" : units
+            "time": time,
+            "units": units
           ]
         )
       }.ignoreNil()
