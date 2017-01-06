@@ -23,16 +23,10 @@ public final class LiveVideoViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // FIXME: we may be able to move this to deinit
-  public func destroy() {
-    self.session?.disconnect(nil)
-    self.subscribers.forEach(self.removeSubscriber(subscriber:))
-    self.videoGridView.destroy()
-  }
-
   deinit {
-    // FIXME: check for retain cycle
-    print("did this get called?")
+    self.session?.disconnect(nil)
+    self.session = nil
+    self.subscribers.forEach(self.removeSubscriber(subscriber:))
   }
 
   public override func viewDidLoad() {
@@ -50,7 +44,7 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
       .observeNext { [weak self] in
-      self?.configureHLSPlayer(streamUrl: $0)
+        self?.configureHLSPlayer(streamUrl: $0)
     }
 
     self.viewModel.outputs.createAndConfigureSessionWithConfig
@@ -98,8 +92,6 @@ public final class LiveVideoViewController: UIViewController {
 
   private func addAndConfigureSubscriber(stream stream: OTStream) {
     let subscriber = OTSubscriber(stream: stream, delegate: nil)
-
-    // FIXME: possibly a retain cycle with subscribers > subscriber > view > videoGrid
 
     self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)

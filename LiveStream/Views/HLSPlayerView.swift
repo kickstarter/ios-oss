@@ -37,16 +37,6 @@ internal final class HLSPlayerView: UIView {
     self.hlsPlayerLayer.player?.play()
   }
 
-  /// AVPlayer must be set to nil to be sure it will be released
-  // FIXME: we may have broken this retain cycle by getting rid of hlsPlayer
-  internal func destroy() {
-    self.hlsPlayerLayer.player = nil
-    self.hlsPlayerLayer.removeFromSuperlayer()
-    // FIXME: remove after looking at retain cycles
-//    self.hlsPlayerLayer = nil
-    self.removeFromSuperview()
-  }
-
   internal required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -58,6 +48,7 @@ internal final class HLSPlayerView: UIView {
   }
 
   deinit {
+    self.hlsPlayerLayer.player = nil
     self.playerItem.removeObserver(self, forKeyPath: statusKeyPath)
   }
 

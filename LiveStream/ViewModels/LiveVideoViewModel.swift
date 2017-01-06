@@ -53,19 +53,21 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   LiveVideoViewModelOutputs {
 
   internal init() {
-    let sessionConfig = self.liveStreamTypeProperty.signal.ignoreNil()
-      .map { $0.openTokSessionConfig }
-      .ignoreNil()
-
-    self.addAndConfigureHLSPlayerWithStreamUrl = self.liveStreamTypeProperty.signal.ignoreNil()
-      .map { $0.hlsStreamUrl }
-      .ignoreNil()
-
-    self.createAndConfigureSessionWithConfig = combineLatest(
-      sessionConfig,
+    let liveStreamType = combineLatest(
+      self.liveStreamTypeProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
+
+    let sessionConfig = liveStreamType
+      .map { $0.openTokSessionConfig }
+      .ignoreNil()
+
+    self.addAndConfigureHLSPlayerWithStreamUrl = liveStreamType
+      .map { $0.hlsStreamUrl }
+      .ignoreNil()
+
+    self.createAndConfigureSessionWithConfig = sessionConfig
 
     self.addAndConfigureSubscriber = self.sessionStreamCreatedProperty.signal.ignoreNil()
     self.removeSubscriber = self.sessionStreamDestroyedProperty.signal.ignoreNil()

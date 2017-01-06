@@ -47,7 +47,6 @@ public final class LiveStreamViewController: UIViewController {
     self.viewModel.outputs.removeVideoViewController
       .observeForUI()
       .observeNext { [weak self] in
-        self?.videoViewController?.destroy()
         self?.videoViewController?.removeFromParentViewController()
         self?.videoViewController = nil
     }
@@ -110,7 +109,6 @@ public final class LiveStreamViewController: UIViewController {
   }
 
   deinit {
-    self.videoViewController?.destroy()
     self.firebaseRef?.removeAllObservers()
   }
 
