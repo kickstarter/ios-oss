@@ -20,7 +20,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let createScaleNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>()
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
-  private let createFirebaseAppAndConfigureDatabaseReference = TestObserver<FirebaseAppType, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
   private let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = TestObserver<Int, NoError>()
 
@@ -31,8 +30,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
     self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
-    self.vm.outputs.createFirebaseAppAndConfigureDatabaseReference.observe(
-      self.createFirebaseAppAndConfigureDatabaseReference.observer)
     self.vm.outputs.createGreenRoomObservers.observe(self.createGreenRoomObservers.observer)
     self.vm.outputs.createHLSObservers.observe(self.createHLSObservers.observer)
     self.vm.outputs.createNumberOfPeopleWatchingObservers.observe(
@@ -44,42 +41,35 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   }
 
   func testOpenTokStreamBeforeScale() {
-    let event = LiveStreamEvent.template
+    let event = .template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
 
-    let dictionary300 = NSMutableDictionary()
-    Array(1...300).forEach { dictionary300.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = NSMutableDictionary()
+    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
 
-    let dictionary200 = NSMutableDictionary()
-    Array(1...200).forEach { dictionary200.setValue(Int($0), forKey: String($0)) }
+    let dictionary20 = NSMutableDictionary()
+    Array(1...20).forEach { dictionary20.setValue(Int($0), forKey: String($0)) }
 
-    let dictionary250 = NSMutableDictionary()
-    Array(1...250).forEach { dictionary250.setValue(Int($0), forKey: String($0)) }
-
-    let dictionary350 = NSMutableDictionary()
-    Array(1...350).forEach { dictionary350.setValue(Int($0), forKey: String($0)) }
-
-    let dictionary400 = NSMutableDictionary()
-    Array(1...400).forEach { dictionary400.setValue(Int($0), forKey: String($0)) }
-
-    XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
-
-    // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
+    // Step 1: Configure stream
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.assertValueCount(0)
 
     // Step 2: Deactivate green room
     self.vm.inputs.observedGreenRoomOffChanged(off: true)
 
     // Step 3: Only once the number of people watching is set and its within the scale threshold
     // should the video view controller be created, it should be an OpenTok stream
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary250)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary5)
 
-    let openTokStreamType = LiveStreamType.openTok(sessionConfig:
-      OpenTokSessionConfig(
+    let openTokStreamType = LiveStreamType.openTok(
+      sessionConfig: .init(
         apiKey: event.openTok.appId,
         sessionId: event.openTok.sessionId,
-        token: event.openTok.token)
+        token: event.openTok.token
+      )
     )
 
     self.createVideoViewController.assertValue(openTokStreamType)
@@ -87,7 +77,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     // Step 4: Update the number of people watching above 300
     // This should not cause the video view controller to be recreated
-    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary400)
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary20)
 
     self.createVideoViewController.assertValueCount(1)
     self.removeVideoViewController.assertValueCount(0)
@@ -109,7 +99,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
@@ -141,7 +131,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssert(event.stream.maxOpenTokViewers == 300, "Maximum viewers before switch to HLS is 300")
 
     // Step 1: Configure stream and set the initial number of people watching below 300
-    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
 
     // Step 2: Deactivate green room
@@ -170,7 +160,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createVideoViewController.assertValues([hlsStreamType, newHLSStreamType])
     self.createVideoViewController.assertValueCount(2)
-    self.removeVideoViewController.assertValueCount(1)
+    self.removeVideoViewController.assertValueCount(0)
   }
 
   func testRTMPStreamDefaultsToHLS() {
@@ -179,7 +169,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.isRtmp .~ true
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(app: TestFirebaseAppType(), event: event)
+    self.vm.inputs.configureWith(app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
 
@@ -202,23 +192,43 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateFirebaseObservers() {
     // Step 1: Configure with the firebase app and event
-    let app = TestFirebaseAppType()
     let event = LiveStreamEvent.template
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(app: app, event: event)
-
-    self.createFirebaseAppAndConfigureDatabaseReference.assertValueCount(1)
-
-    // Step 2: Configure the firebase database reference
-    let dbRef = TestFirebaseDatabaseReferenceType()
-    self.vm.inputs.setFirebaseDatabaseRef(ref: dbRef)
+    self.vm.inputs.configureWith(
+      app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
 
     // All observer creation signals should only emit once
     self.createGreenRoomObservers.assertValueCount(1)
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
-    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(
-      0, "createScaleNumberOfPeopleWatchingObservers should not emit as this is not a scale event")
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0, "Does not emit when not a scale event.")
+  }
+
+  func testNumberOfPeopleObserver_WhenNotScaleEvent() {
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.isScale .~ false
+
+    self.vm.inputs.configureWith(
+      app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0)
+  }
+
+  func testNumberOfPeopleObserver_WhenScaleEvent() {
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.isScale .~ true
+
+    self.vm.inputs.configureWith(
+      app: TestFirebaseAppType(), databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(1)
   }
 }

@@ -49,6 +49,14 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
   public var isRtmp: Lens<LiveStreamEvent, Bool> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isRtmp
   }
+
+  public var isScale: Lens<LiveStreamEvent, Bool> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isScale
+  }
+
+  public var maxOpenTokViewers: Lens<LiveStreamEvent, Int> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.maxOpenTokViewers
+  }
 }
 
 extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.OpenTok {

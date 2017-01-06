@@ -25,7 +25,11 @@ public final class LiveStreamViewController: UIViewController {
 
     self.delegate = delegate
     self.bindVM()
-    self.viewModel.inputs.configureWith(app: KsLiveApp.firebaseApp(), event: event)
+
+    let app = KsLiveApp.firebaseApp()
+    let databaseRef = FIRDatabase.database(app: app).reference()
+
+    self.viewModel.inputs.configureWith(app: app, databaseRef: databaseRef, event: event)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -49,16 +53,6 @@ public final class LiveStreamViewController: UIViewController {
       .observeNext { [weak self] in
         self?.videoViewController?.removeFromParentViewController()
         self?.videoViewController = nil
-    }
-
-    self.viewModel.outputs.createFirebaseAppAndConfigureDatabaseReference
-      .observeNext { [weak self] in
-        guard let firebaseRef = ($0 as? FIRApp).map({
-          FIRDatabase.database(app: $0).reference()
-        }) else { return }
-
-        firebaseRef.keepSynced(true)
-        self?.viewModel.inputs.setFirebaseDatabaseRef(ref: firebaseRef)
     }
 
     self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observeNext { [weak self] in
@@ -165,6 +159,7 @@ public final class LiveStreamViewController: UIViewController {
   private func createVideoViewController(liveStreamType: LiveStreamType) {
     let videoViewController = LiveVideoViewController(liveStreamType: liveStreamType, delegate: self)
 
+    self.videoViewController?.removeFromParentViewController()
     self.videoViewController = videoViewController
     self.addChildVideoViewController(videoViewController)
   }
