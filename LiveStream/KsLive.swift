@@ -46,7 +46,6 @@ public class KsLiveApp {
 
   // MARK: LiveStreamEvent object
 
-  // FIXME: use a custom error type insteadof NSError
   public static func retrieveEvent(eventId: String, uid: Int?)
     -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
