@@ -41,7 +41,7 @@ public final class LiveStreamViewController: UIViewController {
     self.viewModel.outputs.createVideoViewController
       .observeForUI()
       .observeNext { [weak self] in
-      self?.createVideoViewController($0)
+        self?.createVideoViewController($0)
     }
 
     self.viewModel.outputs.removeVideoViewController
@@ -85,11 +85,13 @@ public final class LiveStreamViewController: UIViewController {
       .map(prepare(databaseReference:config:))
       .ignoreNil()
       .observeNext { [weak self] in
-        self?.createFirebaseScaleNumberOfPeopleWatchingObservers($0, refConfig: $1) }
+        self?.createFirebaseScaleNumberOfPeopleWatchingObservers($0, refConfig: $1)
+    }
 
-    self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged.observeNext { [weak self] in
-      guard let _self = self else { return }
-      self?.delegate?.liveStreamViewControllerStateChanged(_self, state: $0)
+    self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged
+      .observeNext { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.liveStreamViewControllerStateChanged(_self, state: $0)
     }
   }
   //swiftlint:enable function_body_length

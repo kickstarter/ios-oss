@@ -50,3 +50,17 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isRtmp
   }
 }
+
+extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.OpenTok {
+  public var appId: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.appId
+  }
+
+  public var sessionId: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.sessionId
+  }
+
+  public var token: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.token
+  }
+}

@@ -90,16 +90,15 @@ public class KsLiveApp {
       }
   }
 
-  // FIXME: apply some of the ideas of the above to clean this up
   public static func subscribe(eventId: String, uid: Int, subscribe: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
 
-        guard let url = NSURL(
-          string: "\(KsLiveApp.apiUrl())/\(eventId)/subscribe") else {
-            observer.sendFailed(.invalidEventId)
-            return
+        let urlString = "\(KsLiveApp.apiUrl())/\(eventId)/subscribe"
+        guard let url = NSURL(string: urlString) else {
+          observer.sendFailed(.invalidEventId)
+          return
         }
 
         let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
@@ -110,17 +109,17 @@ public class KsLiveApp {
           .dataUsingEncoding(NSUTF8StringEncoding)
 
         let task = urlSession.dataTaskWithRequest(request) { data, _, error in
-            let result = data
-              .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
-              .map { _ in !subscribe }
-              .coalesceWith(subscribe)
+          let result = data
+            .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+            .map { _ in !subscribe }
+            .coalesceWith(subscribe)
 
-            observer.sendNext(result)
-            observer.sendCompleted()
+          observer.sendNext(result)
+          observer.sendCompleted()
         }
 
         task.resume()
-        
+
         disposable.addDisposable({
           task.cancel()
           observer.sendInterrupted()

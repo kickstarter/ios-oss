@@ -2,13 +2,13 @@ import ReactiveExtensions
 import OpenTok
 
 public protocol LiveVideoViewControllerDelegate: class {
-  func liveVideoViewControllerPlaybackStateChanged(
-    controller: LiveVideoViewController, state: LiveVideoPlaybackState)
+  func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
+                                                   state: LiveVideoPlaybackState)
 }
 
 public final class LiveVideoViewController: UIViewController {
   private let viewModel: LiveVideoViewModelType = LiveVideoViewModel()
-  private weak var session: OTSession?
+  private var session: OTSession?
   private var subscribers: [OTSubscriber] = []
   public weak var delegate: LiveVideoViewControllerDelegate?
 
@@ -39,7 +39,6 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable function_body_length
   public func bindVM() {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
@@ -73,7 +72,6 @@ public final class LiveVideoViewController: UIViewController {
         self?.delegate?.liveVideoViewControllerPlaybackStateChanged(_self, state: $0)
     }
   }
-  //swiftlint:enable function_body_length
 
   private func configureHLSPlayer(streamUrl streamUrl: String) {
     guard let url = NSURL(string: streamUrl) else { return }
@@ -83,6 +81,7 @@ public final class LiveVideoViewController: UIViewController {
     self.addVideoView(player)
   }
 
+  // FIXME: add new input for when `session = nil` after create session so that we can do error handling
   private func createAndConfigureSession(sessionConfig sessionConfig: OpenTokSessionConfig) {
     self.session = OTSession(
       apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self
