@@ -6,21 +6,10 @@ import Result
 import Social
 
 public struct ShareActivityCompletionData {
-  fileprivate let activityType: UIActivityType?
-  fileprivate let completed: Bool
-  fileprivate let returnedItems: [Any]?
-  fileprivate let activityError: NSError?
-
-  public init(activityType: UIActivityType?,
-              completed: Bool,
-              returnedItems: [Any]?,
-              activityError: NSError?) {
-
-    self.activityType = activityType
-    self.completed = completed
-    self.returnedItems = returnedItems
-    self.activityError = activityError
-  }
+  internal let activityType: UIActivityType?
+  internal let completed: Bool
+  internal let returnedItems: [Any]?
+  internal let activityError: NSError?
 }
 
 /// These share types provide us access to knowing when the user successfully shares through that method,
