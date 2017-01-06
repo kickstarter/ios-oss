@@ -10,7 +10,7 @@ internal protocol LiveStreamViewModelType {
 
 internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent
-  func configureWith(app app: FirebaseAppType, databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent)
+  func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent)
 
   /// Called when the green room changes to active or inactive when a creator goes on/off live, expects a Bool
   func observedGreenRoomOffChanged(off off: AnyObject?)
@@ -68,9 +68,22 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let configData = combineLatest(self.configData.signal.ignoreNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
-    let firebaseApp = configData.map(first)
-    let databaseRef = configData.map(second)
-    let liveStreamEvent = configData.map(third)
+    let databaseRef = configData.map(first)
+    let liveStreamEvent = configData.map(second)
+
+    let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
+      .map { $0 as? NSDictionary }
+      .ignoreNil()
+      .map { $0.allKeys.count }
+
+    let observedScaleNumberOfPeopleWatchingChanged = self.scaleNumberOfPeopleWatchingProperty.signal
+      .map { $0 as? Int }
+      .ignoreNil()
+
+    let numberOfPeopleWatching = Signal.merge(
+      observedNumberOfPeopleWatchingChanged,
+      observedScaleNumberOfPeopleWatchingChanged
+    )
 
     let maxOpenTokViewers = liveStreamEvent.map { $0.stream.maxOpenTokViewers }
 
@@ -103,21 +116,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       }
     ).map { $0 && $1 }
 
-    let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
-      .map { $0 as? NSDictionary }
-      .ignoreNil()
-      .map { $0.allKeys.count }
-
-    let observedScaleNumberOfPeopleWatchingChanged = self.scaleNumberOfPeopleWatchingProperty.signal
-      .map { $0 as? Int }
-      .ignoreNil()
-
     let observedHlsUrlChanged = self.hlsUrlProperty.signal.map { $0 as? String }.ignoreNil()
 
     let observedGreenRoomOffChanged = self.greenRoomOffProperty.signal.map { $0 as? Bool }.ignoreNil()
 
     let maxOpenTokViewersReached = combineLatest(
-      observedNumberOfPeopleWatchingChanged,
+      numberOfPeopleWatching,
       maxOpenTokViewers
       )
       .map { $0 > $1 }
@@ -182,10 +186,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       )
       .map(first)
 
-    self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = Signal.merge(
-      observedNumberOfPeopleWatchingChanged,
-      observedScaleNumberOfPeopleWatchingChanged
-    )
+    self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
     self.createGreenRoomObservers = zip(
       databaseRef,
@@ -243,19 +244,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
   }
 
-  private let configData = MutableProperty<(FirebaseAppType, FirebaseDatabaseReferenceType, LiveStreamEvent)?>(nil)
-  internal func configureWith(app app: FirebaseAppType, databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent) {
-    self.configData.value = (app, databaseRef, event)
-  }
-
-  private let configureFirebaseDatabaseRefProperty = MutableProperty<FirebaseDatabaseReferenceType?>(nil)
-  internal func configureFirebaseDatabaseRef(ref ref: FirebaseDatabaseReferenceType) {
-    self.configureFirebaseDatabaseRefProperty.value = ref
-  }
-
-  private let forceUseHLSProperty = MutableProperty()
-  internal func forceUseHLS() {
-    self.forceUseHLSProperty.value = ()
+  private let configData = MutableProperty<(FirebaseDatabaseReferenceType, LiveStreamEvent)?>(nil)
+  internal func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent) {
+    self.configData.value = (databaseRef, event)
   }
 
   private let greenRoomOffProperty = MutableProperty<AnyObject?>(nil)

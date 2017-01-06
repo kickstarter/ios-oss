@@ -29,7 +29,7 @@ public final class LiveStreamViewController: UIViewController {
     let app = KsLiveApp.firebaseApp()
     let databaseRef = FIRDatabase.database(app: app).reference()
 
-    self.viewModel.inputs.configureWith(app: app, databaseRef: databaseRef, event: event)
+    self.viewModel.inputs.configureWith(databaseRef: databaseRef, event: event)
   }
 
   public required init?(coder aDecoder: NSCoder) {
