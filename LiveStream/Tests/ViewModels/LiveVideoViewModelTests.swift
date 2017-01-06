@@ -36,26 +36,31 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     let streamUrl = "http://www.kickstarter.com"
 
     // Step 1: Configure the HLS stream url
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(liveStreamType: .hlsStream(hlsStreamUrl: streamUrl))
+    self.vm.inputs.viewDidLoad()
+
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
 
     // Step 2: Test state changes
     self.vm.inputs.hlsPlayerStateChanged(state: .Unknown)
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
+
     self.vm.inputs.hlsPlayerStateChanged(state: .ReadyToPlay)
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
+
     self.vm.inputs.hlsPlayerStateChanged(state: .Failed)
-
-    let errorState = LiveVideoPlaybackState.error(error: .failedToConnect)
-
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([
+      .loading, .playing, .error(error: .failedToConnect)
+    ])
   }
 
   func testOpentokSessionConfig() {
     let sessionConfig = OpenTokSessionConfig(apiKey: "123", sessionId: "123", token: "123")
 
     // Step 1: Configure the OpenTok session, playback state should become loading
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(liveStreamType: .openTok(sessionConfig: sessionConfig))
+    self.vm.inputs.viewDidLoad()
+
     self.createAndConfigureSessionWithConfig.assertValue(sessionConfig)
     self.notifyDelegateOfPlaybackStateChange.assertValue(.loading)
 
@@ -66,14 +71,11 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     // Step 3: A stream is created and a subscriber view should be configured
     let testStream1 = TestStreamType()
     self.vm.inputs.sessionStreamCreated(stream: testStream1)
-    XCTAssertNotNil(self.addAndConfigureSubscriber.lastValue)
-    XCTAssertTrue(self.addAndConfigureSubscriber.lastValue is TestStreamType)
+    self.addAndConfigureSubscriber.assertValues([testStream1])
 
     // Step 4: Another stream is created and a subscriber view should be configured
     let testStream2 = TestStreamType()
     self.vm.inputs.sessionStreamCreated(stream: testStream2)
-    XCTAssertNotNil(self.addAndConfigureSubscriber.lastValue)
-    XCTAssertTrue(self.addAndConfigureSubscriber.lastValue is TestStreamType)
     self.addAndConfigureSubscriber.assertValueCount(2)
 
     // Step 5: A stream is destroyed, subscriber view should be removed
