@@ -14,18 +14,18 @@ public class KsLiveApp {
 
   private static func start() {
     let options =
-      FIROptions(googleAppID: Secrets.Firebase.Huzza.Demo.googleAppID,
-                 bundleID: Secrets.Firebase.Huzza.Demo.bundleID,
-                 GCMSenderID: Secrets.Firebase.Huzza.Demo.gcmSenderID,
-                 APIKey: Secrets.Firebase.Huzza.Demo.apiKey,
-                 clientID: Secrets.Firebase.Huzza.Demo.clientID,
+      FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
+                 bundleID: Secrets.Firebase.Huzza.Production.bundleID,
+                 GCMSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
+                 APIKey: Secrets.Firebase.Huzza.Production.apiKey,
+                 clientID: Secrets.Firebase.Huzza.Production.clientID,
                  trackingID: "",
                  androidClientID: "",
-                 databaseURL: Secrets.Firebase.Huzza.Demo.databaseURL,
-                 storageBucket: Secrets.Firebase.Huzza.Demo.storageBucket,
+                 databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
+                 storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
                  deepLinkURLScheme: "")
 
-    FIRApp.configureWithName(Secrets.Firebase.Huzza.Demo.appName, options: options)
+    FIRApp.configureWithName(Secrets.Firebase.Huzza.Production.appName, options: options)
 
     // FIXME: make sure we can get rid of this:
 //    if let app = FIRApp(named: Secrets.Firebase.Huzza.appName) {
@@ -36,9 +36,9 @@ public class KsLiveApp {
   //swiftlint:disable force_unwrapping
   // FIXME: make this return optional and have the views/vms handle the `nil` case to show an error
   public static func firebaseApp() -> FIRApp {
-    guard let app = FIRApp(named: Secrets.Firebase.Huzza.Demo.appName) else {
+    guard let app = FIRApp(named: Secrets.Firebase.Huzza.Production.appName) else {
       self.start()
-      return FIRApp(named: Secrets.Firebase.Huzza.Demo.appName)!
+      return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)!
     }
 
     return app
@@ -57,6 +57,7 @@ public class KsLiveApp {
 
       return SignalProducer { (observer, disposable) in
 
+        // FIXME: gotta unwrap the optional otherwise it shows up as "?uid=Optional(1520421473)"
         let urlString = "\(KsLiveApp.apiUrl())/\(eventId)\(uid != nil ? "?uid=\(uid)" : "")"
         guard let url = NSURL(string: urlString) else {
           observer.sendFailed(.invalidEventId)
@@ -66,7 +67,7 @@ public class KsLiveApp {
         let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
         let task = urlSession.dataTaskWithURL(url) { data, _, error in
-          guard error != nil else {
+          guard error == nil else {
             observer.sendFailed(.genericFailure)
             return
           }
