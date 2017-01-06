@@ -168,16 +168,17 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     }
     .skipRepeats()
 
-    self.greenRoomActive = combineLatest(
-      observedGreenRoomOffChanged.map(negate),
-      isReplayState
-    )
-    .map { $0 && !$1 }
-    .skipRepeats()
+    self.greenRoomActive = .empty
+//    combineLatest(
+//      observedGreenRoomOffChanged.map(negate),
+//      isReplayState
+//    )
+//    .map { $0 && !$1 }
+//    .skipRepeats()
 
     self.createVideoViewController = combineLatest(
       liveStreamType,
-      self.greenRoomActive.filter(isFalse)
+      observedGreenRoomOffChanged.filter(isTrue)
       )
       .map(first)
 
@@ -212,7 +213,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") }
     )
 
-    self.removeVideoViewController = self.greenRoomActive.filter(isTrue).ignoreValues()
+    self.removeVideoViewController = self.createVideoViewController.take(1)
+      .sampleOn(observedGreenRoomOffChanged.filter(isFalse).ignoreValues())
+      .ignoreValues()
 
     self.error = self.videoPlaybackStateChangedProperty.signal.ignoreNil()
       .map { state -> LiveVideoPlaybackError? in
