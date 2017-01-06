@@ -170,10 +170,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
     helpTypes.forEach { helpType in
-      helpSheet.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: {
-        [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.helpTypeButtonTapped(helpType)
-        }))
+      helpSheet.addAction(
+        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+          helpVM?.inputs.helpTypeButtonTapped(helpType)
+        }
+      )
     }
 
     helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),

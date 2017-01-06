@@ -138,7 +138,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.ignoreNil()
-        .map { project, backing in
+        .map { _, backing in
           ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
     }
 

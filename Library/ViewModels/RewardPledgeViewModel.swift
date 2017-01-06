@@ -259,7 +259,7 @@ RewardPledgeViewModelOutputs {
       }
 
     self.updatePledgeButtonHidden = projectAndReward
-      .map { project, reward in
+      .map { project, _ in
         project.personalization.isBacking != .Some(true)
     }
 

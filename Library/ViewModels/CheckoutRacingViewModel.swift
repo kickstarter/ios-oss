@@ -36,7 +36,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
           .delay(1, onScheduler: AppEnvironment.current.scheduler)
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
-              .flatMapError { errorEnv in
+              .flatMapError { _ in
                 return SignalProducer(error: CheckoutRetryError())
               }
               .flatMap { envelope -> SignalProducer<CheckoutEnvelope, CheckoutRetryError> in
