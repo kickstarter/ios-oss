@@ -40,9 +40,6 @@ internal protocol LiveVideoViewModelOutputs {
   /// Emits a playback state when the view should notify its delegate that the state changed.
   var notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError> { get }
 
-  /// Emits when all of the video views should be removed.
-  var removeAllVideoViews: Signal<(), NoError> { get }
-
   /// Emits a stream when the subscriber of that stream should be removed.
   var removeSubscriber: Signal<OTStreamType, NoError> { get }
 }
@@ -80,12 +77,6 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       self.sessionDidConnectProperty.signal.mapConst(.playing),
       self.sessionDidFailWithErrorProperty.signal.ignoreNil()
         .mapConst(.error(error: .sessionInterrupted))
-    )
-
-    self.removeAllVideoViews = Signal.merge(
-      // FIXME: confirm that configureWith gets called multiple times
-      self.addAndConfigureHLSPlayerWithStreamUrl.skip(1).ignoreValues(),
-      self.notifyDelegateOfPlaybackStateChange.filter { $0.isError }.ignoreValues()
     )
   }
 
@@ -128,7 +119,6 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   internal let addAndConfigureSubscriber: Signal<OTStreamType, NoError>
   internal let createAndConfigureSessionWithConfig: Signal<OpenTokSessionConfig, NoError>
   internal let notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError>
-  internal let removeAllVideoViews: Signal<(), NoError>
   internal let removeSubscriber: Signal<OTStreamType, NoError>
 
   internal var inputs: LiveVideoViewModelInputs { return self }

@@ -99,6 +99,4 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing, errorState])
     self.removeAllVideoViews.assertValueCount(1)
   }
-
-  // FIXME: write a test for the case of the configureWith(hlsUrl) being called multiple times.
 }
