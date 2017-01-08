@@ -42,16 +42,16 @@ extension LiveStreamEvent {
 }
 
 extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Stream {
-  public var liveNow: Lens<LiveStreamEvent, Bool> {
-    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.liveNow
-  }
-
   public var isRtmp: Lens<LiveStreamEvent, Bool> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isRtmp
   }
 
   public var isScale: Lens<LiveStreamEvent, Bool> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isScale
+  }
+
+  public var liveNow: Lens<LiveStreamEvent, Bool> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.liveNow
   }
 
   public var maxOpenTokViewers: Lens<LiveStreamEvent, Int> {

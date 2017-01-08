@@ -1,17 +1,17 @@
 extension LiveStreamEvent {
   internal static let template = LiveStreamEvent(
     creator: Creator(
-      name: "Creator Name",
-      avatar: "https://www.kickstarter.com/creator-avatar.jpg"
+      avatar: "https://www.kickstarter.com/creator-avatar.jpg",
+      name: "Creator Name"
     ),
     firebase: Firebase(
-      project: "",
       apiKey: "",
-      hlsUrlPath: "",
+      chatPath: "",
       greenRoomPath: "",
+      hlsUrlPath: "",
       numberPeopleWatchingPath: "",
-      scaleNumberPeopleWatchingPath: "",
-      chatPath: ""
+      project: "",
+      scaleNumberPeopleWatchingPath: ""
     ),
     id: 123,
     openTok: OpenTok(
@@ -20,20 +20,20 @@ extension LiveStreamEvent {
       token: "123"
     ),
     stream: Stream(
-      name: "Test LiveStreamEvent",
-      description: "Test LiveStreamEvent",
-      hlsUrl: "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8",
-      liveNow: false,
-      startDate: NSDate(),
       backgroundImageUrl: "",
-      maxOpenTokViewers: 300,
-      webUrl: "",
-      projectWebUrl: "",
-      projectName: "Test Project",
+      description: "Test LiveStreamEvent",
+      hasReplay: false,
+      hlsUrl: "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8",
       isRtmp: false,
       isScale: false,
-      hasReplay: false,
-      replayUrl: nil
+      liveNow: false,
+      maxOpenTokViewers: 300,
+      name: "Test LiveStreamEvent",
+      projectWebUrl: "",
+      projectName: "Test Project",
+      replayUrl: nil,
+      startDate: NSDate(),
+      webUrl: ""
     ),
     user: User(isSubscribed: false)
   )

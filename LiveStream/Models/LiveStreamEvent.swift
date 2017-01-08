@@ -10,35 +10,35 @@ public struct LiveStreamEvent: Equatable {
   public let user: User
 
   public struct Stream {
-    public let name: String
-    public let description: String
-    public let hlsUrl: String // TODO: ask justin if this is guaranteed?
-    public let liveNow: Bool
-    public let startDate: NSDate
     public let backgroundImageUrl: String
-    public let maxOpenTokViewers: Int
-    public let webUrl: String
-    public let projectWebUrl: String
-    public let projectName: String
+    public let description: String
+    public let hasReplay: Bool
+    public let hlsUrl: String // TODO: ask justin if this is guaranteed?
     public let isRtmp: Bool
     public let isScale: Bool
-    public let hasReplay: Bool
+    public let liveNow: Bool
+    public let maxOpenTokViewers: Int
+    public let name: String
+    public let projectWebUrl: String
+    public let projectName: String
     public let replayUrl: String?
+    public let startDate: NSDate
+    public let webUrl: String
   }
 
   public struct Creator {
-    public let name: String
     public let avatar: String
+    public let name: String
   }
 
   public struct Firebase {
-    public let project: String
     public let apiKey: String
-    public let hlsUrlPath: String
-    public let greenRoomPath: String
-    public let numberPeopleWatchingPath: String
-    public let scaleNumberPeopleWatchingPath: String
     public let chatPath: String
+    public let greenRoomPath: String
+    public let hlsUrlPath: String
+    public let numberPeopleWatchingPath: String
+    public let project: String
+    public let scaleNumberPeopleWatchingPath: String
   }
 
   public struct OpenTok {
@@ -72,22 +72,22 @@ extension LiveStreamEvent.Stream: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Stream> {
     let create = curry(LiveStreamEvent.Stream.init)
     let tmp1 = create
-      <^> json <| "name"
+      <^> json <| "background_image_url"
       <*> json <| "description"
+      <*> json <| "has_replay"
       <*> json <| "hls_url"
-      <*> json <| "live_now"
-      <*> (json <| "start_date" >>- toDate)
-      <*> json <| "background_image_url"
-      <*> json <| "max_opentok_viewers"
-
-    let tmp2 = tmp1
-      <*> json <| "web_url"
-      <*> json <| "project_web_url"
-      <*> json <| "project_name"
       <*> json <| "is_rtmp"
       <*> json <| "is_scale"
-      <*> json <| "has_replay"
+
+    let tmp2 = tmp1
+      <*> json <| "live_now"
+      <*> json <| "max_opentok_viewers"
+      <*> json <| "name"
+      <*> json <| "project_web_url"
+      <*> json <| "project_name"
       <*> json <|? "replay_url"
+      <*> (json <| "start_date" >>- toDate)
+      <*> json <| "web_url"
 
     return tmp2
   }
@@ -96,21 +96,21 @@ extension LiveStreamEvent.Stream: Decodable {
 extension LiveStreamEvent.Creator: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Creator> {
     return curry(LiveStreamEvent.Creator.init)
-      <^> json <| "creator_name"
-      <*> json <| "creator_avatar"
+      <^> json <| "creator_avatar"
+      <*> json <| "creator_name"
   }
 }
 
 extension LiveStreamEvent.Firebase: Decodable {
   static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
     return curry(LiveStreamEvent.Firebase.init)
-      <^> json <| "firebase_project"
-      <*> json <| "firebase_api_key"
-      <*> json <| "hls_url_path"
-      <*> json <| "green_room_path"
-      <*> json <| "number_people_watching_path"
-      <*> json <| "scale_number_people_watching_path"
+      <^> json <| "firebase_api_key"
       <*> json <| "chat_path"
+      <*> json <| "green_room_path"
+      <*> json <| "hls_url_path"
+      <*> json <| "number_people_watching_path"
+      <*> json <| "firebase_project"
+      <*> json <| "scale_number_people_watching_path"
   }
 }
 
