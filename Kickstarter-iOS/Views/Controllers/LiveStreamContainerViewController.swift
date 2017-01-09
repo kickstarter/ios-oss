@@ -48,10 +48,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
       vc.viewModel.inputs.configureWith(project: project, event: event)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, event: event)
 
-      if event == nil {
-        vc.eventDetailsViewModel.inputs.fetchLiveStreamEvent()
-      }
-
       return vc
   }
 
@@ -190,7 +186,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
-      |> UIActivityIndicatorView.lens.animating .~ true
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.animating .~ false
 
     self.subscribeButton
       |> whiteBorderContainerButtonStyle
@@ -202,7 +199,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.detailsLoadingActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .White
-      |> UIActivityIndicatorView.lens.animating .~ true
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.animating .~ false
 
     self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2
@@ -263,24 +261,25 @@ internal final class LiveStreamContainerViewController: UIViewController {
         self?.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    self.eventDetailsViewModel.outputs.retrieveEventInfo
-      .observeNext { [weak self] in
-        KsLiveApp.retrieveEvent($0, uid: $1).startWithResult {
-          switch $0 {
+    self.eventDetailsViewModel.outputs.retrieveEventInfoWithEventIdAndUserId
+      .observeNext { [weak self] (eventId, userId) in
+        KsLiveApp.retrieveEvent(eventId, uid: userId).startWithResult { result in
+          switch result {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
-            self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
+            self?.eventDetailsViewModel.inputs.retrievedLiveStreamEvent(event: event)
           case .Failure:
             self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
           }
         }
     }
 
-    self.creatorAvatarLabel.rac.attributedText = self.eventDetailsViewModel.outputs.introText
+    self.creatorAvatarLabel.rac.attributedText = self.viewModel.outputs.creatorIntroText
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .ignoreNil()
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
 
     let isLive: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
@@ -311,9 +310,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
     self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
     self.numberWatchingButton.rac.title = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
-    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
+    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
-    self.eventDetailsViewModel.outputs.configureSharing.observeNext { [weak self] in
+    self.eventDetailsViewModel.outputs.configureShareViewModel.observeNext { [weak self] in
       self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
@@ -325,18 +324,16 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.availableForLabel.rac.text = self.eventDetailsViewModel.outputs.availableForText
 
-    self.detailsLoadingActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
-      .showActivityIndicator
-      .map(negate)
+    self.detailsLoadingActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
+      .animateActivityIndicator
 
-    self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
+    self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.animateActivityIndicator
 
-    self.subscribeActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
-      .showSubscribeButtonActivityIndicator
-      .map(negate)
+    self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
+      .animateSubscribeButtonActivityIndicator
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
-      .showSubscribeButtonActivityIndicator
+      .animateSubscribeButtonActivityIndicator
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeNext { [weak self] in
@@ -352,7 +349,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     Signal.merge(
       self.viewModel.outputs.error,
-      self.eventDetailsViewModel.outputs.error
+      self.eventDetailsViewModel.outputs.showErrorAlert
     )
     .observeForUI()
     .observeNext { [weak self] in
