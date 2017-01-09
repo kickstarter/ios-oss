@@ -1,13 +1,13 @@
 //swiftlint:disable file_length
 import KsApi
 import Library
+import LiveStream
 import Prelude
 import ReactiveCocoa
 import Result
 import UIKit
-import LiveStream
 
-//swiftlint:disable type_body_length
+//swiftlint:disable:next type_body_length
 internal final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var availableForLabel: UILabel!
@@ -85,7 +85,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -228,9 +228,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.textColor .~ .whiteColor()
       |> UILabel.lens.textAlignment .~ .Center
   }
-  //swiftlint:enable function_body_length
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -264,9 +263,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrieveEventInfo
-      .observeNext { [weak self] in
-        KsLiveApp.retrieveEvent($0, uid: $1).startWithResult {
-          switch $0 {
+      .observeNext { [weak self] eventId, userId in
+        LiveStreamService().fetchEvent(eventId: eventId, uid: userId).startWithResult { result in
+          switch result {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
             self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
@@ -339,14 +338,15 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .showSubscribeButtonActivityIndicator
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeNext { [weak self] in
-        KsLiveApp.subscribe($0.0, uid: $0.1, subscribe: $0.2).startWithResult {
-          switch $0 {
-          case .Success(let result):
-            self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
-          case .Failure:
-            self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
-          }
+      .observeNext { [weak self] eventId, userId, isSubscribed in
+        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, subscribe: isSubscribed)
+          .startWithResult { result in
+            switch result {
+            case .Success(let result):
+              self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
+            case .Failure:
+              self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
+            }
         }
     }
 
@@ -363,7 +363,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
   }
-  //swiftlint:enable function_body_length
 
   internal override func prefersStatusBarHidden() -> Bool {
     return true
@@ -482,7 +481,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
-//swiftlint:enable type_body_length
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {

@@ -1,9 +1,9 @@
 import KsApi
 import Library
+import LiveStream
 import Prelude
 import ReactiveCocoa
 import UIKit
-import LiveStream
 
 internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
@@ -219,7 +219,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       // FIXME: we should probably remove this
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .observeNext { [weak self] eventId, userId in
-        KsLiveApp.retrieveEvent(eventId, uid: userId).startWithResult { result in
+        LiveStreamService().fetchEvent(eventId: eventId, uid: userId).startWithResult { result in
           switch result {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
@@ -243,14 +243,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .showSubscribeButtonActivityIndicator
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeNext { [weak self] in
-        KsLiveApp.subscribe($0.0, uid: $0.1, subscribe: $0.2).startWithResult {
-          switch $0 {
-          case .Success(let result):
-            self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
-          case .Failure:
-            self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
-          }
+      .observeNext { [weak self] eventId, userId, isSubscribed in
+        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, subscribe: isSubscribed)
+          .startWithResult { result in
+            switch result {
+            case .Success(let result):
+              self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
+            case .Failure:
+              self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
+            }
         }
     }
 
