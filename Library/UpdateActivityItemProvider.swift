@@ -19,26 +19,26 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
       return self.activityViewControllerPlaceholderItem(activityViewController)
     }
 
-    if activityType == UIActivityType.mail {
+    switch activityType {
+    case UIActivityType.mail:
       return Strings.social_update_sequence_and_title(
         update_number: String(update.sequence),
         update_title: update.title
       )
-    } else if activityType == UIActivityType.message {
+    case UIActivityType.message:
       return update.title
-    } else if activityType == UIActivityType.postToTwitter {
+    case UIActivityType.postToTwitter:
       return Strings.project_checkout_share_twitter_via_kickstarter(
-          project_or_update_title: update.title
+        project_or_update_title: update.title
       )
-    } else if activityType == UIActivityType.copyToPasteboard ||
-      activityType == UIActivityType.postToFacebook {
+    case UIActivityType.copyToPasteboard, UIActivityType.postToFacebook:
       return update.urls.web.update
+    default:
+      return Strings.social_update_sequence_and_title(
+        update_number: String(update.sequence),
+        update_title: update.title
+      )
     }
-
-    return Strings.social_update_sequence_and_title(
-      update_number: String(update.sequence),
-      update_title: update.title
-    )
   }
 }
 #endif

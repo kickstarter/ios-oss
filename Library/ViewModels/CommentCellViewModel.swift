@@ -33,7 +33,7 @@ CommentCellViewModelOutputs {
 
     self.avatarUrl = comment
       .map { $0.author.avatar.large ?? $0.author.avatar.medium }
-      .map { URL(string: $0) }
+      .map(URL.init(string:))
 
     self.body = comment.map { $0.body }
 

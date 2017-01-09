@@ -4,8 +4,8 @@ import Prelude_UIKit
 import UIKit
 
 public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedString {
-  let isProjectNamePunctuated = project.name.utf16.last
-    .flatMap(UnicodeScalar.init)
+
+  let isProjectNamePunctuated = project.name.unicodeScalars.last
     .map(CharacterSet.punctuationCharacters.contains)
     .coalesceWith(false)
 

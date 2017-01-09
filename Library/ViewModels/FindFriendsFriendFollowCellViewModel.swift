@@ -59,7 +59,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     let friend = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
-    self.imageURL = friend.map { URL.init(string: $0.avatar.medium) }
+    self.imageURL = friend.map { URL(string: $0.avatar.medium) }
 
     self.location = friend.map { $0.location?.displayableName ?? "" }
 

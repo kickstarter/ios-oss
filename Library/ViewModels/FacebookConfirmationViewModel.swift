@@ -131,7 +131,7 @@ FacebookConfirmationViewModelErrors {
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.showSignupError = signupEvent.errors()
       .map { error in
