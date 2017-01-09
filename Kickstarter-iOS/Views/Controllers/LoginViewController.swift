@@ -33,6 +33,7 @@ internal final class LoginViewController: UIViewController {
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldDoneEditing),
                                   forControlEvents: .EditingDidEndOnExit)
+
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldChanged(_:)),
                                   forControlEvents: [.EditingDidEndOnExit, .EditingChanged])

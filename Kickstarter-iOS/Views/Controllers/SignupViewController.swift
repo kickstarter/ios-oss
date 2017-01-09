@@ -32,6 +32,25 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed),
                                     forControlEvents: .TouchUpInside)
 
+    self.nameTextField.addTarget(self,
+                                 action: #selector(nameTextFieldReturn),
+                                 forControlEvents: .EditingDidEndOnExit)
+    self.nameTextField.addTarget(self,
+                                 action: #selector(nameTextFieldChanged(_:)),
+                                 forControlEvents: [.EditingDidEndOnExit, .EditingChanged])
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldReturn),
+                                  forControlEvents: .EditingDidEndOnExit)
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldChanged(_:)),
+                                  forControlEvents: [.EditingDidEndOnExit, .EditingChanged])
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldReturn),
+                                     forControlEvents: .EditingDidEndOnExit)
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldChanged(_:)),
+                                     forControlEvents: [.EditingChanged])
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -44,8 +63,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.disclaimerButton
       |> disclaimerButtonStyle
 
-    self.emailTextField
-      |> emailFieldStyle
+    self.nameTextField
+      |> UITextField.lens.returnKeyType .~ .Next
+
+    self.emailTextField |> emailFieldStyle
+      <> UITextField.lens.returnKeyType .~ .Next
 
     self.formBackgroundView
       |> cardStyle()
@@ -56,8 +78,8 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.newsletterLabel
       |> newsletterLabelStyle
 
-    self.passwordTextField
-      |> passwordFieldStyle
+    self.passwordTextField |> passwordFieldStyle
+      <> UITextField.lens.returnKeyType .~ .Go
 
     self.rootStackView
       |> loginRootStackViewStyle
@@ -124,16 +146,29 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeNext { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-  @IBAction internal func emailChanged(textField: UITextField) {
+
+  @objc internal func emailTextFieldChanged(textField: UITextField) { //this
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
 
-  @IBAction internal func nameChanged(textField: UITextField) {
+  @objc internal func emailTextFieldReturn(textField: UITextField) {
+    self.viewModel.inputs.emailTextFieldReturn()
+  }
+
+  @objc internal func nameTextFieldChanged(textField: UITextField) { //this
     self.viewModel.inputs.nameChanged(textField.text ?? "")
   }
 
-  @IBAction internal func passwordChanged(textField: UITextField) {
+  @objc internal func nameTextFieldReturn(textField: UITextField) {
+    self.viewModel.inputs.nameTextFieldReturn()
+  }
+
+  @objc internal func passwordTextFieldChanged(textField: UITextField) { //this
     self.viewModel.inputs.passwordChanged(textField.text ?? "")
+  }
+
+  @objc internal func passwordTextFieldReturn(textField: UITextField) {
+    self.viewModel.inputs.passwordTextFieldReturn()
   }
 
   @IBAction internal func weeklyNewsletterChanged(newsletterSwitch: UISwitch) {
@@ -186,22 +221,5 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.presentViewController(helpSheet, animated: true, completion: nil)
-  }
-}
-
-extension SignupViewController: UITextFieldDelegate {
-  func textFieldShouldReturn(textField: UITextField) -> Bool {
-    switch textField {
-    case emailTextField:
-      self.viewModel.inputs.emailTextFieldReturn()
-    case nameTextField:
-      self.viewModel.inputs.nameTextFieldReturn()
-    case passwordTextField:
-      self.viewModel.inputs.passwordTextFieldReturn()
-    default:
-      fatalError("\(textField) unrecognized")
-    }
-
-    return true
   }
 }
