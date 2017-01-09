@@ -240,11 +240,13 @@ internal final class LiveStreamContainerViewController: UIViewController {
         _self.addChildLiveStreamViewController(LiveStreamViewController(event: event, delegate: _self))
     }
 
+    // FIXME: move all logic to this VM
     self.viewModel.outputs.showVideoView
       .map(negate)
       .observeForUI()
       .observeNext { [weak self] in
-      self?.liveStreamViewController?.view.hidden = $0
+        // FIXME: can use `self?.liveStreamViewController?.view.rac.hidden`
+        self?.liveStreamViewController?.view.hidden = $0
     }
 
     self.viewModel.outputs.projectImageUrl
@@ -268,21 +270,23 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .ignoreNil()
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
 
+    // FIXME: move all logic to the VM
+
     let isLive: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
       .observeForUI()
       .map {
-      if case .live = $0 { return true }
-
-      return false
+        if case .live = $0 { return true }
+        return false
     }
 
     let isReplay: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
       .observeForUI()
       .map {
         if case .replay = $0 { return true }
-
         return false
     }
+
+    // FIXME: move all logic to the VM
 
     self.navBarLiveDotImageView.rac.hidden = isLive.map(negate)
     self.creatorAvatarLiveDotImageView.rac.hidden = isLive.map(negate)
@@ -298,8 +302,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.numberWatchingButton.rac.title = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
-    self.eventDetailsViewModel.outputs.configureShareViewModel.observeNext { [weak self] in
-      self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+    self.eventDetailsViewModel.outputs.configureShareViewModel
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
@@ -321,6 +327,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
 
+    // FIXME: can just a single output for showing error alert
+    
     Signal.merge(
       self.viewModel.outputs.error,
       self.eventDetailsViewModel.outputs.showErrorAlert
@@ -346,6 +354,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
+    // FIXME: we might be able to leverage `dropShadowStyle` for this. let's revisit after we get screenshot 
+    // tests
     self.loaderView.layer
       |> CALayer.lens.masksToBounds .~ false
       |> CALayer.lens.shadowColor .~ UIColor.blackColor().CGColor
@@ -357,6 +367,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width / 2
 
+    // FIXME: do we have to set frame like this?
     let titleSize = self.navBarTitleLabel.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max))
     self.navBarTitleStackViewBackgroundView.frame = CGRect(
       origin:self.navBarTitleStackViewBackgroundView.frame.origin,
@@ -370,8 +381,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
     }
   }
 
-  internal override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator
-    coordinator: UIViewControllerTransitionCoordinator) {
+  internal override func viewWillTransitionToSize(
+    size: CGSize,
+    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+
     super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
     coordinator.animateAlongsideTransition({ (_) in
@@ -393,6 +406,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     view.frame = self.videoFrame(self.isLandscape())
   }
 
+  // FIXME: we shouldn't depend on these globals for portrait/landscape
   private func isLandscape() -> Bool {
     return UIApplication.sharedApplication().statusBarOrientation != .Portrait
   }
@@ -423,6 +437,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
   // MARK: Subviews
 
+  // FIXME: these should all be IBOutlets
+
   lazy var navBarTitleStackViewBackgroundView = { UIView() }()
   lazy var navBarTitleStackView = { UIStackView() }()
   lazy var navBarLiveDotImageView = { UIImageView() }()
@@ -439,6 +455,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }()
 
   // MARK: Actions
+
+  // FIXME: make these all `private` and remove the arguments since they aren't used
 
   internal func close(sender: UIBarButtonItem) {
     self.viewModel.inputs.closeButtonTapped()

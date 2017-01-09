@@ -32,12 +32,14 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
+  // FIXME: move the timer to the VM
   private var timerProducer: Disposable?
 
   internal static func configuredWith(project project: Project)
     -> LiveStreamCountdownViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController)
+      // FIXME: dont use NSDate, use AppEnvironment, and move to the VM
       vc.viewModel.inputs.configureWith(project: project, now: NSDate())
       vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
       return vc
@@ -49,7 +51,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamCountdownViewController.close(_:)))
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -160,15 +162,19 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    // FIXME: move this logic to the VM
     self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
       .map { attributedCountdownString($0, suffix: $1) }
 
+    // FIXME: move this logic to the VM
     self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
       .map { attributedCountdownString($0, suffix: $1) }
 
+    // FIXME: move this logic to the VM
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
       .map { attributedCountdownString($0, suffix: $1) }
 
+    // FIXME: move this logic to the VM
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
       .map { attributedCountdownString($0, suffix: $1) }
 
@@ -177,10 +183,12 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.viewModel.inputs.setNow(date: $0)
     }
 
-    self.eventDetailsViewModel.outputs.configureShareViewModel.observeNext { [weak self] in
-      self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+    self.eventDetailsViewModel.outputs.configureShareViewModel
+      .observeNext { [weak self] in
+        self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
+    // FIXME: move this logic to the VM
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureShareViewModel.mapConst(true)
 
     self.introLabel.rac.attributedText = self.viewModel.outputs.upcomingIntroText
@@ -190,25 +198,25 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.projectImageView.image = nil })
-      .observeNext { [weak self] in self?.projectImageView.af_setImageWithURL($0) }
+      .observeNext { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .ignoreNil()
-      .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
+      .observeNext { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
 
     self.viewModel.outputs.categoryId
       .observeForUI()
       .observeNext { [weak self] in
-      let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
-      self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
+        let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
+        self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
       .observeNext { [weak self] in
-      self?.dismissViewControllerAnimated(true, completion: nil)
+        self?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     self.navigationItem.rac.title = self.viewModel.outputs.viewControllerTitle
@@ -217,7 +225,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
       .observeNext { [weak self] in
-      self?.subscribeButton.setImage($0, forState: .Normal)
+        self?.subscribeButton.setImage($0, forState: .Normal)
     }
 
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
@@ -235,10 +243,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
       .observeNext { [weak self] in
-      let liveStreamContainerViewController = LiveStreamContainerViewController
-        .configuredWith(project: $0, event: $1)
+        let liveStreamContainerViewController = LiveStreamContainerViewController
+          .configuredWith(project: $0, event: $1)
 
-      self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
+        self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
 
     self.shareViewModel.outputs.showShareSheet
@@ -257,6 +265,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.timerProducer?.dispose()
   }
 
+  // FIXME: this can be an IBOutlet
   lazy var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
@@ -287,15 +296,16 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
   // MARK: Actions
 
-  internal func close(sender: UIBarButtonItem) {
+  @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  internal func share(sender: UIBarButtonItem) {
+  @objc private func share() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction internal func subscribe(sender: UIButton) {
+  // FIXME: remove `sender` from IBAction since it isnt used
+  @IBAction private func subscribe(sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
@@ -324,6 +334,7 @@ private func attributedCountdownString(prefix: String, suffix: String) -> NSAttr
   return NSAttributedString(attributedString: prefix)
 }
 
+// FIXME: let's chat about this
 extension LiveStreamCountdownViewController: UINavigationControllerDelegate {
   func navigationControllerSupportedInterfaceOrientations(
     navigationController: UINavigationController) -> UIInterfaceOrientationMask {
