@@ -12,7 +12,7 @@ internal final class MessageThreadEmptyStateCell: UITableViewCell, ValueCell {
 
     self.titleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15.0)
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 18.0)
       |> UILabel.lens.text %~ { _ in Strings.messages_empty_state_title() }
   }
 
