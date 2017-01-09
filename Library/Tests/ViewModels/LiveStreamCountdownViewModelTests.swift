@@ -7,7 +7,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class LiveStreamCountdownViewModelTests: TestCase {
+internal final class LiveStreamCountdownViewModelTests: XCTestCase {
   private let vm: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
 
   private let categoryId = TestObserver<Int, NoError>()
@@ -17,7 +17,6 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let minutes = TestObserver<(String, String), NoError>()
   private let projectImageUrl = TestObserver<NSURL, NoError>()
   private let pushLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
-  private let retrieveEventInfo = TestObserver<String, NoError>()
   private let seconds = TestObserver<(String, String), NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
 
@@ -31,7 +30,6 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.minutesString.observe(self.minutes.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.observe(self.pushLiveStreamViewController.observer)
-    self.vm.outputs.retrieveEventInfo.observe(self.retrieveEventInfo.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
   }
