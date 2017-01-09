@@ -17,7 +17,7 @@ internal final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
-  fileprivate var timeObserver: AnyObject?
+  fileprivate var timeObserver: Any?
 
   @IBOutlet fileprivate weak var playButton: UIButton!
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
@@ -149,8 +149,7 @@ internal final class VideoViewController: UIViewController {
       forTimes: [NSValue(time: time)],
       queue: DispatchQueue.main) { [weak self] _ in
         self?.viewModel.inputs.crossedCompletionThreshold()
-    } as AnyObject?
-    // FIXME: ^can we get rid of anyobject?
+    }
   }
 
   internal func configurePlayer(withURL url: URL) {

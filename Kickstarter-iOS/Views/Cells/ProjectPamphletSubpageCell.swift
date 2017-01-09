@@ -56,6 +56,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     self.countLabel.text = Format.wholeNumber(subpage.count)
     self.topGradientView.isHidden = !subpage.isFirstInSection
     self.separatorView.isHidden = !subpage.isFirstInSection
+
+    self.setNeedsLayout()
   }
 
   internal override func bindStyles() {
@@ -73,6 +75,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> UIView.lens.backgroundColor .~ .ksr_navy_300
+      |> roundedStyle()
 
     _ = self.countLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -95,14 +98,13 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       (UIColor.init(white: 0, alpha: 0.1), 0),
       (UIColor.init(white: 0, alpha: 0), 1)
     ])
+
+    self.setNeedsLayout()
   }
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
 
-    // FIXME: why doesnt this work?!
-    // self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
-    self.countContainerView.layer.cornerRadius = 14
-    self.countContainerView.layer.masksToBounds = true
+    self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
   }
 }

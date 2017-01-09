@@ -11,6 +11,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
+    
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
     let project = Project.cosmicSurgery
