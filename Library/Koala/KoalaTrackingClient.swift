@@ -136,7 +136,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     var result: HTTPURLResponse?
     let semaphore = DispatchSemaphore(value: 0)
 
-    self.URLSession.dataTask(with: request) { _, response, err in
+    self.URLSession.dataTask(with: request) { _, response, _ in
       defer { semaphore.signal() }
 
       if let httpResponse = response as? HTTPURLResponse {
