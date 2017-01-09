@@ -26,12 +26,12 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var availableForText: Signal<String, NoError> { get }
   var creatorAvatarUrl: Signal<NSURL?, NoError> { get }
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var showErrorAlert: Signal<String, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   // FIXME: support abbreviations of large numbers
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
+  var showErrorAlert: Signal<String, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
@@ -67,6 +67,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     let subscribedProperty = MutableProperty(false)
 
     // Bind the API response values for subscribed
+    //FIXME: remove demoteErrors()
     subscribedProperty <~ event
       .takeWhen(self.subscribeButtonTappedProperty.signal)
       .switchMap { event -> SignalProducer<Bool, NoError> in
@@ -196,7 +197,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
 }
 
-private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
+  SignalProducer<LiveStreamEvent, LiveApiError> {
 
   if let event = event {
     return SignalProducer(value: event)

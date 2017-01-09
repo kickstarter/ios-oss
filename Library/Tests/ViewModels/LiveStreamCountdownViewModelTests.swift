@@ -18,6 +18,7 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
   private let projectImageUrl = TestObserver<NSURL, NoError>()
   private let pushLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
   private let seconds = TestObserver<(String, String), NoError>()
+  private let upcomingIntroText = TestObserver<String, NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -31,7 +32,18 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.observe(self.pushLiveStreamViewController.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
+    self.vm.outputs.upcomingIntroText.map { $0.string }.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
+  }
+
+  func testUpcomingIntroText() {
+    let project = Project.template
+      |> Project.lens.creator.name .~ "Creator Name"
+
+    self.vm.inputs.configureWith(project: project, now: nowDate())
+    self.vm.inputs.viewDidLoad()
+
+    self.upcomingIntroText.assertValues(["Upcoming with\nCreator Name"])
   }
 
   func testDateComparison() {

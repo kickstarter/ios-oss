@@ -106,6 +106,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       localizedString(key: "Live_stream_countdown", defaultValue: "Live stream countdown")
     )
 
+    //FIXME: Consider making the live stream view controller always re-fetch the event
+    //in which case it's not necessary to have it included in this signal
     self.pushLiveStreamViewController = combineLatest(
       self.projectProperty.signal.ignoreNil(),
       self.liveStreamEventProperty.signal.ignoreNil(),
@@ -113,9 +115,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       ).map { project, event, _ in (project, event) }
       .take(1)
 
-    self.upcomingIntroText = self.liveStreamEventProperty.signal.ignoreNil()
-      .observeForUI()
-      .map { event -> NSAttributedString? in
+    self.upcomingIntroText = project
+      .map { project -> NSAttributedString? in
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .Center
 
@@ -131,7 +132,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
           NSParagraphStyleAttributeName: paragraphStyle
         ]
 
-        let text = Strings.Upcoming_with_creator_name(creator_name: event.creator.name)
+        let text = Strings.Upcoming_with_creator_name(creator_name: project.creator.name)
 
         return text.simpleHtmlAttributedString(
           base: baseAttributes,
