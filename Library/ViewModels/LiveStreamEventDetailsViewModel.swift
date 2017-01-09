@@ -14,9 +14,11 @@ public protocol LiveStreamEventDetailsViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func failedToRetrieveEvent()
   func failedToUpdateSubscription()
+  // FIXME: this could prob be removed and instead the VM use the config data to determine if it needs to retrieve event
   func fetchLiveStreamEvent()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
+  // FIXME: rename to `retrievedLiveStreamEvent`
   func setLiveStreamEvent(event event: LiveStreamEvent)
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
   func setSubcribed(subscribed subscribed: Bool)
@@ -25,22 +27,34 @@ public protocol LiveStreamEventDetailsViewModelInputs {
 
 public protocol LiveStreamEventDetailsViewModelOutputs {
   var availableForText: Signal<String, NoError> { get }
+  // FIXME: make this an optional NSURL?
   var creatorAvatarUrl: Signal<NSURL, NoError> { get }
+  // FIXME: remove this output
   var creatorName: Signal<String, NoError> { get }
+  // FIXME: rename to configureShareViewModel
+  // FIXME: new output for `shareButtonEnabled`
   var configureSharing: Signal<(Project, LiveStreamEvent), NoError> { get }
+  // FIXME: rename to `showErrorAlert`
   var error: Signal<String, NoError> { get }
+  // FIXME: rename to creatorIntroText and move to the container vm
   var introText: Signal<NSAttributedString, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
+  // FIXME: support abbreviations of large numbers
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
+  // FIXME: rename to `retrieveEventInfoWithEventIdAndUserId
   var retrieveEventInfo: Signal<(String, Int?), NoError> { get }
+  // FIXME: do `animateActivityIndicator` instead and have it hide when no animating
   var showActivityIndicator: Signal<Bool, NoError> { get }
+  // FIXME: use `animating...` instead
   var showSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
+  // FIXME: could be removed?
   var subscribed: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
   var toggleSubscribe: Signal<(String, Int, Bool), NoError> { get }
+  // FIXME: move to the countdown vm
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
 }
 

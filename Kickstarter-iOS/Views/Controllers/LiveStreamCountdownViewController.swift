@@ -216,10 +216,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.retrieveEventInfo
       .observeForUI()
+      // FIXME: we should probably remove this
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
-      .observeNext { [weak self] in
-        KsLiveApp.retrieveEvent($0, uid: $1).startWithResult {
-          switch $0 {
+      .observeNext { [weak self] eventId, userId in
+        KsLiveApp.retrieveEvent(eventId, uid: userId).startWithResult { result in
+          switch result {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
             self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
