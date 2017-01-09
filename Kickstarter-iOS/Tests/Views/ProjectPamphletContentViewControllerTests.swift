@@ -278,7 +278,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }
