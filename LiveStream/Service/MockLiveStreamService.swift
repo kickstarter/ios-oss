@@ -1,38 +1,37 @@
 import Prelude
 import ReactiveCocoa
+import Result
+
+extension Result {
+  private var value: T? {
+    switch self {
+    case let .Success(value): return value
+    case .Failure:            return nil
+    }
+  }
+}
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
-
-  private let fetchEventError: LiveApiError?
-  private let fetchEventResponse: LiveStreamEvent?
-  private let subscribeToError: LiveApiError?
-  private let subscribeToResponse: Bool?
-
-  // FIXME: do this instead
-  //private subscribeToResult: Result<Bool, LiveApiError>
+  private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
+  private let subscribeToResult: Result<Bool, LiveApiError>?
 
   internal init() {
-    self.init(fetchEventError: nil)
+    self.init(fetchEventResult: nil)
   }
 
-  internal init(fetchEventError: LiveApiError? = nil,
-                fetchEventResponse: LiveStreamEvent? = nil,
-                subscribeToError: LiveApiError? = nil,
-                subscribeToResponse: Bool? = nil) {
-    self.fetchEventError = fetchEventError
-    self.fetchEventResponse = fetchEventResponse
-    self.subscribeToError = subscribeToError
-    self.subscribeToResponse = subscribeToResponse
+  internal init(fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
+                subscribeToResult: Result<Bool, LiveApiError>? = nil) {
+    self.fetchEventResult = fetchEventResult
+    self.subscribeToResult = subscribeToResult
   }
 
   internal func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
-    if let error = self.fetchEventError {
+    if let error = self.fetchEventResult?.error {
       return SignalProducer(error: error)
     }
 
     return SignalProducer(value:
-      self.fetchEventResponse
-        // FIXME: get rid of force unwrap
+      self.fetchEventResult?.value
         ?? .template |> LiveStreamEvent.lens.id .~ eventId
     )
   }
@@ -40,10 +39,10 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   internal func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
-      if let error = self.subscribeToError {
+      if let error = self.subscribeToResult?.error {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: self.subscribeToResponse ?? isSubscribed)
+      return SignalProducer(value: self.subscribeToResult?.value ?? isSubscribed)
   }
 }
