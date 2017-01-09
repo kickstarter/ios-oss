@@ -73,26 +73,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map {
         switch $0 {
         case .sessionInterrupted:
-          return localizedString(
-            key: "The_live_stream_was_interrupted", defaultValue: "The live stream was interrupted")
+          return Strings.The_live_stream_was_interrupted()
         case .failedToConnect:
-          return localizedString(
-            key: "The_live_stream_failed_to_connect", defaultValue: "The live stream failed to connect")
+          return Strings.The_live_stream_failed_to_connect()
         }
       }
 
     self.loaderText = liveStreamState.map {
-      if case .live(playbackState: .loading, _) = $0 { return localizedString(
-        key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
-      }
-      if case .greenRoom = $0 { return localizedString(
-        key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
-      }
+      if case .live(playbackState: .loading, _) = $0 { return Strings.The_live_stream_will_start_soon() }
+      if case .greenRoom = $0 { return Strings.The_live_stream_will_start_soon() }
       if case .replay(playbackState: .loading, _) = $0 {
         return Strings.The_replay_will_start_soon()
       }
 
-      return localizedString(key: "Loading", defaultValue: "Loading")
+      return Strings.Loading()
     }
 
     self.projectImageUrl = project
@@ -100,12 +94,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .ignoreNil()
 
     self.titleViewText = liveStreamState.map {
-      if case .live(_, _) = $0 { return localizedString(key: "Live", defaultValue: "Live") }
-      if case .greenRoom = $0 { return localizedString(key: "Starting_soon", defaultValue: "Starting soon") }
-      if case .replay(_, _) = $0 { return localizedString(
-        key: "Recorded_Live", defaultValue: "Recorded Live") }
+      if case .live(_, _) = $0 { return Strings.Live() }
+      if case .greenRoom = $0 { return Strings.Starting_soon() }
+      if case .replay(_, _) = $0 { return Strings.Recorded_Live() }
 
-      return localizedString(key: "Loading", defaultValue: "Loading")
+      return Strings.Loading()
     }
 
     self.showVideoView = combineLatest(

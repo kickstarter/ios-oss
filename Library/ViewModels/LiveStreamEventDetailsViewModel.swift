@@ -93,11 +93,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       ]
 
       if case .live = state {
-        let text = localizedString(
-          key: "Creator_name_is_live_now",
-          defaultValue: "<b>%{creator_name}</b> is live now",
-          substitutions: ["creator_name": event.creator.name]
-        )
+        let text = Strings.Creator_name_is_live_now(creator_name: event.creator.name)
 
         return text.simpleHtmlAttributedString(
           base: baseAttributes,
@@ -106,15 +102,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       }
 
       if case .replay = state {
-        let text = localizedString(
-          key: "Creator_name_was_live_time_ago",
-          defaultValue: "<b>%{creator_name}</b> was live %{time_ago}",
-          substitutions: [
-            "creator_name": event.creator.name,
-            "time_ago": (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
-              abbreviate: true))
-          ]
-        )
+        let text = Strings.Creator_name_was_live_time_ago(
+          creator_name: event.creator.name,
+          time_ago: (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+          abbreviate: true)))
 
         return text.simpleHtmlAttributedString(
           base: baseAttributes,
@@ -143,11 +134,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         NSParagraphStyleAttributeName: paragraphStyle
       ]
 
-      let text = localizedString(
-        key: "Upcoming_with_creator_name",
-        defaultValue: "Upcoming with<br/><b>%{creator_name}</b>",
-        substitutions: ["creator_name": event.creator.name]
-      )
+      let text = Strings.Upcoming_with_creator_name(creator_name: event.creator.name)
 
       return text.simpleHtmlAttributedString(
         base: baseAttributes,
@@ -167,14 +154,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
-        return localizedString(
-          key: "Available_to_watch_for_time_more_units",
-          defaultValue: "Available to watch for %{time} more %{units}",
-          substitutions: [
-            "time": time,
-            "units": units
-          ]
-        )
+        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
       }.ignoreNil()
 
     self.creatorAvatarUrl = event
@@ -199,14 +179,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
 
     self.subscribeLabelText = self.subscribed.map {
-      !$0 ? localizedString(
-        key: "Keep_up_with_future_live_streams", defaultValue: "Keep up with future live streams"
-      ) : ""
+      !$0 ? Strings.Keep_up_with_future_live_streams() : ""
     }
 
     self.subscribeButtonText = self.subscribed.map {
-      $0 ? localizedString(key: "Subscribed", defaultValue: "Subscribed") :
-        localizedString(key: "Subscribe", defaultValue: "Subscribe")
+      $0 ? Strings.Subscribed() :
+        Strings.Subscribe()
     }
 
     self.showActivityIndicator = Signal.merge(
@@ -236,15 +214,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.error = Signal.merge(
       self.failedToRetrieveEventProperty.signal.map {
-        localizedString(
-          key: "Failed_to_retrieve_live_stream_event_details",
-          defaultValue: "Failed to retrieve live stream event details")
+        Strings.Failed_to_retrieve_live_stream_event_details()
       },
       self.failedToUpdateSubscriptionProperty.signal.map {
-        localizedString(
-          key: "Failed_to_update_subscription",
-          defaultValue: "Failed to update subscription"
-        )
+        Strings.Failed_to_update_subscription()
       })
   }
   //swiftlint:enable function_body_length

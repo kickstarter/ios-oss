@@ -70,6 +70,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { $0.second >= 0 ? $0.second : 0  }
       .skipRepeats()
 
+    //FIXME: Add below strings to Strings.swift
+
     self.daysString = days
       .map { (String(format: "%02d", $0), localizedString(
         key: "dates_day", defaultValue: "days", count: 0)) }

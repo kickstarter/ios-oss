@@ -19,11 +19,8 @@
         if activityType == UIActivityTypeMail || activityType == UIActivityTypeMessage {
           return liveStreamEvent.stream.projectName
         } else if activityType == UIActivityTypePostToTwitter {
-          return localizedString(
-            key: "Creator_name_is_streaming_live_on_Kickstarter",
-            defaultValue: "%{creator_name} is streaming live on Kickstarter",
-            substitutions: ["creator_name": liveStreamEvent.creator.name]
-          )
+          return Strings.Creator_name_is_streaming_live_on_Kickstarter(
+            creator_name: liveStreamEvent.creator.name)
         } else if activityType == UIActivityTypeCopyToPasteboard ||
           activityType == UIActivityTypePostToFacebook {
           return liveStreamEvent.stream.webUrl

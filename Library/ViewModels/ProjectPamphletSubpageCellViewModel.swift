@@ -42,9 +42,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
-      liveStreamDetail.map { $0.isLiveNow ? localizedString(
-        key: "Live_Streaming_now", defaultValue: "Live Streaming now") :
-        localizedString(key: "Live_Stream", defaultValue: "Live Stream")},
+      liveStreamDetail.map { $0.isLiveNow ? Strings.Live_Streaming_now() : Strings.Live_Stream()},
       updatesSubpage.mapConst(Strings.project_menu_buttons_updates())
     )
 
@@ -109,14 +107,14 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
 private func countLabelTextForLiveStream(liveStream: Project.LiveStream) -> String {
   if liveStream.isLiveNow {
-    return localizedString(key: "Watch_live", defaultValue: "Watch live")
+    return Strings.Watch_live()
   }
 
   let now = NSDate()
   let liveStreamStartDate = NSDate(timeIntervalSince1970: liveStream.startDate)
 
   if now.earlierDate(liveStreamStartDate) == liveStreamStartDate {
-    return localizedString(key: "Replay", defaultValue: "Replay")
+    return Strings.Replay()
   }
 
   return Format.relative(secondsInUTC: liveStream.startDate, abbreviate: true)
