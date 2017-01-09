@@ -31,8 +31,8 @@ extension DispatchTimeInterval {
       return Int64(ns)
     }
   }
-}
 
-public func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
-  return .nanoseconds(Int(lhs.nanoseconds + rhs.nanoseconds))
+  public static func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
+    return .nanoseconds(Int(lhs.nanoseconds + rhs.nanoseconds))
+  }
 }

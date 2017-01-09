@@ -131,7 +131,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
 
     self.environmentLoggedInProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }

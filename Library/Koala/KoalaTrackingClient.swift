@@ -78,11 +78,11 @@ public final class KoalaTrackingClient: TrackingClientType {
 
       while !self.buffer.isEmpty {
         guard
-          let result = KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
+          nil == KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
             .flatMap(self.koalaURL)
             .flatMap(KoalaTrackingClient.koalaRequest)
-            .flatMap(self.synchronousKoalaResult),
-          case .success = result else { break }
+            .flatMap(self.synchronousKoalaResult)
+          else { break }
 
         self.buffer.removeFirst(min(chunkSize, self.buffer.count))
       }
@@ -132,24 +132,20 @@ public final class KoalaTrackingClient: TrackingClientType {
     return request
   }
 
-  fileprivate func synchronousKoalaResult(_ request: URLRequest) -> Result<HTTPURLResponse, NSError>? {
-    var result: Result<HTTPURLResponse, NSError>?
+  fileprivate func synchronousKoalaResult(_ request: URLRequest) -> HTTPURLResponse? {
+    var result: HTTPURLResponse?
     let semaphore = DispatchSemaphore(value: 0)
 
-    self.URLSession.dataTask(with: request) { _, response, err in
+    self.URLSession.dataTask(with: request) { _, response, _ in
       defer { semaphore.signal() }
 
       if let httpResponse = response as? HTTPURLResponse {
         #if DEBUG
           NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
         #endif
-        result = Result(value: httpResponse)
+        result = httpResponse
       }
 
-      // FIXME: is this cast safe? is it possible to get a non-NSError here?
-      if let err = err as? NSError {
-        result = Result(error: err)
-      }
     }.resume()
     _ = semaphore.wait(timeout: .distantFuture)
 

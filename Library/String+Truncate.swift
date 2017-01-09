@@ -15,7 +15,7 @@ extension String {
     guard chars.count > maxLength else { return self }
 
     let advancedBy = maxLength - suffix.characters.count
-    // FIXME: is there a better way?
+
     guard let index = chars.index(chars.startIndex, offsetBy: advancedBy, limitedBy: chars.endIndex) else {
       return self
     }
