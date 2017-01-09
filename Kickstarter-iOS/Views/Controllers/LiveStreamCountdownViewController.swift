@@ -220,22 +220,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       self?.subscribeButton.setImage($0, forState: .Normal)
     }
 
-    self.eventDetailsViewModel.outputs.retrieveEventInfoWithEventIdAndUserId
-      .observeForUI()
-      // FIXME: we should probably remove this
-      .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
-      .observeNext { [weak self] eventId, userId in
-        LiveStreamService().fetchEvent(eventId: eventId, uid: userId).startWithResult { result in
-          switch result {
-          case .Success(let event):
-            self?.viewModel.inputs.setLiveStreamEvent(event: event)
-            self?.eventDetailsViewModel.inputs.retrievedLiveStreamEvent(event: event)
-          case .Failure:
-            self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
-          }
-        }
-    }
-
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
 
@@ -247,19 +231,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
-
-    self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeNext { [weak self] eventId, userId, isSubscribed in
-        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, isSubscribe: isSubscribed)
-          .startWithResult { result in
-            switch result {
-            case .Success(let result):
-              self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
-            case .Failure:
-              self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
-            }
-        }
-    }
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()

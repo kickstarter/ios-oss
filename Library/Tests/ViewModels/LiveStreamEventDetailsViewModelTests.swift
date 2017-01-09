@@ -19,40 +19,34 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
   private let numberOfPeopleWatchingText = TestObserver<String, NoError>()
-  private let retrieveEventInfoEventId = TestObserver<String, NoError>()
-  private let retrieveEventInfoUserId = TestObserver<Int?, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeButtonImage = TestObserver<UIImage?, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
-  private let toggleSubscribeEventId = TestObserver<String, NoError>()
-  private let toggleSubscribeUserId = TestObserver<Int, NoError>()
-  private let toggleSubscribeValue = TestObserver<Bool, NoError>()
+//  private let toggleSubscribeEventId = TestObserver<String, NoError>()
+//  private let toggleSubscribeUserId = TestObserver<Int, NoError>()
+//  private let toggleSubscribeValue = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.availableForText.observe(self.availableForText.observer)
     self.vm.outputs.creatorAvatarUrl.map { $0?.absoluteString }.observe(self.creatorAvatarUrl.observer)
-    self.vm.outputs.configureShareViewModel.map { $0.0 }.observe(self.configureShareViewModelProject.observer)
-    self.vm.outputs.configureShareViewModel.map { $0.1 }.observe(self.configureShareViewModelEvent.observer)
+    self.vm.outputs.configureShareViewModel.map(first).observe(self.configureShareViewModelProject.observer)
+    self.vm.outputs.configureShareViewModel.map(second).observe(self.configureShareViewModelEvent.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
     self.vm.outputs.liveStreamParagraph.observe(self.liveStreamParagraph.observer)
     self.vm.outputs.numberOfPeopleWatchingText.observe(self.numberOfPeopleWatchingText.observer)
-    self.vm.outputs.retrieveEventInfoWithEventIdAndUserId.map(first)
-      .observe(self.retrieveEventInfoEventId.observer)
-    self.vm.outputs.retrieveEventInfoWithEventIdAndUserId.map(second)
-      .observe(self.retrieveEventInfoUserId.observer)
     self.vm.outputs.animateActivityIndicator.observe(self.animateActivityIndicator.observer)
     self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
       self.animateSubscribeButtonActivityIndicator.observer)
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
-    self.vm.outputs.toggleSubscribe.map(first).observe(self.toggleSubscribeEventId.observer)
-    self.vm.outputs.toggleSubscribe.map(second).observe(self.toggleSubscribeUserId.observer)
-    self.vm.outputs.toggleSubscribe.map(third).observe(self.toggleSubscribeValue.observer)
+//    self.vm.outputs.toggleSubscribe.map(first).observe(self.toggleSubscribeEventId.observer)
+//    self.vm.outputs.toggleSubscribe.map(second).observe(self.toggleSubscribeUserId.observer)
+//    self.vm.outputs.toggleSubscribe.map(third).observe(self.toggleSubscribeValue.observer)
   }
 
   func testAvailableForText() {
@@ -181,21 +175,29 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testSubscribe() {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+
     let project = Project.template
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.user.isSubscribed .~ false
 
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.subscribeButtonTapped()
-    self.vm.inputs.setSubcribed(subscribed: true)
-    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
-    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
-    self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
+    self.subscribeButtonText.assertValues(["Subscribe"])
 
-    self.toggleSubscribeEventId.assertValues(["123"])
-    self.toggleSubscribeUserId.assertValues([1])
-    self.toggleSubscribeValue.assertValues([false])
+    self.vm.inputs.subscribeButtonTapped()
+
+    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
+
+    self.vm.inputs.subscribeButtonTapped()
+
+    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
+
+
+
+//    self.toggleSubscribeEventId.assertValues(["123"])
+//    self.toggleSubscribeUserId.assertValues([1])
+//    self.toggleSubscribeValue.assertValues([false])
   }
 
   func testSubscribeFailed() {

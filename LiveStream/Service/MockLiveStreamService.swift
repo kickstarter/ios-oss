@@ -8,6 +8,9 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let subscribeToError: LiveApiError?
   private let subscribeToResponse: Bool?
 
+  // FIXME: do this instead
+  //private subscribeToResult: Result<Bool, LiveApiError>
+
   internal init() {
     self.init(fetchEventError: nil)
   }
@@ -34,13 +37,13 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func subscribeTo(eventId eventId: String, uid: Int, isSubscribe: Bool)
+  internal func subscribeTo(eventId eventId: String, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       if let error = self.subscribeToError {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: self.subscribeToResponse ?? (!isSubscribe))
+      return SignalProducer(value: self.subscribeToResponse ?? isSubscribed)
   }
 }

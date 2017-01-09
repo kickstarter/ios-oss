@@ -16,9 +16,7 @@ public protocol LiveStreamEventDetailsViewModelInputs {
   func failedToUpdateSubscription()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
-  func retrievedLiveStreamEvent(event event: LiveStreamEvent)
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
-  func setSubcribed(subscribed subscribed: Bool)
   func viewDidLoad()
 }
 
@@ -33,12 +31,10 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var liveStreamParagraph: Signal<String, NoError> { get }
   // FIXME: support abbreviations of large numbers
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
-  var retrieveEventInfoWithEventIdAndUserId: Signal<(String, Int?), NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
-  var toggleSubscribe: Signal<(String, Int, Bool), NoError> { get }
 }
 
 public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
@@ -46,15 +42,20 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
   //swiftlint:disable function_body_length
   public init () {
-    let event = combineLatest(
-      self.retrievedLiveStreamEventProperty.signal.ignoreNil(),
-      self.viewDidLoadProperty.signal)
+
+    let configData = combineLatest(
+      self.configData.signal.ignoreNil(),
+      self.viewDidLoadProperty.signal
+      )
       .map(first)
 
-    let project = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
-      self.viewDidLoadProperty.signal)
-      .map(first)
+    let event = configData
+      .switchMap { project, optionalEvent in
+        fetchEvent(forProject: project, event: optionalEvent)
+          .demoteErrors()
+    }
+
+    let project = configData.map(first)
 
     self.configureShareViewModel = combineLatest(
       project,
@@ -63,14 +64,24 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.shareButtonEnabled = self.configureShareViewModel.mapConst(true)
 
-    let subscribed = Signal.merge(
-      self.subscribedProperty.signal,
-      event.map { $0.user.isSubscribed },
-      combineLatest(
-        event.map { $0.user.isSubscribed },
-        self.failedToUpdateSubscriptionProperty.signal)
-        .map(first)
-    )
+    let subscribedProperty = MutableProperty(false)
+
+    // Bind the API response values for subscribed
+    subscribedProperty <~ event
+      .takeWhen(self.subscribeButtonTappedProperty.signal)
+      .switchMap { event -> SignalProducer<Bool, NoError> in
+        guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
+
+        return AppEnvironment.current.liveStreamService.subscribeTo(
+          eventId: String(event.id), uid: userId, isSubscribed: !subscribedProperty.value
+          )
+          .demoteErrors()
+    }
+
+    // Bind the initial subscribed value
+    subscribedProperty <~ event.map { $0.user.isSubscribed }
+
+    let subscribed = subscribedProperty.signal
 
     self.availableForText = combineLatest(
       event,
@@ -94,15 +105,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.liveStreamTitle = event.map { $0.stream.projectName }
     self.liveStreamParagraph = event.map { $0.stream.description }
 
-    self.retrieveEventInfoWithEventIdAndUserId = combineLatest(
-      project.map { $0.liveStreams.first }.ignoreNil().map { $0.id },
-      self.retrievedLiveStreamEventProperty.signal.filter { $0 == nil }
-      )
-      .map(first)
-      .map {
-        ($0, AppEnvironment.current.currentUser?.id)
-    }
-
     self.subscribeButtonImage = subscribed.map {
       $0 ? UIImage(named: "postcard-checkmark") : nil
     }
@@ -112,12 +114,11 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
 
     self.subscribeButtonText = subscribed.map {
-      $0 ? Strings.Subscribed() :
-        Strings.Subscribe()
+      $0 ? Strings.Subscribed() : Strings.Subscribe()
     }
 
     self.animateActivityIndicator = Signal.merge(
-      self.retrieveEventInfoWithEventIdAndUserId.mapConst(true),
+      configData.filter { _, event in event == nil }.mapConst(true),
       event.mapConst(false)
     )
 
@@ -126,17 +127,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.failedToUpdateSubscriptionProperty.signal.mapConst(false),
       self.subscribeButtonTappedProperty.signal.mapConst(true)
     )
-
-    self.toggleSubscribe = combineLatest(
-      event.map { String($0.id) },
-      subscribed
-      )
-      .takeWhen(self.subscribeButtonTappedProperty.signal)
-      .map { eventId, subscribed -> (String, Int, Bool)? in
-        guard let userId = AppEnvironment.current.currentUser?.id else { return nil }
-        return (eventId, userId, subscribed)
-      }
-      .ignoreNil()
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
       .map { String($0) }
@@ -151,10 +141,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   }
   //swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
+  private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
   public func configureWith(project project: Project, event: LiveStreamEvent?) {
-    self.projectProperty.value = project
-    self.retrievedLiveStreamEventProperty.value = event
+    self.configData.value = (project, event)
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -178,19 +167,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
-  private let retrievedLiveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func retrievedLiveStreamEvent(event event: LiveStreamEvent) {
-    self.retrievedLiveStreamEventProperty.value = event
-  }
-
   private let numberOfPeopleWatchingProperty = MutableProperty<Int?>(nil)
   public func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int) {
     self.numberOfPeopleWatchingProperty.value = numberOfPeople
-  }
-
-  private let subscribedProperty = MutableProperty(false)
-  public func setSubcribed(subscribed subscribed: Bool) {
-    self.subscribedProperty.value = subscribed
   }
 
   private let subscribeButtonTappedProperty = MutableProperty()
@@ -207,14 +186,28 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
-  public let retrieveEventInfoWithEventIdAndUserId: Signal<(String, Int?), NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonText: Signal<String, NoError>
   public let subscribeButtonImage: Signal<UIImage?, NoError>
   public let subscribeLabelText: Signal<String, NoError>
-  public let toggleSubscribe: Signal<(String, Int, Bool), NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
+}
+
+private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+
+  if let event = event {
+    return SignalProducer(value: event)
+
+  }
+
+  if let eventId = project.liveStreams.first?.id {
+    return AppEnvironment.current.liveStreamService.fetchEvent(
+      eventId: eventId, uid: AppEnvironment.current.currentUser?.id
+      )
+  }
+
+  return .empty
 }

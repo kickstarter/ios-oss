@@ -260,19 +260,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
         self?.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    self.eventDetailsViewModel.outputs.retrieveEventInfoWithEventIdAndUserId
-      .observeNext { [weak self] (eventId, userId) in
-        LiveStreamService().fetchEvent(eventId: eventId, uid: userId).startWithResult { result in
-          switch result {
-          case .Success(let event):
-            self?.viewModel.inputs.setLiveStreamEvent(event: event)
-            self?.eventDetailsViewModel.inputs.retrievedLiveStreamEvent(event: event)
-          case .Failure:
-            self?.eventDetailsViewModel.inputs.failedToUpdateSubscription()
-          }
-        }
-    }
-
     self.creatorAvatarLabel.rac.attributedText = self.viewModel.outputs.creatorIntroText
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
@@ -333,19 +320,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
-
-    self.eventDetailsViewModel.outputs.toggleSubscribe
-      .observeNext { [weak self] eventId, userId, isSubscribed in
-        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, isSubscribe: isSubscribed)
-          .startWithResult { result in
-            switch result {
-            case .Success(let result):
-              self?.eventDetailsViewModel.inputs.setSubcribed(subscribed: result)
-            case .Failure:
-              self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
-            }
-        }
-    }
 
     Signal.merge(
       self.viewModel.outputs.error,

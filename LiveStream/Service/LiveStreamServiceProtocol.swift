@@ -9,5 +9,6 @@ public enum LiveApiError: ErrorType {
 public protocol LiveStreamServiceProtocol {
   init()
   func fetchEvent(eventId eventId: String, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
-  func subscribeTo(eventId eventId: String, uid: Int, isSubscribe: Bool) -> SignalProducer<Bool, LiveApiError>
+  func subscribeTo(eventId eventId: String, uid: Int, isSubscribed: Bool)
+    -> SignalProducer<Bool, LiveApiError>
 }

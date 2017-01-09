@@ -7,7 +7,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
   public func fetchEvent(eventId eventId: String, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
-
     return SignalProducer { (observer, disposable) in
       let uidString = uid
         .flatMap { "?uid=\($0)" }
@@ -48,7 +47,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func subscribeTo(eventId eventId: String, uid: Int, isSubscribe: Bool)
+  public func subscribeTo(eventId eventId: String, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
@@ -63,14 +62,14 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        request.HTTPBody = "uid=\(uid)&subscribe=\(String(!isSubscribe))"
+        request.HTTPBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))"
           .dataUsingEncoding(NSUTF8StringEncoding)
 
         let task = urlSession.dataTaskWithRequest(request) { data, _, error in
           let result = data
             .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
-            .map { _ in !isSubscribe }
-            .coalesceWith(isSubscribe)
+            .map { _ in !isSubscribed }
+            .coalesceWith(isSubscribed)
 
           observer.sendNext(result)
           observer.sendCompleted()

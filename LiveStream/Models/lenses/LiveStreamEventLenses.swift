@@ -88,3 +88,9 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.OpenT
     return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.token
   }
 }
+
+extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.User {
+  public var isSubscribed: Lens<LiveStreamEvent, Bool> {
+    return LiveStreamEvent.lens.user • LiveStreamEvent.User.lens.isSubscribed
+  }
+}
