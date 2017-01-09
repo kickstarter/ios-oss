@@ -191,7 +191,7 @@ extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
       // FIXME: fix the NSError cast
       let status = self?.viewModel.inputs.stripeCreatedToken(
-        stripeToken: token?.tokenId, error: error as NSError?
+        stripeToken: token?.tokenId, error: error
       )
       if let status = status {
         completion(status)

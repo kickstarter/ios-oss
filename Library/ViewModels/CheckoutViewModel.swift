@@ -34,7 +34,7 @@ public protocol CheckoutViewModelInputs {
   func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
 
   /// Call from the Stripe callback method once a stripe token has been created.
-  func stripeCreatedToken(stripeToken: String?, error: NSError?) -> PKPaymentAuthorizationStatus
+  func stripeCreatedToken(stripeToken: String?, error: Error?) -> PKPaymentAuthorizationStatus
 
   /// Call when a user session has started.
   func userSessionStarted()
@@ -371,9 +371,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     return self.shouldStartLoadResponseProperty.value
   }
 
-  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, NSError?.none)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, Error?.none)
   fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
-  public func stripeCreatedToken(stripeToken: String?, error: NSError?)
+  public func stripeCreatedToken(stripeToken: String?, error: Error?)
     -> PKPaymentAuthorizationStatus {
 
       self.stripeTokenAndErrorProperty.value = (stripeToken, error)

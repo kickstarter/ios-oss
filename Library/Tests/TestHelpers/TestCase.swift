@@ -23,7 +23,7 @@ internal class TestCase: FBSnapshotTestCase {
 
   override func setUp() {
     super.setUp()
-//    self.recordMode = true
+    self.recordMode = true
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
