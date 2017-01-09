@@ -5,6 +5,7 @@ import Foundation
 import KsApi
 import ReactiveCocoa
 import KsApi
+import LiveStream
 
 extension XCTestCase {
 
