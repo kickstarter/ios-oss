@@ -24,6 +24,11 @@ public struct LiveStreamEvent: Equatable {
     public let replayUrl: String?
     public let startDate: NSDate
     public let webUrl: String
+
+    // Useful for safeguarding against getting a `hasReplay == true` yet the `replayUrl` is `nil`.
+    public var definitelyHasReplay: Bool {
+      return self.hasReplay && self.replayUrl != nil
+    }
   }
 
   public struct Creator {

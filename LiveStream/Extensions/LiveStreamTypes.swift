@@ -89,8 +89,10 @@ public enum LiveStreamViewControllerState: Equatable {
 
 public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControllerState) -> Bool {
   switch (lhs, rhs) {
-  case (.loading, .loading): return true
-  case (.greenRoom, .greenRoom): return true
+  case (.loading, .loading):
+    return true
+  case (.greenRoom, .greenRoom):
+    return true
   case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime)):
     return lhsPlaybackState == rhsPlaybackState && lhsStartTime == rhsStartTime
   case (.replay(let lhsPlaybackState, let lhsDuration), .replay(let rhsPlaybackState, let rhsDuration)):
@@ -100,6 +102,8 @@ public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControlle
   case (.error(let lhsError), .error(let rhsError)):
 
     return lhsError == rhsError
+  case (.nonStarter, .nonStarter):
+    return true
   default:
     return false
   }

@@ -323,6 +323,23 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createVideoViewController.assertValues([hlsStreamType])
   }
 
+  func testCreateVideoViewController_Replay() {
+    let event = .template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.hasReplay .~ true
+      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    guard let replayUrl = event.stream.replayUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    self.createVideoViewController.assertValues([hlsStreamType])
+  }
+
   func testNotifyDelegateLiveStreamNumberOfPeopleWatchingChanged_NonScaleEvent() {
     let event = .template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
@@ -371,6 +388,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   func testCreateVideoViewController_RTMPStreamDefaultsToHLS() {
     // Step 1: Configure with an rtmp event stream
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.isRtmp .~ true
 
     self.vm.inputs.viewDidLoad()
@@ -424,4 +442,103 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
     self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(1)
   }
+
+  func testNotifyDelegateLiveStreamViewControllerStateChanged_LifeCycle() {
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.loading])
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: false)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.loading, .greenRoom])
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.loading, .greenRoom])
+
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: 5)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.loading, .greenRoom])
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .greenRoom, .live(playbackState: .loading, startTime: 0)]
+    )
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .greenRoom, .live(playbackState: .loading, startTime: 0),
+        .live(playbackState: .playing, startTime: 0)]
+    )
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .error(error: .sessionInterrupted))
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .greenRoom, .live(playbackState: .loading, startTime: 0),
+        .live(playbackState: .playing, startTime: 0), .error(error: .sessionInterrupted)
+      ]
+    )
+
+  }
+
+  func testNotifyDelegateLiveStreamViewControllerStateChanged_NonStarter() {
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.hasReplay .~ false
+      |> LiveStreamEvent.lens.stream.replayUrl .~ nil
+      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -16 * 60))
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.nonStarter])
+  }
+
+  func testNotifyDelegateLiveStreamViewControllerStateChanged_ReplayState() {
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.hasReplay .~ true
+      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading]
+    )
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .replay(playbackState: .loading, duration: 0)]
+    )
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .replay(playbackState: .loading, duration: 0),
+        .replay(playbackState: .playing, duration: 0)]
+    )
+
+    self.vm.inputs.videoPlaybackStateChanged(state: .error(error: .sessionInterrupted))
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
+      [.loading, .replay(playbackState: .loading, duration: 0),
+        .replay(playbackState: .playing, duration: 0),
+        .error(error: .sessionInterrupted),
+      ]
+    )
+  }
+
+
+
+
+  // FIXME: write test for hasreplay/replayurl weirdness
 }

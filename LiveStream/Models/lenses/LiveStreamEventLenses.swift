@@ -42,6 +42,10 @@ extension LiveStreamEvent {
 }
 
 extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Stream {
+  public var hasReplay: Lens<LiveStreamEvent, Bool> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hasReplay
+  }
+
   public var hlsUrl: Lens<LiveStreamEvent, String> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hlsUrl
   }
@@ -60,6 +64,14 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
 
   public var maxOpenTokViewers: Lens<LiveStreamEvent, Int> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.maxOpenTokViewers
+  }
+
+  public var replayUrl: Lens<LiveStreamEvent, String?> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.replayUrl
+  }
+
+  public var startDate: Lens<LiveStreamEvent, NSDate> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.startDate
   }
 }
 

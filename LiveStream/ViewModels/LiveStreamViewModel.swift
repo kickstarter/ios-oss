@@ -65,6 +65,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
   //swiftlint:disable:next function_body_length
   init(scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler) {
+
     let configData = combineLatest(self.configData.signal.ignoreNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
@@ -87,20 +88,10 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let maxOpenTokViewers = liveStreamEvent.map { $0.stream.maxOpenTokViewers }
 
-    // FIXME: need to write a test for this?
-    let everySecondTimer = self.viewDidLoadProperty.signal.flatMap { timer(1, onScheduler: scheduler) }
-
-    let liveStreamWasNonStarter = liveStreamEvent
-      .takeWhen(everySecondTimer)
-      .filter { event in
-        !event.stream.liveNow
-          && !event.stream.hasReplay
-          && startDateMoreThanFifteenMinutesAgo(event: event)
-      }
-      .ignoreValues()
-
     let didLiveStreamEndedNormally = liveStreamEvent
-      .map { event in !event.stream.liveNow && event.stream.hasReplay }
+      .map { event in
+        !event.stream.liveNow && event.stream.definitelyHasReplay
+    }
 
     let observedHlsUrlChanged = self.hlsUrlProperty.signal
       .map { $0 as? String }
@@ -120,12 +111,18 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     // FIXME: lots of tests for non-live replay
 
+
+
     let forceHls = Signal.merge(
       // FIXME: write test for hls starting immediately in case of non-live
 //      didLiveStreamEndedNormally.filter(isTrue).mapConst(true),
       self.viewDidLoadProperty.signal.delay(10, onScheduler: scheduler).mapConst(true),
+
       isMaxOpenTokViewersReached,
-      liveStreamEvent.filter { $0.stream.isRtmp }.mapConst(true)
+
+      zip(liveStreamEvent, didLiveStreamEndedNormally)
+        .map { event, endedNormally in event.stream.isRtmp || endedNormally }
+        .filter(isTrue)
       )
       .take(1)
 
@@ -137,15 +134,20 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .take(1)
 
     let liveHlsUrl = Signal.merge(
-      liveStreamEvent.map { LiveStreamType.hlsStream(hlsStreamUrl: $0.stream.hlsUrl) },
-      observedHlsUrlChanged.map(LiveStreamType.hlsStream)
-      )
+      liveStreamEvent
+        .filter { $0.stream.liveNow }
+        .map { LiveStreamType.hlsStream(hlsStreamUrl: $0.stream.hlsUrl) },
 
-    let replayHlsUrl = liveStreamEvent
-      .takeWhen(didLiveStreamEndedNormally)
-      .map { $0.stream.replayUrl }
+      observedHlsUrlChanged.map(LiveStreamType.hlsStream)
+    )
+
+    let replayHlsUrl = zip(liveStreamEvent, didLiveStreamEndedNormally)
+      // FIXME: write failing test for this:
+      // .takeWhen(didLiveStreamEndedNormally.filter(isTrue)
+      .map { event, _ in event.stream.replayUrl }
       .ignoreNil()
       .map(LiveStreamType.hlsStream)
+
 
     let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)
 
@@ -167,9 +169,14 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     }
     .skipRepeats()
 
+    let observedGreenRoomOffOrInReplay = Signal.merge(
+      observedGreenRoomOffChanged.filter(isTrue),
+      didLiveStreamEndedNormally.filter(isTrue)
+    )
+
     self.createVideoViewController = combineLatest(
       liveStreamType,
-      observedGreenRoomOffChanged.filter(isTrue)
+      observedGreenRoomOffOrInReplay
       )
       .map(first)
 
@@ -206,18 +213,21 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .ignoreValues()
 
     let greenRoomState = observedGreenRoomOffChanged
-      .map(isFalse)
+      .filter(isFalse)
       .mapConst(LiveStreamViewControllerState.greenRoom)
 
     let replayState = didLiveStreamEndedNormally
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.ignoreNil())
+      .filter { didEndNormally, playbackState in didEndNormally && !playbackState.isError }
       .map { _, playbackState in
         LiveStreamViewControllerState.replay(playbackState: playbackState, duration: 0)
     }
 
     let liveState = liveStreamEvent
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.ignoreNil())
-      .filter { event, _ in event.stream.liveNow }
+      .filter { event, playbackState in
+        event.stream.liveNow && !playbackState.isError
+      }
       .map { _, playbackState in
         LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
     }
@@ -227,15 +237,19 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .ignoreNil()
       .map(LiveStreamViewControllerState.error)
 
-    let nonStarterState = liveStreamWasNonStarter
-      .mapConst(LiveStreamViewControllerState.nonStarter)
+    let nonStarterOrLoadingState = liveStreamEvent
+      .map { event in
+        isNonStarter(event: event)
+          ? LiveStreamViewControllerState.nonStarter
+          : LiveStreamViewControllerState.loading
+      }
 
     // FIXME: write tests
     self.notifyDelegateLiveStreamViewControllerStateChanged = Signal.merge(
+      nonStarterOrLoadingState,
       errorState,
       greenRoomState,
       liveState,
-      nonStarterState,
       replayState
     )
   }
@@ -289,6 +303,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
   internal var inputs: LiveStreamViewModelInputs { return self }
   internal var outputs: LiveStreamViewModelOutputs { return self }
+}
+
+private func isNonStarter(event event: LiveStreamEvent) -> Bool {
+  return !event.stream.liveNow
+    && !event.stream.definitelyHasReplay
+    && startDateMoreThanFifteenMinutesAgo(event: event)
 }
 
 private func startDateMoreThanFifteenMinutesAgo(event event: LiveStreamEvent) -> Bool {
