@@ -522,9 +522,6 @@
 		A7BA54DB1E1E4B7100E54377 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54DA1E1E4B7100E54377 /* SystemConfiguration.framework */; };
 		A7BA54DD1E1E4B7700E54377 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54DC1E1E4B7700E54377 /* UIKit.framework */; };
 		A7BA54DF1E1E4B7C00E54377 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54DE1E1E4B7C00E54377 /* VideoToolbox.framework */; };
-		A7BA54E51E1E4BE200E54377 /* LiveStreamEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54E11E1E4BE200E54377 /* LiveStreamEventTests.swift */; };
-		A7BA54E61E1E4BE200E54377 /* LiveStreamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54E31E1E4BE200E54377 /* LiveStreamViewModelTests.swift */; };
-		A7BA54E71E1E4BE200E54377 /* LiveVideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */; };
 		A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54F21E1E4D5A00E54377 /* Secrets.swift */; };
 		A7BA55001E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */; };
 		A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */; };
@@ -533,6 +530,9 @@
 		A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */; };
 		A7BA55051E1E9D4B00E54377 /* LiveStreamEventLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FF1E1E9D4B00E54377 /* LiveStreamEventLenses.swift */; };
 		A7BA55071E1E9DEE00E54377 /* LiveStreamEventTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */; };
+		A7BC37331E237F7500C4D031 /* LiveStreamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC37311E237F7500C4D031 /* LiveStreamViewModelTests.swift */; };
+		A7BC37341E237F7500C4D031 /* LiveVideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC37321E237F7500C4D031 /* LiveVideoViewModelTests.swift */; };
+		A7BC37361E237F8600C4D031 /* LiveStreamEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC37351E237F8600C4D031 /* LiveStreamEventTests.swift */; };
 		A7C5C4F81DF881190048D14C /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4501DF87CAC0048D14C /* KsApi.framework */; };
 		A7C5C5331DF893110048D14C /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4D41DF87CEB0048D14C /* Prelude.framework */; };
 		A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5C4DC1DF87CEB0048D14C /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1698,7 +1698,6 @@
 		A7BA542B1E1E493600E54377 /* LiveStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStream.h; sourceTree = "<group>"; };
 		A7BA542D1E1E493600E54377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7BA54841E1E497300E54377 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypes.swift; sourceTree = "<group>"; };
 		A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTokExtensions.swift; sourceTree = "<group>"; };
@@ -1729,9 +1728,6 @@
 		A7BA54DA1E1E4B7100E54377 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		A7BA54DC1E1E4B7700E54377 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7BA54DE1E1E4B7C00E54377 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		A7BA54E11E1E4BE200E54377 /* LiveStreamEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventTests.swift; sourceTree = "<group>"; };
-		A7BA54E31E1E4BE200E54377 /* LiveStreamViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModelTests.swift; sourceTree = "<group>"; };
-		A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModelTests.swift; sourceTree = "<group>"; };
 		A7BA54F21E1E4D5A00E54377 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = SOURCE_ROOT; };
 		A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.CreatorLenses.swift; sourceTree = "<group>"; };
 		A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.FirebaseLenses.swift; sourceTree = "<group>"; };
@@ -1740,6 +1736,9 @@
 		A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.UserLenses.swift; sourceTree = "<group>"; };
 		A7BA54FF1E1E9D4B00E54377 /* LiveStreamEventLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventLenses.swift; sourceTree = "<group>"; };
 		A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventTemplates.swift; sourceTree = "<group>"; };
+		A7BC37311E237F7500C4D031 /* LiveStreamViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModelTests.swift; sourceTree = "<group>"; };
+		A7BC37321E237F7500C4D031 /* LiveVideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModelTests.swift; sourceTree = "<group>"; };
+		A7BC37351E237F8600C4D031 /* LiveStreamEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventTests.swift; sourceTree = "<group>"; };
 		A7BE4EEB1D05C10200353EF9 /* Argo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Argo.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Argo/Argo.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F031D05C10600353EF9 /* Curry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Curry.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Curry/Curry.xcodeproj"; sourceTree = "<group>"; };
 		A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Prelude.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Prelude/Prelude.xcodeproj"; sourceTree = "<group>"; };
@@ -2597,21 +2596,10 @@
 				A7BA54F21E1E4D5A00E54377 /* Secrets.swift */,
 				A7BA54881E1E4A9E00E54377 /* Extensions */,
 				A7BA54991E1E4A9E00E54377 /* Models */,
-				A7BA54831E1E497300E54377 /* Tests */,
 				A7BA549B1E1E4A9E00E54377 /* ViewModels */,
 				A7BA54931E1E4A9E00E54377 /* Views */,
 			);
 			path = LiveStream;
-			sourceTree = "<group>";
-		};
-		A7BA54831E1E497300E54377 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				A7BA54E01E1E4BE200E54377 /* Models */,
-				A7BA54E21E1E4BE200E54377 /* ViewModels */,
-				A7BA54841E1E497300E54377 /* Info.plist */,
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		A7BA54881E1E4A9E00E54377 /* Extensions */ = {
@@ -2647,6 +2635,7 @@
 			isa = PBXGroup;
 			children = (
 				A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */,
+				A7BC37351E237F8600C4D031 /* LiveStreamEventTests.swift */,
 				A7BA54F91E1E9D2200E54377 /* lenses */,
 				A7BA54F81E1E9CDD00E54377 /* templates */,
 			);
@@ -2657,24 +2646,9 @@
 			isa = PBXGroup;
 			children = (
 				A7BA549C1E1E4A9E00E54377 /* LiveStreamViewModel.swift */,
+				A7BC37311E237F7500C4D031 /* LiveStreamViewModelTests.swift */,
 				A7BA549D1E1E4A9E00E54377 /* LiveVideoViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		A7BA54E01E1E4BE200E54377 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A7BA54E11E1E4BE200E54377 /* LiveStreamEventTests.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A7BA54E21E1E4BE200E54377 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				A7BA54E31E1E4BE200E54377 /* LiveStreamViewModelTests.swift */,
-				A7BA54E41E1E4BE200E54377 /* LiveVideoViewModelTests.swift */,
+				A7BC37321E237F7500C4D031 /* LiveVideoViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4299,9 +4273,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7BA54E61E1E4BE200E54377 /* LiveStreamViewModelTests.swift in Sources */,
-				A7BA54E71E1E4BE200E54377 /* LiveVideoViewModelTests.swift in Sources */,
-				A7BA54E51E1E4BE200E54377 /* LiveStreamEventTests.swift in Sources */,
+				A7BC37341E237F7500C4D031 /* LiveVideoViewModelTests.swift in Sources */,
+				A7BC37331E237F7500C4D031 /* LiveStreamViewModelTests.swift in Sources */,
+				A7BC37361E237F8600C4D031 /* LiveStreamEventTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5091,13 +5065,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -5105,10 +5081,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
@@ -5121,10 +5098,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = LiveStream/Tests/Info.plist;
+				INFOPLIST_FILE = LiveStream/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LiveStreamTests;
