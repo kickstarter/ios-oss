@@ -16,6 +16,11 @@ public enum LiveVideoPlaybackState: Equatable {
     }
     return false
   }
+
+  public var error: LiveVideoPlaybackError? {
+    guard case let .error(error) = self else { return nil }
+    return error
+  }
 }
 
 public func == (lhs: LiveVideoPlaybackState, rhs: LiveVideoPlaybackState) -> Bool {
@@ -63,12 +68,23 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
   }
 }
 
+/**
+ FIXME
+
+ - error:      <#error description#>
+ - greenRoom:  <#greenRoom description#>
+ - live:       <#live description#>
+ - loading:    <#loading description#>
+ - nonStarter: <#nonStarter description#>
+ - replay:     <#replay description#>
+ */
 public enum LiveStreamViewControllerState: Equatable {
   case error(error: LiveVideoPlaybackError)
   case greenRoom
   case live(playbackState: LiveVideoPlaybackState, startTime: NSTimeInterval)
   case loading
-  case replay(playbackState: LiveVideoPlaybackState, replayAvailable: Bool, duration: NSTimeInterval)
+  case nonStarter
+  case replay(playbackState: LiveVideoPlaybackState, duration: NSTimeInterval)
 }
 
 public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControllerState) -> Bool {
@@ -77,12 +93,9 @@ public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControlle
   case (.greenRoom, .greenRoom): return true
   case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime)):
     return lhsPlaybackState == rhsPlaybackState && lhsStartTime == rhsStartTime
-  case (.replay(let lhsPlaybackState, let lhsReplayAvailable, let lhsDuration), .replay(
-    let rhsPlaybackState, let rhsReplayAvailable, let rhsDuration)):
+  case (.replay(let lhsPlaybackState, let lhsDuration), .replay(let rhsPlaybackState, let rhsDuration)):
 
-    return lhsPlaybackState == rhsPlaybackState &&
-      lhsReplayAvailable == rhsReplayAvailable &&
-      lhsDuration == rhsDuration
+    return lhsPlaybackState == rhsPlaybackState && lhsDuration == rhsDuration
 
   case (.error(let lhsError), .error(let rhsError)):
 

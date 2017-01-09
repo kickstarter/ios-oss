@@ -42,6 +42,10 @@ extension LiveStreamEvent {
 }
 
 extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Stream {
+  public var hlsUrl: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hlsUrl
+  }
+
   public var isRtmp: Lens<LiveStreamEvent, Bool> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isRtmp
   }
