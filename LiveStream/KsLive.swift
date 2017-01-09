@@ -28,7 +28,6 @@ public class KsLiveApp {
     FIRApp.configureWithName(Secrets.Firebase.Huzza.Production.appName, options: options)
   }
 
-  // FIXME: make this return optional and have the views/vms handle the `nil` case to show an error
   public static func firebaseApp() -> FIRApp? {
     guard let app = FIRApp(named: Secrets.Firebase.Huzza.Production.appName) else {
       self.start()

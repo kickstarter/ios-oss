@@ -69,14 +69,15 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
 }
 
 /**
- FIXME: docs
-
- - error:      <#error description#>
- - greenRoom:  <#greenRoom description#>
- - live:       <#live description#>
- - loading:    <#loading description#>
- - nonStarter: <#nonStarter description#>
- - replay:     <#replay description#>
+ - error:                The LiveVideoPlaybackError returned by the LiveVideoViewController.
+ - greenRoom:            The green room is active (streamer not ready to go live yet).
+ - initializationFailed: LiveStreamViewController initialization failed.
+ - live:                 The LiveStreamViewController is Live along with its respective LiveVideoPlaybackState 
+                         and startTime.
+ - loading:              The LiveStreamViewController is loading.
+ - nonStarter:           The event failed to start and has no replay.
+ - replay:               The LiveStreamViewController is Replay along with its respective 
+                         LiveVideoPlaybackState and duration.
  */
 public enum LiveStreamViewControllerState: Equatable {
   case error(error: LiveVideoPlaybackError)
