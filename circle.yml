@@ -15,7 +15,9 @@ test:
     - sleep 15
   override:
     - sudo xcode-select -s /Applications/Xcode-8.2.app
-    - swiftlint lint --reporter json
+    - set -o pipefail &&
+      swiftlint lint --strict --reporter json |
+      tee $CIRCLE_ARTIFACTS/swiftlint-report.json
     - sudo xcode-select -s /Applications/Xcode-7.3.app
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
