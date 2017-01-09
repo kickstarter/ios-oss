@@ -2,6 +2,7 @@ import Argo
 import FBSDKCoreKit
 import Foundation
 import KsApi
+import LiveStream
 import Prelude
 import ReactiveCocoa
 import Result
@@ -112,6 +113,7 @@ public struct AppEnvironment {
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+               liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
                locale: NSLocale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
@@ -138,6 +140,7 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         reachability: reachability,
@@ -170,6 +173,7 @@ public struct AppEnvironment {
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+               liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
                locale: NSLocale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
@@ -196,6 +200,7 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         reachability: reachability,

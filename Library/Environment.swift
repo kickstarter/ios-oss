@@ -1,6 +1,7 @@
 import AVFoundation
 import Foundation
 import KsApi
+import LiveStream
 import ReactiveCocoa
 import Result
 import FBSDKCoreKit
@@ -58,6 +59,9 @@ public struct Environment {
   /// The current set of launched countries for Kickstarter.
   public let launchedCountries: LaunchedCountries
 
+  /// The current service being used for live stream requests.
+  public let liveStreamService: LiveStreamServiceProtocol
+
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `NSLocale.currentLocale()`.
   public let locale: NSLocale
@@ -98,6 +102,7 @@ public struct Environment {
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: NSLocale.preferredLanguages()) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
+    liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: NSLocale = .currentLocale(),
     mainBundle: NSBundleType = NSBundle.mainBundle(),
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
@@ -122,6 +127,7 @@ public struct Environment {
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
+    self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle
     self.reachability = reachability

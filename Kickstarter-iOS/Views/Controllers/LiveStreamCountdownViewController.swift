@@ -244,7 +244,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeNext { [weak self] eventId, userId, isSubscribed in
-        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, subscribe: isSubscribed)
+        LiveStreamService().subscribeTo(eventId: eventId, uid: userId, isSubscribe: isSubscribed)
           .startWithResult { result in
             switch result {
             case .Success(let result):
