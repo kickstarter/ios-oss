@@ -40,7 +40,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController)
       vc.viewModel.inputs.configureWith(project: project, now: NSDate())
       vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
-      vc.eventDetailsViewModel.inputs.fetchLiveStreamEvent()
       return vc
   }
 
@@ -133,7 +132,13 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.activityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
-      |> UIActivityIndicatorView.lens.animating .~ true
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.animating .~ false
+
+    self.subscribeActivityIndicatorView
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.animating .~ false
   }
   //swiftlint:enable function_body_length
 
@@ -172,13 +177,13 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.viewModel.inputs.setNow(date: $0)
     }
 
-    self.eventDetailsViewModel.outputs.configureSharing.observeNext { [weak self] in
+    self.eventDetailsViewModel.outputs.configureShareViewModel.observeNext { [weak self] in
       self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
-    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureSharing.mapConst(true)
+    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureShareViewModel.mapConst(true)
 
-    self.introLabel.rac.attributedText = self.eventDetailsViewModel.outputs.upcomingIntroText
+    self.introLabel.rac.attributedText = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
 
@@ -190,6 +195,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .ignoreNil()
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
 
     self.viewModel.outputs.categoryId
@@ -214,7 +220,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       self?.subscribeButton.setImage($0, forState: .Normal)
     }
 
-    self.eventDetailsViewModel.outputs.retrieveEventInfo
+    self.eventDetailsViewModel.outputs.retrieveEventInfoWithEventIdAndUserId
       .observeForUI()
       // FIXME: we should probably remove this
       .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
@@ -223,24 +229,24 @@ internal final class LiveStreamCountdownViewController: UIViewController {
           switch result {
           case .Success(let event):
             self?.viewModel.inputs.setLiveStreamEvent(event: event)
-            self?.eventDetailsViewModel.inputs.setLiveStreamEvent(event: event)
+            self?.eventDetailsViewModel.inputs.retrievedLiveStreamEvent(event: event)
           case .Failure:
             self?.eventDetailsViewModel.inputs.failedToRetrieveEvent()
           }
         }
     }
 
-    self.activityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
-      .map(negate)
+    self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
+      .animateSubscribeButtonActivityIndicator
 
-    self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs.showActivityIndicator
+    self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs
+      .animateSubscribeButtonActivityIndicator
 
-    self.subscribeActivityIndicatorView.rac.hidden = self.eventDetailsViewModel.outputs
-      .showSubscribeButtonActivityIndicator
-      .map(negate)
+    self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
+      .animateSubscribeButtonActivityIndicator
 
     self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
-      .showSubscribeButtonActivityIndicator
+      .animateSubscribeButtonActivityIndicator
 
     self.eventDetailsViewModel.outputs.toggleSubscribe
       .observeNext { [weak self] eventId, userId, isSubscribed in
@@ -268,7 +274,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .observeForControllerAction()
       .observeNext { [weak self] in self?.showShareSheet($0) }
 
-    self.eventDetailsViewModel.outputs.error
+    self.eventDetailsViewModel.outputs.showErrorAlert
       .observeForUI()
       .observeNext { [weak self] in
         self?.presentViewController(UIAlertController.genericError($0), animated: true, completion: nil)

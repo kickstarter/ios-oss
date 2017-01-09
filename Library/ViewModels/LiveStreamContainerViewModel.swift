@@ -20,6 +20,7 @@ public protocol LiveStreamContainerViewModelInputs {
 
 public protocol LiveStreamContainerViewModelOutputs {
   var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var creatorIntroText: Signal<NSAttributedString, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
   var error: Signal<String, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
@@ -112,6 +113,49 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     ).map(first)
 
     self.dismiss = self.closeButtonTappedProperty.signal
+
+    self.creatorIntroText = combineLatest(
+      Signal.merge(
+        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+        project.mapConst(.loading)
+      ),
+      liveStreamEventProperty.signal.ignoreNil()
+      )
+      .observeForUI()
+      .map { (state, event) -> NSAttributedString? in
+
+        let baseAttributes = [
+          NSFontAttributeName: UIFont.ksr_body(size: 13),
+          NSForegroundColorAttributeName: UIColor.whiteColor()
+        ]
+        let boldAttributes = [
+          NSFontAttributeName: UIFont.ksr_headline(size: 13),
+          NSForegroundColorAttributeName: UIColor.whiteColor()
+        ]
+
+        if case .live = state {
+          let text = Strings.Creator_name_is_live_now(creator_name: event.creator.name)
+
+          return text.simpleHtmlAttributedString(
+            base: baseAttributes,
+            bold: boldAttributes
+          )
+        }
+
+        if case .replay = state {
+          let text = Strings.Creator_name_was_live_time_ago(
+            creator_name: event.creator.name,
+            time_ago: (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+              abbreviate: true)))
+
+          return text.simpleHtmlAttributedString(
+            base: baseAttributes,
+            bold: boldAttributes
+          )
+        }
+        
+        return NSAttributedString(string: "")
+      }.ignoreNil()
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
@@ -144,6 +188,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
+  public let creatorIntroText: Signal<NSAttributedString, NoError>
   public let dismiss: Signal<(), NoError>
   public let error: Signal<String, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>

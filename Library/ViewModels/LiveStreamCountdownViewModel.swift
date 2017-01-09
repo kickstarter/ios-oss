@@ -27,6 +27,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<NSURL, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
   var secondsString: Signal<(String, String), NoError> { get }
+  var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
 }
 
@@ -111,6 +112,32 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       countdownEnded
       ).map { project, event, _ in (project, event) }
       .take(1)
+
+    self.upcomingIntroText = self.liveStreamEventProperty.signal.ignoreNil()
+      .observeForUI()
+      .map { event -> NSAttributedString? in
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
+
+        let baseAttributes = [
+          NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+          NSForegroundColorAttributeName: UIColor.ksr_navy_600,
+          NSParagraphStyleAttributeName: paragraphStyle
+        ]
+
+        let boldAttributes = [
+          NSFontAttributeName: UIFont.ksr_headline(size: 14),
+          NSForegroundColorAttributeName: UIColor.ksr_navy_700,
+          NSParagraphStyleAttributeName: paragraphStyle
+        ]
+
+        let text = Strings.Upcoming_with_creator_name(creator_name: event.creator.name)
+
+        return text.simpleHtmlAttributedString(
+          base: baseAttributes,
+          bold: boldAttributes
+        )
+      }.ignoreNil()
   }
   //swiftlint:enable function_body_length
 
@@ -148,6 +175,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let projectImageUrl: Signal<NSURL, NoError>
   public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let secondsString: Signal<(String, String), NoError>
+  public let upcomingIntroText: Signal<NSAttributedString, NoError>
   public let viewControllerTitle: Signal<String, NoError>
 
   public var inputs: LiveStreamCountdownViewModelInputs { return self }
