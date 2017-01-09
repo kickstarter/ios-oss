@@ -401,6 +401,12 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createVideoViewController.assertValues([hlsStreamType])
   }
 
+  func testCreateFirebaseFailedToInitialize() {
+    self.vm.inputs.firebaseAppFailedToInitialize()
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.initializationFailed])
+  }
+
   func testCreateFirebaseObservers() {
     // Step 1: Configure with the firebase app and event
     let event = LiveStreamEvent.template

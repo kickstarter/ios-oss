@@ -12,6 +12,9 @@ internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent
   func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent)
 
+  /// Called when the Firebase app fails to initialise
+  func firebaseAppFailedToInitialize()
+
   /// Called when the green room changes to active or inactive when a creator goes on/off live, expects a Bool
   func observedGreenRoomOffChanged(off off: AnyObject?)
 
@@ -238,6 +241,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.notifyDelegateLiveStreamViewControllerStateChanged = Signal.merge(
       nonStarterOrLoadingState,
       errorState,
+      self.firebaseAppFailedToInitializeProperty.signal.mapConst(.initializationFailed),
       greenRoomState,
       liveState,
       replayState
@@ -247,6 +251,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   private let configData = MutableProperty<(FirebaseDatabaseReferenceType, LiveStreamEvent)?>(nil)
   internal func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent) {
     self.configData.value = (databaseRef, event)
+  }
+
+  private let firebaseAppFailedToInitializeProperty = MutableProperty()
+  internal func firebaseAppFailedToInitialize() {
+    self.firebaseAppFailedToInitializeProperty.value = ()
   }
 
   private let greenRoomOffProperty = MutableProperty<AnyObject?>(nil)

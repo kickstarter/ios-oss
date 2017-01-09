@@ -61,6 +61,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         if case let .error(videoError) = playbackState { return videoError }
       case .replay(let playbackState, _):
         if case let .error(videoError) = playbackState { return videoError }
+      case .initializationFailed:
+        return .failedToConnect
       default:
         return nil
       }

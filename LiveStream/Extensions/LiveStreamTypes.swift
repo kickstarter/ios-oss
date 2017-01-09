@@ -81,6 +81,7 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
 public enum LiveStreamViewControllerState: Equatable {
   case error(error: LiveVideoPlaybackError)
   case greenRoom
+  case initializationFailed
   case live(playbackState: LiveVideoPlaybackState, startTime: NSTimeInterval)
   case loading
   case nonStarter
@@ -103,6 +104,8 @@ public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControlle
 
     return lhsError == rhsError
   case (.nonStarter, .nonStarter):
+    return true
+  case (.initializationFailed, .initializationFailed):
     return true
   default:
     return false

@@ -26,7 +26,10 @@ public final class LiveStreamViewController: UIViewController {
     self.delegate = delegate
     self.bindVM()
 
-    let app = KsLiveApp.firebaseApp()
+    guard let app = KsLiveApp.firebaseApp() else {
+      self.viewModel.inputs.firebaseAppFailedToInitialize()
+      return
+    }
     let databaseRef = FIRDatabase.database(app: app).reference()
 
     self.viewModel.inputs.configureWith(databaseRef: databaseRef, event: event)
