@@ -98,7 +98,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       .live(playbackState: .error(error: .sessionInterrupted), startTime: 123),
       .replay(playbackState: .loading, duration: 123),
       .replay(playbackState: .playing, duration: 123),
-      .replay(playbackState: .error(error: .failedToConnect), replayAvailable: false, duration: 123)
+      .replay(playbackState: .error(error: .failedToConnect), duration: 123)
     ])
   }
 

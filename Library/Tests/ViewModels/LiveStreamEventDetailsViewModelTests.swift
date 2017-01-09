@@ -19,14 +19,17 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
   private let numberOfPeopleWatchingText = TestObserver<String, NoError>()
-  private let retrieveEventInfo = TestObserver<String, NoError>()
+  private let retrieveEventInfoEventId = TestObserver<String, NoError>()
+  private let retrieveEventInfoUserId = TestObserver<Int?, NoError>()
   private let showActivityIndicator = TestObserver<Bool, NoError>()
   private let showSubscribeButtonActivityIndicator = TestObserver<Bool, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeButtonImage = TestObserver<UIImage?, NoError>()
   private let subscribed = TestObserver<Bool, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
-  private let toggleSubscribe = TestObserver<(String, Bool), NoError>()
+  private let toggleSubscribeEventId = TestObserver<String, NoError>()
+  private let toggleSubscribeUserId = TestObserver<Int, NoError>()
+  private let toggleSubscribeValue = TestObserver<Bool, NoError>()
   private let upcomingIntroText = TestObserver<NSAttributedString, NoError>()
 
   override func setUp() {
@@ -41,7 +44,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
     self.vm.outputs.liveStreamParagraph.observe(self.liveStreamParagraph.observer)
     self.vm.outputs.numberOfPeopleWatchingText.observe(self.numberOfPeopleWatchingText.observer)
-    self.vm.outputs.retrieveEventInfo.observe(self.retrieveEventInfo.observer)
+    self.vm.outputs.retrieveEventInfo.map(first).observe(self.retrieveEventInfoEventId.observer)
+    self.vm.outputs.retrieveEventInfo.map(second).observe(self.retrieveEventInfoUserId.observer)
     self.vm.outputs.showActivityIndicator.observe(self.showActivityIndicator.observer)
     self.vm.outputs.showSubscribeButtonActivityIndicator.observe(
       self.showSubscribeButtonActivityIndicator.observer)
@@ -49,7 +53,9 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribed.observe(self.subscribed.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
-    self.vm.outputs.toggleSubscribe.observe(self.toggleSubscribe.observer)
+    self.vm.outputs.toggleSubscribe.map(first).observe(self.toggleSubscribeEventId.observer)
+    self.vm.outputs.toggleSubscribe.map(second).observe(self.toggleSubscribeUserId.observer)
+    self.vm.outputs.toggleSubscribe.map(third).observe(self.toggleSubscribeValue.observer)
     self.vm.outputs.upcomingIntroText.observe(self.upcomingIntroText.observer)
   }
 
@@ -127,7 +133,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     XCTAssertTrue(self.introText.lastValue?.string == "Creator Name is live now")
 
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, replayAvailable: true, duration: 0))
+      state: .replay(playbackState: .playing, duration: 0))
 
     XCTAssertTrue(self.introText.lastValue?.string == "Creator Name was live right now")
   }
@@ -167,7 +173,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.fetchLiveStreamEvent()
 
-    self.retrieveEventInfo.assertValue("123")
+    self.retrieveEventInfoEventId.assertValues(["123"])
+    self.retrieveEventInfoUserId.assertValues([nil])
   }
 
   func testShowActivityIndicator() {
@@ -184,6 +191,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testSubscribe() {
+    AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
     let project = Project.template
     let event = LiveStreamEvent.template
 
@@ -197,7 +205,9 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
     self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
 
-    XCTAssertTrue(self.toggleSubscribe.values[0] == ("123", false))
+    self.toggleSubscribeEventId.assertValues(["123"])
+    self.toggleSubscribeUserId.assertValues([1])
+    self.toggleSubscribeValue.assertValues([false])
   }
 
   func testSubscribeFailed() {
@@ -229,7 +239,11 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 }
 
-private func == (tuple1: (String, Bool), tuple2: (String, Bool)) -> Bool {
+private func == (tuple1: (String, Int?), tuple2: (String, Int?)) -> Bool {
+  return tuple1.0 == tuple2.0 && tuple1.1 == tuple2.1
+}
+
+private func == (tuple1: (String, Int, Bool), tuple2: (String, Int, Bool)) -> Bool {
   return tuple1.0 == tuple2.0 && tuple1.1 == tuple2.1
 }
 
