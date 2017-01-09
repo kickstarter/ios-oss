@@ -32,13 +32,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     let liveStreamSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isLiveStream }
     let updatesSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isUpdates }
 
-    let liveStreamDetail = liveStreamSubpage.map { subpage -> Project.LiveStream? in
-      if case .liveStream(let detail, _) = subpage {
-        return detail
-      }
-
-      return nil
-    }.ignoreNil()
+    let liveStreamDetail = liveStreamSubpage.map { $0.liveStream }.ignoreNil()
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
@@ -52,17 +46,15 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       updatesSubpage.mapConst(.ksr_text_navy_700)
     )
 
-    self.topGradientViewHidden = self.subpageProperty.signal.ignoreNil().map {
-      $0.position != .first
-    }
+    self.topGradientViewHidden = self.subpageProperty.signal.ignoreNil()
+      .map { $0.position != .first }
 
-    self.separatorViewHidden = self.subpageProperty.signal.ignoreNil().map {
-      $0.position == .last
-    }
+    self.separatorViewHidden = self.subpageProperty.signal.ignoreNil()
+      .map { $0.position == .last }
 
     self.countLabelText = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).map { String($0.count) },
-      liveStreamDetail.map { countLabelTextForLiveStream($0) }
+      liveStreamDetail.map(labelText(forLiveStream:))
     )
 
     self.countLabelTextColor = Signal.merge(
@@ -71,8 +63,8 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     )
 
     self.countLabelBorderColor = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage).mapConst(.whiteColor()),
-      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .whiteColor() }
+      Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clearColor()),
+      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .clearColor() }
     )
 
     self.countLabelBackgroundColor = Signal.merge(
@@ -82,7 +74,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.liveNowImageViewHidden = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
-      liveStreamDetail.map { $0.isLiveNow ? false : true }
+      liveStreamDetail.map { !$0.isLiveNow }
     )
   }
 
@@ -105,15 +97,14 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }
 }
 
-private func countLabelTextForLiveStream(liveStream: Project.LiveStream) -> String {
+private func labelText(forLiveStream liveStream: Project.LiveStream) -> String {
   if liveStream.isLiveNow {
     return Strings.Watch_live()
   }
 
-  let now = NSDate()
-  let liveStreamStartDate = NSDate(timeIntervalSince1970: liveStream.startDate)
+  let now = AppEnvironment.current.dateType.init()
 
-  if now.earlierDate(liveStreamStartDate) == liveStreamStartDate {
+  if now.timeIntervalSince1970 >= liveStream.startDate {
     return Strings.Replay()
   }
 
@@ -166,5 +157,12 @@ public enum ProjectPamphletSubpage {
     case .liveStream: return true
     default: return false
     }
+  }
+
+  private var liveStream: Project.LiveStream? {
+    if case .liveStream(let liveStream, _) = self {
+      return liveStream
+    }
+    return nil
   }
 }

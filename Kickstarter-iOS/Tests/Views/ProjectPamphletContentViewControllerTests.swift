@@ -262,4 +262,29 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
     }
   }
+
+  func testNonBacker_LiveProject_LiveStreamIsLive() {
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewards .~ []
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ true,
+        .template
+          |> Project.LiveStream.lens.startDate .~ AppEnvironment.current.dateType.init().dateByAddingTimeInterval(-60 * 60).timeIntervalSince1970
+    ]
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
+      }
+    }
+  }
+
+  // FIXME: do a non-live stream / replay
+  // FIXME: do a non-live stream in a future date
 }

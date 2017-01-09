@@ -21,12 +21,15 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
-    let liveStreamSubpages = self.liveStreamSubpageArray(project)
+    // FIXME: add a data source test for the live stream subpage
+    let liveStreamSubpages = self.liveStreamSubpage(forProject: project)
 
-    let values = liveStreamSubpages + [
-      .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
+    let values = [
+      liveStreamSubpages,
+      .comments(project.stats.commentsCount ?? 0, liveStreamSubpages == nil ? .first : .middle),
       .updates(project.stats.updatesCount ?? 0, .last)
-    ]
+      ]
+      .compact()
 
     self.set(
       values: values,
@@ -56,9 +59,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
-  private func liveStreamSubpageArray(project: Project) -> [ProjectPamphletSubpage] {
-    return project.liveStreams.isEmpty ? [] : [ProjectPamphletSubpage.liveStream(
-      liveStream: project.liveStreams[0], .first)]
+  private func liveStreamSubpage(forProject project: Project) -> ProjectPamphletSubpage? {
+    return project.liveStreams.first.map { ProjectPamphletSubpage.liveStream(liveStream: $0, .first) }
   }
 
   internal func indexPathForMainCell() -> NSIndexPath {

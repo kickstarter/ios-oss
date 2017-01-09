@@ -43,6 +43,9 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.alignment .~ .Center
       |> UIStackView.lens.distribution .~ .Fill
 
+    self.liveNowImageView
+      |> UIImageView.lens.tintColor .~ .ksr_green_500
+
     self.separatorView
       |> separatorStyle
 
@@ -64,8 +67,10 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     self.countLabel.rac.textColor = self.viewModel.outputs.countLabelTextColor
     self.countContainerView.rac.backgroundColor = self.viewModel.outputs.countLabelBackgroundColor
 
-    self.viewModel.outputs.countLabelBorderColor.observeNext { [weak self] in
-      self?.countContainerView.layer.borderColor = $0.CGColor
+    self.viewModel.outputs.countLabelBorderColor
+      .observeForUI()
+      .observeNext { [weak self] in
+        self?.countContainerView.layer.borderColor = $0.CGColor
     }
 
     self.liveNowImageView.rac.hidden = self.viewModel.outputs.liveNowImageViewHidden

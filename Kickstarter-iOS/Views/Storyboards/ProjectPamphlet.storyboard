@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GbK-FV-Iaj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GbK-FV-Iaj">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -463,14 +463,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="56"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vAH-qI-wPb">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vAH-qI-wPb">
                                             <rect key="frame" x="8" y="8" width="384" height="40"/>
                                             <subviews>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="253" verticalHuggingPriority="251" image="oval" translatesAutoresizingMaskIntoConstraints="NO" id="946-cU-6Dn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="40"/>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="253" verticalHuggingPriority="251" misplaced="YES" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="946-cU-6Dn">
+                                                    <rect key="frame" x="0.0" y="13" width="0.0" height="14"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-bs-AP3">
-                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="40"/>
+                                                    <rect key="frame" x="0.0" y="10" width="240" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -672,9 +672,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="384" height="91"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vcO-BW-Vtn">
-                                                            <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="62" height="50"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All gone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRI-UA-0kb">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="All gone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRI-UA-0kb">
                                                                     <rect key="frame" x="8" y="8" width="43" height="14"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -812,18 +812,18 @@
                                                 </button>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eBu-vx-gVX">
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBu-vx-gVX">
                                             <rect key="frame" x="8" y="-97" width="108" height="210"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FVl-ud-ryO">
-                                                    <rect key="frame" x="8" y="8" width="92" height="14"/>
+                                                    <rect key="frame" x="8" y="8" width="98" height="15"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="checkmark-icon" translatesAutoresizingMaskIntoConstraints="NO" id="U2O-wN-1PT">
-                                                            <rect key="frame" x="0.0" y="2" width="11" height="9"/>
+                                                            <rect key="frame" x="0.0" y="3" width="11" height="9"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You‘re a backer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtd-7I-2ig">
-                                                            <rect key="frame" x="11" y="0.0" width="81" height="14"/>
+                                                            <rect key="frame" x="11" y="0.0" width="87" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -897,7 +897,7 @@
     </scenes>
     <resources>
         <image name="checkmark-icon" width="11" height="9"/>
-        <image name="oval" width="14" height="14"/>
+        <image name="live-indicator" width="14" height="14"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

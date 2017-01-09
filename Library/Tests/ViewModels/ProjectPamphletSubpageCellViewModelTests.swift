@@ -40,7 +40,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("12")
-    self.countLabelBorderColor.assertValue(.whiteColor())
+    self.countLabelBorderColor.assertValue(.clearColor())
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Comments")
@@ -74,7 +74,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("Replay")
-    self.countLabelBorderColor.assertValue(.whiteColor())
+    self.countLabelBorderColor.assertValue(.clearColor())
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Live Stream")
@@ -88,7 +88,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("12")
-    self.countLabelBorderColor.assertValue(.whiteColor())
+    self.countLabelBorderColor.assertValue(.clearColor())
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Updates")
@@ -138,4 +138,6 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     XCTAssertFalse(liveStream.isUpdates)
     XCTAssertEqual(liveStream.count, 0)
   }
+
+  // FIXME: do a test for the future live stream state
 }
