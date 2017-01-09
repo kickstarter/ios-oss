@@ -81,11 +81,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(
       state: .live(playbackState: .error(error: .sessionInterrupted), startTime: 123))
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, replayAvailable: false, duration: 123))
+      state: .replay(playbackState: .loading, duration: 123))
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, replayAvailable: false, duration: 123))
+      state: .replay(playbackState: .playing, duration: 123))
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .error(error: .failedToConnect), replayAvailable: false,
+      state: .replay(playbackState: .error(error: .failedToConnect),
         duration: 123))
 
     // Test begins with an implicit loading state before any others
@@ -96,8 +96,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       .live(playbackState: .loading, startTime: 123),
       .live(playbackState: .playing, startTime: 123),
       .live(playbackState: .error(error: .sessionInterrupted), startTime: 123),
-      .replay(playbackState: .loading, replayAvailable: false, duration: 123),
-      .replay(playbackState: .playing, replayAvailable: false, duration: 123),
+      .replay(playbackState: .loading, duration: 123),
+      .replay(playbackState: .playing, duration: 123),
       .replay(playbackState: .error(error: .failedToConnect), replayAvailable: false, duration: 123)
     ])
   }
@@ -112,7 +112,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, replayAvailable: false, duration: 123))
+      state: .replay(playbackState: .loading, duration: 123))
 
     self.loaderText.assertValues([
       "Loading",
@@ -142,7 +142,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, replayAvailable: false, duration: 123))
+      state: .replay(playbackState: .playing, duration: 123))
 
     self.showVideoView.assertValues([
       false,
@@ -164,7 +164,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
     self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, replayAvailable: false, duration: 123))
+      state: .replay(playbackState: .loading, duration: 123))
 
     self.titleViewText.assertValues([
       "Loading",

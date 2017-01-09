@@ -109,13 +109,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0 > $1 }
       .take(1)
 
-    // FIXME: lots of tests for non-live replay
-
-
-
     let forceHls = Signal.merge(
-      // FIXME: write test for hls starting immediately in case of non-live
-//      didLiveStreamEndedNormally.filter(isTrue).mapConst(true),
       self.viewDidLoadProperty.signal.delay(10, onScheduler: scheduler).mapConst(true),
 
       isMaxOpenTokViewersReached,
@@ -141,13 +135,10 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
     )
 
-    let replayHlsUrl = zip(liveStreamEvent, didLiveStreamEndedNormally)
-      // FIXME: write failing test for this:
-      // .takeWhen(didLiveStreamEndedNormally.filter(isTrue)
+    let replayHlsUrl = zip(liveStreamEvent, didLiveStreamEndedNormally.filter(isTrue))
       .map { event, _ in event.stream.replayUrl }
       .ignoreNil()
       .map(LiveStreamType.hlsStream)
-
 
     let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)
 
@@ -194,17 +185,17 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") }
     )
 
-    /// Should never emit if stream isScale
     self.createNumberOfPeopleWatchingObservers = zip(
       databaseRef,
-      liveStreamEvent.filter { !$0.stream.isScale }
+      liveStreamEvent
+        .filter { !$0.stream.isScale }
         .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") }
     )
 
-    /// Should never emit if stream !isScale
     self.createScaleNumberOfPeopleWatchingObservers = combineLatest(
       databaseRef,
-      liveStreamEvent.filter { $0.stream.isScale }
+      liveStreamEvent
+        .filter { $0.stream.isScale }
         .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") }
     )
 
@@ -244,7 +235,6 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
           : LiveStreamViewControllerState.loading
       }
 
-    // FIXME: write tests
     self.notifyDelegateLiveStreamViewControllerStateChanged = Signal.merge(
       nonStarterOrLoadingState,
       errorState,

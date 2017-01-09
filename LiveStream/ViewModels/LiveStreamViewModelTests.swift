@@ -487,12 +487,25 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   }
 
-  func testNotifyDelegateLiveStreamViewControllerStateChanged_NonStarter() {
+  func testNotifyDelegateLiveStreamViewControllerStateChanged_NotLive_NoReplay() {
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ false
       |> LiveStreamEvent.lens.stream.replayUrl .~ nil
       |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -16 * 60))
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.nonStarter])
+  }
+
+  func testNotifyDelegateLiveStreamViewControllerStateChanged_NotLive_Replay_NoReplayUrl() {
+    let event = .template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.hasReplay .~ true
+      |> LiveStreamEvent.lens.stream.replayUrl .~ nil
+      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
@@ -536,9 +549,4 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       ]
     )
   }
-
-
-
-
-  // FIXME: write test for hasreplay/replayurl weirdness
 }

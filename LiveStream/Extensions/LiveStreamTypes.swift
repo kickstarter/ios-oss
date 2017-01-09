@@ -69,7 +69,7 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
 }
 
 /**
- FIXME
+ FIXME: docs
 
  - error:      <#error description#>
  - greenRoom:  <#greenRoom description#>

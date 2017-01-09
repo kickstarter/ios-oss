@@ -81,7 +81,6 @@ public final class LiveVideoViewController: UIViewController {
     self.addVideoView(player)
   }
 
-  // FIXME: add new input for when `session = nil` after create session so that we can do error handling
   private func createAndConfigureSession(sessionConfig sessionConfig: OpenTokSessionConfig) {
     self.session = OTSession(
       apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self

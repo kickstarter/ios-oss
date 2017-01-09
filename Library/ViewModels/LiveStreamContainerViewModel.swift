@@ -59,7 +59,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       case .error(let error): return error
       case .live(let playbackState, _):
         if case let .error(videoError) = playbackState { return videoError }
-      case .replay(let playbackState, _, _):
+      case .replay(let playbackState, _):
         if case let .error(videoError) = playbackState { return videoError }
       default:
         return nil
@@ -86,7 +86,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       if case .greenRoom = $0 { return localizedString(
         key: "The_live_stream_will_start_soon", defaultValue: "The live stream will start soon")
       }
-      if case .replay(playbackState: .loading, _, _) = $0 {
+      if case .replay(playbackState: .loading, _) = $0 {
         Strings.The_replay_will_start_soon()
       }
 
@@ -100,7 +100,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.titleViewText = liveStreamState.map {
       if case .live(_, _) = $0 { return localizedString(key: "Live", defaultValue: "Live") }
       if case .greenRoom = $0 { return localizedString(key: "Starting_soon", defaultValue: "Starting soon") }
-      if case .replay(_, _, _) = $0 { return localizedString(
+      if case .replay(_, _) = $0 { return localizedString(
         key: "Recorded_Live", defaultValue: "Recorded Live") }
 
       return localizedString(key: "Loading", defaultValue: "Loading")
@@ -109,7 +109,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.showVideoView = combineLatest(
         self.liveStreamState.map {
           if case .live(playbackState: .playing, _) = $0 { return true }
-          if case .replay(playbackState: .playing, _, _) = $0 { return true }
+          if case .replay(playbackState: .playing, _) = $0 { return true }
 
           return false
         },
