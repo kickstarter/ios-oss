@@ -5,7 +5,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public init() {
   }
 
-  public func fetchEvent(eventId eventId: String, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+  public func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
       let uidString = uid
@@ -47,7 +47,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func subscribeTo(eventId eventId: String, uid: Int, isSubscribed: Bool)
+  public func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in

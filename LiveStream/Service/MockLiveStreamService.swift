@@ -25,7 +25,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.subscribeToResponse = subscribeToResponse
   }
 
-  internal func fetchEvent(eventId eventId: String, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+  internal func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
     if let error = self.fetchEventError {
       return SignalProducer(error: error)
     }
@@ -33,11 +33,11 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     return SignalProducer(value:
       self.fetchEventResponse
         // FIXME: get rid of force unwrap
-        ?? .template |> LiveStreamEvent.lens.id .~ Int(eventId)!
+        ?? .template |> LiveStreamEvent.lens.id .~ eventId
     )
   }
 
-  internal func subscribeTo(eventId eventId: String, uid: Int, isSubscribed: Bool)
+  internal func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       if let error = self.subscribeToError {

@@ -73,7 +73,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
-          eventId: String(event.id), uid: userId, isSubscribed: !subscribedProperty.value
+          eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
           .demoteErrors()
     }
