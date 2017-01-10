@@ -11,6 +11,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   private let createAndConfigureLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
+  private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
   private let error = TestObserver<String, NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
@@ -24,6 +25,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.vm.outputs.createAndConfigureLiveStreamViewController.observe(
       self.createAndConfigureLiveStreamViewController.observer)
+    self.vm.outputs.creatorIntroText.map { $0.string }.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.error.observe(self.error.observer)
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
@@ -31,6 +33,32 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.showVideoView.observe(self.showVideoView.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
+  }
+
+  func testCreatorIntroText() {
+    let stream = LiveStreamEvent.template.stream
+      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream .~ stream
+
+    self.creatorIntroText.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.creatorIntroText.assertValues([""])
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 0))
+    self.creatorIntroText.assertValues(["", "Creator Name is live now"])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .playing, duration: 0))
+
+    self.creatorIntroText.assertValues([
+      "",
+      "Creator Name is live now",
+      "Creator Name was live right now"
+      ])
   }
 
   func testCreateLiveStreamViewController() {

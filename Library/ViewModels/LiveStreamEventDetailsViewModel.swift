@@ -75,7 +75,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         return AppEnvironment.current.liveStreamService.subscribeTo(
           eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
-          .demoteErrors()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors(replaceErrorWith: subscribedProperty.value)
     }
 
     // Bind the initial subscribed value
@@ -208,6 +209,7 @@ private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
     return AppEnvironment.current.liveStreamService.fetchEvent(
       eventId: eventId, uid: AppEnvironment.current.currentUser?.id
       )
+      .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
   }
 
   return .empty
