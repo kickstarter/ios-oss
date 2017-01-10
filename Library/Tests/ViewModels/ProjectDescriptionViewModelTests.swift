@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 import XCTest
@@ -8,12 +8,12 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectDescriptionViewModelTests: TestCase {
-  private let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
+  fileprivate let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  private let goBackToProject = TestObserver<(), NoError>()
-  private let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let loadWebViewRequest = TestObserver<NSURLRequest, NoError>()
+  fileprivate let goBackToProject = TestObserver<(), NoError>()
+  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -34,10 +34,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
+    let request = URLRequest(url: URL(string: project.urls.web.project)!)
 
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -45,7 +45,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -64,9 +64,9 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project + "/messages/new")!)
+    let request = URLRequest(url: URL(string: project.urls.web.project + "/messages/new")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -74,7 +74,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -93,9 +93,9 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    let request = NSURLRequest(URL: NSURL(string: "https://www.somewhere.com/else")!)
+    let request = URLRequest(url: URL(string: "https://www.somewhere.com/else")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -103,7 +103,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
     XCTAssertEqual(["project_description"], self.trackingClient.properties(forKey: "context"))
@@ -122,9 +122,9 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    let request = NSURLRequest(URL: NSURL(string: project.urls.web.project + "/description")!)
+    let request = URLRequest(url: URL(string: project.urls.web.project + "/description")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -132,7 +132,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -149,9 +149,9 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValueCount(1)
 
-    let request = NSURLRequest(URL: NSURL(string: "https://www.youtube.com/watch")!)
+    let request = URLRequest(url: URL(string: "https://www.youtube.com/watch")!)
     let navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: request,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
       targetFrame: WKFrameInfoData(mainFrame: false, request: request)
@@ -159,7 +159,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
                    self.vm.outputs.decidedPolicyForNavigationAction.rawValue,
                    "Loading non-main frame requests permitted, e.g. youtube.")
 

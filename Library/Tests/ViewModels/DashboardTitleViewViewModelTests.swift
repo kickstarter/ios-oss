@@ -1,6 +1,6 @@
 import XCTest
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import Prelude
 @testable import KsApi
 @testable import Library

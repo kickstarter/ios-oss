@@ -4,15 +4,15 @@ import Prelude
 import UIKit
 
 internal final class ProfileViewController: UICollectionViewController {
-  @IBOutlet private weak var messagesButton: UIBarButtonItem!
-  @IBOutlet private weak var settingsButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var messagesButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var settingsButton: UIBarButtonItem!
 
-  private let dataSource = ProfileDataSource()
-  private let viewModel: ProfileViewModelType = ProfileViewModel()
-  private let refreshControl = UIRefreshControl()
+  fileprivate let dataSource = ProfileDataSource()
+  fileprivate let viewModel: ProfileViewModelType = ProfileViewModel()
+  fileprivate let refreshControl = UIRefreshControl()
 
   internal static func instantiate() -> ProfileViewController {
-    return Storyboard.Profile.instantiate(ProfileViewController)
+    return Storyboard.Profile.instantiate(ProfileViewController.self)
   }
 
   internal override func viewDidLoad() {
@@ -24,11 +24,11 @@ internal final class ProfileViewController: UICollectionViewController {
       layout.itemSize = CGSize(width: 178, height: 220)
     }
 
-    self.refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
+    self.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     self.collectionView?.addSubview(refreshControl)
   }
 
-  internal override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated)
   }
@@ -38,14 +38,14 @@ internal final class ProfileViewController: UICollectionViewController {
 
     self.viewModel.outputs.backedProjects
       .observeForUI()
-      .observeNext { [weak self] ps in
+      .observeValues { [weak self] ps in
         self?.dataSource.load(projects: ps)
         self?.collectionView?.reloadData()
       }
 
     self.viewModel.outputs.user
       .observeForUI()
-      .observeNext { [weak self] u in
+      .observeValues { [weak self] u in
         self?.dataSource.load(user: u)
         self?.collectionView?.reloadData()
     }
@@ -54,19 +54,19 @@ internal final class ProfileViewController: UICollectionViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] project, projects, refTag in
+      .observeValues { [weak self] project, projects, refTag in
         self?.present(project: project, projects: projects, refTag: refTag)
     }
 
     self.viewModel.outputs.goToSettings
       .observeForControllerAction()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.goToSettings()
     }
 
     self.viewModel.outputs.showEmptyState
       .observeForUI()
-      .observeNext { [weak self] visible in
+      .observeValues { [weak self] visible in
         self?.dataSource.emptyState(visible: visible)
         self?.collectionView?.reloadData()
     }
@@ -75,73 +75,73 @@ internal final class ProfileViewController: UICollectionViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.messagesButton
+    _ = self.messagesButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_buttons_messages() }
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
 
-    self.navigationItem
+    _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
 
-    self.settingsButton
+    _ = self.settingsButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
   }
 
-  @IBAction private func settingsTapped() {
+  @IBAction fileprivate func settingsTapped() {
     self.viewModel.inputs.settingsButtonTapped()
   }
 
-  @IBAction private func messagesButtonTapped() {
+  @IBAction fileprivate func messagesButtonTapped() {
     let vc = MessageThreadsViewController.configuredWith(project: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  internal override func collectionView(collectionView: UICollectionView,
-                                        didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  internal override func collectionView(_ collectionView: UICollectionView,
+                                        didSelectItemAt indexPath: IndexPath) {
     if let project = self.dataSource[indexPath] as? Project {
       self.viewModel.inputs.projectTapped(project)
     }
   }
 
-  private func goToSettings() {
+  fileprivate func goToSettings() {
     let vc = SettingsViewController.instantiate()
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+    if UIDevice.current.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = .FormSheet
-      self.presentViewController(nav, animated: true, completion: nil)
+      nav.modalPresentationStyle = .formSheet
+      self.present(nav, animated: true, completion: nil)
 
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
 
-  private func present(project project: Project, projects: [Project], refTag: RefTag) {
+  fileprivate func present(project: Project, projects: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project,
                                                            refTag: refTag,
                                                            initialPlaylist: projects,
                                                            navigatorDelegate: self)
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  internal override func collectionView(collectionView: UICollectionView,
-                                        willDisplayCell cell: UICollectionViewCell,
-                                        forItemAtIndexPath indexPath: NSIndexPath) {
+  internal override func collectionView(_ collectionView: UICollectionView,
+                                        willDisplay cell: UICollectionViewCell,
+                                        forItemAt indexPath: IndexPath) {
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
                                          outOf: self.dataSource.numberOfItems())
 
   }
 
-  internal override func collectionView(collectionView: UICollectionView,
+  internal override func collectionView(_ collectionView: UICollectionView,
                                         viewForSupplementaryElementOfKind kind: String,
-                                        atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-    return collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                        at indexPath: IndexPath) -> UICollectionReusableView {
+    return collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                  withReuseIdentifier: "Header",
-                                                                 forIndexPath: indexPath)
+                                                                 for: indexPath)
   }
 
-  @objc private func refresh() {
+  @objc fileprivate func refresh() {
     self.viewModel.inputs.refresh()
   }
 }

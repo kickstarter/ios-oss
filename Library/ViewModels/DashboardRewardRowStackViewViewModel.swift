@@ -1,12 +1,12 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
 
 public protocol DashboardRewardRowStackViewViewModelInputs {
   /// Call to configure view model with Country, RewardsStats, and total pledged.
-  func configureWith(country country: Project.Country,
+  func configureWith(country: Project.Country,
                              reward: ProjectStatsEnvelope.RewardStats,
                              totalPledged: Int)
 }
@@ -31,10 +31,10 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
   DashboardRewardRowStackViewViewModelInputs, DashboardRewardRowStackViewViewModelOutputs {
 
   public init() {
-    let countryRewardPledged = self.countryRewardPledgedProperty.signal.ignoreNil()
+    let countryRewardPledged = self.countryRewardPledgedProperty.signal.skipNil()
 
     self.backersText = countryRewardPledged.map { _, reward, _ in
-      Format.wholeNumber(reward.backersCount ?? 0)
+      Format.wholeNumber(reward.backersCount)
     }
 
     self.pledgedText = countryRewardPledged.map(pledgedWithPercentText)
@@ -54,16 +54,16 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
   public let pledgedText: Signal<String, NoError>
   public let topRewardText: Signal<String, NoError>
 
-  private let countryRewardPledgedProperty =
+  fileprivate let countryRewardPledgedProperty =
     MutableProperty<(Project.Country, ProjectStatsEnvelope.RewardStats, Int)?>(nil)
-  public func configureWith(country country: Project.Country,
+  public func configureWith(country: Project.Country,
                                     reward: ProjectStatsEnvelope.RewardStats,
                                     totalPledged: Int) {
     countryRewardPledgedProperty.value = (country, reward, totalPledged)
   }
 }
 
-private func pledgedWithPercentText(country country: Project.Country,
+private func pledgedWithPercentText(country: Project.Country,
                                             reward: ProjectStatsEnvelope.RewardStats,
                                             totalPledged: Int) -> String {
     let percent = Double(reward.pledged) / Double(totalPledged)

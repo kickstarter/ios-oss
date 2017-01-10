@@ -5,9 +5,9 @@ import UIKit
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var filterTitleLabel: UILabel!
 
-  private var isSelected: Bool = false
+  private var rowIsSelected: Bool = false
 
-  func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
+  func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if value.row.params.staffPicks == true {
       self.filterTitleLabel.text = Strings.Projects_We_Love()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_projects_we_love()
@@ -27,24 +27,23 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_all_projects()
     }
 
-    self.filterTitleLabel
-      |> discoveryFilterLabelStyle(categoryId: value.categoryId,
-                                                       isSelected: value.row.isSelected)
+    _ = self.filterTitleLabel
+      |> discoveryFilterLabelStyle(categoryId: value.categoryId, isSelected: value.row.isSelected)
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.isSelected = value.row.isSelected
+    self.rowIsSelected = value.row.isSelected
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> discoveryFilterRowMarginStyle
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
   }
 
   internal func willDisplay() {
-    self.filterTitleLabel
-      |> discoveryFilterLabelFontStyle(isSelected: self.isSelected)
+    _ = self.filterTitleLabel
+      |> discoveryFilterLabelFontStyle(isSelected: self.rowIsSelected)
   }
 }

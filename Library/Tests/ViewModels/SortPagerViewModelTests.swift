@@ -2,23 +2,23 @@
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 import XCTest
 
 internal final class SortPagerViewModelTests: TestCase {
-  private let vm: SortPagerViewModelType = SortPagerViewModel()
+  fileprivate let vm: SortPagerViewModelType = SortPagerViewModel()
 
-  private let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
-  private let indicatorViewIsHidden = TestObserver<Bool, NoError>()
-  private let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  private let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
-  private let pinSelectedIndicatorAnimated = TestObserver<Bool, NoError>()
-  private let setSelectedButton = TestObserver<Int, NoError>()
-  private let updateSortStyleId = TestObserver<Int?, NoError>()
-  private let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], NoError>()
-  private let updateSortStyleAnimated = TestObserver<Bool, NoError>()
+  fileprivate let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
+  fileprivate let indicatorViewIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
+  fileprivate let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
+  fileprivate let pinSelectedIndicatorAnimated = TestObserver<Bool, NoError>()
+  fileprivate let setSelectedButton = TestObserver<Int, NoError>()
+  fileprivate let updateSortStyleId = TestObserver<Int?, NoError>()
+  fileprivate let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], NoError>()
+  fileprivate let updateSortStyleAnimated = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -147,7 +147,7 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.indicatorViewIsHidden.assertValues([true], "Indicator does not show immediately.")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false])
 
@@ -164,7 +164,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false])
     self.indicatorViewIsHidden.assertValues([true, false, true], "Indicator is still hidden")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false], "Indicator shows after delay.")
 
@@ -178,7 +178,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false, false])
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true], "Indicator is still hidden")
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false],
                                             "Indicator shows after delay.")
@@ -198,7 +198,7 @@ internal final class SortPagerViewModelTests: TestCase {
     self.pinSelectedIndicatorAnimated.assertValues([false, false, false, true, false])
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true])
 
-    self.scheduler.advanceByInterval(0.1)
+    self.scheduler.advance(by: .seconds(1))
 
     self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false, true, false])
   }

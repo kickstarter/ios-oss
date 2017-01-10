@@ -6,15 +6,15 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class ActivityUpdateViewModelTests: TestCase {
-  private let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()
-  private let body = TestObserver<String, NoError>()
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
-  private let notifyDelegateTappedProjectImage = TestObserver<Activity, NoError>()
-  private let projectButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let projectImageURL = TestObserver<String?, NoError>()
-  private let projectName = TestObserver<String, NoError>()
-  private let sequenceTitle = TestObserver<String, NoError>()
-  private let title = TestObserver<String, NoError>()
+  fileprivate let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()
+  fileprivate let body = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateTappedProjectImage = TestObserver<Activity, NoError>()
+  fileprivate let projectButtonAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let projectImageURL = TestObserver<String?, NoError>()
+  fileprivate let projectName = TestObserver<String, NoError>()
+  fileprivate let sequenceTitle = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()

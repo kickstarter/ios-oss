@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -7,15 +7,15 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectPamphletContentViewModelTests: TestCase {
-  private let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
+  fileprivate let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
 
-  private let goToBacking = TestObserver<Project, NoError>()
-  private let goToComments = TestObserver<Project, NoError>()
-  private let goToRewardPledgeProject = TestObserver<Project, NoError>()
-  private let goToRewardPledgeReward = TestObserver<Reward, NoError>()
-  private let goToUpdates = TestObserver<Project, NoError>()
-  private let loadProjectIntoDataSource = TestObserver<Project, NoError>()
-  private let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
+  fileprivate let goToBacking = TestObserver<Project, NoError>()
+  fileprivate let goToComments = TestObserver<Project, NoError>()
+  fileprivate let goToRewardPledgeProject = TestObserver<Project, NoError>()
+  fileprivate let goToRewardPledgeReward = TestObserver<Reward, NoError>()
+  fileprivate let goToUpdates = TestObserver<Project, NoError>()
+  fileprivate let loadProjectIntoDataSource = TestObserver<Project, NoError>()
+  fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
 
   override func setUp() {
     super.setUp()

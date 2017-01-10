@@ -6,16 +6,16 @@ import Prelude
 import Result
 
 internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
-  private let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
+  fileprivate let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  private let activityTitle = TestObserver<String, NoError>()
-  private let body = TestObserver<String, NoError>()
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
-  private let cellAccessibilityValue = TestObserver<String, NoError>()
-  private let commentsCount = TestObserver<String, NoError>()
-  private let defaultUser = .template |> User.lens.name .~ "Christopher"
-  private let likesCount = TestObserver<String, NoError>()
-  private let updateTitle = TestObserver<String, NoError>()
+  fileprivate let activityTitle = TestObserver<String, NoError>()
+  fileprivate let body = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let commentsCount = TestObserver<String, NoError>()
+  fileprivate let defaultUser = .template |> User.lens.name .~ "Christopher"
+  fileprivate let likesCount = TestObserver<String, NoError>()
+  fileprivate let updateTitle = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -33,7 +33,7 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
   func testActivityTitle() {
     let project = Project.template
-    let publishedAt = NSDate().timeIntervalSince1970
+    let publishedAt = Date().timeIntervalSince1970
     let update = .template
       |> Update.lens.publishedAt .~ publishedAt
       |> Update.lens.sequence .~ 9
@@ -77,7 +77,7 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
   func testCellAccessibilityLabel() {
     let project = Project.template
-    let publishedAt = NSDate().timeIntervalSince1970
+    let publishedAt = Date().timeIntervalSince1970
     let update = .template
       |> Update.lens.publishedAt .~ publishedAt
       |> Update.lens.sequence .~ 9

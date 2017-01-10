@@ -4,7 +4,7 @@ import UIKit
 
 public final class UpdateActivityItemProvider: UIActivityItemProvider {
 
-  private var update: Update?
+  fileprivate var update: Update?
 
   public convenience init(update: Update) {
     self.init(placeholderItem: update.title)
@@ -12,33 +12,33 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
     self.update = update
   }
 
-  public override func activityViewController(activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: String) -> AnyObject? {
+  public override func activityViewController(_ activityViewController: UIActivityViewController,
+                                              itemForActivityType activityType: UIActivityType) -> Any? {
 
     guard let update = self.update else {
       return self.activityViewControllerPlaceholderItem(activityViewController)
     }
 
-    if activityType == UIActivityTypeMail {
+    switch activityType {
+    case UIActivityType.mail:
       return Strings.social_update_sequence_and_title(
         update_number: String(update.sequence),
         update_title: update.title
       )
-    } else if activityType == UIActivityTypeMessage {
+    case UIActivityType.message:
       return update.title
-    } else if activityType == UIActivityTypePostToTwitter {
+    case UIActivityType.postToTwitter:
       return Strings.project_checkout_share_twitter_via_kickstarter(
-          project_or_update_title: update.title
+        project_or_update_title: update.title
       )
-    } else if activityType == UIActivityTypeCopyToPasteboard ||
-      activityType == UIActivityTypePostToFacebook {
+    case UIActivityType.copyToPasteboard, UIActivityType.postToFacebook:
       return update.urls.web.update
+    default:
+      return Strings.social_update_sequence_and_title(
+        update_number: String(update.sequence),
+        update_title: update.title
+      )
     }
-
-    return Strings.social_update_sequence_and_title(
-      update_number: String(update.sequence),
-      update_title: update.title
-    )
   }
 }
 #endif

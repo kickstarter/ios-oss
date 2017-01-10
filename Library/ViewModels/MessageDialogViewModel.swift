@@ -1,17 +1,17 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessageDialogViewModelInputs {
   /// Call when the message text changes.
-  func bodyTextChanged(body: String)
+  func bodyTextChanged(_ body: String)
 
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
 
   /// Call with the backing/message-thread/project that was given to the view.
-  func configureWith(messageSubject messageSubject: MessageSubject, context: Koala.MessageDialogContext)
+  func configureWith(messageSubject: MessageSubject, context: Koala.MessageDialogContext)
 
   /// Call when the post button is pressed.
   func postButtonPressed()
@@ -53,34 +53,34 @@ MessageDialogViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let messageSubject = self.messageSubjectProperty.signal.ignoreNil()
+    let messageSubject = self.messageSubjectProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let projectFromBacking = messageSubject
       .map { $0.backing }
-      .ignoreNil()
+      .skipNil()
       .flatMap {
         AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
     }
 
     let project = Signal.merge(
       projectFromBacking,
-      messageSubject.map { $0.messageThread?.project }.ignoreNil(),
-      messageSubject.map { $0.project }.ignoreNil()
+      messageSubject.map { $0.messageThread?.project }.skipNil(),
+      messageSubject.map { $0.project }.skipNil()
     )
 
-    let body = self.bodyTextChangedProperty.signal.ignoreNil()
+    let body = self.bodyTextChangedProperty.signal.skipNil()
 
     let bodyIsPresent = body
       .map { !$0.trimmed().isEmpty }
       .skipRepeats()
 
     self.postButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.take(1).mapConst(false),
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       bodyIsPresent
     )
 
-    let sendMessageResult = combineLatest(
+    let sendMessageResult = Signal.combineLatest(
       body,
       messageSubject
       )
@@ -88,7 +88,7 @@ MessageDialogViewModelOutputs {
       .switchMap { body, messageSubject in
 
         AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -105,11 +105,11 @@ MessageDialogViewModelOutputs {
     self.loadingViewIsHidden = Signal.merge(
       self.postButtonPressedProperty.signal.mapConst(false),
       sendMessageResult.filter { $0.isTerminating }.mapConst(true),
-      self.viewDidLoadProperty.signal.take(1).mapConst(true)
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(true)
     )
 
     self.recipientName = messageSubject
-      .take(1)
+      .take(first: 1)
       .flatMap { messageSubject -> SignalProducer<String, NoError> in
         switch messageSubject {
         case let .backing(backing):
@@ -127,35 +127,35 @@ MessageDialogViewModelOutputs {
       self.notifyPresenterDialogWantsDismissal.mapConst(false)
     )
 
-    combineLatest(project, self.contextProperty.signal.ignoreNil())
-      .observeNext { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
+    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
+      .observeValues { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
 
-    combineLatest(project, self.contextProperty.signal.ignoreNil())
+    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
       .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeNext { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
+      .observeValues { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
   // swiftlint:enable function_body_length
 
-  private let bodyTextChangedProperty = MutableProperty<String?>(nil)
-  public func bodyTextChanged(body: String) {
+  fileprivate let bodyTextChangedProperty = MutableProperty<String?>(nil)
+  public func bodyTextChanged(_ body: String) {
     self.bodyTextChangedProperty.value = body
   }
-  private let cancelButtonPressedProperty = MutableProperty()
+  fileprivate let cancelButtonPressedProperty = MutableProperty()
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
-  private let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
-  private let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
-  public func configureWith(messageSubject messageSubject: MessageSubject,
+  fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
+  fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
+  public func configureWith(messageSubject: MessageSubject,
                                            context: Koala.MessageDialogContext) {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }
-  private let postButtonPressedProperty = MutableProperty()
+  fileprivate let postButtonPressedProperty = MutableProperty()
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -172,9 +172,9 @@ MessageDialogViewModelOutputs {
   public var outputs: MessageDialogViewModelOutputs { return self }
 }
 
-func fetchBackerName(backing backing: Backing) -> SignalProducer<String, NoError> {
+func fetchBackerName(backing: Backing) -> SignalProducer<String, NoError> {
   return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
-    .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .demoteErrors()
     .map { $0.name }
 }

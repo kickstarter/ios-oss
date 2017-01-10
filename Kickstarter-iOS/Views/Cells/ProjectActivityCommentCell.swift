@@ -5,36 +5,36 @@ import Prelude_UIKit
 import UIKit
 
 internal protocol ProjectActivityCommentCellDelegate: class {
-  func projectActivityCommentCellGoToBacking(project project: Project, user: User)
-  func projectActivityCommentCellGoToSendReply(project project: Project, update: Update?, comment: Comment)
+  func projectActivityCommentCellGoToBacking(project: Project, user: User)
+  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment)
 }
 
 internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
-  private let viewModel: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
+  fileprivate let viewModel: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
   internal weak var delegate: ProjectActivityCommentCellDelegate?
 
-  @IBOutlet private weak var authorImageView: UIImageView!
-  @IBOutlet private weak var backingButton: UIButton!
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var bodyView: UIView!
-  @IBOutlet private weak var bulletSeparatorView: UIView!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var containerStackView: UIStackView!
-  @IBOutlet private weak var footerDividerView: UIView!
-  @IBOutlet private weak var footerStackView: UIStackView!
-  @IBOutlet private weak var headerDividerView: UIView!
-  @IBOutlet private weak var headerStackView: UIStackView!
-  @IBOutlet private weak var replyButton: UIButton!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var authorImageView: UIImageView!
+  @IBOutlet fileprivate weak var backingButton: UIButton!
+  @IBOutlet fileprivate weak var bodyLabel: UILabel!
+  @IBOutlet fileprivate weak var bodyView: UIView!
+  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var containerStackView: UIStackView!
+  @IBOutlet fileprivate weak var footerDividerView: UIView!
+  @IBOutlet fileprivate weak var footerStackView: UIStackView!
+  @IBOutlet fileprivate weak var headerDividerView: UIView!
+  @IBOutlet fileprivate weak var headerStackView: UIStackView!
+  @IBOutlet fileprivate weak var replyButton: UIButton!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.backingButton
-      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .TouchUpInside)]
+    _ = self.backingButton
+      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
 
-    self.replyButton
-      |> UIButton.lens.targets .~ [(self, #selector(replyButtonPressed), .TouchUpInside)]
+    _ = self.replyButton
+      |> UIButton.lens.targets .~ [(self, #selector(replyButtonPressed), .touchUpInside)]
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
@@ -47,13 +47,13 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.authorImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.authorImageView.af_cancelImageRequest()
         self?.authorImageView.image = nil
         })
-      .ignoreNil()
-      .observeNext { [weak self] url in
-        self?.authorImageView.af_setImageWithURL(url)
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.authorImageView.ksr_setImageWithURL(url)
     }
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
@@ -61,13 +61,13 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateGoToBacking
       .observeForUI()
-      .observeNext { [weak self] project, user in
+      .observeValues { [weak self] project, user in
         self?.delegate?.projectActivityCommentCellGoToBacking(project: project, user: user)
     }
 
     self.viewModel.outputs.notifyDelegateGoToSendReply
       .observeForUI()
-      .observeNext { [weak self] project, update, comment in
+      .observeValues { [weak self] project, update, comment in
         self?.delegate?.projectActivityCommentCellGoToSendReply(
           project: project, update: update, comment: comment
         )
@@ -75,8 +75,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
 
-    self.viewModel.outputs.title.observeForUI()
-      .observeNext { [weak titleLabel] title in
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
         titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),
@@ -84,14 +85,14 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        titleLabel |> projectActivityTitleLabelStyle
+        _ = titleLabel |> projectActivityTitleLabelStyle
     }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityCommentCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -100,11 +101,11 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
 
-    self.backingButton
+    _ = self.backingButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font %~~ { _, label in
           label.traitCollection.isRegularRegular
@@ -112,38 +113,38 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
             : UIFont.ksr_body(size: 14)
       }
 
-    self.bodyView
+    _ = self.bodyView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
-    self.bulletSeparatorView
+    _ = self.bulletSeparatorView
       |> projectActivityBulletSeparatorViewStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.footerDividerView
+    _ = self.footerDividerView
       |> projectActivityDividerViewStyle
 
-    self.footerStackView
+    _ = self.footerStackView
       |> projectActivityFooterStackViewStyle
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.headerDividerView
+    _ = self.headerDividerView
       |> projectActivityDividerViewStyle
 
-    self.headerStackView
+    _ = self.headerStackView
       |> projectActivityHeaderStackViewStyle
 
-    self.replyButton
+    _ = self.replyButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_activity_reply() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_reply() }
   }
 
-  @objc private func backingButtonPressed(button: UIButton) {
+  @objc fileprivate func backingButtonPressed(_ button: UIButton) {
     self.viewModel.inputs.backingButtonPressed()
   }
 
-  @objc private func replyButtonPressed(button: UIButton) {
+  @objc fileprivate func replyButtonPressed(_ button: UIButton) {
     self.viewModel.inputs.replyButtonPressed()
   }
 }

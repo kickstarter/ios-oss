@@ -2,36 +2,36 @@ import Library
 import KsApi
 
 internal final class MessagesDataSource: ValueCellDataSource {
-  private enum Section: Int {
-    case ProjectBanner
-    case Backing
-    case Messages
+  fileprivate enum Section: Int {
+    case projectBanner
+    case backing
+    case messages
   }
 
-  internal func load(project project: Project) {
+  internal func load(project: Project) {
     self.set(values: [project],
              cellClass: ProjectBannerCell.self,
-             inSection: Section.ProjectBanner.rawValue)
+             inSection: Section.projectBanner.rawValue)
   }
 
-  internal func load(backing backing: Backing, project: Project) {
+  internal func load(backing: Backing, project: Project) {
     self.set(values: [(backing, project)],
              cellClass: BackingCell.self,
-             inSection: Section.Backing.rawValue)
+             inSection: Section.backing.rawValue)
   }
 
-  internal func load(messages messages: [Message]) {
+  internal func load(messages: [Message]) {
     self.set(values: messages,
              cellClass: MessageCell.self,
-             inSection: Section.Messages.rawValue)
+             inSection: Section.messages.rawValue)
   }
 
-  internal func isProjectBanner(indexPath indexPath: NSIndexPath) -> Bool {
-    return indexPath.section == Section.ProjectBanner.rawValue
+  internal func isProjectBanner(indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.projectBanner.rawValue
   }
 
-  internal func isBackingInfo(indexPath indexPath: NSIndexPath) -> Bool {
-    return indexPath.section == Section.Backing.rawValue
+  internal func isBackingInfo(indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.backing.rawValue
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

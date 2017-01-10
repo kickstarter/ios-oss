@@ -5,41 +5,41 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
-  private let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
+  fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var backersSubtitleLabel: UILabel!
-  @IBOutlet private weak var backersTitleLabel: UILabel!
-  @IBOutlet private weak var deadlineSubtitleLabel: UILabel!
-  @IBOutlet private weak var deadlineTitleLabel: UILabel!
-  @IBOutlet private weak var fundingProgressBarView: UIView!
-  @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var fundingSubtitleLabel: UILabel!
-  @IBOutlet private weak var fundingTitleLabel: UILabel!
-  @IBOutlet private weak var metadataView: UIView!
-  @IBOutlet private weak var metadataBackgroundView: UIView!
-  @IBOutlet private weak var metadataLabel: UILabel!
-  @IBOutlet private weak var metadataStackView: UIStackView!
-  @IBOutlet private weak var metadataIconImageView: UIImageView!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectInfoStackView: UIStackView!
-  @IBOutlet private weak var projectNameAndBlurbLabel: UILabel!
-  @IBOutlet private weak var projectStateIconImageView: UIImageView!
-  @IBOutlet private weak var projectStateSubtitleLabel: UILabel!
-  @IBOutlet private weak var projectStateTitleLabel: UILabel!
-  @IBOutlet private weak var projectStateStackView: UIStackView!
-  @IBOutlet private weak var projectStatsStackView: UIStackView!
-  @IBOutlet private weak var socialAvatarImageView: UIImageView!
-  @IBOutlet private weak var socialLabel: UILabel!
-  @IBOutlet private weak var socialStackView: UIStackView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var metadataView: UIView!
+  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate weak var metadataLabel: UILabel!
+  @IBOutlet fileprivate weak var metadataStackView: UIStackView!
+  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
+  @IBOutlet fileprivate weak var projectStateIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectStateSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
+  @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
+  @IBOutlet fileprivate weak var socialLabel: UILabel!
+  @IBOutlet fileprivate weak var socialStackView: UIStackView!
 
   // swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
-      |> DiscoveryPostcardCell.lens.backgroundColor .~ .clearColor()
+      |> DiscoveryPostcardCell.lens.backgroundColor .~ .clear
       // Future: the top should adjust to grid(4) when there is metadata present.
       |> DiscoveryPostcardCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -50,78 +50,78 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
-    self.backersSubtitleLabel
+    _ = self.backersSubtitleLabel
       |> postcardStatsSubtitleStyle
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-    [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
-    [self.backersTitleLabel, self.deadlineTitleLabel]
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel]
       ||> postcardStatsTitleStyle
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    self.fundingTitleLabel
+    _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.fundingProgressBarView
+    _ = self.fundingProgressBarView
       |> UIView.lens.backgroundColor .~ .ksr_green_400
 
-    self.fundingSubtitleLabel
+    _ = self.fundingSubtitleLabel
       |> postcardStatsSubtitleStyle
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
 
-    self.metadataIconImageView
+    _ = self.metadataIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_700
 
-    self.metadataLabel
+    _ = self.metadataLabel
       |> postcardMetadataLabelStyle
 
-    self.metadataStackView
+    _ = self.metadataStackView
       |> postcardMetadataStackViewStyle
 
-    self.metadataBackgroundView
+    _ = self.metadataBackgroundView
       |> dropShadowStyle(radius: 0.5)
 
-    self.projectInfoStackView
+    _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.projectNameAndBlurbLabel
+    _ = self.projectNameAndBlurbLabel
       |> UILabel.lens.numberOfLines .~ 3
-      |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
-    self.projectStateIconImageView
+    _ = self.projectStateIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_green_700
 
-    self.projectStateSubtitleLabel
+    _ = self.projectStateSubtitleLabel
       |> postcardStatsSubtitleStyle
 
-    self.projectStateTitleLabel
+    _ = self.projectStateTitleLabel
       |> postcardStatsTitleStyle
 
-    self.projectStateStackView
+    _ = self.projectStateStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.projectStatsStackView
+    _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.socialAvatarImageView
+    _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
 
-    self.socialLabel
+    _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
 
-    self.socialStackView
-      |> UIStackView.lens.alignment .~ .Center
+    _ = self.socialStackView
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
@@ -153,7 +153,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.metadataData
       .observeForUI()
-      .observeNext { [weak self] data in
+      .observeValues { [weak self] data in
         self?.metadataIconImageView.image = data.iconImage
         self?.metadataLabel.text = data.labelText
         self?.metadataIconImageView.tintColor = data.iconAndTextColor
@@ -162,47 +162,47 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.progressPercentage
       .observeForUI()
-      .observeNext { [weak self] progress in
+      .observeValues { [weak self] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
     }
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
-      .ignoreNil()
-      .observeNext { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.projectImageView.ksr_setImageWithURL(url)
     }
 
     self.viewModel.outputs.socialImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.socialAvatarImageView.af_cancelImageRequest()
         self?.socialAvatarImageView.image = nil
         })
-      .ignoreNil()
-      .observeNext { [weak self] url in
-        self?.socialAvatarImageView.af_setImageWithURL(url)
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.socialAvatarImageView.ksr_setImageWithURL(url)
     }
   }
   // swiftlint:enable function_body_length
 
-  internal func configureWith(value value: Project) {
+  internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
   }
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
 
-    dispatch_async(dispatch_get_main_queue()) {
-      self.cardView.layer.shadowPath = UIBezierPath.init(rect: self.cardView.bounds).CGPath
+    DispatchQueue.main.async {
+      self.cardView.layer.shadowPath = UIBezierPath.init(rect: self.cardView.bounds).cgPath
       self.metadataBackgroundView.layer.shadowPath =
-        UIBezierPath.init(rect: self.metadataBackgroundView.bounds).CGPath
+        UIBezierPath.init(rect: self.metadataBackgroundView.bounds).cgPath
     }
   }
 }

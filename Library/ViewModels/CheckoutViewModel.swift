@@ -1,9 +1,10 @@
 // swiftlint:disable file_length
 import Argo
+import Runes
 import KsApi
 import PassKit
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -12,10 +13,10 @@ public protocol CheckoutViewModelInputs {
   func cancelButtonTapped()
 
   /// Call with the data passed to the view.
-  func configureWith(initialRequest initialRequest: NSURLRequest,
-                                    project: Project,
-                                    reward: Reward,
-                                    applePayCapable: Bool)
+  func configureWith(initialRequest: URLRequest,
+                     project: Project,
+                     reward: Reward,
+                     applePayCapable: Bool)
 
   /// Call when the failure alert OK button is tapped.
   func failureAlertButtonTapped()
@@ -30,10 +31,10 @@ public protocol CheckoutViewModelInputs {
   func paymentAuthorizationWillAuthorizePayment()
 
   /// Call when the webview decides whether to load a request.
-  func shouldStartLoad(withRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
+  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
 
   /// Call from the Stripe callback method once a stripe token has been created.
-  func stripeCreatedToken(stripeToken stripeToken: String?, error: NSError?) -> PKPaymentAuthorizationStatus
+  func stripeCreatedToken(stripeToken: String?, error: Error?) -> PKPaymentAuthorizationStatus
 
   /// Call when a user session has started.
   func userSessionStarted()
@@ -56,13 +57,13 @@ public protocol CheckoutViewModelOutputs {
   var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits when the thanks screen should be loaded.
   var goToThanks: Signal<Project, NoError> { get }
 
   /// Emits when the web modal should be loaded.
-  var goToWebModal: Signal<NSURLRequest, NoError> { get }
+  var goToWebModal: Signal<URLRequest, NoError> { get }
 
   /// Emits when the login tout should be opened.
   var openLoginTout: Signal<Void, NoError> { get }
@@ -80,7 +81,7 @@ public protocol CheckoutViewModelOutputs {
   var showAlert: Signal<String, NoError> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewModelOutputs {
@@ -90,12 +91,12 @@ public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewMode
 
 public final class CheckoutViewModel: CheckoutViewModelType {
 
-  private let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
+  fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
   // swiftlint:disable function_body_length
   // swiftlint:disable cyclomatic_complexity
   public init() {
-    let configData = self.configDataProperty.signal.ignoreNil()
+    let configData = self.configDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let userSessionStarted = self.userSessionStartedProperty.signal
@@ -104,7 +105,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     let initialRequest = configData.map { $0.initialRequest }
     let project = configData.map { $0.project }
 
-    let requestData = self.shouldStartLoadProperty.signal.ignoreNil()
+    let requestData = self.shouldStartLoadProperty.signal.skipNil()
       .map { request, navigationType -> RequestData in
         let navigation = Navigation.match(request)
 
@@ -132,7 +133,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { $0.request }
 
     self.goToPaymentAuthorization = requestData
-      .filter { $0.webViewNavigationType == .LinkClicked }
+      .filter { $0.webViewNavigationType == .linkClicked }
       .map { requestData -> String? in
         guard case let (.checkout(_, .payments(.applePay(payload))))? = requestData.navigation else {
           return nil
@@ -140,11 +141,11 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         return payload
       }
       .map { $0.flatMap(paymentRequest(fromBase64Payload:)) }
-      .ignoreNil()
+      .skipNil()
 
     let modalRequestOrSafariRequest = requestData
       .filter(isModal)
-      .map { requestData -> Either<NSURLRequest, NSURLRequest> in
+      .map { requestData -> Either<URLRequest, URLRequest> in
         if let navigation = requestData.navigation,
           case .project(_, .pledge(.bigPrint), _) = navigation { return Either.left(requestData.request) }
         return Either.right(requestData.request)
@@ -156,7 +157,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       .map { previous, _ in previous.request }
 
     let thanksRequestOrRacingRequest = requestData
-      .map { requestData -> Either<NSURLRequest, NSURLRequest>? in
+      .map { requestData -> Either<URLRequest, URLRequest>? in
         guard let navigation = requestData.navigation else { return nil }
         if case .project(_, .checkout(_, .thanks(let racing)), _) = navigation {
           guard let r = racing else { return Either.left(requestData.request) }
@@ -164,22 +165,22 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         }
         return nil
       }
-      .ignoreNil()
+      .skipNil()
 
     let thanksRequest = thanksRequestOrRacingRequest
       .map { $0.left }
-      .ignoreNil()
+      .skipNil()
       .ignoreValues()
 
     let racingRequest = thanksRequestOrRacingRequest
       .map { $0.right }
-      .ignoreNil()
+      .skipNil()
 
     self.closeLoginTout = userSessionStarted
 
     self.goToSafariBrowser = modalRequestOrSafariRequest
-      .map { $0.right?.URL }
-      .ignoreNil()
+      .map { $0.right?.url }
+      .skipNil()
 
     let thanksRequestOrRacingSuccessful = Signal.merge(
       thanksRequest,
@@ -191,7 +192,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     self.goToWebModal = modalRequestOrSafariRequest
       .map { $0.left }
-      .ignoreNil()
+      .skipNil()
 
     self.openLoginTout = requestData
       .filter { $0.navigation == .signup }
@@ -221,21 +222,21 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.shouldStartLoadResponseProperty <~ requestData
       .map { $0.shouldStartLoad }
 
-    self.webViewLoadRequest = combineLatest(
+    self.webViewLoadRequest = Signal.combineLatest(
       Signal.merge(initialRequest, retryAfterSessionStartedRequest, webViewRequest),
       applePayCapable
       )
       .map(prepared(request:applePayCapable:))
 
-    let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).ignoreNil()
+    let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).skipNil()
 
     self.paymentAuthorizationStatusProperty <~ self.stripeTokenAndErrorProperty.signal
-      .map { _, error in error == nil ? .Success : .Failure }
+      .map { _, error in error == nil ? .success : .failure }
 
-    self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.ignoreNil()
+    self.evaluateJavascript = self.didAuthorizePaymentProperty.signal.skipNil()
       .takePairWhen(stripeToken)
       .map(applePayCheckoutNextJS(forPaymentData:stripeToken:))
-      .ignoreNil()
+      .skipNil()
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -244,17 +245,17 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.setStripePublishableKey = applePayCapable
       .filter(isTrue)
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
-      .ignoreNil()
+      .skipNil()
 
     racingRequest
-      .observeNext { [weak self] request in
-        guard let url = request.URL?.URLByDeletingLastPathComponent else { return }
+      .observeValues { [weak self] request in
+        guard let url = request.url?.deletingLastPathComponent() else { return }
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
     }
 
     configData
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackShowApplePaySheet(
           project: $0.project,
           reward: $0.reward,
@@ -264,7 +265,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.didAuthorizePaymentProperty.signal)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackApplePayAuthorizedPayment(
           project: $0.project,
           reward: $0.reward,
@@ -274,7 +275,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
           project: $0.project,
           reward: $0.reward,
@@ -284,7 +285,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
           project: $0.project,
           reward: $0.reward,
@@ -297,9 +298,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       self.didAuthorizePaymentProperty.signal.mapConst(true)
     )
 
-    combineLatest(configData, applePaySuccessful)
+    Signal.combineLatest(configData, applePaySuccessful)
       .takeWhen(self.paymentAuthorizationFinishedProperty.signal)
-      .observeNext { configData, successful in
+      .observeValues { configData, successful in
 
         if successful {
           AppEnvironment.current.koala.trackApplePayFinished(
@@ -318,7 +319,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
     configData
       .takeWhen(checkoutCancelled)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackCheckoutCancel(
           project: $0.project,
           reward: $0.reward,
@@ -329,11 +330,11 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   // swiftlint:enable cyclomatic_complexity
   // swiftlint:enable function_body_length
 
-  private let cancelButtonTappedProperty = MutableProperty()
+  fileprivate let cancelButtonTappedProperty = MutableProperty()
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
-  private let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(initialRequest initialRequest: NSURLRequest,
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(initialRequest: URLRequest,
                                            project: Project,
                                            reward: Reward,
                                            applePayCapable: Bool) {
@@ -344,45 +345,45 @@ public final class CheckoutViewModel: CheckoutViewModelType {
                                                applePayCapable: applePayCapable)
   }
 
-  private let failureAlertButtonTappedProperty = MutableProperty()
+  fileprivate let failureAlertButtonTappedProperty = MutableProperty()
   public func failureAlertButtonTapped() { self.failureAlertButtonTappedProperty.value = () }
 
-  private let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
+  fileprivate let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
   public func paymentAuthorization(didAuthorizePayment payment: PaymentData) {
     self.didAuthorizePaymentProperty.value = payment
   }
 
-  private let paymentAuthorizationFinishedProperty = MutableProperty()
+  fileprivate let paymentAuthorizationFinishedProperty = MutableProperty()
   public func paymentAuthorizationDidFinish() {
     self.paymentAuthorizationFinishedProperty.value = ()
   }
 
-  private let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
+  fileprivate let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
   public func paymentAuthorizationWillAuthorizePayment() {
     self.paymentAuthorizationWillAuthorizeProperty.value = ()
   }
 
-  private let shouldStartLoadProperty = MutableProperty<(NSURLRequest, UIWebViewNavigationType)?>(nil)
-  private let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: NSURLRequest,
+  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
+  fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
+  public func shouldStartLoad(withRequest request: URLRequest,
                                           navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
 
-  private let stripeTokenAndErrorProperty = MutableProperty(String?.None, NSError?.None)
-  private let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.Failure)
-  public func stripeCreatedToken(stripeToken stripeToken: String?, error: NSError?)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, Error?.none)
+  fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
+  public func stripeCreatedToken(stripeToken: String?, error: Error?)
     -> PKPaymentAuthorizationStatus {
 
       self.stripeTokenAndErrorProperty.value = (stripeToken, error)
       return self.paymentAuthorizationStatusProperty.value
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() { self.userSessionStartedProperty.value = () }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -391,9 +392,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public let dismissViewController: Signal<Void, NoError>
   public let evaluateJavascript: Signal<String, NoError>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToSafariBrowser: Signal<NSURL, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
   public let goToThanks: Signal<Project, NoError>
-  public let goToWebModal: Signal<NSURLRequest, NoError>
+  public let goToWebModal: Signal<URLRequest, NoError>
   public let openLoginTout: Signal<Void, NoError>
   public let popViewController: Signal<Void, NoError>
   public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
@@ -401,27 +402,27 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   public var showAlert: Signal<String, NoError> {
     return self.checkoutRacingViewModel.outputs.showAlert
   }
-  public let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, NoError>
 
   public var inputs: CheckoutViewModelInputs { return self }
   public var outputs: CheckoutViewModelOutputs { return self }
 }
 
-private func isLoadableByWebView(request request: NSURLRequest, navigation: Navigation?) -> Bool {
+private func isLoadableByWebView(request: URLRequest, navigation: Navigation?) -> Bool {
   let preparedWebViewRequest = isNavigationLoadedByWebView(navigation: navigation)
     && AppEnvironment.current.apiService.isPrepared(request: request)
   return preparedWebViewRequest || isStripeRequest(request: request)
 }
 
-private func isModal(requestData requestData: RequestData) -> Bool {
-  guard let url = requestData.request.URL else { return false }
-  guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return false }
+private func isModal(requestData: RequestData) -> Bool {
+  guard let url = requestData.request.url else { return false }
+  guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
   guard let queryItems = components.queryItems else { return false }
 
   return queryItems.filter { $0.name == "modal" }.first?.value == "true"
 }
 
-private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> Bool {
+private func isNavigationLoadedByWebView(navigation: Navigation?) -> Bool {
   guard let nav = navigation else { return false }
   switch nav {
   case
@@ -438,67 +439,62 @@ private func isNavigationLoadedByWebView(navigation navigation: Navigation?) -> 
   }
 }
 
-private func isStripeRequest(request request: NSURLRequest) -> Bool {
-  return request.URL?.host?.hasSuffix("stripe.com") == true
+private func isStripeRequest(request: URLRequest) -> Bool {
+  return request.url?.host?.hasSuffix("stripe.com") == true
 }
 
 private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String)
   -> String? {
 
-  let tokenData = paymentData.tokenData
+    let tokenData = paymentData.tokenData
 
-  let json: [String:[String:String]] = [
-    "apple_pay_token": [
-      "transaction_identifier": tokenData.transactionIdentifier,
-      "payment_network": tokenData.paymentMethodData.network,
-      "payment_instrument_name": tokenData.paymentMethodData.displayName
-      ].compact(),
-    "stripe_token": [
-      "id": stripeToken
-    ]
-  ]
+    var json: [String:[String:String]] = [:]
 
-  return (try? NSJSONSerialization.dataWithJSONObject(json, options: []))
-    .flatMap { String(data: $0, encoding: NSUTF8StringEncoding) }
-    .map { json in "window.checkout_apple_pay_next(\(json));" }
+    json["apple_pay_token"] = [:]
+    json["apple_pay_token"]?["transaction_identifier"] = tokenData.transactionIdentifier
+    json["apple_pay_token"]?["payment_network"] = tokenData.paymentMethodData.network?.rawValue
+    json["apple_pay_token"]?["payment_instrument_name"] = tokenData.paymentMethodData.displayName
+
+    json["stripe_token"] = [:]
+    json["stripe_token"]?["id"] = stripeToken
+
+    return (try? JSONSerialization.data(withJSONObject: json, options: []))
+      .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
+      .map { json in "window.checkout_apple_pay_next(\(json));" }
 }
 
 private func paymentRequest(fromBase64Payload payload: String) -> PKPaymentRequest? {
 
-  return NSData(base64EncodedString: payload, options: [])
-    .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+  return Data(base64Encoded: payload, options: [])
+    .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
     .flatMap { (decode($0) as Decoded<PKPaymentRequest>).value }
 }
 
-private func prepared(request baseRequest: NSURLRequest, applePayCapable: Bool) -> NSURLRequest {
+private func prepared(request baseRequest: URLRequest, applePayCapable: Bool) -> URLRequest {
 
   var applePayHeader: [String:String] = [:]
   applePayHeader["Kickstarter-Apple-Pay"] = applePayCapable ? "1" : nil
 
-  guard let request = AppEnvironment.current.apiService.preparedRequest(forRequest: baseRequest).mutableCopy()
-    as? NSMutableURLRequest else {
-      return baseRequest
-  }
-
+  var request = AppEnvironment.current.apiService.preparedRequest(forRequest: baseRequest)
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:]).withAllValuesFrom(applePayHeader)
 
   return request
 }
 
 private struct ConfigData {
-  private let initialRequest: NSURLRequest
-  private let project: Project
-  private let reward: Reward
-  private let applePayCapable: Bool
+  fileprivate let initialRequest: URLRequest
+  fileprivate let project: Project
+  fileprivate let reward: Reward
+  fileprivate let applePayCapable: Bool
 
-  private var pledgeContext: Koala.PledgeContext {
+  fileprivate var pledgeContext: Koala.PledgeContext {
     return Library.pledgeContext(forProject: self.project, reward: self.reward)
   }
 }
 
 private struct RequestData {
-  private let request: NSURLRequest
-  private let navigation: Navigation?
-  private let shouldStartLoad: Bool
-  private let webViewNavigationType: UIWebViewNavigationType
+  fileprivate let request: URLRequest
+  fileprivate let navigation: Navigation?
+  fileprivate let shouldStartLoad: Bool
+  fileprivate let webViewNavigationType: UIWebViewNavigationType
 }

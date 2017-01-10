@@ -1,23 +1,23 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol SortPagerViewModelInputs {
   /// Call with the sorts that the view was configured with.
-  func configureWith(sorts sorts: [DiscoveryParams.Sort])
+  func configureWith(sorts: [DiscoveryParams.Sort])
 
   /// Call when the view controller's didRotateFromInterfaceOrientation method is called.
   func didRotateFromInterfaceOrientation()
 
   /// Call when a sort is selected from outside this view.
-  func select(sort sort: DiscoveryParams.Sort)
+  func select(sort: DiscoveryParams.Sort)
 
   /// Call when a sort button is tapped.
-  func sortButtonTapped(index index: Int)
+  func sortButtonTapped(index: Int)
 
   /// Call when to update the sort style.
-  func updateStyle(categoryId categoryId: Int?)
+  func updateStyle(categoryId: Int?)
 
   /// Call when the view controller's willRotateToInterfaceOrientation method is called.
   func willRotateToInterfaceOrientation()
@@ -60,28 +60,28 @@ SortPagerViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let sorts = self.sortsProperty.signal.ignoreNil()
+    let sorts = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
-    self.createSortButtons = sorts.take(1)
+    self.createSortButtons = sorts.take(first: 1)
 
     self.updateSortStyle = Signal.merge(
-      sorts.map { ($0, nil, false) }.take(1),
+      sorts.map { ($0, nil, false) }.take(first: 1),
       sorts.takePairWhen(self.updateStyleProperty.signal).map { ($0, $1, true) }
       )
       .map { sorts, id, animated in (categoryId: id, sorts: sorts, animated: animated) }
 
-    let selectedPage = combineLatest(
+    let selectedPage = Signal.combineLatest(
       sorts,
-      self.selectSortProperty.signal.ignoreNil()
+      self.selectSortProperty.signal.skipNil()
       )
-      .map { sorts, sort in (sorts.indexOf(sort) ?? 0, sorts.count) }
+      .map { sorts, sort in (sorts.index(of: sort) ?? 0, sorts.count) }
 
     let pageIndex = sorts.mapConst(0)
 
     self.setSelectedButton = Signal.merge(
-      pageIndex.take(1),
-      self.sortButtonTappedIndexProperty.signal.ignoreNil(),
+      pageIndex.take(first: 1),
+      self.sortButtonTappedIndexProperty.signal.skipNil(),
       selectedPage.map { index, _ in index }
       )
       .skipRepeats(==)
@@ -92,7 +92,7 @@ SortPagerViewModelOutputs {
     self.pinSelectedIndicatorToPage =  Signal.merge(
       pageIndex
         .takeWhen(self.viewDidAppearProperty.signal)
-        .take(1)
+        .take(first: 1)
         .map { ($0, false) },
       selectedPage
         .map { page, _ in (page, true) }
@@ -101,57 +101,57 @@ SortPagerViewModelOutputs {
         .map { ($0, false) }
     )
 
-    self.notifyDelegateOfSelectedSort = combineLatest(
-      sorts.take(1),
-      self.sortButtonTappedIndexProperty.signal.ignoreNil()
+    self.notifyDelegateOfSelectedSort = Signal.combineLatest(
+      sorts.take(first: 1),
+      self.sortButtonTappedIndexProperty.signal.skipNil()
       )
       .map { sorts, sortIndex in sorts[sortIndex] }
 
     self.indicatorViewIsHidden = Signal.merge(
       self.viewWillAppearProperty.signal
-        .take(1)
+        .take(first: 1)
         .mapConst(true),
       self.viewDidAppearProperty.signal
-        .take(1)
+        .take(first: 1)
         .mapConst(false)
-        .ksr_debounce(0.1, onScheduler: AppEnvironment.current.scheduler),
+        .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler),
       self.willRotateProperty.signal.mapConst(true),
       self.didRotateProperty.signal
         .mapConst(false)
-        .ksr_debounce(0.1, onScheduler: AppEnvironment.current.scheduler)
+        .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
     )
   }
   // swiftlint:enable function_body_length
 
-  private let didRotateProperty = MutableProperty()
+  fileprivate let didRotateProperty = MutableProperty()
   public func didRotateFromInterfaceOrientation() {
     self.didRotateProperty.value = ()
   }
-  private let sortsProperty = MutableProperty<[DiscoveryParams.Sort]?>(nil)
-  public func configureWith(sorts sorts: [DiscoveryParams.Sort]) {
+  fileprivate let sortsProperty = MutableProperty<[DiscoveryParams.Sort]?>(nil)
+  public func configureWith(sorts: [DiscoveryParams.Sort]) {
     self.sortsProperty.value = sorts
   }
-  private let selectSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
-  public func select(sort sort: DiscoveryParams.Sort) {
+  fileprivate let selectSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
+  public func select(sort: DiscoveryParams.Sort) {
     self.selectSortProperty.value = sort
   }
-  private let sortButtonTappedIndexProperty = MutableProperty<Int?>(nil)
-  public func sortButtonTapped(index index: Int) {
+  fileprivate let sortButtonTappedIndexProperty = MutableProperty<Int?>(nil)
+  public func sortButtonTapped(index: Int) {
     self.sortButtonTappedIndexProperty.value = index
   }
-  private let updateStyleProperty = MutableProperty<Int?>(nil)
-  public func updateStyle(categoryId categoryId: Int?) {
+  fileprivate let updateStyleProperty = MutableProperty<Int?>(nil)
+  public func updateStyle(categoryId: Int?) {
     self.updateStyleProperty.value = categoryId
   }
-  private let willRotateProperty = MutableProperty()
+  fileprivate let willRotateProperty = MutableProperty()
   public func willRotateToInterfaceOrientation() {
     self.willRotateProperty.value = ()
   }
-  private let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty()
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

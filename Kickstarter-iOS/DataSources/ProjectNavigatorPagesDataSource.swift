@@ -3,10 +3,10 @@ import Library
 
 internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewControllerDataSource {
 
-  private let initialProject: Project
-  private var playlist: [Project] = []
-  private let refTag: RefTag
-  private var viewControllers: [UIViewController?] = []
+  fileprivate let initialProject: Project
+  fileprivate var playlist: [Project] = []
+  fileprivate let refTag: RefTag
+  fileprivate var viewControllers: [UIViewController?] = []
 
   init(refTag: RefTag, initialPlaylist: [Project]?, initialProject: Project) {
     self.initialProject = initialProject
@@ -19,14 +19,14 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func initialController() -> UIViewController? {
-    return self.playlist.indexOf(self.initialProject).flatMap(self.controllerFor(index:))
+    return self.playlist.index(of: self.initialProject).flatMap(self.controllerFor(index:))
   }
 
   internal func initialPamphletController() -> ProjectPamphletViewController? {
-    return self.playlist.indexOf(self.initialProject).flatMap(self.projectPamphletControllerFor(index:))
+    return self.playlist.index(of: self.initialProject).flatMap(self.projectPamphletControllerFor(index:))
   }
 
-  internal func controllerFor(index index: Int) -> UIViewController? {
+  internal func controllerFor(index: Int) -> UIViewController? {
     guard index >= 0 && index < self.playlist.count else { return nil }
 
     let project = self.playlist[index]
@@ -37,25 +37,25 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     return self.viewControllers[index]
   }
 
-  internal func projectPamphletControllerFor(index index: Int) -> ProjectPamphletViewController? {
+  internal func projectPamphletControllerFor(index: Int) -> ProjectPamphletViewController? {
     return self.controllerFor(index: index)
       .flatMap { $0 as? UINavigationController }
       .flatMap { $0.viewControllers.first as? ProjectPamphletViewController }
   }
 
-  internal func indexFor(controller controller: UIViewController) -> Int? {
-    return self.viewControllers.indexOf { $0 == controller }
+  internal func indexFor(controller: UIViewController) -> Int? {
+    return self.viewControllers.index { $0 == controller }
   }
 
-  internal func projectFor(controller controller: UIViewController) -> Project? {
+  internal func projectFor(controller: UIViewController) -> Project? {
     return self.indexFor(controller: controller).map { self.playlist[$0] }
   }
 
   internal func pageViewController(
-    pageViewController: UIPageViewController,
-    viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    _ pageViewController: UIPageViewController,
+    viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.indexOf({ $0 == viewController }) else {
+    guard let pageIdx = self.viewControllers.index(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -75,11 +75,11 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func pageViewController(
-    pageViewController: UIPageViewController,
-    viewControllerBeforeViewController
+    _ pageViewController: UIPageViewController,
+    viewControllerBefore
     viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.indexOf({ $0 == viewController }) else {
+    guard let pageIdx = self.viewControllers.index(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -98,7 +98,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     return self.viewControllers[previousPageIdx]
   }
 
-  private func createViewController(forProject project: Project) -> UIViewController {
+  fileprivate func createViewController(forProject project: Project) -> UIViewController {
     return UINavigationController(
       rootViewController: ProjectPamphletViewController.configuredWith(
         projectOrParam: .left(project),
@@ -107,7 +107,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     )
   }
 
-  private func clearViewControllersFarAway(fromIndex index: Int) {
+  fileprivate func clearViewControllersFarAway(fromIndex index: Int) {
     self.viewControllers.indices
       .filter { abs($0 - index) >= 3 }
       .forEach { idx in
@@ -115,7 +115,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     }
   }
 
-  private func padControllers(toLength length: Int) {
+  fileprivate func padControllers(toLength length: Int) {
     guard self.viewControllers.count <= length else { return }
 
     (self.viewControllers.count...length).forEach { _ in

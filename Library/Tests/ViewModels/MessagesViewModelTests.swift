@@ -3,22 +3,22 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 
 internal final class MessagesViewModelTests: TestCase {
-  private let vm: MessagesViewModelType = MessagesViewModel()
+  fileprivate let vm: MessagesViewModelType = MessagesViewModel()
 
-  private let backingAndProject = TestObserver<(Backing, Project), NoError>()
-  private let goToBackingProject = TestObserver<Project, NoError>()
-  private let goToBackingUser = TestObserver<User, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToRefTag = TestObserver<RefTag, NoError>()
-  private let messages = TestObserver<[Message], NoError>()
-  private let presentMessageDialog = TestObserver<MessageThread, NoError>()
-  private let project = TestObserver<Project, NoError>()
-  private let successfullyMarkedAsRead = TestObserver<(), NoError>()
+  fileprivate let backingAndProject = TestObserver<(Backing, Project), NoError>()
+  fileprivate let goToBackingProject = TestObserver<Project, NoError>()
+  fileprivate let goToBackingUser = TestObserver<User, NoError>()
+  fileprivate let goToProject = TestObserver<Project, NoError>()
+  fileprivate let goToRefTag = TestObserver<RefTag, NoError>()
+  fileprivate let messages = TestObserver<[Message], NoError>()
+  fileprivate let presentMessageDialog = TestObserver<MessageThread, NoError>()
+  fileprivate let project = TestObserver<Project, NoError>()
+  fileprivate let successfullyMarkedAsRead = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()

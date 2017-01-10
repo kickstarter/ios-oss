@@ -38,12 +38,12 @@ internal enum ProjectPamphletSubpage {
 
 internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var countContainerView: UIView!
-  @IBOutlet private weak var countLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var separatorView: UIView!
-  @IBOutlet private weak var subpageLabel: UILabel!
-  @IBOutlet private weak var topGradientView: GradientView!
+  @IBOutlet fileprivate weak var countContainerView: UIView!
+  @IBOutlet fileprivate weak var countLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var subpageLabel: UILabel!
+  @IBOutlet fileprivate weak var topGradientView: GradientView!
 
   internal func configureWith(value subpage: ProjectPamphletSubpage) {
     switch subpage {
@@ -54,14 +54,16 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     }
 
     self.countLabel.text = Format.wholeNumber(subpage.count)
-    self.topGradientView.hidden = !subpage.isFirstInSection
-    self.separatorView.hidden = !subpage.isFirstInSection
+    self.topGradientView.isHidden = !subpage.isFirstInSection
+    self.separatorView.isHidden = !subpage.isFirstInSection
+
+    self.setNeedsLayout()
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
@@ -70,23 +72,23 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
     }
 
-    self.countContainerView
+    _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> UIView.lens.backgroundColor .~ .ksr_navy_300
       |> roundedStyle()
 
-    self.countLabel
+    _ = self.countLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.rootStackView
-      |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.distribution .~ .EqualSpacing
+    _ = self.rootStackView
+      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.distribution .~ .equalSpacing
 
-    self.separatorView
+    _ = self.separatorView
       |> separatorStyle
 
-    self.subpageLabel
+    _ = self.subpageLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_body(size: 14)
 
@@ -96,10 +98,13 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       (UIColor.init(white: 0, alpha: 0.1), 0),
       (UIColor.init(white: 0, alpha: 0), 1)
     ])
+
+    self.setNeedsLayout()
   }
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
+
     self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
   }
 }

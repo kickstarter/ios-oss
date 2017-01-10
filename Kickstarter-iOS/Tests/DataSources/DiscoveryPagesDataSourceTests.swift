@@ -7,8 +7,8 @@ import Prelude
 private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest]
 
 internal final class DiscoveryPagesDataSourceTests: XCTestCase {
-  private let dataSource = DiscoveryPagesDataSource(sorts: sorts)
-  private let pageViewController = UIPageViewController()
+  fileprivate let dataSource = DiscoveryPagesDataSource(sorts: sorts)
+  fileprivate let pageViewController = UIPageViewController()
 
   func testIndex() {
     for sort in sorts {
@@ -30,7 +30,7 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
       let next = controller.flatMap {
         self.dataSource.pageViewController(
           self.pageViewController,
-          viewControllerAfterViewController: $0
+          viewControllerAfter: $0
         )
       }
 
@@ -41,7 +41,7 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
   func testViewControllerAfterLastViewController() {
     let lastController = self.dataSource.controllerFor(index: sorts.count - 1)
     let afterLastController = lastController.flatMap {
-      self.dataSource.pageViewController(self.pageViewController, viewControllerAfterViewController: $0)
+      self.dataSource.pageViewController(self.pageViewController, viewControllerAfter: $0)
     }
 
     XCTAssertNil(afterLastController)
@@ -53,7 +53,7 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
       let previous = controller.flatMap {
         self.dataSource.pageViewController(
           self.pageViewController,
-          viewControllerBeforeViewController: $0
+          viewControllerBefore: $0
         )
       }
 
@@ -64,7 +64,7 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
   func testViewControllerBeforeLastViewController() {
     let firstController = self.dataSource.controllerFor(index: 0)
     let beforeFirstController = firstController.flatMap {
-      self.dataSource.pageViewController(self.pageViewController, viewControllerBeforeViewController: $0)
+      self.dataSource.pageViewController(self.pageViewController, viewControllerBefore: $0)
     }
 
     XCTAssertNil(beforeFirstController)

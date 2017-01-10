@@ -12,7 +12,7 @@ internal final class SearchDataSource: ValueCellDataSource {
              inSection: Section.popularTitle.rawValue)
   }
 
-  internal func load(projects projects: [Project]) {
+  internal func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
 
     if let mostPopular = projects.first {
@@ -22,7 +22,7 @@ internal final class SearchDataSource: ValueCellDataSource {
     }
 
     if !projects.isEmpty {
-      projects.suffixFrom(1).forEach {
+      projects.suffix(from: 1).forEach {
         self.appendRow(value: $0, cellClass: SearchProjectCell.self, toSection: Section.projects.rawValue)
       }
     }

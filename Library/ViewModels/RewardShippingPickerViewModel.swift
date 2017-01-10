@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol RewardShippingPickerViewModelInputs {
@@ -8,7 +8,7 @@ public protocol RewardShippingPickerViewModelInputs {
   func cancelButtonTapped()
 
   /// Call with the project, shipping rules and selected shipping rule that is provided to the view.
-  func configureWith(project project: Project,
+  func configureWith(project: Project,
                              shippingRules: [ShippingRule],
                              selectedShippingRule: ShippingRule)
 
@@ -51,8 +51,8 @@ public final class RewardShippingPickerViewModel: RewardShippingPickerViewModelT
 RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
   public init() {
-    let projectAndShippingRulesAndSelectedShippingRule = combineLatest(
-      self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.ignoreNil(),
+    let projectAndShippingRulesAndSelectedShippingRule = Signal.combineLatest(
+      self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -61,14 +61,14 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
       .map { project, shippingRules, selectedShippingRule in
         (
           project,
-          shippingRules.sort { $0.location.displayableName < $1.location.displayableName },
+          shippingRules.sorted { $0.location.displayableName < $1.location.displayableName },
           selectedShippingRule
         )
     }
 
     self.selectRow = projectAndSortedShippingRulesAndSelectedShippingRule
       .map { _, shippingRules, selectedShippingRule in
-        shippingRules.indexOf(selectedShippingRule) ?? 0
+        shippingRules.index(of: selectedShippingRule) ?? 0
       }
       .takeWhen(self.viewWillAppearProperty.signal)
 
@@ -79,7 +79,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     let selectedRow = Signal.merge(self.pickerSelectedRowProperty.signal, self.selectRow)
 
-    let currentShippingRule = combineLatest(
+    let currentShippingRule = Signal.combineLatest(
       projectAndSortedShippingRulesAndSelectedShippingRule.map(second),
       selectedRow
       )
@@ -96,36 +96,36 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
     }
   }
 
-  private let cancelButtonTappedProperty = MutableProperty()
+  fileprivate let cancelButtonTappedProperty = MutableProperty()
   public func cancelButtonTapped() {
     self.cancelButtonTappedProperty.value = ()
   }
 
-  private let projectAndShippingRulesAndSelectedShippingRuleProperty
+  fileprivate let projectAndShippingRulesAndSelectedShippingRuleProperty
     = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
-  public func configureWith(project project: Project,
+  public func configureWith(project: Project,
                                     shippingRules: [ShippingRule],
                                     selectedShippingRule: ShippingRule) {
     self.projectAndShippingRulesAndSelectedShippingRuleProperty.value
       = (project, shippingRules, selectedShippingRule)
   }
 
-  private let doneButtonTappedProperty = MutableProperty()
+  fileprivate let doneButtonTappedProperty = MutableProperty()
   public func doneButtonTapped() {
     self.doneButtonTappedProperty.value = ()
   }
 
-  private let pickerSelectedRowProperty = MutableProperty(-1)
+  fileprivate let pickerSelectedRowProperty = MutableProperty(-1)
   public func pickerView(didSelectRow row: Int) {
     self.pickerSelectedRowProperty.value = row
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

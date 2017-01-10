@@ -10,8 +10,8 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testDataSource() {
-    let timeZone = NSTimeZone(abbreviation: "UTC")!
-    let calendar = NSCalendar.init(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    let timeZone = TimeZone(abbreviation: "UTC")!
+    var calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
     calendar.timeZone = timeZone
 
     withEnvironment(calendar: calendar, timeZone: timeZone) {
@@ -39,7 +39,7 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
       self.dataSource.load(projectActivityData:
         ProjectActivityData(activities: activities, project: project, groupedDates: true))
 
-      XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+      XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
       XCTAssertEqual(7, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
       XCTAssertEqual("ProjectActivityDateCell", self.dataSource.reusableId(item: 0, section: section))
       XCTAssertEqual("ProjectActivitySuccessCell", self.dataSource.reusableId(item: 1, section: section))
@@ -52,8 +52,8 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   }
 
   func testGroupedDatesIsFalse() {
-    let timeZone = NSTimeZone(abbreviation: "UTC")!
-    let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    let timeZone = TimeZone(abbreviation: "UTC")!
+    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
     calendar.timeZone = timeZone
 
     withEnvironment(calendar: calendar, timeZone: timeZone) {

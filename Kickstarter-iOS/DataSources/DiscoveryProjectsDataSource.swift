@@ -9,7 +9,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     case projects
   }
 
-  func load(activities activities: [Activity]) {
+  func load(activities: [Activity]) {
     let section = Section.activitySample.rawValue
 
     self.clearValues(section: section)
@@ -26,7 +26,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func load(projects projects: [Project]) {
+  func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
 
     projects.forEach { project in
@@ -38,17 +38,17 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func show(onboarding onboarding: Bool) {
+  func show(onboarding: Bool) {
     self.set(values: onboarding ? [()] : [],
              cellClass: DiscoveryOnboardingCell.self,
              inSection: Section.onboarding.rawValue)
   }
 
-  internal func activityAtIndexPath(indexPath: NSIndexPath) -> Activity? {
+  internal func activityAtIndexPath(_ indexPath: IndexPath) -> Activity? {
     return self[indexPath] as? Activity
   }
 
-  internal func projectAtIndexPath(indexPath: NSIndexPath) -> Project? {
+  internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
     return self[indexPath] as? Project
   }
 

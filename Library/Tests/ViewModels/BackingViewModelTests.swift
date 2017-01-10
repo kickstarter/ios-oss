@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -410,7 +410,7 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.Vertical])
+      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.vertical])
     }
   }
 }

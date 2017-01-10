@@ -6,16 +6,16 @@ import Prelude
 import Result
 
 internal final class ProjectActivityCommentCellViewModelTests: TestCase {
-  private let vm: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
+  fileprivate let vm: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
 
-  private let authorImage = TestObserver<String?, NoError>()
-  private let body = TestObserver<String, NoError>()
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
-  private let cellAccessibilityValue = TestObserver<String, NoError>()
-  private let defaultUser = .template |> User.lens.id .~ 9
-  private let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
-  private let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
-  private let title = TestObserver<String, NoError>()
+  fileprivate let authorImage = TestObserver<String?, NoError>()
+  fileprivate let body = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let defaultUser = .template |> User.lens.id .~ 9
+  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
+  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   internal override func setUp() {
     super.setUp()

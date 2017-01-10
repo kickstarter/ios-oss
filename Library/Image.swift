@@ -3,8 +3,7 @@ import UIKit
 public func image(named name: String, inBundle bundle: NSBundleType = AppEnvironment.current.mainBundle,
                         compatibleWithTraitCollection traitCollection: UITraitCollection? = nil) -> UIImage? {
 
-  return UIImage(named: name, inBundle: NSBundle(identifier: bundle.identifier),
-                 compatibleWithTraitCollection: traitCollection)
+  return UIImage(named: name, in: Bundle(identifier: bundle.identifier), compatibleWith: traitCollection)
 }
 
 public func image(named name: String,
@@ -21,7 +20,7 @@ public func image(named name: String,
   defer { UIGraphicsEndImageContext() }
 
   tintColor.set()
-  img.drawInRect(.init(origin: .zero, size: img.size))
+  img.draw(in: .init(origin: .zero, size: img.size))
 
   return UIGraphicsGetImageFromCurrentImageContext()
 }

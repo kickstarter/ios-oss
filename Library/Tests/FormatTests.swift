@@ -6,28 +6,28 @@ import KsApi
 final class FormatTests: TestCase {
 
   func testWholeNumber() {
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       XCTAssertEqual(Format.wholeNumber(10), "10")
       XCTAssertEqual(Format.wholeNumber(100), "100")
       XCTAssertEqual(Format.wholeNumber(1_000), "1,000")
       XCTAssertEqual(Format.wholeNumber(10_000), "10,000")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       XCTAssertEqual(Format.wholeNumber(10), "10")
       XCTAssertEqual(Format.wholeNumber(100), "100")
       XCTAssertEqual(Format.wholeNumber(1_000), "1.000")
       XCTAssertEqual(Format.wholeNumber(10_000), "10.000")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    withEnvironment(locale: Locale(identifier: "fr")) {
       XCTAssertEqual(Format.wholeNumber(10), "10")
       XCTAssertEqual(Format.wholeNumber(100), "100")
       XCTAssertEqual(Format.wholeNumber(1_000), "1 000")
       XCTAssertEqual(Format.wholeNumber(10_000), "10 000")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       XCTAssertEqual(Format.wholeNumber(10), "10")
       XCTAssertEqual(Format.wholeNumber(100), "100")
       XCTAssertEqual(Format.wholeNumber(1_000), "1.000")
@@ -37,51 +37,51 @@ final class FormatTests: TestCase {
 
   func testPercentages() {
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       XCTAssertEqual(Format.percentage(50), "50%")
       XCTAssertEqual(Format.percentage(1_000), "1,000%")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       XCTAssertEqual(Format.percentage(50), "50 %")
       XCTAssertEqual(Format.percentage(1_000), "1.000 %")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    withEnvironment(locale: Locale(identifier: "fr")) {
       XCTAssertEqual(Format.percentage(50), "50 %")
       XCTAssertEqual(Format.percentage(1_000), "1 000 %")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       XCTAssertEqual(Format.percentage(50), "50 %")
       XCTAssertEqual(Format.percentage(1_000), "1.000 %")
     }
   }
 
   func testPercentageFromDouble() {
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       XCTAssertEqual(Format.percentage(0.532), "53%")
       XCTAssertEqual(Format.percentage(10.66), "1,066%")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       XCTAssertEqual(Format.percentage(0.532), "53 %")
       XCTAssertEqual(Format.percentage(10.66), "1.066 %")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    withEnvironment(locale: Locale(identifier: "fr")) {
       XCTAssertEqual(Format.percentage(0.532), "53 %")
       XCTAssertEqual(Format.percentage(10.66), "1 066 %")
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       XCTAssertEqual(Format.percentage(0.532), "53 %")
       XCTAssertEqual(Format.percentage(10.66), "1.066 %")
     }
   }
 
   func testCurrency() {
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "$1,000")
         XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
@@ -110,7 +110,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
         XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
@@ -136,7 +136,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    withEnvironment(locale: Locale(identifier: "fr")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 $")
         XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
@@ -162,7 +162,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       withEnvironment(countryCode: "US") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
         XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
@@ -188,7 +188,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "dk")) {
+    withEnvironment(locale: Locale(identifier: "dk")) {
       withEnvironment(countryCode: "DK") {
         XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1000")
         XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1000")
@@ -201,10 +201,10 @@ final class FormatTests: TestCase {
 
   func testDate() {
     let date = 434592000.0 // Oct 10 1983 in UTC
-    let UTC = NSTimeZone(abbreviation: "UTC")!
-    let EST = NSTimeZone(abbreviation: "EST")!
+    let UTC = TimeZone(abbreviation: "UTC")!
+    let EST = TimeZone(abbreviation: "EST")!
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date), "Oct 10, 1983, 12:00:00 AM")
       }
@@ -214,7 +214,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date), "10.10.1983, 00:00:00")
       }
@@ -223,7 +223,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct 1983 0:00:00")
       }
@@ -232,9 +232,9 @@ final class FormatTests: TestCase {
       }
     }
 
-    let ios10 = NSOperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0)
-    if NSProcessInfo().isOperatingSystemAtLeastVersion(ios10) {
-      withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    let ios10 = OperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0)
+    if ProcessInfo().isOperatingSystemAtLeast(ios10) {
+      withEnvironment(locale: Locale(identifier: "fr")) {
         withEnvironment(timeZone: UTC) {
           XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct. 1983 à 00:00:00")
         }
@@ -243,7 +243,7 @@ final class FormatTests: TestCase {
         }
       }
     } else {
-      withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+      withEnvironment(locale: Locale(identifier: "fr")) {
         withEnvironment(timeZone: UTC) {
           XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct. 1983 00:00:00")
         }
@@ -256,11 +256,11 @@ final class FormatTests: TestCase {
 
   func testDateWithDateFormat() {
     let date = 434592000.0 // Oct 10 1983 in UTC
-    let UTC = NSTimeZone(abbreviation: "UTC")!
-    let EST = NSTimeZone(abbreviation: "EST")!
+    let UTC = TimeZone(abbreviation: "UTC")!
+    let EST = TimeZone(abbreviation: "EST")!
     let format = "MMM yyyy"
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en")) {
+    withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Oct 1983")
       }
@@ -270,7 +270,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de")) {
+    withEnvironment(locale: Locale(identifier: "de")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Okt. 1983")
       }
@@ -279,7 +279,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "es")) {
+    withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct 1983")
       }
@@ -288,7 +288,7 @@ final class FormatTests: TestCase {
       }
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "fr")) {
+    withEnvironment(locale: Locale(identifier: "fr")) {
       withEnvironment(timeZone: UTC) {
         XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct. 1983")
       }
@@ -389,7 +389,7 @@ final class FormatTests: TestCase {
     let awhileAgo = now.timeIntervalSince1970 - 60 * 60 * 24 * 30 - 60 * 60 * 24
     let inAwhile = now.timeIntervalSince1970 + 60 * 60 * 24 * 30 + 60 * 60 * 24
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "en"), language: .en, mainBundle: MockBundle()) {
+    withEnvironment(language: .en, locale: Locale(identifier: "en"), mainBundle: MockBundle()) {
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))
       XCTAssertEqual("right now", Format.relative(secondsInUTC: rightNow))
       XCTAssertEqual("30 minutes ago", Format.relative(secondsInUTC: minutesAgo))
@@ -400,9 +400,9 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
                      Format.relative(secondsInUTC: awhileAgo))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
                      Format.relative(secondsInUTC: inAwhile))
 
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow, abbreviate: true))
@@ -415,13 +415,13 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo, abbreviate: true))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
                      Format.relative(secondsInUTC: awhileAgo, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .NoStyle),
+      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
                      Format.relative(secondsInUTC: inAwhile, abbreviate: true))
     }
 
-    withEnvironment(locale: NSLocale(localeIdentifier: "de"), language: .de, mainBundle: MockBundle()) {
+    withEnvironment(language: .de, locale: Locale(identifier: "de"), mainBundle: MockBundle()) {
       XCTAssertEqual("vor 1 Stunde", Format.relative(secondsInUTC: hoursAgo))
       XCTAssertEqual("vor 1 Std", Format.relative(secondsInUTC: hoursAgo, abbreviate: true))
     }

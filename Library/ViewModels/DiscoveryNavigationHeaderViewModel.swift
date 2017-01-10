@@ -1,18 +1,18 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
-  func configureWith(params params: DiscoveryParams)
+  func configureWith(params: DiscoveryParams)
 
   /// Call when favorite category button is tapped.
   func favoriteButtonTapped()
 
   /// Call when params have been selected from the filters menu.
-  func filtersSelected(row row: SelectableRow)
+  func filtersSelected(row: SelectableRow)
 
   /// Call when title button is tapped.
   func titleButtonTapped()
@@ -96,15 +96,15 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     let categories = self.viewDidLoadProperty.signal
       .switchMap {
         AppEnvironment.current.apiService.fetchCategories()
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.categories }
           .prefix(value: [])
           .demoteErrors()
       }
 
     let currentParams = Signal.merge(
-      self.paramsProperty.signal.ignoreNil(),
-      self.filtersSelectedRowProperty.signal.ignoreNil().map { $0.params }
+      self.paramsProperty.signal.skipNil(),
+      self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
     )
 
     let paramsAndFiltersAreHidden = Signal.merge(
@@ -116,7 +116,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         return (params: params,
                 filtersAreHidden: filtersAreHidden ? !(data?.filtersAreHidden ?? true) : true)
       }
-      .ignoreNil()
+      .skipNil()
 
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
     let categoryId = paramsAndFiltersAreHidden.map(first).map { $0.category?.root?.id }
@@ -141,13 +141,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     let dismissFiltersSignal = Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreValues(),
-      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.skip(1).ignoreValues()
+      paramsAndFiltersAreHidden.filter { $0.filtersAreHidden }.skip(first: 1).ignoreValues()
     )
 
     self.dismissDiscoveryFilters = dismissFiltersSignal
-      .ksr_debounce(0.4, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_debounce(.milliseconds(400), on: AppEnvironment.current.scheduler)
 
-    self.notifyDelegateFilterSelectedParams = currentParams.skip(1)
+    self.notifyDelegateFilterSelectedParams = currentParams.skip(first: 1)
 
     self.primaryLabelFont = paramsAndFiltersAreHidden
       .map { params, filtersAreHidden in
@@ -158,7 +158,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       self.viewDidLoadProperty.signal.mapConst((0.0, false)),
       paramsAndFiltersAreHidden
         .map(first)
-        .map { ($0.category?.isRoot == .Some(false) ? 0.6 : 1.0, true) }
+        .map { ($0.category?.isRoot == .some(false) ? 0.6 : 1.0, true) }
     )
 
     self.primaryLabelText = strings.map { $0.filter }
@@ -171,12 +171,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.arrowOpacityAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((0.0, false)),
-      self.secondaryLabelText.signal.mapConst((1.0, true)).take(1)
+      self.secondaryLabelText.signal.mapConst((1.0, true)).take(first: 1)
     )
 
-    let categoriesWithParams = combineLatest(categories, (Signal.merge(
-      self.paramsProperty.signal.ignoreNil().map { SelectableRow(isSelected: true, params: $0) },
-      self.filtersSelectedRowProperty.signal.ignoreNil()
+    let categoriesWithParams = Signal.combineLatest(categories, (Signal.merge(
+      self.paramsProperty.signal.skipNil().map { SelectableRow(isSelected: true, params: $0) },
+      self.filtersSelectedRowProperty.signal.skipNil()
       )))
       .map { categories, row in (row: row, categories: categories) }
 
@@ -186,12 +186,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.subviewColor = primaryColor
 
     let isFullScreen = Signal.merge(
-      self.paramsProperty.signal.ignoreNil().mapConst(false),
+      self.paramsProperty.signal.skipNil().mapConst(false),
       self.showDiscoveryFilters.mapConst(true),
       dismissFiltersSignal.mapConst(false)
     )
 
-    self.gradientViewCategoryIdForColor = combineLatest(categoryId, isFullScreen)
+    self.gradientViewCategoryIdForColor = Signal.combineLatest(categoryId, isFullScreen)
       .map { (categoryId: $0, isFullScreen: $1) }
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
@@ -204,11 +204,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     let categoryIdOnParamsUpdated = currentParams
       .map { $0.category?.id }
-      .ignoreNil()
+      .skipNil()
 
     let categoryIdOnFavoriteTap = categoryIdOnParamsUpdated
       .takeWhen(self.favoriteButtonTappedProperty.signal)
-      .on(next: { toggleStoredFavoriteCategory(withId: $0) })
+      .on(value: { toggleStoredFavoriteCategory(withId: $0) })
 
     self.updateFavoriteButton = Signal.merge(
       categoryIdOnParamsUpdated.map { ($0, false) },
@@ -226,14 +226,14 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
         !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
-      .on(next: { _ in
+      .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })
 
     currentParams
       .takePairWhen(categoryIdOnFavoriteTap.map(isFavoriteCategoryStored(withId:)))
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackDiscoveryFavoritedCategory(params: $0, isFavorited: $1)
     }
 
@@ -241,27 +241,27 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .takeWhen(self.titleButtonTappedProperty.signal)
       .filter { $0.filtersAreHidden }
       .map { $0.params }
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
   // swiftlint:enable function_body_length
 
-  private let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
-  public func configureWith(params params: DiscoveryParams) {
+  fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
+  public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
   }
-  private let favoriteButtonTappedProperty = MutableProperty()
+  fileprivate let favoriteButtonTappedProperty = MutableProperty()
   public func favoriteButtonTapped() {
     self.favoriteButtonTappedProperty.value = ()
   }
-  private let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
-  public func filtersSelected(row row: SelectableRow) {
+  fileprivate let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
+  public func filtersSelected(row: SelectableRow) {
     self.filtersSelectedRowProperty.value = row
   }
-  private let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty()
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -291,7 +291,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public var outputs: DiscoveryNavigationHeaderViewModelOutputs { return self }
 }
 
-private func stringsForTitle(params params: DiscoveryParams) -> (filter: String, subcategory: String?) {
+private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcategory: String?) {
   let filterText: String
   var subcategoryText: String? = nil
 
@@ -312,7 +312,7 @@ private func stringsForTitle(params params: DiscoveryParams) -> (filter: String,
   return (filter: filterText, subcategory: subcategoryText)
 }
 
-private func accessibilityLabelForTitleButton(params params: DiscoveryParams) -> String {
+private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String {
   if params.staffPicks == true {
     return Strings.Filter_by_projects_we_love()
   } else if params.starred == true {
@@ -336,19 +336,19 @@ private func string(forCategoryId id: Int) -> String {
 }
 
 private func isFavoriteCategoryStored(withId id: Int) -> Bool {
-  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) != nil ||
-  AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) != nil
+  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) != nil ||
+  AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) != nil
 }
 
 private func toggleStoredFavoriteCategory(withId id: Int) {
-  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.indexOf(id) {
-    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.removeAtIndex(index)
+  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) {
+    AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.append(id)
   }
 
-  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.indexOf(id) {
-    AppEnvironment.current.userDefaults.favoriteCategoryIds.removeAtIndex(index)
+  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) {
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.userDefaults.favoriteCategoryIds.append(id)
   }

@@ -1,9 +1,9 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol BackingCellViewModelInputs {
-  func configureWith(backing backing: Backing, project: Project)
+  func configureWith(backing: Backing, project: Project)
 }
 public protocol BackingCellViewModelOutputs {
   var pledged: Signal<String, NoError> { get }
@@ -22,7 +22,7 @@ public final class BackingCellViewModel: BackingCellViewModelType, BackingCellVi
 BackingCellViewModelOutputs {
 
   public init() {
-    let backingAndProject = self.backingAndProjectProperty.signal.ignoreNil()
+    let backingAndProject = self.backingAndProjectProperty.signal.skipNil()
     let backing = backingAndProject.map { $0.0 }
 
     self.pledged = backingAndProject.map { backing, project in
@@ -35,7 +35,7 @@ BackingCellViewModelOutputs {
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .ShortStyle, timeStyle: .NoStyle))
+            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .short, timeStyle: .none))
       }
     }
     .map { $0 ?? "" }
@@ -43,17 +43,17 @@ BackingCellViewModelOutputs {
     self.deliveryAccessibilityLabel = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .LongStyle, timeStyle: .NoStyle))
+          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .long, timeStyle: .none))
       }
     }
       .map { $0 ?? "" }
 
     self.rootStackViewAlignment = backingAndProject
-      .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .Fill : .Leading }
+      .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .fill : .leading }
   }
 
-  private let backingAndProjectProperty = MutableProperty<(Backing, Project)?>(nil)
-  public func configureWith(backing backing: Backing, project: Project) {
+  fileprivate let backingAndProjectProperty = MutableProperty<(Backing, Project)?>(nil)
+  public func configureWith(backing: Backing, project: Project) {
     self.backingAndProjectProperty.value = (backing, project)
   }
 

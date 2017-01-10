@@ -7,14 +7,14 @@ import KsApi
 import Prelude
 
 final class ProjectActivitiesViewModelTests: TestCase {
-  private let vm: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
+  fileprivate let vm: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
 
-  private let activitiesPresent = TestObserver<Bool, NoError>()
-  private let goTo = TestObserver<ProjectActivitiesGoTo, NoError>()
-  private let groupedDates = TestObserver<Bool, NoError>()
-  private let isRefreshing = TestObserver<Bool, NoError>()
-  private let project = TestObserver<Project, NoError>()
-  private let showEmptyState = TestObserver<Bool, NoError>()
+  fileprivate let activitiesPresent = TestObserver<Bool, NoError>()
+  fileprivate let goTo = TestObserver<ProjectActivitiesGoTo, NoError>()
+  fileprivate let groupedDates = TestObserver<Bool, NoError>()
+  fileprivate let isRefreshing = TestObserver<Bool, NoError>()
+  fileprivate let project = TestObserver<Project, NoError>()
+  fileprivate let showEmptyState = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()

@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -23,7 +23,7 @@ public protocol DashboardRewardsCellViewModelInputs {
   func backersButtonTapped()
 
   /// Call when load cell with project.
-  func configureWith(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
+  func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats],
                                  project: Project)
 
   /// Call when Pledged button is tapped.
@@ -56,16 +56,16 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   DashboardRewardsCellViewModelInputs, DashboardRewardsCellViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let statsProject = self.statsProjectProperty.signal.ignoreNil()
+    let statsProject = self.statsProjectProperty.signal.skipNil()
 
     let rewards = statsProject
-      .map { stats, project in (project.rewards ?? [], stats) }
+      .map { stats, project in (project.rewards, stats) }
       .map(allRewardsStats(rewards:stats:))
 
     let initialSort = rewards.sort { $0.pledged > $1.pledged }
 
     let sortedByTop = rewards
-      .sort { $0.minimum > $1.minimum }
+      .sort { ($0.minimum ?? 0) > ($1.minimum ?? 0) }
       .takeWhen(self.topRewardsButtonTappedProperty.signal)
 
     let sortedByBackers = rewards
@@ -82,7 +82,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       sortedByPledged
     )
 
-    let allRewardsRowData = combineLatest(
+    let allRewardsRowData = Signal.combineLatest(
       statsProject.map { $1 },
       allRewards
       )
@@ -98,7 +98,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     self.hideSeeAllTiersButton = allTiersButtonIsHidden.skipRepeats()
 
     // if more than 6 rewards, truncate at 4
-    self.rewardsRowData = combineLatest(allRewardsRowData, allTiersButtonIsHidden)
+    self.rewardsRowData = Signal.combineLatest(allRewardsRowData, allTiersButtonIsHidden)
       .map { rowData, isHidden in
         let rewardCount = rowData.rewardsStats.count
         let maxRewards = isHidden ? rowData.rewardsStats :
@@ -115,7 +115,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     statsProject
       .map { $1 }
       .takeWhen(self.seeAllTiersButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
   }
   // swiftlint:enable function_body_length
 
@@ -126,31 +126,31 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   public let notifyDelegateAddedRewardRows: Signal<Void, NoError>
   public let rewardsRowData: Signal<RewardsRowData, NoError>
 
-  private let backersButtonTappedProperty = MutableProperty()
+  fileprivate let backersButtonTappedProperty = MutableProperty()
   public func backersButtonTapped() {
     backersButtonTappedProperty.value = ()
   }
-  private let statsProjectProperty =
+  fileprivate let statsProjectProperty =
     MutableProperty<([ProjectStatsEnvelope.RewardStats], Project)?>(nil)
-  public func configureWith(rewardStats rewardStats: [ProjectStatsEnvelope.RewardStats],
+  public func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats],
                                         project: Project) {
     self.statsProjectProperty.value = (rewardStats, project)
   }
-  private let pledgedButtonTappedProperty = MutableProperty()
+  fileprivate let pledgedButtonTappedProperty = MutableProperty()
   public func pledgedButtonTapped() {
     pledgedButtonTappedProperty.value = ()
   }
-  private let seeAllTiersButtonTappedProperty = MutableProperty()
+  fileprivate let seeAllTiersButtonTappedProperty = MutableProperty()
   public func seeAllTiersButtonTapped() {
     seeAllTiersButtonTappedProperty.value = ()
   }
-  private let topRewardsButtonTappedProperty = MutableProperty()
+  fileprivate let topRewardsButtonTappedProperty = MutableProperty()
   public func topRewardsButtonTapped() {
     topRewardsButtonTappedProperty.value = ()
   }
 }
 
-private func allRewardsStats(rewards rewards: [Reward],
+private func allRewardsStats(rewards: [Reward],
                                      stats: [ProjectStatsEnvelope.RewardStats]) ->
   [ProjectStatsEnvelope.RewardStats] {
 
@@ -159,7 +159,7 @@ private func allRewardsStats(rewards rewards: [Reward],
     let zeroPledgedStats = rewards.filter { !statsIds.contains($0.id) }
       .map {
         return .zero
-          |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ $0.backersCount ?? 0
+          |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0.backersCount ?? 0)
           |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0.id
           |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ $0.minimum
     }

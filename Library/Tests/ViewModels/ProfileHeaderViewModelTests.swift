@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import KsApi
 @testable import KsApi
@@ -10,7 +10,7 @@ import Prelude
 
 internal final class ProfileHeaderViewModelTests: TestCase {
   let vm = ProfileHeaderViewModel()
-  let avatarURL = TestObserver<NSURL?, NoError>()
+  let avatarURL = TestObserver<URL?, NoError>()
   let backedProjectsCountLabel = TestObserver<String, NoError>()
   let createdProjectsCountLabel = TestObserver<String, NoError>()
   let createdProjectsCountLabelHidden = TestObserver<Bool, NoError>()
@@ -34,7 +34,7 @@ internal final class ProfileHeaderViewModelTests: TestCase {
 
     self.vm.inputs.user(user)
 
-    self.avatarURL.assertValues([NSURL(string: user.avatar.large ?? user.avatar.medium)],
+    self.avatarURL.assertValues([URL(string: user.avatar.large ?? user.avatar.medium)],
                                 "User avatar emitted.")
     self.userName.assertValues([user.name], "User name emitted.")
   }

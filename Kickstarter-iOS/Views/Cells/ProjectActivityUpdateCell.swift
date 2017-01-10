@@ -6,22 +6,22 @@ import UIKit
 
 internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
 
-  private let viewModel: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
+  fileprivate let viewModel: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  @IBOutlet private weak var activityTitleLabel: UILabel!
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var commentsCountImageView: UIImageView!
-  @IBOutlet private weak var commentsCountLabel: UILabel!
-  @IBOutlet private weak var commentsStackView: UIStackView!
-  @IBOutlet private weak var containerStackView: UIStackView!
-  @IBOutlet private weak var contentAndFooterStackView: UIStackView!
-  @IBOutlet private weak var footerDividerView: UIView!
-  @IBOutlet private weak var likeAndCommentsCountStackView: UIStackView!
-  @IBOutlet private weak var likesCountImageView: UIImageView!
-  @IBOutlet private weak var likesCountLabel: UILabel!
-  @IBOutlet private weak var likesStackView: UIStackView!
-  @IBOutlet private weak var updateTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var bodyLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var commentsCountImageView: UIImageView!
+  @IBOutlet fileprivate weak var commentsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var commentsStackView: UIStackView!
+  @IBOutlet fileprivate weak var containerStackView: UIStackView!
+  @IBOutlet fileprivate weak var contentAndFooterStackView: UIStackView!
+  @IBOutlet fileprivate weak var footerDividerView: UIView!
+  @IBOutlet fileprivate weak var likeAndCommentsCountStackView: UIStackView!
+  @IBOutlet fileprivate weak var likesCountImageView: UIImageView!
+  @IBOutlet fileprivate weak var likesCountLabel: UILabel!
+  @IBOutlet fileprivate weak var likesStackView: UIStackView!
+  @IBOutlet fileprivate weak var updateTitleLabel: UILabel!
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
     self.viewModel.inputs.configureWith(activity: activityAndProject.0,
@@ -32,7 +32,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.viewModel.outputs.activityTitle.observeForUI()
-      .observeNext { [weak activityTitleLabel] title in
+      .observeValues { [weak activityTitleLabel] title in
         guard let activityTitleLabel = activityTitleLabel else { return }
 
         activityTitleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),
@@ -40,7 +40,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
           italic: nil
         )
 
-        activityTitleLabel
+        _ = activityTitleLabel
           |> projectActivityTitleLabelStyle
     }
 
@@ -60,7 +60,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       UILabel.lens.font .~ .ksr_caption1(size: 12)
         <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityUpdateCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -69,10 +69,10 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.numberOfLines .~ 4
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font %~~ { _, label in
@@ -81,39 +81,39 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
             : UIFont.ksr_body(size: 14)
       }
 
-    self.commentsCountImageView
+    _ = self.commentsCountImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_600
 
-    self.commentsCountLabel
+    _ = self.commentsCountLabel
       |> statLabel
 
-    self.commentsStackView
+    _ = self.commentsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.containerStackView
+    _ = self.containerStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    self.contentAndFooterStackView
+    _ = self.contentAndFooterStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.footerDividerView
+    _ = self.footerDividerView
       |> projectActivityDividerViewStyle
 
-    self.likeAndCommentsCountStackView
+    _ = self.likeAndCommentsCountStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.likesCountImageView
+    _ = self.likesCountImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_600
 
-    self.likesCountLabel
+    _ = self.likesCountLabel
       |> statLabel
 
-    self.likesStackView
+    _ = self.likesStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.updateTitleLabel
+    _ = self.updateTitleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_text_navy_700

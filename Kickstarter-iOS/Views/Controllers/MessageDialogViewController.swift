@@ -4,26 +4,26 @@ import ReactiveExtensions
 import UIKit
 
 internal protocol MessageDialogViewControllerDelegate: class {
-  func messageDialogWantsDismissal(dialog: MessageDialogViewController)
-  func messageDialog(dialog: MessageDialogViewController, postedMessage: Message)
+  func messageDialogWantsDismissal(_ dialog: MessageDialogViewController)
+  func messageDialog(_ dialog: MessageDialogViewController, postedMessage: Message)
 }
 
 internal final class MessageDialogViewController: UIViewController {
-  private let viewModel: MessageDialogViewModelType = MessageDialogViewModel()
+  fileprivate let viewModel: MessageDialogViewModelType = MessageDialogViewModel()
   internal weak var delegate: MessageDialogViewControllerDelegate?
 
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var postButton: UIBarButtonItem!
-  @IBOutlet private weak var bodyTextView: UITextView!
-  @IBOutlet private weak var loadingView: UIView!
-  @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var nameLabel: UILabel!
+  @IBOutlet fileprivate weak var postButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var bodyTextView: UITextView!
+  @IBOutlet fileprivate weak var loadingView: UIView!
+  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
 
-  internal static func configuredWith(messageSubject messageSubject: MessageSubject,
+  internal static func configuredWith(messageSubject: MessageSubject,
                                       context: Koala.MessageDialogContext) -> MessageDialogViewController {
 
-    let vc = Storyboard.Messages.instantiate(MessageDialogViewController)
+    let vc = Storyboard.Messages.instantiate(MessageDialogViewController.self)
     vc.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
-    vc.modalPresentationStyle = .FormSheet
+    vc.modalPresentationStyle = .formSheet
     return vc
   }
 
@@ -42,32 +42,32 @@ internal final class MessageDialogViewController: UIViewController {
       .map { [weak self] in (self?.view.frame.height ?? 0.0) - $0.frame.minY }
 
     self.viewModel.outputs.notifyPresenterDialogWantsDismissal
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.messageDialogWantsDismissal(_self)
     }
 
     self.viewModel.outputs.notifyPresenterCommentWasPostedSuccesfully
-      .observeNext { [weak self] message in
+      .observeValues { [weak self] message in
         guard let _self = self else { return }
         _self.delegate?.messageDialog(_self, postedMessage: message)
     }
 
     self.viewModel.outputs.showAlertMessage
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.presentError($0) }
+      .observeValues { [weak self] in self?.presentError($0) }
   }
 
-  @IBAction private func cancelButtonPressed () {
+  @IBAction fileprivate func cancelButtonPressed () {
     self.viewModel.inputs.cancelButtonPressed()
   }
 
-  @IBAction private func postButtonPressed() {
+  @IBAction fileprivate func postButtonPressed() {
     self.viewModel.inputs.postButtonPressed()
   }
 
-  private func presentError(message: String) {
-    self.presentViewController(UIAlertController.genericError(message),
+  fileprivate func presentError(_ message: String) {
+    self.present(UIAlertController.genericError(message),
                                animated: true,
                                completion: nil)
   }
@@ -75,7 +75,7 @@ internal final class MessageDialogViewController: UIViewController {
 
 extension MessageDialogViewController: UITextViewDelegate {
 
-  internal func textViewDidChange(textView: UITextView) {
+  internal func textViewDidChange(_ textView: UITextView) {
     self.viewModel.inputs.bodyTextChanged(textView.text)
   }
 }

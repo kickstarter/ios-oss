@@ -96,30 +96,30 @@ public extension FontStyle {
   public func toUIFont() -> UIFont {
     switch self {
     case .Body:
-      return .preferredFontForTextStyle(UIFontTextStyleBody)
+      return .preferredFont(forTextStyle: .body)
     case .Callout:
-      return .preferredFontForTextStyle(UIFontTextStyleCallout)
+      return .preferredFont(forTextStyle: .callout)
     case .Caption1:
-      return .preferredFontForTextStyle(UIFontTextStyleCaption1)
+      return .preferredFont(forTextStyle: .caption1)
     case .Caption2:
-      return .preferredFontForTextStyle(UIFontTextStyleCaption2)
+      return .preferredFont(forTextStyle: .caption2)
     case .Footnote:
-      return .preferredFontForTextStyle(UIFontTextStyleFootnote)
+      return .preferredFont(forTextStyle: .footnote)
     case .Headline:
-      return .preferredFontForTextStyle(UIFontTextStyleHeadline)
+      return .preferredFont(forTextStyle: .headline)
     case .Subhead:
-      return .preferredFontForTextStyle(UIFontTextStyleSubheadline)
+      return .preferredFont(forTextStyle: .subheadline)
     case .Title1:
-      return .preferredFontForTextStyle(UIFontTextStyleTitle1)
+      return .preferredFont(forTextStyle: .title1)
     case .Title2:
-      return .preferredFontForTextStyle(UIFontTextStyleTitle2)
+      return .preferredFont(forTextStyle: .title2)
     case .Title3:
-      return .preferredFontForTextStyle(UIFontTextStyleTitle3)
+      return .preferredFont(forTextStyle: .title3)
     }
   }
 
   #if os(iOS)
-  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? .systemFontOfSize(15.0)
+  internal static let mismatchedFont = UIFont(name: "Marker Felt", size: 15.0) ?? .systemFont(ofSize: 15.0)
   #else
   internal static let mismatchedFont = UIFont(name: "Courier New", size: 15.0) ?? .systemFontOfSize(15.0)
   #endif
@@ -134,7 +134,7 @@ public extension Color {
     case .BlueDark:       return .hex(0x081245)
     case .BlueLight:      return .hex(0xe8f6ff)
     case .BlueRoyal:      return .hex(0x00a0ff)
-    case .Clear:          return .clearColor()
+    case .Clear:          return .clear
     case .FacebookBlue:   return .hex(0x3b5998)
     case .Green:          return .hex(0x2bde73)
     case .GreenLight:     return .hex(0xdef7e0)
@@ -159,7 +159,7 @@ public extension Color {
   #if TARGET_OS_TV
   internal static let mismatchedColor = UIColor.redColor()
   #else
-  internal static let mismatchedColor = UIColor.redColor()
+  internal static let mismatchedColor = UIColor.red
   #endif
 }
 
@@ -201,7 +201,7 @@ public extension Color.Category {
   }
 }
 
-public func UIColorFromCategoryId(id: Int) -> UIColor? {
+public func UIColorFromCategoryId(_ id: Int) -> UIColor? {
   switch id {
   case 1: return Color.Category.Art.toUIColor()
   case 3: return Color.Category.Comics.toUIColor()

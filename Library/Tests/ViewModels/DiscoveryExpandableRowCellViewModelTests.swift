@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -8,18 +8,18 @@ import XCTest
 @testable import Library
 
 final class DiscoveryExpandableRowCellViewModelTests: TestCase {
-  private let vm: DiscoveryExpandableRowCellViewModelType = DiscoveryExpandableRowCellViewModel()
+  fileprivate let vm: DiscoveryExpandableRowCellViewModelType = DiscoveryExpandableRowCellViewModel()
 
-  private let cellAccessibilityHint = TestObserver<String, NoError>()
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
-  private let expandCategoryStyleExpandableRow = TestObserver<ExpandableRow, NoError>()
-  private let expandCategoryStyleCategoryId = TestObserver<Int?, NoError>()
-  private let filterIsExpanded = TestObserver<Bool, NoError>()
-  private let filterTitleLabelText = TestObserver<String, NoError>()
-  private let projectsCountLabelAlpha = TestObserver<CGFloat, NoError>()
-  private let projectsCountLabelHidden = TestObserver<Bool, NoError>()
-  private let projectsCountLabelText = TestObserver<String, NoError>()
-  private let projectsCountLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let cellAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let expandCategoryStyleExpandableRow = TestObserver<ExpandableRow, NoError>()
+  fileprivate let expandCategoryStyleCategoryId = TestObserver<Int?, NoError>()
+  fileprivate let filterIsExpanded = TestObserver<Bool, NoError>()
+  fileprivate let filterTitleLabelText = TestObserver<String, NoError>()
+  fileprivate let projectsCountLabelAlpha = TestObserver<CGFloat, NoError>()
+  fileprivate let projectsCountLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let projectsCountLabelText = TestObserver<String, NoError>()
+  fileprivate let projectsCountLabelTextColor = TestObserver<UIColor, NoError>()
 
   override func setUp() {
     super.setUp()

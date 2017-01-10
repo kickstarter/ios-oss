@@ -7,10 +7,10 @@ import KsApi
 import Prelude
 
 final class DeprecatedWebViewModelTests: TestCase {
-  private let vm: DeprecatedWebViewModelType = DeprecatedWebViewModel()
+  fileprivate let vm: DeprecatedWebViewModelType = DeprecatedWebViewModel()
 
-  private let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
-  private let loadingOverlayIsAnimated = TestObserver<Bool, NoError>()
+  fileprivate let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let loadingOverlayIsAnimated = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()

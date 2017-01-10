@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import WebKit
 
 public protocol ProjectCreatorViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
@@ -21,10 +21,10 @@ public protocol ProjectCreatorViewModelOutputs {
   var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<NSURL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var loadWebViewRequest: Signal<NSURLRequest, NoError> { get }
+  var loadWebViewRequest: Signal<URLRequest, NoError> { get }
 }
 
 public protocol ProjectCreatorViewModelType {
@@ -36,68 +36,68 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
 ProjectCreatorViewModelOutputs {
 
   public init() {
-    let navigationAction = self.navigationAction.signal.ignoreNil()
-    let project = combineLatest(self.projectProperty.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let navigationAction = self.navigationAction.signal.skipNil()
+    let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
     let messageCreatorRequest = navigationAction
-      .filter { $0.navigationType == .LinkActivated }
+      .filter { $0.navigationType == .linkActivated }
       .filter { isMessageCreator(request: $0.request) }
       .map { $0.request }
 
     self.loadWebViewRequest = project.map {
-      NSURL(string: $0.urls.web.project)?.URLByAppendingPathComponent("creator_bio")
+      URL(string: $0.urls.web.project)?.appendingPathComponent("creator_bio")
       }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.decidedPolicy <~ navigationAction
-      .map { $0.navigationType == .Other ? .Allow : .Cancel }
+      .map { $0.navigationType == .other ? .allow : .cancel }
 
     self.goToMessageDialog = project
       .takeWhen(messageCreatorRequest)
       .map { (MessageSubject.project($0), .projectPage) }
 
     self.goToSafariBrowser = navigationAction
-      .filter { $0.navigationType == .LinkActivated }
+      .filter { $0.navigationType == .linkActivated }
       .filter { !isMessageCreator(request: $0.request) }
-      .map { $0.request.URL }
-      .ignoreNil()
+      .map { $0.request.url }
+      .skipNil()
 
     project
       .takeWhen(self.goToSafariBrowser)
-      .observeNext {
+      .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
     }
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
-  private let decidedPolicy = MutableProperty(WKNavigationActionPolicy.Cancel)
+  fileprivate let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionProtocol)
     -> WKNavigationActionPolicy {
     self.navigationAction.value = action
     return self.decidedPolicy.value
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
-  public let goToSafariBrowser: Signal<NSURL, NoError>
-  public let loadWebViewRequest: Signal<NSURLRequest, NoError>
+  public let goToSafariBrowser: Signal<URL, NoError>
+  public let loadWebViewRequest: Signal<URLRequest, NoError>
 
   public var inputs: ProjectCreatorViewModelInputs { return self }
   public var outputs: ProjectCreatorViewModelOutputs { return self }
 }
 
-private func isMessageCreator(request request: NSURLRequest) -> Bool {
+private func isMessageCreator(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .messageCreator, _) = nav { return true }
   return false
 }

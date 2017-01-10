@@ -6,8 +6,7 @@ public extension UIButton {
   */
   public var normalLocalizedKey: String {
     set(key) {
-      self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Normal) ?? ""),
-        forState: .Normal)
+      self.setTitle(localizedString(key: key, defaultValue: self.title(for: []) ?? ""), for: [])
     }
     get {
       return ""
@@ -19,8 +18,8 @@ public extension UIButton {
    */
   public var selectedLocalizedKey: String {
     set(key) {
-      self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Selected) ?? ""),
-        forState: .Selected)
+      self.setTitle(localizedString(key: key, defaultValue: self.title(for: .selected) ?? ""),
+        for: .selected)
     }
     get {
       return ""
@@ -32,8 +31,8 @@ public extension UIButton {
    */
   public var disabledLocalizedKey: String {
     set(key) {
-      self.setTitle(localizedString(key: key, defaultValue: self.titleForState(.Disabled) ?? ""),
-        forState: .Disabled)
+      self.setTitle(localizedString(key: key, defaultValue: self.title(for: .disabled) ?? ""),
+        for: .disabled)
     }
     get {
       return ""

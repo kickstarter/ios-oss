@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 
 public protocol DashboardProjectsDrawerViewModelInputs {
@@ -15,10 +15,10 @@ public protocol DashboardProjectsDrawerViewModelInputs {
   func backgroundTapped()
 
   /// Call to configure the datasource with projects.
-  func configureWith(data data: [ProjectsDrawerData])
+  func configureWith(data: [ProjectsDrawerData])
 
   /// Call when a project cell is tapped with the project.
-  func projectCellTapped(project: Project)
+  func projectCellTapped(_ project: Project)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -50,12 +50,12 @@ public final class DashboardProjectsDrawerViewModel: DashboardProjectsDrawerView
 DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
 
   public init() {
-    self.projectsDrawerData = self.projectsDrawerDataProperty.signal.ignoreNil()
+    self.projectsDrawerData = self.projectsDrawerDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     self.notifyDelegateToCloseDrawer = self.backgroundTappedProperty.signal
 
-    self.notifyDelegateProjectCellTapped = self.projectCellTappedProperty.signal.ignoreNil()
+    self.notifyDelegateProjectCellTapped = self.projectCellTappedProperty.signal.skipNil()
 
     self.notifyDelegateDidAnimateOut = self.animateOutCompletedProperty.signal
 
@@ -71,27 +71,27 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public var notifyDelegateToCloseDrawer: Signal<(), NoError>
   public let notifyDelegateProjectCellTapped: Signal<Project, NoError>
 
-  private let animateInCompletedProperty = MutableProperty()
+  fileprivate let animateInCompletedProperty = MutableProperty()
   public func animateInCompleted() {
     self.animateInCompletedProperty.value = ()
   }
-  private let animateOutCompletedProperty = MutableProperty()
+  fileprivate let animateOutCompletedProperty = MutableProperty()
   public func animateOutCompleted() {
     self.animateOutCompletedProperty.value = ()
   }
-  private let backgroundTappedProperty = MutableProperty()
+  fileprivate let backgroundTappedProperty = MutableProperty()
   public func backgroundTapped() {
     self.backgroundTappedProperty.value = ()
   }
-  private let projectsDrawerDataProperty = MutableProperty<[ProjectsDrawerData]?>(nil)
-  public func configureWith(data data: [ProjectsDrawerData]) {
+  fileprivate let projectsDrawerDataProperty = MutableProperty<[ProjectsDrawerData]?>(nil)
+  public func configureWith(data: [ProjectsDrawerData]) {
     self.projectsDrawerDataProperty.value = data
   }
-  private let projectCellTappedProperty = MutableProperty<Project?>(nil)
-  public func projectCellTapped(project: Project) {
+  fileprivate let projectCellTappedProperty = MutableProperty<Project?>(nil)
+  public func projectCellTapped(_ project: Project) {
     self.projectCellTappedProperty.value = project
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

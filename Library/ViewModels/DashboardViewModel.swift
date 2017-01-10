@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -39,7 +39,7 @@ public protocol DashboardViewModelInputs {
   func showHideProjectsDrawer()
 
   /// Call when the view will appear.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 }
 
 public protocol DashboardViewModelOutputs {
@@ -92,7 +92,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { $0.projects }
     }
@@ -103,7 +103,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { param in
             find(projectForParam: param, in: projects) ?? projects.first
           }
-          .ignoreNil()
+          .skipNil()
           .map { (projects, $0) }
     }
 
@@ -112,7 +112,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
         AppEnvironment.current.apiService.fetchProjectStats(projectId: project.id)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (project, $0) }
           .materialize()
       }
@@ -129,7 +129,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         (cumulative: stats.cumulativeStats, project: project, stats: stats.referralDistribution)
     }
 
-    self.videoStats = selectedProjectAndStats.map { _, stats in stats.videoStats }.ignoreNil()
+    self.videoStats = selectedProjectAndStats.map { _, stats in stats.videoStats }.skipNil()
 
     self.rewardData = selectedProjectAndStats
       .map { project, stats in
@@ -150,20 +150,20 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           project
         )
       }
-      .ignoreNil()
+      .skipNil()
 
     self.updateTitleViewData = drawerStateProjectsAndSelectedProject
       .map { drawerState, projects, selectedProject in
         DashboardTitleViewData(
           drawerState: drawerState,
           isArrowHidden: projects.count <= 1,
-          currentProjectIndex: projects.indexOf(selectedProject) ?? 0
+          currentProjectIndex: projects.index(of: selectedProject) ?? 0
         )
     }
 
     let updateDrawerStateToOpen = self.updateTitleViewData
       .map { $0.drawerState == .open }
-      .skip(1)
+      .skip(first: 1)
 
     self.presentProjectsDrawer = drawerStateProjectsAndSelectedProject
       .filter { drawerState, _, _ in drawerState == .open }
@@ -171,7 +171,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         projects.map { project in
           ProjectsDrawerData(
             project: project,
-            indexNum: projects.indexOf(project) ?? 0,
+            indexNum: projects.index(of: project) ?? 0,
             isChecked: project == selectedProject
           )
         }
@@ -183,24 +183,24 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.dismissProjectsDrawer = self.projectsDrawerDidAnimateOutProperty.signal
 
-    self.goToProject = combineLatest(self.project, projects)
+    self.goToProject = Signal.combineLatest(self.project, projects)
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .map { project, projects in (project, projects, RefTag.dashboard) }
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
     let projectForTrackingViews = Signal.merge(
-      projects.map { $0.first }.ignoreNil().take(1),
+      projects.map { $0.first }.skipNil().take(first: 1),
       self.project
         .takeWhen(self.viewWillAppearAnimatedProperty.signal.filter(isFalse))
     )
 
     projectForTrackingViews
-      .observeNext { AppEnvironment.current.koala.trackDashboardView(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDashboardView(project: $0) }
 
     self.project
       .takeWhen(self.presentProjectsDrawer)
-      .observeNext { AppEnvironment.current.koala.trackDashboardShowProjectSwitcher(onProject: $0) }
+      .observeValues { AppEnvironment.current.koala.trackDashboardShowProjectSwitcher(onProject: $0) }
 
     let drawerHasClosedAndShouldTrack = Signal.merge(
       self.showHideProjectsDrawerProperty.signal.map { (drawerState: true, shouldTrack: true) },
@@ -212,43 +212,43 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           ? ((data?.0.toggled ?? DrawerState.closed), shouldTrack)
           : (DrawerState.closed, shouldTrack)
       }
-      .ignoreNil()
+      .skipNil()
       .filter { drawerState, _ in drawerState == .open }
       .map { _, shouldTrack in shouldTrack }
 
     self.project
       .takePairWhen(drawerHasClosedAndShouldTrack)
       .filter { _, shouldTrack in shouldTrack }
-      .observeNext { project, _ in
+      .observeValues { project, _ in
         AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: project)
     }
 
     projects
       .takePairWhen(self.switchToProjectProperty.signal)
       .map { projects, param in find(projectForParam: param, in: projects) }
-      .ignoreNil()
-      .observeNext { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
+      .skipNil()
+      .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
   // swiftlint:enable function_body_length
 
-  private let showHideProjectsDrawerProperty = MutableProperty()
+  fileprivate let showHideProjectsDrawerProperty = MutableProperty()
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()
   }
-  private let projectContextCellTappedProperty = MutableProperty()
+  fileprivate let projectContextCellTappedProperty = MutableProperty()
   public func projectContextCellTapped() {
     self.projectContextCellTappedProperty.value = ()
   }
-  private let switchToProjectProperty = MutableProperty<Param?>(nil)
+  fileprivate let switchToProjectProperty = MutableProperty<Param?>(nil)
   public func `switch`(toProject param: Param) {
     self.switchToProjectProperty.value = param
   }
-  private let projectsDrawerDidAnimateOutProperty = MutableProperty()
+  fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty()
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
-  private let viewWillAppearAnimatedProperty = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 

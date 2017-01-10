@@ -1,25 +1,30 @@
 import Argo
+import Runes
 import Curry
 import Foundation
 import KsApi
 import PassKit
 
+extension PKPaymentNetwork: Decodable {}
+
 extension PKPaymentSummaryItem: Decodable {
 
-  public static func decode(json: JSON) -> Decoded<PKPaymentSummaryItem> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItem> {
     return curry(PKPaymentSummaryItem.init(label:amount:type:))
       <^> json <| "label"
       <*> json <| "amount"
-      <*> json <| "type" <|> .Success(.Final)
+      <*> (json <| "type" <|> .success(.final))
   }
 }
 
 extension PKPaymentRequest: Decodable {
 
-  private convenience init(countryCode: String, currencyCode: String,
-                          merchantCapabilities: PKMerchantCapability,
-                          merchantIdentifier: String, paymentSummaryItems: [PKPaymentSummaryItem],
-                          shippingType: PKShippingType, supportedNetworks: [String]) {
+  fileprivate convenience init(countryCode: String, currencyCode: String,
+                               merchantCapabilities: PKMerchantCapability,
+                               merchantIdentifier: String,
+                               paymentSummaryItems: [PKPaymentSummaryItem],
+                               shippingType: PKShippingType,
+                               supportedNetworks: [PKPaymentNetwork]) {
 
     self.init()
     self.countryCode = countryCode
@@ -31,25 +36,25 @@ extension PKPaymentRequest: Decodable {
     self.supportedNetworks = supportedNetworks
   }
 
-  public static func decode(json: JSON) -> Decoded<PKPaymentRequest> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentRequest> {
     let create = curry(PKPaymentRequest.init)
     let snakeCase = create
       <^> json <|  "country_code"
       <*> json <|  "currency_code"
-      <*> (json <| "merchant_capabilities" <|> .Success(.Capability3DS))
+      <*> (json <| "merchant_capabilities" <|> .success(.capability3DS))
       <*> json <|  "merchant_identifier"
       <*> json <|| "payment_summary_items"
-      <*> json <|  "shipping_type" <|> .Success(.Shipping)
+      <*> (json <|  "shipping_type" <|> .success(.shipping))
       <*> json <|| "supported_networks"
 
     let camelCase = {
       create
         <^> json <|  "countryCode"
         <*> json <|  "currencyCode"
-        <*> (json <| "merchantCapabilities" <|> .Success(.Capability3DS))
+        <*> (json <| "merchantCapabilities" <|> .success(.capability3DS))
         <*> json <|  "merchantIdentifier"
         <*> json <|| "paymentSummaryItems"
-        <*> json <|  "shippingType" <|> .Success(.Shipping)
+        <*> (json <|  "shippingType" <|> .success(.shipping))
         <*> json <|| "supportedNetworks"
     }
 
@@ -58,21 +63,21 @@ extension PKPaymentRequest: Decodable {
 }
 
 extension NSDecimalNumber: Decodable {
-  public static func decode(json: JSON) -> Decoded<NSDecimalNumber> {
+  public static func decode(_ json: JSON) -> Decoded<NSDecimalNumber> {
     switch json {
-    case let .String(string):
-      return .Success(NSDecimalNumber(string: string))
-    case let .Number(number):
-      return .Success(NSDecimalNumber(decimal: number.decimalValue))
+    case let .string(string):
+      return .success(NSDecimalNumber(string: string))
+    case let .number(number):
+      return .success(NSDecimalNumber(decimal: number.decimalValue))
     default:
-      return .Failure(.TypeMismatch(expected: "String or Number", actual: json.description))
+      return .failure(.typeMismatch(expected: "String or Number", actual: json.description))
     }
   }
 }
 
 extension PKPaymentRequest: EncodableType {
-  public func encode() -> [String : AnyObject] {
-    var result: [String:AnyObject] = [:]
+  public func encode() -> [String : Any] {
+    var result: [String:Any] = [:]
     result["countryCode"] = self.countryCode
     result["currencyCode"] = self.currencyCode
     result["merchantCapabilities"] = self.merchantCapabilities.rawValue.bitComponents()
@@ -85,8 +90,8 @@ extension PKPaymentRequest: EncodableType {
 }
 
 extension PKPaymentSummaryItem: EncodableType {
-  public func encode() -> [String : AnyObject] {
-    var result: [String:AnyObject] = [:]
+  public func encode() -> [String : Any] {
+    var result: [String:Any] = [:]
     result["label"] = self.label
     result["amount"] = self.amount
     result["type"] = self.type.rawValue
@@ -96,108 +101,108 @@ extension PKPaymentSummaryItem: EncodableType {
 
 // swiftlint:disable cyclomatic_complexity
 extension PKMerchantCapability: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKMerchantCapability> {
+  public static func decode(_ json: JSON) -> Decoded<PKMerchantCapability> {
     switch json {
-    case let .String(string):
+    case let .string(string):
       switch string {
-      case "Capability3DS":     return .Success(.Capability3DS)
-      case "CapabilityEMV":     return .Success(.CapabilityEMV)
-      case "CapabilityCredit":  return .Success(.CapabilityCredit)
-      case "CapabilityDebit":   return .Success(.CapabilityDebit)
-      default:                  return .Failure(.Custom("Unrecognized merchant capability: \(string)"))
+      case "Capability3DS":     return .success(.capability3DS)
+      case "CapabilityEMV":     return .success(.capabilityEMV)
+      case "CapabilityCredit":  return .success(.capabilityCredit)
+      case "CapabilityDebit":   return .success(.capabilityDebit)
+      default:                  return .failure(.custom("Unrecognized merchant capability: \(string)"))
       }
 
-    case let .Number(number):
-      switch number.unsignedIntegerValue {
-      case PKMerchantCapability.Capability3DS.rawValue:
-        return .Success(.Capability3DS)
-      case PKMerchantCapability.CapabilityEMV.rawValue:
-        return .Success(.CapabilityEMV)
-      case PKMerchantCapability.CapabilityCredit.rawValue:
-        return .Success(.CapabilityCredit)
-      case PKMerchantCapability.CapabilityDebit.rawValue:
-        return .Success(.CapabilityDebit)
+    case let .number(number):
+      switch number.uintValue {
+      case PKMerchantCapability.capability3DS.rawValue:
+        return .success(.capability3DS)
+      case PKMerchantCapability.capabilityEMV.rawValue:
+        return .success(.capabilityEMV)
+      case PKMerchantCapability.capabilityCredit.rawValue:
+        return .success(.capabilityCredit)
+      case PKMerchantCapability.capabilityDebit.rawValue:
+        return .success(.capabilityDebit)
       default:
-        return .Failure(.Custom("Unrecognized merchant capability: \(number)"))
+        return .failure(.custom("Unrecognized merchant capability: \(number)"))
       }
 
-    case let .Array(array):
-      return .Success(
+    case let .array(array):
+      return .success(
         array
           .flatMap { PKMerchantCapability.decode($0).value }
           .reduce([]) { $0.union($1) }
       )
 
     default:
-      return .Failure(
-        .TypeMismatch(expected: "String, Integer or Array of Strings/Integers", actual: json.description)
+      return .failure(
+        .typeMismatch(expected: "String, Integer or Array of Strings/Integers", actual: json.description)
       )
     }
   }
 }
 
 extension PKShippingType: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKShippingType> {
+  public static func decode(_ json: JSON) -> Decoded<PKShippingType> {
     switch json {
-    case let .String(string):
+    case let .string(string):
       switch string {
       case "Shipping":
-        return .Success(.Shipping)
+        return .success(.shipping)
       case "Delivery":
-        return .Success(.Delivery)
+        return .success(.delivery)
       case "StorePickup":
-        return .Success(.StorePickup)
+        return .success(.storePickup)
       case "ServicePickup":
-        return .Success(.ServicePickup)
+        return .success(.servicePickup)
       default:
-        return .Failure(.Custom("Unrecognized shipping: \(string)"))
+        return .failure(.custom("Unrecognized shipping: \(string)"))
       }
 
-    case let .Number(number):
-      switch number.unsignedIntegerValue {
-      case PKShippingType.Shipping.rawValue:
-        return .Success(.Shipping)
-      case PKShippingType.Delivery.rawValue:
-        return .Success(.Delivery)
-      case PKShippingType.StorePickup.rawValue:
-        return .Success(.StorePickup)
-      case PKShippingType.ServicePickup.rawValue:
-        return .Success(.ServicePickup)
+    case let .number(number):
+      switch number.uintValue {
+      case PKShippingType.shipping.rawValue:
+        return .success(.shipping)
+      case PKShippingType.delivery.rawValue:
+        return .success(.delivery)
+      case PKShippingType.storePickup.rawValue:
+        return .success(.storePickup)
+      case PKShippingType.servicePickup.rawValue:
+        return .success(.servicePickup)
       default:
-        return .Failure(.Custom("Unrecognized shipping: \(number)"))
+        return .failure(.custom("Unrecognized shipping: \(number)"))
       }
 
     default:
-      return .Failure(.TypeMismatch(expected: "String or Integer", actual: json.description))
+      return .failure(.typeMismatch(expected: "String or Integer", actual: json.description))
     }
   }
 }
 
 extension PKPaymentSummaryItemType: Decodable {
-  public static func decode(json: JSON) -> Decoded<PKPaymentSummaryItemType> {
+  public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItemType> {
     switch json {
-    case let .String(string):
+    case let .string(string):
       switch string {
       case "Final":
-        return .Success(.Final)
+        return .success(.final)
       case "Pending":
-        return .Success(.Pending)
+        return .success(.pending)
       default:
-        return .Failure(.Custom("Unrecognized payment summary item type: \(string)"))
+        return .failure(.custom("Unrecognized payment summary item type: \(string)"))
       }
 
-    case let .Number(number):
-      switch number.unsignedIntegerValue {
-      case PKPaymentSummaryItemType.Final.rawValue:
-        return .Success(.Final)
-      case PKPaymentSummaryItemType.Pending.rawValue:
-        return .Success(.Pending)
+    case let .number(number):
+      switch number.uintValue {
+      case PKPaymentSummaryItemType.final.rawValue:
+        return .success(.final)
+      case PKPaymentSummaryItemType.pending.rawValue:
+        return .success(.pending)
       default:
-        return .Failure(.Custom("Unrecognized payment summary item type: \(number)"))
+        return .failure(.custom("Unrecognized payment summary item type: \(number)"))
       }
 
     default:
-      return .Failure(.TypeMismatch(expected: "String or Integer", actual: json.description))
+      return .failure(.typeMismatch(expected: "String or Integer", actual: json.description))
     }
   }
 }
@@ -207,8 +212,8 @@ extension UInt {
   /**
    - returns: An array of bitmask values for an integer.
    */
-  private func bitComponents() -> [UInt] {
-    let range: Range<UInt> = 0 ..< UInt(8 * sizeof(UInt))
+  fileprivate func bitComponents() -> [UInt] {
+    let range: CountableRange<UInt> = 0 ..< UInt(8 * MemoryLayout<UInt>.size)
     return range
       .map { 1 << $0 }
       .filter { self & $0 != 0 }

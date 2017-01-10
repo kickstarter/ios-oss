@@ -1,17 +1,17 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectNavigatorViewModelInputs {
   /// Call with the config data give to the view.
-  func configureWith(project project: Project, refTag: RefTag)
+  func configureWith(project: Project, refTag: RefTag)
 
   /// Call when the UIPageViewController finishes transitioning.
-  func pageTransition(completed completed: Bool)
+  func pageTransition(completed: Bool)
 
   /// Call with panning data.
-  func panning(contentOffset contentOffset: CGPoint,
+  func panning(contentOffset: CGPoint,
                              translation: CGPoint,
                              velocity: CGPoint,
                              isDragging: Bool)
@@ -56,13 +56,13 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let configData = combineLatest(
-      self.configDataProperty.signal.ignoreNil(),
+    let configData = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let swipedToProject = self.willTransitionToProjectProperty.signal.ignoreNil()
+    let swipedToProject = self.willTransitionToProjectProperty.signal.skipNil()
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
 
     let currentProject = Signal.merge(
@@ -72,7 +72,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
     self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
 
-    let panningData = self.panningDataProperty.signal.ignoreNil()
+    let panningData = self.panningDataProperty.signal.skipNil()
 
     let transitionPhase = panningData
       .scan(TransitionPhase.none) { phase, data in
@@ -108,7 +108,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .filter(isTrue)
       .ignoreValues()
 
-    self.updateInteractiveTransition = zip(panningData, transitionPhase)
+    self.updateInteractiveTransition = Signal.zip(panningData, transitionPhase)
       .filter { _, phase in phase == .updating || phase == .started }
       .map { data, _ in data.translation.y }
 
@@ -124,13 +124,13 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
     configData
       .takePairWhen(swipedToProject)
-      .observeNext { configData, project in
+      .observeValues { configData, project in
         AppEnvironment.current.koala.trackSwipedProject(project, refTag: configData.refTag)
     }
 
-    combineLatest(configData, currentProject)
+    Signal.combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
-      .observeNext { configData, project in
+      .observeValues { configData, project in
         AppEnvironment.current.koala.trackClosedProjectPage(
           project,
           refTag: configData.refTag,
@@ -139,28 +139,28 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     }
   }
 
-  private let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(project project: Project, refTag: RefTag) {
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project, refTag: RefTag) {
     self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
 
-  private let pageTransitionCompletedProperty = MutableProperty(false)
-  public func pageTransition(completed completed: Bool) {
+  fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
+  public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let willTransitionToProjectProperty = MutableProperty<Project?>(nil)
+  fileprivate let willTransitionToProjectProperty = MutableProperty<Project?>(nil)
   public func willTransition(toProject project: Project) {
     self.willTransitionToProjectProperty.value = project
   }
 
-  private let panningDataProperty = MutableProperty<PanningData?>(nil)
-  public func panning(contentOffset contentOffset: CGPoint,
+  fileprivate let panningDataProperty = MutableProperty<PanningData?>(nil)
+  public func panning(contentOffset: CGPoint,
                                     translation: CGPoint,
                                     velocity: CGPoint,
                                     isDragging: Bool) {
@@ -183,15 +183,15 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 }
 
 private struct ConfigData {
-  private let project: Project
-  private let refTag: RefTag
+  fileprivate let project: Project
+  fileprivate let refTag: RefTag
 }
 
 private struct PanningData {
-  private let contentOffset: CGPoint
-  private let isDragging: Bool
-  private let translation: CGPoint
-  private let velocity: CGPoint
+  fileprivate let contentOffset: CGPoint
+  fileprivate let isDragging: Bool
+  fileprivate let translation: CGPoint
+  fileprivate let velocity: CGPoint
 }
 
 private enum TransitionPhase {
@@ -201,7 +201,7 @@ private enum TransitionPhase {
   case canceling
   case finishing
 
-  private var active: Bool {
+  fileprivate var active: Bool {
     return self == .started || self == .updating
   }
 }

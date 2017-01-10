@@ -38,15 +38,15 @@ final class BorderButtonTests: XCTestCase {
     XCTAssertEqual(Color.mismatchedColor, button.backgroundColor)
 
     button._borderColor = "Blood"
-    XCTAssertEqual(Color.mismatchedColor.CGColor, button.layer.borderColor)
+    XCTAssertEqual(Color.mismatchedColor.cgColor, button.layer.borderColor)
 
     button._titleColorNormal = "Blu"
     XCTAssertNil(button.titleColorNormal)
-    XCTAssertEqual(Color.mismatchedColor, button.titleColorForState(.Normal))
+    XCTAssertEqual(Color.mismatchedColor, button.titleColor(for: .normal))
 
     button._titleColorHighlighted = "Pinky"
     XCTAssertNil(button.titleColorHighlighted)
-    XCTAssertEqual(Color.mismatchedColor, button.titleColorForState(.Normal))
+    XCTAssertEqual(Color.mismatchedColor, button.titleColor(for: .normal))
 
     button._titleWeight = "Med"
     XCTAssertNil(button.titleWeight?.rawValue)

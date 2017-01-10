@@ -9,10 +9,10 @@ public final class CountBadgeView: UIView {
     super.init(coder: aDecoder)
 
     self.addSubview(self.label)
-    self.label.topAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.topAnchor).active = true
-    self.label.leftAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.leftAnchor).active = true
-    self.label.bottomAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.bottomAnchor).active = true
-    self.label.rightAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.rightAnchor).active = true
+    self.label.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor).isActive = true
+    self.label.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
+    self.label.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor).isActive = true
+    self.label.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
   }
 
   public override func layoutSubviews() {
@@ -23,19 +23,19 @@ public final class CountBadgeView: UIView {
   public override func bindStyles() {
     let required = UILayoutPriorityRequired
 
-    self
+    _ = self
       |> roundedStyle(cornerRadius: floor(self.bounds.size.height / 2.0))
       |> CountBadgeView.lens.backgroundColor .~ .ksr_navy_400
       |> CountBadgeView.lens.layoutMargins .~ .init(topBottom: 4.0, leftRight: 8.0)
-      |> CountBadgeView.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
-      |> CountBadgeView.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required
+      |> CountBadgeView.lens.contentHuggingPriorityForAxis(.horizontal) .~ required
+      |> CountBadgeView.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ required
       |> CountBadgeView.lens.translatesAutoresizingMaskIntoConstraints .~ false
 
-    self.label
+    _ = self.label
       |> UILabel.lens.font .~ .ksr_footnote()
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.contentHuggingPriorityForAxis(.Horizontal) .~ required
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.Horizontal) .~ required
+      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ required
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ required
       |> UILabel.lens.translatesAutoresizingMaskIntoConstraints .~ false
   }
 }
