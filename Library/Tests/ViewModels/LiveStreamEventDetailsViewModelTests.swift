@@ -231,7 +231,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
           [true, false, true, false, true, false]
         )
 
-        //FIXME: Fix duplicate text with skipRepeats() in VM when errors are correctly handled
         self.subscribeLabelText.assertValues([
           "Keep up with future live streams",
           "",
