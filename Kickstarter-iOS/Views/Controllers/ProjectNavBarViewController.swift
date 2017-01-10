@@ -91,7 +91,6 @@ internal final class ProjectNavBarViewController: UIViewController {
 
     _ = self.closeButton
       |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.tintColor .~ .white
       |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
