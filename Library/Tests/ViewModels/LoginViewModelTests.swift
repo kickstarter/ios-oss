@@ -79,7 +79,7 @@ final class LoginViewModelTests: TestCase {
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                            "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")
@@ -189,7 +189,7 @@ final class LoginViewModelTests: TestCase {
       "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")

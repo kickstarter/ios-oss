@@ -132,7 +132,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.viewWillAppearProperty.signal
       .observeValues { AppEnvironment.current.koala.trackTfa() }

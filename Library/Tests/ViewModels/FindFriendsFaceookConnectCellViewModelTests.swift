@@ -86,7 +86,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([CurrentUserNotifications.userUpdated],
+      postUserUpdatedNotification.assertValues([Notification.Name.ksr_userUpdated],
                                                "User updated notification posted")
       notifyPresenterUserFacebookConnected.assertValueCount(1, "Notify presenter that user was updated")
 

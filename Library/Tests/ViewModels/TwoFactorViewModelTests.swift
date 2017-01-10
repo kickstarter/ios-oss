@@ -97,7 +97,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
   }
 
@@ -116,7 +116,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
   }
 

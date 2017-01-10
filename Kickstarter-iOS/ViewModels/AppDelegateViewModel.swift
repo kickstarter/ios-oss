@@ -176,7 +176,7 @@ AppDelegateViewModelOutputs {
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
-      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(Notification(name: .ksr_userUpdated, object: nil))
 
     self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(first: 1)

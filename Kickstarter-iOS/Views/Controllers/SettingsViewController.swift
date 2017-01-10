@@ -488,9 +488,7 @@ internal final class SettingsViewController: UIViewController {
         UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
           root.switchToDiscovery(params: params)
           }, completion: { _ in
-            NotificationCenter.default.post(
-              .init(name: .init(rawValue: CurrentUserNotifications.sessionEnded), object: nil)
-            )
+            NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
         })
     }
   }

@@ -110,7 +110,7 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")

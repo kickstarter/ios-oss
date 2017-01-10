@@ -111,7 +111,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "New User", "Signed Up", "Login",
@@ -138,7 +138,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     XCTAssertEqual(

@@ -81,7 +81,7 @@ internal final class SignupViewModelTests: TestCase {
     self.scheduler.advance()
     XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
                    self.trackingClient.events)
-    self.postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotification.assertValues([.ksr_sessionStarted],
                                   "Notification posted after scheduler advances.")
   }
 

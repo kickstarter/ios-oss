@@ -317,7 +317,7 @@ final class ThanksViewModelTests: TestCase {
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([CurrentUserNotifications.userUpdated],
+      postUserUpdatedNotification.assertValues([Notification.Name.ksr_userUpdated],
                                                "User updated notification emits")
     }
   }
