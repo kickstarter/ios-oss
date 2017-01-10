@@ -139,5 +139,22 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     XCTAssertEqual(liveStream.count, 0)
   }
 
-  // FIXME: do a test for the future live stream state
+  func testUpcomingLiveStreamsSubpage() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ MockDate()
+        .dateByAddingTimeInterval(60 * 60).timeIntervalSince1970
+
+    self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
+
+    self.countLabelTextColor.assertValue(.ksr_text_navy_700)
+    self.countLabelText.assertValue("in 1 hr")
+    self.countLabelBorderColor.assertValue(.clearColor())
+    self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
+    self.liveNowImageViewHidden.assertValue(true)
+    self.labelText.assertValue("Live Stream")
+    self.labelTextColor.assertValue(.ksr_text_navy_700)
+    self.topGradientViewHidden.assertValue(false)
+    self.separatorViewHidden.assertValue(false)
+  }
 }
