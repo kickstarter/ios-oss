@@ -13,7 +13,7 @@ public protocol LiveStreamContainerViewModelType {
 public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
-  func setLiveStreamEvent(event event: LiveStreamEvent)
+  func retrievedLiveStreamEvent(event event: LiveStreamEvent)
   func viewDidLoad()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
 }
@@ -201,7 +201,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func setLiveStreamEvent(event event: LiveStreamEvent) {
+  public func retrievedLiveStreamEvent(event event: LiveStreamEvent) {
     self.liveStreamEventProperty.value = event
   }
 

@@ -243,7 +243,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeNext(self.viewModel.inputs.setLiveStreamEvent(event:))
+      .observeNext(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
 
     // FIXME: move all logic to this VM
     self.viewModel.outputs.showVideoView

@@ -72,15 +72,15 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     XCTAssertTrue(self.minutes.lastValue == ("53", "minutes"))
     XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
 
-    let event = LiveStreamEvent.template
-
-    // Step 3: Set the event
-    self.vm.inputs.setLiveStreamEvent(event: event)
-
-    // Step 4: Set now to a second past the stream's start date
+    // Step 3: Set now to a second past the stream's start date
     // The live stream view controller should be pushed
     _ = AppEnvironment.current.calendar.dateByAddingUnit(.Second,
       value: 1, toDate: futureDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
+
+    let event = LiveStreamEvent.template
+
+    // Step 4: Set the event
+    self.vm.inputs.retrievedLiveStreamEvent(event: event)
 
     XCTAssertTrue(self.pushLiveStreamViewController.lastValue == (project, event))
   }

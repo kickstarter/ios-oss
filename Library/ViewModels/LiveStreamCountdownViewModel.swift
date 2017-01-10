@@ -13,7 +13,7 @@ public protocol LiveStreamCountdownViewModelType {
 public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
   func configureWith(project project: Project, now: NSDate?)
-  func setLiveStreamEvent(event event: LiveStreamEvent)
+  func retrievedLiveStreamEvent(event event: LiveStreamEvent)
   func setNow(date date: NSDate)
   func viewDidLoad()
 }
@@ -159,7 +159,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func setLiveStreamEvent(event event: LiveStreamEvent) {
+  public func retrievedLiveStreamEvent(event event: LiveStreamEvent) {
     self.liveStreamEventProperty.value = event
   }
 
