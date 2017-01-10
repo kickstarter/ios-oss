@@ -245,12 +245,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
       .observeNext(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
 
-    // FIXME: move all logic to this VM
-    self.viewModel.outputs.showVideoView
-      .map(negate)
+    self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
       .observeNext { [weak self] in
-        // FIXME: can use `self?.liveStreamViewController?.view.rac.hidden`
         self?.liveStreamViewController?.view.hidden = $0
     }
 

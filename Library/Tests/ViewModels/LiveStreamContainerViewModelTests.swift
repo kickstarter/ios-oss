@@ -17,8 +17,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<NSURL, NoError>()
-  private let showVideoView = TestObserver<Bool, NoError>()
   private let titleViewText = TestObserver<String, NoError>()
+  private let videoViewControllerHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -31,7 +31,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
-    self.vm.outputs.showVideoView.observe(self.showVideoView.observer)
+    self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
   }
 
@@ -172,12 +172,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(
       state: .replay(playbackState: .playing, duration: 123))
 
-    self.showVideoView.assertValues([
-      false,
-      false,
+    self.videoViewControllerHidden.assertValues([
+      true,
       true,
       false,
-      true
+      true,
+      false
     ])
   }
 

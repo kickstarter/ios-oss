@@ -30,7 +30,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
-  var showVideoView: Signal<Bool, NoError> { get }
+  var videoViewControllerHidden: Signal<Bool, NoError> { get }
   var titleViewText: Signal<String, NoError> { get }
 }
 
@@ -106,7 +106,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       return Strings.Loading()
     }
 
-    self.showVideoView = combineLatest(
+    self.videoViewControllerHidden = combineLatest(
         self.liveStreamState.map {
           if case .live(playbackState: .playing, _) = $0 { return true }
           if case .replay(playbackState: .playing, _) = $0 { return true }
@@ -114,7 +114,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           return false
         },
         self.createAndConfigureLiveStreamViewController
-    ).map(first)
+      )
+      .map(first)
+      .map(negate)
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
@@ -221,8 +223,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingButtonHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
-  public let showVideoView: Signal<Bool, NoError>
   public let titleViewText: Signal<String, NoError>
+  public let videoViewControllerHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamContainerViewModelInputs { return self }
   public var outputs: LiveStreamContainerViewModelOutputs { return self }
