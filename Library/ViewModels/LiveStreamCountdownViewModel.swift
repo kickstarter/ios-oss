@@ -12,9 +12,8 @@ public protocol LiveStreamCountdownViewModelType {
 
 public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
-  func configureWith(project project: Project, now: NSDate?)
+  func configureWith(project project: Project)
   func retrievedLiveStreamEvent(event event: LiveStreamEvent)
-  func setNow(date date: NSDate)
   func viewDidLoad()
 }
 
@@ -41,16 +40,20 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.viewDidLoadProperty.signal)
       .map(first)
 
-    let dateComponents = combineLatest(
-      project.map { $0.liveStreams.first }.ignoreNil()
-        .map { NSDate(timeIntervalSince1970: $0.startDate) },
-      self.nowProperty.signal.ignoreNil()
-      )
-      .map {
+    let everySecondTimer = self.viewDidLoadProperty.signal.flatMap {
+      timer(1, onScheduler: AppEnvironment.current.scheduler)
+        .ignoreValues()
+        .prefix(value: ())
+    }
+
+    let dateComponents = project.map { $0.liveStreams.first }.ignoreNil()
+      .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
+      .takeWhen(everySecondTimer)
+      .map { startDate in
         AppEnvironment.current.calendar.components(
           [.Day, .Hour, .Minute, .Second],
-          fromDate: $1,
-          toDate: $0,
+          fromDate: AppEnvironment.current.dateType.init().date,
+          toDate: startDate,
           options: []
         )
     }
@@ -95,10 +98,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     let countdownEnded = combineLatest(
       project.map { $0.liveStreams.first }.ignoreNil()
-        .map { NSDate(timeIntervalSince1970: $0.startDate) },
-      self.nowProperty.signal.ignoreNil()
+        .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date },
+      everySecondTimer.mapConst(AppEnvironment.current.dateType.init().date)
       )
-      .filter { $0.earlierDate($1) == $0 }
+      .filter { startDate, now in startDate.earlierDate(now) == startDate }
 
     self.projectImageUrl = project
       .map { NSURL(string: $0.photo.full) }
@@ -107,7 +110,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.categoryId = project.map { $0.category.rootId }.ignoreNil()
     self.dismiss = self.closeButtonTappedProperty.signal
     self.viewControllerTitle = viewDidLoadProperty.signal.mapConst(
-      localizedString(key: "Live_stream_countdown", defaultValue: "Live stream countdown")
+      Strings.Live_stream_countdown()
     )
 
     //FIXME: Consider making the live stream view controller always re-fetch the event
@@ -152,14 +155,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project, now: NSDate? = NSDate()) {
+  public func configureWith(project project: Project) {
     self.projectProperty.value = project
-    self.nowProperty.value = now
-  }
-
-  private let nowProperty = MutableProperty<NSDate?>(nil)
-  public func setNow(date date: NSDate) {
-    self.nowProperty.value = date
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)

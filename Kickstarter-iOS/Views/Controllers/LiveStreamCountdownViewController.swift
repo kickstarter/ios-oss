@@ -32,15 +32,12 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
-  // FIXME: move the timer to the VM
-  private var timerProducer: Disposable?
 
   internal static func configuredWith(project project: Project)
     -> LiveStreamCountdownViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController)
-      // FIXME: dont use NSDate, use AppEnvironment, and move to the VM
-      vc.viewModel.inputs.configureWith(project: project, now: NSDate())
+      vc.viewModel.inputs.configureWith(project: project)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
       return vc
   }
@@ -167,11 +164,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
 
-    self.timerProducer = timer(1, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
-      .startWithNext { [weak self] in
-        self?.viewModel.inputs.setNow(date: $0)
-    }
-
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeNext { [weak self] in
         self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
@@ -252,10 +244,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
   }
   //swiftlint:enable function_body_length
-
-  deinit {
-    self.timerProducer?.dispose()
-  }
 
   // FIXME: this can be an IBOutlet
   lazy var shareBarButtonItem: UIBarButtonItem = {
