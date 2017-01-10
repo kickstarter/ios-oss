@@ -20,13 +20,13 @@ public protocol LiveStreamCountdownViewModelInputs {
 
 public protocol LiveStreamCountdownViewModelOutputs {
   var categoryId: Signal<Int, NoError> { get }
-  var daysString: Signal<(String, String), NoError> { get }
+  var daysString: Signal<NSAttributedString, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
-  var hoursString: Signal<(String, String), NoError> { get }
-  var minutesString: Signal<(String, String), NoError> { get }
+  var hoursString: Signal<NSAttributedString, NoError> { get }
+  var minutesString: Signal<NSAttributedString, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var secondsString: Signal<(String, String), NoError> { get }
+  var secondsString: Signal<NSAttributedString, NoError> { get }
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
 }
@@ -76,18 +76,22 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.daysString = days
       .map { (String(format: "%02d", $0), localizedString(
         key: "dates_day", defaultValue: "days", count: 0)) }
+      .map(attributedCountdownString(prefix:suffix:))
 
     self.hoursString = hours
       .map { (String(format: "%02d", $0), localizedString(
         key: "dates_hour", defaultValue: "hours", count: 0)) }
+      .map(attributedCountdownString(prefix:suffix:))
 
     self.minutesString = minutes
       .map { (String(format: "%02d", $0), localizedString(
         key: "dates_minute", defaultValue: "minutes", count: 0)) }
+      .map(attributedCountdownString(prefix:suffix:))
 
     self.secondsString = seconds
       .map { (String(format: "%02d", $0), localizedString(
         key: "dates_second", defaultValue: "seconds", count: 0)) }
+      .map(attributedCountdownString(prefix:suffix:))
 
     let countdownEnded = combineLatest(
       project.map { $0.liveStreams.first }.ignoreNil()
@@ -169,16 +173,40 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   public let categoryId: Signal<Int, NoError>
-  public let daysString: Signal<(String, String), NoError>
+  public let daysString: Signal<NSAttributedString, NoError>
   public let dismiss: Signal<(), NoError>
-  public let hoursString: Signal<(String, String), NoError>
-  public let minutesString: Signal<(String, String), NoError>
+  public let hoursString: Signal<NSAttributedString, NoError>
+  public let minutesString: Signal<NSAttributedString, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
   public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
-  public let secondsString: Signal<(String, String), NoError>
+  public let secondsString: Signal<NSAttributedString, NoError>
   public let upcomingIntroText: Signal<NSAttributedString, NoError>
   public let viewControllerTitle: Signal<String, NoError>
 
   public var inputs: LiveStreamCountdownViewModelInputs { return self }
   public var outputs: LiveStreamCountdownViewModelOutputs { return self }
+}
+
+private func attributedCountdownString(prefix prefix: String, suffix: String) -> NSAttributedString {
+  let fontDescriptorAttributes = [
+    UIFontDescriptorFeatureSettingsAttribute: [
+      [
+        UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+        UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+      ]
+    ]
+  ]
+
+  let fontDescriptor = UIFont.ksr_title1(size: 24)
+    .fontDescriptor()
+    .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+
+  let prefixAttributes = [NSFontAttributeName: UIFont(descriptor: fontDescriptor, size: 24)]
+  let suffixAttributes = [NSFontAttributeName: UIFont.ksr_headline(size: 14)]
+
+  let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
+  let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)
+  prefix.appendAttributedString(suffix)
+
+  return NSAttributedString(attributedString: prefix)
 }

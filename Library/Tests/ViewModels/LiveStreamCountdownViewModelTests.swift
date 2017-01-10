@@ -11,13 +11,13 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
   private let vm: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
 
   private let categoryId = TestObserver<Int, NoError>()
-  private let days = TestObserver<(String, String), NoError>()
+  private let days = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let hours = TestObserver<(String, String), NoError>()
-  private let minutes = TestObserver<(String, String), NoError>()
+  private let hours = TestObserver<String, NoError>()
+  private let minutes = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<NSURL, NoError>()
   private let pushLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
-  private let seconds = TestObserver<(String, String), NoError>()
+  private let seconds = TestObserver<String, NoError>()
   private let upcomingIntroText = TestObserver<String, NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
 
@@ -25,13 +25,13 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     super.setUp()
 
     self.vm.outputs.categoryId.observe(self.categoryId.observer)
-    self.vm.outputs.daysString.observe(self.days.observer)
+    self.vm.outputs.daysString.map { $0.string }.observe(self.days.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.hoursString.observe(self.hours.observer)
-    self.vm.outputs.minutesString.observe(self.minutes.observer)
+    self.vm.outputs.hoursString.map { $0.string }.observe(self.hours.observer)
+    self.vm.outputs.minutesString.map { $0.string }.observe(self.minutes.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.observe(self.pushLiveStreamViewController.observer)
-    self.vm.outputs.secondsString.observe(self.seconds.observer)
+    self.vm.outputs.secondsString.map { $0.string }.observe(self.seconds.observer)
     self.vm.outputs.upcomingIntroText.map { $0.string }.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
   }
@@ -53,24 +53,29 @@ internal final class LiveStreamCountdownViewModelTests: XCTestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
+    self.days.assertValueCount(0)
+    self.hours.assertValueCount(0)
+    self.minutes.assertValueCount(0)
+    self.seconds.assertValueCount(0)
+
     // Step 1: Set project and date
     self.vm.inputs.configureWith(project: project, now: nowDate())
     self.vm.inputs.setNow(date: nowDate())
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertTrue(self.days.lastValue == ("10", "days"))
-    XCTAssertTrue(self.hours.lastValue == ("19", "hours"))
-    XCTAssertTrue(self.minutes.lastValue == ("53", "minutes"))
-    XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
+    self.days.assertValues(["10\ndays"])
+    self.hours.assertValues(["19\nhours"])
+    self.minutes.assertValues(["53\nminutes"])
+    self.seconds.assertValues(["26\nseconds"])
 
     // Step 2: Set date as if two days have passed
     _ = AppEnvironment.current.calendar.dateByAddingUnit(.Day,
       value: 2, toDate: nowDate(), options: []).flatMap { self.vm.inputs.setNow(date: $0) }
 
-    XCTAssertTrue(self.days.lastValue == ("08", "days"))
-    XCTAssertTrue(self.hours.lastValue == ("19", "hours"))
-    XCTAssertTrue(self.minutes.lastValue == ("53", "minutes"))
-    XCTAssertTrue(self.seconds.lastValue == ("26", "seconds"))
+    self.days.assertValues(["10\ndays", "08\ndays"])
+    self.hours.assertValues(["19\nhours"])
+    self.minutes.assertValues(["53\nminutes"])
+    self.seconds.assertValues(["26\nseconds"])
 
     // Step 3: Set now to a second past the stream's start date
     // The live stream view controller should be pushed

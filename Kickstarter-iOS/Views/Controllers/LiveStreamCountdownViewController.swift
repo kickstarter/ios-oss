@@ -162,21 +162,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    // FIXME: move this logic to the VM
     self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
-      .map { attributedCountdownString($0, suffix: $1) }
-
-    // FIXME: move this logic to the VM
     self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
-      .map { attributedCountdownString($0, suffix: $1) }
-
-    // FIXME: move this logic to the VM
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
-      .map { attributedCountdownString($0, suffix: $1) }
-
-    // FIXME: move this logic to the VM
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
-      .map { attributedCountdownString($0, suffix: $1) }
 
     self.timerProducer = timer(1, onScheduler: QueueScheduler(queue: dispatch_get_main_queue()))
       .startWithNext { [weak self] in
@@ -310,30 +299,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBAction private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
-}
-
-private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {
-  let fontDescriptorAttributes = [
-    UIFontDescriptorFeatureSettingsAttribute: [
-      [
-        UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-        UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
-      ]
-    ]
-  ]
-
-  let fontDescriptor = UIFont.ksr_title1(size: 24)
-    .fontDescriptor()
-    .fontDescriptorByAddingAttributes(fontDescriptorAttributes)
-
-  let prefixAttributes = [NSFontAttributeName: UIFont(descriptor: fontDescriptor, size: 24)]
-  let suffixAttributes = [NSFontAttributeName: UIFont.ksr_headline(size: 14)]
-
-  let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
-  let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)
-  prefix.appendAttributedString(suffix)
-
-  return NSAttributedString(attributedString: prefix)
 }
 
 // FIXME: let's chat about this
