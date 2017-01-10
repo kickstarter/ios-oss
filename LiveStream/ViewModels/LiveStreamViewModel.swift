@@ -176,31 +176,40 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
+    let createObservers = zip(
+      didLiveStreamEndedNormally.filter(isFalse).mapConst(true),
+      liveStreamEvent.map(isNonStarter(event:)).filter(isFalse).mapConst(true)
+      ).map { $0 && $1 }
+
     self.createGreenRoomObservers = zip(
       databaseRef,
       liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") }
-    )
+        .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") },
+      createObservers.filter(isTrue)
+      ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createHLSObservers = zip(
       databaseRef,
       liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") }
-    )
+        .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") },
+      createObservers.filter(isTrue)
+      ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createNumberOfPeopleWatchingObservers = zip(
       databaseRef,
       liveStreamEvent
         .filter { !$0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") }
-    )
+        .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") },
+      createObservers.filter(isTrue)
+      ).map { dbRef, event, _ in (dbRef, event) }
 
-    self.createScaleNumberOfPeopleWatchingObservers = combineLatest(
+    self.createScaleNumberOfPeopleWatchingObservers = zip(
       databaseRef,
       liveStreamEvent
         .filter { $0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") }
-    )
+        .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") },
+      createObservers.filter(isTrue)
+      ).map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(1)
       .sampleOn(observedGreenRoomOffChanged.filter(isFalse).ignoreValues())

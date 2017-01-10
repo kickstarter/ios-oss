@@ -406,8 +406,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.initializationFailed])
   }
 
-  func testCreateFirebaseObservers() {
-    // Step 1: Configure with the firebase app and event
+  func testCreateFirebaseObservers_WhenLive() {
     let event = LiveStreamEvent.template
 
     self.vm.inputs.viewDidLoad()
@@ -420,6 +419,28 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
     self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0, "Does not emit when not a scale event.")
+  }
+
+  func testDoNotCreateFirebaseObservers_WhenNotLive() {
+    let event = .template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.hasReplay .~ true
+      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
+
+    self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
+    self.vm.inputs.viewDidLoad()
+
+    guard let replayUrl = event.stream.replayUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    self.createVideoViewController.assertValues([hlsStreamType])
+
+    self.createGreenRoomObservers.assertValueCount(0)
+    self.createHLSObservers.assertValueCount(0)
+    self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0)
   }
 
   func testNumberOfPeopleObserver_WhenNotScaleEvent() {

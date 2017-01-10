@@ -13,20 +13,24 @@ public protocol LiveStreamContainerViewModelType {
 public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
-  func setLiveStreamEvent(event event: LiveStreamEvent)
+  func retrievedLiveStreamEvent(event event: LiveStreamEvent)
   func viewDidLoad()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
+  var availableForLabelHidden: Signal<Bool, NoError> { get }
   var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var creatorIntroText: Signal<NSAttributedString, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
   var error: Signal<String, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
+  var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
+  var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
-  var showVideoView: Signal<Bool, NoError> { get }
+  var videoViewControllerHidden: Signal<Bool, NoError> { get }
   var titleViewText: Signal<String, NoError> { get }
 }
 
@@ -45,7 +49,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.projectProperty.signal.ignoreNil(),
       self.liveStreamEventProperty.signal.ignoreNil(),
       self.viewDidLoadProperty.signal
-      ).map { a, b, _ in (a, b) }
+      ).map { project, event, _ in (project, event) }
 
     self.liveStreamState = combineLatest(
       Signal.merge(
@@ -102,7 +106,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       return Strings.Loading()
     }
 
-    self.showVideoView = combineLatest(
+    self.videoViewControllerHidden = combineLatest(
         self.liveStreamState.map {
           if case .live(playbackState: .playing, _) = $0 { return true }
           if case .replay(playbackState: .playing, _) = $0 { return true }
@@ -110,7 +114,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           return false
         },
         self.createAndConfigureLiveStreamViewController
-    ).map(first)
+      )
+      .map(first)
+      .map(negate)
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
@@ -156,6 +162,25 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
         return NSAttributedString(string: "")
       }.ignoreNil()
+
+
+    let isLive: Signal<Bool, NoError> = self.liveStreamState
+      .map {
+        if case .live = $0 { return true }
+        return false
+    }
+
+    let isReplay: Signal<Bool, NoError> = self.liveStreamState
+      .observeForUI()
+      .map {
+        if case .replay = $0 { return true }
+        return false
+    }
+
+    self.navBarLiveDotImageViewHidden = isLive.map(negate)
+    self.creatorAvatarLiveDotImageViewHidden = isLive.map(negate)
+    self.numberWatchingButtonHidden = isLive.map(negate)
+    self.availableForLabelHidden = isReplay.map(negate)
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
@@ -178,7 +203,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func setLiveStreamEvent(event event: LiveStreamEvent) {
+  public func retrievedLiveStreamEvent(event event: LiveStreamEvent) {
     self.liveStreamEventProperty.value = event
   }
 
@@ -187,15 +212,19 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let availableForLabelHidden: Signal<Bool, NoError>
   public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
+  public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<NSAttributedString, NoError>
   public let dismiss: Signal<(), NoError>
   public let error: Signal<String, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>
+  public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
+  public let numberWatchingButtonHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<NSURL, NoError>
-  public let showVideoView: Signal<Bool, NoError>
   public let titleViewText: Signal<String, NoError>
+  public let videoViewControllerHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamContainerViewModelInputs { return self }
   public var outputs: LiveStreamContainerViewModelOutputs { return self }

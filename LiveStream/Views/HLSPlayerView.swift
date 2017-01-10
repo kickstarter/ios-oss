@@ -47,6 +47,7 @@ internal final class HLSPlayerView: UIView {
     self.hlsPlayerLayer.frame = self.bounds
   }
 
+  //FIXME: make sure this gets deinit'd when multiple are created
   deinit {
     self.hlsPlayerLayer.player = nil
     self.playerItem.removeObserver(self, forKeyPath: statusKeyPath)

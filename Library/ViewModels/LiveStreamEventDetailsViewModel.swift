@@ -26,11 +26,12 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var availableForText: Signal<String, NoError> { get }
   var creatorAvatarUrl: Signal<NSURL?, NoError> { get }
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var showErrorAlert: Signal<String, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
+  var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
+  var showErrorAlert: Signal<String, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<UIImage?, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
@@ -54,6 +55,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           .demoteErrors()
     }
 
+    self.retrievedLiveStreamEvent = event
+
     let project = configData.map(first)
 
     self.configureShareViewModel = combineLatest(
@@ -66,6 +69,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     let subscribedProperty = MutableProperty(false)
 
     // Bind the API response values for subscribed
+    //FIXME: remove demoteErrors()
     subscribedProperty <~ event
       .takeWhen(self.subscribeButtonTappedProperty.signal)
       .switchMap { event -> SignalProducer<Bool, NoError> in
@@ -74,7 +78,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         return AppEnvironment.current.liveStreamService.subscribeTo(
           eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
-          .demoteErrors()
+          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .demoteErrors(replaceErrorWith: subscribedProperty.value)
     }
 
     // Bind the initial subscribed value
@@ -185,6 +190,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
+  public let retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonText: Signal<String, NoError>
@@ -195,7 +201,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
 }
 
-private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
+  SignalProducer<LiveStreamEvent, LiveApiError> {
 
   if let event = event {
     return SignalProducer(value: event)
@@ -206,6 +213,7 @@ private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
     return AppEnvironment.current.liveStreamService.fetchEvent(
       eventId: eventId, uid: AppEnvironment.current.currentUser?.id
       )
+      .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
   }
 
   return .empty

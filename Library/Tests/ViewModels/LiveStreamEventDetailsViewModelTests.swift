@@ -23,9 +23,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeButtonImage = TestObserver<UIImage?, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
-//  private let toggleSubscribeEventId = TestObserver<String, NoError>()
-//  private let toggleSubscribeUserId = TestObserver<Int, NoError>()
-//  private let toggleSubscribeValue = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -44,9 +41,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
-//    self.vm.outputs.toggleSubscribe.map(first).observe(self.toggleSubscribeEventId.observer)
-//    self.vm.outputs.toggleSubscribe.map(second).observe(self.toggleSubscribeUserId.observer)
-//    self.vm.outputs.toggleSubscribe.map(third).observe(self.toggleSubscribeValue.observer)
   }
 
   func testAvailableForText() {
@@ -55,6 +49,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream .~ stream
+
+    self.availableForText.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
@@ -66,26 +62,61 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
+    self.creatorAvatarUrl.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.creatorAvatarUrl.assertValues(["https://www.kickstarter.com/creator-avatar.jpg"])
   }
 
-  func testConfigureSharing() {
+  func testConfigureShareViewModel_WithEvent() {
     let project = Project.template
     let event = LiveStreamEvent.template
 
+    self.animateActivityIndicator.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
+
+    self.animateActivityIndicator.assertValues([false])
 
     self.configureShareViewModelProject.assertValues([project])
     self.configureShareViewModelEvent.assertValues([event])
   }
 
-  func testError() {
+  func testConfigureShareViewModel_WithoutEvent() {
+    let event = LiveStreamEvent.template
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.id .~ event.id
+    ]
+
+    self.animateActivityIndicator.assertValueCount(0)
+
+    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(event))) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(project: project, event: nil)
+
+      self.animateActivityIndicator.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.animateActivityIndicator.assertValues([true, false])
+
+      self.configureShareViewModelProject.assertValues([project])
+      self.configureShareViewModelEvent.assertValues([event])
+    }
+  }
+
+  //FIXME: Update when demoteErrors() removed
+  func testShowErrorAlert() {
     let project = Project.template
     let event = LiveStreamEvent.template
+
+    self.showErrorAlert.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
@@ -99,28 +130,11 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       ])
   }
 
-//  func testIntroText() {
-//    let stream = LiveStreamEvent.template.stream
-//      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
-//    let project = Project.template
-//    let event = LiveStreamEvent.template
-//      |> LiveStreamEvent.lens.stream .~ stream
-//
-//    self.vm.inputs.configureWith(project: project, event: event)
-//    self.vm.inputs.viewDidLoad()
-//
-//    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 0))
-//    XCTAssertTrue(self.introText.lastValue?.string == "Creator Name is live now")
-//
-//    self.vm.inputs.liveStreamViewControllerStateChanged(
-//      state: .replay(playbackState: .playing, duration: 0))
-//
-//    XCTAssertTrue(self.introText.lastValue?.string == "Creator Name was live right now")
-//  }
-
   func testLiveStreamTitle() {
     let project = Project.template
     let event = LiveStreamEvent.template
+
+    self.liveStreamTitle.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
@@ -132,6 +146,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
+    self.liveStreamParagraph.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
@@ -139,38 +155,16 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testNumberOfPeopleWatchingText() {
+    self.numberOfPeopleWatchingText.assertValueCount(0)
+
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
 
-    self.numberOfPeopleWatchingText.assertValue("300")
+    self.numberOfPeopleWatchingText.assertValues(["300"])
+
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 350)
+
+    self.numberOfPeopleWatchingText.assertValues(["300", "350"])
   }
-
-  //FIXME: rewrite these tests
-
-//  func testRetrieveEventInfo() {
-//    let liveStream = Project.LiveStream.template
-//    let project = Project.template
-//      |> Project.lens.liveStreams .~ [liveStream]
-//
-//    self.vm.inputs.configureWith(project: project, event: nil)
-//    self.vm.inputs.viewDidLoad()
-//    self.vm.inputs.fetchLiveStreamEvent()
-//
-//    self.retrieveEventInfoEventId.assertValues(["123"])
-//    self.retrieveEventInfoUserId.assertValues([nil])
-//  }
-//
-//  func testShowActivityIndicator() {
-//    let liveStream = Project.LiveStream.template
-//    let project = Project.template
-//      |> Project.lens.liveStreams .~ [liveStream]
-//
-//    self.vm.inputs.configureWith(project: project, event: nil)
-//    self.vm.inputs.viewDidLoad()
-//    self.vm.inputs.fetchLiveStreamEvent()
-//
-//    self.vm.inputs.setLiveStreamEvent(event: LiveStreamEvent.template)
-//    self.showActivityIndicator.assertValues([true, false])
-//  }
 
   func testSubscribe() {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
@@ -179,50 +173,59 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.user.isSubscribed .~ false
 
+    self.subscribeLabelText.assertValueCount(0)
+    self.subscribeButtonText.assertValueCount(0)
+    self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
+    self.animateSubscribeButtonActivityIndicator.assertValues([false])
+
+    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
     self.subscribeButtonText.assertValues(["Subscribe"])
 
     self.vm.inputs.subscribeButtonTapped()
 
+    self.scheduler.advance()
+
+    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
+
+    self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
 
     self.vm.inputs.subscribeButtonTapped()
 
+    self.scheduler.advance()
+
+    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
+
+    self.subscribeLabelText.assertValues([
+      "Keep up with future live streams",
+      "",
+      "Keep up with future live streams"
+      ])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
 
-//    self.toggleSubscribeEventId.assertValues(["123"])
-//    self.toggleSubscribeUserId.assertValues([1])
-//    self.toggleSubscribeValue.assertValues([false])
+    withEnvironment(liveStreamService: MockLiveStreamService(
+      subscribeToResult: Result(error: .genericFailure))) {
+        self.vm.inputs.subscribeButtonTapped()
+
+        self.scheduler.advance()
+        self.animateSubscribeButtonActivityIndicator.assertValues(
+          [false, true, false, true, false, true, false]
+        )
+
+        //FIXME: Fix duplicate text with skipRepeats() in VM when errors are correctly handled
+        self.subscribeLabelText.assertValues([
+          "Keep up with future live streams",
+          "",
+          "Keep up with future live streams",
+          "Keep up with future live streams"
+          ])
+        self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe", "Subscribe"])
+    }
   }
-
-  func testSubscribeFailed() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
-
-    self.vm.inputs.configureWith(project: project, event: event)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.subscribeButtonTapped()
-    self.vm.inputs.failedToUpdateSubscription()
-//    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, false])
-//    self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
-//    self.subscribeLabelText.assertValues([
-//      "Keep up with future live streams",
-//      "Keep up with future live streams"
-//    ])
-  }
-
-//  func testUpcomingIntroText() {
-//    let project = Project.template
-//    let event = LiveStreamEvent.template
-//
-//    self.vm.inputs.configureWith(project: project, event: event)
-//    self.vm.inputs.viewDidLoad()
-//
-//    XCTAssertTrue(self.upcomingIntroText.lastValue?.string == "Upcoming with\nCreator Name")
-//  }
 }
 
 private func == (tuple1: (String, Int?), tuple2: (String, Int?)) -> Bool {
