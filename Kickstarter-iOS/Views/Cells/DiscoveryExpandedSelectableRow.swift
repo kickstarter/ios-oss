@@ -3,12 +3,12 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var highlightView: UIView!
-  @IBOutlet fileprivate weak var circleImageView: UIImageView!
-  @IBOutlet fileprivate weak var checkImageView: UIImageView!
+  @IBOutlet private weak var filterTitleLabel: UILabel!
+  @IBOutlet private weak var highlightView: UIView!
+  @IBOutlet private weak var circleImageView: UIImageView!
+  @IBOutlet private weak var checkImageView: UIImageView!
 
-  internal var rowIsSelected: Bool = false
+  private var rowIsSelected: Bool = false
 
   internal func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if let category = value.row.params.category, category.isRoot {

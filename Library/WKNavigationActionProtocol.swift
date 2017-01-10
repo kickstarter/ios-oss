@@ -5,14 +5,12 @@
     public let navigationAction: WKNavigationAction
     public let navigationType: WKNavigationType
     public let request: URLRequest
-    public let sourceFrame: WKFrameInfoData
     public let targetFrame: WKFrameInfoData?
 
     public init(navigationAction: WKNavigationAction) {
       self.navigationAction = navigationAction
       self.navigationType = navigationAction.navigationType
       self.request = navigationAction.request
-      self.sourceFrame = .init(frameInfo: navigationAction.sourceFrame)
       self.targetFrame = navigationAction.targetFrame.map(WKFrameInfoData.init(frameInfo:))
     }
 
@@ -23,7 +21,6 @@
       self.navigationAction = WKNavigationAction()
       self.navigationType = navigationType
       self.request = request
-      self.sourceFrame = sourceFrame
       self.targetFrame = targetFrame
     }
   }
@@ -31,18 +28,15 @@
   public struct WKFrameInfoData {
     public let frameInfo: WKFrameInfo
     public let mainFrame: Bool
-    public let request: URLRequest
 
     public init(frameInfo: WKFrameInfo) {
       self.frameInfo = frameInfo
       self.mainFrame = frameInfo.isMainFrame
-      self.request = frameInfo.request
     }
 
     public init(mainFrame: Bool, request: URLRequest) {
       self.frameInfo = WKFrameInfo()
       self.mainFrame = mainFrame
-      self.request = request
     }
   }
 

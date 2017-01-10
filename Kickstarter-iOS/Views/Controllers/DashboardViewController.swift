@@ -191,21 +191,24 @@ internal final class DashboardViewController: UITableViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    // FIXME: problem with completion handler types
-//    controller.completionWithItemsHandler = { [weak self] in
-//      self?.shareViewModel.inputs.shareActivityCompletion(
-//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
-//      )
-//    }
-//
-//    if UIDevice.current.userInterfaceIdiom == .pad {
-//      controller.modalPresentationStyle = .popover
-//      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-//      self.present(controller, animated: true, completion: nil)
-//
-//    } else {
-//      self.present(controller, animated: true, completion: nil)
-//    }
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+      self.present(controller, animated: true, completion: nil)
+
+    } else {
+      self.present(controller, animated: true, completion: nil)
+    }
   }
 
   fileprivate func accessibilityFocusOnTitleView() {

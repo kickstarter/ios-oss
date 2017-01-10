@@ -15,7 +15,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
   fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let postNotification = TestObserver<String, NoError>()
+  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
   fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
   fileprivate let isLoading = TestObserver<Bool, NoError>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
@@ -30,7 +30,7 @@ final class LoginToutViewModelTests: TestCase {
       .observe(self.startFacebookConfirmation.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
@@ -110,7 +110,7 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")

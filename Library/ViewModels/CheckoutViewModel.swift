@@ -14,9 +14,9 @@ public protocol CheckoutViewModelInputs {
 
   /// Call with the data passed to the view.
   func configureWith(initialRequest: URLRequest,
-                                    project: Project,
-                                    reward: Reward,
-                                    applePayCapable: Bool)
+                     project: Project,
+                     reward: Reward,
+                     applePayCapable: Bool)
 
   /// Call when the failure alert OK button is tapped.
   func failureAlertButtonTapped()

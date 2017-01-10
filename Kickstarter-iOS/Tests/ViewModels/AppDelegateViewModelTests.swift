@@ -19,7 +19,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let goToLogin = TestObserver<(), NoError>()
   fileprivate let goToProfile = TestObserver<(), NoError>()
   fileprivate let goToSearch = TestObserver<(), NoError>()
-  fileprivate let postNotificationName = TestObserver<String, NoError>()
+  fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
   fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
   fileprivate let presentViewController = TestObserver<Int, NoError>()
   fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
@@ -40,7 +40,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
-    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotificationName.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
@@ -247,20 +247,20 @@ final class AppDelegateViewModelTests: TestCase {
     vm.inputs.currentUserUpdatedInEnvironment()
 
     updateCurrentUserInEnvironment.assertValues([env.user])
-    postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    postNotificationName.assertValues([.ksr_userUpdated])
 
     vm.inputs.applicationDidEnterBackground()
     vm.inputs.applicationWillEnterForeground()
     self.scheduler.advance(by: .seconds(5))
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
-    postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    postNotificationName.assertValues([.ksr_userUpdated])
 
     vm.inputs.currentUserUpdatedInEnvironment()
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
     postNotificationName.assertValues(
-      [CurrentUserNotifications.userUpdated, CurrentUserNotifications.userUpdated]
+      [.ksr_userUpdated, .ksr_userUpdated]
     )
   }
 
@@ -280,7 +280,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.currentUserUpdatedInEnvironment()
 
       self.updateCurrentUserInEnvironment.assertValues([.template])
-      self.postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+      self.postNotificationName.assertValues([.ksr_userUpdated])
     }
   }
 
@@ -329,10 +329,12 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                                   url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-                                                   sourceApplication: nil,
-                                                   annotation: 1)
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+      sourceApplication: nil,
+      annotation: 1
+    )
     XCTAssertFalse(result)
 
     XCTAssertEqual(["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
@@ -578,7 +580,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
-      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: Data())
+      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "deadbeef".data(using: .utf8)!)
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)

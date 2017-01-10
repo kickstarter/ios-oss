@@ -176,7 +176,7 @@ AppDelegateViewModelOutputs {
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
-      .mapConst(.init(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(Notification(name: .ksr_userUpdated, object: nil))
 
     self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(first: 1)
@@ -628,13 +628,9 @@ AppDelegateViewModelOutputs {
 
 private func deviceToken(fromData data: Data) -> String {
 
-  // FIXME: what's the deal with NSData?
-  return UnsafeBufferPointer<UInt8>(
-    start: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count),
-    count: data.count
-    )
-    .map { String(format: "%02hhx", $0) }
-    .joined(separator: "")
+  return data
+    .map { String(format: "%02.2hhx", $0 as CVarArg) }
+    .joined()
 }
 
 // swiftlint:disable:next cyclomatic_complexity

@@ -211,21 +211,23 @@ internal final class ProjectNavBarViewController: UIViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    // FIXME: the completion handler has some type signature problems
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
-//    controller.completionWithItemsHandler = { [weak self] in
-//      self?.shareViewModel.inputs.shareActivityCompletion(
-//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
-//      )
-//    }
-//
-//    if UIDevice.current.userInterfaceIdiom == .pad {
-//      controller.modalPresentationStyle = .popover
-//      let popover = controller.popoverPresentationController
-//      popover?.sourceView = self.shareButton
-//    }
-//
-//    self.present(controller, animated: true, completion: nil)
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = self.shareButton
+    }
+
+    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func showShareCompose(_ controller: SLComposeViewController) {

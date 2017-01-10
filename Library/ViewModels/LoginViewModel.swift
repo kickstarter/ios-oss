@@ -130,7 +130,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .map { (email: $0, password: $1) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: .ksr_sessionStarted))
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 

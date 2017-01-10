@@ -96,6 +96,6 @@ extension DeprecatedWebViewController: UIWebViewDelegate {
 
   // Call super from subclasses that override this method.
   internal func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-    self.viewModel.inputs.webViewDidFail(withError: error as NSError?)
+    self.viewModel.inputs.webViewDidFail(withError: error)
   }
 }

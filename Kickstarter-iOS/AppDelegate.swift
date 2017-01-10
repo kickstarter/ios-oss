@@ -138,14 +138,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
-    let startedNote = NSNotification.Name.ksr_sessionStarted
     NotificationCenter.default
-      .addObserver(forName: startedNote, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter.default
-      .addObserver(forName: NSNotification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 

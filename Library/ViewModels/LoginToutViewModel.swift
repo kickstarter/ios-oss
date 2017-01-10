@@ -12,7 +12,7 @@ public protocol LoginToutViewModelInputs {
   func facebookLoginButtonPressed()
 
   /// Call when Facebook login completed with error
-  func facebookLoginFail(error: NSError?)
+  func facebookLoginFail(error: Error?)
 
   /// Call when Facebook login completed successfully with a result
   func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
@@ -124,8 +124,10 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .ignoreValues()
       .mapConst(AlertError.facebookTokenFail)
 
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.skipNil()
-      .map { AlertError.facebookLoginAttemptFail(error: $0) }
+    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
+      .map { $0 as? NSError }
+      .skipNil()
+      .map(AlertError.facebookLoginAttemptFail)
 
     self.startTwoFactorChallenge = tokenString.takeWhen(tfaRequiredError)
 
@@ -134,7 +136,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.sessionStarted), object: nil))
+      .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -186,8 +188,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
-  fileprivate let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
-  public func facebookLoginFail(error: NSError?) {
+  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
+  public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
   fileprivate let environmentLoggedInProperty = MutableProperty()

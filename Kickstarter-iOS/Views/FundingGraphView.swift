@@ -253,8 +253,8 @@ private func slope(ofLine line: Line) -> CGFloat {
 
 // Returns the day number, given the start and current date in seconds.
 private func dateToDayNumber(launchDate: TimeInterval,
-                                        currentDate: TimeInterval,
-                                        calendar: Calendar = .current) -> CGFloat {
+                             currentDate: TimeInterval,
+                             calendar: Calendar = AppEnvironment.current.calendar) -> CGFloat {
   let startOfCurrentDate = fabs(
     calendar.startOfDay(
       for: Date(timeIntervalSinceReferenceDate: currentDate)).timeIntervalSince1970
@@ -270,8 +270,8 @@ private func dateToDayNumber(launchDate: TimeInterval,
 
 // Returns the number of days in a given date range.
 private func totalNumberOfDays(startDate: TimeInterval,
-                                         endDate: TimeInterval,
-                                         calendar: Calendar = .current) -> CGFloat {
+                               endDate: TimeInterval,
+                               calendar: Calendar = AppEnvironment.current.calendar) -> CGFloat {
   let startOfStartDate = fabs(
     calendar.startOfDay(for: Date(timeIntervalSinceReferenceDate: startDate)).timeIntervalSince1970
   )
