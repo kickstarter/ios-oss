@@ -146,7 +146,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeNext { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-
   @objc internal func emailTextFieldChanged(textField: UITextField) { //this
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
