@@ -169,8 +169,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
-    // FIXME: move this logic to the VM
-    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.configureShareViewModel.mapConst(true)
+    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
     self.introLabel.rac.attributedText = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
