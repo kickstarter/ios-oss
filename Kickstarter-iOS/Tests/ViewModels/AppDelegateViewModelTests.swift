@@ -329,10 +329,12 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                                   url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-                                                   sourceApplication: nil,
-                                                   annotation: 1)
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+      sourceApplication: nil,
+      annotation: 1
+    )
     XCTAssertFalse(result)
 
     XCTAssertEqual(["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],

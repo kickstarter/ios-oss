@@ -216,7 +216,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   // MARK: Facebook Login
-  
+
   fileprivate func attemptFacebookLogin() {
     self.fbLoginManager
       .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
