@@ -11,7 +11,7 @@ dependencies:
     - xcodebuild -showsdks
 test:
   pre:
-    - xcrun instruments -w 'iPhone 6 (9.3)' || true
+    - xcrun instruments -w 'iPhone 7 (10.2)' || true
     - sleep 15
   override:
     - make lint
