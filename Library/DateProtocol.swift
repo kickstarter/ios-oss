@@ -1,39 +1,39 @@
 import Foundation
 
 public protocol DateProtocol {
-  var date: NSDate { get }
-  func dateByAddingTimeInterval(_: NSTimeInterval) -> Self
+  var date: Date { get }
+  func addingTimeInterval(_: TimeInterval) -> Self
   init()
-  init(timeIntervalSince1970: NSTimeInterval)
-  var timeIntervalSince1970: NSTimeInterval { get }
+  init(timeIntervalSince1970: TimeInterval)
+  var timeIntervalSince1970: TimeInterval { get }
 }
 
-extension NSDate: DateProtocol {
-  public var date: NSDate {
+extension Date: DateProtocol {
+  public var date: Date {
     return self
   }
 }
 
 internal struct MockDate: DateProtocol {
-  private let time: NSTimeInterval
+  private let time: TimeInterval
 
   internal init() {
     self.time = 1475361315
   }
 
-  internal init(timeIntervalSince1970 time: NSTimeInterval) {
+  internal init(timeIntervalSince1970 time: TimeInterval) {
     self.time = time
   }
 
-  internal var timeIntervalSince1970: NSTimeInterval {
+  internal var timeIntervalSince1970: TimeInterval {
     return self.time
   }
 
-  internal var date: NSDate {
-    return NSDate(timeIntervalSince1970: self.time)
+  internal var date: Date {
+    return Date(timeIntervalSince1970: self.time)
   }
 
-  internal func dateByAddingTimeInterval(interval: NSTimeInterval) -> MockDate {
+  internal func addingTimeInterval(_ interval: TimeInterval) -> MockDate {
     return MockDate(timeIntervalSince1970: self.time + interval)
   }
 }

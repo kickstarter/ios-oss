@@ -1,6 +1,6 @@
 import XCTest
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions
@@ -8,18 +8,18 @@ import ReactiveCocoa
 import Prelude
 
 internal final class CommentsEmptyStateCellViewModelTest: TestCase {
-  private let vm: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
+  fileprivate let vm: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
 
-  private let backProjectButtonHidden = TestObserver<Bool, NoError>()
-  private let goBackToProject = TestObserver<(), NoError>()
-  private let goToCommentDialog = TestObserver<Void, NoError>()
-  private let goToLoginTout = TestObserver<Void, NoError>()
-  private let leaveACommentButtonHidden = TestObserver<Bool, NoError>()
-  private let loginButtonHidden = TestObserver<Bool, NoError>()
-  private let subtitleIsHidden = TestObserver<Bool, NoError>()
-  private let subtitleText = TestObserver<String, NoError>()
+  fileprivate let backProjectButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let goBackToProject = TestObserver<(), NoError>()
+  fileprivate let goToCommentDialog = TestObserver<Void, NoError>()
+  fileprivate let goToLoginTout = TestObserver<Void, NoError>()
+  fileprivate let leaveACommentButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let loginButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let subtitleIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let subtitleText = TestObserver<String, NoError>()
 
-  private let creator = .template
+  fileprivate let creator = .template
     |> User.lens.name .~ "Fuzzy Wuzzy"
     |> User.lens.id .~ 400
 

@@ -1,12 +1,12 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
 
 public protocol FindFriendsFriendFollowCellViewModelInputs {
   /// Call to set friend and source from whence it comes
-  func configureWith(friend friend: User, source: FriendsSource)
+  func configureWith(friend: User, source: FriendsSource)
 
   /// Call when follow friend button is tapped
   func followButtonTapped()
@@ -31,8 +31,8 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits when to show Unfollow button
   var hideUnfollowButton: Signal<Bool, NoError> { get }
 
-  /// Emits an NSURL to friend's avatar
-  var imageURL: Signal<NSURL?, NoError> { get }
+  /// Emits an URL to friend's avatar
+  var imageURL: Signal<URL?, NoError> { get }
 
   /// Emits friend's location
   var location: Signal<String, NoError> { get }
@@ -56,10 +56,10 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
   // swiftlint:disable function_body_length
   public init() {
-    let friend = self.configureWithFriendProperty.signal.ignoreNil()
+    let friend = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
-    self.imageURL = friend.map { NSURL.init(string: $0.avatar.medium) }
+    self.imageURL = friend.map { URL(string: $0.avatar.medium) }
 
     self.location = friend.map { $0.location?.displayableName ?? "" }
 
@@ -72,8 +72,8 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     self.hideProjectsCreated = friend.map { $0.stats.createdProjectsCount == 0 }
 
     self.projectsCreatedText = friend
-      .filter { $0.stats.createdProjectsCount > 0 }
       .map { $0.stats.createdProjectsCount ?? 0 }
+      .filter { $0 > 0 }
       .map(Strings.social_following_friend_projects_count_created(created_count:))
 
     let isLoadingFollowRequest = MutableProperty(false)
@@ -84,13 +84,13 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
           .on(
-            started: {
+            starting: {
               isLoadingFollowRequest.value = true
             },
             terminated: {
               isLoadingFollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ true)
           .materialize()
     }
@@ -100,22 +100,22 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .switchMap { user in
         AppEnvironment.current.apiService.unfollowFriend(userId: user.id)
           .on(
-            started: {
+            starting: {
               isLoadingUnfollowRequest.value = true
             },
             terminated: {
               isLoadingUnfollowRequest.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .mapConst(user |> User.lens.isFriend .~ false)
           .materialize()
     }
 
     let updatedFriendToFollowed = followFriendEvent.values()
-      .on(next: { cache(friend: $0, isFriend: true) })
+      .on(value: { cache(friend: $0, isFriend: true) })
 
     let updatedFriendToUnfollowed = unfollowFriendEvent.values()
-      .on(next: { cache(friend: $0, isFriend: false) })
+      .on(value: { cache(friend: $0, isFriend: false) })
 
     let isFollowed = Signal.merge(friend, updatedFriendToFollowed, updatedFriendToUnfollowed)
       .map { $0.isFriend ?? false }
@@ -136,34 +136,34 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       )
       .skipRepeats()
 
-    let source = self.configureWithSourceProperty.signal.ignoreNil().map { $0 }
+    let source = self.configureWithSourceProperty.signal.skipNil().map { $0 }
 
     source
       .takeWhen(self.followButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFriendFollow(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFriendFollow(source: $0) }
 
     source
       .takeWhen(self.unfollowButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFriendUnfollow(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFriendUnfollow(source: $0) }
   }
   // swiftlint:enable function_body_length
 
   public var inputs: FindFriendsFriendFollowCellViewModelInputs { return self }
   public var outputs: FindFriendsFriendFollowCellViewModelOutputs { return self }
 
-  private let configureWithFriendProperty = MutableProperty<User?>(nil)
-  private let configureWithSourceProperty = MutableProperty<FriendsSource?>(nil)
-  public func configureWith(friend friend: User, source: FriendsSource) {
+  fileprivate let configureWithFriendProperty = MutableProperty<User?>(nil)
+  fileprivate let configureWithSourceProperty = MutableProperty<FriendsSource?>(nil)
+  public func configureWith(friend: User, source: FriendsSource) {
     configureWithFriendProperty.value = friend
     configureWithSourceProperty.value = source
   }
 
-  private let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty()
   public func followButtonTapped() {
     followButtonTappedProperty.value = ()
   }
 
-  private let unfollowButtonTappedProperty = MutableProperty()
+  fileprivate let unfollowButtonTappedProperty = MutableProperty()
   public func unfollowButtonTapped() {
     unfollowButtonTappedProperty.value = ()
   }
@@ -172,7 +172,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let enableUnfollowButton: Signal<Bool, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
   public let hideUnfollowButton: Signal<Bool, NoError>
-  public let imageURL: Signal<NSURL?, NoError>
+  public let imageURL: Signal<URL?, NoError>
   public let location: Signal<String, NoError>
   public let name: Signal<String, NoError>
   public let projectsBackedText: Signal<String, NoError>
@@ -182,7 +182,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
 
 internal let findFriendsCacheKey: String = "find_friends_follow_view_model"
 
-private func cached(friend friend: User) -> User {
+private func cached(friend: User) -> User {
   if let friendCache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
     return friend |> User.lens.isFriend .~ isFriend
@@ -191,9 +191,9 @@ private func cached(friend friend: User) -> User {
   }
 }
 
-private func cache(friend friend: User, isFriend: Bool) {
+private func cache(friend: User, isFriend: Bool) {
   AppEnvironment.current.cache[findFriendsCacheKey] =
-    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int:Bool]()
+    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int: Bool]()
 
   var cache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool]
   cache?[friend.id] = isFriend

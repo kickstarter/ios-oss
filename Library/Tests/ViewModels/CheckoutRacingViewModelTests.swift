@@ -6,10 +6,10 @@ import Prelude
 import Result
 
 final class CheckoutRacingViewModelTests: TestCase {
-  private let vm: CheckoutRacingViewModelType = CheckoutRacingViewModel()
+  fileprivate let vm: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
-  private let goToThanks = TestObserver<Void, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
+  fileprivate let goToThanks = TestObserver<Void, NoError>()
+  fileprivate let showAlert = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -25,11 +25,11 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.showAlert.assertDidNotEmitValue()
 
       // Attempts up to 10 times, with one second delay before each attempt
-      self.scheduler.advanceByInterval(9)
+      self.scheduler.advance(by: .seconds(9))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
     }
@@ -41,12 +41,12 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
       withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
-        self.scheduler.advanceByInterval(1)
+        self.scheduler.advance(by: .seconds(1))
         self.goToThanks.assertValueCount(1)
         self.showAlert.assertDidNotEmitValue()
       }
@@ -60,7 +60,7 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertValues([envelope.stateReason])
     }
@@ -71,11 +71,11 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.vm.inputs.configureWith(url: racingURL())
 
       // Attempts up to 10 times, with one second delay before each attempt
-      self.scheduler.advanceByInterval(9)
+      self.scheduler.advance(by: .seconds(9))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertValues([Strings.project_checkout_finalizing_timeout_message()])
     }
@@ -87,12 +87,12 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertDidNotEmitValue()
       self.showAlert.assertDidNotEmitValue()
 
       withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
-        self.scheduler.advanceByInterval(1)
+        self.scheduler.advance(by: .seconds(1))
         self.goToThanks.assertValueCount(1)
         self.showAlert.assertDidNotEmitValue()
       }
@@ -105,13 +105,13 @@ final class CheckoutRacingViewModelTests: TestCase {
       self.goToThanks.assertDidNotEmitValue()
         self.showAlert.assertDidNotEmitValue()
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertValueCount(1)
       self.showAlert.assertDidNotEmitValue()
     }
   }
 }
 
-private func racingURL() -> NSURL {
-  return NSURL(string: "https://www.kickstarter.com/projects/creator/project/checkouts/1")!
+private func racingURL() -> URL {
+  return URL(string: "https://www.kickstarter.com/projects/creator/project/checkouts/1")!
 }

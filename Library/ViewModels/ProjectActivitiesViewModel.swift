@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -15,22 +15,22 @@ public enum ProjectActivitiesGoTo {
 
 public protocol ProjectActivitiesViewModelInputs {
   /// Call when a cell containing an activity and project is tapped.
-  func activityAndProjectCellTapped(activity activity: Activity, project: Project)
+  func activityAndProjectCellTapped(activity: Activity, project: Project)
 
   /// Call to set project.
-  func configureWith(project: Project)
+  func configureWith(_ project: Project)
 
   /// Call when the backing cell's backing button is pressed.
-  func projectActivityBackingCellGoToBacking(project project: Project, user: User)
+  func projectActivityBackingCellGoToBacking(project: Project, user: User)
 
   /// Call when the backing cell's send message button is pressed.
-  func projectActivityBackingCellGoToSendMessage(project project: Project, backing: Backing)
+  func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing)
 
   /// Call when the comment cell's backing button is pressed.
-  func projectActivityCommentCellGoToBacking(project project: Project, user: User)
+  func projectActivityCommentCellGoToBacking(project: Project, user: User)
 
   /// Call when the comment cell's reply button is pressed.
-  func projectActivityCommentCellGoToSendReply(project project: Project, update: Update?, comment: Comment)
+  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -44,7 +44,7 @@ public protocol ProjectActivitiesViewModelInputs {
    - parameter row:       The 0-based index of the row displaying.
    - parameter totalRows: The total number of rows in the table view.
    */
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol ProjectActivitiesViewModelOutputs {
@@ -71,9 +71,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
@@ -99,7 +99,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       requestFromCursor: { AppEnvironment.current.apiService.fetchProjectActivities(paginationUrl: $0) }
     )
 
-    self.projectActivityData = combineLatest(activities, project)
+    self.projectActivityData = Signal.combineLatest(activities, project)
       .map { activities, project in
         ProjectActivityData(
           activities: activities,
@@ -111,7 +111,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       .map { $0.isEmpty }
       .skipRepeats()
 
-    let cellTappedGoTo = self.activityAndProjectCellTappedProperty.signal.ignoreNil()
+    let cellTappedGoTo = self.activityAndProjectCellTappedProperty.signal.skipNil()
       .flatMap { activity, project -> SignalProducer<(ProjectActivitiesGoTo), NoError> in
         switch activity.category {
         case .backing, .backingAmount, .backingCanceled, .backingReward:
@@ -133,21 +133,21 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     }
 
     let projectActivityBackingCellGoToBacking =
-      self.projectActivityBackingCellGoToBackingProperty.signal.ignoreNil()
+      self.projectActivityBackingCellGoToBackingProperty.signal.skipNil()
         .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityBackingCellGoToSendMessage =
-      self.projectActivityBackingCellGoToSendMessageProperty.signal.ignoreNil()
-        .map { project, backing in
+      self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
+        .map { _, backing in
           ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
     }
 
     let projectActivityCommentCellGoToBacking =
-      self.projectActivityCommentCellGoToBackingProperty.signal.ignoreNil()
+      self.projectActivityCommentCellGoToBackingProperty.signal.skipNil()
         .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityCommentCellGoToSendReply =
-      self.projectActivityCommentCellGoToSendReplyProperty.signal.ignoreNil()
+      self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()
         .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
 
     self.goTo = Signal.merge(
@@ -160,47 +160,47 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     project
       .takeWhen(self.viewDidLoadProperty.signal)
-      .take(1)
-      .observeNext { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
+      .take(first: 1)
+      .observeValues { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
 
     project
-      .takeWhen(pageCount.skip(1).filter { $0 == 1 })
-      .observeNext { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
+      .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
+      .observeValues { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
 
     project
-      .takePairWhen(pageCount.skip(1).filter { $0 > 1 })
-      .observeNext { project, pageCount in
+      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
+      .observeValues { project, pageCount in
         AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
     }
   }
   // swiftlint:enable function_body_length
 
   private let activityAndProjectCellTappedProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func activityAndProjectCellTapped(activity activity: Activity, project: Project) {
+  public func activityAndProjectCellTapped(activity: Activity, project: Project) {
     self.activityAndProjectCellTappedProperty.value = (activity, project)
   }
 
   private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) { self.projectProperty.value = project }
+  public func configureWith(_ project: Project) { self.projectProperty.value = project }
 
   private let projectActivityBackingCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
-  public func projectActivityBackingCellGoToBacking(project project: Project, user: User) {
+  public func projectActivityBackingCellGoToBacking(project: Project, user: User) {
     self.projectActivityBackingCellGoToBackingProperty.value = (project, user)
   }
 
   private let projectActivityBackingCellGoToSendMessageProperty = MutableProperty<(Project, Backing)?>(nil)
-  public func projectActivityBackingCellGoToSendMessage(project project: Project, backing: Backing) {
+  public func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing) {
     self.projectActivityBackingCellGoToSendMessageProperty.value = (project, backing)
   }
 
   private let projectActivityCommentCellGoToBackingProperty = MutableProperty<(Project, User)?>(nil)
-  public func projectActivityCommentCellGoToBacking(project project: Project, user: User) {
+  public func projectActivityCommentCellGoToBacking(project: Project, user: User) {
     self.projectActivityCommentCellGoToBackingProperty.value = (project, user)
   }
 
   private let projectActivityCommentCellGoToSendReplyProperty
     = MutableProperty<(Project, Update?, Comment)?>(nil)
-  public func projectActivityCommentCellGoToSendReply(project project: Project,
+  public func projectActivityCommentCellGoToSendReply(project: Project,
                                                               update: Update?,
                                                               comment: Comment) {
     self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
@@ -213,7 +213,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   private let willDisplayRowProperty = MutableProperty<(row: Int, totalRows: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

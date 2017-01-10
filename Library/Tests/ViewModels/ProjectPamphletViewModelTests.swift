@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -7,13 +7,13 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectPamphletViewModelTests: TestCase {
-  private let vm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+  fileprivate let vm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
-  private let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
-  private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
-  private let setNavigationBarHidden = TestObserver<Bool, NoError>()
-  private let setNavigationBarAnimated = TestObserver<Bool, NoError>()
-  private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
+  fileprivate let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
+  fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
+  fileprivate let setNavigationBarHidden = TestObserver<Bool, NoError>()
+  fileprivate let setNavigationBarAnimated = TestObserver<Bool, NoError>()
+  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
 
   internal override func setUp() {
     super.setUp()

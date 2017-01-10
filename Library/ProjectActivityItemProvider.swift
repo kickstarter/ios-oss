@@ -12,15 +12,14 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
     self.project = project
   }
 
-  public override func activityViewController(activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: String) -> AnyObject? {
+  public override func activityViewController(_ activityViewController: UIActivityViewController,
+                                              itemForActivityType activityType: UIActivityType) -> Any? {
     if let project = self.project {
-      if activityType == UIActivityTypeMail || activityType == UIActivityTypeMessage {
+      if activityType == .mail || activityType == .message {
         return project.name
-      } else if activityType == UIActivityTypePostToTwitter {
+      } else if activityType == .postToTwitter {
         return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-      } else if activityType == UIActivityTypeCopyToPasteboard ||
-        activityType == UIActivityTypePostToFacebook {
+      } else if activityType == .copyToPasteboard || activityType == .postToFacebook {
         return project.urls.web.project
       }
     }

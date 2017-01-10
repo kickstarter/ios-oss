@@ -1,15 +1,15 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProjectNotificationCellViewModelInputs {
   /// Call with the initial cell notification value.
-  func configureWith(notification notification: ProjectNotification)
+  func configureWith(notification: ProjectNotification)
 
   /// Call when the notification switch is tapped.
-  func notificationTapped(on on: Bool)
+  func notificationTapped(on: Bool)
 }
 
 public protocol ProjectNotificationCellViewModelOutputs {
@@ -33,7 +33,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
   // swiftlint:disable function_body_length
   public init() {
-    let notification = self.notificationProperty.signal.ignoreNil()
+    let notification = self.notificationProperty.signal.skipNil()
       .map(cached(notification:))
 
     self.name = notification.map { $0.project.name }
@@ -49,7 +49,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     let updateEvent = toggledNotification
       .switchMap {
         AppEnvironment.current.apiService.updateProjectNotification($0)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -62,7 +62,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       .switchMap {
         .merge(
           SignalProducer(value: $0),
-          SignalProducer(signal: toggledNotification.skipRepeats())
+          SignalProducer(toggledNotification.skipRepeats())
         )
       }
       .combinePrevious()
@@ -70,7 +70,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       .map { previous, _ in previous }
 
     Signal.merge(updateEvent.values(), previousNotificationOnError)
-      .observeNext(cache(notification:))
+      .observeValues(cache(notification:))
 
     self.notificationOn = Signal.merge(
       notification,
@@ -82,17 +82,17 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     notification
       .takeWhen(self.notificationTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
+      .observeValues { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
   }
   // swiftlint:enable function_body_length
 
-  private let notificationProperty = MutableProperty<ProjectNotification?>(nil)
-  public func configureWith(notification notification: ProjectNotification) {
+  fileprivate let notificationProperty = MutableProperty<ProjectNotification?>(nil)
+  public func configureWith(notification: ProjectNotification) {
     self.notificationProperty.value = notification
   }
 
-  private let notificationTappedProperty = MutableProperty(false)
-  public func notificationTapped(on on: Bool) {
+  fileprivate let notificationTappedProperty = MutableProperty(false)
+  public func notificationTapped(on: Bool) {
     self.notificationTappedProperty.value = on
   }
 
@@ -108,12 +108,12 @@ private func cacheKey(forNotification notification: ProjectNotification) -> Stri
   return "project_notification_view_model_notification_\(notification.id)"
 }
 
-private func cache(notification notification: ProjectNotification) {
+private func cache(notification: ProjectNotification) {
   let key = cacheKey(forNotification: notification)
-  AppEnvironment.current.cache[key] = (notification.email && notification.mobile)
+  AppEnvironment.current.cache[key] = notification.email && notification.mobile
 }
 
-private func cached(notification notification: ProjectNotification) -> ProjectNotification {
+private func cached(notification: ProjectNotification) -> ProjectNotification {
   let key = cacheKey(forNotification: notification)
   let on = AppEnvironment.current.cache[key] as? Bool
   return notification

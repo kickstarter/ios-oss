@@ -1,11 +1,11 @@
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 internal protocol HelpWebViewModelInputs {
   /// Call to configure with HelpType.
-  func configureWith(helpType helpType: HelpType)
+  func configureWith(helpType: HelpType)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -13,7 +13,7 @@ internal protocol HelpWebViewModelInputs {
 
 internal protocol HelpWebViewModelOutputs {
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<NSURLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
 
 internal protocol HelpWebViewModelType {
@@ -23,43 +23,43 @@ internal protocol HelpWebViewModelType {
 
 internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInputs, HelpWebViewModelOutputs {
   internal init() {
-    self.webViewLoadRequest = self.helpTypeProperty.signal.ignoreNil()
+    self.webViewLoadRequest = self.helpTypeProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { urlForHelpType($0, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) }
-      .ignoreNil()
+      .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
 
   internal var inputs: HelpWebViewModelInputs { return self }
   internal var outputs: HelpWebViewModelOutputs { return self }
 
-  internal let webViewLoadRequest: Signal<NSURLRequest, NoError>
+  internal let webViewLoadRequest: Signal<URLRequest, NoError>
 
-  private let helpTypeProperty = MutableProperty<HelpType?>(nil)
-  func configureWith(helpType helpType: HelpType) {
+  fileprivate let helpTypeProperty = MutableProperty<HelpType?>(nil)
+  func configureWith(helpType: HelpType) {
     self.helpTypeProperty.value = helpType
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 }
 
-private func urlForHelpType(helpType: HelpType, baseUrl: NSURL) -> NSURL? {
+private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
   switch helpType {
   case .cookie:
-    return baseUrl.URLByAppendingPathComponent("cookies")
+    return baseUrl.appendingPathComponent("cookies")
   case .contact:
     return nil
   case .faq:
-    return baseUrl.URLByAppendingPathComponent("help/faq/kickstarter+basics")
+    return baseUrl.appendingPathComponent("help/faq/kickstarter+basics")
   case .howItWorks:
-    return baseUrl.URLByAppendingPathComponent("about")
+    return baseUrl.appendingPathComponent("about")
   case .privacy:
-    return baseUrl.URLByAppendingPathComponent("privacy")
+    return baseUrl.appendingPathComponent("privacy")
   case .terms:
-    return baseUrl.URLByAppendingPathComponent("terms-of-use")
+    return baseUrl.appendingPathComponent("terms-of-use")
   case .trust:
-    return baseUrl.URLByAppendingPathComponent("trust")
+    return baseUrl.appendingPathComponent("trust")
   }
 }

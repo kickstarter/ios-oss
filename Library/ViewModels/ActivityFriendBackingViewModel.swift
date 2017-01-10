@@ -1,19 +1,19 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityFriendBackingViewModelInputs {
   /// Call to configure with an Activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 }
 
 public protocol ActivityFriendBackingViewModelOutputs {
   /// Emits an a11y label for the cell.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits an NSURL for the friend avatar image view.
-  var friendImageURL: Signal<NSURL?, NoError> { get }
+  /// Emits an URL for the friend avatar image view.
+  var friendImageURL: Signal<URL?, NoError> { get }
 
   /// Emits an attributed string for the "friend backed" label.
   var friendTitle: Signal<NSAttributedString, NoError> { get }
@@ -28,7 +28,7 @@ public protocol ActivityFriendBackingViewModelOutputs {
   var percentFundedText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a url to the project image.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits text for the project name label.
   var projectName: Signal<String, NoError> { get }
@@ -44,11 +44,11 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
 
     self.friendImageURL = activity
-      .map { ($0.user?.avatar.small).flatMap(NSURL.init) }
+      .map { ($0.user?.avatar.small).flatMap(URL.init) }
 
     self.friendTitle = activity
       .map { activity in
@@ -83,24 +83,24 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.projectName = activity.map { $0.project?.name ?? "" }
 
-    self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(NSURL.init) }
+    self.projectImageURL = activity.map { ($0.project?.photo.full).flatMap(URL.init) }
 
-    self.cellAccessibilityLabel = combineLatest(self.friendTitle, self.projectName)
+    self.cellAccessibilityLabel = Signal.combineLatest(self.friendTitle, self.projectName)
       .map { "\($0.string), \($1)" }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
 
-  public let friendImageURL: Signal<NSURL?, NoError>
+  public let friendImageURL: Signal<URL?, NoError>
   public let friendTitle: Signal<NSAttributedString, NoError>
   public let fundingBarColor: Signal<UIColor, NoError>
   public let fundingProgressPercentage: Signal<Float, NoError>
   public let percentFundedText: Signal<NSAttributedString, NoError>
   public let projectName: Signal<String, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
@@ -167,8 +167,9 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
     NSForegroundColorAttributeName: UIColor.ksr_navy_500
     ])
 
-  if let percentRange = mutableString.string.rangeOfString(percentage) {
-    let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
+  if let percentRange = mutableString.string.range(of: percentage) {
+    let percentStartIndex = mutableString.string
+      .distance(from: mutableString.string.startIndex, to: percentRange.lowerBound)
     mutableString.addAttributes([
       NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
       NSForegroundColorAttributeName:

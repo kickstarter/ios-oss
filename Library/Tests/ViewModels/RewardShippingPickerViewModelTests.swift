@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -15,7 +15,7 @@ private let locations: [Location] = [
 ]
 
 private let shippingRules = locations
-  .enumerate()
+  .enumerated()
   .map { idx, location in
     .template
       |> ShippingRule.lens.location .~ location
@@ -23,16 +23,16 @@ private let shippingRules = locations
 }
 
 private let sortedShippingRules = shippingRules
-  .sort { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
+  .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
 
 internal final class RewardShippingPickerViewModelTests: TestCase {
-  private let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
+  fileprivate let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
 
-  private let dataSource = TestObserver<[String], NoError>()
-  private let doneButtonAccessibilityHint = TestObserver<String, NoError>()
-  private let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, NoError>()
-  private let notifyDelegateToCancel = TestObserver<(), NoError>()
-  private let selectRow = TestObserver<Int, NoError>()
+  fileprivate let dataSource = TestObserver<[String], NoError>()
+  fileprivate let doneButtonAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, NoError>()
+  fileprivate let notifyDelegateToCancel = TestObserver<(), NoError>()
+  fileprivate let selectRow = TestObserver<Int, NoError>()
 
   override func setUp() {
     super.setUp()

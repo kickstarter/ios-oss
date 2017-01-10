@@ -4,12 +4,13 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
+OS ?= 10.2
 RELEASE ?= beta
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 6,OS=9.3'
+	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 7,OS=10.2'
 endif
 
 XCPRETTY :=
@@ -27,7 +28,7 @@ test-all:
 	PLATFORM=iOS "$(MAKE)" test
 	PLATFORM=iOS TARGET=Library "$(MAKE)" test
 
-test: dependencies
+test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 clean:
@@ -36,7 +37,7 @@ clean:
 dependencies: submodules configs secrets
 
 bootstrap: hooks dependencies
-	brew update
+	brew update || brew update
 	brew unlink swiftlint || true
 	brew install swiftlint
 	brew link --overwrite swiftlint
@@ -82,8 +83,8 @@ strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
 
 secrets:
-	-rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
-	-git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
+	-@git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
 	then \
 		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \

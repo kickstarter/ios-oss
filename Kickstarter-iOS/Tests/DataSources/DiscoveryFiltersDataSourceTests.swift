@@ -5,15 +5,15 @@ import KsApi
 import Prelude
 
 internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
-  private let collectionsHeader = DiscoveryFiltersDataSource.Section.collectionsHeader.rawValue
-  private let collections = DiscoveryFiltersDataSource.Section.collections.rawValue
-  private let categoriesHeader = DiscoveryFiltersDataSource.Section.categoriesHeader.rawValue
-  private let categories = DiscoveryFiltersDataSource.Section.categories.rawValue
-  private let favoritesHeader = DiscoveryFiltersDataSource.Section.favoritesHeader.rawValue
-  private let favorites = DiscoveryFiltersDataSource.Section.favorites.rawValue
+  fileprivate let collectionsHeader = DiscoveryFiltersDataSource.Section.collectionsHeader.rawValue
+  fileprivate let collections = DiscoveryFiltersDataSource.Section.collections.rawValue
+  fileprivate let categoriesHeader = DiscoveryFiltersDataSource.Section.categoriesHeader.rawValue
+  fileprivate let categories = DiscoveryFiltersDataSource.Section.categories.rawValue
+  fileprivate let favoritesHeader = DiscoveryFiltersDataSource.Section.favoritesHeader.rawValue
+  fileprivate let favorites = DiscoveryFiltersDataSource.Section.favorites.rawValue
 
-  private let dataSource = DiscoveryFiltersDataSource()
-  private let tableView = UITableView()
+  fileprivate let dataSource = DiscoveryFiltersDataSource()
+  fileprivate let tableView = UITableView()
 
   func testLoadTopRows() {
     self.dataSource.load(topRows: [

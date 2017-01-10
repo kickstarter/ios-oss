@@ -5,7 +5,7 @@ import ReactiveExtensions
 import UIKit
 
 internal final class MessageCell: UITableViewCell, ValueCell {
-  private let viewModel: MessageCellViewModelType = MessageCellViewModel()
+  fileprivate let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
   @IBOutlet private weak var avatarImageView: UIImageView!
   @IBOutlet private weak var dividerView: UIView!
@@ -17,7 +17,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     // NB: removes the default padding around UITextView.
-    self.bodyTextView.textContainerInset = UIEdgeInsetsZero
+    self.bodyTextView.textContainerInset = UIEdgeInsets.zero
     self.bodyTextView.textContainer.lineFragmentPadding = 0
   }
 
@@ -26,7 +26,9 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindStyles() {
-    self
+    super.bindStyles()
+
+    _ = self
       |> baseTableViewCellStyle()
       |> MessageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -34,18 +36,18 @@ internal final class MessageCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
 
-    self.bodyTextView
+    _ = self.bodyTextView
       |> UITextView.lens.textColor .~ .ksr_navy_700
       |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
 
-    self.dividerView
+    _ = self.dividerView
       |> separatorStyle
 
-    self.nameLabel
+    _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
-    self.timestampLabel
+    _ = self.timestampLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
   }
@@ -58,13 +60,13 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.avatarURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
       })
-      .ignoreNil()
-      .observeNext { [weak self] in
-        self?.avatarImageView.af_setImageWithURL($0)
+      .skipNil()
+      .observeValues { [weak self] in
+        self?.avatarImageView.af_setImage(withURL: $0)
     }
   }
 }

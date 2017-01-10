@@ -3,19 +3,19 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryFiltersStaticRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
-  func configureWith(value value: (title: String, categoryId: Int?)) {
+  func configureWith(value: (title: String, categoryId: Int?)) {
     self.titleLabel.text = value.title
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -29,7 +29,7 @@ internal final class DiscoveryFiltersStaticRowCell: UITableViewCell, ValueCell {
                      right: Styles.grid(2))
     }
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular ? UIFont.ksr_headline() : UIFont.ksr_headline(size: 14)
     }

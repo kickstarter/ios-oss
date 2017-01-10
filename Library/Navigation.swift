@@ -1,5 +1,6 @@
 // swiftlint:disable file_length
 import Argo
+import Runes
 import Curry
 import Foundation
 import KsApi
@@ -200,19 +201,19 @@ public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
 }
 
 extension Navigation {
-  public static func match(url: NSURL) -> Navigation? {
+  public static func match(_ url: URL) -> Navigation? {
     return routes.reduce(nil) { accum, templateAndRoute in
       let (template, route) = templateAndRoute
       return accum ?? parsedParams(url: url, fromTemplate: template).flatMap(route)?.value
     }
   }
 
-  public static func match(request: NSURLRequest) -> Navigation? {
-    return request.URL.flatMap(match)
+  public static func match(_ request: URLRequest) -> Navigation? {
+    return request.url.flatMap(match)
   }
 }
 
-private let routes: [String:RouteParams -> Decoded<Navigation>] = [
+private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -250,19 +251,19 @@ private let routes: [String:RouteParams -> Decoded<Navigation>] = [
 
 extension Navigation.Project {
   // swiftlint:disable conditional_binding_cascade
-  public static func withRequest(request: NSURLRequest) -> (Param, RefTag?)? {
+  public static func withRequest(_ request: URLRequest) -> (Param, RefTag?)? {
     guard let nav = Navigation.match(request), case let .project(project, .root, refTag) = nav
       else { return nil }
     return (project, refTag)
   }
 
-  public static func updateWithRequest(request: NSURLRequest) -> (Param, Int)? {
+  public static func updateWithRequest(_ request: URLRequest) -> (Param, Int)? {
     guard let nav = Navigation.match(request), case let .project(project, .update(update, .root), _) = nav
       else { return nil }
     return (project, update)
   }
 
-  public static func updateCommentsWithRequest(request: NSURLRequest) -> (Param, Int)? {
+  public static func updateCommentsWithRequest(_ request: URLRequest) -> (Param, Int)? {
     guard let nav = Navigation.match(request), case let .project(project, .update(update, .comments), _) = nav
       else { return nil }
     return (project, update)
@@ -276,25 +277,25 @@ extension Navigation.Project {
 public typealias RouteParams = JSON
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.activity))
+  return .success(.tab(.activity))
 }
 
 private func authorize(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.login))
+  return .success(.tab(.login))
 }
 
-private func messages(params: RouteParams) -> Decoded<Navigation> {
+private func messages(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.messages)
     <^> (params <| "message_thread_id" >>- stringToInt)
 }
 
-private func paymentsNew(params: RouteParams) -> Decoded<Navigation> {
+private func paymentsNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
-    <*> .Success(.payments(.new))
+    <*> .success(.payments(.new))
 }
 
-private func paymentsApplePay(params: RouteParams) -> Decoded<Navigation> {
+private func paymentsApplePay(_ params: RouteParams) -> Decoded<Navigation> {
 
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
@@ -303,56 +304,56 @@ private func paymentsApplePay(params: RouteParams) -> Decoded<Navigation> {
         <^> params <| "payload"))
 }
 
-private func paymentsRoot(params: RouteParams) -> Decoded<Navigation> {
+private func paymentsRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
-    <*> .Success(.payments(.root))
+    <*> .success(.payments(.root))
 }
 
-private func paymentsUseStoredCard(params: RouteParams) -> Decoded<Navigation> {
+private func paymentsUseStoredCard(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
-    <*> .Success(.payments(.useStoredCard))
+    <*> .success(.payments(.useStoredCard))
 }
 
-private func discovery(params: RouteParams) -> Decoded<Navigation> {
-  guard case let .Object(object) = params
-    else { return .Failure(.Custom("Failed to extact discovery params")) }
+private func discovery(_ params: RouteParams) -> Decoded<Navigation> {
+  guard case let .object(object) = params
+    else { return .failure(.custom("Failed to extact discovery params")) }
 
   var discoveryParams: [String:String] = [:]
   for (key, value) in object {
-    guard case let .String(stringValue) = value
-      else { return .Failure(.Custom("Failed to extact discovery params")) }
+    guard case let .string(stringValue) = value
+      else { return .failure(.custom("Failed to extact discovery params")) }
     discoveryParams[key] = stringValue
   }
 
   guard discoveryParams != [:] else {
-    return .Success(.tab(.discovery(nil)))
+    return .success(.tab(.discovery(nil)))
   }
 
-  return .Success(.tab(.discovery(discoveryParams)))
+  return .success(.tab(.discovery(discoveryParams)))
 }
 
 private func me(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.me))
+  return .success(.tab(.me))
 }
 
 private func search(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.tab(.search))
+  return .success(.tab(.search))
 }
 
 private func signup(_: RouteParams) -> Decoded<Navigation> {
-  return .Success(.signup)
+  return .success(.signup)
 }
 
-private func project(params: RouteParams) -> Decoded<Navigation> {
+private func project(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.root)
+    <*> .success(.root)
     <*> params <|? "ref_tag"
 }
 
-private func thanks(params: RouteParams) -> Decoded<Navigation> {
+private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   let thanks = curry(Navigation.Project.Checkout.thanks)
     <^> (params <|? "racing" >>- oneToBool)
 
@@ -364,116 +365,119 @@ private func thanks(params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref_tag"
 }
 
-private func projectComments(params: RouteParams) -> Decoded<Navigation> {
+private func projectComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.comments)
+    <*> .success(.comments)
     <*> params <|? "ref_tag"
 }
 
-private func creatorBio(params: RouteParams) -> Decoded<Navigation> {
+private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.creatorBio)
+    <*> .success(.creatorBio)
     <*> params <|? "ref_tag"
 }
 
-private func dashboard(params: RouteParams) -> Decoded<Navigation> {
+private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
   guard let dashboard = (Navigation.Tab.dashboard <^> params <|? "project_param").value
-    else { return .Failure(.Custom("Failed to extract project param")) }
+    else { return .failure(.custom("Failed to extract project param")) }
 
-  return .Success(.tab(dashboard))
+  return .success(.tab(dashboard))
 }
 
-private func friends(params: RouteParams) -> Decoded<Navigation> {
+private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.friends)
+    <*> .success(.friends)
     <*> params <|? "ref_tag"
 }
 
-private func messageCreator(params: RouteParams) -> Decoded<Navigation> {
+private func messageCreator(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.messageCreator)
+    <*> .success(.messageCreator)
     <*> params <|? "ref_tag"
 }
 
-private func pledgeBigPrint(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeBigPrint(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.bigPrint))
+    <*> .success(.pledge(.bigPrint))
     <*> params <|? "ref_tag"
 }
 
-private func pledgeChangeMethod(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeChangeMethod(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.changeMethod))
+    <*> .success(.pledge(.changeMethod))
     <*> params <|? "ref_tag"
 }
 
-private func pledgeDestroy(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeDestroy(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.destroy))
+    <*> .success(.pledge(.destroy))
     <*> params <|? "ref_tag"
 }
 
-private func pledgeEdit(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeEdit(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.edit))
+    <*> .success(.pledge(.edit))
     <*> params <|? "ref_tag"
 }
 
-private func pledgeNew(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.new))
+    <*> .success(.pledge(.new))
     <*> params <|? "ref_tag"
 }
 
-private func pledgeRoot(params: RouteParams) -> Decoded<Navigation> {
+private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(.pledge(.root))
+    <*> .success(.pledge(.root))
     <*> params <|? "ref_tag"
 }
 
-private func posts(params: RouteParams) -> Decoded<Navigation> {
+private func posts(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> .Success(Navigation.Project.updates)
+    <*> .success(Navigation.Project.updates)
     <*> params <|? "ref_tag"
 }
 
-private func projectSurvey(params: RouteParams) -> Decoded<Navigation> {
+private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
     <*> params <|? "ref_tag"
 }
 
-private func update(params: RouteParams) -> Decoded<Navigation> {
+private func update(_ params: RouteParams) -> Decoded<Navigation> {
+  let createProject = curry(Navigation.project)
+  let createUpdate = curry(Navigation.Project.update)
+
+  return createProject
+    <^> params <| "project_param"
+    <*> (createUpdate
+      <^> (params <| "update_param" >>- stringToInt)
+      <*> .success(.root))
+    <*> params <|? "ref_tag"
+}
+
+private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
-      <*> .Success(.root))
+      <*> .success(.comments))
     <*> params <|? "ref_tag"
 }
 
-private func updateComments(params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.project)
-    <^> params <| "project_param"
-    <*> (curry(Navigation.Project.update)
-      <^> (params <| "update_param" >>- stringToInt)
-      <*> .Success(.comments))
-    <*> params <|? "ref_tag"
-}
-
-private func userSurvey(params: RouteParams) -> Decoded<Navigation> {
+private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.user)
   <^> params <| "user_param"
   <*> (Navigation.User.survey <^> (params <| "survey_response_id" >>- stringToInt))
@@ -481,32 +485,24 @@ private func userSurvey(params: RouteParams) -> Decoded<Navigation> {
 
 // MARK: Helpers
 
-private func parsedParams(url url: NSURL, fromTemplate template: String) -> RouteParams? {
+private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  #if swift(>=2.3)
-    let isApiURL = true == AppEnvironment.current.apiService.serverConfig.apiBaseUrl.absoluteString
-      .flatMap { url.absoluteString?.hasPrefix($0) }
+  let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
+    .map { $0.hasPrefix($1) } == .some(true)
 
-    let isWebURL = true == AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
-      .flatMap { url.absoluteString?.hasPrefix($0) }
-  #else
-    let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
-      .map { $0.hasPrefix($1) } == .Some(true)
-
-    let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
-      .map { $0.hasPrefix($1) } == .Some(true)
-  #endif
+  let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
+    .map { $0.hasPrefix($1) } == .some(true)
 
   guard isApiURL || isWebURL else { return nil }
 
   let templateComponents = template
-    .componentsSeparatedByString("/")
+    .components(separatedBy: "/")
     .filter { $0 != "" }
   let urlComponents = url
-    .path?
-    .componentsSeparatedByString("/")
-    .filter { $0 != "" && !$0.hasPrefix("?") } ?? []
+    .path
+    .components(separatedBy: "/")
+    .filter { $0 != "" && !$0.hasPrefix("?") }
 
   guard templateComponents.count == urlComponents.count else { return nil }
 
@@ -522,7 +518,7 @@ private func parsedParams(url url: NSURL, fromTemplate template: String) -> Rout
     }
   }
 
-  NSURLComponents(URL: url, resolvingAgainstBaseURL: false)?
+  URLComponents(url: url, resolvingAgainstBaseURL: false)?
     .queryItems?
     .forEach { item in
       params[item.name] = item.value
@@ -530,18 +526,18 @@ private func parsedParams(url url: NSURL, fromTemplate template: String) -> Rout
 
   var object: [String:RouteParams] = [:]
   params.forEach { key, value in
-    object[key] = .String(value)
+    object[key] = .string(value)
   }
 
-  return .Object(object)
+  return .object(object)
 }
 
-private func oneToBool(string: String?) -> Decoded<Bool?> {
-  return string.flatMap { Int($0) }.map { $0 == 1 }.map(Decoded.Success) ?? .Success(nil)
+private func oneToBool(_ string: String?) -> Decoded<Bool?> {
+  return string.flatMap { Int($0) }.map { $0 == 1 }.map(Decoded.success) ?? .success(nil)
 }
 
-private func stringToInt(string: String) -> Decoded<Int> {
-  return Int(string).map(Decoded.Success) ?? .Failure(.Custom("Could not parse string into int."))
+private func stringToInt(_ string: String) -> Decoded<Int> {
+  return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
 }
 
 /**
@@ -553,8 +549,8 @@ private func stringToInt(string: String) -> Decoded<Int> {
 
  - returns: An optional tuple.
  */
-private func zip <A, B> (a: A?, _ b: B?) -> (A, B)? {
-  if let a = a, b = b {
+private func zip <A, B> (_ a: A?, _ b: B?) -> (A, B)? {
+  if let a = a, let b = b {
     return (a, b)
   }
   return nil

@@ -2,29 +2,29 @@
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 import XCTest
 
 internal final class DiscoveryPageViewModelTests: TestCase {
-  private let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
+  fileprivate let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
-  private let activitiesForSample = TestObserver<[Activity], NoError>()
-  private let asyncReloadData = TestObserver<(), NoError>()
-  private let hideEmptyState = TestObserver<(), NoError>()
-  private let goToActivityProject = TestObserver<Project, NoError>()
-  private let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
-  private let goToPlaylist = TestObserver<[Project], NoError>()
-  private let goToPlaylistProject = TestObserver<Project, NoError>()
-  private let goToPlaylistRefTag = TestObserver<RefTag, NoError>()
-  private let goToProjectUpdate = TestObserver<Update, NoError>()
-  private let hasAddedProjects = TestObserver<Bool, NoError>()
-  private let hasRemovedProjects = TestObserver<Bool, NoError>()
-  private let projectsAreLoading = TestObserver<Bool, NoError>()
-  private let setScrollsToTop = TestObserver<Bool, NoError>()
-  private let showEmptyState = TestObserver<EmptyState, NoError>()
-  private let showOnboarding = TestObserver<Bool, NoError>()
+  fileprivate let activitiesForSample = TestObserver<[Activity], NoError>()
+  fileprivate let asyncReloadData = TestObserver<(), NoError>()
+  fileprivate let hideEmptyState = TestObserver<(), NoError>()
+  fileprivate let goToActivityProject = TestObserver<Project, NoError>()
+  fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
+  fileprivate let goToPlaylist = TestObserver<[Project], NoError>()
+  fileprivate let goToPlaylistProject = TestObserver<Project, NoError>()
+  fileprivate let goToPlaylistRefTag = TestObserver<RefTag, NoError>()
+  fileprivate let goToProjectUpdate = TestObserver<Update, NoError>()
+  fileprivate let hasAddedProjects = TestObserver<Bool, NoError>()
+  fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
+  fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
+  fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
+  fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
+  fileprivate let showOnboarding = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -221,14 +221,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let potdAt = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
+    let potdAt = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
     let project = Project.template
     let potd = project
       |> Project.lens.id %~ { $0 + 1 }
       |> Project.lens.dates.potdAt .~ potdAt
     let discoveryEnvelope = .template
       |> DiscoveryEnvelope.lens.projects .~ (
-        (0...2).map { id in .template |> Project.lens.id .~ 100 + id }
+        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
     )
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {

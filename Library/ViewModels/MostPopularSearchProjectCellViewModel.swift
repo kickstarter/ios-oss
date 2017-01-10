@@ -1,16 +1,16 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MostPopularSearchProjectCellViewModelInputs {
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
   var fundingLabelText: Signal<String, NoError> { get }
   var fundingProgress: Signal<Float, NoError> { get }
-  var projectImageUrl: Signal<NSURL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
 }
 
@@ -23,7 +23,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
 
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.fundingLabelText = project.map {
       Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))
@@ -33,19 +33,19 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
+    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
   public let fundingLabelText: Signal<String, NoError>
   public let fundingProgress: Signal<Float, NoError>
-  public let projectImageUrl: Signal<NSURL?, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 
   public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }

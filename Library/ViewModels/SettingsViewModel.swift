@@ -1,36 +1,36 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 // swiftlint:disable file_length
 public protocol SettingsViewModelInputs {
-  func backingsTapped(selected selected: Bool)
+  func backingsTapped(selected: Bool)
   func betaFeedbackButtonTapped()
-  func commentsTapped(selected selected: Bool)
+  func commentsTapped(selected: Bool)
   func findFriendsTapped()
-  func followerTapped(selected selected: Bool)
-  func friendActivityTapped(selected selected: Bool)
-  func gamesNewsletterTapped(on on: Bool)
-  func happeningNewsletterTapped(on on: Bool)
+  func followerTapped(selected: Bool)
+  func friendActivityTapped(selected: Bool)
+  func gamesNewsletterTapped(on: Bool)
+  func happeningNewsletterTapped(on: Bool)
   func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
   func manageProjectNotificationsTapped()
-  func mobileBackingsTapped(selected selected: Bool)
-  func mobileCommentsTapped(selected selected: Bool)
-  func mobileFollowerTapped(selected selected: Bool)
-  func mobileFriendActivityTapped(selected selected: Bool)
-  func mobilePostLikesTapped(selected selected: Bool)
-  func mobileUpdatesTapped(selected selected: Bool)
-  func postLikesTapped(selected selected: Bool)
-  func promoNewsletterTapped(on on: Bool)
+  func mobileBackingsTapped(selected: Bool)
+  func mobileCommentsTapped(selected: Bool)
+  func mobileFollowerTapped(selected: Bool)
+  func mobileFriendActivityTapped(selected: Bool)
+  func mobilePostLikesTapped(selected: Bool)
+  func mobileUpdatesTapped(selected: Bool)
+  func postLikesTapped(selected: Bool)
+  func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
-  func updatesTapped(selected selected: Bool)
+  func updatesTapped(selected: Bool)
   func viewDidLoad()
-  func weeklyNewsletterTapped(on on: Bool)
+  func weeklyNewsletterTapped(on: Bool)
 }
 
 public protocol SettingsViewModelOutputs {
@@ -83,7 +83,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
           .prefix(value: AppEnvironment.current.currentUser)
           .demoteErrors()
       }
-      .ignoreNil()
+      .skipNil()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
@@ -123,7 +123,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -172,35 +172,35 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
       .map { newsletter, _ in newsletter.displayableName }
 
-    self.gamesNewsletterOn = self.updateCurrentUser.map { $0.newsletters.games }.ignoreNil().skipRepeats()
+    self.gamesNewsletterOn = self.updateCurrentUser.map { $0.newsletters.games }.skipNil().skipRepeats()
     self.happeningNewsletterOn = self.updateCurrentUser
-      .map { $0.newsletters.happening }.ignoreNil().skipRepeats()
-    self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.ignoreNil().skipRepeats()
-    self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.ignoreNil().skipRepeats()
+      .map { $0.newsletters.happening }.skipNil().skipRepeats()
+    self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.skipNil().skipRepeats()
+    self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
 
-    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.ignoreNil().skipRepeats()
+    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
-      .map { $0.notifications.comments }.ignoreNil().skipRepeats()
+      .map { $0.notifications.comments }.skipNil().skipRepeats()
     self.followerSelected = self.updateCurrentUser
-      .map { $0.notifications.follower }.ignoreNil().skipRepeats()
+      .map { $0.notifications.follower }.skipNil().skipRepeats()
     self.friendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.friendActivity }.ignoreNil().skipRepeats()
+      .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
     self.mobileBackingsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileBackings }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
     self.mobileCommentsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileComments }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileComments }.skipNil().skipRepeats()
     self.mobileFollowerSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFollower }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
     self.mobileFriendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFriendActivity }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
     self.mobilePostLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobilePostLikes }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileUpdates }.ignoreNil().skipRepeats()
+      .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.postLikes }.ignoreNil().skipRepeats()
+      .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
-      .map { $0.notifications.updates }.ignoreNil().skipRepeats()
+      .map { $0.notifications.updates }.skipNil().skipRepeats()
 
     self.versionText = viewDidLoadProperty.signal
       .map {
@@ -222,7 +222,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     // Koala
     userAttributeChanged
-      .observeNext { attribute, on in
+      .observeValues { attribute, on in
         switch attribute {
         case let .newsletter(newsletter):
           AppEnvironment.current.koala.trackChangeNewsletter(
@@ -242,116 +242,116 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     }
 
     self.logoutCanceledProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
 
     self.logoutConfirmedProperty.signal
-      .observeNext { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
 
     self.goToAppStoreRating
-      .observeNext { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
+      .observeValues { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
 
     self.showConfirmLogoutPrompt
-      .observeNext { _ in AppEnvironment.current.koala.trackLogoutModal() }
+      .observeValues { _ in AppEnvironment.current.koala.trackLogoutModal() }
 
-    self.viewDidLoadProperty.signal.observeNext { _ in AppEnvironment.current.koala.trackSettingsView() }
+    self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
   }
   // swiftlint:enable function_body_length
   // swiftlint:enable cyclomatic_complexity
 
-  private let backingsTappedProperty = MutableProperty(false)
-  public func backingsTapped(selected selected: Bool) {
+  fileprivate let backingsTappedProperty = MutableProperty(false)
+  public func backingsTapped(selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
-  private let betaFeedbackButtonTappedProperty = MutableProperty()
+  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty()
   public func betaFeedbackButtonTapped() {
     self.betaFeedbackButtonTappedProperty.value = ()
   }
-  private let commentsTappedProperty = MutableProperty(false)
-  public func commentsTapped(selected selected: Bool) {
+  fileprivate let commentsTappedProperty = MutableProperty(false)
+  public func commentsTapped(selected: Bool) {
     self.commentsTappedProperty.value = selected
   }
-  private let findFriendsTappedProperty = MutableProperty()
+  fileprivate let findFriendsTappedProperty = MutableProperty()
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
   }
-  private let followerTappedProperty = MutableProperty(false)
-  public func followerTapped(selected selected: Bool) {
+  fileprivate let followerTappedProperty = MutableProperty(false)
+  public func followerTapped(selected: Bool) {
     self.followerTappedProperty.value = selected
   }
-  private let friendActivityTappedProperty = MutableProperty(false)
-  public func friendActivityTapped(selected selected: Bool) {
+  fileprivate let friendActivityTappedProperty = MutableProperty(false)
+  public func friendActivityTapped(selected: Bool) {
     self.friendActivityTappedProperty.value = selected
   }
-  private let gamesNewsletterTappedProperty = MutableProperty(false)
-  public func gamesNewsletterTapped(on on: Bool) {
+  fileprivate let gamesNewsletterTappedProperty = MutableProperty(false)
+  public func gamesNewsletterTapped(on: Bool) {
     self.gamesNewsletterTappedProperty.value = on
   }
-  private let happeningNewsletterTappedProperty = MutableProperty(false)
-  public func happeningNewsletterTapped(on on: Bool) {
+  fileprivate let happeningNewsletterTappedProperty = MutableProperty(false)
+  public func happeningNewsletterTapped(on: Bool) {
     self.happeningNewsletterTappedProperty.value = on
   }
-  private let logoutCanceledProperty = MutableProperty()
+  fileprivate let logoutCanceledProperty = MutableProperty()
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()
   }
-  private let logoutConfirmedProperty = MutableProperty()
+  fileprivate let logoutConfirmedProperty = MutableProperty()
   public func logoutConfirmed() {
     self.logoutConfirmedProperty.value = ()
   }
-  private let logoutTappedProperty = MutableProperty()
+  fileprivate let logoutTappedProperty = MutableProperty()
   public func logoutTapped() {
     self.logoutTappedProperty.value = ()
   }
-  private let manageProjectNotificationsTappedProperty = MutableProperty()
+  fileprivate let manageProjectNotificationsTappedProperty = MutableProperty()
   public func manageProjectNotificationsTapped() {
     self.manageProjectNotificationsTappedProperty.value = ()
   }
-  private let mobileBackingsTappedProperty = MutableProperty(false)
-  public func mobileBackingsTapped(selected selected: Bool) {
+  fileprivate let mobileBackingsTappedProperty = MutableProperty(false)
+  public func mobileBackingsTapped(selected: Bool) {
     self.mobileBackingsTappedProperty.value = selected
   }
-  private let mobileCommentsTappedProperty = MutableProperty(false)
-  public func mobileCommentsTapped(selected selected: Bool) {
+  fileprivate let mobileCommentsTappedProperty = MutableProperty(false)
+  public func mobileCommentsTapped(selected: Bool) {
     self.mobileCommentsTappedProperty.value = selected
   }
-  private let mobileFollowerTappedProperty = MutableProperty(false)
-  public func mobileFollowerTapped(selected selected: Bool) {
+  fileprivate let mobileFollowerTappedProperty = MutableProperty(false)
+  public func mobileFollowerTapped(selected: Bool) {
     self.mobileFollowerTappedProperty.value = selected
   }
-  private let mobileFriendActivityTappedProperty = MutableProperty(false)
-  public func mobileFriendActivityTapped(selected selected: Bool) {
+  fileprivate let mobileFriendActivityTappedProperty = MutableProperty(false)
+  public func mobileFriendActivityTapped(selected: Bool) {
     self.mobileFriendActivityTappedProperty.value = selected
   }
-  private let mobilePostLikesTappedProperty = MutableProperty(false)
-  public func mobilePostLikesTapped(selected selected: Bool) {
+  fileprivate let mobilePostLikesTappedProperty = MutableProperty(false)
+  public func mobilePostLikesTapped(selected: Bool) {
     self.mobilePostLikesTappedProperty.value = selected
   }
-  private let mobileUpdatesTappedProperty = MutableProperty(false)
-  public func mobileUpdatesTapped(selected selected: Bool) {
+  fileprivate let mobileUpdatesTappedProperty = MutableProperty(false)
+  public func mobileUpdatesTapped(selected: Bool) {
     self.mobileUpdatesTappedProperty.value = selected
   }
-  private let postLikesTappedProperty = MutableProperty(false)
-  public func postLikesTapped(selected selected: Bool) {
+  fileprivate let postLikesTappedProperty = MutableProperty(false)
+  public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
-  private let promoNewsletterTappedProperty = MutableProperty(false)
-  public func promoNewsletterTapped(on on: Bool) {
+  fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
+  public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
-  private let rateUsTappedProperty = MutableProperty()
+  fileprivate let rateUsTappedProperty = MutableProperty()
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
-  private let updatesTappedProperty = MutableProperty(false)
-  public func updatesTapped(selected selected: Bool) {
+  fileprivate let updatesTappedProperty = MutableProperty(false)
+  public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let weeklyNewsletterTappedProperty = MutableProperty(false)
-  public func weeklyNewsletterTapped(on on: Bool) {
+  fileprivate let weeklyNewsletterTappedProperty = MutableProperty(false)
+  public func weeklyNewsletterTapped(on: Bool) {
     self.weeklyNewsletterTappedProperty.value = on
   }
 
@@ -394,7 +394,7 @@ private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
 
-  private var lens: Lens<User, Bool?> {
+  fileprivate var lens: Lens<User, Bool?> {
     switch self {
     case let .newsletter(newsletter):
       switch newsletter {
@@ -436,7 +436,7 @@ private enum Notification {
   case postLikes
   case updates
 
-  private var trackingString: String {
+  fileprivate var trackingString: String {
     switch self {
     case .backings, .mobileBackings:                return "New pledges"
     case .comments, .mobileComments:                return "New comments"

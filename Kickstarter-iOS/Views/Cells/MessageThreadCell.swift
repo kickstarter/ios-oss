@@ -5,7 +5,7 @@ import ReactiveExtensions
 import UIKit
 
 internal final class MessageThreadCell: UITableViewCell, ValueCell {
-  private let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
+  fileprivate let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
   @IBOutlet private weak var avatarImageView: UIImageView!
   @IBOutlet private weak var bodyLabel: UILabel!
@@ -16,38 +16,38 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var replyIndicator: UIView?
   @IBOutlet private weak var unreadIndicatorView: UIView?
 
-  func configureWith(value value: MessageThread) {
+  func configureWith(value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
-      |> MessageThreadCell.lens.backgroundColor .~ .whiteColor()
+      |> MessageThreadCell.lens.backgroundColor .~ .white
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
 
-    self.bodyLabel
+    _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
 
-    self.dateLabel
+    _ = self.dateLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
 
-    self.dividerView
+    _ = self.dividerView
       |> separatorStyle
 
-    self.nameLabel
+    _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 15.0)
   }
@@ -56,18 +56,18 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.participantAvatarURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
       })
-      .ignoreNil()
-      .observeNext { [weak self] url in
-        self?.avatarImageView.af_setImageWithURL(url)
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.avatarImageView.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.participantName
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.nameLabel.setHTML($0)
     }
 

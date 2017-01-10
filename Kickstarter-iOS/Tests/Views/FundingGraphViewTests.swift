@@ -8,12 +8,12 @@ import XCTest
 
 internal final class FundingGraphViewTests: TestCase {
 
-  private let vm: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
-  private let graphData = TestObserver<FundingGraphData, NoError>()
+  fileprivate let vm: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
+  fileprivate let graphData = TestObserver<FundingGraphData, NoError>()
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     self.vm.outputs.graphData.observe(self.graphData.observer)
   }
 
@@ -102,10 +102,10 @@ private let project = .template
 private func fundingStats(forProject project: Project, pledgeValues: [Int])
   -> [ProjectStatsEnvelope.FundingDateStats] {
 
-    return pledgeValues.enumerate().map { idx, pledged in
+    return pledgeValues.enumerated().map { idx, pledged in
       .template
         |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
         |> ProjectStatsEnvelope.FundingDateStats.lens.date
-          .~ (project.dates.launchedAt + NSTimeInterval(idx * 86_400))
+          .~ (project.dates.launchedAt + TimeInterval(idx * 86_400))
     }
 }

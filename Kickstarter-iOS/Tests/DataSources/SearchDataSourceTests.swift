@@ -12,11 +12,11 @@ final class SearchDataSourceTests: XCTestCase {
     let section = SearchDataSource.Section.popularTitle.rawValue
 
     dataSource.popularTitle(isVisible: false)
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     dataSource.popularTitle(isVisible: true)
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("MostPopularCell", self.dataSource.reusableId(item: 0, section: section))
   }
@@ -30,7 +30,7 @@ final class SearchDataSourceTests: XCTestCase {
       .template |> Project.lens.id .~ 3
       ])
 
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(3, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     XCTAssertEqual("MostPopularSearchProjectCell", self.dataSource.reusableId(item: 0, section: section))
@@ -43,7 +43,7 @@ final class SearchDataSourceTests: XCTestCase {
 
     dataSource.load(projects: [])
 
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -52,7 +52,7 @@ final class SearchDataSourceTests: XCTestCase {
 
     dataSource.load(projects: [.template |> Project.lens.id .~ 1])
 
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     XCTAssertEqual("MostPopularSearchProjectCell", self.dataSource.reusableId(item: 0, section: section))

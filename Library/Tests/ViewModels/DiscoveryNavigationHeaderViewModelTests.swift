@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -8,29 +8,29 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
-  private let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
+  fileprivate let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
-  private let animateArrowToDown = TestObserver<Bool, NoError>()
-  private let arrowOpacity = TestObserver<CGFloat, NoError>()
-  private let arrowOpacityAnimated = TestObserver<Bool, NoError>()
-  private let dividerIsHidden = TestObserver<Bool, NoError>()
-  private let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
-  private let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
-  private let primaryLabelText = TestObserver<String, NoError>()
-  private let dismissDiscoveryFilters = TestObserver<(), NoError>()
-  private let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
-  private let secondaryLabelText = TestObserver<String, NoError>()
-  private let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
-  private let titleAccessibilityHint = TestObserver<String, NoError>()
-  private let titleAccessibilityLabel = TestObserver<String, NoError>()
-  private let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
-  private let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
-  private let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
-  private let favoriteViewIsHidden = TestObserver<Bool, NoError>()
-  private let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
-  private let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
-  private let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
+  fileprivate let animateArrowToDown = TestObserver<Bool, NoError>()
+  fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
+  fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
+  fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let primaryLabelText = TestObserver<String, NoError>()
+  fileprivate let dismissDiscoveryFilters = TestObserver<(), NoError>()
+  fileprivate let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let secondaryLabelText = TestObserver<String, NoError>()
+  fileprivate let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let titleAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let titleAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
+  fileprivate let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
+  fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
+  fileprivate let favoriteViewIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
+  fileprivate let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
@@ -85,7 +85,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configureWith(params: initialParams)
-      self.scheduler.advanceByInterval(AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
       self.showDiscoveryFiltersRow.assertValueCount(0)
       self.dismissDiscoveryFilters.assertValueCount(0)
@@ -99,7 +99,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
 
-      scheduler.advanceByInterval(0.4)
+      scheduler.advance(by: .milliseconds(400))
       self.dismissDiscoveryFilters.assertValueCount(1)
 
       self.vm.inputs.titleButtonTapped()
@@ -147,7 +147,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title before the categories are fetched
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow],
                                                 "Filters are shown even before categories are fetched.")
@@ -156,7 +156,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
       // Wait enough time for categories to come back
-      self.scheduler.advanceByInterval(AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
       self.showDiscoveryFiltersRow.assertValues([initialRow],
                                                 "Nothing new is emitted once categories are fetched.")
@@ -166,7 +166,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title again to dismiss
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow], "Nothing new is emitted when dismissing.")
       self.showDiscoveryFiltersCats.assertValues([[]], "Nothing new is emitted when dismissing.")
@@ -174,7 +174,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       // Tap title again to present
       self.vm.inputs.titleButtonTapped()
-      self.scheduler.advanceByInterval(0.4)
+      self.scheduler.advance(by: .milliseconds(400))
 
       self.showDiscoveryFiltersRow.assertValues([initialRow, initialRow],
                                                 "Filters are shown again.")

@@ -5,7 +5,7 @@ import UIKit
 
 internal final class RewardsTitleCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var rewardsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardsTitleLabel: UILabel!
 
   func configureWith(value project: Project) {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
@@ -36,7 +36,7 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { margins, cell in
         .init(top: Styles.grid(2),
@@ -45,7 +45,7 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
               right: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.right * 2)
     }
 
-    self.rewardsTitleLabel
+    _ = self.rewardsTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
   }
 }

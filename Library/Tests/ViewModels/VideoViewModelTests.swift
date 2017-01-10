@@ -32,7 +32,7 @@ internal final class VideoViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.addCompletionObserver.observe(self.addCompletionObserver.observer)
-    self.vm.outputs.configurePlayerWithURL.map { optionalize($0.absoluteString) }.ignoreNil()
+    self.vm.outputs.configurePlayerWithURL.map { $0.absoluteString }
       .observe(self.configurePlayerWithURL.observer)
     self.vm.outputs.incrementVideoCompletion.observe(self.incrementVideoCompletion.observer)
     self.vm.outputs.incrementVideoStart.observe(self.incrementVideoStart.observer)

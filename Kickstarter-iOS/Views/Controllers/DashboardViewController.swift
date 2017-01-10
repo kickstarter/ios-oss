@@ -5,15 +5,15 @@ import Prelude
 import Prelude_UIKit
 
 internal final class DashboardViewController: UITableViewController {
-  @IBOutlet private weak var titleView: DashboardTitleView!
-  @IBOutlet private weak var shareButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var titleView: DashboardTitleView!
+  @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
-  private let dataSource = DashboardDataSource()
-  private let viewModel: DashboardViewModelType = DashboardViewModel()
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let dataSource = DashboardDataSource()
+  fileprivate let viewModel: DashboardViewModelType = DashboardViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   internal static func instantiate() -> DashboardViewController {
-    return Storyboard.Dashboard.instantiate(DashboardViewController)
+    return Storyboard.Dashboard.instantiate(DashboardViewController.self)
   }
 
   internal func `switch`(toProject param: Param) {
@@ -34,16 +34,16 @@ internal final class DashboardViewController: UITableViewController {
     self.titleView.delegate = self
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   override func bindStyles() {
-    self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    self.navigationController?.navigationBar
+    _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
   }
 
@@ -53,14 +53,14 @@ internal final class DashboardViewController: UITableViewController {
 
     self.viewModel.outputs.fundingData
       .observeForUI()
-      .observeNext { [weak self] stats, project in
+      .observeValues { [weak self] stats, project in
         self?.dataSource.load(fundingDateStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.project
       .observeForUI()
-      .observeNext { [weak self] project in
+      .observeValues { [weak self] project in
         self?.dataSource.load(project: project)
         self?.tableView.reloadData()
 
@@ -70,34 +70,34 @@ internal final class DashboardViewController: UITableViewController {
 
     self.viewModel.outputs.referrerData
       .observeForUI()
-      .observeNext { [weak self] (cumulative, project, referrers) in
+      .observeValues { [weak self] (cumulative, project, referrers) in
         self?.dataSource.load(cumulative: cumulative, project: project, referrers: referrers)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.rewardData
       .observeForUI()
-      .observeNext { [weak self] (stats, project) in
+      .observeValues { [weak self] (stats, project) in
         self?.dataSource.load(rewardStats: stats, project: project)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.videoStats
       .observeForUI()
-      .observeNext { [weak self] videoStats in
+      .observeValues { [weak self] videoStats in
         self?.dataSource.load(videoStats: videoStats)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.presentProjectsDrawer
       .observeForControllerAction()
-      .observeNext { [weak self] data in
+      .observeValues { [weak self] data in
         self?.presentProjectsDrawer(data: data)
     }
 
     self.viewModel.outputs.animateOutProjectsDrawer
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         if let drawerVC = self?.presentedViewController as? DashboardProjectsDrawerViewController {
           drawerVC.animateOut()
         }
@@ -105,37 +105,37 @@ internal final class DashboardViewController: UITableViewController {
 
     self.viewModel.outputs.dismissProjectsDrawer
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(false, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: false, completion: nil)
     }
 
     self.viewModel.outputs.updateTitleViewData
       .observeForControllerAction()
-      .observeNext { [weak element = self.titleView] data in
+      .observeValues { [weak element = self.titleView] data in
         element?.updateData(data)
     }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] project, projects, reftag in
+      .observeValues { [weak self] project, projects, reftag in
         self?.goToProject(project, projects: projects, refTag: reftag)
     }
 
     self.viewModel.outputs.focusScreenReaderOnTitleView
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.accessibilityFocusOnTitleView()
     }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet($0) }
   }
   // swiftlint:enable function_body_length
 
-  internal override func tableView(tableView: UITableView,
-                                   willDisplayCell cell: UITableViewCell,
-                                   forRowAtIndexPath indexPath: NSIndexPath) {
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
     if let actionCell = cell as? DashboardActionCell {
       actionCell.delegate = self
     } else if let referrersCell = cell as? DashboardReferrersCell {
@@ -145,98 +145,103 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  private func goToActivity(project: Project) {
+  fileprivate func goToActivity(_ project: Project) {
     let vc = ProjectActivitiesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
+
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  internal override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let cell = tableView.cellForRowAtIndexPath(indexPath)
+  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let cell = tableView.cellForRow(at: indexPath)
     if let _ = cell as? DashboardContextCell {
       self.viewModel.inputs.projectContextCellTapped()
     }
   }
 
-  private func goToMessages(project: Project) {
+  fileprivate func goToMessages(_ project: Project) {
     let vc = MessageThreadsViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToPostUpdate(project: Project) {
+  fileprivate func goToPostUpdate(_ project: Project) {
     let vc = UpdateDraftViewController.configuredWith(project: project)
     vc.delegate = self
 
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .FormSheet
+    nav.modalPresentationStyle = .formSheet
 
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToProject(project: Project, projects: [Project], refTag: RefTag) {
+  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project,
                                                            refTag: refTag,
                                                            initialPlaylist: projects,
                                                            navigatorDelegate: self)
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func presentProjectsDrawer(data data: [ProjectsDrawerData]) {
+  fileprivate func presentProjectsDrawer(data: [ProjectsDrawerData]) {
     let vc = DashboardProjectsDrawerViewController.configuredWith(data: data)
     vc.delegate = self
-    self.modalPresentationStyle = .OverCurrentContext
-    self.presentViewController(vc, animated: false, completion: nil)
+    self.modalPresentationStyle = .overCurrentContext
+    self.present(vc, animated: false, completion: nil)
   }
 
-  private func showShareSheet(controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
+  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
+
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
     }
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      controller.modalPresentationStyle = .Popover
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
       controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-      self.presentViewController(controller, animated: true, completion: nil)
+      self.present(controller, animated: true, completion: nil)
 
     } else {
-      self.presentViewController(controller, animated: true, completion: nil)
+      self.present(controller, animated: true, completion: nil)
     }
   }
 
-  private func accessibilityFocusOnTitleView() {
+  fileprivate func accessibilityFocusOnTitleView() {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleView)
   }
 
-  @objc private func shareButtonTapped() {
+  @objc fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 }
 
 extension DashboardViewController: DashboardActionCellDelegate {
-  internal func goToActivity(cell: DashboardActionCell?, project: Project) {
+  internal func goToActivity(_ cell: DashboardActionCell?, project: Project) {
     self.goToActivity(project)
   }
 
-  internal func goToMessages(cell: DashboardActionCell?, project: Project) {
+  internal func goToMessages(_ cell: DashboardActionCell?, project: Project) {
     self.goToMessages(project)
   }
 
-  internal func goToPostUpdate(cell: DashboardActionCell?, project: Project) {
+  internal func goToPostUpdate(_ cell: DashboardActionCell?, project: Project) {
     self.goToPostUpdate(project)
   }
 }
 
 extension DashboardViewController: UpdateDraftViewControllerDelegate {
-  func updateDraftViewControllerWantsDismissal(updateDraftViewController: UpdateDraftViewController) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  func updateDraftViewControllerWantsDismissal(_ updateDraftViewController: UpdateDraftViewController) {
+    self.dismiss(animated: true, completion: nil)
   }
 }
 
 extension DashboardViewController: DashboardReferrersCellDelegate {
-  func dashboardReferrersCellDidAddReferrerRows(cell: DashboardReferrersCell?) {
+  func dashboardReferrersCellDidAddReferrerRows(_ cell: DashboardReferrersCell?) {
     let inset = self.tableView.contentInset
     self.tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 1000, right: 0.0)
 
@@ -248,14 +253,14 @@ extension DashboardViewController: DashboardReferrersCellDelegate {
 }
 
 extension DashboardViewController: DashboardRewardsCellDelegate {
-  func dashboardRewardsCellDidAddRewardRows(cell: DashboardRewardsCell?) {
+  func dashboardRewardsCellDidAddRewardRows(_ cell: DashboardRewardsCell?) {
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
   }
 }
 
 extension DashboardViewController: DashboardProjectsDrawerViewControllerDelegate {
-  func dashboardProjectsDrawerCellDidTapProject(project: Project) {
+  func dashboardProjectsDrawerCellDidTapProject(_ project: Project) {
     self.viewModel.inputs.`switch`(toProject: .id(project.id))
   }
 

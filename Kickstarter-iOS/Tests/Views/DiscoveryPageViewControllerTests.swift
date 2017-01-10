@@ -9,7 +9,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -43,13 +43,13 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Card_NoMetadata() {
     let project = anomalisaNoPhoto
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
+    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
+      .forEach { language, device in
 
         withEnvironment(apiService: MockService(fetchActivitiesResponse: [],
           fetchDiscoveryResponse: discoveryResponse), currentUser: User.template, language: language) {
@@ -73,7 +73,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   func testView_Onboarding() {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language, currentUser: nil) {
+      withEnvironment(currentUser: nil, language: language) {
 
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -89,17 +89,17 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  private let anomalisaNoPhoto = .anomalisa
+  fileprivate let anomalisaNoPhoto = .anomalisa
     |> Project.lens.id .~ 1111
     |> Project.lens.photo.full .~ ""
 
-  private let brandoNoAvatar = .brando
+  fileprivate let brandoNoAvatar = .brando
     |> User.lens.avatar.medium .~ ""
 
-  private let cosmicSurgeryNoPhoto = .cosmicSurgery
+  fileprivate let cosmicSurgeryNoPhoto = .cosmicSurgery
     |> Project.lens.id .~ 2222
     |> Project.lens.photo.full .~ ""
 
-  private let magicParams = .defaults
+  fileprivate let magicParams = .defaults
     |> DiscoveryParams.lens.sort .~ .magic
 }

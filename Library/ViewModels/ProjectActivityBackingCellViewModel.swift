@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -9,7 +9,7 @@ public protocol ProjectActivityBackingCellViewModelInputs {
   func backingButtonPressed()
 
   /// Call to set the activity and project.
-  func configureWith(activity activity: Activity, project: Project)
+  func configureWith(activity: Activity, project: Project)
 
   /// Call when the send message button is pressed.
   func sendMessageButtonPressed()
@@ -17,7 +17,7 @@ public protocol ProjectActivityBackingCellViewModelInputs {
 
 public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits a URL for the backer's avatar.
-  var backerImageURL: Signal<NSURL?, NoError> { get }
+  var backerImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the cell's accessibility label.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
@@ -72,12 +72,12 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
   // swiftlint:disable function_body_length
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
     let title = activity.map(title(activity:))
 
     self.backerImageURL = activityAndProject
-      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(URL.init) }
 
     self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
 
@@ -116,7 +116,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
 
     self.previousPledgeAmountLabelIsHidden = previousPledgeAmountLabelIsHidden.skipRepeats()
 
-    let pledgeAmountsStackViewIsHidden = zip(
+    let pledgeAmountsStackViewIsHidden = Signal.zip(
       pledgeAmountLabelIsHidden,
       previousPledgeAmountLabelIsHidden
       )
@@ -133,11 +133,11 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.rewardLabelIsHidden = rewardLabelIsHidden
 
     self.sendMessageButtonAndBulletSeparatorHidden = activityAndProject
-      .map { .Some($1.creator) != AppEnvironment.current.currentUser }
+      .map { .some($1.creator) != AppEnvironment.current.currentUser }
 
     self.title = title
 
-    self.pledgeDetailsSeparatorStackViewIsHidden = zip(
+    self.pledgeDetailsSeparatorStackViewIsHidden = Signal.zip(
       pledgeAmountsStackViewIsHidden,
       rewardLabelIsHidden
       )
@@ -146,22 +146,22 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   }
   // swiftlint:enable function_body_length
 
-  private let backingButtonPressedProperty = MutableProperty()
+  fileprivate let backingButtonPressedProperty = MutableProperty()
   public func backingButtonPressed() {
     self.backingButtonPressedProperty.value = ()
   }
 
-  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func configureWith(activity activity: Activity, project: Project) {
+  fileprivate let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity: Activity, project: Project) {
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  private let sendMessageButtonPressedProperty = MutableProperty()
+  fileprivate let sendMessageButtonPressedProperty = MutableProperty()
   public func sendMessageButtonPressed() {
     self.sendMessageButtonPressedProperty.value = ()
   }
 
-  public let backerImageURL: Signal<NSURL?, NoError>
+  public let backerImageURL: Signal<URL?, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
@@ -181,7 +181,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
   public var outputs: ProjectActivityBackingCellViewModelOutputs { return self }
 }
 
-private func accessibilityValue(activity activity: Activity, project: Project) -> String {
+private func accessibilityValue(activity: Activity, project: Project) -> String {
   switch activity.category {
   case .backing, .backingCanceled:
     return Strings.Amount_reward(
@@ -201,24 +201,24 @@ private func accessibilityValue(activity activity: Activity, project: Project) -
   }
 }
 
-private func currentUserIsBacker(activity activity: Activity) -> Bool {
+private func currentUserIsBacker(activity: Activity) -> Bool {
   guard let backing = activity.memberData.backing else { return false }
   return AppEnvironment.current.currentUser?.id == backing.backerId
 }
 
-private func rewardSummary(activity activity: Activity, project: Project) -> String {
+private func rewardSummary(activity: Activity, project: Project) -> String {
   guard let reward = reward(activity: activity, project: project) else { return "" }
   return reward.isNoReward ?
     Strings.dashboard_activity_no_reward_selected() :
     Strings.dashboard_activity_reward_name(reward_name: reward.title ?? reward.description)
 }
 
-private func reward(activity activity: Activity, project: Project) -> Reward? {
+private func reward(activity: Activity, project: Project) -> Reward? {
   guard let rewardId = activity.memberData.rewardId ?? activity.memberData.newRewardId else { return nil }
   return project.rewards.filter { $0.id == rewardId }.first
 }
 
-private func title(activity activity: Activity) -> String {
+private func title(activity: Activity) -> String {
   guard let userName = activity.user?.name else { return "" }
 
   switch activity.category {
@@ -244,12 +244,12 @@ private func title(activity activity: Activity) -> String {
   }
 }
 
-private func amount(activity activity: Activity, project: Project) -> String {
+private func amount(activity: Activity, project: Project) -> String {
   guard let amount = activity.memberData.amount ?? activity.memberData.newAmount else { return "" }
   return Format.currency(amount, country: project.country)
 }
 
-private func oldAmount(activity activity: Activity, project: Project) -> String {
+private func oldAmount(activity: Activity, project: Project) -> String {
   guard let amount = activity.memberData.oldAmount else { return "" }
   return Format.currency(amount, country: project.country)
 }

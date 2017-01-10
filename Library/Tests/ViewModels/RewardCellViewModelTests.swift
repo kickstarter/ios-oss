@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -8,32 +8,32 @@ import XCTest
 @testable import Library
 
 final class RewardCellViewModelTests: TestCase {
-  private let vm: RewardCellViewModelType = RewardCellViewModel()
+  fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
 
-  private let allGoneHidden = TestObserver<Bool, NoError>()
-  private let cardViewBackgroundColor = TestObserver<UIColor, NoError>()
-  private let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
-  private let contentViewBackgroundColor = TestObserver<UIColor, NoError>()
-  private let conversionLabelHidden = TestObserver<Bool, NoError>()
-  private let conversionLabelText = TestObserver<String, NoError>()
-  private let descriptionLabelHidden = TestObserver<Bool, NoError>()
-  private let descriptionLabelText = TestObserver<String, NoError>()
-  private let footerLabelText = TestObserver<String, NoError>()
-  private let footerViewHidden = TestObserver<Bool, NoError>()
-  private let items = TestObserver<[String], NoError>()
-  private let itemsContainerHidden = TestObserver<Bool, NoError>()
-  private let manageButtonHidden = TestObserver<Bool, NoError>() // todo
-  private let minimumAndConversionLabelsColor = TestObserver<UIColor, NoError>()
-  private let minimumLabelText = TestObserver<String, NoError>()
-  private let notifyDelegateRewardCellWantsExpansion = TestObserver<(), NoError>()
-  private let pledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  private let pledgeButtonTitleText = TestObserver<String, NoError>() // todo
-  private let titleLabelHidden = TestObserver<Bool, NoError>()
-  private let titleLabelText = TestObserver<String, NoError>()
-  private let titleLabelTextColor = TestObserver<UIColor, NoError>()
-  private let updateTopMarginsForIsBacking = TestObserver<Bool, NoError>() // todo
-  private let viewPledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  private let youreABackerViewHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
+  fileprivate let cardViewBackgroundColor = TestObserver<UIColor, NoError>()
+  fileprivate let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
+  fileprivate let contentViewBackgroundColor = TestObserver<UIColor, NoError>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let conversionLabelText = TestObserver<String, NoError>()
+  fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let descriptionLabelText = TestObserver<String, NoError>()
+  fileprivate let footerLabelText = TestObserver<String, NoError>()
+  fileprivate let footerViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let items = TestObserver<[String], NoError>()
+  fileprivate let itemsContainerHidden = TestObserver<Bool, NoError>()
+  fileprivate let manageButtonHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let minimumAndConversionLabelsColor = TestObserver<UIColor, NoError>()
+  fileprivate let minimumLabelText = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateRewardCellWantsExpansion = TestObserver<(), NoError>()
+  fileprivate let pledgeButtonHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let pledgeButtonTitleText = TestObserver<String, NoError>() // todo
+  fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let titleLabelText = TestObserver<String, NoError>()
+  fileprivate let titleLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, NoError>() // todo
+  fileprivate let viewPledgeButtonHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let youreABackerViewHidden = TestObserver<Bool, NoError>() // todo
 
   override func setUp() {
     super.setUp()
@@ -100,11 +100,11 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
     self.vm.inputs.boundStyles()
 
-    self.cardViewBackgroundColor.assertValues([UIColor.whiteColor()])
+    self.cardViewBackgroundColor.assertValues([UIColor.white])
 
     self.vm.inputs.configureWith(project: .template,
                                  rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
-    self.cardViewBackgroundColor.assertValues([UIColor.whiteColor(), UIColor.ksr_grey_100])
+    self.cardViewBackgroundColor.assertValues([UIColor.white, UIColor.ksr_grey_100])
   }
 
   func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {
@@ -219,7 +219,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(.template)
     )
 
-    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.colorWithAlphaComponent(0.65)])
+    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.withAlphaComponent(0.65)])
 
     self.vm.inputs.configureWith(
       project: .template |> Project.lens.category .~ .filmAndVideo,
@@ -227,8 +227,8 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
+      UIColor.ksr_red_100.withAlphaComponent(0.65),
+      UIColor.ksr_beige_400.withAlphaComponent(0.65),
       ])
 
     self.vm.inputs.configureWith(
@@ -237,9 +237,9 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.colorWithAlphaComponent(0.65),
-      UIColor.ksr_beige_400.colorWithAlphaComponent(0.65),
-      UIColor.ksr_violet_200.colorWithAlphaComponent(0.65),
+      UIColor.ksr_red_100.withAlphaComponent(0.65),
+      UIColor.ksr_beige_400.withAlphaComponent(0.65),
+      UIColor.ksr_violet_200.withAlphaComponent(0.65),
       ])
   }
 
@@ -389,7 +389,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
       |> Reward.lens.endsAt
-      .~ self.dateType.init().dateByAddingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -401,7 +401,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
       |> Reward.lens.endsAt
-      .~ self.dateType.init().dateByAddingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -424,7 +424,7 @@ final class RewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
       |> Reward.lens.endsAt
-        .~ self.dateType.init().dateByAddingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+        .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 

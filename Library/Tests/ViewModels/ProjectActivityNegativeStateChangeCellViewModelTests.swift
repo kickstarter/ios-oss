@@ -7,10 +7,10 @@ import Result
 
 // swiftlint:disable type_name
 internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestCase {
-  private let vm: ProjectActivityNegativeStateChangeCellViewModel =
+  fileprivate let vm: ProjectActivityNegativeStateChangeCellViewModel =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  private let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -19,7 +19,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
   }
 
   func testTitleForCancelledProject() {
-    let canceledAt = NSDate().timeIntervalSince1970
+    let canceledAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template
@@ -33,14 +33,14 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_canceled(
       project_name: projectName,
-      cancellation_date: Format.date(secondsInUTC: canceledAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      cancellation_date: Format.date(secondsInUTC: canceledAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was cancelled")
   }
 
   func testTitleForFailedProject() {
-    let failedAt = NSDate().timeIntervalSince1970
+    let failedAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template
@@ -54,14 +54,14 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_unsuccessful(
       project_name: projectName,
-      unsuccessful_date: Format.date(secondsInUTC: failedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      unsuccessful_date: Format.date(secondsInUTC: failedAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was unsuccessful")
   }
 
   func testTitleForSuspendedProject() {
-    let suspendedAt = NSDate().timeIntervalSince1970
+    let suspendedAt = Date().timeIntervalSince1970
     let projectName = "Sick Skull Graphic Lunchbox"
 
     let project = .template
@@ -75,7 +75,7 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_project_name_was_suspended(
       project_name: projectName,
-      suspension_date: Format.date(secondsInUTC: suspendedAt, dateStyle: .LongStyle, timeStyle: .NoStyle)
+      suspension_date: Format.date(secondsInUTC: suspendedAt, dateStyle: .long, timeStyle: .none)
         .nonBreakingSpaced()
     )
     self.title.assertValues([expected], "Emits title indicating the project was suspended")

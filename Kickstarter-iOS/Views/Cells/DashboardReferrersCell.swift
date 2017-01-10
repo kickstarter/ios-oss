@@ -6,39 +6,39 @@ import UIKit
 
 internal protocol DashboardReferrersCellDelegate: class {
   /// Call when referrer stack view rows are added to expand the cell size.
-  func dashboardReferrersCellDidAddReferrerRows(cell: DashboardReferrersCell?)
+  func dashboardReferrersCellDidAddReferrerRows(_ cell: DashboardReferrersCell?)
 }
 
 internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal weak var delegate: DashboardReferrersCellDelegate?
-  private let viewModel: DashboardReferrersCellViewModelType = DashboardReferrersCellViewModel()
+  fileprivate let viewModel: DashboardReferrersCellViewModelType = DashboardReferrersCellViewModel()
 
-  @IBOutlet private weak var averagePledgeAmountSubtitleLabel: UILabel!
-  @IBOutlet private weak var averagePledgeAmountTitleLabel: UILabel!
-  @IBOutlet private weak var averageStackView: UIStackView!
-  @IBOutlet private weak var backersColumnTitleButton: UIButton!
-  @IBOutlet private weak var cumulativeStackView: UIStackView!
-  @IBOutlet private weak var customPercentLabel: UILabel!
-  @IBOutlet private weak var customPercentIndicatorLabel: UILabel!
-  @IBOutlet private weak var customPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet private weak var customPledgedAmountTitleLabel: UILabel!
-  @IBOutlet private weak var customStackView: UIStackView!
-  @IBOutlet private weak var externalPercentLabel: UILabel!
-  @IBOutlet private weak var externalPercentIndicatorLabel: UILabel!
-  @IBOutlet private weak var externalPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet private weak var externalPledgedAmountTitleLabel: UILabel!
-  @IBOutlet private weak var internalPercentLabel: UILabel!
-  @IBOutlet private weak var internalPercentIndicatorLabel: UILabel!
-  @IBOutlet private weak var internalPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet private weak var internalPledgedAmountTitleLabel: UILabel!
-  @IBOutlet private weak var pledgedColumnTitleButton: UIButton!
-  @IBOutlet private weak var referralChartView: ReferralChartView!
-  @IBOutlet private weak var referrersTitleLabel: UILabel!
-  @IBOutlet private weak var referrersStackView: UIStackView!
-  @IBOutlet private weak var showMoreReferrersButton: UIButton!
-  @IBOutlet private weak var sourceColumnTitleButton: UIButton!
-  @IBOutlet private weak var chartCardView: UIView!
-  @IBOutlet private var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var averagePledgeAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var averagePledgeAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var averageStackView: UIStackView!
+  @IBOutlet fileprivate weak var backersColumnTitleButton: UIButton!
+  @IBOutlet fileprivate weak var cumulativeStackView: UIStackView!
+  @IBOutlet fileprivate weak var customPercentLabel: UILabel!
+  @IBOutlet fileprivate weak var customPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate weak var customPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var customPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var customStackView: UIStackView!
+  @IBOutlet fileprivate weak var externalPercentLabel: UILabel!
+  @IBOutlet fileprivate weak var externalPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate weak var externalPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var externalPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPercentLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgedColumnTitleButton: UIButton!
+  @IBOutlet fileprivate weak var referralChartView: ReferralChartView!
+  @IBOutlet fileprivate weak var referrersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var referrersStackView: UIStackView!
+  @IBOutlet fileprivate weak var showMoreReferrersButton: UIButton!
+  @IBOutlet fileprivate weak var sourceColumnTitleButton: UIButton!
+  @IBOutlet fileprivate weak var chartCardView: UIView!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -46,109 +46,109 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.backersColumnTitleButton.addTarget(
       self,
       action: #selector(backersButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
 
     self.pledgedColumnTitleButton.addTarget(
       self,
       action: #selector(pledgedButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
 
     self.showMoreReferrersButton.addTarget(
       self,
       action: #selector(showMoreReferrersTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
 
     self.sourceColumnTitleButton.addTarget(
       self,
       action: #selector(sourceButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
   }
 
   // swiftlint:disable function_body_length
   internal override func bindStyles() {
-    self |> baseTableViewCellStyle()
+    _ = self |> baseTableViewCellStyle()
 
-    self.averagePledgeAmountSubtitleLabel
+    _ = self.averagePledgeAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_average_pledge_amount() }
 
-    self.averagePledgeAmountTitleLabel
+    _ = self.averagePledgeAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.backersColumnTitleButton
+    _ = self.backersColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
 
-    self.customPercentLabel
+    _ = self.customPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.customPercentIndicatorLabel
+    _ = self.customPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_violet_500
 
-    self.customPledgedAmountTitleLabel
+    _ = self.customPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.customPledgedAmountSubtitleLabel
+    _ = self.customPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_custom() }
 
-    self.externalPercentLabel
+    _ = self.externalPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.externalPercentIndicatorLabel
+    _ = self.externalPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_orange_400
 
-    self.externalPledgedAmountSubtitleLabel
+    _ = self.externalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_external() }
 
-    self.externalPledgedAmountTitleLabel
+    _ = self.externalPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.internalPercentLabel
+    _ = self.internalPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
 
-    self.internalPercentIndicatorLabel
+    _ = self.internalPercentIndicatorLabel
       |> UILabel.lens.textColor .~ .ksr_green_700
 
-    self.internalPledgedAmountSubtitleLabel
+    _ = self.internalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_pledged_via_kickstarter() }
 
-    self.internalPledgedAmountTitleLabel
+    _ = self.internalPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
 
-    self.pledgedColumnTitleButton
+    _ = self.pledgedColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
 
-    self.referrersTitleLabel
+    _ = self.referrersTitleLabel
       |> dashboardReferrersTitleLabelStyle
 
-    self.referralChartView
-      |> UIView.lens.backgroundColor .~ .clearColor()
+    _ = self.referralChartView
+      |> UIView.lens.backgroundColor .~ .clear
 
-    self.showMoreReferrersButton
+    _ = self.showMoreReferrersButton
       |> dashboardReferrersShowMoreButtonStyle
 
-    self.sourceColumnTitleButton
+    _ = self.sourceColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
 
-    self.chartCardView
+    _ = self.chartCardView
       |> dashboardChartCardViewStyle
 
-    self.cumulativeStackView
+    _ = self.cumulativeStackView
       |> dashboardReferrersCumulativeStackViewStyle
 
-    self.averageStackView
+    _ = self.averageStackView
       |> dashboardReferrersCumulativeStackViewStyle
 
-    self.separatorViews.forEach { $0 |> separatorStyle }
+    self.separatorViews.forEach { _ = $0 |> separatorStyle }
   }
   // swiftlint:enable function_body_length
 
@@ -164,13 +164,13 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateAddedReferrerRows
       .observeForUI()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.delegate?.dashboardReferrersCellDidAddReferrerRows(self)
     }
 
     self.viewModel.outputs.referrersRowData
       .observeForUI()
-      .observeNext { [weak self] data in
+      .observeValues { [weak self] data in
         self?.addReferrerRows(withData: data)
     }
 
@@ -178,11 +178,11 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.externalPercentage
       .observeForUI()
-      .observeNext { [weak self] in self?.referralChartView.externalPercentage = CGFloat($0) }
+      .observeValues { [weak self] in self?.referralChartView.externalPercentage = CGFloat($0) }
 
     self.viewModel.outputs.internalPercentage
       .observeForUI()
-      .observeNext { [weak self] in self?.referralChartView.internalPercentage = CGFloat($0) }
+      .observeValues { [weak self] in self?.referralChartView.internalPercentage = CGFloat($0) }
   }
 
   internal func addReferrerRows(withData data: ReferrersRowData) {
@@ -202,32 +202,32 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       if $0 < refsCount - 1 {
         let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
 
-        divider.heightAnchor.constraintEqualToConstant(1.0).active = true
+        divider.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
 
         self.referrersStackView.addArrangedSubview(divider)
       }
     }
   }
 
-  internal func configureWith(value value: (ProjectStatsEnvelope.CumulativeStats,
+  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats,
                                             Project,
                                             [ProjectStatsEnvelope.ReferrerStats])) {
     self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referrers: value.2)
   }
 
-  @objc private func backersButtonTapped() {
+  @objc fileprivate func backersButtonTapped() {
     self.viewModel.inputs.backersButtonTapped()
   }
 
-  @objc private func pledgedButtonTapped() {
+  @objc fileprivate func pledgedButtonTapped() {
     self.viewModel.inputs.pledgedButtonTapped()
   }
 
-  @objc private func showMoreReferrersTapped() {
+  @objc fileprivate func showMoreReferrersTapped() {
     self.viewModel.inputs.showMoreReferrersTapped()
   }
 
-  @objc private func sourceButtonTapped() {
+  @objc fileprivate func sourceButtonTapped() {
     self.viewModel.inputs.sourceButtonTapped()
   }
 }

@@ -11,9 +11,9 @@ internal protocol SurveyResponseViewControllerDelegate: class {
 
 internal final class SurveyResponseViewController: DeprecatedWebViewController {
   internal weak var delegate: SurveyResponseViewControllerDelegate?
-  private let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
+  fileprivate let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
 
-  internal static func configuredWith(surveyResponse surveyResponse: SurveyResponse)
+  internal static func configuredWith(surveyResponse: SurveyResponse)
     -> SurveyResponseViewController {
       let vc = SurveyResponseViewController()
       vc.viewModel.inputs.configureWith(surveyResponse: surveyResponse)
@@ -25,7 +25,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
 
     self.navigationItem.leftBarButtonItem =
       UIBarButtonItem(title: Strings.general_navigation_buttons_close(),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(closeButtonTapped))
 
@@ -37,20 +37,20 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.navigationController?.dismiss(animated: true, completion: nil)
         self?.delegate?.surveyResponseViewControllerDismissed()
     }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] param, refTag in
+      .observeValues { [weak self] param, refTag in
         self?.goToProject(param: param, refTag: refTag)
     }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeNext { [weak self] message in
+      .observeValues { [weak self] message in
         self?.showAlert(message: message)
     }
 
@@ -58,23 +58,23 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] request in
+      .observeValues { [weak self] request in
         self?.webView.loadRequest(request)
     }
   }
 
-  @objc private func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  private func goToProject(param param: Param, refTag: RefTag?) {
+  fileprivate func goToProject(param: Param, refTag: RefTag?) {
     let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
     let nav = UINavigationController(rootViewController: vc)
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func showAlert(message message: String) {
-    self.presentViewController(
+  fileprivate func showAlert(message: String) {
+    self.present(
       UIAlertController.alert(
         message: message,
         handler: { [weak self] _ in
@@ -86,7 +86,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
     )
   }
 
-  internal func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest,
+  internal func webView(_ webView: UIWebView, shouldStartLoadWithRequest request: URLRequest,
                navigationType: UIWebViewNavigationType) -> Bool {
     let result = self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
     return result

@@ -2,7 +2,7 @@
 @testable import KsApi
 @testable import Library
 @testable import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 
@@ -37,19 +37,19 @@ private let filmExpandableRow = expandableRowTemplate
 ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
-  private let vm = DiscoveryFiltersViewModel()
+  fileprivate let vm = DiscoveryFiltersViewModel()
 
-  private let animateInView = TestObserver<Int?, NoError>()
-  private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
-  private let loadCategoryRowsInitialId = TestObserver<Int?, NoError>()
-  private let loadCategoryRowsSelectedId = TestObserver<Int?, NoError>()
-  private let loadTopRows = TestObserver<[SelectableRow], NoError>()
-  private let loadTopRowsInitialId = TestObserver<Int?, NoError>()
-  private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
-  private let loadFavoriteRows = TestObserver<[SelectableRow], NoError>()
-  private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
+  fileprivate let animateInView = TestObserver<Int?, NoError>()
+  fileprivate let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
+  fileprivate let loadCategoryRowsInitialId = TestObserver<Int?, NoError>()
+  fileprivate let loadCategoryRowsSelectedId = TestObserver<Int?, NoError>()
+  fileprivate let loadTopRows = TestObserver<[SelectableRow], NoError>()
+  fileprivate let loadTopRowsInitialId = TestObserver<Int?, NoError>()
+  fileprivate let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
+  fileprivate let loadFavoriteRows = TestObserver<[SelectableRow], NoError>()
+  fileprivate let loadFavoriteRowsId = TestObserver<Int?, NoError>()
 
-  private let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
+  fileprivate let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
 
   override func setUp() {
     super.setUp()
@@ -289,7 +289,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     let counts = self.loadCategoryRows.values
-      .flatten()
+      .joined()
       .map { $0.params.category?.projectsCount }
 
     XCTAssertEqual([Category.art.projectsCount, Category.filmAndVideo.projectsCount],

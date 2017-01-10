@@ -56,7 +56,7 @@ public func discoveryGradientColors(forCategoryId id: Int?) -> (UIColor, UIColor
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
-    return (.whiteColor(), .whiteColor())
+    return (.white, .white)
   case .culture:
     return (.ksr_peachToBlushGradientStart, .ksr_peachToBlushGradientEnd)
   case .entertainment:
@@ -74,22 +74,22 @@ public let discoveryNavDividerLabelStyle =
 
 public let discoveryNavTitleStackViewStyle =
   UIStackView.lens.layoutMargins %~~ { _, stack in
-    stack.traitCollection.horizontalSizeClass == .Compact ? .init(top: -6.0) : .init(top: 0.0)
+    stack.traitCollection.horizontalSizeClass == .compact ? .init(top: -6.0) : .init(top: 0.0)
     }
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_900
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.blackColor().CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
+  <> UIButton.lens.layer.borderColor .~ UIColor.black.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.title(forState: .Normal) %~ { _ in
+  <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
-public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected isSelected: Bool) -> (L -> L) {
+public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected: Bool) -> ((L) -> L) {
   return L.lens.font %~~ { _, label in
     label.traitCollection.isRegularRegular
       ? isSelected ? UIFont.ksr_title1(size: 24).bolded : .ksr_title1(size: 24)
@@ -97,10 +97,10 @@ public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected isSele
   }
 }
 
-public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId categoryId: Int?, isSelected: Bool)
-  -> (L -> L) {
+public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId: Int?, isSelected: Bool)
+  -> ((L) -> L) {
   return L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
-      <> L.lens.alpha .~ (categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6)
+      <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6))
 }
 
 public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
@@ -118,19 +118,19 @@ public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
 
 public let discoveryOnboardingTitleStyle =
   UILabel.lens.font .~ .ksr_title3()
-    <> UILabel.lens.textAlignment .~ .Center
+    <> UILabel.lens.textAlignment .~ .center
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
 
 public let discoveryOnboardingLogoStyle =
-  UIImageView.lens.contentMode .~ .ScaleAspectFit
-    <> UIImageView.lens.contentHuggingPriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
-    <> UIImageView.lens.contentCompressionResistancePriorityForAxis(.Vertical) .~ UILayoutPriorityRequired
+  UIImageView.lens.contentMode .~ .scaleAspectFit
+    <> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityRequired
+    <> UIImageView.lens.contentCompressionResistancePriorityForAxis(.vertical) .~ UILayoutPriorityRequired
 
 public let discoveryOnboardingStackViewStyle =
   UIStackView.lens.spacing .~ 16.0
-    <> UIStackView.lens.distribution .~ .Fill
-    <> UIStackView.lens.alignment .~ .Fill
+    <> UIStackView.lens.distribution .~ .fill
+    <> UIStackView.lens.alignment .~ .fill
 
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
@@ -138,11 +138,11 @@ public let discoveryProjectCellStyle =
       Strings.dashboard_tout_accessibility_hint_opens_project()
 }
 
-public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: DiscoveryParams.Sort,
+public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: DiscoveryParams.Sort,
                                                                  categoryId: Int?,
                                                                  isLeftMost: Bool,
                                                                  isRightMost: Bool,
-                                                                 isRegularRegular: Bool) -> (B -> B) {
+                                                                 isRegularRegular: Bool) -> ((B) -> B) {
 
   let sortString = string(forSort: sort)
   let titleColor = discoverySecondaryColor(forCategoryId: categoryId)
@@ -151,7 +151,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: Disc
     NSFontAttributeName: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0)
       : UIFont.ksr_subhead(size: 14.0),
-    NSForegroundColorAttributeName: titleColor.colorWithAlphaComponent(0.6)
+    NSForegroundColorAttributeName: titleColor.withAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
@@ -162,15 +162,15 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort sort: Disc
   ])
 
   return
-    B.lens.titleColor(forState: .Highlighted) .~ titleColor
+    B.lens.titleColor(forState: .highlighted) .~ titleColor
       <> B.lens.accessibilityLabel %~ { _ in
         Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
       }
       <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
       <> B.lens.contentEdgeInsets .~ sortButtonEdgeInsets(isLeftMost: isLeftMost,
                                                           isRightMost: isRightMost)
-      <> B.lens.attributedTitle(forState: .Normal) %~ { _ in normalTitleString }
-      <> B.lens.attributedTitle(forState: .Selected) %~ { _ in selectedTitleString }
+      <> B.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
+      <> B.lens.attributedTitle(forState: .selected) %~ { _ in selectedTitleString }
 }
 
 public let postcardMetadataLabelStyle =
@@ -178,13 +178,13 @@ public let postcardMetadataLabelStyle =
     <> UILabel.lens.textColor .~ .ksr_text_navy_700
 
 public let postcardMetadataStackViewStyle =
-  UIStackView.lens.alignment .~ .Center
+  UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let postcardSocialStackViewStyle =
-  UIStackView.lens.alignment .~ .Center
+  UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
@@ -200,7 +200,7 @@ public let postcardStatsSubtitleStyle =
 public let postcardStatsTitleStyle =
   UILabel.lens.font .~ .ksr_headline(size: 14)
 
-private func sortButtonEdgeInsets(isLeftMost isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
+private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
   let edge = Styles.grid(2)
   let inner = Styles.grid(4) - 3

@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessageThreadsViewModelInputs {
@@ -8,7 +8,7 @@ public protocol MessageThreadsViewModelInputs {
   func mailboxButtonPressed()
 
   /// Call with the project whose message threads we are viewing. If no project is given, then use `nil`.
-  func configureWith(project project: Project?)
+  func configureWith(project: Project?)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -17,13 +17,13 @@ public protocol MessageThreadsViewModelInputs {
   func searchButtonPressed()
 
   /// Call when the user has selected a mailbox to switch to.
-  func switchTo(mailbox mailbox: Mailbox)
+  func switchTo(mailbox: Mailbox)
 
   /// Call when the view loads.
   func viewDidLoad()
 
   /// Call when a new row is displayed.
-  func willDisplayRow(row: Int, outOf totalRows: Int)
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
 public protocol MessageThreadsViewModelOutputs {
@@ -59,15 +59,15 @@ MessageThreadsViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let isCloseToBottom = self.willDisplayRowProperty.signal.ignoreNil()
-      .filter { row, total in total > 1 }
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+      .filter { _, total in total > 1 }
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter { isClose in isClose }
       .ignoreValues()
 
     let mailbox = Signal.merge(
-      self.switchToMailbox.signal.ignoreNil(),
+      self.switchToMailbox.signal.skipNil(),
       self.viewDidLoadProperty.signal.mapConst(.inbox)
     )
 
@@ -83,7 +83,7 @@ MessageThreadsViewModelOutputs {
       valuesFromEnvelope: { $0.messageThreads },
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
       requestFromParams: { [project = projectProperty.producer] mailbox in
-        project.take(1)
+        project.take(first: 1)
           .promoteErrors(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
@@ -110,7 +110,7 @@ MessageThreadsViewModelOutputs {
     ).skipRepeats()
 
     self.loadingFooterIsHidden = Signal.merge([
-      self.viewDidLoadProperty.signal.take(1).mapConst(false),
+      self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       isCloseToBottom.mapConst(false),
       mailbox.mapConst(false),
       isLoading.filter(isFalse).mapConst(true),
@@ -122,38 +122,38 @@ MessageThreadsViewModelOutputs {
 
     self.projectProperty.producer
       .takePairWhen(mailbox)
-      .observeNext { project, mailbox in
+      .observeValues { project, mailbox in
         AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox, project: project)
     }
   }
   // swiftlint:enable function_body_length
 
-  private let mailboxButtonPressedProperty = MutableProperty()
+  fileprivate let mailboxButtonPressedProperty = MutableProperty()
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project?) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project?) {
     self.projectProperty.value = project
   }
-  private let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
     self.refreshProperty.value = ()
   }
-  private let searchButtonPressedProperty = MutableProperty()
+  fileprivate let searchButtonPressedProperty = MutableProperty()
   public func searchButtonPressed() {
     self.searchButtonPressedProperty.value = ()
   }
-  private let switchToMailbox = MutableProperty<Mailbox?>(nil)
-  public func switchTo(mailbox mailbox: Mailbox) {
+  fileprivate let switchToMailbox = MutableProperty<Mailbox?>(nil)
+  public func switchTo(mailbox: Mailbox) {
     self.switchToMailbox.value = mailbox
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(row: Int, outOf totalRows: Int) {
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 

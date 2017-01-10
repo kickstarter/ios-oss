@@ -11,18 +11,18 @@ public enum AppKeys: String {
 }
 
 public protocol KeyValueStoreType: class {
-  func setBool(bool: Bool, forKey key: String)
-  func setInteger(int: Int, forKey key: String)
-  func setObject(object: AnyObject?, forKey key: String)
+  func setBool(_ bool: Bool, forKey key: String)
+  func setInteger(_ int: Int, forKey key: String)
+  func set(_ value: Any?, forKey defaultName: String)
 
-  func boolForKey(key: String) -> Bool
-  func dictionaryForKey(key: String) -> [String:AnyObject]?
-  func integerForKey(key: String) -> Int
-  func objectForKey(key: String) -> AnyObject?
-  func stringForKey(key: String) -> String?
+  func boolForKey(_ key: String) -> Bool
+  func dictionary(forKey defaultName: String) -> [String : Any]?
+  func integerForKey(_ key: String) -> Int
+  func object(forKey defaultName: String) -> Any?
+  func stringForKey(_ key: String) -> String?
   func synchronize() -> Bool
 
-  func removeObjectForKey(key: String)
+  func removeObjectForKey(_ key: String)
 
   var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
@@ -36,28 +36,28 @@ public protocol KeyValueStoreType: class {
 extension KeyValueStoreType {
   public var favoriteCategoryIds: [Int] {
     get {
-      return self.objectForKey(AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
+      return self.object(forKey: AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.favoriteCategoryIds.rawValue)
+      self.set(newValue, forKey: AppKeys.favoriteCategoryIds.rawValue)
     }
   }
 
   public var hasClosedFacebookConnectInActivity: Bool {
     get {
-      return self.objectForKey(AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
+      return self.object(forKey: AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
+      self.set(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
     }
   }
 
   public var hasClosedFindFriendsInActivity: Bool {
     get {
-      return self.objectForKey(AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
+      return self.object(forKey: AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
     }
     set {
-      self.setObject(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
+      self.set(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
     }
   }
 
@@ -98,56 +98,56 @@ extension KeyValueStoreType {
   }
 }
 
-extension NSUserDefaults: KeyValueStoreType {
+extension UserDefaults: KeyValueStoreType {
 }
 
 extension NSUbiquitousKeyValueStore: KeyValueStoreType {
-  public func integerForKey(key: String) -> Int {
-    return Int(longLongForKey(key))
+  public func integerForKey(_ key: String) -> Int {
+    return Int(longLong(forKey: key))
   }
 
-  public func setInteger(int: Int, forKey key: String) {
-    return setLongLong(Int64(int), forKey: key)
+  public func setInteger(_ int: Int, forKey key: String) {
+    return set(Int64(int), forKey: key)
   }
 }
 
 internal class MockKeyValueStore: KeyValueStoreType {
-  var store: [String:AnyObject] = [:]
+  var store: [String:Any] = [:]
 
-  func setBool(bool: Bool, forKey key: String) {
+  func setBool(_ bool: Bool, forKey key: String) {
     self.store[key] = bool
   }
 
-  func setInteger(int: Int, forKey key: String) {
+  func setInteger(_ int: Int, forKey key: String) {
     self.store[key] = int
   }
 
-  func setObject(object: AnyObject?, forKey key: String) {
-    self.store[key] = object
+  func set(_ value: Any?, forKey key: String) {
+    self.store[key] = value
   }
 
-  func boolForKey(key: String) -> Bool {
+  func boolForKey(_ key: String) -> Bool {
     return self.store[key] as? Bool ?? false
   }
 
-  func integerForKey(key: String) -> Int {
+  func integerForKey(_ key: String) -> Int {
     return self.store[key] as? Int ?? 0
   }
 
-  func objectForKey(key: String) -> AnyObject? {
+  func object(forKey key: String) -> Any? {
     return self.store[key]
   }
 
-  func stringForKey(key: String) -> String? {
-    return self.objectForKey(key) as? String
+  func stringForKey(_ key: String) -> String? {
+    return self.object(forKey: key) as? String
   }
 
-  func dictionaryForKey(key: String) -> [String:AnyObject]? {
-    return self.objectForKey(key) as? [String:AnyObject]
+  func dictionary(forKey key: String) -> [String:Any]? {
+    return self.object(forKey: key) as? [String:Any]
   }
 
-  func removeObjectForKey(key: String) {
-    self.setObject(nil, forKey: key)
+  func removeObjectForKey(_ key: String) {
+    self.set(nil, forKey: key)
   }
 
   func synchronize() -> Bool {

@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Foundation
 import UIKit
 import MessageUI
@@ -8,25 +8,25 @@ import Prelude
 import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet private weak var fbDisclaimer: UILabel!
-  @IBOutlet private weak var fbLoginButton: UIButton!
-  @IBOutlet private weak var helpButton: UIButton!
-  @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var signupButton: UIButton!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var fbDisclaimer: UILabel!
+  @IBOutlet fileprivate weak var fbLoginButton: UIButton!
+  @IBOutlet fileprivate weak var helpButton: UIButton!
+  @IBOutlet fileprivate weak var loginButton: UIButton!
+  @IBOutlet fileprivate weak var signupButton: UIButton!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  private let viewModel: LoginToutViewModelType = LoginToutViewModel()
-  private let helpViewModel = HelpViewModel()
+  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  fileprivate let helpViewModel = HelpViewModel()
 
-  private lazy var fbLoginManager: FBSDKLoginManager = {
+  fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
     let manager = FBSDKLoginManager()
-    manager.loginBehavior = .SystemAccount
-    manager.defaultAudience = .Friends
+    manager.loginBehavior = .systemAccount
+    manager.defaultAudience = .friends
     return manager
   }()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
-    let vc = Storyboard.Login.instantiate(LoginToutViewController)
+    let vc = Storyboard.Login.instantiate(LoginToutViewController.self)
     vc.viewModel.inputs.loginIntent(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
@@ -38,8 +38,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.fbLoginManager.logOut()
 
-    NSNotificationCenter.defaultCenter()
-      .addObserverForName(CurrentUserNotifications.sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -49,66 +49,68 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.view(isPresented: self.presentingViewController != nil)
     self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindStyles() {
-    self |> baseControllerStyle()
+    super.bindStyles()
 
-    self.fbDisclaimer |> fbDisclaimerLabelStyle
-    self.fbLoginButton |> fbLoginButtonStyle
-    self.helpButton |> disclaimerButtonStyle
-    self.loginButton |> loginWithEmailButtonStyle
-    self.rootStackView |> loginRootStackViewStyle
-    self.signupButton |> signupWithEmailButtonStyle
+    _ = self |> baseControllerStyle()
+
+    _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
+    _ = self.fbLoginButton |> fbLoginButtonStyle
+    _ = self.helpButton |> disclaimerButtonStyle
+    _ = self.loginButton |> loginWithEmailButtonStyle
+    _ = self.rootStackView |> loginRootStackViewStyle
+    _ = self.signupButton |> signupWithEmailButtonStyle
   }
 
   // swiftlint:disable function_body_length
   override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.pushLoginViewController()
     }
     self.viewModel.outputs.startSignup
       .observeForControllerAction()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.pushSignupViewController()
     }
 
     self.viewModel.outputs.logIntoEnvironment
-      .observeNext { [weak self] accessTokenEnv in
+      .observeValues { [weak self] accessTokenEnv in
         AppEnvironment.login(accessTokenEnv)
         self?.viewModel.inputs.environmentLoggedIn()
     }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.startFacebookConfirmation
       .observeForControllerAction()
-      .observeNext { [weak self] (user, token) in
+      .observeValues { [weak self] (user, token) in
         self?.pushFacebookConfirmationController(facebookUser: user, facebookToken: token)
     }
 
     self.viewModel.outputs.startTwoFactorChallenge
       .observeForControllerAction()
-      .observeNext { [weak self] token in
+      .observeValues { [weak self] token in
         self?.pushTwoFactorViewController(facebookAccessToken: token)
     }
 
     self.viewModel.outputs.attemptFacebookLogin
-      .observeNext { [weak self] _ in self?.attemptFacebookLogin()
+      .observeValues { [weak self] _ in self?.attemptFacebookLogin()
     }
 
     self.viewModel.outputs.showFacebookErrorAlert
       .observeForControllerAction()
-      .observeNext { [weak self] error in
-        self?.presentViewController(
+      .observeValues { [weak self] error in
+        self?.present(
           UIAlertController.alertController(forError: error),
           animated: true,
           completion: nil
@@ -117,64 +119,64 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showHelpSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
     }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
-        _self.presentViewController(controller, animated: true, completion: nil)
+        _self.present(controller, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
-      .observeNext { [weak self] alert in
-        self?.presentViewController(alert, animated: true, completion: nil)
+      .observeValues { [weak self] alert in
+        self?.present(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
-      .observeNext { [weak self] helpType in
+      .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
     }
   }
   // swiftlint:enable function_body_length
 
-  @objc internal func mailComposeController(controller: MFMailComposeViewController,
-                                            didFinishWithResult result: MFMailComposeResult,
-                                                                error: NSError?) {
+  @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
+                                            didFinishWith result: MFMailComposeResult,
+                                                                error: Error?) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.dismiss(animated: true, completion: nil)
   }
 
-  private func goToHelpType(helpType: HelpType) {
+  fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushLoginViewController() {
+  fileprivate func pushLoginViewController() {
     self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushTwoFactorViewController(facebookAccessToken token: String) {
+  fileprivate func pushTwoFactorViewController(facebookAccessToken token: String) {
     let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
+  fileprivate func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
                                                                facebookToken token: String) {
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
@@ -182,64 +184,67 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushSignupViewController() {
+  fileprivate func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func showHelpSheet(helpTypes helpTypes: [HelpType]) {
-    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+  fileprivate func showHelpSheet(helpTypes: [HelpType]) {
+    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     helpTypes.forEach { helpType in
-      helpSheet.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: {
-        [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.helpTypeButtonTapped(helpType)
-      }))
+      helpSheet.addAction(
+        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
+          helpVM?.inputs.helpTypeButtonTapped(helpType)
+        }
+      )
     }
 
-    helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
-      style: .Cancel,
-      handler: { [weak helpVM = self.helpViewModel] _ in
+    helpSheet.addAction(
+      UIAlertAction(
+        title: Strings.login_tout_help_sheet_cancel(),
+        style: .cancel
+      ) { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }))
+      }
+    )
 
     //iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
-    self.presentViewController(helpSheet, animated: true, completion: nil)
+    self.present(helpSheet, animated: true, completion: nil)
   }
 
   // MARK: Facebook Login
-  private func attemptFacebookLogin() {
-    self.fbLoginManager.logInWithReadPermissions(
-      ["public_profile", "email", "user_friends"],
-      fromViewController: self) {
-        (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
-        if error != nil {
+
+  fileprivate func attemptFacebookLogin() {
+    self.fbLoginManager
+      .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
+        if let error = error {
           self.viewModel.inputs.facebookLoginFail(error: error)
-        } else if !result.isCancelled {
+        } else if let result = result, !result.isCancelled {
           self.viewModel.inputs.facebookLoginSuccess(result: result)
         }
     }
   }
 
-  @objc private func closeButtonPressed() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @objc fileprivate func closeButtonPressed() {
+    self.dismiss(animated: true, completion: nil)
   }
 
-  @objc private func helpButtonPressed() {
+  @objc fileprivate func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @IBAction private func loginButtonPressed(sender: UIButton) {
+  @IBAction fileprivate func loginButtonPressed(_ sender: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @IBAction private func facebookLoginButtonPressed(sender: UIButton) {
+  @IBAction fileprivate func facebookLoginButtonPressed(_ sender: UIButton) {
     self.viewModel.inputs.facebookLoginButtonPressed()
   }
 
-  @IBAction private func signupButtonPressed() {
+  @IBAction fileprivate func signupButtonPressed() {
     self.viewModel.inputs.signupButtonPressed()
   }
 }

@@ -1,27 +1,27 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 protocol FindFriendsStatsCellDelegate: class {
-  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount friendCount: Int)
+  func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: Int)
 }
 
 internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var backedProjectsLabel: UILabel!
-  @IBOutlet private weak var bulletSeparatorView: UIView!
-  @IBOutlet private weak var friendsLabel: UILabel!
-  @IBOutlet private weak var friendsCountLabel: UILabel!
-  @IBOutlet private weak var backedProjectsCountLabel: UILabel!
-  @IBOutlet private weak var followAllButton: UIButton!
+  @IBOutlet fileprivate weak var backedProjectsLabel: UILabel!
+  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate weak var friendsLabel: UILabel!
+  @IBOutlet fileprivate weak var friendsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var backedProjectsCountLabel: UILabel!
+  @IBOutlet fileprivate weak var followAllButton: UIButton!
 
   internal weak var delegate: FindFriendsStatsCellDelegate?
 
-  private let viewModel: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
+  fileprivate let viewModel: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
 
-  func configureWith(value value: (stats: FriendStatsEnvelope, source: FriendsSource)) {
+  func configureWith(value: (stats: FriendStatsEnvelope, source: FriendsSource)) {
     self.viewModel.inputs.configureWith(stats: value.stats, source: value.source)
   }
 
@@ -38,7 +38,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateShowFollowAllFriendsAlert
       .observeForUI()
-      .observeNext { [weak self] count in
+      .observeValues { [weak self] count in
         self?.delegate?.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: count)
     }
   }
@@ -46,33 +46,33 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self.friendsLabel
+    _ = self.friendsLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_friends() }
 
-    self.friendsCountLabel
+    _ = self.friendsCountLabel
       |> UILabel.lens.textColor .~ .ksr_navy_900
       |> UILabel.lens.font .~ .ksr_title2()
 
-    self.backedProjectsLabel
+    _ = self.backedProjectsLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_backed_projects() }
 
-    self.self.backedProjectsCountLabel
+    _ = self.self.backedProjectsCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.font .~ .ksr_title2()
 
-    self.followAllButton
+    _ = self.followAllButton
       |> borderButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .touchUpInside)]
 
-    self.bulletSeparatorView
+    _ = self.bulletSeparatorView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500
       |> UIView.lens.alpha .~ 0.7
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

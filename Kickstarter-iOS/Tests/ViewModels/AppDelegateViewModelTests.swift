@@ -1,6 +1,6 @@
 import XCTest
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 @testable import Library
@@ -11,23 +11,23 @@ import Result
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
-  private let configureHockey = TestObserver<HockeyConfigData, NoError>()
-  private let forceLogout = TestObserver<(), NoError>()
-  private let goToActivity = TestObserver<(), NoError>()
-  private let goToDashboard = TestObserver<Param?, NoError>()
-  private let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
-  private let goToLogin = TestObserver<(), NoError>()
-  private let goToProfile = TestObserver<(), NoError>()
-  private let goToSearch = TestObserver<(), NoError>()
-  private let postNotificationName = TestObserver<String, NoError>()
-  private let presentRemoteNotificationAlert = TestObserver<String, NoError>()
-  private let presentViewController = TestObserver<Int, NoError>()
-  private let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
-  private let registerUserNotificationSettings = TestObserver<(), NoError>()
-  private let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
-  private let unregisterForRemoteNotifications = TestObserver<(), NoError>()
-  private let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  private let updateConfigInEnvironment = TestObserver<Config, NoError>()
+  fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
+  fileprivate let forceLogout = TestObserver<(), NoError>()
+  fileprivate let goToActivity = TestObserver<(), NoError>()
+  fileprivate let goToDashboard = TestObserver<Param?, NoError>()
+  fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
+  fileprivate let goToLogin = TestObserver<(), NoError>()
+  fileprivate let goToProfile = TestObserver<(), NoError>()
+  fileprivate let goToSearch = TestObserver<(), NoError>()
+  fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
+  fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
+  fileprivate let presentViewController = TestObserver<Int, NoError>()
+  fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
+  fileprivate let registerUserNotificationSettings = TestObserver<(), NoError>()
+  fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
+  fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
+  fileprivate let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
+  fileprivate let updateConfigInEnvironment = TestObserver<Config, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -56,7 +56,7 @@ final class AppDelegateViewModelTests: TestCase {
     let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
 
     withEnvironment(mainBundle: betaBundle) {
-      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
 
       self.configureHockey.assertValues([
@@ -73,9 +73,9 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfigureHockey_BetaApp_LoggedIn() {
     let currentUser = User.template
     withEnvironment(
-      mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en"),
-      currentUser: .template) {
-        vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      currentUser: .template,
+      mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")) {
+        vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                 launchOptions: [:])
 
         self.configureHockey.assertValues([
@@ -92,7 +92,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfigureHockey_ProductionApp_LoggedOut() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
     withEnvironment(mainBundle: bundle) {
-      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
 
       self.configureHockey.assertValues([
@@ -110,8 +110,8 @@ final class AppDelegateViewModelTests: TestCase {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
     let currentUser = User.template
 
-    withEnvironment(mainBundle: bundle, currentUser: .template) {
-        vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    withEnvironment(currentUser: .template, mainBundle: bundle) {
+        vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                 launchOptions: [:])
 
         self.configureHockey.assertValues([
@@ -130,7 +130,7 @@ final class AppDelegateViewModelTests: TestCase {
     let currentUser = User.template
 
     withEnvironment(mainBundle: bundle) {
-      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
 
       self.configureHockey.assertValues([
@@ -189,7 +189,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testKoala_AppLifecycle() {
     XCTAssertEqual([], trackingClient.events)
 
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                             launchOptions: [:])
     XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
@@ -204,7 +204,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testKoala_MemoryWarning() {
     XCTAssertEqual([], trackingClient.events)
 
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                            launchOptions: [:])
     XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
@@ -215,7 +215,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testKoala_AppCrash() {
     XCTAssertEqual([], trackingClient.events)
 
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                             launchOptions: [:])
     XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
@@ -224,7 +224,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                             launchOptions: [:])
     vm.inputs.applicationWillEnterForeground()
     vm.inputs.applicationDidEnterBackground()
@@ -236,10 +236,10 @@ final class AppDelegateViewModelTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: User.template)
     AppEnvironment.login(env)
 
-    vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                             launchOptions: [:])
 
-    self.scheduler.advanceByInterval(5.0)
+    self.scheduler.advance(by: .seconds(5))
 
     updateCurrentUserInEnvironment.assertValues([env.user])
     postNotificationName.assertDidNotEmitValue()
@@ -247,20 +247,20 @@ final class AppDelegateViewModelTests: TestCase {
     vm.inputs.currentUserUpdatedInEnvironment()
 
     updateCurrentUserInEnvironment.assertValues([env.user])
-    postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    postNotificationName.assertValues([.ksr_userUpdated])
 
     vm.inputs.applicationDidEnterBackground()
     vm.inputs.applicationWillEnterForeground()
-    self.scheduler.advanceByInterval(5.0)
+    self.scheduler.advance(by: .seconds(5))
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
-    postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+    postNotificationName.assertValues([.ksr_userUpdated])
 
     vm.inputs.currentUserUpdatedInEnvironment()
 
     updateCurrentUserInEnvironment.assertValues([env.user, env.user])
     postNotificationName.assertValues(
-      [CurrentUserNotifications.userUpdated, CurrentUserNotifications.userUpdated]
+      [.ksr_userUpdated, .ksr_userUpdated]
     )
   }
 
@@ -269,10 +269,10 @@ final class AppDelegateViewModelTests: TestCase {
     // token is resurrected from the legacy user defaults.
     withEnvironment(apiService: MockService(oauthToken: OauthToken(token: "deadbeef"))) {
 
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
 
-      self.scheduler.advanceByInterval(5.0)
+      self.scheduler.advance(by: .seconds(5))
 
       self.updateCurrentUserInEnvironment.assertValues([.template])
       self.postNotificationName.assertDidNotEmitValue()
@@ -280,7 +280,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.currentUserUpdatedInEnvironment()
 
       self.updateCurrentUserInEnvironment.assertValues([.template])
-      self.postNotificationName.assertValues([CurrentUserNotifications.userUpdated])
+      self.postNotificationName.assertValues([.ksr_userUpdated])
     }
   }
 
@@ -295,9 +295,9 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchUserSelfError: error), currentUser: .template) {
       self.forceLogout.assertValueCount(0)
 
-      vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                               launchOptions: [:])
-      self.scheduler.advanceByInterval(5.0)
+      self.scheduler.advance(by: .seconds(5))
 
       updateCurrentUserInEnvironment.assertDidNotEmitValue()
       self.forceLogout.assertValueCount(1)
@@ -308,30 +308,34 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.facebookAppDelegate.didFinishLaunching)
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     XCTAssertTrue(self.facebookAppDelegate.didFinishLaunching)
     XCTAssertFalse(self.facebookAppDelegate.openedUrl)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "http://www.fb.com")!,
-                                      sourceApplication: nil,
-                                      annotation: 1)
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: "http://www.fb.com")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
 
     XCTAssertTrue(self.facebookAppDelegate.openedUrl)
   }
 
   func testOpenAppBanner() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-                                      sourceApplication: nil,
-                                      annotation: 1)
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
+      sourceApplication: nil,
+      annotation: 1
+    )
+    XCTAssertFalse(result)
 
     XCTAssertEqual(["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
                    self.trackingClient.events)
@@ -344,7 +348,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfig() {
     let config1 = Config.template |> Config.lens.countryCode .~ "US"
     withEnvironment(apiService: MockService(fetchConfigResponse: config1)) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
       self.updateConfigInEnvironment.assertValues([config1])
     }
@@ -361,97 +365,100 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
       let rootUrl = "https://www.kickstarter.com/"
 
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
 
       self.presentViewController.assertValues([])
 
-      let projectUrl =
-        rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: projectUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1)
+      let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      var result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                     url: URL(string: projectUrl)!,
+                                                     sourceApplication: nil,
+                                                     annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1])
 
-      let commentsUrl =
-        projectUrl + "/comments"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: commentsUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1)
+      let commentsUrl = projectUrl + "/comments"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: commentsUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2])
 
-      let updatesUrl =
-        projectUrl + "/posts"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updatesUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1)
+      let updatesUrl = projectUrl + "/posts"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updatesUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2])
 
-      let updateUrl =
-        projectUrl + "/posts/1399396"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updateUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1)
+      let updateUrl = projectUrl + "/posts/1399396"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updateUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2])
 
-      let updateCommentsUrl =
-        updateUrl + "/comments"
-      self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                        url: NSURL(string: updateCommentsUrl)!,
-                                        sourceApplication: nil,
-                                        annotation: 1)
+      let updateCommentsUrl = updateUrl + "/comments"
+      result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                 url: URL(string: updateCommentsUrl)!,
+                                                 sourceApplication: nil,
+                                                 annotation: 1)
+      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2, 3])
     }
   }
 
   func testGoToActivity() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToActivity.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/activity")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/activity")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToActivity.assertValueCount(1)
   }
 
   func testGoToDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDashboard.assertValueCount(0)
 
     let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: url)!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: url)!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToDashboard.assertValueCount(1)
   }
 
   func testGoToDiscovery() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDiscovery.assertValues([])
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/discover?sort=newest")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
@@ -459,30 +466,32 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testGoToDiscovery_NoParams() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDiscovery.assertValues([])
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/discover")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/discover")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToDiscovery.assertValues([nil])
   }
 
   func testGoToDiscoveryWithCategory() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDiscovery.assertValues([])
 
-    let url = NSURL(string: "https://www.kickstarter.com/discover/categories/art")!
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
+    let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                       url: url,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.scheduler.advance()
 
@@ -491,49 +500,52 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testGoToLogin() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToLogin.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/authorize")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/authorize")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToLogin.assertValueCount(1)
   }
 
   func testGoToProfile() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToProfile.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/profile/me")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/profile/me")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToProfile.assertValueCount(1)
   }
 
   func testGoToSearch() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToSearch.assertValueCount(0)
 
-    self.vm.inputs.applicationOpenUrl(application: UIApplication.sharedApplication(),
-                                      url: NSURL(string: "https://www.kickstarter.com/search")!,
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                      url: URL(string: "https://www.kickstarter.com/search")!,
                                       sourceApplication: nil,
                                       annotation: 1)
+    XCTAssertFalse(result)
 
     self.goToSearch.assertValueCount(1)
   }
 
   func testRegisterUnregisterNotifications() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.registerUserNotificationSettings.assertValueCount(0)
@@ -566,17 +578,17 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testRegisterDeviceToken() {
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
-      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: NSData())
-      self.scheduler.advanceByInterval(5.0)
+      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "deadbeef".data(using: .utf8)!)
+      self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
     }
   }
 
   func testOpenPushNotification_WhileInBackground() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.presentViewController.assertValueCount(0)
@@ -592,7 +604,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenPushNotification_WhileInForeground() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.presentViewController.assertValueCount(0)
@@ -611,8 +623,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenPushNotification_LaunchApp() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: friendBackingPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: friendBackingPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -625,7 +637,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenPushNotification_WhileAppIsActive() {
     let pushData = friendBackingPushData
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.presentViewController.assertValueCount(0)
@@ -648,8 +660,8 @@ final class AppDelegateViewModelTests: TestCase {
     let param = Param.id(projectId ?? -1)
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: backingForCreatorPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: backingForCreatorPushData]
     )
 
     self.goToDashboard.assertValues([param])
@@ -662,8 +674,8 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"] = badActivityData
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.goToDashboard.assertValueCount(0)
@@ -671,8 +683,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_ProjectUpdate() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: updatePushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -683,8 +695,8 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"]?["update_id"] = nil
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -692,8 +704,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_SurveyResponse() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: surveyResponsePushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: surveyResponsePushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -704,8 +716,8 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["survey"]?["id"] = nil
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -713,8 +725,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_UpdateComment() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: updateCommentPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updateCommentPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -725,8 +737,8 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"]?["update_id"] = nil
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -734,8 +746,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_ProjectComment() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: projectCommentPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: projectCommentPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -746,8 +758,8 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"]?["project_id"] = nil
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: badPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -755,8 +767,8 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_GenericProject() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsRemoteNotificationKey: genericProjectPushData]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: genericProjectPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -765,10 +777,10 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_ProjectStateChanges() {
     let states: [Activity.Category] = [.failure, .launch, .success, .cancellation, .suspension]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-    states.enumerate().forEach { idx, state in
+    states.enumerated().forEach { idx, state in
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
@@ -787,10 +799,10 @@ final class AppDelegateViewModelTests: TestCase {
       .flatMap { $0["project_id"] as? Int }
     let param = Param.id(projectId ?? -1)
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-    categories.enumerate().forEach { idx, state in
+    categories.enumerated().forEach { idx, state in
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
@@ -803,7 +815,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_PostLike() {
 
-    let pushData: [String:AnyObject] = [
+    let pushData: [String:Any] = [
       "aps": [
         "alert": "Blob liked your update: Important message..."
       ],
@@ -821,10 +833,10 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_UnrecognizedActivityType() {
     let categories: [Activity.Category] = [.follow, .funding, .unknown, .watch]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-    categories.enumerate().forEach { idx, state in
+    categories.enumerated().forEach { _, state in
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
@@ -841,8 +853,8 @@ final class AppDelegateViewModelTests: TestCase {
     localNotification.userInfo = updatePushData
 
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
-      launchOptions: [UIApplicationLaunchOptionsLocalNotificationKey: localNotification]
+      application: UIApplication.shared,
+      launchOptions: [UIApplicationLaunchOptionsKey.localNotification: localNotification]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -850,15 +862,16 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testContinueUserActivity_ValidActivity() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-    userActivity.webpageURL = NSURL(string: "https://www.kickstarter.com/activity")
+    userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
 
-    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+    self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
 
     self.goToActivity.assertValueCount(0)
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.vm.inputs.applicationContinueUserActivity(userActivity)
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertTrue(result)
 
     self.goToActivity.assertValueCount(1)
     XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
@@ -871,8 +884,9 @@ final class AppDelegateViewModelTests: TestCase {
   func testContinueUserActivity_InvalidActivity() {
     let userActivity = NSUserActivity(activityType: "Other")
 
-    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
-    self.vm.inputs.applicationContinueUserActivity(userActivity)
+    self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertFalse(result)
 
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
@@ -881,17 +895,17 @@ final class AppDelegateViewModelTests: TestCase {
   func testSetApplicationShortcutItems() {
     self.setApplicationShortcutItems.assertValues([])
 
-    self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+    self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
 
     self.setApplicationShortcutItems.assertValues([])
 
-    self.scheduler.advanceByInterval(5)
+    self.scheduler.advance(by: .seconds(5))
 
     self.setApplicationShortcutItems.assertValues([[.projectOfTheDay, .projectsWeLove, .search]])
 
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    self.scheduler.advanceByInterval(5)
+    self.scheduler.advance(by: .seconds(5))
 
     self.setApplicationShortcutItems.assertValues(
       [
@@ -908,11 +922,11 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
       self.setApplicationShortcutItems.assertValues([])
 
-      self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+      self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
 
       self.setApplicationShortcutItems.assertValues([])
 
-      self.scheduler.advanceByInterval(5)
+      self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
         [.projectOfTheDay, .recommendedForYou, .projectsWeLove, .search]
@@ -927,11 +941,11 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
       self.setApplicationShortcutItems.assertValues([])
 
-      self.vm.inputs.applicationDidFinishLaunching(application: .sharedApplication(), launchOptions: [:])
+      self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
 
       self.setApplicationShortcutItems.assertValues([])
 
-      self.scheduler.advanceByInterval(5)
+      self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
         [.creatorDashboard, .projectOfTheDay, .recommendedForYou, .projectsWeLove]
@@ -940,7 +954,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testPerformShortcutItem_CreatorDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDashboard.assertValueCount(0)
@@ -954,9 +968,9 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_CreatorDashboard() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
+      application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.creatorDashboard.applicationShortcutItem
+        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.creatorDashboard.applicationShortcutItem
       ]
     )
 
@@ -966,11 +980,11 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testPerformShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
 
       self.presentViewController.assertValueCount(0)
@@ -985,14 +999,14 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ NSDate().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
       self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.sharedApplication(),
+        application: UIApplication.shared,
         launchOptions: [
-          UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectOfTheDay.applicationShortcutItem
+          UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectOfTheDay.applicationShortcutItem
         ]
       )
 
@@ -1002,7 +1016,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testPerformShortcutItem_ProjectsWeLove() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDiscovery.assertValueCount(0)
@@ -1019,9 +1033,9 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_ProjectsWeLove() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
+      application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectsWeLove.applicationShortcutItem
+        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
       ]
     )
 
@@ -1033,7 +1047,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testPerformShortcutItem_RecommendedForYou() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToDiscovery.assertValueCount(0)
@@ -1050,9 +1064,9 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_RecommendedForYou() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
+      application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.recommendedForYou.applicationShortcutItem
+        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.recommendedForYou.applicationShortcutItem
       ]
     )
 
@@ -1064,7 +1078,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testPerformShortcutItem_Search() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.goToSearch.assertValueCount(0)
@@ -1076,9 +1090,9 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_Search() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
+      application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.search.applicationShortcutItem
+        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
       ]
     )
 
@@ -1088,9 +1102,9 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testPerformShortcutItem_KoalaTracking() {
     // Launch app and wait for shortcuts to be set
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.sharedApplication(),
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
-    self.scheduler.advanceByInterval(5)
+    self.scheduler.advance(by: .seconds(5))
 
     // Perform a shortcut item
     self.vm.inputs.applicationPerformActionForShortcutItem(
@@ -1106,7 +1120,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       // Login with a user and wait for shortcuts to be set
       self.vm.inputs.userSessionStarted()
-      self.scheduler.advanceByInterval(5)
+      self.scheduler.advance(by: .seconds(5))
 
       XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"],
                      self.trackingClient.events,
@@ -1133,15 +1147,15 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_KoalaTracking() {
     self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.sharedApplication(),
+      application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsShortcutItemKey: ShortcutItem.projectsWeLove.applicationShortcutItem
+        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
       ]
     )
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    self.scheduler.advanceByInterval(5)
+    self.scheduler.advance(by: .seconds(5))
 
     XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
     XCTAssertEqual([nil, nil, "projects_we_love"],
@@ -1151,7 +1165,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 }
 
-private let backingForCreatorPushData = [
+private let backingForCreatorPushData: [String: Any] = [
   "aps": [
     "alert": "HEYYYY"
   ],

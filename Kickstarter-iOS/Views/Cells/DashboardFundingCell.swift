@@ -5,59 +5,59 @@ import Prelude_UIKit
 import UIKit
 
 internal final class DashboardFundingCell: UITableViewCell, ValueCell {
-  private let viewModel: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
+  fileprivate let viewModel: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
 
-  @IBOutlet private weak var backersTitleLabel: UILabel!
-  @IBOutlet private weak var backersSubtitleLabel: UILabel!
-  @IBOutlet private weak var deadlineDateLabel: UILabel!
-  @IBOutlet private weak var fundingProgressTitleLabel: UILabel!
-  @IBOutlet private weak var graphAxisSeparatorView: UIView!
-  @IBOutlet private weak var graphBackgroundView: UIView!
-  @IBOutlet private weak var graphView: FundingGraphView!
-  @IBOutlet private weak var graphViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var graphXAxisStackView: UIStackView!
-  @IBOutlet private weak var graphYAxisBottomLabel: UILabel!
-  @IBOutlet private weak var graphYAxisMiddleLabel: UILabel!
-  @IBOutlet private weak var graphYAxisTopLabel: UILabel!
-  @IBOutlet private weak var launchDateLabel: UILabel!
-  @IBOutlet private weak var pledgedSubtitleLabel: UILabel!
-  @IBOutlet private weak var pledgedTitleLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var statsStackView: UIStackView!
-  @IBOutlet private weak var timeRemainingSubtitleLabel: UILabel!
-  @IBOutlet private weak var timeRemainingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineDateLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingProgressTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var graphAxisSeparatorView: UIView!
+  @IBOutlet fileprivate weak var graphBackgroundView: UIView!
+  @IBOutlet fileprivate weak var graphView: FundingGraphView!
+  @IBOutlet fileprivate weak var graphViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var graphXAxisStackView: UIStackView!
+  @IBOutlet fileprivate weak var graphYAxisBottomLabel: UILabel!
+  @IBOutlet fileprivate weak var graphYAxisMiddleLabel: UILabel!
+  @IBOutlet fileprivate weak var graphYAxisTopLabel: UILabel!
+  @IBOutlet fileprivate weak var launchDateLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgedSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgedTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate weak var timeRemainingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var timeRemainingTitleLabel: UILabel!
 
   internal override func bindStyles() {
     super.bindStyles()
 
     self.accessibilityLabel = Strings.dashboard_graphs_funding_title_funding_progress()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.backersSubtitleLabel
+    _ = self.backersSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_tout_backers() }
-    self.backersTitleLabel |> dashboardStatTitleLabelStyle
-    self.deadlineDateLabel |> dashboardFundingGraphXAxisLabelStyle
-    self.fundingProgressTitleLabel |> dashboardFundingProgressTitleLabelStyle
-    self.graphAxisSeparatorView |> dashboardFundingGraphAxisSeparatorViewStyle
-    self.graphBackgroundView
+    _ = self.backersTitleLabel |> dashboardStatTitleLabelStyle
+    _ = self.deadlineDateLabel |> dashboardFundingGraphXAxisLabelStyle
+    _ = self.fundingProgressTitleLabel |> dashboardFundingProgressTitleLabelStyle
+    _ = self.graphAxisSeparatorView |> dashboardFundingGraphAxisSeparatorViewStyle
+    _ = self.graphBackgroundView
       |> containerViewBackgroundStyle
       |> UIView.lens.accessibilityElementsHidden .~ true
-    self.graphView |> UIView.lens.layoutMargins .~ .init(top: 0.0, left: 16.0, bottom: 0.0, right: 0.0)
-    self.graphXAxisStackView |> dashboardFundingGraphXAxisStackViewStyle
-    self.graphYAxisBottomLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.graphYAxisMiddleLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.graphYAxisTopLabel |> dashboardFundingGraphYAxisLabelStyle
-    self.launchDateLabel |> dashboardFundingGraphXAxisLabelStyle
-    self.pledgedSubtitleLabel |> dashboardStatSubtitleLabelStyle
-    self.pledgedTitleLabel
+    _ = self.graphView |> UIView.lens.layoutMargins .~ .init(top: 0.0, left: 16.0, bottom: 0.0, right: 0.0)
+    _ = self.graphXAxisStackView |> dashboardFundingGraphXAxisStackViewStyle
+    _ = self.graphYAxisBottomLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.graphYAxisMiddleLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.graphYAxisTopLabel |> dashboardFundingGraphYAxisLabelStyle
+    _ = self.launchDateLabel |> dashboardFundingGraphXAxisLabelStyle
+    _ = self.pledgedSubtitleLabel |> dashboardStatSubtitleLabelStyle
+    _ = self.pledgedTitleLabel
       |> dashboardStatTitleLabelStyle
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, stack in
         stack.traitCollection.isRegularRegular
@@ -65,10 +65,10 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
           : .init(all: 0.0)
     }
 
-    self.separatorViews ||> separatorStyle
-    self.statsStackView |> dashboardFundingStatsStackView
-    self.timeRemainingSubtitleLabel |> dashboardStatSubtitleLabelStyle
-    self.timeRemainingTitleLabel |> dashboardStatTitleLabelStyle
+    _ = self.separatorViews ||> separatorStyle
+    _ = self.statsStackView |> dashboardFundingStatsStackView
+    _ = self.timeRemainingSubtitleLabel |> dashboardStatSubtitleLabelStyle
+    _ = self.timeRemainingTitleLabel |> dashboardStatTitleLabelStyle
 
     self.graphViewHeightConstraint.constant = self.traitCollection.isRegularRegular
       ? Styles.grid(40) : Styles.grid(30)
@@ -90,14 +90,14 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.graphData
       .observeForUI()
-      .observeNext { [weak self] data in
+      .observeValues { [weak self] data in
         self?.graphView.project = data.project
         self?.graphView.stats = data.stats
         self?.graphView.yAxisTickSize = data.yAxisTickSize
     }
   }
 
-  internal func configureWith(value value: ([ProjectStatsEnvelope.FundingDateStats], Project)) {
+  internal func configureWith(value: ([ProjectStatsEnvelope.FundingDateStats], Project)) {
     self.viewModel.inputs.configureWith(fundingDateStats: value.0, project: value.1)
   }
 }

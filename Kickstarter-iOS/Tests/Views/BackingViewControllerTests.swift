@@ -6,15 +6,15 @@ import XCTest
 @testable import KsApi
 
 internal final class BackingViewControllerTests: TestCase {
-  private let cosmicSurgery = Project.cosmicSurgery
+  fileprivate let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .successful
-  private let backing = Backing.template
+  fileprivate let backing = Backing.template
     |> Backing.lens.pledgedAt .~ 1468527587.32843
-  private let brando = User.brando
+  fileprivate let brando = User.brando
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 

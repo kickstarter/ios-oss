@@ -9,14 +9,17 @@ extension String {
 
    - returns: The truncated string.
    */
-  public func truncated(maxLength maxLength: Int, suffix: String = "…") -> String {
+  public func truncated(maxLength: Int, suffix: String = "…") -> String {
 
     let chars = self.characters
     guard chars.count > maxLength else { return self }
 
     let advancedBy = maxLength - suffix.characters.count
-    let str = String(chars.prefixUpTo(chars.startIndex.advancedBy(advancedBy, limit: chars.endIndex)))
 
-    return str + suffix
+    guard let index = chars.index(chars.startIndex, offsetBy: advancedBy, limitedBy: chars.endIndex) else {
+      return self
+    }
+
+    return String(chars.prefix(upTo: index)) + suffix
   }
 }

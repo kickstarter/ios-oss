@@ -14,9 +14,9 @@ extension UIDevice: UIDeviceType {
   public var modelCode: String {
     var size: Int = 0
     sysctlbyname("hw.machine", nil, &size, nil, 0)
-    var machine = [CChar](count: Int(size), repeatedValue: 0)
+    var machine = [CChar](repeating: 0, count: Int(size))
     sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String.fromCString(machine) ?? "Unknown device model"
+    return String(cString: machine)
   }
 }
 

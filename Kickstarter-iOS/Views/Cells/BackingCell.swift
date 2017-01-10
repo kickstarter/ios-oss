@@ -10,7 +10,7 @@ internal protocol BackingCellDelegate: class {
 }
 
 internal final class BackingCell: UITableViewCell, ValueCell {
-  private let viewModel: BackingCellViewModelType = BackingCellViewModel()
+  fileprivate let viewModel: BackingCellViewModelType = BackingCellViewModel()
 
   @IBOutlet private weak var backingInfoButton: UIButton!
   @IBOutlet private weak var deliveryLabel: UILabel!
@@ -25,17 +25,17 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     self.backingInfoButton.addTarget(self, action: #selector(backingInfoButtonTapped),
-                                     forControlEvents: .TouchUpInside)
+                                     for: .touchUpInside)
   }
 
-  internal func configureWith(value value: (Backing, Project)) {
+  internal func configureWith(value: (Backing, Project)) {
     self.viewModel.inputs.configureWith(backing: value.0, project: value.1)
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> BackingCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -43,24 +43,24 @@ internal final class BackingCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
 
-    self.backingInfoButton
+    _ = self.backingInfoButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.backing_info_info_button() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backing_info_info_button() }
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3),
                                                   leftRight: Styles.gridHalf(5))
 
-    self.deliveryLabel
+    _ = self.deliveryLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ UIFont.ksr_caption1()
 
-    self.dividerView
+    _ = self.dividerView
       |> separatorStyle
 
-    self.pledgedLabel
+    _ = self.pledgedLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline()
 
-    self.rewardLabel
+    _ = self.rewardLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_subhead()
   }

@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -7,24 +7,24 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectNavBarViewModelTests: TestCase {
-  private let vm: ProjectNavBarViewModelType = ProjectNavBarViewModel()
+  fileprivate let vm: ProjectNavBarViewModelType = ProjectNavBarViewModel()
 
-  private let backgroundAnimate = TestObserver<Bool, NoError>()
-  private let backgroundOpaque = TestObserver<Bool, NoError>()
-  private let categoryButtonBackgroundColor = TestObserver<UIColor, NoError>()
-  private let categoryButtonText = TestObserver<String, NoError>()
-  private let categoryButtonTintColor = TestObserver<UIColor, NoError>()
-  private let categoryButtonTitleColor = TestObserver<UIColor, NoError>()
-  private let categoryHidden = TestObserver<Bool, NoError>()
-  private let categoryAnimate = TestObserver<Bool, NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
-  private let goToLoginTout = TestObserver<(), NoError>()
-  private let projectName = TestObserver<String, NoError>()
-  private let showProjectStarredPrompt = TestObserver<String, NoError>()
-  private let starButtonAccessibilityHint = TestObserver<String, NoError>()
-  private let starButtonSelected = TestObserver<Bool, NoError>()
-  private let titleAnimate = TestObserver<Bool, NoError>()
-  private let titleHidden = TestObserver<Bool, NoError>()
+  fileprivate let backgroundAnimate = TestObserver<Bool, NoError>()
+  fileprivate let backgroundOpaque = TestObserver<Bool, NoError>()
+  fileprivate let categoryButtonBackgroundColor = TestObserver<UIColor, NoError>()
+  fileprivate let categoryButtonText = TestObserver<String, NoError>()
+  fileprivate let categoryButtonTintColor = TestObserver<UIColor, NoError>()
+  fileprivate let categoryButtonTitleColor = TestObserver<UIColor, NoError>()
+  fileprivate let categoryHidden = TestObserver<Bool, NoError>()
+  fileprivate let categoryAnimate = TestObserver<Bool, NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let goToLoginTout = TestObserver<(), NoError>()
+  fileprivate let projectName = TestObserver<String, NoError>()
+  fileprivate let showProjectStarredPrompt = TestObserver<String, NoError>()
+  fileprivate let starButtonAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let starButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let titleAnimate = TestObserver<Bool, NoError>()
+  fileprivate let titleHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -264,7 +264,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     let project = .template
       |> Project.lens.personalization.isStarred .~ false
-      |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Project.lens.dates.deadline .~ (Date().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)

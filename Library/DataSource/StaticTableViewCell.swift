@@ -1,6 +1,6 @@
 import UIKit
 
-public class StaticTableViewCell: UITableViewCell, ValueCell {
-  public func configureWith(value value: Void) {
+open class StaticTableViewCell: UITableViewCell, ValueCell {
+  open func configureWith(value: Void) {
   }
 }
