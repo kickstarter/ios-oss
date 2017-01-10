@@ -146,7 +146,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeNext { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-  @objc internal func emailTextFieldChanged(textField: UITextField) { //this
+  @objc internal func emailTextFieldChanged(textField: UITextField) {
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
 
@@ -154,7 +154,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.emailTextFieldReturn()
   }
 
-  @objc internal func nameTextFieldChanged(textField: UITextField) { //this
+  @objc internal func nameTextFieldChanged(textField: UITextField) {
     self.viewModel.inputs.nameChanged(textField.text ?? "")
   }
 
@@ -162,7 +162,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.nameTextFieldReturn()
   }
 
-  @objc internal func passwordTextFieldChanged(textField: UITextField) { //this
+  @objc internal func passwordTextFieldChanged(textField: UITextField) {
     self.viewModel.inputs.passwordChanged(textField.text ?? "")
   }
 
