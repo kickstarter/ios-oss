@@ -1,5 +1,5 @@
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit.UIActivity
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
@@ -17,7 +17,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   let isLoading = TestObserver<Bool, NoError>()
   let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
   let notifyPresenterUserFacebookConnected = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<String, NoError>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
 
@@ -28,7 +28,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
     vm.outputs.notifyDelegateUserFacebookConnected.observe(notifyPresenterUserFacebookConnected.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(postUserUpdatedNotification.observer)
+    vm.outputs.postUserUpdatedNotification.map { $0.name }
+      .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
   }
@@ -53,8 +54,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -62,7 +63,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     withEnvironment(currentUser: User.template) {
       vm.inputs.configureWith(source: FriendsSource.activity)
@@ -85,7 +86,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([CurrentUserNotifications.userUpdated],
+      postUserUpdatedNotification.assertValues([.ksr_userUpdated],
                                                "User updated notification posted")
       notifyPresenterUserFacebookConnected.assertValueCount(1, "Notify presenter that user was updated")
 
@@ -128,8 +129,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -137,7 +138,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -179,8 +180,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -188,7 +189,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["This Facebook account is already linked to another Kickstarter user."],
@@ -230,8 +231,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -239,7 +240,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: [
@@ -283,8 +284,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -292,7 +293,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],

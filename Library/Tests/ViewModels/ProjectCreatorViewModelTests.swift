@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -7,12 +7,12 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectCreatorViewModelTests: TestCase {
-  private let vm: ProjectCreatorViewModelType = ProjectCreatorViewModel()
+  fileprivate let vm: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
-  private let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, NoError>()
-  private let goToMessageDialogSubject = TestObserver<MessageSubject, NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let loadWebViewRequest = TestObserver<NSURLRequest, NoError>()
+  fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, NoError>()
+  fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -31,22 +31,24 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    var policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: .init(URL: NSURL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        navigationType: .other,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
+    XCTAssertEqual(.allow, policy)
 
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: NSURL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
     self.goToMessageDialogContext.assertValues([.projectPage])
     self.goToMessageDialogSubject.assertValues([.project(project)])
@@ -59,23 +61,25 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goToSafariBrowser.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    var policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .Other,
-        request: .init(URL: NSURL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        navigationType: .other,
+        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
       )
     )
+    XCTAssertEqual(.allow, policy)
 
     self.goToSafariBrowser.assertValues([])
 
-    self.vm.inputs.decidePolicy(
+    policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: NSURL(string: "http://www.google.com")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
-    self.goToSafariBrowser.assertValues([NSURL(string: "http://www.google.com")!])
+    self.goToSafariBrowser.assertValues([URL(string: "http://www.google.com")!])
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
     XCTAssertEqual(["project_creator"], self.trackingClient.properties(forKey: "context"))
   }
@@ -83,7 +87,7 @@ final class ProjectCreatorViewModelTests: TestCase {
   func testLoadWebViewRequest() {
     let project = Project.template
     let creatorBioRequest = AppEnvironment.current.apiService.preparedRequest(
-      forURL: NSURL(string: "\(project.urls.web.project)/creator_bio")!
+      forURL: URL(string: "\(project.urls.web.project)/creator_bio")!
     )
 
     self.vm.inputs.configureWith(project: project)
@@ -91,12 +95,13 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValues([creatorBioRequest])
 
-    self.vm.inputs.decidePolicy(
+    let policy = self.vm.inputs.decidePolicy(
       forNavigationAction: MockNavigationAction(
-        navigationType: .LinkActivated,
-        request: .init(URL: NSURL(string: "http://www.google.com")!)
+        navigationType: .linkActivated,
+        request: .init(url: URL(string: "http://www.google.com")!)
       )
     )
+    XCTAssertEqual(.cancel, policy)
 
     self.loadWebViewRequest.assertValues([creatorBioRequest])
   }

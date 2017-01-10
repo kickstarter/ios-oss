@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -44,7 +44,7 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
   DashboardVideoCellViewModelOutputs, DashboardVideoCellViewModelType {
 
   public init() {
-    let videoStats = self.statsProperty.signal.ignoreNil()
+    let videoStats = self.statsProperty.signal.skipNil()
 
     self.completionPercentage = videoStats
       .map {
@@ -81,7 +81,7 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
         " " + Strings.dashboard_graphs_video_stats_off_site() }
   }
 
-  private let statsProperty = MutableProperty<ProjectStatsEnvelope.VideoStats?>(nil)
+  fileprivate let statsProperty = MutableProperty<ProjectStatsEnvelope.VideoStats?>(nil)
   public func configureWith(videoStats stats: ProjectStatsEnvelope.VideoStats) {
     self.statsProperty.value = stats
   }

@@ -7,12 +7,10 @@ extension UIScrollView {
    index path, and otherwise we just set the content offset directly.
    */
   public func scrollToTop() {
-    if let tableView = self as? UITableView
-      where tableView.numberOfSections > 0 && tableView.numberOfRowsInSection(0) > 0 {
+    if let tableView = self as? UITableView,
+      tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
 
-      tableView.scrollToRowAtIndexPath(.init(forRow: 0, inSection: 0),
-                                       atScrollPosition: .Top,
-                                       animated: true)
+      tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
 
     } else {
       self.setContentOffset(CGPoint(x: 0.0, y: -self.contentInset.top), animated: true)

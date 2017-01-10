@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
@@ -40,7 +40,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var conversionLabelText: Signal<String, NoError> { get }
 
   /// Emits an image url to be loaded into the creator's image view.
-  var creatorImageUrl: Signal<NSURL?, NoError> { get }
+  var creatorImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits text to be put into the creator label.
   var creatorLabelText: Signal<String, NoError> { get }
@@ -76,7 +76,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var projectBlurbLabelText: Signal<String, NoError> { get }
 
   /// Emits a URL to be loaded into the project's image view.
-  var projectImageUrl: Signal<NSURL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits text to be put into the project name label.
   var projectNameLabelText: Signal<String, NoError> { get }
@@ -107,7 +107,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
     self.projectBlurbLabelText = project.map(Project.lens.blurb.view)
@@ -116,7 +116,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       Strings.project_creator_by_creator(creator_name: $0.creator.name)
     }
 
-    self.creatorImageUrl = project.map { NSURL(string: $0.creator.avatar.small) }
+    self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
 
@@ -140,15 +140,15 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       .map { $0.state == .successful  || $0.state == .live ?
         UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
 
-    self.projectImageUrl = project.map { NSURL(string: $0.photo.full) }
+    self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     let videoIsPlaying = Signal.merge(
-      project.take(1).mapConst(false),
+      project.take(first: 1).mapConst(false),
       self.videoDidStartProperty.signal.mapConst(true),
       self.videoDidFinishProperty.signal.mapConst(false)
     )
 
-    self.youreABackerLabelHidden = combineLatest(project, videoIsPlaying)
+    self.youreABackerLabelHidden = Signal.combineLatest(project, videoIsPlaying)
       .map { project, videoIsPlaying in
         project.personalization.isBacking != true || videoIsPlaying
       }
@@ -156,7 +156,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split("\n").map(String.init)
+      let parts = string.characters.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 
@@ -220,38 +220,38 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
-    self.configureVideoPlayerController = combineLatest(project, self.delegateDidSetProperty.signal)
+    self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
-      .take(1)
+      .take(first: 1)
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let creatorButtonTappedProperty = MutableProperty()
+  fileprivate let creatorButtonTappedProperty = MutableProperty()
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
   }
 
-  private let delegateDidSetProperty = MutableProperty()
+  fileprivate let delegateDidSetProperty = MutableProperty()
   public func delegateDidSet() {
     self.delegateDidSetProperty.value = ()
   }
 
-  private let readMoreButtonTappedProperty = MutableProperty()
+  fileprivate let readMoreButtonTappedProperty = MutableProperty()
   public func readMoreButtonTapped() {
     self.readMoreButtonTappedProperty.value = ()
   }
 
-  private let videoDidFinishProperty = MutableProperty()
+  fileprivate let videoDidFinishProperty = MutableProperty()
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
   }
 
-  private let videoDidStartProperty = MutableProperty()
+  fileprivate let videoDidStartProperty = MutableProperty()
   public func videoDidStart() {
     self.videoDidStartProperty.value = ()
   }
@@ -261,7 +261,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
-  public let creatorImageUrl: Signal<NSURL?, NoError>
+  public let creatorImageUrl: Signal<URL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
@@ -273,7 +273,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let pledgedTitleLabelTextColor: Signal<UIColor, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectBlurbLabelText: Signal<String, NoError>
-  public let projectImageUrl: Signal<NSURL?, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
   public let projectStateLabelText: Signal<String, NoError>
   public let projectStateLabelTextColor: Signal<UIColor, NoError>
@@ -310,8 +310,8 @@ private func statsStackViewAccessibilityLabel(forProject project: Project, needs
 
 private func fundingStatus(forProject project: Project) -> String {
   let date = Format.date(secondsInUTC: project.dates.stateChangedAt,
-                         dateStyle: .MediumStyle,
-                         timeStyle: .NoStyle)
+                         dateStyle: .medium,
+                         timeStyle: .none)
 
   switch project.state {
   case .canceled:

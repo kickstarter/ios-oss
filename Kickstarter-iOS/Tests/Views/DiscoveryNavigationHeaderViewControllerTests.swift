@@ -5,9 +5,8 @@ import Prelude
 import Result
 import XCTest
 
-// swiftlint:disable type_name
+// swiftlint:disable:next type_name
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
-// swiftlint:ensable type_name
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
@@ -21,7 +20,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 

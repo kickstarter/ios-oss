@@ -11,7 +11,7 @@ final class FindFriendsDataSourceTests: XCTestCase {
   func testDataSource() {
     self.dataSource.facebookConnect(source: FriendsSource.discovery, visible: true)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: 0))
 
@@ -19,7 +19,7 @@ final class FindFriendsDataSourceTests: XCTestCase {
     self.dataSource.facebookConnect(source: FriendsSource.discovery, visible: false)
     self.dataSource.stats(stats: stats, source: FriendsSource.discovery)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual("FindFriendsStatsCell", self.dataSource.reusableId(item: 0, section: 1))
@@ -27,7 +27,7 @@ final class FindFriendsDataSourceTests: XCTestCase {
     let friends = [User.template, User.template, User.template]
     self.dataSource.friends(friends, source: FriendsSource.discovery)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual("FindFriendsFriendFollowCell", self.dataSource.reusableId(item: 0, section: 2))

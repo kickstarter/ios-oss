@@ -1,6 +1,6 @@
 import XCTest
 @testable import KsApi
-@testable import ReactiveCocoa
+@testable import ReactiveSwift
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
@@ -9,17 +9,17 @@ import XCTest
 @testable import FBSDKCoreKit
 
 final class LoginToutViewModelTests: TestCase {
-  private let vm: LoginToutViewModelType = LoginToutViewModel()
-  private let startLogin = TestObserver<(), NoError>()
-  private let startSignup = TestObserver<(), NoError>()
-  private let startFacebookConfirmation = TestObserver<String, NoError>()
-  private let startTwoFactorChallenge = TestObserver<String, NoError>()
-  private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  private let postNotification = TestObserver<String, NoError>()
-  private let attemptFacebookLogin = TestObserver<(), NoError>()
-  private let isLoading = TestObserver<Bool, NoError>()
-  private let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
+  fileprivate let startLogin = TestObserver<(), NoError>()
+  fileprivate let startSignup = TestObserver<(), NoError>()
+  fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
+  fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
+  fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
+  fileprivate let isLoading = TestObserver<Bool, NoError>()
+  fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -30,7 +30,7 @@ final class LoginToutViewModelTests: TestCase {
       .observe(self.startFacebookConfirmation.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.postNotification.map { note in note.name }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
@@ -80,8 +80,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -89,7 +89,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     vm.inputs.viewWillAppear()
 
@@ -110,7 +110,7 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
@@ -175,8 +175,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -184,7 +184,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -217,8 +217,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -226,7 +226,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
@@ -257,8 +257,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -266,7 +266,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: [],
@@ -297,8 +297,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -306,7 +306,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Two Factor Authenticaion is required."],
@@ -340,8 +340,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: nil,
       appID: "834987809",
       userID: "0000000001",
-      expirationDate: NSDate(),
-      refreshDate: NSDate()
+      expirationDate: Date(),
+      refreshDate: Date()
     )
 
     let result = FBSDKLoginManagerLoginResult(
@@ -349,7 +349,7 @@ final class LoginToutViewModelTests: TestCase {
       isCancelled: false,
       grantedPermissions: nil,
       declinedPermissions: nil
-    )
+    )!
 
     let error = ErrorEnvelope(
       errorMessages: ["Confirm Facebook Signup"],

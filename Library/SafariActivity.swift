@@ -2,38 +2,38 @@
 import Foundation
 import UIKit
 
-public let SafariActivityType = "com.kickstarter.kickstarter.safari"
+public let SafariActivityType = UIActivityType("com.kickstarter.kickstarter.safari")
 
 public final class SafariActivity: UIActivity {
-  private var url: NSURL?
+  fileprivate var url: URL?
 
-  public convenience init(url: NSURL) {
+  public convenience init(url: URL) {
     self.init()
 
     self.url = url
   }
 
-  public override func activityType() -> String? {
+  public override var activityType: UIActivityType? {
     return SafariActivityType
   }
 
-  public override func activityTitle() -> String? {
+  public override var activityTitle: String? {
     return "Safari"
   }
 
-  public override func activityImage() -> UIImage? {
+  public override var activityImage: UIImage? {
     return image(named: "safari-icon-full")
   }
 
-  public override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
-    let urls = activityItems.filter { $0 is NSURL && ($0 as? NSURL)?.host != nil }
+  public override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    let urls = activityItems.filter { $0 is URL && ($0 as? URL)?.host != nil }
     return !urls.isEmpty
   }
 
-  public override func performActivity() {
+  public override func perform() {
     guard let url = self.url else { return }
 
-    UIApplication.sharedApplication().openURL(url)
+    UIApplication.shared.openURL(url)
     self.activityDidFinish(true)
   }
 }

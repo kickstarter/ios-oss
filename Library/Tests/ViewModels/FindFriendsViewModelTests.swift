@@ -1,5 +1,5 @@
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit.UIActivity
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
@@ -227,11 +227,11 @@ final class FindFriendsViewModelTests: TestCase {
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
       // Test the 2 second "Follow all" debounce.
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
 
       self.friends.assertValues([friendsResponse.users, []], "Friend list clears.")
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
 
       self.friends.assertValues([friendsResponse.users, [], friendsResponse.users], "Updated friends emit.")
     }

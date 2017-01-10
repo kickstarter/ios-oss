@@ -10,7 +10,7 @@ public enum Language: String {
   public static let allLanguages: [Language] = [.de, .en, .es, .fr]
 
   public init?(languageString language: String) {
-    switch language.lowercaseString {
+    switch language.lowercased() {
     case "de":  self = .de
     case "en":  self = .en
     case "es":  self = .es

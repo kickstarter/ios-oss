@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -74,12 +74,12 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
   // swiftlint:disable function_body_length
   public init() {
-    let statsProject = self.statsProjectProperty.signal.ignoreNil()
+    let statsProject = self.statsProjectProperty.signal.skipNil()
 
     self.backersText = statsProject.map { _, project in Format.wholeNumber(project.stats.backersCount) }
 
     self.deadlineDateText = statsProject.map { _, project in
-      Format.date(secondsInUTC: project.dates.deadline, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+      Format.date(secondsInUTC: project.dates.deadline, dateStyle: .short, timeStyle: .none)
     }
 
     self.goalText = statsProject.map { _, project in
@@ -90,7 +90,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
     self.graphData = statsProject
       .map { stats, project in
-        let maxPledged = stats.map { $0.cumulativePledged }.maxElement() ?? 0
+        let maxPledged = stats.map { $0.cumulativePledged }.max() ?? 0
         let range = Double(maxPledged > project.stats.goal ? maxPledged : project.stats.goal)
 
         return FundingGraphData(
@@ -111,7 +111,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
     self.launchDateText = statsProject
       .map { _, project in
-        Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .ShortStyle, timeStyle: .NoStyle)
+        Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .short, timeStyle: .none)
     }
 
     self.pledgedText = statsProject
@@ -168,7 +168,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 }
 
 // Returns the tick size relative to the number of ticks in a range.
-private func tickSize(tickCount: Int, range: Double) -> CGFloat {
+private func tickSize(_ tickCount: Int, range: Double) -> CGFloat {
   let unroundedTickSize = range / (Double(tickCount) - 1.0)
   let exponent = ceil(log10(unroundedTickSize) - 1.0)
   let power = pow(10.0, exponent)

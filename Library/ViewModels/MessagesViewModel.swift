@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol MessagesViewModelInputs {
@@ -8,10 +8,10 @@ public protocol MessagesViewModelInputs {
   func backingInfoPressed()
 
   /// Configures the view model with either a message thread or a project and a backing.
-  func configureWith(data data: Either<MessageThread, (project: Project, backing: Backing)>)
+  func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>)
 
   /// Call when the message dialog has told us that a message was successfully posted.
-  func messageSent(message: Message)
+  func messageSent(_ message: Message)
 
   /// Call when the project banner is tapped.
   func projectBannerTapped()
@@ -56,17 +56,17 @@ MessagesViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let configData = self.configData.signal.ignoreNil()
+    let configData = self.configData.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
     let configBacking = configData.map { $0.right?.backing }
 
     let configThread = configData.map { $0.left }
-      .ignoreNil()
+      .skipNil()
 
     let currentUser = self.viewDidLoadProperty.signal
       .map { AppEnvironment.current.currentUser }
-      .ignoreNil()
+      .skipNil()
 
     self.project = configData
       .map {
@@ -79,7 +79,7 @@ MessagesViewModelOutputs {
     }
 
     let backingOrThread = Signal.merge(
-      configBacking.ignoreNil().map(Either.left),
+      configBacking.skipNil().map(Either.left),
       configThread.map(Either.right)
     )
 
@@ -101,7 +101,7 @@ MessagesViewModelOutputs {
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
-    self.backingAndProject = combineLatest(configBacking, self.project, participant, currentUser)
+    self.backingAndProject = Signal.combineLatest(configBacking, self.project, participant, currentUser)
       .switchMap { value -> SignalProducer<(Backing, Project), NoError> in
         let (backing, project, participant, currentUser) = value
 
@@ -109,7 +109,7 @@ MessagesViewModelOutputs {
           return SignalProducer(value: (backing, project))
         }
 
-        let request = project.personalization.isBacking == .Some(true)
+        let request = project.personalization.isBacking == .some(true)
           ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
           : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
 
@@ -126,10 +126,10 @@ MessagesViewModelOutputs {
       .map { ($0.messageThread, .messages) }
       .takeWhen(self.replyButtonPressedProperty.signal)
 
-    self.goToBacking = combineLatest(messageThreadEnvelope, currentUser)
+    self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
       .map { env, currentUser in
-        env.messageThread.project.personalization.isBacking == .Some(true)
+        env.messageThread.project.personalization.isBacking == .some(true)
           ? (env.messageThread.project, currentUser)
           : (env.messageThread.project, env.messageThread.participant)
     }
@@ -144,9 +144,9 @@ MessagesViewModelOutputs {
       }
       .ignoreValues()
 
-    combineLatest(project, self.viewDidLoadProperty.signal)
-      .take(1)
-      .observeNext { project, _ in
+    Signal.combineLatest(project, self.viewDidLoadProperty.signal)
+      .take(first: 1)
+      .observeValues { project, _ in
         AppEnvironment.current.koala.trackMessageThreadView(project: project)
     }
   }
@@ -157,12 +157,12 @@ MessagesViewModelOutputs {
     self.backingInfoPressedProperty.value = ()
   }
   private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
-  public func configureWith(data data: Either<MessageThread, (project: Project, backing: Backing)>) {
+  public func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>) {
     self.configData.value = data
   }
 
   private let messageSentProperty = MutableProperty<Message?>(nil)
-  public func messageSent(message: Message) {
+  public func messageSent(_ message: Message) {
     self.messageSentProperty.value = message
   }
   private let projectBannerTappedProperty = MutableProperty()

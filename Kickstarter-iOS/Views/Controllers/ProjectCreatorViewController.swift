@@ -4,9 +4,9 @@ import Prelude
 import SafariServices
 
 internal final class ProjectCreatorViewController: WebViewController {
-  private let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()
+  fileprivate let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
-  internal static func configuredWith(project project: Project) -> ProjectCreatorViewController {
+  internal static func configuredWith(project: Project) -> ProjectCreatorViewController {
     let vc = ProjectCreatorViewController()
     vc.viewModel.inputs.configureWith(project: project)
     return vc
@@ -18,12 +18,12 @@ internal final class ProjectCreatorViewController: WebViewController {
 
     self.navigationItem.title = Strings.project_subpages_menu_buttons_creator()
 
-    if self.traitCollection.userInterfaceIdiom == .Pad {
+    if self.traitCollection.userInterfaceIdiom == .pad {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
     }
   }
 
-  internal override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
@@ -31,7 +31,7 @@ internal final class ProjectCreatorViewController: WebViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseControllerStyle()
   }
 
@@ -40,49 +40,49 @@ internal final class ProjectCreatorViewController: WebViewController {
 
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
 
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
+      .observeValues { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.goToSafariBrowser(url: $0)
     }
   }
 
-  internal func webView(webView: WKWebView,
+  internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
     decisionHandler(self.viewModel.inputs.decidePolicy(forNavigationAction: navigationAction))
   }
 
-  private func goToMessageDialog(subject subject: MessageSubject, context: Koala.MessageDialogContext) {
+  fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .FormSheet
-    self.presentViewController(nav, animated: true, completion: nil)
+    nav.modalPresentationStyle = .formSheet
+    self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToSafariBrowser(url url: NSURL) {
-    let controller = SFSafariViewController(URL: url)
-    controller.modalPresentationStyle = .OverFullScreen
-    self.presentViewController(controller, animated: true, completion: nil)
+  fileprivate func goToSafariBrowser(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
-  @objc private func closeButtonTapped() {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @objc fileprivate func closeButtonTapped() {
+    self.dismiss(animated: true, completion: nil)
   }
 }
 
 extension ProjectCreatorViewController: MessageDialogViewControllerDelegate {
-  internal func messageDialogWantsDismissal(dialog: MessageDialogViewController) {
-    dialog.dismissViewControllerAnimated(true, completion: nil)
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(dialog: MessageDialogViewController, postedMessage message: Message) {
+  internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
   }
 }

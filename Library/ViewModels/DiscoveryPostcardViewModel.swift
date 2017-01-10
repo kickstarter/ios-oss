@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public struct PostcardMetadataData {
@@ -15,7 +15,7 @@ private enum PostcardMetadataType {
   case potd
   case starred
 
-  private func data(forProject project: Project) -> PostcardMetadataData? {
+  fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
     case .backing:
       return PostcardMetadataData(iconImage: image(named: "metadata-backing"),
@@ -42,7 +42,7 @@ private enum PostcardMetadataType {
 
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -77,7 +77,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var progressPercentage: Signal<Float, NoError> { get }
 
   /// Emits a URL to be loaded into the project's image view.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the text to be put into the project name and blurb label.
   var projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError> { get }
@@ -101,7 +101,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var projectStatsStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the URL to be loaded into the social avatar's image view.
-  var socialImageURL: Signal<NSURL?, NoError> { get }
+  var socialImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the text for the social label.
   var socialLabelText: Signal<String, NoError> { get }
@@ -120,11 +120,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
   // swiftlint:disable function_body_length
   public init() {
-    let project = self.projectProperty.signal.ignoreNil()
+    let project = self.projectProperty.signal.skipNil()
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split("\n").map(String.init)
+      let parts = string.characters.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 
@@ -134,7 +134,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let deadlineTitleAndSubtitle = project
       .map {
         $0.state == .live
-          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) ?? ("", "")
+          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
           : ("", "")
     }
 
@@ -151,7 +151,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.metadataData = project.map(postcardMetadata(forProject:)).ignoreNil()
+    self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 
     self.percentFundedTitleLabelText = project
       .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
@@ -160,7 +160,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
+    self.projectImageURL = project.map { $0.photo.full }.map(URL.init(string:))
 
     self.projectNameAndBlurbLabelText = project
       .map(projectAttributedNameAndBlurb)
@@ -173,7 +173,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectStateSubtitleLabelText = project
       .map {
         $0.state != .live
-          ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .MediumStyle, timeStyle: .NoStyle)
+          ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .medium, timeStyle: .none)
           : ""
     }
 
@@ -187,7 +187,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
     self.socialImageURL = project
-      .map { $0.personalization.friends?.first.flatMap { NSURL(string: $0.avatar.medium) } }
+      .map { $0.personalization.friends?.first.flatMap { URL(string: $0.avatar.medium) } }
 
     self.socialLabelText = project
       .map { $0.personalization.friends.flatMap(socialText(forFriends:)) ?? "" }
@@ -202,8 +202,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   }
   // swiftlint:enable function_body_length
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
@@ -217,7 +217,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataViewHidden: Signal<Bool, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>
   public let projectStateIconHidden: Signal<Bool, NoError>
   public let projectStateStackViewHidden: Signal<Bool, NoError>
@@ -225,7 +225,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStateSubtitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
-  public let socialImageURL: Signal<NSURL?, NoError>
+  public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
 

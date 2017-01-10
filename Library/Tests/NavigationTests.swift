@@ -3,13 +3,13 @@ import Prelude
 import XCTest
 @testable import Library
 
-private func KSRAssertMatch(expected: Navigation,
+private func KSRAssertMatch(_ expected: Navigation,
                             _ path: String,
                               file: StaticString = #file,
                               line: UInt = #line) {
 
-  let match = optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)
-    .flatMap { NSURL(string: "\($0)\(path)") }
+  let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+  let match = URL(string: "\(baseUrl)\(path)")
     .flatMap(Navigation.match)
 
   XCTAssertEqual(expected, match, file: file, line: line)
@@ -19,7 +19,7 @@ public final class NavigationTests: XCTestCase {
 
   func testDoesNotRecognizeNonKickstarterURLs() {
     let projectRoute = Navigation
-      .match(NSURL(string: "http://www.face-kickstarter.com/projects/creator/project")!)
+      .match(URL(string: "http://www.face-kickstarter.com/projects/creator/project")!)
 
     XCTAssertNil(projectRoute)
   }
@@ -125,7 +125,7 @@ public final class NavigationTests: XCTestCase {
 
   func testRecognizesKsrUrlScheme() {
     let projectRoute = Navigation
-      .match(NSURL(string: "ksr://www.kickstarter.com/projects/creator/project")!)
+      .match(URL(string: "ksr://www.kickstarter.com/projects/creator/project")!)
 
     XCTAssertNotNil(projectRoute)
     XCTAssertEqual(.project(.slug("project"), .root, refTag: nil), projectRoute)

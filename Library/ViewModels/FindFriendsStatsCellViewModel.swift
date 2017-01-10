@@ -1,12 +1,12 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
 
 public protocol FindFriendsStatsCellViewModelInputs {
   /// Call to set with stats and the source from whence it comes
-  func configureWith(stats stats: FriendStatsEnvelope, source: FriendsSource)
+  func configureWith(stats: FriendStatsEnvelope, source: FriendsSource)
 
   /// Call when follow all button is tapped
   func followAllButtonTapped()
@@ -60,24 +60,24 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
   public var inputs: FindFriendsStatsCellViewModelInputs { return self }
   public var outputs: FindFriendsStatsCellViewModelOutputs { return self }
 
-  private let configureWithStatsProperty = MutableProperty<FriendStatsEnvelope?>(nil)
-  private let configureWithSourceProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
-  public func configureWith(stats stats: FriendStatsEnvelope, source: FriendsSource) {
+  fileprivate let configureWithStatsProperty = MutableProperty<FriendStatsEnvelope?>(nil)
+  fileprivate let configureWithSourceProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
+  public func configureWith(stats: FriendStatsEnvelope, source: FriendsSource) {
     configureWithStatsProperty.value = stats
     configureWithSourceProperty.value = source
   }
 
-  private let confirmFollowAllFriendsProperty = MutableProperty()
+  fileprivate let confirmFollowAllFriendsProperty = MutableProperty()
   func confirmFollowAllFriends() {
     confirmFollowAllFriendsProperty.value = ()
   }
 
-  private let declineFollowAllFriendsProperty = MutableProperty()
+  fileprivate let declineFollowAllFriendsProperty = MutableProperty()
   func declineFollowAllFriends() {
     declineFollowAllFriendsProperty.value = ()
   }
 
-  private let followAllButtonTappedProperty = MutableProperty()
+  fileprivate let followAllButtonTappedProperty = MutableProperty()
   public func followAllButtonTapped() {
     followAllButtonTappedProperty.value = ()
   }

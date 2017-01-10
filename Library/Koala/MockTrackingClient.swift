@@ -1,7 +1,7 @@
 internal final class MockTrackingClient: TrackingClientType {
-  internal var tracks: [(event: String, properties: [String:AnyObject])] = []
+  internal var tracks: [(event: String, properties: [String:Any])] = []
 
-  func track(event event: String, properties: [String: AnyObject]) {
+  func track(event: String, properties: [String:Any]) {
     self.tracks.append((event: event, properties: properties))
   }
 
@@ -9,7 +9,7 @@ internal final class MockTrackingClient: TrackingClientType {
     return self.tracks.map { $0.event }
   }
 
-  internal var properties: [[String:AnyObject]] {
+  internal var properties: [[String:Any]] {
     return self.tracks.map { $0.properties }
   }
 

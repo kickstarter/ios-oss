@@ -1,10 +1,10 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol DiscoveryExpandableRowCellInputs {
-  func configureWith(row row: ExpandableRow, categoryId: Int?)
+  func configureWith(row: ExpandableRow, categoryId: Int?)
   func willDisplay()
 }
 
@@ -29,7 +29,7 @@ public final class DiscoveryExpandableRowCellViewModel: DiscoveryExpandableRowCe
 DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
 
   public init() {
-    let expandableRowAndCategoryId = self.expandableRowAndCategoryIdProperty.signal.ignoreNil()
+    let expandableRowAndCategoryId = self.expandableRowAndCategoryIdProperty.signal.skipNil()
       .takeWhen(self.willDisplayProperty.signal)
 
     let expandableRow = expandableRowAndCategoryId.map(first)
@@ -57,7 +57,7 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .map { Format.wholeNumber($0.params.category?.projectsCount ?? 0) }
 
     self.projectsCountLabelHidden = expandableRow
-      .map { $0.params.category?.projectsCount == .Some(0) }
+      .map { $0.params.category?.projectsCount == .some(0) }
 
     self.projectsCountLabelTextColor = categoryId
       .map(discoverySecondaryColor(forCategoryId:))
@@ -67,12 +67,12 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
 
   }
 
-  private let expandableRowAndCategoryIdProperty = MutableProperty<(ExpandableRow, Int?)?>(nil)
-  public func configureWith(row row: ExpandableRow, categoryId: Int?) {
+  fileprivate let expandableRowAndCategoryIdProperty = MutableProperty<(ExpandableRow, Int?)?>(nil)
+  public func configureWith(row: ExpandableRow, categoryId: Int?) {
     self.expandableRowAndCategoryIdProperty.value = (row, categoryId)
   }
 
-  private let willDisplayProperty = MutableProperty()
+  fileprivate let willDisplayProperty = MutableProperty()
   public func willDisplay() {
     self.willDisplayProperty.value = ()
   }

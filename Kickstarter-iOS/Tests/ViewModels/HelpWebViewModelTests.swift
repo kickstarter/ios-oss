@@ -2,19 +2,19 @@
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 
 internal final class HelpWebViewModelTests: TestCase {
-  private let vm: HelpWebViewModelType = HelpWebViewModel()
+  fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
 
-  private let webViewLoadRequest = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.webViewLoadRequest.map { $0.URL?.relativePath ?? "" }
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.relativePath ?? "" }
       .observe(self.webViewLoadRequest.observer)
   }
 

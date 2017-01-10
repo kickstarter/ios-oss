@@ -14,19 +14,19 @@ internal class WebViewController: UIViewController {
     self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
 
     self.view.addSubview(self.webView)
-    self.webView.topAnchor.constraintEqualToAnchor(self.view.topAnchor).active = true
-    self.webView.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor).active = true
-    self.webView.leadingAnchor.constraintEqualToAnchor(self.view.leadingAnchor).active = true
-    self.webView.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor).active = true
+    self.webView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+    self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+    self.webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+    self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     self.webView.translatesAutoresizingMaskIntoConstraints = false
 
-    self.webView.UIDelegate = self
+    self.webView.uiDelegate = self
     self.webView.navigationDelegate = self
     self.webView.scrollView.delegate = self
   }
 
   deinit {
-    self.webView.UIDelegate = nil
+    self.webView.uiDelegate = nil
     self.webView.navigationDelegate = nil
     self.webView.scrollView.delegate = nil
   }

@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol DashboardReferrerRowStackViewViewModelInputs {
   /// Call to configure cell with referrer data.
-  func configureWith(country country: Project.Country, referrer: ProjectStatsEnvelope.ReferrerStats)
+  func configureWith(country: Project.Country, referrer: ProjectStatsEnvelope.ReferrerStats)
 }
 
 public protocol DashboardReferrerRowStackViewViewModelOutputs {
@@ -32,7 +32,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
   DashboardReferrerRowStackViewViewModelOutputs, DashboardReferrerRowStackViewViewModelType {
 
   public init() {
-    let countryReferrer = self.countryReferrerProperty.signal.ignoreNil()
+    let countryReferrer = self.countryReferrerProperty.signal.skipNil()
 
     self.backersText = countryReferrer.map { _, referrer in Format.wholeNumber(referrer.backersCount) }
 
@@ -56,9 +56,9 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
     }
   }
 
-  private let countryReferrerProperty =
+  fileprivate let countryReferrerProperty =
     MutableProperty<(Project.Country, ProjectStatsEnvelope.ReferrerStats)?>(nil)
-  public func configureWith(country country: Project.Country, referrer: ProjectStatsEnvelope.ReferrerStats) {
+  public func configureWith(country: Project.Country, referrer: ProjectStatsEnvelope.ReferrerStats) {
     self.countryReferrerProperty.value = (country, referrer)
   }
 

@@ -6,9 +6,9 @@ import Prelude
 import Result
 
 internal final class ActivityFriendBackingViewModelTests: TestCase {
-  private let vm: ActivityFriendBackingViewModelType = ActivityFriendBackingViewModel()
+  fileprivate let vm: ActivityFriendBackingViewModelType = ActivityFriendBackingViewModel()
 
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()

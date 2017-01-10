@@ -8,9 +8,9 @@ public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
 public let projectActivityFooterButton =
-  UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_green_700
+  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
     <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
-    <> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_grey_100
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
 
 public let projectActivityFooterStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
@@ -29,7 +29,7 @@ public let projectActivityRegularRegularLayoutMargins: UIEdgeInsets =
 
 // Use `.ksr_body` for font.
 public let projectActivityStateChangeLabelStyle = UILabel.lens.numberOfLines .~ 0
-  <> UILabel.lens.textAlignment .~ .Center
+  <> UILabel.lens.textAlignment .~ .center
 
 // Use `.ksr_title3(size: 14)` for font.
 public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_navy_500

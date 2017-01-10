@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 import ReactiveExtensions
@@ -40,13 +40,13 @@ import ReactiveExtensions
 public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams> (
   requestFirstPageWith requestFirstPage: Signal<RequestParams, NoError>,
   requestNextPageWhen  requestNextPage: Signal<(), NoError>,
-                       clearOnNewRequest: Bool,
-                       skipRepeats: Bool = true,
-                       valuesFromEnvelope: (Envelope -> [Value]),
-                       cursorFromEnvelope: (Envelope -> Cursor),
-                       requestFromParams: (RequestParams -> SignalProducer<Envelope, ErrorEnvelope>),
-                       requestFromCursor: (Cursor -> SignalProducer<Envelope, ErrorEnvelope>),
-                       concater: (([Value], [Value]) -> [Value]) = (+))
+  clearOnNewRequest: Bool,
+  skipRepeats: Bool = true,
+  valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
+  cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
+  requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
+  requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
+  concater: @escaping (([Value], [Value]) -> [Value]) = (+))
   ->
   (paginatedValues: Signal<[Value], NoError>,
    isLoading: Signal<Bool, NoError>,
@@ -56,7 +56,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
     let isLoading = MutableProperty<Bool>(false)
 
     // Emits the last cursor when nextPage emits
-    let cursorOnNextPage = cursor.producer.ignoreNil().sampleOn(requestNextPage)
+    let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
 
     let paginatedValues = requestFirstPage
       .switchMap { requestParams in
@@ -66,15 +66,15 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
           .switchMap { paramsOrCursor in
 
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
-              .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+              .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .on(
-                started: { [weak isLoading] _ in
+                starting: { [weak isLoading] _ in
                   isLoading?.value = true
                 },
                 terminated: { [weak isLoading] _ in
                   isLoading?.value = false
                 },
-                next: { [weak cursor] env in
+                value: { [weak cursor] env in
                   cursor?.value = cursorFromEnvelope(env)
               })
               .map(valuesFromEnvelope)
@@ -84,7 +84,7 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
           .mergeWith(clearOnNewRequest ? .init(value: []) : .empty)
           .scan([], concater)
       }
-      .skip(clearOnNewRequest ? 1 : 0)
+      .skip(first: clearOnNewRequest ? 1 : 0)
 
     let pageCount = Signal.merge(paginatedValues, requestFirstPage.mapConst([]))
       .scan(0) { accum, values in values.isEmpty ? 0 : accum + 1 }

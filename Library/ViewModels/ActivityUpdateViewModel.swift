@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityUpdateViewModelInputs {
   /// Call to configure with the activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 
   /// Call when the project image is tapped.
   func tappedProjectImage()
@@ -25,7 +25,7 @@ public protocol ActivityUpdateViewModelOutputs {
   var projectButtonAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits the project image URL to be displayed.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the project name to be displayed.
   var projectName: Signal<String, NoError> { get }
@@ -46,14 +46,14 @@ public final class ActivityUpdateViewModel: ActivityUpdateViewModelType, Activit
 ActivityUpdateViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
-    let update = activity.map { $0.update }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
+    let update = activity.map { $0.update }.skipNil()
 
     self.body = update
       .map { $0.body?.htmlStripped()?.truncated(maxLength: 300) ?? "" }
 
-    self.projectImageURL = project.map { $0.photo.med }.map(NSURL.init(string:))
+    self.projectImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.projectName = project.map { $0.name }
     self.projectButtonAccessibilityLabel = self.projectName
@@ -65,15 +65,15 @@ ActivityUpdateViewModelOutputs {
     self.notifyDelegateTappedProjectImage = activity
       .takeWhen(self.tappedProjectImageProperty.signal)
 
-    self.cellAccessibilityLabel = combineLatest(project, self.sequenceTitle)
+    self.cellAccessibilityLabel = Signal.combineLatest(project, self.sequenceTitle)
       .map { project, postedText in "\(project.name) \(postedText.string)" }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
-  private let tappedProjectImageProperty = MutableProperty()
+  fileprivate let tappedProjectImageProperty = MutableProperty()
   public func tappedProjectImage() {
     self.tappedProjectImageProperty.value = ()
   }
@@ -82,7 +82,7 @@ ActivityUpdateViewModelOutputs {
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let notifyDelegateTappedProjectImage: Signal<Activity, NoError>
   public let projectButtonAccessibilityLabel: Signal<String, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectName: Signal<String, NoError>
   public let sequenceTitle: Signal<NSAttributedString, NoError>
   public let title: Signal<String, NoError>
@@ -91,7 +91,7 @@ ActivityUpdateViewModelOutputs {
   public var outputs: ActivityUpdateViewModelOutputs { return self }
 }
 
-private let decimalCharacterSet = NSCharacterSet.decimalDigitCharacterSet().invertedSet
+private let decimalCharacterSet = NSCharacterSet.decimalDigits.inverted
 
 private func updatePostedString(forActivity activity: Activity) -> NSAttributedString {
   let updateNum = Format.wholeNumber(activity.update?.sequence ?? 1)
@@ -115,11 +115,14 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
 
   let mutableString = NSMutableAttributedString(attributedString: attributedString)
 
-  let timeNumber = time.componentsSeparatedByCharactersInSet(decimalCharacterSet).first
+  let timeNumber = time.components(separatedBy: decimalCharacterSet).first
 
-  if let timeRange = mutableString.string.rangeOfString(time), let timeNumber = timeNumber {
-    let timeStartIndex = mutableString.string.startIndex.distanceTo(timeRange.startIndex)
-    let timeNumberStartIndex = time.startIndex.distanceTo(timeNumber.startIndex)
+  if let timeRange = mutableString.string.range(of: time), let timeNumber = timeNumber {
+
+    let timeStartIndex = mutableString.string
+      .distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
+    let timeNumberStartIndex = mutableString.string
+      .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
       [NSFontAttributeName: UIFont.ksr_headline(size: 13.0)],

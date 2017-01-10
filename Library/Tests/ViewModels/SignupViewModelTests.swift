@@ -2,19 +2,19 @@ import XCTest
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
-@testable import ReactiveCocoa
+@testable import ReactiveSwift
 @testable import Result
 
 internal final class SignupViewModelTests: TestCase {
-  private let vm: SignupViewModelType = SignupViewModel()
-  private let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  private let isSignupButtonEnabled = TestObserver<Bool, NoError>()
-  private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  private let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  private let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  private let postNotification = TestObserver<String, NoError>()
-  private let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
-  private let showError = TestObserver<String, NoError>()
+  fileprivate let vm: SignupViewModelType = SignupViewModel()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  fileprivate let isSignupButtonEnabled = TestObserver<Bool, NoError>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
+  fileprivate let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
+  fileprivate let showError = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -81,7 +81,7 @@ internal final class SignupViewModelTests: TestCase {
     self.scheduler.advance()
     XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
                    self.trackingClient.events)
-    self.postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotification.assertValues([.ksr_sessionStarted],
                                   "Notification posted after scheduler advances.")
   }
 

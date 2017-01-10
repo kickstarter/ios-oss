@@ -2,26 +2,26 @@ import Prelude
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import ReactiveCocoa
+@testable import ReactiveSwift
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
 
 final class LoginViewModelTests: TestCase {
-  private let vm: LoginViewModelType = LoginViewModel()
-  private let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  private let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  private let isFormValid = TestObserver<Bool, NoError>()
-  private let dismissKeyboard = TestObserver<(), NoError>()
-  private let postNotificationName = TestObserver<String, NoError>()
-  private let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  private let showError = TestObserver<String, NoError>()
-  private let tfaChallenge = TestObserver<String, NoError>()
-  private let emailText = TestObserver<String, NoError>()
-  private let tfaChallengePasswordText = TestObserver<String, NoError>()
-  private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
-  private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let passwordText = TestObserver<String, NoError>()
+  fileprivate let vm: LoginViewModelType = LoginViewModel()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
+  fileprivate let isFormValid = TestObserver<Bool, NoError>()
+  fileprivate let dismissKeyboard = TestObserver<(), NoError>()
+  fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
+  fileprivate let showError = TestObserver<String, NoError>()
+  fileprivate let tfaChallenge = TestObserver<String, NoError>()
+  fileprivate let emailText = TestObserver<String, NoError>()
+  fileprivate let tfaChallengePasswordText = TestObserver<String, NoError>()
+  fileprivate let onePasswordButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
+  fileprivate let passwordText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -79,7 +79,7 @@ final class LoginViewModelTests: TestCase {
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                            "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")
@@ -177,7 +177,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.onePasswordButtonTapped()
 
     self.onePasswordFindLoginForURLString.assertValues(
-      [optionalize(AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString)].compact()
+      [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
     )
 
     self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")
@@ -189,7 +189,7 @@ final class LoginViewModelTests: TestCase {
       "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")

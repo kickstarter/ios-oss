@@ -1,14 +1,14 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
-private struct CheckoutRetryError: ErrorType {}
+private struct CheckoutRetryError: Error {}
 
 public protocol CheckoutRacingViewModelInputs {
   /// Configure with the checkout URL.
-  func configureWith(url url: NSURL)
+  func configureWith(url: URL)
 }
 
 public protocol CheckoutRacingViewModelOutputs {
@@ -27,13 +27,12 @@ public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, Chec
 public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
 
-    let envelope = initialURLProperty.signal.ignoreNil()
-      .map { optionalize($0.absoluteString) }
-      .ignoreNil()
+    let envelope = initialURLProperty.signal.skipNil()
+      .map { $0.absoluteString }
       .promoteErrors(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())
-          .delay(1, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
               .flatMapError { _ in
@@ -49,12 +48,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
                 }
             }
           }
-          .retry(9)
-          .timeoutWithError(
-            CheckoutRetryError(),
-            afterInterval: 10,
-            onScheduler: AppEnvironment.current.scheduler
-          )
+          .retry(upTo: 9)
+          .timeout(after: 10, raising: CheckoutRetryError(), on: AppEnvironment.current.scheduler)
       }
       .materialize()
 
@@ -74,8 +69,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     self.showAlert = Signal.merge(failedCheckoutError, timedOutError)
   }
 
-  private let initialURLProperty = MutableProperty<NSURL?>(nil)
-  public func configureWith(url url: NSURL) {
+  fileprivate let initialURLProperty = MutableProperty<URL?>(nil)
+  public func configureWith(url: URL) {
     self.initialURLProperty.value = url
   }
 

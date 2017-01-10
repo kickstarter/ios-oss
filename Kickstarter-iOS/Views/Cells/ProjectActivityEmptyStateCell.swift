@@ -3,6 +3,6 @@ import UIKit
 
 internal final class ProjectActivityEmptyStateCell: UITableViewCell, ValueCell {
 
-  internal func configureWith(value value: Void) {
+  internal func configureWith(value: Void) {
   }
 }

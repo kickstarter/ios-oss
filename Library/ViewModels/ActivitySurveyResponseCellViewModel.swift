@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
   /// Call to configure with survey response, number of surveys, and the cell's position in the survey stack.
-  func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int)
+  func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int)
 
   /// Call when respond now button is tapped.
   func respondNowButtonTapped()
@@ -13,7 +13,7 @@ public protocol ActivitySurveyResponseCellViewModelInputs {
 
 public protocol ActivitySurveyResponseCellViewModelOutputs {
   /// Emits image url to creator's avatar.
-  var creatorImageURL: Signal<NSURL?, NoError> { get }
+  var creatorImageURL: Signal<URL?, NoError> { get }
 
   /// Emits text for the creator name label.
   var creatorNameText: Signal<String, NoError> { get }
@@ -40,12 +40,12 @@ public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCe
 ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
 
   public init() {
-    let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.ignoreNil()
+    let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.skipNil()
     let project = surveyResponseAndCountAndPosition
       .map { surveyResponse, _, _ in surveyResponse.project }
-      .ignoreNil()
+      .skipNil()
 
-    self.creatorImageURL = project.map { NSURL.init(string: $0.creator.avatar.small) }
+    self.creatorImageURL = project.map { URL.init(string: $0.creator.avatar.small) }
 
     self.creatorNameText = project.map { $0.creator.name }
 
@@ -78,16 +78,16 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
       .map { _, count, _ in Strings.Reward_Surveys(reward_survey_count: count) }
   }
 
-  private let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)
-  public func configureWith(surveyResponse surveyResponse: SurveyResponse, count: Int, position: Int) {
+  fileprivate let surveyResponseCountPositionProperty = MutableProperty<(SurveyResponse, Int, Int)?>(nil)
+  public func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int) {
     self.surveyResponseCountPositionProperty.value = (surveyResponse, count, position)
   }
-  private let respondNowButtonTappedProperty = MutableProperty()
+  fileprivate let respondNowButtonTappedProperty = MutableProperty()
   public func respondNowButtonTapped() {
     self.respondNowButtonTappedProperty.value = ()
   }
 
-  public let creatorImageURL: Signal<NSURL?, NoError>
+  public let creatorImageURL: Signal<URL?, NoError>
   public let creatorNameText: Signal<String, NoError>
   public let notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError>
   public let rewardSurveysCountIsHidden: Signal<Bool, NoError>

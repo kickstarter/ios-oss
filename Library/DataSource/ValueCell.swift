@@ -2,5 +2,5 @@
 public protocol ValueCell: class {
   associatedtype Value
   static var defaultReusableId: String { get }
-  func configureWith(value value: Value)
+  func configureWith(value: Value)
 }

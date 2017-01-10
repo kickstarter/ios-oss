@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -30,7 +30,7 @@ public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelT
     }
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

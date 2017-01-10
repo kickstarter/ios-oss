@@ -1,19 +1,19 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
-  func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?)
+  func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
   /// Call when the view loads.
   func viewDidLoad()
 
-  func viewDidAppear(animated animated: Bool)
+  func viewDidAppear(animated: Bool)
 
   /// Call when the view will appear, and pass the animated parameter.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -40,13 +40,13 @@ ProjectPamphletViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let projectOrParam = combineLatest(
-      self.projectOrParamProperty.signal.ignoreNil(),
+    let projectOrParam = Signal.combineLatest(
+      self.projectOrParamProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let projectOrParamAndIndex = combineLatest(
+    let projectOrParamAndIndex = Signal.combineLatest(
       projectOrParam,
       self.viewDidAppearAnimated.signal.scan(0, { accum, _ in accum + 1 })
       )
@@ -56,19 +56,19 @@ ProjectPamphletViewModelOutputs {
       .switchMap { _, param, _ -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
 
     let project = Signal.merge(
-      projectOrParam.map { $0.left }.ignoreNil(),
+      projectOrParam.map { $0.left }.skipNil(),
       freshProject
       )
 
     let refTag = self.refTagProperty.signal
       .map { $0.map(cleanUp(refTag:)) }
 
-    self.configureChildViewControllersWithProject = combineLatest(project, refTag)
+    self.configureChildViewControllersWithProject = Signal.combineLatest(project, refTag)
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -76,54 +76,54 @@ ProjectPamphletViewModelOutputs {
 
     self.setNavigationBarHiddenAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
-      self.viewWillAppearAnimated.signal.skip(1).map { (true, $0) }
+      self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
-    let cookieRefTag = combineLatest(
+    let cookieRefTag = Signal.combineLatest(
       project.map(cookieRefTagFor(project:)),
       refTag
       )
-      .take(1)
+      .take(first: 1)
       .map { $0 ?? $1 }
 
-    combineLatest(project, refTag, cookieRefTag)
+    Signal.combineLatest(project, refTag, cookieRefTag)
       .takeWhen(self.viewDidAppearAnimated.signal)
-      .take(1)
-      .observeNext { project, refTag, cookieRefTag in
+      .take(first: 1)
+      .observeValues { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
-    combineLatest(cookieRefTag.ignoreNil(), project)
-      .take(1)
+    Signal.combineLatest(cookieRefTag.skipNil(), project)
+      .take(first: 1)
       .map(cookieFrom(refTag:project:))
-      .ignoreNil()
-      .observeNext { AppEnvironment.current.cookieStorage.setCookie($0) }
+      .skipNil()
+      .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  private let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
-  private let refTagProperty = MutableProperty<RefTag?>(nil)
-  public func configureWith(projectOrParam projectOrParam: Either<Project, Param>, refTag: RefTag?) {
+  fileprivate let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
+  fileprivate let refTagProperty = MutableProperty<RefTag?>(nil)
+  public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.projectOrParamProperty.value = projectOrParam
     self.refTagProperty.value = refTag
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewDidAppearAnimated = MutableProperty(false)
-  public func viewDidAppear(animated animated: Bool) {
+  fileprivate let viewDidAppearAnimated = MutableProperty(false)
+  public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimated.value = animated
   }
 
-  private let viewWillAppearAnimated = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimated = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimated.value = animated
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
-  private let prefersStatusBarHiddenProperty = MutableProperty(false)
+  fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
@@ -139,7 +139,7 @@ private let escapedCookieSeparator = "%3F"
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
-private func cookieRefTagFor(project project: Project) -> RefTag? {
+private func cookieRefTagFor(project: Project) -> RefTag? {
 
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
@@ -149,32 +149,32 @@ private func cookieRefTagFor(project project: Project) -> RefTag? {
 }
 
 // Derives the name of the ref cookie from the project.
-private func cookieName(project: Project) -> String {
+private func cookieName(_ project: Project) -> String {
   return "ref_\(project.id)"
 }
 
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
-private func refTagName(fromCookie cookie: NSHTTPCookie) -> String {
+private func refTagName(fromCookie cookie: HTTPCookie) -> String {
 
   return cleanUp(refTagString: cookie.value)
 }
 
 // Tries to remove cruft from a ref tag.
-private func cleanUp(refTag refTag: RefTag) -> RefTag {
+private func cleanUp(refTag: RefTag) -> RefTag {
   return RefTag(code: cleanUp(refTagString: refTag.stringTag))
 }
 
 // Tries to remove cruft from a ref tag string.
-private func cleanUp(refTagString refTagString: String) -> String {
+private func cleanUp(refTagString: String) -> String {
 
-  let secondPass = refTagString.componentsSeparatedByString(escapedCookieSeparator)
-  if let name = secondPass.first where secondPass.count == 2 {
+  let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
+  if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
   }
 
-  let firstPass = refTagString.componentsSeparatedByString(cookieSeparator)
-  if let name = firstPass.first where firstPass.count == 2 {
+  let firstPass = refTagString.components(separatedBy: cookieSeparator)
+  if let name = firstPass.first, firstPass.count == 2 {
     return String(name)
   }
 
@@ -182,17 +182,17 @@ private func cleanUp(refTagString refTagString: String) -> String {
 }
 
 // Constructs a cookie from a ref tag and project.
-private func cookieFrom(refTag refTag: RefTag, project: Project) -> NSHTTPCookie? {
+private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
   let timestamp = Int(NSDate().timeIntervalSince1970)
 
-  var properties: [String:AnyObject] = [:]
-  properties[NSHTTPCookieName]    = cookieName(project)
-  properties[NSHTTPCookieValue]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[NSHTTPCookieDomain]  = NSURL(string: project.urls.web.project)?.host
-  properties[NSHTTPCookiePath]    = NSURL(string: project.urls.web.project)?.path
-  properties[NSHTTPCookieVersion] = 0
-  properties[NSHTTPCookieExpires] = NSDate(timeIntervalSince1970: project.dates.deadline)
+  var properties: [HTTPCookiePropertyKey:Any] = [:]
+  properties[.name]    = cookieName(project)
+  properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
+  properties[.domain]  = URL(string: project.urls.web.project)?.host
+  properties[.path]    = URL(string: project.urls.web.project)?.path
+  properties[.version] = 0
+  properties[.expires] = Date(timeIntervalSince1970: project.dates.deadline)
 
-  return NSHTTPCookie(properties: properties)
+  return HTTPCookie(properties: properties)
 }
