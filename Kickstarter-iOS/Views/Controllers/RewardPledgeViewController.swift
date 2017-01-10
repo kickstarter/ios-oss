@@ -687,10 +687,7 @@ extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelega
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
-      // FIXME: dont use NSError
-      let status = self?.viewModel.inputs.stripeCreatedToken(
-        stripeToken: token?.tokenId, error: error as? NSError
-      )
+      let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error)
       if let status = status {
         completion(status)
       } else {

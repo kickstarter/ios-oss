@@ -221,8 +221,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.fbLoginManager
       .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
         if let error = error {
-          // FIXME: get rid of this NSError
-          self.viewModel.inputs.facebookLoginFail(error: error as NSError?)
+          self.viewModel.inputs.facebookLoginFail(error: error)
         } else if let result = result, !result.isCancelled {
           self.viewModel.inputs.facebookLoginSuccess(result: result)
         }
