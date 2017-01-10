@@ -46,7 +46,11 @@ extension UIViewController {
 
   internal func ksr_viewWillAppear(_ animated: Bool) {
     self.ksr_viewWillAppear(animated)
-    self.bindStyles()
+
+    if !self.hasViewAppeared {
+      self.bindStyles()
+      self.hasViewAppeared = true
+    }
   }
 
   /**
@@ -64,6 +68,23 @@ extension UIViewController {
   public func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
     self.bindStyles()
+  }
+
+  private struct AssociatedKeys {
+    static var hasViewAppeared = "hasViewAppeared"
+  }
+
+  // Helper to figure out if the `viewWillAppear` has been called yet
+  private var hasViewAppeared: Bool {
+    get {
+      return (objc_getAssociatedObject(self, &AssociatedKeys.hasViewAppeared) as? Bool) ?? false
+    }
+    set {
+      objc_setAssociatedObject(self,
+                               &AssociatedKeys.hasViewAppeared,
+                               newValue,
+                               .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
   }
 }
 
