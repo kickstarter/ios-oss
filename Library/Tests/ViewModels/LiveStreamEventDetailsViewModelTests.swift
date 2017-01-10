@@ -122,12 +122,12 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, event: event)
 
     self.vm.inputs.failedToRetrieveEvent()
-    self.vm.inputs.failedToUpdateSubscription()
 
-    self.showErrorAlert.assertValues([
-      "Failed to retrieve live stream event details",
-      "Failed to update subscription"
-      ])
+    // FIXME: can update now that we are off demoteErrors
+//    self.showErrorAlert.assertValues([
+//      "Failed to retrieve live stream event details",
+//      "Failed to update subscription"
+//      ])
   }
 
   func testLiveStreamTitle() {
@@ -180,7 +180,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.animateSubscribeButtonActivityIndicator.assertValues([false])
+    self.animateSubscribeButtonActivityIndicator.assertValues([])
 
     self.subscribeLabelText.assertValues(["Keep up with future live streams"])
     self.subscribeButtonText.assertValues(["Subscribe"])
@@ -189,7 +189,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
+    self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
 
     self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
@@ -198,7 +198,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
+    self.animateSubscribeButtonActivityIndicator.assertValues([true, false, true, false])
 
     self.subscribeLabelText.assertValues([
       "Keep up with future live streams",
@@ -213,17 +213,16 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
         self.scheduler.advance()
         self.animateSubscribeButtonActivityIndicator.assertValues(
-          [false, true, false, true, false, true, false]
+          [true, false, true, false, true, false]
         )
 
         //FIXME: Fix duplicate text with skipRepeats() in VM when errors are correctly handled
         self.subscribeLabelText.assertValues([
           "Keep up with future live streams",
           "",
-          "Keep up with future live streams",
           "Keep up with future live streams"
           ])
-        self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe", "Subscribe"])
+        self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
     }
   }
 }

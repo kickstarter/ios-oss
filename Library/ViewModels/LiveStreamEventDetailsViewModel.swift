@@ -12,8 +12,8 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
+  // FIXME: remove input
   func failedToRetrieveEvent()
-  func failedToUpdateSubscription()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
@@ -68,19 +68,20 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribedProperty = MutableProperty(false)
 
-    // Bind the API response values for subscribed
-    //FIXME: remove demoteErrors()
-    subscribedProperty <~ event
+    let isSubscribedEvent = event
       .takeWhen(self.subscribeButtonTappedProperty.signal)
-      .switchMap { event -> SignalProducer<Bool, NoError> in
+      .switchMap { event -> SignalProducer<Event<Bool, LiveApiError>, NoError> in
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
           eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
           .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
-          .demoteErrors(replaceErrorWith: subscribedProperty.value)
+          .materialize()
     }
+
+    // Bind the API response values for subscribed
+    subscribedProperty <~ isSubscribedEvent.values()
 
     // Bind the initial subscribed value
     subscribedProperty <~ event.map { $0.user.isSubscribed }
@@ -127,9 +128,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     )
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
-      subscribed.mapConst(false),
-      self.failedToUpdateSubscriptionProperty.signal.mapConst(false),
-      self.subscribeButtonTappedProperty.signal.mapConst(true)
+      self.subscribeButtonTappedProperty.signal.mapConst(true),
+      isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
@@ -139,9 +139,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.failedToRetrieveEventProperty.signal.map {
         Strings.Failed_to_retrieve_live_stream_event_details()
       },
-      self.failedToUpdateSubscriptionProperty.signal.map {
-        Strings.Failed_to_update_subscription()
-      })
+      isSubscribedEvent.map { $0.error }.ignoreNil().mapConst(Strings.Failed_to_update_subscription())
+    )
   }
   //swiftlint:enable function_body_length
 
@@ -158,11 +157,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   private let failedToRetrieveEventProperty = MutableProperty()
   public func failedToRetrieveEvent() {
     self.failedToRetrieveEventProperty.value = ()
-  }
-
-  private let failedToUpdateSubscriptionProperty = MutableProperty()
-  public func failedToUpdateSubscription() {
-    self.failedToUpdateSubscriptionProperty.value = ()
   }
 
   private let liveStreamViewControllerStateChangedProperty =
