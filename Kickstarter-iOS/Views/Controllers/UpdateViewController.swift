@@ -103,23 +103,26 @@ internal final class UpdateViewController: WebViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func showShareSheet(_ activityController: UIActivityViewController) {
+  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    // FIXME: problem with completion handler type signature
-//    activityController.completionWithItemsHandler = { [weak self] in
-//      self?.shareViewModel.inputs.shareActivityCompletion(
-//        with: .init(activityType: $0, completed: $1, returnedItems: $2, activityError: $3)
-//      )
-//    }
-//
-//    if UIDevice.current.userInterfaceIdiom == .pad {
-//      activityController.modalPresentationStyle = .popover
-//      let popover = activityController.popoverPresentationController
-//      popover?.permittedArrowDirections = .any
-//      popover?.barButtonItem = self.navigationItem.rightBarButtonItem
-//    }
-//
-//    self.present(activityController, animated: true, completion: nil)
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.permittedArrowDirections = .any
+      popover?.barButtonItem = self.navigationItem.rightBarButtonItem
+    }
+
+    self.present(controller, animated: true, completion: nil)
   }
 
   @IBAction fileprivate func shareButtonTapped() {

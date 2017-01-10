@@ -578,7 +578,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                    launchOptions: [:])
-      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: Data())
+      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "deadbeef".data(using: .utf8)!)
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
