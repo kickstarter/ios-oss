@@ -2,43 +2,43 @@ import KsApi
 import UIKit
 
 internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDataSource {
-  private let viewControllers: [UIViewController]
-  private let sorts: [DiscoveryParams.Sort]
+  fileprivate let viewControllers: [UIViewController]
+  fileprivate let sorts: [DiscoveryParams.Sort]
 
   internal init(sorts: [DiscoveryParams.Sort]) {
     self.sorts = sorts
     self.viewControllers = sorts.map(DiscoveryPageViewController.configuredWith(sort:))
   }
 
-  internal func load(filter filter: DiscoveryParams) {
+  internal func load(filter: DiscoveryParams) {
     self.viewControllers
       .flatMap { $0 as? DiscoveryPageViewController }
       .forEach { $0.change(filter: filter) }
   }
 
-  internal func indexFor(controller controller: UIViewController) -> Int? {
-    return self.viewControllers.indexOf(controller)
+  internal func indexFor(controller: UIViewController) -> Int? {
+    return self.viewControllers.index(of: controller)
   }
 
-  internal func sortFor(controller controller: UIViewController) -> DiscoveryParams.Sort? {
+  internal func sortFor(controller: UIViewController) -> DiscoveryParams.Sort? {
     return self.indexFor(controller: controller).map { self.sorts[$0] }
   }
 
-  internal func controllerFor(index index: Int) -> UIViewController? {
+  internal func controllerFor(index: Int) -> UIViewController? {
     guard index >= 0 && index < self.viewControllers.count else { return nil }
     return self.viewControllers[index]
   }
 
-  internal func controllerFor(sort sort: DiscoveryParams.Sort) -> UIViewController? {
-    guard let index = self.sorts.indexOf(sort) else { return nil }
+  internal func controllerFor(sort: DiscoveryParams.Sort) -> UIViewController? {
+    guard let index = self.sorts.index(of: sort) else { return nil }
     return self.viewControllers[index]
   }
 
   internal func pageViewController(
-    pageViewController: UIPageViewController,
-    viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    _ pageViewController: UIPageViewController,
+    viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.indexOf(viewController) else {
+    guard let pageIdx = self.viewControllers.index(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -51,10 +51,10 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func pageViewController(
-    pageViewController: UIPageViewController,
-    viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    _ pageViewController: UIPageViewController,
+    viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.indexOf(viewController) else {
+    guard let pageIdx = self.viewControllers.index(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 

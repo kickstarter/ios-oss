@@ -9,16 +9,16 @@ internal protocol ActivitySampleFollowCellDelegate: class {
 }
 
 internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
+  fileprivate let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
   internal weak var delegate: ActivitySampleFollowCellDelegate?
 
-  @IBOutlet private weak var activityStackView: UIStackView!
-  @IBOutlet private weak var activityTitleLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var friendFollowLabel: UILabel!
-  @IBOutlet private weak var friendImageAndFollowStackView: UIStackView!
-  @IBOutlet private weak var friendImageView: CircleAvatarImageView!
-  @IBOutlet private weak var seeAllActivityButton: UIButton!
+  @IBOutlet fileprivate weak var activityStackView: UIStackView!
+  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var friendFollowLabel: UILabel!
+  @IBOutlet fileprivate weak var friendImageAndFollowStackView: UIStackView!
+  @IBOutlet fileprivate weak var friendImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate weak var seeAllActivityButton: UIButton!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -26,32 +26,32 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
     self.seeAllActivityButton.addTarget(
       self,
       action: #selector(seeAllActivityButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> activitySampleCellStyle
 
-    self.activityStackView
+    _ = self.activityStackView
       |> activitySampleStackViewStyle
 
-    self.activityTitleLabel
+    _ = self.activityTitleLabel
       |> activitySampleTitleLabelStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.friendFollowLabel
+    _ = self.friendFollowLabel
       |> activitySampleFriendFollowLabelStyle
 
-    self.friendImageAndFollowStackView
+    _ = self.friendImageAndFollowStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.seeAllActivityButton
+    _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle
   }
 
@@ -62,27 +62,27 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.friendImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.friendImageView.af_cancelImageRequest()
         self?.friendImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
-        self?.friendImageView.af_setImageWithURL(url)
+      .observeValues { [weak self] url in
+        self?.friendImageView.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.delegate?.goToActivity()
     }
   }
 
-  internal func configureWith(value value: Activity) {
+  internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
-  @objc private func seeAllActivityButtonTapped() {
+  @objc fileprivate func seeAllActivityButtonTapped() {
     self.viewModel.inputs.seeAllActivityTapped()
   }
 }

@@ -2,18 +2,18 @@ import Library
 import KsApi
 
 internal final class MessageThreadsDataSource: ValueCellDataSource {
-  private enum Section: Int {
+  fileprivate enum Section: Int {
     case emptyState
     case messageThreads
   }
 
-  internal func load(messageThreads messageThreads: [MessageThread]) {
+  internal func load(messageThreads: [MessageThread]) {
     self.set(values: messageThreads,
              cellClass: MessageThreadCell.self,
              inSection: Section.messageThreads.rawValue)
   }
 
-  internal func emptyState(isVisible isVisible: Bool) {
+  internal func emptyState(isVisible: Bool) {
     self.set(cellIdentifiers: isVisible ? ["MessageThreadsEmptyState"] : [],
              inSection: Section.emptyState.rawValue)
   }

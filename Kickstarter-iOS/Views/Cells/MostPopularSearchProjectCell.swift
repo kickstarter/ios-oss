@@ -5,56 +5,57 @@ import Prelude_UIKit
 import UIKit
 
 internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
-  private let viewModel: MostPopularSearchProjectCellViewModelType = MostPopularSearchProjectCellViewModel()
+  fileprivate let viewModel: MostPopularSearchProjectCellViewModelType
+    = MostPopularSearchProjectCellViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var fundingLabel: UILabel!
-  @IBOutlet private weak var fundingProgressBarView: UIView!
-  @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var fundingStackView: UIStackView!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectInfoOverlayView: UIView!
-  @IBOutlet private weak var projectInfoStackView: UIStackView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var separateView: UIView!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var fundingLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var fundingStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectInfoOverlayView: UIView!
+  @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var separateView: UIView!
 
-  internal func configureWith(value value: Project) {
+  internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
-      |> MostPopularSearchProjectCell.lens.backgroundColor .~ .clearColor()
+      |> MostPopularSearchProjectCell.lens.backgroundColor .~ .clear
       |> MostPopularSearchProjectCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.fundingLabel
+    _ = self.fundingLabel
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    self.fundingProgressBarView
+    _ = self.fundingProgressBarView
       |> UIView.lens.backgroundColor .~ .ksr_green_400
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_500
 
-    self.fundingStackView
+    _ = self.fundingStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.projectImageView
-      |> UIImageView.lens.contentMode .~ .ScaleAspectFill
+    _ = self.projectImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFill
       |> UIImageView.lens.clipsToBounds .~ true
 
-    self.projectInfoOverlayView
+    _ = self.projectInfoOverlayView
       |> UIView.lens.backgroundColor .~ .init(white: 1.0, alpha: 0.95)
       |> UIView.lens.layoutMargins %~~ { _, label in
         label.traitCollection.isRegularRegular
@@ -62,10 +63,10 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
           : .init(all: Styles.grid(2))
     }
 
-    self.projectInfoStackView
+    _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_title2()
@@ -73,9 +74,9 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.lineBreakMode .~ .ByTruncatingTail
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
-    self.separateView
+    _ = self.separateView
       |> separatorStyle
   }
 
@@ -86,21 +87,21 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.fundingProgress
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         let anchorX = $0 == 0 ? 0 : 0.5 / $0
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat($0), 1.0)
+        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat($0), y: 1.0)
     }
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.projectImageView.image = nil
         self?.projectImageView.af_cancelImageRequest()
       })
       .skipNil()
-      .observeNext { [weak self] in
-        self?.projectImageView.af_setImageWithURL($0)
+      .observeValues { [weak self] in
+        self?.projectImageView.af_setImage(withURL: $0)
     }
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText

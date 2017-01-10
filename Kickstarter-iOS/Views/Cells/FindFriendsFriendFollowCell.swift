@@ -1,22 +1,22 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
-  @IBOutlet private weak var friendNameLabel: UILabel!
-  @IBOutlet private weak var friendLocationLabel: UILabel!
-  @IBOutlet private weak var projectsBackedLabel: UILabel!
-  @IBOutlet private weak var projectsCreatedLabel: UILabel!
-  @IBOutlet private weak var followButton: UIButton!
-  @IBOutlet private weak var unfollowButton: UIButton!
+  @IBOutlet fileprivate weak var avatarImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate weak var friendNameLabel: UILabel!
+  @IBOutlet fileprivate weak var friendLocationLabel: UILabel!
+  @IBOutlet fileprivate weak var projectsBackedLabel: UILabel!
+  @IBOutlet fileprivate weak var projectsCreatedLabel: UILabel!
+  @IBOutlet fileprivate weak var followButton: UIButton!
+  @IBOutlet fileprivate weak var unfollowButton: UIButton!
 
-  private let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
+  fileprivate let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
-  func configureWith(value value: (friend: User, source: FriendsSource)) {
+  func configureWith(value: (friend: User, source: FriendsSource)) {
     self.viewModel.inputs.configureWith(friend: value.friend, source: value.source)
   }
 
@@ -43,12 +43,12 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.imageURL
       .observeForUI()
-      .on(next: { [weak avatarImageView] _ in
+      .on(event: { [weak avatarImageView] _ in
         avatarImageView?.af_cancelImageRequest()
         avatarImageView?.image = nil
         })
       .skipNil()
-      .observeNext { [weak avatarImageView] url in
+      .observeValues { [weak avatarImageView] url in
         avatarImageView?.ksr_setImageWithURL(url)
     }
   }
@@ -56,38 +56,38 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    self.friendNameLabel
+    _ = self.friendNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14.0)
 
-    self.self.friendLocationLabel
+    _ = self.self.friendLocationLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ .ksr_caption1()
 
-    self.projectsBackedLabel
+    _ = self.projectsBackedLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    self.projectsCreatedLabel
+    _ = self.projectsCreatedLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    self.followButton
+    _ = self.followButton
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .TouchUpInside)]
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
+      |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
-    self.unfollowButton
+    _ = self.unfollowButton
       |> lightNavyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_600
-      |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .TouchUpInside)]
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
+      |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .touchUpInside)]
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.social_following_friend_buttons_following()
     }
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

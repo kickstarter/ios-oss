@@ -16,7 +16,7 @@ public protocol FindFriendsFacebookConnectCellViewModelInputs {
   func facebookConnectButtonTapped()
 
   /// Call when Facebook login completed with error
-  func facebookLoginFail(error: NSError?)
+  func facebookLoginFail(error: Error?)
 
   /// Call when Facebook login completed successfully with a result
   func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
@@ -88,7 +88,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.updateUserInEnvironment = facebookConnect.values()
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(Notification(name: .init(rawValue: CurrentUserNotifications.userUpdated), object: nil))
+      .mapConst(Notification(name: .ksr_userUpdated))
 
     self.notifyDelegateUserFacebookConnected = self.userUpdatedProperty.signal
 
@@ -113,8 +113,10 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .filter { $0.ksrCode == .FacebookConnectEmailTaken }
       .map { AlertError.facebookConnectEmailTaken(envelope: $0) }
 
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.skipNil()
-      .map { AlertError.facebookLoginAttemptFail(error: $0) }
+    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
+      .map { $0 as? NSError }
+      .skipNil()
+      .map(AlertError.facebookLoginAttemptFail)
 
     self.showErrorAlert = Signal.merge([
       genericFacebookErrorAlert,
@@ -160,8 +162,8 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     facebookConnectButtonTappedProperty.value = ()
   }
 
-  fileprivate let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
-  public func facebookLoginFail(error: NSError?) {
+  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
+  public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
 

@@ -9,18 +9,18 @@ internal protocol ActivitySampleProjectCellDelegate: class {
 }
 
 internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
-  private let viewModel: ActivitySampleProjectCellViewModelType = ActivitySampleProjectCellViewModel()
+  fileprivate let viewModel: ActivitySampleProjectCellViewModelType = ActivitySampleProjectCellViewModel()
   internal weak var delegate: ActivitySampleProjectCellDelegate?
 
-  @IBOutlet private weak var activityStackView: UIStackView!
-  @IBOutlet private weak var activityTitleLabel: UILabel!
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var projectImageAndInfoStackView: UIStackView!
-  @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var projectSubtitleAndTitleStackView: UIStackView!
-  @IBOutlet private weak var projectSubtitleLabel: UILabel!
-  @IBOutlet private weak var projectTitleLabel: UILabel!
-  @IBOutlet private weak var seeAllActivityButton: UIButton!
+  @IBOutlet fileprivate weak var activityStackView: UIStackView!
+  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var projectImageAndInfoStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectSubtitleAndTitleStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var projectTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var seeAllActivityButton: UIButton!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -28,38 +28,38 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
     self.seeAllActivityButton.addTarget(
       self,
       action: #selector(seeAllActivityButtonTapped),
-      forControlEvents: .TouchUpInside
+      for: .touchUpInside
     )
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> activitySampleCellStyle
 
-    self.activityTitleLabel
+    _ = self.activityTitleLabel
       |> activitySampleTitleLabelStyle
 
-    self.activityStackView
+    _ = self.activityStackView
       |> activitySampleStackViewStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.projectImageAndInfoStackView
+    _ = self.projectImageAndInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.projectSubtitleAndTitleStackView
+    _ = self.projectSubtitleAndTitleStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
-    self.projectSubtitleLabel
+    _ = self.projectSubtitleLabel
       |> activitySampleProjectSubtitleLabelStyle
 
-    self.projectTitleLabel
+    _ = self.projectTitleLabel
       |> activitySampleProjectTitleLabelStyle
 
-    self.seeAllActivityButton
+    _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle
   }
 
@@ -72,27 +72,27 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.delegate?.goToActivity()
     }
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
         })
       .skipNil()
-      .observeNext { [weak self] url in
-        self?.projectImageView.af_setImageWithURL(url)
+      .observeValues { [weak self] url in
+        self?.projectImageView.ksr_setImageWithURL(url)
     }
   }
 
-  internal func configureWith(value value: Activity) {
+  internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
   }
 
-  @objc private func seeAllActivityButtonTapped() {
+  @objc fileprivate func seeAllActivityButtonTapped() {
     self.viewModel.inputs.seeAllActivityTapped()
   }
 }

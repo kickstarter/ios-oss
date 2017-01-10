@@ -102,3 +102,4 @@ let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .por
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 2200
 XCPlaygroundPage.currentPage.liveView = parent
 parent.view.frame = frame
+

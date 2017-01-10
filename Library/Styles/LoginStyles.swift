@@ -6,20 +6,20 @@ public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
 public let disclaimerButtonStyle =
-    UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_500
-      <> UIButton.lens.titleLabel.font %~~ { _, label in
-        label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
-      }
-      <> UIButton.lens.titleLabel.textAlignment .~ .center
-      <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
-      <> UIButton.lens.title(forState: .normal) %~ { _ in
-        Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
-      }
-      <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
-      <> UIButton.lens.accessibilityLabel %~ { _ in
-        Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
-      }
-      <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_500
+    <> UIButton.lens.titleLabel.font %~~ { _, label in
+      label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
+    }
+    <> UIButton.lens.titleLabel.textAlignment .~ .center
+    <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+    <> UIButton.lens.title(forState: .normal) %~ { _ in
+      Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
+    }
+    <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
+    <> UIButton.lens.accessibilityLabel %~ { _ in
+      Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
+    }
+    <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }

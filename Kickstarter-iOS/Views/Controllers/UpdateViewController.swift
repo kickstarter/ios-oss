@@ -5,15 +5,15 @@ import SafariServices
 import UIKit
 
 internal final class UpdateViewController: WebViewController {
-  private let viewModel: UpdateViewModelType = UpdateViewModel()
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let viewModel: UpdateViewModelType = UpdateViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  private let closeButton = UIBarButtonItem()
+  fileprivate let closeButton = UIBarButtonItem()
 
-  @IBOutlet private weak var shareButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
-  internal static func configuredWith(project project: Project, update: Update) -> UpdateViewController {
-    let vc = Storyboard.Update.instantiate(UpdateViewController)
+  internal static func configuredWith(project: Project, update: Update) -> UpdateViewController {
+    let vc = Storyboard.Update.instantiate(UpdateViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update)
     vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
     return vc
@@ -24,27 +24,26 @@ internal final class UpdateViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
 
     guard
       self.presentingViewController != nil,
-      let navigationController = self.navigationController
-      where navigationController.viewControllers == [self]
+      let navigationController = self.navigationController, navigationController.viewControllers == [self]
       else { return }
 
     self.navigationItem.leftBarButtonItem = self.closeButton
   }
 
   internal override func bindStyles() {
-    self |> baseControllerStyle()
+    _ = self |> baseControllerStyle()
 
-    self.closeButton |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismiss))
+    _ = self.closeButton |> closeBarButtonItemStyle
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(dismissSelf))
 
-    self.shareButton
+    _ = self.shareButton
       |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.Share_update() }
   }
 
@@ -53,26 +52,26 @@ internal final class UpdateViewController: WebViewController {
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
 
     self.viewModel.outputs.goToComments
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToComments(forUpdate: $0) }
+      .observeValues { [weak self] in self?.goToComments(forUpdate: $0) }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goTo(project: $0, refTag: $1) }
+      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet($0) }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeNext { [weak self] url in self?.goToSafariBrowser(url: url) }
+      .observeValues { [weak self] url in self?.goToSafariBrowser(url: url) }
   }
 
-  internal func webView(webView: WKWebView,
+  internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                         decisionHandler: (WKNavigationActionPolicy) -> Void) {
 
@@ -81,53 +80,56 @@ internal final class UpdateViewController: WebViewController {
     )
   }
 
-  private func goToComments(forUpdate update: Update) {
+  fileprivate func goToComments(forUpdate update: Update) {
     let vc = CommentsViewController.configuredWith(update: update)
 
-    if self.traitCollection.userInterfaceIdiom == .Pad {
+    if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
-      self.presentViewController(nav, animated: true, completion: nil)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
 
-  private func goTo(project project: Project, refTag: RefTag) {
+  fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-    self.presentViewController(vc, animated: true, completion: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
-  private func goToSafariBrowser(url url: NSURL) {
-    let controller = SFSafariViewController(URL: url)
-    controller.modalPresentationStyle = .OverFullScreen
-    self.presentViewController(controller, animated: true, completion: nil)
+  fileprivate func goToSafariBrowser(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func showShareSheet(activityController: UIActivityViewController) {
+  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-    activityController.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
     }
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      activityController.modalPresentationStyle = .Popover
-      let popover = activityController.popoverPresentationController
-      popover?.permittedArrowDirections = .Any
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.permittedArrowDirections = .any
       popover?.barButtonItem = self.navigationItem.rightBarButtonItem
     }
 
-    self.presentViewController(activityController, animated: true, completion: nil)
+    self.present(controller, animated: true, completion: nil)
   }
 
-  @IBAction private func shareButtonTapped() {
+  @IBAction fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc private func dismiss() {
-    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+  @objc fileprivate func dismissSelf() {
+    self.presentingViewController?.dismiss(animated: true, completion: nil)
   }
 }

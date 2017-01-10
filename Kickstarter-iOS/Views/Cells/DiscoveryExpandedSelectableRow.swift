@@ -8,38 +8,38 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   @IBOutlet private weak var circleImageView: UIImageView!
   @IBOutlet private weak var checkImageView: UIImageView!
 
-  private var isSelected: Bool = false
+  private var rowIsSelected: Bool = false
 
-  internal func configureWith(value value: (row: SelectableRow, categoryId: Int?)) {
-    if let category = value.row.params.category where category.isRoot {
+  internal func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
+    if let category = value.row.params.category, category.isRoot {
       self.filterTitleLabel.text = RootCategory(categoryId: category.id).allProjectsString()
     } else {
       self.filterTitleLabel.text = value.row.params.category?.name
     }
 
-    self.highlightView
+    _ = self.highlightView
       |> UIView.lens.backgroundColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UIView.lens.alpha .~ 0.08
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.circleImageView
+    _ = self.circleImageView
       |> UIView.lens.tintColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.checkImageView
+    _ = self.checkImageView
       |> UIView.lens.hidden .~ !value.row.isSelected
 
-    self.filterTitleLabel
+    _ = self.filterTitleLabel
       |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.isSelected = value.row.isSelected
+    self.rowIsSelected = value.row.isSelected
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -56,30 +56,30 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
   }
 
   internal func willDisplay() {
-    self.filterTitleLabel
+    _ = self.filterTitleLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
-          ? self.isSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
-          : self.isSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
+          ? self.rowIsSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
+          : self.rowIsSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
   }
 
-  internal func animateIn(delayOffset delayOffset: Int) {
-    self.contentView.transform = CGAffineTransformMakeTranslation(0.0, 50.0)
+  internal func animateIn(delayOffset: Int) {
+    self.contentView.transform = CGAffineTransform(translationX: 0.0, y: 50.0)
     self.alpha = 0
     let delay = 0.03 * Double(delayOffset)
 
-    UIView.animateWithDuration(0.3, delay: delay, options: .CurveEaseOut, animations: {
+    UIView.animate(withDuration: 0.3, delay: delay, options: .curveEaseOut, animations: {
         self.alpha = 1
       },
       completion: nil)
 
-    UIView.animateWithDuration(0.3,
+    UIView.animate(withDuration: 0.3,
                                delay: delay,
                                usingSpringWithDamping: 0.7,
                                initialSpringVelocity: 1.0,
-                               options: .CurveEaseOut,
+                               options: .curveEaseOut,
                                animations: {
-                                self.contentView.transform = CGAffineTransformIdentity
+                                self.contentView.transform = CGAffineTransform.identity
                                 },
                                completion: nil)
   }

@@ -13,12 +13,12 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.show(onboarding: true)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     self.dataSource.show(onboarding: false)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -27,12 +27,12 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.load(activities: [.template])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     self.dataSource.load(activities: [])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -41,12 +41,12 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.load(projects: [.template, .template, .template])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(3, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     self.dataSource.load(projects: [])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 }

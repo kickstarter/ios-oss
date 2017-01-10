@@ -5,22 +5,22 @@ import Prelude_UIKit
 import UIKit
 
 internal final class SignupViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  private let viewModel: SignupViewModelType = SignupViewModel()
-  private let helpViewModel = HelpViewModel()
+  fileprivate let viewModel: SignupViewModelType = SignupViewModel()
+  fileprivate let helpViewModel = HelpViewModel()
 
-  @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var disclaimerButton: UIButton!
-  @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var formBackgroundView: UIView!
-  @IBOutlet private weak var nameTextField: UITextField!
-  @IBOutlet private weak var newsletterLabel: UILabel!
-  @IBOutlet private weak var newsletterSwitch: UISwitch!
-  @IBOutlet private weak var passwordTextField: UITextField!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var signupButton: UIButton!
+  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
+  @IBOutlet fileprivate weak var emailTextField: UITextField!
+  @IBOutlet fileprivate weak var formBackgroundView: UIView!
+  @IBOutlet fileprivate weak var nameTextField: UITextField!
+  @IBOutlet fileprivate weak var newsletterLabel: UILabel!
+  @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
+  @IBOutlet fileprivate weak var passwordTextField: UITextField!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var signupButton: UIButton!
 
   internal static func instantiate() -> SignupViewController {
-    let vc = Storyboard.Login.instantiate(SignupViewController)
+    let vc = Storyboard.Login.instantiate(SignupViewController.self)
     vc.helpViewModel.inputs.configureWith(helpContext: .signup)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc
@@ -30,7 +30,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     super.viewDidLoad()
 
     self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed),
-                                    forControlEvents: .TouchUpInside)
+                                    for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -38,31 +38,31 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> signupControllerStyle
 
-    self.disclaimerButton
+    _ = self.disclaimerButton
       |> disclaimerButtonStyle
 
-    self.emailTextField
+    _ = self.emailTextField
       |> emailFieldStyle
 
-    self.formBackgroundView
+    _ = self.formBackgroundView
       |> cardStyle()
 
-    self.nameTextField
+    _ = self.nameTextField
       |> UITextField.lens.placeholder %~ { _ in Strings.signup_input_fields_full_name() }
 
-    self.newsletterLabel
+    _ = self.newsletterLabel
       |> newsletterLabelStyle
 
-    self.passwordTextField
+    _ = self.passwordTextField
       |> passwordFieldStyle
 
-    self.rootStackView
+    _ = self.rootStackView
       |> loginRootStackViewStyle
 
-    self.signupButton
+    _ = self.signupButton
       |> signupButtonStyle
   }
 
@@ -75,19 +75,19 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
 
     self.viewModel.outputs.logIntoEnvironment
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         AppEnvironment.login($0)
         self?.viewModel.inputs.environmentLoggedIn()
       }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
-      .observeNext { [weak self] message in
-        self?.presentViewController(
+      .observeValues { [weak self] message in
+        self?.present(
           UIAlertController.alert(Strings.signup_error_title(), message: message),
           animated: true, completion: nil
         )
@@ -95,90 +95,90 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     self.helpViewModel.outputs.showHelpSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
     }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
-        _self.presentViewController(controller, animated: true, completion: nil)
+        _self.present(controller, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
-      .observeNext { [weak self] alert in
-        self?.presentViewController(alert, animated: true, completion: nil)
+      .observeValues { [weak self] alert in
+        self?.present(alert, animated: true, completion: nil)
     }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
-      .observeNext { [weak self] helpType in
+      .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
     }
 
     Keyboard.change.observeForUI()
-      .observeNext { [weak self] in self?.animateTextViewConstraint($0) }
+      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-  @IBAction internal func emailChanged(textField: UITextField) {
+  @IBAction internal func emailChanged(_ textField: UITextField) {
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
 
-  @IBAction internal func nameChanged(textField: UITextField) {
+  @IBAction internal func nameChanged(_ textField: UITextField) {
     self.viewModel.inputs.nameChanged(textField.text ?? "")
   }
 
-  @IBAction internal func passwordChanged(textField: UITextField) {
+  @IBAction internal func passwordChanged(_ textField: UITextField) {
     self.viewModel.inputs.passwordChanged(textField.text ?? "")
   }
 
-  @IBAction internal func weeklyNewsletterChanged(newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.weeklyNewsletterChanged(newsletterSwitch.on)
+  @IBAction internal func weeklyNewsletterChanged(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.weeklyNewsletterChanged(newsletterSwitch.isOn)
   }
 
   @IBAction internal func signupButtonPressed() {
     self.viewModel.inputs.signupButtonPressed()
   }
 
-  @objc private func disclaimerButtonPressed() {
+  @objc fileprivate func disclaimerButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @objc internal func mailComposeController(controller: MFMailComposeViewController,
-                                            didFinishWithResult result: MFMailComposeResult,
-                                                                error: NSError?) {
+  @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
+                                            didFinishWith result: MFMailComposeResult,
+                                                                error: Error?) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.dismiss(animated: true, completion: nil)
   }
 
-  private func animateTextViewConstraint(change: Keyboard.Change) {
-    UIView.animateWithDuration(change.duration, delay: 0.0, options: change.options, animations: {
+  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
       }, completion: nil)
   }
 
-  private func goToHelpType(helpType: HelpType) {
+  fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func showHelpSheet(helpTypes helpTypes: [HelpType]) {
-    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+  fileprivate func showHelpSheet(helpTypes: [HelpType]) {
+    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     helpTypes.forEach { helpType in
       helpSheet.addAction(
-        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
           helpVM?.inputs.helpTypeButtonTapped(helpType)
         }
       )
     }
 
     helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
-      style: .Cancel,
+      style: .cancel,
       handler: { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
       }))
@@ -186,12 +186,12 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     //iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
-    self.presentViewController(helpSheet, animated: true, completion: nil)
+    self.present(helpSheet, animated: true, completion: nil)
   }
 }
 
 extension SignupViewController: UITextFieldDelegate {
-  func textFieldShouldReturn(textField: UITextField) -> Bool {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     switch textField {
     case emailTextField:
       self.viewModel.inputs.emailTextFieldReturn()

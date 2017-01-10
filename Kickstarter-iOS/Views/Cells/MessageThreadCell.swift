@@ -5,26 +5,26 @@ import ReactiveExtensions
 import UIKit
 
 internal final class MessageThreadCell: UITableViewCell, ValueCell {
-  private let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
+  fileprivate let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var dateLabel: UILabel!
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var replyIndicator: UIView?
-  @IBOutlet private weak var unreadIndicatorView: UIView?
+  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+  @IBOutlet fileprivate weak var bodyLabel: UILabel!
+  @IBOutlet fileprivate weak var dateLabel: UILabel!
+  @IBOutlet fileprivate weak var nameLabel: UILabel!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var replyIndicator: UIView?
+  @IBOutlet fileprivate weak var unreadIndicatorView: UIView?
 
-  func configureWith(value value: MessageThread) {
+  func configureWith(value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
-      |> MessageThreadCell.lens.backgroundColor .~ .whiteColor()
+      |> MessageThreadCell.lens.backgroundColor .~ .white
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
@@ -36,18 +36,18 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.participantAvatarURL
       .observeForUI()
-      .on(next: { [weak self] _ in
+      .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
       })
       .skipNil()
-      .observeNext { [weak self] url in
-        self?.avatarImageView.af_setImageWithURL(url)
+      .observeValues { [weak self] url in
+        self?.avatarImageView.af_setImage(withURL: url)
     }
 
     self.viewModel.outputs.participantName
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.nameLabel.setHTML($0)
     }
 

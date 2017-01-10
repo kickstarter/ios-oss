@@ -16,7 +16,7 @@ private let you = .template
 internal final class ActivitiesViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(currentUser: you, mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(currentUser: you, mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 

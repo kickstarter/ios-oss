@@ -1,23 +1,23 @@
 import Library
 import Prelude
 import Prelude_UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class LoginViewController: UIViewController {
-  @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var forgotPasswordButton: UIButton!
-  @IBOutlet private weak var formBackgroundView: UIView!
-  @IBOutlet private weak var formDividerView: UIView!
-  @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var onePasswordButton: UIButton!
-  @IBOutlet private weak var passwordTextField: UITextField!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var emailTextField: UITextField!
+  @IBOutlet fileprivate weak var forgotPasswordButton: UIButton!
+  @IBOutlet fileprivate weak var formBackgroundView: UIView!
+  @IBOutlet fileprivate weak var formDividerView: UIView!
+  @IBOutlet fileprivate weak var loginButton: UIButton!
+  @IBOutlet fileprivate weak var onePasswordButton: UIButton!
+  @IBOutlet fileprivate weak var passwordTextField: UITextField!
+  @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
   internal static func instantiate() -> LoginViewController {
-    return Storyboard.Login.instantiate(LoginViewController)
+    return Storyboard.Login.instantiate(LoginViewController.self)
   }
 
   override func viewDidLoad() {
@@ -28,53 +28,53 @@ internal final class LoginViewController: UIViewController {
 
     self.onePasswordButton.addTarget(self,
                                      action: #selector(onePasswordButtonTapped),
-                                     forControlEvents: .TouchUpInside)
+                                     for: .touchUpInside)
 
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldDoneEditing),
-                                  forControlEvents: .EditingDidEndOnExit)
+                                  for: .editingDidEndOnExit)
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldChanged(_:)),
-                                  forControlEvents: .EditingChanged)
+                                  for: .editingChanged)
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldDoneEditing),
-                                     forControlEvents: .EditingDidEndOnExit)
+                                     for: .editingDidEndOnExit)
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
-                                     forControlEvents: .EditingChanged)
+                                     for: .editingChanged)
 
     self.viewModel.inputs.onePassword(
-      isAvailable: OnePasswordExtension.sharedExtension().isAppExtensionAvailable()
+      isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindStyles() {
-    self |> loginControllerStyle
+    _ = self |> loginControllerStyle
 
-    self.loginButton |> loginButtonStyle
+    _ = self.loginButton |> loginButtonStyle
 
-    self.forgotPasswordButton |> forgotPasswordButtonStyle
+    _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
 
-    self.emailTextField |> emailFieldStyle
-      <> UITextField.lens.returnKeyType .~ .Next
+    _ = self.emailTextField |> emailFieldStyle
+      |> UITextField.lens.returnKeyType .~ .next
 
-    self.passwordTextField |> passwordFieldStyle
-      <> UITextField.lens.returnKeyType .~ .Go
+    _ = self.passwordTextField |> passwordFieldStyle
+      |> UITextField.lens.returnKeyType .~ .go
 
-    self.formDividerView |> separatorStyle
+    _ = self.formDividerView |> separatorStyle
 
-    self.formBackgroundView |> cardStyle()
+    _ = self.formBackgroundView |> cardStyle()
 
-    self.onePasswordButton |> onePasswordButtonStyle
+    _ = self.onePasswordButton |> onePasswordButtonStyle
 
-    self.rootStackView |> loginRootStackViewStyle
+    _ = self.rootStackView |> loginRootStackViewStyle
   }
 
   override func bindViewModel() {
@@ -90,47 +90,47 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
-      .observeNext { [weak self] _ in
+      .observeValues { [weak self] _ in
         self?.dismissKeyboard()
     }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeNext(NSNotificationCenter.defaultCenter().postNotification)
+      .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.logIntoEnvironment
-      .observeNext { [weak self] env in
+      .observeValues { [weak self] env in
         AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
     }
 
     self.viewModel.outputs.showResetPassword
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.startResetPasswordViewController()
       }
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
-      .observeNext { [weak self] message in
-        self?.presentViewController(UIAlertController.genericError(message), animated: true, completion: nil)
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
     self.viewModel.outputs.tfaChallenge
       .observeForControllerAction()
-      .observeNext { [weak self] (email, password) in
+      .observeValues { [weak self] (email, password) in
         self?.startTwoFactorViewController(email, password: password)
     }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
+      .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
   }
 
-  private func onePasswordFindLogin(forURLString string: String) {
+  fileprivate func onePasswordFindLogin(forURLString string: String) {
 
-    OnePasswordExtension.sharedExtension()
-      .findLoginForURLString(string, forViewController: self, sender: self.onePasswordButton) { result, _ in
+    OnePasswordExtension.shared()
+      .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
         guard let result = result else { return }
 
         self.viewModel.inputs.onePasswordFoundLogin(
@@ -140,22 +140,22 @@ internal final class LoginViewController: UIViewController {
     }
   }
 
-  private func startTwoFactorViewController(email: String, password: String) {
+  fileprivate func startTwoFactorViewController(_ email: String, password: String) {
     let vc = TwoFactorViewController.configuredWith(email: email, password: password)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func startResetPasswordViewController() {
+  fileprivate func startResetPasswordViewController() {
     let vc = ResetPasswordViewController.configuredWith(email: emailTextField.text)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   @IBAction
-  internal func loginButtonPressed(sender: UIButton) {
+  internal func loginButtonPressed(_ sender: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @objc internal func emailTextFieldChanged(textField: UITextField) {
+  @objc internal func emailTextFieldChanged(_ textField: UITextField) {
     self.viewModel.inputs.emailChanged(textField.text)
   }
 
@@ -163,7 +163,7 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.emailTextFieldDoneEditing()
   }
 
-  @objc internal func passwordTextFieldChanged(textField: UITextField) {
+  @objc internal func passwordTextFieldChanged(_ textField: UITextField) {
     self.viewModel.inputs.passwordChanged(textField.text)
   }
 
@@ -172,11 +172,11 @@ internal final class LoginViewController: UIViewController {
   }
 
   @IBAction
-  internal func resetPasswordButtonPressed(sender: UIButton) {
+  internal func resetPasswordButtonPressed(_ sender: UIButton) {
     self.viewModel.inputs.resetPasswordButtonPressed()
   }
 
-  @objc @IBAction private func onePasswordButtonTapped() {
+  @objc @IBAction fileprivate func onePasswordButtonTapped() {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 

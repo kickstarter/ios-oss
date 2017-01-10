@@ -6,11 +6,11 @@ import UIKit
 
 internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, ValueCell {
 
-  private let viewModel: ProjectActivityNegativeStateChangeCellViewModelType =
+  fileprivate let viewModel: ProjectActivityNegativeStateChangeCellViewModelType =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
     self.viewModel.inputs.configureWith(activity: activityAndProject.0,
@@ -21,7 +21,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
     super.bindViewModel()
 
     self.viewModel.outputs.title.observeForUI()
-      .observeNext { [weak titleLabel] title in
+      .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
         titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_body(),
@@ -29,7 +29,8 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
           italic: nil
         )
 
-        titleLabel |> projectActivityStateChangeLabelStyle
+        _ = titleLabel
+          |> projectActivityStateChangeLabelStyle
           |> UILabel.lens.textColor .~ .ksr_text_navy_500
     }
   }
@@ -37,7 +38,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectActivityNegativeStateChangeCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
@@ -46,9 +47,9 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
 
-    self.cardView
+    _ = self.cardView
       |> cardStyle()
       |> dropShadowStyle()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_500.CGColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_500.cgColor
   }
 }

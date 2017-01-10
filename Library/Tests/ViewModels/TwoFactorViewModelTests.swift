@@ -11,7 +11,7 @@ final class TwoFactorViewModelTests: TestCase {
   var isFormValid = TestObserver<Bool, NoError>()
   var isLoading = TestObserver<Bool, NoError>()
   var logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  var postNotificationName = TestObserver<String, NoError>()
+  var postNotificationName = TestObserver<Notification.Name, NoError>()
   var resendSuccess = TestObserver<(), NoError>()
   var showError = TestObserver<String, NoError>()
 
@@ -22,7 +22,7 @@ final class TwoFactorViewModelTests: TestCase {
     vm.outputs.isFormValid.observe(isFormValid.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name.rawValue }.observe(postNotificationName.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
     vm.outputs.resendSuccess.observe(resendSuccess.observer)
     vm.outputs.showError.observe(showError.observer)
   }
@@ -97,7 +97,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
   }
 
@@ -116,7 +116,7 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
   }
 

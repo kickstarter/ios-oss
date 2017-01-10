@@ -4,9 +4,9 @@ import Prelude
 import UIKit
 
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
-  func projectPamphletMainCell(cell: ProjectPamphletMainCell, addChildController child: UIViewController)
-  func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
-  func projectPamphletMainCell(cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
+  func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
+  func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
+  func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
 
 internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
@@ -15,52 +15,52 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       self.viewModel.inputs.delegateDidSet()
     }
   }
-  private let viewModel: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
+  fileprivate let viewModel: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  private weak var videoController: VideoViewController?
+  fileprivate weak var videoController: VideoViewController?
 
-  @IBOutlet private weak var backersSubtitleLabel: UILabel!
-  @IBOutlet private weak var backersTitleLabel: UILabel!
-  @IBOutlet private weak var blurbAndReadMoreStackView: UIStackView!
-  @IBOutlet private weak var contentStackView: UIStackView!
-  @IBOutlet private weak var conversionLabel: UILabel!
-  @IBOutlet private weak var creatorButton: UIButton!
-  @IBOutlet private weak var creatorImageView: UIImageView!
-  @IBOutlet private weak var creatorLabel: UILabel!
-  @IBOutlet private weak var creatorStackView: UIStackView!
-  @IBOutlet private weak var deadlineSubtitleLabel: UILabel!
-  @IBOutlet private weak var deadlineTitleLabel: UILabel!
-  @IBOutlet private weak var fundingProgressBarView: UIView!
-  @IBOutlet private weak var fundingProgressContainerView: UIView!
-  @IBOutlet private weak var pledgeSubtitleLabel: UILabel!
-  @IBOutlet private weak var pledgedTitleLabel: UILabel!
-  @IBOutlet private weak var projectBlurbLabel: UILabel!
-  @IBOutlet private weak var projectImageContainerView: UIView!
-  @IBOutlet private weak var projectNameAndCreatorStackView: UIStackView!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet private weak var readMoreButton: UIButton!
-  @IBOutlet private weak var stateLabel: UILabel!
-  @IBOutlet private weak var statsStackView: UIStackView!
-  @IBOutlet private weak var youreABackerContainerView: UIView!
-  @IBOutlet private weak var youreABackerLabel: UILabel!
+  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate weak var contentStackView: UIStackView!
+  @IBOutlet fileprivate weak var conversionLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorButton: UIButton!
+  @IBOutlet fileprivate weak var creatorImageView: UIImageView!
+  @IBOutlet fileprivate weak var creatorLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorStackView: UIStackView!
+  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var pledgeSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgedTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var projectBlurbLabel: UILabel!
+  @IBOutlet fileprivate weak var projectImageContainerView: UIView!
+  @IBOutlet fileprivate weak var projectNameAndCreatorStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
+  @IBOutlet fileprivate weak var progressBarAndStatsStackView: UIStackView!
+  @IBOutlet fileprivate weak var readMoreButton: UIButton!
+  @IBOutlet fileprivate weak var stateLabel: UILabel!
+  @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
+  @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.creatorButton.addTarget(self,
                                  action: #selector(creatorButtonTapped),
-                                 forControlEvents: .TouchUpInside)
+                                 for: .touchUpInside)
     self.readMoreButton.addTarget(self,
                                   action: #selector(readMoreButtonTapped),
-                                  forControlEvents: .TouchUpInside)
+                                  for: .touchUpInside)
   }
 
   internal func configureWith(value project: Project) {
     self.viewModel.inputs.configureWith(project: project)
   }
 
-  internal func scrollContentOffset(offset: CGFloat) {
+  internal func scrollContentOffset(_ offset: CGFloat) {
 
     let height = self.projectImageContainerView.bounds.height
     let translation = offset / 2
@@ -82,23 +82,23 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.clipsToBounds .~ true
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
-    [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_500
       ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
       ||> UILabel.lens.numberOfLines .~ 2
 
-    [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.blurbAndReadMoreStackView
+    _ = self.blurbAndReadMoreStackView
       |> UIStackView.lens.spacing .~ 0
 
-    self.contentStackView
+    _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
@@ -107,32 +107,32 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    self.conversionLabel
+    _ = self.conversionLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.creatorButton
+    _ = self.creatorButton
       |> UIButton.lens.accessibilityHint %~ { _ in
         localizedString(key: "Opens_creator_profile", defaultValue: "Opens creator profile.")
       }
 
-    self.creatorImageView
+    _ = self.creatorImageView
       |> UIImageView.lens.clipsToBounds .~ true
-      |> UIImageView.lens.contentMode .~ .ScaleAspectFill
+      |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
-    self.creatorLabel
+    _ = self.creatorLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.creatorStackView
-      |> UIStackView.lens.alignment .~ .Center
+    _ = self.creatorStackView
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    self.fundingProgressContainerView
+    _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
-    self.projectBlurbLabel
+    _ = self.projectBlurbLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_body(size: 18)
@@ -141,10 +141,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.projectNameAndCreatorStackView
+    _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.projectNameLabel
+    _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_title3(size: 28)
@@ -153,33 +153,33 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.numberOfLines .~ 0
 
-    self.progressBarAndStatsStackView
+    _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    self.readMoreButton
-      |> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_text_navy_700
-      |> UIButton.lens.titleColor(forState: .Highlighted) .~ .ksr_text_navy_500
+    _ = self.readMoreButton
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3) - 1,
                                                   left: 0,
                                                   bottom: Styles.grid(4) - 1,
                                                   right: 0)
 
-    self.stateLabel
+    _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.statsStackView
+    _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
 
-    self.youreABackerContainerView
+    _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ .ksr_green_500
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
-    self.youreABackerLabel
-      |> UILabel.lens.textColor .~ .whiteColor()
+    _ = self.youreABackerLabel
+      |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
   }
@@ -214,71 +214,71 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
-      .observeNext { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
+      .observeValues { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
 
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
-      .on(next: { [weak self] _ in self?.creatorImageView.image = nil })
+      .on(event: { [weak self] _ in self?.creatorImageView.image = nil })
       .skipNil()
-      .observeNext { [weak self] in self?.creatorImageView.af_setImageWithURL($0) }
+      .observeValues { [weak self] in self?.creatorImageView.af_setImage(withURL: $0) }
 
     self.viewModel.outputs.notifyDelegateToGoToCampaign
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.projectPamphletMainCell(_self, goToCampaignForProject: $0)
     }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.projectPamphletMainCell(_self, goToCreatorForProject: $0)
     }
 
     self.viewModel.outputs.progressPercentage
       .observeForUI()
-      .observeNext { [weak self] progress in
+      .observeValues { [weak self] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransformMakeScale(CGFloat(progress), 1.0)
+        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
     }
   }
   // swiftlint:enable function_body_length
 
-  private func configureVideoPlayerController(forProject project: Project) {
+  fileprivate func configureVideoPlayerController(forProject project: Project) {
     let vc = VideoViewController.configuredWith(project: project)
     vc.delegate = self
     vc.view.translatesAutoresizingMaskIntoConstraints = false
     self.projectImageContainerView.addSubview(vc.view)
 
-    NSLayoutConstraint.activateConstraints([
-      vc.view.topAnchor.constraintEqualToAnchor(self.projectImageContainerView.topAnchor),
-      vc.view.leadingAnchor.constraintEqualToAnchor(self.projectImageContainerView.leadingAnchor),
-      vc.view.bottomAnchor.constraintEqualToAnchor(self.projectImageContainerView.bottomAnchor),
-      vc.view.trailingAnchor.constraintEqualToAnchor(self.projectImageContainerView.trailingAnchor),
+    NSLayoutConstraint.activate([
+      vc.view.topAnchor.constraint(equalTo: self.projectImageContainerView.topAnchor),
+      vc.view.leadingAnchor.constraint(equalTo: self.projectImageContainerView.leadingAnchor),
+      vc.view.bottomAnchor.constraint(equalTo: self.projectImageContainerView.bottomAnchor),
+      vc.view.trailingAnchor.constraint(equalTo: self.projectImageContainerView.trailingAnchor),
     ])
 
     self.delegate?.projectPamphletMainCell(self, addChildController: vc)
     self.videoController = vc
   }
 
-  @objc private func readMoreButtonTapped() {
+  @objc fileprivate func readMoreButtonTapped() {
     self.viewModel.inputs.readMoreButtonTapped()
   }
 
-  @objc private func creatorButtonTapped() {
+  @objc fileprivate func creatorButtonTapped() {
     self.viewModel.inputs.creatorButtonTapped()
   }
 }
 
 extension ProjectPamphletMainCell: VideoViewControllerDelegate {
-  internal func videoViewControllerDidFinish(controller: VideoViewController) {
+  internal func videoViewControllerDidFinish(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidFinish(controller)
     self.viewModel.inputs.videoDidFinish()
   }
 
-  internal func videoViewControllerDidStart(controller: VideoViewController) {
+  internal func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
   }

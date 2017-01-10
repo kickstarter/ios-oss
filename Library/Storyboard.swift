@@ -29,11 +29,11 @@ public enum Storyboard: String {
   case Video
   case WebModal
 
-  public func instantiate<VC: UIViewController>(viewController: VC.Type,
-                          inBundle bundle: NSBundle = .framework) -> VC {
+  public func instantiate<VC: UIViewController>(_ viewController: VC.Type,
+                          inBundle bundle: Bundle = .framework) -> VC {
     guard
-      let vc = UIStoryboard(name: self.rawValue, bundle: NSBundle(identifier: bundle.identifier))
-        .instantiateViewControllerWithIdentifier(VC.storyboardIdentifier) as? VC
+      let vc = UIStoryboard(name: self.rawValue, bundle: Bundle(identifier: bundle.identifier))
+        .instantiateViewController(withIdentifier: VC.storyboardIdentifier) as? VC
       else { fatalError("Couldn't instantiate \(VC.storyboardIdentifier) from \(self.rawValue)") }
 
     return vc

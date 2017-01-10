@@ -13,7 +13,7 @@ final class LoginViewModelTests: TestCase {
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   fileprivate let isFormValid = TestObserver<Bool, NoError>()
   fileprivate let dismissKeyboard = TestObserver<(), NoError>()
-  fileprivate let postNotificationName = TestObserver<String, NoError>()
+  fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   fileprivate let showError = TestObserver<String, NoError>()
   fileprivate let tfaChallenge = TestObserver<String, NoError>()
@@ -32,7 +32,7 @@ final class LoginViewModelTests: TestCase {
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.isFormValid.observe(self.isFormValid.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotificationName.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
@@ -79,7 +79,7 @@ final class LoginViewModelTests: TestCase {
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                            "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")
@@ -189,7 +189,7 @@ final class LoginViewModelTests: TestCase {
       "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
 
     self.vm.inputs.environmentLoggedIn()
-    self.postNotificationName.assertValues([CurrentUserNotifications.sessionStarted],
+    self.postNotificationName.assertValues([.ksr_sessionStarted],
                                       "Login notification posted.")
 
     self.showError.assertValueCount(0, "Error did not happen")

@@ -12,7 +12,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
   let sendNewsletters = TestObserver<Bool, NoError>()
   let showLogin = TestObserver<(), NoError>()
   let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  let postNotification = TestObserver<String, NoError>()
+  let postNotification = TestObserver<Notification.Name, NoError>()
   let showSignupError = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -22,7 +22,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
     vm.outputs.sendNewsletters.observe(sendNewsletters.observer)
     vm.outputs.showLogin.observe(showLogin.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name.rawValue }.observe(postNotification.observer)
+    vm.outputs.postNotification.map { $0.name }.observe(postNotification.observer)
     vm.errors.showSignupError.observe(showSignupError.observer)
   }
 
@@ -111,7 +111,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup", "New User", "Signed Up", "Login",
@@ -138,7 +138,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotification.assertValues([CurrentUserNotifications.sessionStarted],
+    postNotification.assertValues([.ksr_sessionStarted],
                                   "Login notification posted.")
 
     XCTAssertEqual(

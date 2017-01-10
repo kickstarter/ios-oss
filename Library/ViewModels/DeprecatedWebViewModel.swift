@@ -6,7 +6,7 @@ public protocol DeprecatedWebViewModelInputs {
   func viewDidLoad()
 
   /// Call when the webview encounters an error.
-  func webViewDidFail(withError error: NSError?)
+  func webViewDidFail(withError error: Error?)
 
   /// Call when the webview finishes loading.
   func webViewDidFinishLoad()
@@ -41,7 +41,7 @@ DeprecatedWebViewModelOutputs {
       // Hide loading if the web view fails with a non-102 error code (102 is the interrupted error that
       // occurs anytime we cancel a request).
       self.webViewDidFailErrorProperty.signal
-        .filter { $0?.code != 102 }
+        .filter { ($0 as? NSError)?.code != .some(102) }
         .mapConst((true, true))
       )
       .skipRepeats(==)
@@ -52,8 +52,8 @@ DeprecatedWebViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let webViewDidFailErrorProperty = MutableProperty<NSError?>(nil)
-  public func webViewDidFail(withError error: NSError?) {
+  fileprivate let webViewDidFailErrorProperty = MutableProperty<Error?>(nil)
+  public func webViewDidFail(withError error: Error?) {
     self.webViewDidFailErrorProperty.value = error
   }
 

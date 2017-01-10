@@ -1,6 +1,6 @@
 import Library
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 protocol FindFriendsHeaderCellDelegate: class {
@@ -10,16 +10,16 @@ protocol FindFriendsHeaderCellDelegate: class {
 
 internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var cardView: UIView!
-  @IBOutlet private weak var closeButton: UIButton!
-  @IBOutlet private weak var containerView: UIView!
-  @IBOutlet private weak var findFriendsButton: UIButton!
-  @IBOutlet private weak var subtitleLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var closeButton: UIButton!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var findFriendsButton: UIButton!
+  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   internal weak var delegate: FindFriendsHeaderCellDelegate?
 
-  private let viewModel: FindFriendsHeaderCellViewModelType = FindFriendsHeaderCellViewModel()
+  fileprivate let viewModel: FindFriendsHeaderCellViewModelType = FindFriendsHeaderCellViewModel()
 
   func configureWith(value source: FriendsSource) {
     self.viewModel.inputs.configureWith(source: source)
@@ -28,52 +28,52 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     self.viewModel.outputs.notifyDelegateGoToFriends
       .observeForUI()
-      .observeNext { [weak self] in self?.delegate?.findFriendsHeaderCellGoToFriends()
+      .observeValues { [weak self] in self?.delegate?.findFriendsHeaderCellGoToFriends()
     }
 
     self.viewModel.outputs.notifyDelegateToDismissHeader
       .observeForUI()
-      .observeNext { [weak self] in self?.delegate?.findFriendsHeaderCellDismissHeader()
+      .observeValues { [weak self] in self?.delegate?.findFriendsHeaderCellDismissHeader()
     }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> feedTableViewCellStyle
 
-    self.cardView
+    _ = self.cardView
       |> dropShadowStyle()
 
-    self.containerView
+    _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
-    self.subtitleLabel
+    _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Follow_your_Facebook_friends_and_get_notified() }
 
-    self.closeButton
+    _ = self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_navy_700
-      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
                                                   bottom: Styles.grid(3), right: Styles.grid(2))
       |> UIButton.lens.accessibilityLabel %~ { _ in
         Strings.social_following_header_accessibility_button_close_find_friends_header_label()
     }
 
-    self.findFriendsButton
+    _ = self.findFriendsButton
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .TouchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(4))
-      |> UIButton.lens.title(forState: .Normal) %~ { _ in
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
     }
   }

@@ -13,13 +13,13 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     self.dataSource.load(surveys: [.template])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("ActivitySurveyResponseCell", self.dataSource.reusableId(item: 0, section: section))
 
     self.dataSource.load(surveys: [])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -28,7 +28,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     self.dataSource.facebookConnect(source: .activity, visible: true)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
 
@@ -36,7 +36,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     XCTAssertEqual(1, indexPaths.count)
     XCTAssertEqual(section, indexPaths.first?.section)
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -45,7 +45,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     self.dataSource.findFriends(source: .activity, visible: true)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
     XCTAssertEqual("FindFriendsHeaderCell", self.dataSource.reusableId(item: 0, section: section))
 
@@ -53,7 +53,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     XCTAssertEqual(1, indexPaths.count)
     XCTAssertEqual(section, indexPaths.first?.section)
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
@@ -65,7 +65,7 @@ final class ActivitiesDataSourceTests: XCTestCase {
 
     self.dataSource.load(activities: [updateActivity, backingActivity, successActivity])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSectionsInTableView(tableView))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(3, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
 
     XCTAssertEqual(updateActivity, self.dataSource[testItemSection: (0, section)] as? Activity)

@@ -17,7 +17,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   let isLoading = TestObserver<Bool, NoError>()
   let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
   let notifyPresenterUserFacebookConnected = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<String, NoError>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
 
@@ -28,7 +28,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
     vm.outputs.notifyDelegateUserFacebookConnected.observe(notifyPresenterUserFacebookConnected.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name.rawValue }
+    vm.outputs.postUserUpdatedNotification.map { $0.name }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
@@ -86,7 +86,7 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([CurrentUserNotifications.userUpdated],
+      postUserUpdatedNotification.assertValues([.ksr_userUpdated],
                                                "User updated notification posted")
       notifyPresenterUserFacebookConnected.assertValueCount(1, "Notify presenter that user was updated")
 

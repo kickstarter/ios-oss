@@ -6,7 +6,7 @@ import UIKit
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import Prelude
 
 final class RootViewModelTests: TestCase {
@@ -210,14 +210,14 @@ final class RootViewModelTests: TestCase {
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
-      .profile(avatarUrl: NSURL(string: user.avatar.small), index: 3)
+      .profile(avatarUrl: URL(string: user.avatar.small), index: 3)
     ]
     let itemsMember: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
       .dashboard(index: 3),
-      .profile(avatarUrl: NSURL(string: creator.avatar.small), index: 4)
+      .profile(avatarUrl: URL(string: creator.avatar.small), index: 4)
     ]
 
     let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
@@ -251,16 +251,16 @@ final class RootViewModelTests: TestCase {
   }
 }
 
-private func extractRootNames(vcs: [UIViewController]) -> [String] {
+private func extractRootNames(_ vcs: [UIViewController]) -> [String] {
   return vcs.flatMap(extractRootName)
 }
 
-private func extractRootName(vc: UIViewController) -> String? {
+private func extractRootName(_ vc: UIViewController) -> String? {
   return (vc as? UINavigationController)?
     .viewControllers
     .first
     .map { root in
-      "\(root.dynamicType)"
-        .stringByReplacingOccurrencesOfString("ViewController", withString: "")
+      "\(type(of: root))"
+        .replacingOccurrences(of: "ViewController", with: "")
   }
 }
