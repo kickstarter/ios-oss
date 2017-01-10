@@ -172,7 +172,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     }
 
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
-      .map { project, _, backerIsCurrentUser in
+      .map { project, _, _ in
         project.creator == AppEnvironment.current.currentUser
           ? Strings.Message_backer()
           : Strings.Message_creator()

@@ -1,0 +1,53 @@
+public enum Secrets {
+  public static let isOSS = false
+  public static let fieldReportEmail = "hello@email.com"
+
+  public enum Api {
+    public enum Client {
+      public static let production = "deadbeef"
+      public static let staging = "beefdead"
+    }
+
+    public enum Endpoint {
+      public static let production = "api.com"
+      public static let staging = "api.staging"
+    }
+  }
+
+  public enum BasicHTTPAuth {
+    public static let username = "usr"
+    public static let password = "pswd"
+  }
+
+  public enum Firebase {
+    public enum Huzza {
+      public static let apiKey = ""
+      public static let appName = ""
+      public static let bundleID = ""
+      public static let clientID = ""
+      public static let databaseURL = ""
+      public static let gcmSenderID = ""
+      public static let googleAppID = ""
+      public static let storageBucket = ""
+    }
+  }
+
+  public enum HockeyAppId {
+    public static let beta = "beta"
+    public static let production = "production"
+  }
+
+  public enum KoalaEndpoint {
+    public static let staging = "staging";
+    public static let production = "production";
+  }
+
+  public enum LiveStreams {
+    public static let endpoint = "streams"
+  }
+
+  public enum WebEndpoint {
+    public static let production = "www.kickstarter.com"
+    public static let staging = "staging.com"
+  }
+}

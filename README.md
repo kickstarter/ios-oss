@@ -7,7 +7,7 @@ stay a while—explore how Kickstarter’s native squad has built and continues 
 build the app.
 
 We’ve also open sourced our [Android app](https://github.com/kickstarter/android-oss),
-and read more about our journey to open source [here TODO LINK]().
+and read more about our journey to open source [here](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd).
 
 ![Kickstarter for iOS](.github/app.jpg)
 
@@ -94,6 +94,10 @@ product, for our community, in a safe and open space. We work as we live, as
 kind and considerate human beings who learn and grow from giving and receiving
 positive, constructive feedback. We reserve the right to delete or ban any
 behavior violating this base foundation of respect.
+
+## Find this interesting?
+
+We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)!
 
 ## License
 

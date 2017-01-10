@@ -145,7 +145,7 @@ public final class RootTabBarViewController: UITabBarController {
           let session = NSURLSession(configuration: sessionConfig,
             delegate: nil,
             delegateQueue: NSOperationQueue.mainQueue())
-          let dataTask = session.dataTaskWithURL(avatarUrl) { [weak self] (avatarData, response, error) in
+          let dataTask = session.dataTaskWithURL(avatarUrl) { [weak self] (avatarData, _, _) in
             guard let avatarData = avatarData else { return }
             avatarData.writeToFile(imagePath, atomically: true)
 

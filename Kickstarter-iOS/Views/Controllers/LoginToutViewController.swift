@@ -191,17 +191,21 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
     helpTypes.forEach { helpType in
-      helpSheet.addAction(UIAlertAction(title: helpType.title, style: .Default, handler: {
-        [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.helpTypeButtonTapped(helpType)
-      }))
+      helpSheet.addAction(
+        UIAlertAction(title: helpType.title, style: .Default) { [weak helpVM = self.helpViewModel] _ in
+          helpVM?.inputs.helpTypeButtonTapped(helpType)
+        }
+      )
     }
 
-    helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
-      style: .Cancel,
-      handler: { [weak helpVM = self.helpViewModel] _ in
+    helpSheet.addAction(
+      UIAlertAction(
+        title: Strings.login_tout_help_sheet_cancel(),
+        style: .Cancel
+      ) { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }))
+      }
+    )
 
     //iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
@@ -213,13 +217,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private func attemptFacebookLogin() {
     self.fbLoginManager.logInWithReadPermissions(
       ["public_profile", "email", "user_friends"],
-      fromViewController: self) {
-        (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
-        if error != nil {
-          self.viewModel.inputs.facebookLoginFail(error: error)
-        } else if !result.isCancelled {
-          self.viewModel.inputs.facebookLoginSuccess(result: result)
-        }
+      fromViewController: self
+    ) { (result: FBSDKLoginManagerLoginResult!, error: NSError!) in
+      if error != nil {
+        self.viewModel.inputs.facebookLoginFail(error: error)
+      } else if !result.isCancelled {
+        self.viewModel.inputs.facebookLoginSuccess(result: result)
+      }
     }
   }
 
