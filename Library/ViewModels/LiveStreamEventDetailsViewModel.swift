@@ -28,7 +28,6 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
-  // FIXME: support abbreviations of large numbers
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
@@ -74,7 +73,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
-          eventId: String(event.id), uid: userId, isSubscribed: !subscribedProperty.value
+          eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
           .demoteErrors()
     }
@@ -130,7 +129,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     )
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
-      .map { String($0) }
+      .map { Format.wholeNumber($0) }
 
     self.showErrorAlert = Signal.merge(
       self.failedToRetrieveEventProperty.signal.map {

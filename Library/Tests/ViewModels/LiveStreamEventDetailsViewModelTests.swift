@@ -82,13 +82,18 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testConfigureShareViewModel_WithoutEvent() {
-    let project = Project.template
-      |> Project.lens.liveStreams .~ [.template]
     let event = LiveStreamEvent.template
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.id .~ event.id
+    ]
+
 
     self.animateActivityIndicator.assertValueCount(0)
 
-    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResponse: event)) {
+    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(event))) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configureWith(project: project, event: nil)
 
@@ -221,11 +226,14 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
 
-    withEnvironment(liveStreamService: MockLiveStreamService(subscribeToError: LiveApiError.genericFailure)) {
+    withEnvironment(liveStreamService: MockLiveStreamService(
+      fetchEventResult: Result(error: .genericFailure))) {
       self.vm.inputs.subscribeButtonTapped()
-      self.animateSubscribeButtonActivityIndicator.assertValues([false, false, true, false, true, true])
+      self.animateSubscribeButtonActivityIndicator.assertValues(
+        [false, false, true, false, true, false, true]
+        )
 
-      self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe", "Subscribed"])
     }
   }
 
