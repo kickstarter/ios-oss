@@ -328,7 +328,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .animateSubscribeButtonActivityIndicator
 
     // FIXME: can just a single output for showing error alert
-    
+
     Signal.merge(
       self.viewModel.outputs.error,
       self.eventDetailsViewModel.outputs.showErrorAlert

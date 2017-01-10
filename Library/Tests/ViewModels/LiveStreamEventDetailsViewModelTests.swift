@@ -144,7 +144,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.numberOfPeopleWatchingText.assertValue("300")
   }
 
-
   //FIXME: rewrite these tests
 
 //  func testRetrieveEventInfo() {
@@ -192,8 +191,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.subscribeButtonTapped()
 
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
-
-
 
 //    self.toggleSubscribeEventId.assertValues(["123"])
 //    self.toggleSubscribeUserId.assertValues([1])

@@ -93,7 +93,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.removeVideoViewController.assertValueCount(0)
   }
 
-
   func testCreateVideoViewController_UnderMaxOpenTokViews_ForScaleEvent() {
     let event = .template
       |> LiveStreamEvent.lens.stream.liveNow .~ true

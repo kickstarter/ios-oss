@@ -153,7 +153,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
             bold: boldAttributes
           )
         }
-        
+
         return NSAttributedString(string: "")
       }.ignoreNil()
   }

@@ -65,7 +65,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         request.HTTPBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))"
           .dataUsingEncoding(NSUTF8StringEncoding)
 
-        let task = urlSession.dataTaskWithRequest(request) { data, _, error in
+        let task = urlSession.dataTaskWithRequest(request) { data, _, _ in
           let result = data
             .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
             .map { _ in !isSubscribed }
