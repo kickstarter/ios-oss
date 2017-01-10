@@ -29,6 +29,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
+  var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
@@ -53,6 +54,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         fetchEvent(forProject: project, event: optionalEvent)
           .demoteErrors()
     }
+
+    self.retrievedLiveStreamEvent = event
 
     let project = configData.map(first)
 
@@ -187,6 +190,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
+  public let retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonText: Signal<String, NoError>

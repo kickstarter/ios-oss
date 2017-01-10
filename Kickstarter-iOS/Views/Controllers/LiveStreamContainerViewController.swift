@@ -57,7 +57,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.close(_:)))
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -66,14 +66,16 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
     self.navBarTitleStackView.addArrangedSubview(self.navBarTitleLabel)
 
-    self.navBarTitleStackView.leadingAnchor.constraintEqualToAnchor(
-      self.navBarTitleStackViewBackgroundView.leadingAnchor).active = true
-    self.navBarTitleStackView.topAnchor.constraintEqualToAnchor(
-      self.navBarTitleStackViewBackgroundView.topAnchor).active = true
-    self.navBarTitleStackView.trailingAnchor.constraintEqualToAnchor(
-      self.navBarTitleStackViewBackgroundView.trailingAnchor).active = true
-    self.navBarTitleStackView.bottomAnchor.constraintEqualToAnchor(
-      self.navBarTitleStackViewBackgroundView.bottomAnchor).active = true
+    NSLayoutConstraint.activateConstraints([
+      self.navBarTitleStackView.leadingAnchor.constraintEqualToAnchor(
+        self.navBarTitleStackViewBackgroundView.leadingAnchor),
+      self.navBarTitleStackView.topAnchor.constraintEqualToAnchor(
+        self.navBarTitleStackViewBackgroundView.topAnchor),
+      self.navBarTitleStackView.trailingAnchor.constraintEqualToAnchor(
+        self.navBarTitleStackViewBackgroundView.trailingAnchor),
+      self.navBarTitleStackView.bottomAnchor.constraintEqualToAnchor(
+        self.navBarTitleStackViewBackgroundView.bottomAnchor),
+      ])
 
     self.navigationItem.titleView = navBarTitleStackViewBackgroundView
 
@@ -240,6 +242,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
         _self.addChildLiveStreamViewController(LiveStreamViewController(event: event, delegate: _self))
     }
 
+    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
+      .observeNext(self.viewModel.inputs.setLiveStreamEvent(event:))
+
     // FIXME: move all logic to this VM
     self.viewModel.outputs.showVideoView
       .map(negate)
@@ -270,28 +275,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .ignoreNil()
       .observeNext { [weak self] in self?.creatorAvatarImageView.af_setImageWithURL($0) }
 
-    // FIXME: move all logic to the VM
-
-    let isLive: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
-      .observeForUI()
-      .map {
-        if case .live = $0 { return true }
-        return false
-    }
-
-    let isReplay: Signal<Bool, NoError> = self.viewModel.outputs.liveStreamState
-      .observeForUI()
-      .map {
-        if case .replay = $0 { return true }
-        return false
-    }
-
-    // FIXME: move all logic to the VM
-
-    self.navBarLiveDotImageView.rac.hidden = isLive.map(negate)
-    self.creatorAvatarLiveDotImageView.rac.hidden = isLive.map(negate)
-    self.numberWatchingButton.rac.hidden = isLive.map(negate)
-    self.availableForLabel.rac.hidden = isReplay.map(negate)
+    self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
+    self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden
+    self.numberWatchingButton.rac.hidden = self.viewModel.outputs.numberWatchingButtonHidden
+    self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
     self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText
 
@@ -448,7 +435,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.share(_:)))
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
       |> UIBarButtonItem.lens.enabled .~ false
 
     return shareBarButtonItem
@@ -456,17 +443,15 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
   // MARK: Actions
 
-  // FIXME: make these all `private` and remove the arguments since they aren't used
-
-  internal func close(sender: UIBarButtonItem) {
+  @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  internal func share(sender: UIBarButtonItem) {
+  @objc private func share() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction internal func subscribe(sender: UIButton) {
+  @IBAction private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }

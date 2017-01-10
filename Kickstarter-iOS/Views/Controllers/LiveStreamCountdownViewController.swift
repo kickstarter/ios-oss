@@ -270,7 +270,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(LiveStreamContainerViewController.share(_:)))
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
       |> UIBarButtonItem.lens.enabled .~ false
 
     return shareBarButtonItem
@@ -304,8 +304,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  // FIXME: remove `sender` from IBAction since it isnt used
-  @IBAction private func subscribe(sender: UIButton) {
+  @IBAction private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
