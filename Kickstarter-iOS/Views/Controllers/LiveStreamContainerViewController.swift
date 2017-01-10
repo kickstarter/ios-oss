@@ -313,8 +313,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
 
     Signal.merge(
-      // FIXME: rename to `showErrorAlert`
-      self.viewModel.outputs.error,
+      self.viewModel.outputs.showErrorAlert,
       self.eventDetailsViewModel.outputs.showErrorAlert
     )
     .observeForUI()

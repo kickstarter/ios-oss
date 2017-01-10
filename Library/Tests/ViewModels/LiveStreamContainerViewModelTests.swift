@@ -13,12 +13,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let createAndConfigureLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let error = TestObserver<String, NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<NSURL, NoError>()
-  private let titleViewText = TestObserver<String, NoError>()
+  private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
+  private let titleViewText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -27,7 +27,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.createAndConfigureLiveStreamViewController.observer)
     self.vm.outputs.creatorIntroText.map { $0.string }.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.error.observe(self.error.observer)
+    self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
@@ -89,7 +89,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.liveStreamViewControllerStateChanged(
       state: .live(playbackState: .error(error: .failedToConnect), startTime: 0))
 
-    self.error.assertValues([
+    self.showErrorAlert.assertValues([
       "The live stream was interrupted",
       "The live stream failed to connect"
     ])

@@ -24,12 +24,12 @@ public protocol LiveStreamContainerViewModelOutputs {
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var creatorIntroText: Signal<NSAttributedString, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
-  var error: Signal<String, NoError> { get }
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
   var projectImageUrl: Signal<NSURL, NoError> { get }
+  var showErrorAlert: Signal<String, NoError> { get }
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
   var titleViewText: Signal<String, NoError> { get }
 }
@@ -59,7 +59,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    self.error = self.liveStreamState.map { state -> LiveVideoPlaybackError? in
+    self.showErrorAlert = self.liveStreamState.map { state -> LiveVideoPlaybackError? in
       switch state {
       case .error(let error): return error
       case .live(let playbackState, _):
@@ -217,7 +217,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<NSAttributedString, NoError>
   public let dismiss: Signal<(), NoError>
-  public let error: Signal<String, NoError>
+  public let showErrorAlert: Signal<String, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
