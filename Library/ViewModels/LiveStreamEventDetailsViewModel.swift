@@ -12,8 +12,6 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   func configureWith(project project: Project, event: LiveStreamEvent?)
-  // FIXME: remove input
-  func failedToRetrieveEvent()
   func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
   func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
@@ -49,11 +47,13 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       )
       .map(first)
 
-    let event = configData
-      .switchMap { project, optionalEvent in
+    let eventEvent = configData
+      .switchMap { project, optionalEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
         fetchEvent(forProject: project, event: optionalEvent)
-          .demoteErrors()
+        .materialize()
     }
+
+    let event = eventEvent.values()
 
     self.retrievedLiveStreamEvent = event
 
@@ -124,8 +124,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.animateActivityIndicator = Signal.merge(
       configData.filter { _, event in event == nil }.mapConst(true),
-      event.mapConst(false)
-    )
+      event.mapConst(false),
+      eventEvent.filter { $0.isTerminating }.mapConst(false)
+    ).skipRepeats()
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
       self.subscribeButtonTappedProperty.signal.mapConst(true),
@@ -136,9 +137,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map { Format.wholeNumber($0) }
 
     self.showErrorAlert = Signal.merge(
-      self.failedToRetrieveEventProperty.signal.map {
-        Strings.Failed_to_retrieve_live_stream_event_details()
-      },
+      eventEvent.map { $0.error }.ignoreNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
       isSubscribedEvent.map { $0.error }.ignoreNil().mapConst(Strings.Failed_to_update_subscription())
     )
   }
@@ -152,11 +151,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let failedToRetrieveEventProperty = MutableProperty()
-  public func failedToRetrieveEvent() {
-    self.failedToRetrieveEventProperty.value = ()
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -200,7 +194,6 @@ private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
 
   if let event = event {
     return SignalProducer(value: event)
-
   }
 
   if let eventId = project.liveStreams.first?.id {

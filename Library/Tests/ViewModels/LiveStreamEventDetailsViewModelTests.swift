@@ -71,8 +71,13 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testConfigureShareViewModel_WithEvent() {
-    let project = Project.template
     let event = LiveStreamEvent.template
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.id .~ event.id
+    ]
 
     self.animateActivityIndicator.assertValueCount(0)
 
@@ -111,23 +116,33 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     }
   }
 
-  //FIXME: Update when demoteErrors() removed
   func testShowErrorAlert() {
-    let project = Project.template
     let event = LiveStreamEvent.template
 
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.id .~ event.id
+    ]
+
     self.showErrorAlert.assertValueCount(0)
+    self.animateActivityIndicator.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project, event: event)
+    withEnvironment(liveStreamService: MockLiveStreamService(
+      fetchEventResult: Result(error: .genericFailure))) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(project: project, event: nil)
 
-    self.vm.inputs.failedToRetrieveEvent()
+      self.animateActivityIndicator.assertValues([true])
 
-    // FIXME: can update now that we are off demoteErrors
-//    self.showErrorAlert.assertValues([
-//      "Failed to retrieve live stream event details",
-//      "Failed to update subscription"
-//      ])
+      self.scheduler.advance()
+
+      self.animateActivityIndicator.assertValues([true, false])
+    }
+
+    self.showErrorAlert.assertValues([
+      "Failed to retrieve live stream event details"
+      ])
   }
 
   func testLiveStreamTitle() {
