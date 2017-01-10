@@ -12,7 +12,7 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let postNotification = TestObserver<String, NoError>()
+  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
   fileprivate let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   fileprivate let showError = TestObserver<String, NoError>()
 
@@ -26,7 +26,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.outputs.nameTextFieldBecomeFirstResponder.observe(self.nameTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordTextFieldBecomeFirstResponder
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
-    self.vm.outputs.postNotification.map { $0.name.rawValue }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
     self.vm.outputs.setWeeklyNewsletterState.observe(self.setWeeklyNewsletterState.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
   }

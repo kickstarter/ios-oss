@@ -22,7 +22,7 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterOptInAlert = TestObserver<String, NoError>()
   let showRecommendations = TestObserver<[Project], NoError>()
   let dismissToRootViewController = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<String, NoError>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let facebookButtonIsHidden = TestObserver<Bool, NoError>()
   let twitterButtonIsHidden = TestObserver<Bool, NoError>()
@@ -42,7 +42,7 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
     vm.outputs.showRecommendations.map { projects, _ in projects }.observe(showRecommendations.observer)
     vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name.rawValue }
+    vm.outputs.postUserUpdatedNotification.map { $0.name }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.facebookButtonIsHidden.observe(facebookButtonIsHidden.observer)
