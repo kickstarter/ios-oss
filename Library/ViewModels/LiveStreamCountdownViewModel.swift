@@ -112,13 +112,14 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       Strings.Live_stream_countdown()
     )
 
-    //FIXME: Consider making the live stream view controller always re-fetch the event
-    //in which case it's not necessary to have it included in this signal
+    //FIXME: write test for the event flipping to live
     self.pushLiveStreamViewController = combineLatest(
       self.projectProperty.signal.ignoreNil(),
-      self.liveStreamEventProperty.signal.ignoreNil(),
-      countdownEnded
-      ).map { project, event, _ in (project, event) }
+      self.liveStreamEventProperty.signal.ignoreNil()
+        .map(LiveStreamEvent.lens.stream.liveNow .~ true)
+      )
+      .takeWhen(countdownEnded)
+      .map { project, event in (project, event) }
       .take(1)
 
     self.upcomingIntroText = project
