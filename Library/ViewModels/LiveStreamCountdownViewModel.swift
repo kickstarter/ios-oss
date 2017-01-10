@@ -42,17 +42,16 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     let everySecondTimer = self.viewDidLoadProperty.signal.flatMap {
       timer(1, onScheduler: AppEnvironment.current.scheduler)
-        .ignoreValues()
-        .prefix(value: ())
+        .prefix(value: AppEnvironment.current.scheduler.currentDate)
     }
 
     let dateComponents = project.map { $0.liveStreams.first }.ignoreNil()
       .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
-      .takeWhen(everySecondTimer)
-      .map { startDate in
+      .takePairWhen(everySecondTimer)
+      .map { startDate, currentDate in
         AppEnvironment.current.calendar.components(
           [.Day, .Hour, .Minute, .Second],
-          fromDate: AppEnvironment.current.dateType.init().date,
+          fromDate: currentDate,
           toDate: startDate,
           options: []
         )

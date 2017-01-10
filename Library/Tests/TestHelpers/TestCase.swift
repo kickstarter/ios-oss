@@ -18,7 +18,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let liveStreamService = MockLiveStreamService(fetchEventResult: nil)
   internal let mainBundle = MockBundle()
-  internal let scheduler = TestScheduler()
+  internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let trackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()

@@ -75,12 +75,12 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     //FIXME: once we have a way to advance the test scheduler in such a way that time can pass we can fix this test
 
     // Step 2: Set date as if two days have passed
-   // self.scheduler.advanceByInterval(60 * 60 * 24 * 2)
+    self.scheduler.advanceByInterval(2)
 
-//    self.days.assertValues(["10\ndays", "08\ndays"])
-//    self.hours.assertValues(["19\nhours"])
-//    self.minutes.assertValues(["53\nminutes"])
-//    self.seconds.assertValues(["26\nseconds"])
+    self.days.assertValues(["10\ndays"])
+    self.hours.assertValues(["07\nhours"])
+    self.minutes.assertValues(["24\nminutes"])
+    self.seconds.assertValues(["45\nseconds", "44\nseconds", "43\nseconds"])
 
     // Step 3: Set now to a second past the stream's start date
     // The live stream view controller should be pushed
