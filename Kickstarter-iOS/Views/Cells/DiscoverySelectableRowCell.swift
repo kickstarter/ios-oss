@@ -3,9 +3,9 @@ import Prelude
 import UIKit
 
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
+  @IBOutlet private weak var filterTitleLabel: UILabel!
 
-  internal var rowIsSelected: Bool = false
+  private var rowIsSelected: Bool = false
 
   func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if value.row.params.staffPicks == true {
