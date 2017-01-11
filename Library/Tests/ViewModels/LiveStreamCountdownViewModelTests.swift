@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -15,7 +15,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<String, NoError>()
   private let minutes = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<NSURL, NoError>()
+  private let projectImageUrl = TestObserver<URL, NoError>()
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
   private let seconds = TestObserver<String, NoError>()
@@ -75,7 +75,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     //FIXME: once we have a way to advance the test scheduler in such a way that time can pass we can fix this test
 
     // Step 2: Set date as if two days have passed
-    self.scheduler.advanceByInterval(2)
+    self.scheduler.advance(by: .seconds(2))
 
     self.days.assertValues(["10\ndays"])
     self.hours.assertValues(["07\nhours"])
@@ -131,18 +131,18 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 }
 
 //swiftlint:disable force_unwrapping
-private func futureDate() -> NSDate {
-  let components = NSDateComponents()
+private func futureDate() -> Date {
+  var components = DateComponents()
   components.year = 2016
   components.day = 12
   components.month = 10
   components.hour = 8
 
-  return AppEnvironment.current.calendar.dateFromComponents(components)!
+  return AppEnvironment.current.calendar.date(from: components)!
 }
 
-private func nowDate() -> NSDate {
-  let components = NSDateComponents()
+private func nowDate() -> Date {
+  var components = DateComponents()
   components.year = 2016
   components.day = 25
   components.month = 12
@@ -150,7 +150,7 @@ private func nowDate() -> NSDate {
   components.minute = 6
   components.second = 34
 
-  return AppEnvironment.current.calendar.dateFromComponents(components)!
+  return AppEnvironment.current.calendar.date(from: components)!
 }
 //swiftlint:enable force_unwrapping
 

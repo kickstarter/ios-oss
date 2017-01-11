@@ -1,27 +1,27 @@
 import AVFoundation
 import OpenTok
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 internal protocol LiveVideoViewModelInputs {
   /// Call with the live stream given to the view.
-  func configureWith(liveStreamType liveStreamType: LiveStreamType)
+  func configureWith(liveStreamType: LiveStreamType)
 
   /// Call when the HLS player's state changes.
-  func hlsPlayerStateChanged(state state: AVPlayerItemStatus)
+  func hlsPlayerStateChanged(state: AVPlayerItemStatus)
 
   /// Call when the OpenTok session connects.
   func sessionDidConnect()
 
   /// Call when the OpenTok session fails.
-  func sessionDidFailWithError(error error: OTErrorType)
+  func sessionDidFailWithError(error: OTErrorType)
 
   /// Call when the OpenTok session stream is created.
-  func sessionStreamCreated(stream stream: OTStreamType)
+  func sessionStreamCreated(stream: OTStreamType)
 
   /// Call when the OpenTok session is destroy.
-  func sessionStreamDestroyed(stream stream: OTStreamType)
+  func sessionStreamDestroyed(stream: OTStreamType)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -53,42 +53,42 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   LiveVideoViewModelOutputs {
 
   internal init() {
-    let liveStreamType = combineLatest(
-      self.liveStreamTypeProperty.signal.ignoreNil(),
+    let liveStreamType = Signal.combineLatest(
+      self.liveStreamTypeProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
     let sessionConfig = liveStreamType
       .map { $0.openTokSessionConfig }
-      .ignoreNil()
+      .skipNil()
 
     self.addAndConfigureHLSPlayerWithStreamUrl = liveStreamType
       .map { $0.hlsStreamUrl }
-      .ignoreNil()
+      .skipNil()
 
     self.createAndConfigureSessionWithConfig = sessionConfig
 
-    self.addAndConfigureSubscriber = self.sessionStreamCreatedProperty.signal.ignoreNil()
-    self.removeSubscriber = self.sessionStreamDestroyedProperty.signal.ignoreNil()
+    self.addAndConfigureSubscriber = self.sessionStreamCreatedProperty.signal.skipNil()
+    self.removeSubscriber = self.sessionStreamDestroyedProperty.signal.skipNil()
 
     self.notifyDelegateOfPlaybackStateChange = Signal.merge(
-      self.hlsPlayerStateChangedProperty.signal.ignoreNil()
+      self.hlsPlayerStateChangedProperty.signal.skipNil()
         .map(playbackState(fromHlsPlayState:)),
       sessionConfig.mapConst(.loading),
       self.sessionDidConnectProperty.signal.mapConst(.playing),
-      self.sessionDidFailWithErrorProperty.signal.ignoreNil()
+      self.sessionDidFailWithErrorProperty.signal.skipNil()
         .mapConst(.error(error: .sessionInterrupted))
     )
   }
 
   private let liveStreamTypeProperty = MutableProperty<LiveStreamType?>(nil)
-  internal func configureWith(liveStreamType liveStreamType: LiveStreamType) {
+  internal func configureWith(liveStreamType: LiveStreamType) {
     self.liveStreamTypeProperty.value = liveStreamType
   }
 
   private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItemStatus?>(nil)
-  internal func hlsPlayerStateChanged(state state: AVPlayerItemStatus) {
+  internal func hlsPlayerStateChanged(state: AVPlayerItemStatus) {
     self.hlsPlayerStateChangedProperty.value = state
   }
 
@@ -98,17 +98,17 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   }
 
   private let sessionDidFailWithErrorProperty = MutableProperty<OTErrorType?>(nil)
-  internal func sessionDidFailWithError(error error: OTErrorType) {
+  internal func sessionDidFailWithError(error: OTErrorType) {
     self.sessionDidFailWithErrorProperty.value = error
   }
 
   private let sessionStreamCreatedProperty = MutableProperty<OTStreamType?>(nil)
-  internal func sessionStreamCreated(stream stream: OTStreamType) {
+  internal func sessionStreamCreated(stream: OTStreamType) {
     self.sessionStreamCreatedProperty.value = stream
   }
 
   private let sessionStreamDestroyedProperty = MutableProperty<OTStreamType?>(nil)
-  internal func sessionStreamDestroyed(stream stream: OTStreamType) {
+  internal func sessionStreamDestroyed(stream: OTStreamType) {
     self.sessionStreamDestroyedProperty.value = stream
   }
 
@@ -129,8 +129,8 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
 
 private func playbackState(fromHlsPlayState state: AVPlayerItemStatus) -> LiveVideoPlaybackState {
   switch state {
-  case .Failed: return .error(error: .failedToConnect)
-  case .Unknown: return .loading
-  case .ReadyToPlay: return .playing
+  case .failed: return .error(error: .failedToConnect)
+  case .unknown: return .loading
+  case .readyToPlay: return .playing
   }
 }

@@ -78,7 +78,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
 
     self.viewModel.outputs.goToLiveStream
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToLiveStream(project: $0) }
+      .observeValues { [weak self] in self?.goToLiveStream(project: $0) }
 
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
@@ -96,7 +96,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
-    } else if self.dataSource.indexPathIsLiveStreamSubpage(indexPath) {
+    } else if self.dataSource.indexPathIsLiveStreamSubpage(indexPath: indexPath) {
       self.viewModel.inputs.tappedLiveStream()
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
@@ -147,11 +147,11 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     }
   }
 
-  private func goToLiveStream(project project: Project) {
+  private func goToLiveStream(project: Project) {
     let lvc = project.liveStreams.first.flatMap { liveStream -> UIViewController in
-      let startDate = NSDate(timeIntervalSince1970: liveStream.startDate)
+      let startDate = Date(timeIntervalSince1970: liveStream.startDate)
 
-      if startDate.earlierDate(NSDate()) == startDate {
+      if startDate < Date() {
         return LiveStreamContainerViewController.configuredWith(project: project, event: nil)
       }
 
@@ -163,7 +163,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 
-    self.presentViewController(nav, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToUpdates(project: Project) {

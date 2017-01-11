@@ -1,6 +1,6 @@
 import KsApi
 import LiveStream
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -11,11 +11,11 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  func configureWith(project project: Project, event: LiveStreamEvent?)
+  func configureWith(project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
-  func retrievedLiveStreamEvent(event event: LiveStreamEvent)
+  func retrievedLiveStreamEvent(event: LiveStreamEvent)
   func viewDidLoad()
-  func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
+  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
@@ -28,7 +28,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var loaderText: Signal<String, NoError> { get }
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
-  var projectImageUrl: Signal<NSURL, NoError> { get }
+  var projectImageUrl: Signal<URL, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
   var titleViewText: Signal<String, NoError> { get }
@@ -40,20 +40,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   //swiftlint:disable function_body_length
   //swiftlint:disable cyclomatic_complexity
   public init() {
-    let project = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
+    let project = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal)
       .map(first)
 
-    self.createAndConfigureLiveStreamViewController = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
-      self.liveStreamEventProperty.signal.ignoreNil(),
+    self.createAndConfigureLiveStreamViewController = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
+      self.liveStreamEventProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       ).map { project, event, _ in (project, event) }
 
-    self.liveStreamState = combineLatest(
+    self.liveStreamState = Signal.combineLatest(
       Signal.merge(
-        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
         project.mapConst(.loading)
       ),
       self.viewDidLoadProperty.signal
@@ -74,7 +74,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
       return nil
       }
-      .ignoreNil()
+      .skipNil()
       .map {
         switch $0 {
         case .sessionInterrupted:
@@ -95,8 +95,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     self.projectImageUrl = project
-      .map { NSURL(string: $0.photo.full) }
-      .ignoreNil()
+      .map { URL(string: $0.photo.full) }
+      .skipNil()
 
     self.titleViewText = liveStreamState.map {
       if case .live(_, _) = $0 { return Strings.Live() }
@@ -106,7 +106,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       return Strings.Loading()
     }
 
-    self.videoViewControllerHidden = combineLatest(
+    self.videoViewControllerHidden = Signal.combineLatest(
         self.liveStreamState.map {
           if case .live(playbackState: .playing, _) = $0 { return true }
           if case .replay(playbackState: .playing, _) = $0 { return true }
@@ -120,23 +120,23 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    self.creatorIntroText = combineLatest(
+    self.creatorIntroText = Signal.combineLatest(
       Signal.merge(
-        self.liveStreamViewControllerStateChangedProperty.signal.ignoreNil(),
+        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
         project.mapConst(.loading)
       ),
-      liveStreamEventProperty.signal.ignoreNil()
+      liveStreamEventProperty.signal.skipNil()
       )
       .observeForUI()
       .map { (state, event) -> NSAttributedString? in
 
         let baseAttributes = [
           NSFontAttributeName: UIFont.ksr_body(size: 13),
-          NSForegroundColorAttributeName: UIColor.whiteColor()
+          NSForegroundColorAttributeName: UIColor.white
         ]
         let boldAttributes = [
           NSFontAttributeName: UIFont.ksr_headline(size: 13),
-          NSForegroundColorAttributeName: UIColor.whiteColor()
+          NSForegroundColorAttributeName: UIColor.white
         ]
 
         if case .live = state {
@@ -161,8 +161,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
 
         return NSAttributedString(string: "")
-      }.ignoreNil()
-
+      }.skipNil()
 
     let isLive: Signal<Bool, NoError> = self.liveStreamState
       .map {
@@ -186,7 +185,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   //swiftlint:enable cyclomatic_complexity
 
   private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project, event: LiveStreamEvent?) {
+  public func configureWith(project: Project, event: LiveStreamEvent?) {
     self.projectProperty.value = project
     self.liveStreamEventProperty.value = event
   }
@@ -198,12 +197,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   private let liveStreamViewControllerStateChangedProperty =
     MutableProperty<LiveStreamViewControllerState?>(nil)
-  public func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState) {
+  public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
     self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func retrievedLiveStreamEvent(event event: LiveStreamEvent) {
+  public func retrievedLiveStreamEvent(event: LiveStreamEvent) {
     self.liveStreamEventProperty.value = event
   }
 
@@ -222,7 +221,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let loaderText: Signal<String, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingButtonHidden: Signal<Bool, NoError>
-  public let projectImageUrl: Signal<NSURL, NoError>
+  public let projectImageUrl: Signal<URL, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>
 

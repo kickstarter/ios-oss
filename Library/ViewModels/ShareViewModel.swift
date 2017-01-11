@@ -212,7 +212,7 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
   case let .update(_, update):
     return URL(string: update.urls.web.update)
   case let .liveStream(_, liveStreamEvent):
-    return NSURL(string: liveStreamEvent.stream.webUrl) ?? NSURL()
+    return URL(string: liveStreamEvent.stream.webUrl)
   }
 }
 
@@ -280,7 +280,7 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     )
   }
 
-  if NSDate().earlierDate(liveStreamEvent.stream.startDate) == liveStreamEvent.stream.startDate {
+  if liveStreamEvent.stream.startDate < Date() {
     return localizedString(
       key: "Creator_name_was_streaming_live_on_Kickstarter",
       defaultValue: "%{creator_name} was streaming live on Kickstarter",

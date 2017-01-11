@@ -1,6 +1,6 @@
-import ReactiveCocoa
+import ReactiveSwift
 
-public enum LiveApiError: ErrorType {
+public enum LiveApiError: Error {
   case genericFailure
   case invalidEventId
   case invalidJson
@@ -8,7 +8,6 @@ public enum LiveApiError: ErrorType {
 
 public protocol LiveStreamServiceProtocol {
   init()
-  func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
-  func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
-    -> SignalProducer<Bool, LiveApiError>
+  func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
+  func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError>
 }

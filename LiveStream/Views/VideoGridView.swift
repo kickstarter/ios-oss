@@ -1,10 +1,10 @@
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 
 public final class VideoGridView: UIView {
 
   public func addVideoView(view: UIView) {
-    self.insertSubview(view, atIndex: 0)
+    self.insertSubview(view, at: 0)
     self.setNeedsLayout()
   }
 
@@ -22,7 +22,7 @@ public final class VideoGridView: UIView {
     let halfWidth = fullWidth / 2
     let halfHeight = fullHeight / 2
 
-    for (index, view) in self.subviews.enumerate() {
+    for (index, view) in self.subviews.enumerated() {
       switch (index, self.subviews.count) {
       //two views, side-by-side
       case (0, 2): view.frame = .init(x: 0, y: 0, width: halfWidth, height: fullHeight)

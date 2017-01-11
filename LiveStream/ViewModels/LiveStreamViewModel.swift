@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -10,25 +10,25 @@ internal protocol LiveStreamViewModelType {
 
 internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent
-  func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent)
+  func configureWith(databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent)
 
   /// Called when the Firebase app fails to initialise
   func firebaseAppFailedToInitialize()
 
   /// Called when the green room changes to active or inactive when a creator goes on/off live, expects a Bool
-  func observedGreenRoomOffChanged(off off: AnyObject?)
+  func observedGreenRoomOffChanged(off: Any?)
 
   /// Called when the HLS url for the stream changes, expects a String
-  func observedHlsUrlChanged(hlsUrl hlsUrl: AnyObject?)
+  func observedHlsUrlChanged(hlsUrl: Any?)
 
   /// Called when the number of people watching changes in a non-scale event, expects an NSDictionary
-  func observedNumberOfPeopleWatchingChanged(numberOfPeople numberOfPeople: AnyObject?)
+  func observedNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
 
   /// Called when the number of people watching changes in a scaled event, expects an Int
-  func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople numberOfPeople: AnyObject?)
+  func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
 
   /// Called when the video playback state changes
-  func videoPlaybackStateChanged(state state: LiveVideoPlaybackState)
+  func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
 
   /// Call when the viewDidLoad
   func viewDidLoad()
@@ -67,9 +67,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler) {
+  init(scheduler: DateSchedulerProtocol = QueueScheduler.main) {
 
-    let configData = combineLatest(self.configData.signal.ignoreNil(), self.viewDidLoadProperty.signal)
+    let configData = Signal.combineLatest(self.configData.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
 
     let databaseRef = configData.map(first)
@@ -77,12 +77,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
       .map { $0 as? NSDictionary }
-      .ignoreNil()
+      .skipNil()
       .map { $0.allKeys.count }
 
     let observedScaleNumberOfPeopleWatchingChanged = self.scaleNumberOfPeopleWatchingProperty.signal
       .map { $0 as? Int }
-      .ignoreNil()
+      .skipNil()
 
     let numberOfPeopleWatching = Signal.merge(
       observedNumberOfPeopleWatchingChanged,
@@ -98,37 +98,37 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let observedHlsUrlChanged = self.hlsUrlProperty.signal
       .map { $0 as? String }
-      .ignoreNil()
+      .skipNil()
 
     let observedGreenRoomOffChanged = self.greenRoomOffProperty
       .signal
       .map { $0 as? Bool }
-      .ignoreNil()
+      .skipNil()
 
-    let isMaxOpenTokViewersReached = combineLatest(
+    let isMaxOpenTokViewersReached = Signal.combineLatest(
       numberOfPeopleWatching,
       maxOpenTokViewers
       )
       .map { $0 > $1 }
-      .take(1)
+      .take(first: 1)
 
     let forceHls = Signal.merge(
-      self.viewDidLoadProperty.signal.delay(10, onScheduler: scheduler).mapConst(true),
+      self.viewDidLoadProperty.signal.ksr_delay(.seconds(10), on: scheduler).mapConst(true),
 
       isMaxOpenTokViewersReached,
 
-      zip(liveStreamEvent, didLiveStreamEndedNormally)
+      Signal.zip(liveStreamEvent, didLiveStreamEndedNormally)
         .map { event, endedNormally in event.stream.isRtmp || endedNormally }
         .filter(isTrue)
       )
-      .take(1)
+      .take(first: 1)
 
-    let useHlsStream = zip(
+    let useHlsStream = Signal.zip(
       forceHls,
       didLiveStreamEndedNormally
       )
       .map { $0 || $1 }
-      .take(1)
+      .take(first: 1)
 
     let liveHlsUrl = Signal.merge(
       liveStreamEvent
@@ -138,9 +138,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
     )
 
-    let replayHlsUrl = zip(liveStreamEvent, didLiveStreamEndedNormally.filter(isTrue))
+    let replayHlsUrl = Signal.zip(liveStreamEvent, didLiveStreamEndedNormally.filter(isTrue))
       .map { event, _ in event.stream.replayUrl }
-      .ignoreNil()
+      .skipNil()
       .map(LiveStreamType.hlsStream)
 
     let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)
@@ -153,7 +153,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       )
     }
 
-    let liveStreamType = combineLatest(
+    let liveStreamType = Signal.combineLatest(
       hlsStreamUrl,
       openTokSessionConfig,
       useHlsStream
@@ -168,7 +168,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       didLiveStreamEndedNormally.filter(isTrue)
     )
 
-    self.createVideoViewController = combineLatest(
+    self.createVideoViewController = Signal.combineLatest(
       liveStreamType,
       observedGreenRoomOffOrInReplay
       )
@@ -176,26 +176,26 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
-    let createObservers = zip(
+    let createObservers = Signal.zip(
       didLiveStreamEndedNormally.filter(isFalse).mapConst(true),
       liveStreamEvent.map(isNonStarter(event:)).filter(isFalse).mapConst(true)
       ).map { $0 && $1 }
 
-    self.createGreenRoomObservers = zip(
+    self.createGreenRoomObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") },
       createObservers.filter(isTrue)
       ).map { dbRef, event, _ in (dbRef, event) }
 
-    self.createHLSObservers = zip(
+    self.createHLSObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") },
       createObservers.filter(isTrue)
       ).map { dbRef, event, _ in (dbRef, event) }
 
-    self.createNumberOfPeopleWatchingObservers = zip(
+    self.createNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .filter { !$0.stream.isScale }
@@ -203,7 +203,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       createObservers.filter(isTrue)
       ).map { dbRef, event, _ in (dbRef, event) }
 
-    self.createScaleNumberOfPeopleWatchingObservers = zip(
+    self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .filter { $0.stream.isScale }
@@ -211,8 +211,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       createObservers.filter(isTrue)
       ).map { dbRef, event, _ in (dbRef, event) }
 
-    self.removeVideoViewController = self.createVideoViewController.take(1)
-      .sampleOn(observedGreenRoomOffChanged.filter(isFalse).ignoreValues())
+    self.removeVideoViewController = self.createVideoViewController.take(first: 1)
+      .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())
       .ignoreValues()
 
     let greenRoomState = observedGreenRoomOffChanged
@@ -220,14 +220,14 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .mapConst(LiveStreamViewControllerState.greenRoom)
 
     let replayState = didLiveStreamEndedNormally
-      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.ignoreNil())
+      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { didEndNormally, playbackState in didEndNormally && !playbackState.isError }
       .map { _, playbackState in
         LiveStreamViewControllerState.replay(playbackState: playbackState, duration: 0)
     }
 
     let liveState = liveStreamEvent
-      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.ignoreNil())
+      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { event, playbackState in
         event.stream.liveNow && !playbackState.isError
       }
@@ -235,9 +235,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
     }
 
-    let errorState = self.videoPlaybackStateChangedProperty.signal.ignoreNil()
+    let errorState = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { $0.error }
-      .ignoreNil()
+      .skipNil()
       .map(LiveStreamViewControllerState.error)
 
     let nonStarterOrLoadingState = liveStreamEvent
@@ -258,7 +258,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   }
 
   private let configData = MutableProperty<(FirebaseDatabaseReferenceType, LiveStreamEvent)?>(nil)
-  internal func configureWith(databaseRef databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent) {
+  internal func configureWith(databaseRef: FirebaseDatabaseReferenceType, event: LiveStreamEvent) {
     self.configData.value = (databaseRef, event)
   }
 
@@ -267,28 +267,28 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.firebaseAppFailedToInitializeProperty.value = ()
   }
 
-  private let greenRoomOffProperty = MutableProperty<AnyObject?>(nil)
-  internal func observedGreenRoomOffChanged(off off: AnyObject?) {
+  private let greenRoomOffProperty = MutableProperty<Any?>(nil)
+  internal func observedGreenRoomOffChanged(off: Any?) {
     self.greenRoomOffProperty.value = off
   }
 
-  private let hlsUrlProperty = MutableProperty<AnyObject?>(nil)
-  internal func observedHlsUrlChanged(hlsUrl hlsUrl: AnyObject?) {
+  private let hlsUrlProperty = MutableProperty<Any?>(nil)
+  internal func observedHlsUrlChanged(hlsUrl: Any?) {
     self.hlsUrlProperty.value = hlsUrl
   }
 
-  private let numberOfPeopleWatchingProperty = MutableProperty<AnyObject?>(nil)
-  internal func observedNumberOfPeopleWatchingChanged(numberOfPeople numberOfPeople: AnyObject?) {
+  private let numberOfPeopleWatchingProperty = MutableProperty<Any?>(nil)
+  internal func observedNumberOfPeopleWatchingChanged(numberOfPeople: Any?) {
     self.numberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
-  private let scaleNumberOfPeopleWatchingProperty = MutableProperty<AnyObject?>(nil)
-  internal func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople numberOfPeople: AnyObject?) {
+  private let scaleNumberOfPeopleWatchingProperty = MutableProperty<Any?>(nil)
+  internal func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?) {
     self.scaleNumberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
-  internal func videoPlaybackStateChanged(state state: LiveVideoPlaybackState) {
+  internal func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
     self.videoPlaybackStateChangedProperty.value = state
   }
 
@@ -313,14 +313,15 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   internal var outputs: LiveStreamViewModelOutputs { return self }
 }
 
-private func isNonStarter(event event: LiveStreamEvent) -> Bool {
+private func isNonStarter(event: LiveStreamEvent) -> Bool {
   return !event.stream.liveNow
     && !event.stream.definitelyHasReplay
     && startDateMoreThanFifteenMinutesAgo(event: event)
 }
 
-private func startDateMoreThanFifteenMinutesAgo(event event: LiveStreamEvent) -> Bool {
-  return NSCalendar.currentCalendar()
-    .components(.Minute, fromDate: event.stream.startDate, toDate: NSDate(), options: [])
-    .minute > 15
+private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool {
+  let minute = Calendar.current
+    .dateComponents([.minute], from: event.stream.startDate as Date, to: Date())
+    .minute ?? 0
+  return minute > 15
 }

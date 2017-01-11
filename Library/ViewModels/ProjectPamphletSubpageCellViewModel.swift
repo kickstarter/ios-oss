@@ -1,10 +1,10 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import KsApi
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
-  func configureWith(subpage subpage: ProjectPamphletSubpage)
+  func configureWith(subpage: ProjectPamphletSubpage)
 }
 
 public protocol ProjectPamphletSubpageCellViewModelOutputs {
@@ -28,11 +28,11 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
 ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOutputs {
   var st: String?
   public init() {
-    let commentsSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isComments }
-    let liveStreamSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isLiveStream }
-    let updatesSubpage = self.subpageProperty.signal.ignoreNil().filter { $0.isUpdates }
+    let commentsSubpage = self.subpageProperty.signal.skipNil().filter { $0.isComments }
+    let liveStreamSubpage = self.subpageProperty.signal.skipNil().filter { $0.isLiveStream }
+    let updatesSubpage = self.subpageProperty.signal.skipNil().filter { $0.isUpdates }
 
-    let liveStreamDetail = liveStreamSubpage.map { $0.liveStream }.ignoreNil()
+    let liveStreamDetail = liveStreamSubpage.map { $0.liveStream }.skipNil()
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
@@ -46,10 +46,10 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       updatesSubpage.mapConst(.ksr_text_navy_700)
     )
 
-    self.topGradientViewHidden = self.subpageProperty.signal.ignoreNil()
+    self.topGradientViewHidden = self.subpageProperty.signal.skipNil()
       .map { $0.position != .first }
 
-    self.separatorViewHidden = self.subpageProperty.signal.ignoreNil()
+    self.separatorViewHidden = self.subpageProperty.signal.skipNil()
       .map { $0.position == .last }
 
     self.countLabelText = Signal.merge(
@@ -63,13 +63,13 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     )
 
     self.countLabelBorderColor = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clearColor()),
-      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .clearColor() }
+      Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clear),
+      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .clear }
     )
 
     self.countLabelBackgroundColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_navy_300),
-      liveStreamDetail.map { $0.isLiveNow ? .whiteColor() : .ksr_navy_300 }
+      liveStreamDetail.map { $0.isLiveNow ? .white : .ksr_navy_300 }
     )
 
     self.liveNowImageViewHidden = Signal.merge(
@@ -79,7 +79,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)
-  public func configureWith(subpage subpage: ProjectPamphletSubpage) {
+  public func configureWith(subpage: ProjectPamphletSubpage) {
     self.subpageProperty.value = subpage
   }
 
@@ -159,7 +159,7 @@ public enum ProjectPamphletSubpage {
     }
   }
 
-  private var liveStream: Project.LiveStream? {
+  fileprivate var liveStream: Project.LiveStream? {
     if case .liveStream(let liveStream, _) = self {
       return liveStream
     }

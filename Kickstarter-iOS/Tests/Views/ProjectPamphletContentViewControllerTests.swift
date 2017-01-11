@@ -272,7 +272,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         .template
           |> Project.LiveStream.lens.isLiveNow .~ true,
         .template
-          |> Project.LiveStream.lens.startDate .~ AppEnvironment.current.dateType.init().dateByAddingTimeInterval(-60 * 60).timeIntervalSince1970
+          |> Project.LiveStream.lens.startDate .~ AppEnvironment.current.dateType.init().addingTimeInterval(-60 * 60).timeIntervalSince1970
     ]
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in

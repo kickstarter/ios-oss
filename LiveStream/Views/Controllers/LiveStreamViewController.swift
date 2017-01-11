@@ -2,7 +2,7 @@ import Argo
 import FirebaseAnalytics
 import FirebaseDatabase
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import UIKit
 
@@ -15,7 +15,7 @@ public protocol LiveStreamViewControllerDelegate: class {
 }
 
 public final class LiveStreamViewController: UIViewController {
-  private var viewModel: LiveStreamViewModelType = LiveStreamViewModel()
+  fileprivate var viewModel: LiveStreamViewModelType = LiveStreamViewModel()
   private var firebaseRef: FIRDatabaseReference?
   private var videoViewController: LiveVideoViewController?
   public weak var delegate: LiveStreamViewControllerDelegate?
@@ -39,56 +39,60 @@ public final class LiveStreamViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-    return [.Portrait, .Landscape]
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return [.portrait, .landscape]
   }
 
   //swiftlint:disable function_body_length
   public func bindVM() {
     self.viewModel.outputs.createVideoViewController
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.createVideoViewController($0)
+      .observeValues { [weak self] in
+        self?.createVideoViewController(liveStreamType: $0)
     }
 
     self.viewModel.outputs.removeVideoViewController
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.videoViewController?.removeFromParentViewController()
         self?.videoViewController = nil
     }
 
-    self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observeNext { [weak self] in
-      guard let _self = self else { return }
-      _self.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(_self, numberOfPeople: $0)
+    self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: _self,
+                                                                              numberOfPeople: $0)
     }
 
     self.viewModel.outputs.createGreenRoomObservers
       .map(prepare(databaseReference:config:))
-      .ignoreNil()
-      .observeNext { [weak self] in self?.createFirebaseGreenRoomObservers($0, refConfig: $1) }
+      .skipNil()
+      .observeValues { [weak self] in self?.createFirebaseGreenRoomObservers(ref: $0, refConfig: $1) }
 
     self.viewModel.outputs.createHLSObservers
       .map(prepare(databaseReference:config:))
-      .ignoreNil()
-      .observeNext { [weak self] in self?.createFirebaseHLSObservers($0, refConfig: $1) }
+      .skipNil()
+      .observeValues { [weak self] in self?.createFirebaseHLSObservers(ref: $0, refConfig: $1) }
 
     self.viewModel.outputs.createNumberOfPeopleWatchingObservers
       .map(prepare(databaseReference:config:))
-      .ignoreNil()
-      .observeNext { [weak self] in self?.createFirebaseNumberOfPeopleWatchingObservers($0, refConfig: $1) }
+      .skipNil()
+      .observeValues { [weak self] in
+        self?.createFirebaseNumberOfPeopleWatchingObservers(ref: $0, refConfig: $1)
+    }
 
     self.viewModel.outputs.createScaleNumberOfPeopleWatchingObservers
       .map(prepare(databaseReference:config:))
-      .ignoreNil()
-      .observeNext { [weak self] in
-        self?.createFirebaseScaleNumberOfPeopleWatchingObservers($0, refConfig: $1)
+      .skipNil()
+      .observeValues { [weak self] in
+        self?.createFirebaseScaleNumberOfPeopleWatchingObservers(ref: $0, refConfig: $1)
     }
 
     self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.liveStreamViewControllerStateChanged(_self, state: $0)
+        self?.delegate?.liveStreamViewControllerStateChanged(controller: _self, state: $0)
     }
   }
   //swiftlint:enable function_body_length
@@ -104,7 +108,7 @@ public final class LiveStreamViewController: UIViewController {
 
     guard let videoView = self.videoViewController?.view else { return }
 
-    self.layoutVideoView(videoView)
+    self.layoutVideoView(view: videoView)
   }
 
   deinit {
@@ -116,7 +120,7 @@ public final class LiveStreamViewController: UIViewController {
   private func createFirebaseGreenRoomObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
-    query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
+    query.observe(.value, with: { [weak self] snapshot in
       self?.viewModel.inputs.observedGreenRoomOffChanged(off: snapshot.value)
     })
   }
@@ -124,7 +128,7 @@ public final class LiveStreamViewController: UIViewController {
   private func createFirebaseHLSObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
-    query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
+    query.observe(.value, with: { [weak self] snapshot in
       self?.viewModel.inputs.observedHlsUrlChanged(hlsUrl: snapshot.value)
     })
   }
@@ -133,7 +137,7 @@ public final class LiveStreamViewController: UIViewController {
                                                              refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
-    query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
+    query.observe(.value, with: { [weak self] snapshot in
       self?.viewModel.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
     })
   }
@@ -142,7 +146,7 @@ public final class LiveStreamViewController: UIViewController {
                                                              refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
-    query.observeEventType(.Value, withBlock: { [weak self] (snapshot) in
+    query.observe(.value, with: { [weak self] snapshot in
       self?.viewModel.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
     })
   }
@@ -151,7 +155,7 @@ public final class LiveStreamViewController: UIViewController {
 
   private func addChildVideoViewController(controller: UIViewController) {
     self.addChildViewController(controller)
-    controller.didMoveToParentViewController(self)
+    controller.didMove(toParentViewController: self)
     self.view.addSubview(controller.view)
   }
 
@@ -164,7 +168,7 @@ public final class LiveStreamViewController: UIViewController {
 
     self.videoViewController?.removeFromParentViewController()
     self.videoViewController = videoViewController
-    self.addChildVideoViewController(videoViewController)
+    self.addChildVideoViewController(controller: videoViewController)
   }
 }
 

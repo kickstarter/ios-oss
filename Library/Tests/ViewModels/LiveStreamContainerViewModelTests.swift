@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
@@ -15,7 +15,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let dismiss = TestObserver<(), NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderText = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<NSURL, NoError>()
+  private let projectImageUrl = TestObserver<URL, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
   private let titleViewText = TestObserver<String, NoError>()

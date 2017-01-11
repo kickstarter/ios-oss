@@ -7,7 +7,7 @@ public protocol LiveVideoViewControllerDelegate: class {
 }
 
 public final class LiveVideoViewController: UIViewController {
-  private let viewModel: LiveVideoViewModelType = LiveVideoViewModel()
+  fileprivate let viewModel: LiveVideoViewModelType = LiveVideoViewModel()
   private var session: OTSession?
   private var subscribers: [OTSubscriber] = []
   public weak var delegate: LiveVideoViewControllerDelegate?
@@ -33,7 +33,7 @@ public final class LiveVideoViewController: UIViewController {
     super.viewDidLoad()
     self.bindVM()
 
-    self.view.backgroundColor = .blackColor()
+    self.view.backgroundColor = .black
     self.view.addSubview(self.videoGridView)
 
     self.viewModel.inputs.viewDidLoad()
@@ -42,79 +42,80 @@ public final class LiveVideoViewController: UIViewController {
   public func bindVM() {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.configureHLSPlayer(streamUrl: $0)
     }
 
     self.viewModel.outputs.createAndConfigureSessionWithConfig
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.createAndConfigureSession(sessionConfig: $0)
     }
 
     self.viewModel.outputs.addAndConfigureSubscriber
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let stream = $0 as? OTStream else { return }
         self?.addAndConfigureSubscriber(stream: stream)
     }
 
     self.viewModel.outputs.removeSubscriber
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let stream = $0 as? OTStream else { return }
         self?.removeSubscriberForStream(stream: stream)
     }
 
     self.viewModel.outputs.notifyDelegateOfPlaybackStateChange
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.liveVideoViewControllerPlaybackStateChanged(_self, state: $0)
+        self?.delegate?.liveVideoViewControllerPlaybackStateChanged(controller: _self, state: $0)
     }
   }
 
-  private func configureHLSPlayer(streamUrl streamUrl: String) {
-    guard let url = NSURL(string: streamUrl) else { return }
+  private func configureHLSPlayer(streamUrl: String) {
+    guard let url = URL(string: streamUrl) else { return }
 
     let player = HLSPlayerView(hlsStreamUrl: url, delegate: self)
 
-    self.addVideoView(player)
+    self.addVideoView(view: player)
   }
 
-  private func createAndConfigureSession(sessionConfig sessionConfig: OpenTokSessionConfig) {
+  private func createAndConfigureSession(sessionConfig: OpenTokSessionConfig) {
     self.session = OTSession(
       apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self
     )
-    self.session?.connectWithToken(sessionConfig.token, error: nil)
+    self.session?.connect(withToken: sessionConfig.token, error: nil)
   }
 
-  private func addAndConfigureSubscriber(stream stream: OTStream) {
-    let subscriber = OTSubscriber(stream: stream, delegate: nil)
+  private func addAndConfigureSubscriber(stream: OTStream) {
+    // FIXME: for some reason this IUO initializer is causing problems, maybe opentok 2.10 addresses this
+    guard let subscriber = OTSubscriber(stream: stream, delegate: nil) else { return }
 
     self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)
 
-    self.addVideoView(subscriber.view)
+    self.addVideoView(view: subscriber.view)
   }
 
   private func addVideoView(view: UIView) {
-    self.videoGridView.addVideoView(view)
+    self.videoGridView.addVideoView(view: view)
   }
 
   private func removeVideoView(view: UIView) {
-    self.videoGridView.removeVideoView(view)
+    self.videoGridView.removeVideoView(view: view)
   }
 
-  private func removeSubscriberForStream(stream stream: OTStream) {
+  private func removeSubscriberForStream(stream: OTStream) {
     self.subscribers.filter({ $0.stream.streamId == stream.streamId })
       .first
       .doIfSome(self.removeSubscriber(subscriber:))
   }
 
-  private func removeSubscriber(subscriber subscriber: OTSubscriber) {
-    self.removeVideoView(subscriber.view)
+  private func removeSubscriber(subscriber: OTSubscriber) {
+    self.removeVideoView(view: subscriber.view)
     self.session?.unsubscribe(subscriber, error: nil)
-    self.subscribers.indexOf(subscriber).doIfSome { self.subscribers.removeAtIndex($0) }
+    self.subscribers.index(of: subscriber).doIfSome { self.subscribers.remove(at: $0) }
   }
 
   // MARK: Actions
@@ -138,21 +139,21 @@ extension LiveVideoViewController: HLSPlayerViewDelegate {
 
 extension LiveVideoViewController: OTSessionDelegate {
 
-  public func sessionDidConnect(session: OTSession!) {
+  public func sessionDidConnect(_ session: OTSession!) {
     self.viewModel.inputs.sessionDidConnect()
   }
 
-  public func sessionDidDisconnect(session: OTSession!) {}
+  public func sessionDidDisconnect(_ session: OTSession!) {}
 
-  public func session(session: OTSession!, streamCreated stream: OTStream!) {
+  public func session(_ session: OTSession!, streamCreated stream: OTStream!) {
     self.viewModel.inputs.sessionStreamCreated(stream: stream)
   }
 
-  public func session(session: OTSession!, streamDestroyed stream: OTStream!) {
+  public func session(_ session: OTSession!, streamDestroyed stream: OTStream!) {
     self.viewModel.inputs.sessionStreamDestroyed(stream: stream)
   }
 
-  public func session(session: OTSession!, didFailWithError error: OTError!) {
+  public func session(_ session: OTSession!, didFailWithError error: OTError!) {
     self.viewModel.inputs.sessionDidFailWithError(error: error)
   }
 }

@@ -1,6 +1,6 @@
 import KsApi
 import LiveStream
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -11,10 +11,10 @@ public protocol LiveStreamEventDetailsViewModelType {
 }
 
 public protocol LiveStreamEventDetailsViewModelInputs {
-  func configureWith(project project: Project, event: LiveStreamEvent?)
-  func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState)
+  func configureWith(project: Project, event: LiveStreamEvent?)
+  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
-  func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int)
+  func setNumberOfPeopleWatching(numberOfPeople: Int)
   func viewDidLoad()
 }
 
@@ -22,7 +22,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var animateActivityIndicator: Signal<Bool, NoError> { get }
   var animateSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
   var availableForText: Signal<String, NoError> { get }
-  var creatorAvatarUrl: Signal<NSURL?, NoError> { get }
+  var creatorAvatarUrl: Signal<URL?, NoError> { get }
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
@@ -41,8 +41,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   //swiftlint:disable function_body_length
   public init () {
 
-    let configData = combineLatest(
-      self.configData.signal.ignoreNil(),
+    let configData = Signal.combineLatest(
+      self.configData.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -59,7 +59,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let project = configData.map(first)
 
-    self.configureShareViewModel = combineLatest(
+    self.configureShareViewModel = Signal.combineLatest(
       project,
       event
     )
@@ -76,7 +76,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         return AppEnvironment.current.liveStreamService.subscribeTo(
           eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
           )
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -88,23 +88,22 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribed = subscribedProperty.signal
 
-    self.availableForText = combineLatest(
+    self.availableForText = Signal.combineLatest(
       event,
       self.viewDidLoadProperty.signal)
       .map(first)
       .map { event -> String? in
         guard let availableDate = AppEnvironment.current.calendar
-          .dateByAddingUnit(.Day, value: 2, toDate: event.stream.startDate,
-            options: [])?.timeIntervalSince1970
+          .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
           else { return nil }
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
         return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
-      }.ignoreNil()
+      }.skipNil()
 
     self.creatorAvatarUrl = event
-      .map { NSURL(string: $0.creator.avatar) }
+      .map { URL(string: $0.creator.avatar) }
 
     self.creatorName = event.map { $0.creator.name }
     self.liveStreamTitle = event.map { $0.stream.projectName }
@@ -133,18 +132,18 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.ignoreNil()
+    self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
       .map { Format.wholeNumber($0) }
 
     self.showErrorAlert = Signal.merge(
-      eventEvent.map { $0.error }.ignoreNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
-      isSubscribedEvent.map { $0.error }.ignoreNil().mapConst(Strings.Failed_to_update_subscription())
+      eventEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
+      isSubscribedEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_update_subscription())
     )
   }
   //swiftlint:enable function_body_length
 
   private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
-  public func configureWith(project project: Project, event: LiveStreamEvent?) {
+  public func configureWith(project: Project, event: LiveStreamEvent?) {
     self.configData.value = (project, event)
   }
 
@@ -155,12 +154,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
   private let liveStreamViewControllerStateChangedProperty =
     MutableProperty<LiveStreamViewControllerState?>(nil)
-  public func liveStreamViewControllerStateChanged(state state: LiveStreamViewControllerState) {
+  public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
     self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
   private let numberOfPeopleWatchingProperty = MutableProperty<Int?>(nil)
-  public func setNumberOfPeopleWatching(numberOfPeople numberOfPeople: Int) {
+  public func setNumberOfPeopleWatching(numberOfPeople: Int) {
     self.numberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
@@ -172,7 +171,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let animateActivityIndicator: Signal<Bool, NoError>
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
-  public let creatorAvatarUrl: Signal<NSURL?, NoError>
+  public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
   public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>
   public let liveStreamTitle: Signal<String, NoError>
@@ -200,7 +199,7 @@ private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
     return AppEnvironment.current.liveStreamService.fetchEvent(
       eventId: eventId, uid: AppEnvironment.current.currentUser?.id
       )
-      .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
   }
 
   return .empty

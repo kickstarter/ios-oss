@@ -22,7 +22,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self
+    _ = self
       |> baseTableViewCellStyle()
       |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
       |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
@@ -31,26 +31,26 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
     }
 
-    self.countContainerView
+    _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> roundedStyle()
       |> UIView.lens.layer.borderWidth .~ 1
 
-    self.countLabel
+    _ = self.countLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
-    self.rootStackView
+    _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.alignment .~ .Center
-      |> UIStackView.lens.distribution .~ .Fill
+      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.distribution .~ .fill
 
-    self.liveNowImageView
+    _ = self.liveNowImageView
       |> UIImageView.lens.tintColor .~ .ksr_green_500
 
-    self.separatorView
+    _ = self.separatorView
       |> separatorStyle
 
-    self.subpageLabel
+    _ = self.subpageLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
 
     self.topGradientView.startPoint = CGPoint(x: 0, y: 0)
@@ -72,8 +72,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.countLabelBorderColor
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.countContainerView.layer.borderColor = $0.CGColor
+      .observeValues { [weak self] in
+        self?.countContainerView.layer.borderColor = $0.cgColor
     }
 
     self.liveNowImageView.rac.hidden = self.viewModel.outputs.liveNowImageViewHidden

@@ -32,7 +32,7 @@ extension LiveStreamEvent {
       projectWebUrl: "",
       projectName: "Test Project",
       replayUrl: nil,
-      startDate: NSDate(),
+      startDate: Date(),
       webUrl: ""
     ),
     user: User(isSubscribed: false)

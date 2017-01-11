@@ -2,7 +2,7 @@ import KsApi
 import Library
 import LiveStream
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class LiveStreamCountdownViewController: UIViewController {
@@ -33,10 +33,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  internal static func configuredWith(project project: Project)
+  internal static func configuredWith(project: Project)
     -> LiveStreamCountdownViewController {
 
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController)
+      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
       vc.viewModel.inputs.configureWith(project: project)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
       return vc
@@ -47,7 +47,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
+      |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
@@ -63,90 +63,90 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.projectImageView
-      |> UIImageView.lens.contentMode .~ .ScaleAspectFill
+    _ = self.projectImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
-    self.countdownStackView
-      |> UIStackView.lens.alignment .~ .Top
-      |> UIStackView.lens.distribution .~ .EqualCentering
+    _ = self.countdownStackView
+      |> UIStackView.lens.alignment .~ .top
+      |> UIStackView.lens.distribution .~ .equalCentering
 
-    self.countdownContainerStackView
-      |> UIStackView.lens.alignment .~ .Center
+    _ = self.countdownContainerStackView
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(6)
-      |> UIStackView.lens.distribution .~ .Fill
+      |> UIStackView.lens.distribution .~ .fill
 
     self.countdownLabels?.forEach { label in
-      label
-        |> UILabel.lens.textAlignment .~ .Center
+      _ = label
+        |> UILabel.lens.textAlignment .~ .center
         |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .whiteColor()
+        |> UILabel.lens.textColor .~ .white
     }
 
     self.countdownColons?.forEach { label in
-      label
+      _ = label
         |> UILabel.lens.text .~ ":"
-        |> UILabel.lens.textAlignment .~ .Center
+        |> UILabel.lens.textAlignment .~ .center
         |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .whiteColor()
+        |> UILabel.lens.textColor .~ .white
         |> UILabel.lens.font .~ .ksr_title1(size: 24)
     }
 
-    self.detailsContainerStackView
+    _  = self.detailsContainerStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
         top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
 
-    self.detailsStackView
+    _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(8), left: Styles.grid(4),
                                                         bottom: Styles.grid(7), right: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.detailsStackViewBackgroundView
+    _ = self.detailsStackViewBackgroundView
       |> roundedStyle(cornerRadius: 2)
 
     self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
-    self.creatorAvatarImageView
+    _ = self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
 
-    self.introLabel
+    _ = self.introLabel
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.liveStreamTitleLabel
+    _ = self.liveStreamTitleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3()
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
-    self.liveStreamParagraphLabel
+    _ = self.liveStreamParagraphLabel
       |> UILabel.lens.font .~ UIFont.ksr_subhead()
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
-    self.subscribeButton
+    _ = self.subscribeButton
       |> greenBorderContainerButtonStyle
       |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
       |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
 
-    self.subscribeButton.semanticContentAttribute = .ForceRightToLeft
+    self.subscribeButton.semanticContentAttribute = .forceRightToLeft
 
-    self.activityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
+    _ = self.activityIndicatorView
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.animating .~ false
 
-    self.subscribeActivityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .Gray
+    _ = self.subscribeActivityIndicatorView
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.animating .~ false
   }
   //swiftlint:enable function_body_length
 
-  internal override func prefersStatusBarHidden() -> Bool {
-    return true
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
 
-  internal override func preferredStatusBarStyle() -> UIStatusBarStyle {
-    return .LightContent
+  override var prefersStatusBarHidden: Bool {
+    return true
   }
 
   internal override func viewDidLayoutSubviews() {
@@ -165,7 +165,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
     }
 
@@ -177,29 +177,29 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
-      .on(next: { [weak self] image in self?.projectImageView.image = nil })
-      .observeNext { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
+      .on(event: { [weak self] image in self?.projectImageView.image = nil })
+      .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0 as URL) }
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
-      .on(next: { [weak self] image in self?.creatorAvatarImageView.image = nil })
-      .ignoreNil()
-      .observeNext { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
+      .on(event: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .skipNil()
+      .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0 as URL) }
 
     self.viewModel.outputs.categoryId
       .observeForUI()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
         self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeNext(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
+      .observeValues(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
-      .observeNext { [weak self] in
-        self?.dismissViewControllerAnimated(true, completion: nil)
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
     }
 
     self.navigationItem.rac.title = self.viewModel.outputs.viewControllerTitle
@@ -207,8 +207,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.subscribeButton.setImage($0, forState: .Normal)
+      .observeValues { [weak self] in
+        self?.subscribeButton.setImage($0, for: .normal)
     }
 
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
@@ -225,7 +225,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeNext { [weak self] in
+      .observeValues { [weak self] in
         let liveStreamContainerViewController = LiveStreamContainerViewController
           .configuredWith(project: $0, event: $1)
 
@@ -234,12 +234,12 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
 
     self.eventDetailsViewModel.outputs.showErrorAlert
       .observeForUI()
-      .observeNext { [weak self] in
-        self?.presentViewController(UIAlertController.genericError($0), animated: true, completion: nil)
+      .observeValues { [weak self] in
+        self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
   }
   //swiftlint:enable function_body_length
@@ -248,7 +248,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   lazy var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .whiteColor()
+      |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
       |> UIBarButtonItem.lens.enabled .~ false
 
@@ -256,20 +256,23 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   }()
 
   private func showShareSheet(controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareActivityCompletion(activityType: $0,
-                                                          completed: $1,
-                                                          returnedItems: $2,
-                                                          activityError: $3)
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
     }
 
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      controller.modalPresentationStyle = .Popover
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
       controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-      self.presentViewController(controller, animated: true, completion: nil)
+      self.present(controller, animated: true, completion: nil)
 
     } else {
-      self.presentViewController(controller, animated: true, completion: nil)
+      self.present(controller, animated: true, completion: nil)
     }
   }
 
@@ -290,8 +293,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
 // FIXME: let's chat about this
 extension LiveStreamCountdownViewController: UINavigationControllerDelegate {
+
   func navigationControllerSupportedInterfaceOrientations(
-    navigationController: UINavigationController) -> UIInterfaceOrientationMask {
-    return .Portrait
+    _ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+
+    return .portrait
   }
 }

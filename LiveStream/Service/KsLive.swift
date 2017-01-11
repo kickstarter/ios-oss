@@ -4,19 +4,22 @@ import FirebaseDatabase
 public class KsLiveApp {
 
   private static func start() {
-    let options =
-      FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
-                 bundleID: Secrets.Firebase.Huzza.Production.bundleID,
-                 GCMSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
-                 APIKey: Secrets.Firebase.Huzza.Production.apiKey,
-                 clientID: Secrets.Firebase.Huzza.Production.clientID,
-                 trackingID: "",
-                 androidClientID: "",
-                 databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
-                 storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
-                 deepLinkURLScheme: "")
+    guard let options = FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
+                                   bundleID: Secrets.Firebase.Huzza.Production.bundleID,
+                                   gcmSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
+                                   apiKey: Secrets.Firebase.Huzza.Production.apiKey,
+                                   clientID: Secrets.Firebase.Huzza.Production.clientID,
+                                   trackingID: "",
+                                   androidClientID: "",
+                                   databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
+                                   storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
+                                   deepLinkURLScheme: "")
+      else {
+        // FIXME: look into IUO problem
+        return
+    }
 
-    FIRApp.configureWithName(Secrets.Firebase.Huzza.Production.appName, options: options)
+    FIRApp.configure(withName: Secrets.Firebase.Huzza.Production.appName, options: options)
   }
 
   public static func firebaseApp() -> FIRApp? {

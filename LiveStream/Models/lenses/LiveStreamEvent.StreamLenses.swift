@@ -110,7 +110,7 @@ extension LiveStreamEvent.Stream {
         startDate: $1.startDate, webUrl: $1.webUrl) }
     )
 
-    public static let startDate = Lens<LiveStreamEvent.Stream, NSDate>(
+    public static let startDate = Lens<LiveStreamEvent.Stream, Date>(
       view: { $0.startDate },
       set: { .init(backgroundImageUrl: $1.backgroundImageUrl, description: $1.description,
         hasReplay: $1.hasReplay, hlsUrl: $1.hlsUrl, isRtmp: $1.isRtmp, isScale: $1.isScale,

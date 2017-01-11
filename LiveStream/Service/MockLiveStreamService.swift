@@ -1,12 +1,12 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 extension Result {
   private var value: T? {
     switch self {
-    case let .Success(value): return value
-    case .Failure:            return nil
+    case let .success(value): return value
+    case .failure:            return nil
     }
   }
 }
@@ -25,7 +25,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.subscribeToResult = subscribeToResult
   }
 
-  internal func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+  internal func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
     if let error = self.fetchEventResult?.error {
       return SignalProducer(error: error)
     }
@@ -36,7 +36,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
+  internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool)
     -> SignalProducer<Bool, LiveApiError> {
 
       if let error = self.subscribeToResult?.error {

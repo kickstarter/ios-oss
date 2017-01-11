@@ -1,11 +1,11 @@
 import Argo
-import ReactiveCocoa
+import ReactiveSwift
 
 public struct LiveStreamService: LiveStreamServiceProtocol {
   public init() {
   }
 
-  public func fetchEvent(eventId eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+  public func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
       let uidString = uid
@@ -13,26 +13,26 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .coalesceWith("")
 
       let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)\(uidString)"
-      guard let url = NSURL(string: urlString) else {
-        observer.sendFailed(.invalidEventId)
+      guard let url = URL(string: urlString) else {
+        observer.send(error: .invalidEventId)
         return
       }
 
-      let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
+      let urlSession = URLSession(configuration: .default)
 
-      let task = urlSession.dataTaskWithURL(url) { data, _, error in
+      let task = urlSession.dataTask(with: url) { data, _, error in
         guard error == nil else {
-          observer.sendFailed(.genericFailure)
+          observer.send(error: .genericFailure)
           return
         }
 
         let event = data
-          .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+          .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
           .map(JSON.init)
           .map(LiveStreamEvent.decode)
           .flatMap { $0.value }
-          .map(Event<LiveStreamEvent, LiveApiError>.Next)
-          .coalesceWith(.Failed(.genericFailure))
+          .map(Event<LiveStreamEvent, LiveApiError>.value)
+          .coalesceWith(.failed(.genericFailure))
 
         observer.action(event)
         observer.sendCompleted()
@@ -40,44 +40,42 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       task.resume()
 
-      disposable.addDisposable({
+      disposable.add({
         task.cancel()
         observer.sendInterrupted()
       })
     }
   }
 
-  public func subscribeTo(eventId eventId: Int, uid: Int, isSubscribed: Bool)
-    -> SignalProducer<Bool, LiveApiError> {
+  public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
 
         let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)/subscribe"
-        guard let url = NSURL(string: urlString) else {
-          observer.sendFailed(.invalidEventId)
+        guard let url = URL(string: urlString) else {
+          observer.send(error: .invalidEventId)
           return
         }
 
-        let urlSession = NSURLSession(configuration: .defaultSessionConfiguration())
+        let urlSession = URLSession(configuration: .default)
 
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))"
-          .dataUsingEncoding(NSUTF8StringEncoding)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))".data(using: .utf8)
 
-        let task = urlSession.dataTaskWithRequest(request) { data, _, _ in
+        let task = urlSession.dataTask(with: request) { data, _, _ in
           let result = data
-            .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+            .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
             .map { _ in !isSubscribed }
             .coalesceWith(isSubscribed)
 
-          observer.sendNext(result)
+          observer.send(value: result)
           observer.sendCompleted()
         }
 
         task.resume()
 
-        disposable.addDisposable({
+        disposable.add({
           task.cancel()
           observer.sendInterrupted()
         })

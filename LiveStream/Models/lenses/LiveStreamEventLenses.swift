@@ -70,7 +70,7 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.replayUrl
   }
 
-  public var startDate: Lens<LiveStreamEvent, NSDate> {
+  public var startDate: Lens<LiveStreamEvent, Date> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.startDate
   }
 }

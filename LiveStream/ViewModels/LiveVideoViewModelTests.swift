@@ -1,12 +1,12 @@
 import XCTest
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import LiveStream
 
 private struct TestOTStreamType: OTStreamType {
-  private let streamId: String!
+  fileprivate let streamId: String!
 }
 private class TestOTErrorType: NSError, OTErrorType {}
 
@@ -44,13 +44,13 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
 
     // Step 2: Test state changes
-    self.vm.inputs.hlsPlayerStateChanged(state: .Unknown)
+    self.vm.inputs.hlsPlayerStateChanged(state: .unknown)
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
 
-    self.vm.inputs.hlsPlayerStateChanged(state: .ReadyToPlay)
+    self.vm.inputs.hlsPlayerStateChanged(state: .readyToPlay)
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
 
-    self.vm.inputs.hlsPlayerStateChanged(state: .Failed)
+    self.vm.inputs.hlsPlayerStateChanged(state: .failed)
     self.notifyDelegateOfPlaybackStateChange.assertValues([
       .loading, .playing, .error(error: .failedToConnect)
     ])

@@ -21,16 +21,16 @@ public class ClearNavigationBar: UINavigationBar {
       (UIColor(white: 0, alpha: 0), 1)
       ])
 
-    self
+    _ = self
       |> UINavigationBar.lens.titleTextAttributes .~ [
-        NSForegroundColorAttributeName: UIColor.whiteColor(),
+        NSForegroundColorAttributeName: UIColor.white,
         NSFontAttributeName: UIFont.ksr_callout()
       ]
       |> UINavigationBar.lens.translucent .~ true
-      |> UINavigationBar.lens.barTintColor .~ .whiteColor()
+      |> UINavigationBar.lens.barTintColor .~ .white
       |> UINavigationBar.lens.shadowImage .~ UIImage()
 
-    self.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+    self.setBackgroundImage(UIImage(), for: .default)
 
     self.addSubview(self.backgroundGradientView)
   }
@@ -39,8 +39,8 @@ public class ClearNavigationBar: UINavigationBar {
     super.layoutSubviews()
     self.backgroundGradientView.frame = self.bounds
 
-    if self.subviews.indexOf(self.backgroundGradientView) != 0 {
-      self.sendSubviewToBack(self.backgroundGradientView)
+    if self.subviews.index(of: self.backgroundGradientView) != 0 {
+      self.sendSubview(toBack: self.backgroundGradientView)
     }
   }
 

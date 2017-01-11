@@ -1,5 +1,6 @@
 import Argo
 import Curry
+import Runes
 
 public struct LiveStreamEvent: Equatable {
   public let creator: Creator
@@ -22,7 +23,7 @@ public struct LiveStreamEvent: Equatable {
     public let projectWebUrl: String
     public let projectName: String
     public let replayUrl: String?
-    public let startDate: NSDate
+    public let startDate: Date
     public let webUrl: String
 
     // Useful for safeguarding against getting a `hasReplay == true` yet the `replayUrl` is `nil`.
@@ -62,19 +63,20 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
 }
 
 extension LiveStreamEvent: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent> {
-    return curry(LiveStreamEvent.init)
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
+    let create = curry(LiveStreamEvent.init)
+    return create
       <^> json <| "creator"
       <*> json <| "firebase"
       <*> json <| "id"
       <*> json <| "opentok"
       <*> json <| "stream"
-      <*> json <| "user" <|> .Success(User(isSubscribed: false))
+      <*> json <| "user" // FIXME: <|> .success(User(isSubscribed: false))
   }
 }
 
 extension LiveStreamEvent.Stream: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Stream> {
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Stream> {
     let create = curry(LiveStreamEvent.Stream.init)
     let tmp1 = create
       <^> json <| "background_image_url"
@@ -99,7 +101,7 @@ extension LiveStreamEvent.Stream: Decodable {
 }
 
 extension LiveStreamEvent.Creator: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Creator> {
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Creator> {
     return curry(LiveStreamEvent.Creator.init)
       <^> json <| "creator_avatar"
       <*> json <| "creator_name"
@@ -107,7 +109,7 @@ extension LiveStreamEvent.Creator: Decodable {
 }
 
 extension LiveStreamEvent.Firebase: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
     return curry(LiveStreamEvent.Firebase.init)
       <^> json <| "firebase_api_key"
       <*> json <| "chat_path"
@@ -120,7 +122,7 @@ extension LiveStreamEvent.Firebase: Decodable {
 }
 
 extension LiveStreamEvent.OpenTok: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent.OpenTok> {
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.OpenTok> {
     return curry(LiveStreamEvent.OpenTok.init)
       <^> json <| "app"
       <*> json <| "session"
@@ -129,23 +131,23 @@ extension LiveStreamEvent.OpenTok: Decodable {
 }
 
 extension LiveStreamEvent.User: Decodable {
-  static public func decode(json: JSON) -> Decoded<LiveStreamEvent.User> {
+  static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.User> {
     return curry(LiveStreamEvent.User.init)
       <^> json <| "is_subscribed"
   }
 }
 
-private let dateFormatter: NSDateFormatter = {
-  let dateFormatter = NSDateFormatter()
+private let dateFormatter: DateFormatter = {
+  let dateFormatter = DateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
   return dateFormatter
 }()
 
-private func toDate(dateString: String) -> Decoded<NSDate> {
+private func toDate(dateString: String) -> Decoded<Date> {
 
-  guard let date = dateFormatter.dateFromString(dateString) else {
-    return .Failure(DecodeError.Custom("Unable to parse date format"))
+  guard let date = dateFormatter.date(from: dateString) else {
+    return .failure(DecodeError.custom("Unable to parse date format"))
   }
 
-  return .Success(date)
+  return .success(date)
 }

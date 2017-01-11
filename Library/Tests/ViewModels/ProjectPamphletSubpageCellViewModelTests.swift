@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -40,7 +40,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("12")
-    self.countLabelBorderColor.assertValue(.clearColor())
+    self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Comments")
@@ -58,7 +58,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelTextColor.assertValue(.ksr_text_green_700)
     self.countLabelText.assertValue("Watch live")
     self.countLabelBorderColor.assertValue(.ksr_green_500)
-    self.countLabelBackgroundColor.assertValue(.whiteColor())
+    self.countLabelBackgroundColor.assertValue(.white)
     self.liveNowImageViewHidden.assertValue(false)
     self.labelText.assertValue("Live Streaming now")
     self.labelTextColor.assertValue(.ksr_text_green_700)
@@ -74,7 +74,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("Replay")
-    self.countLabelBorderColor.assertValue(.clearColor())
+    self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Live Stream")
@@ -88,7 +88,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("12")
-    self.countLabelBorderColor.assertValue(.clearColor())
+    self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Updates")
@@ -142,14 +142,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testUpcomingLiveStreamsSubpage() {
     let liveStream = Project.LiveStream.template
       |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ MockDate()
-        .dateByAddingTimeInterval(60 * 60).timeIntervalSince1970
+      |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(60 * 60).timeIntervalSince1970
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("in 1 hr")
-    self.countLabelBorderColor.assertValue(.clearColor())
+    self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Live Stream")

@@ -44,12 +44,12 @@ public let greenBorderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
 public let greenBorderContainerButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .ksr_green_700
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .whiteColor()
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .whiteColor()
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ .ksr_green_700
-  <> UIButton.lens.titleColor(forState: .Disabled) .~ UIColor.ksr_green_700.colorWithAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_500.CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_green_700
+  <> UIButton.lens.titleColor(forState: .disabled) .~ UIColor.ksr_green_700.withAlphaComponent(0.5)
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_500.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(3))
 
@@ -132,12 +132,11 @@ public let twitterButtonStyle = baseButtonStyle
 }
 
 public let whiteBorderContainerButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .Normal) .~ .whiteColor()
-  <> UIButton.lens.backgroundColor(forState: .Normal) .~ .clearColor()
-  <> UIButton.lens.titleColor(forState: .Highlighted) .~ .whiteColor()
-  <> UIButton.lens.backgroundColor(forState: .Highlighted) .~ UIColor
-    .whiteColor().colorWithAlphaComponent(0.5)
-  <> UIButton.lens.titleColor(forState: .Disabled) .~ UIColor.whiteColor().colorWithAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.whiteColor().CGColor
+  <> UIButton.lens.titleColor(forState: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
+  <> UIButton.lens.titleColor(forState: .disabled) .~ UIColor.white.withAlphaComponent(0.5)
+  <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(3))

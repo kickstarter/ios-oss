@@ -74,7 +74,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
   }
 
-  internal func indexPathIsLiveStreamSubpage(indexPath: NSIndexPath) -> Bool {
+  internal func indexPathIsLiveStreamSubpage(indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isLiveStream == true
   }
 

@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 import Prelude
@@ -316,7 +316,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createVideoViewController.assertValueCount(0)
 
-    self.scheduler.advanceByInterval(10)
+    self.scheduler.advance(by: .seconds(10))
 
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
     self.createVideoViewController.assertValues([hlsStreamType])
@@ -327,7 +327,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ true
       |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
       |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
@@ -426,7 +426,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ true
       |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
       |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
@@ -518,7 +518,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ false
       |> LiveStreamEvent.lens.stream.replayUrl .~ nil
-      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -16 * 60))
+      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -16 * 60)
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
@@ -531,7 +531,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ true
       |> LiveStreamEvent.lens.stream.replayUrl .~ nil
-      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()
@@ -544,7 +544,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.hasReplay .~ true
       |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ (NSDate.init(timeIntervalSinceNow: -60 * 60))
+      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
     self.vm.inputs.configureWith(databaseRef: TestFirebaseDatabaseReferenceType(), event: event)
     self.vm.inputs.viewDidLoad()

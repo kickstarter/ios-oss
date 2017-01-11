@@ -3,7 +3,7 @@ import Argo
 @testable import LiveStream
 
 public extension Decodable {
-  public static func decodeJSONDictionary(json: [String: AnyObject]) -> Decoded<DecodedType> {
+  public static func decodeJSONDictionary(_ json: [String: Any]) -> Decoded<DecodedType> {
     return Self.decode(JSON(json))
   }
 }
@@ -12,7 +12,7 @@ final class LiveStreamEventTests: XCTestCase {
 
   //swiftlint:disable function_body_length
   func testParseJSON() {
-    let liveStreamEvent = LiveStreamEvent.decodeJSONDictionary([
+    let json: [String:Any] = [
       "success": true,
       "id": 123,
       "stream": [
@@ -52,15 +52,16 @@ final class LiveStreamEventTests: XCTestCase {
       "user": [
         "is_subscribed": true
       ]
-    ])
+    ]
+    let liveStreamEvent = LiveStreamEvent.decodeJSONDictionary(json)
 
-    let dateComponents = NSDateComponents()
+    var dateComponents = DateComponents()
     dateComponents.day = 1
     dateComponents.month = 12
     dateComponents.year = 2016
-    dateComponents.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+    dateComponents.timeZone = TimeZone(secondsFromGMT: 0)
 
-    let date = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
+    let date = Calendar.current.date(from: dateComponents)
 
     // Stream
     XCTAssertNil(liveStreamEvent.error)
