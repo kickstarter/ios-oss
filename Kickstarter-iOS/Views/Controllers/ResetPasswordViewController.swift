@@ -6,10 +6,10 @@ import ReactiveExtensions
 import UIKit
 
 internal final class ResetPasswordViewController: UIViewController {
-  @IBOutlet fileprivate weak var emailTextFieldBackgroundView: UIView!
-  @IBOutlet fileprivate weak var emailTextField: UITextField!
-  @IBOutlet fileprivate weak var resetPasswordButton: BorderButton!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet private weak var emailTextFieldBackgroundView: UIView!
+  @IBOutlet private weak var emailTextField: UITextField!
+  @IBOutlet private weak var resetPasswordButton: UIButton!
+  @IBOutlet private weak var rootStackView: UIStackView!
 
   fileprivate let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 

@@ -5,7 +5,7 @@ import ReactiveSwift
 import KsApi
 import UIKit
 
-protocol ActivityUpdateCellDelegate {
+internal protocol ActivityUpdateCellDelegate {
   /// Call with the activity value when navigating to the activity's project.
   func activityUpdateCellTappedProjectImage(activity: Activity)
 }

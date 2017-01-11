@@ -1,5 +1,6 @@
-import Library
 import KsApi
+import Library
+import Prelude
 import UIKit
 
 internal final class ProjectBannerCell: UITableViewCell, ValueCell {
@@ -15,5 +16,15 @@ internal final class ProjectBannerCell: UITableViewCell, ValueCell {
     if let url = URL(string: project.photo.full) {
       self.projectImageView.af_setImage(withURL: url)
     }
+  }
+
+  internal override func bindStyles() {
+    _ = self.projectNameLabel
+      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.font .~ .ksr_title1(size: 16)
+
+    _ = self.creatorNameLabel
+      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
   }
 }
