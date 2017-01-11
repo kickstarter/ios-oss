@@ -21,12 +21,14 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.addAndConfigureSubscriber.map { $0.streamId }.observe(self.addAndConfigureSubscriberStreamId.observer)
+    self.vm.outputs.addAndConfigureSubscriber.map { $0.streamId }
+      .observe(self.addAndConfigureSubscriberStreamId.observer)
     self.vm.outputs.createAndConfigureSessionWithConfig.observe(
       self.createAndConfigureSessionWithConfig.observer)
     self.vm.outputs.addAndConfigureHLSPlayerWithStreamUrl.observe(
       self.addAndConfigureHLSPlayerWithStreamUrl.observer)
-    self.vm.outputs.notifyDelegateOfPlaybackStateChange.observe(self.notifyDelegateOfPlaybackStateChange.observer)
+    self.vm.outputs.notifyDelegateOfPlaybackStateChange
+      .observe(self.notifyDelegateOfPlaybackStateChange.observer)
     self.vm.outputs.removeSubscriber.map { $0.streamId }.observe(self.removeSubscriberStreamId.observer)
   }
 

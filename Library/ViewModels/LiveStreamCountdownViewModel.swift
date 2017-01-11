@@ -24,7 +24,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var hoursString: Signal<NSAttributedString, NoError> { get }
   var minutesString: Signal<NSAttributedString, NoError> { get }
   var projectImageUrl: Signal<URL, NoError> { get }
-  var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
   var secondsString: Signal<NSAttributedString, NoError> { get }
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
@@ -114,12 +114,12 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     //FIXME: write test for the event flipping to live
     self.pushLiveStreamViewController = Signal.combineLatest(
-      project,
+      configData,
       self.liveStreamEventProperty.signal.skipNil()
         .map(LiveStreamEvent.lens.stream.liveNow .~ true)
       )
+      .map(unpack)
       .takeWhen(countdownEnded)
-      .map { project, event in (project, event) }
       .take(first: 1)
 
     self.upcomingIntroText = project
@@ -175,7 +175,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let hoursString: Signal<NSAttributedString, NoError>
   public let minutesString: Signal<NSAttributedString, NoError>
   public let projectImageUrl: Signal<URL, NoError>
-  public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
+  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
   public let secondsString: Signal<NSAttributedString, NoError>
   public let upcomingIntroText: Signal<NSAttributedString, NoError>
   public let viewControllerTitle: Signal<String, NoError>

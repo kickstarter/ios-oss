@@ -48,9 +48,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map(first)
 
     let eventEvent = configData
-      .switchMap { project, liveStream, optionalEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+      .switchMap { project, liveStream, optionalEvent in
         fetchEvent(forProject: project, liveStream: liveStream, event: optionalEvent)
-        .materialize()
+          .materialize()
     }
 
     let event = eventEvent.values()
@@ -188,13 +188,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
 }
 
-private func fetchEvent(forProject project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) ->
-  SignalProducer<LiveStreamEvent, LiveApiError> {
+private func fetchEvent(forProject project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
+  -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
     if let event = event {
       return SignalProducer(value: event)
     }
-
 
     return AppEnvironment.current.liveStreamService.fetchEvent(
       eventId: liveStream.id, uid: AppEnvironment.current.currentUser?.id

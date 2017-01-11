@@ -225,10 +225,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, event in
+      .observeValues { [weak self] project, liveStream, event in
         // FIXME: pass the live stream into countdown too
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: project.liveStreams.first!, event: event)
+          .configuredWith(project: project, liveStream: liveStream, event: event)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }

@@ -154,7 +154,9 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     let startDate = Date(timeIntervalSince1970: liveStream.startDate)
 
     if startDate < Date() {
-      vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream, event: nil)
+      vc = LiveStreamContainerViewController.configuredWith(project: project,
+                                                            liveStream: liveStream,
+                                                            event: nil)
     } else {
       vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: liveStream)
     }
