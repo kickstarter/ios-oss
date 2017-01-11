@@ -58,30 +58,29 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   private func liveStreamSubpage(forProject project: Project) -> [ProjectPamphletSubpage] {
 
-    let liveComparator = Prelude.Comparator<Bool> { lhs, rhs in
-      switch (lhs, rhs) {
+    let currentlyLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      switch (lhs.isLiveNow, rhs.isLiveNow) {
       case (true, false):                 return .lt
       case (false, true):                 return .gt
       case (true, true), (false, false):  return .eq
       }
     }
 
-    let pastStartDateComparator = Prelude.Comparator<TimeInterval> { lhs, rhs in
-      lhs < Date().timeIntervalSince1970 ? .lt
-        : lhs == rhs ? .eq
+    // A comparator of time intervals that puts future times (relative to now) before past times.
+    let futureLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      lhs.startDate > AppEnvironment.current.dateType.init().timeIntervalSince1970 ? .lt
+        : lhs.startDate == rhs.startDate ? .eq
         : .gt
     }
 
-    let comparator = Project.LiveStream.lens.isLiveNow.lift(comparator: liveComparator)
-      <> Project.LiveStream.lens.startDate.lift(comparator: pastStartDateComparator)
+    // Sort by:
+    //   * live streams first
+    //   * future live streams next, followed by past live streams
+    //   * then sorted by start date, most recent first
+    let comparator = currentlyLiveStreamsFirstComparator
+      <> futureLiveStreamsFirstComparator
       <> Project.LiveStream.lens.startDate.comparator.reversed
 
-//    Prelude.Comparator.init(compare)
-
-    // FIXME: Sort by:
-    //   * live first
-    //   * past start date ordered by most recent
-    //   * future start date
     return project.liveStreams
       .sorted(comparator: comparator)
       .enumerated()
