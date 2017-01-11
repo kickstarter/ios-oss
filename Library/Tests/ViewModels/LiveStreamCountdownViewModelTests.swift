@@ -53,7 +53,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.upcomingIntroText.assertValues(["Upcoming with\nCreator Name"])
   }
 
-  func testDateComparison() {
+  func testCountdownLabels() {
     let liveStream = .template
       |> Project.LiveStream.lens.startDate .~ futureDate().timeIntervalSince1970
 
@@ -65,7 +65,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.minutes.assertValueCount(0)
     self.seconds.assertValueCount(0)
 
-    // Step 1: Set project and date
+    // Step 1: Set project and liveStream
     self.vm.inputs.configureWith(project: project, liveStream: liveStream)
     self.vm.inputs.viewDidLoad()
 
@@ -74,28 +74,49 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.minutes.assertValues(["24\nminutes"])
     self.seconds.assertValues(["45\nseconds"])
 
-    //FIXME: once we have a way to advance the test scheduler in such a way that time can pass we can fix 
-    //this test
-
-    // Step 2: Set date as if two days have passed
+    // Step 2: Set date as if two seconds have passed
     self.scheduler.advance(by: .seconds(2))
 
     self.days.assertValues(["10\ndays"])
     self.hours.assertValues(["07\nhours"])
     self.minutes.assertValues(["24\nminutes"])
     self.seconds.assertValues(["45\nseconds", "44\nseconds", "43\nseconds"])
+  }
 
-    // Step 3: Set now to a second past the stream's start date
-    // The live stream view controller should be pushed
+  func testCountdownEnded() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (self.scheduler.currentDate.timeIntervalSince1970 + 10)
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
+    self.vm.inputs.viewDidLoad()
 
     let event = LiveStreamEvent.template
-
-    // Step 4: Set the event
-    // The event could be set at any time but it's required for pushing the live stream
     self.vm.inputs.retrievedLiveStreamEvent(event: event)
 
-//    self.pushLiveStreamViewControllerProject.assertValues([project])
-//    self.pushLiveStreamViewControllerEvent.assertValues([event])
+    self.pushLiveStreamViewControllerProject.assertValueCount(0)
+    self.pushLiveStreamViewControllerEvent.assertValueCount(0)
+
+    self.scheduler.advance(by: .seconds(2))
+
+    self.pushLiveStreamViewControllerProject.assertValueCount(0)
+    self.pushLiveStreamViewControllerEvent.assertValueCount(0)
+
+    self.scheduler.advance(by: .seconds(8))
+
+    self.pushLiveStreamViewControllerProject.assertValueCount(0)
+    self.pushLiveStreamViewControllerEvent.assertValueCount(0)
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.pushLiveStreamViewControllerProject.assertValues([project])
+    self.pushLiveStreamViewControllerEvent.assertValues([event])
+
+    XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow ?? false)
+    XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
   }
 
   func testClose() {
