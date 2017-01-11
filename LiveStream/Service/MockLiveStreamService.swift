@@ -43,6 +43,6 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: self.subscribeToResult?.value ?? isSubscribed)
+      return SignalProducer(value: self.subscribeToResult?.value ?? !isSubscribed)
   }
 }
