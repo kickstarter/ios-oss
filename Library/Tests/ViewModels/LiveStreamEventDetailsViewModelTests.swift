@@ -65,6 +65,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.creator.avatar .~ "https://www.com/creator-avatar.jpg"
 
+    self.creatorAvatarUrl.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 

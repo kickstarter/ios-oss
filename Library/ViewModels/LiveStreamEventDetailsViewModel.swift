@@ -103,7 +103,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       }.skipNil()
 
     self.creatorAvatarUrl = Signal.merge(
-      project.mapConst(nil),
       event
         .map { URL(string: $0.creator.avatar) }
     )

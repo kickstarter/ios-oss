@@ -112,6 +112,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
     _ = self.creatorAvatarImageView
+      |> UIImageView.lens.image .~ nil
       |> UIImageView.lens.layer.masksToBounds .~ true
 
     _ = self.introLabel

@@ -161,6 +161,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_footnote()
 
     _  = self.creatorAvatarImageView
+      |> UIImageView.lens.image .~ nil
       |> UIImageView.lens.layer.masksToBounds .~ true
 
     _  = self.numberWatchingButton
