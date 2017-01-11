@@ -298,8 +298,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.subscribeButton.setImage($0, for: .normal)
+      .observeValues { [weak self] imageName in
+        imageName.map { self?.subscribeButton.setImage(UIImage(named: $0), for: .normal) }
     }
 
     self.availableForLabel.rac.text = self.eventDetailsViewModel.outputs.availableForText
