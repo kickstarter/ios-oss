@@ -6,7 +6,7 @@ import Result
 @testable import LiveStream
 
 private struct TestOTStreamType: OTStreamType {
-  fileprivate let streamId: String!
+  fileprivate let streamId: String
 }
 private class TestOTErrorType: NSError, OTErrorType {}
 

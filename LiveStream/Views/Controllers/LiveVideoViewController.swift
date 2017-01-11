@@ -89,8 +89,7 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func addAndConfigureSubscriber(stream: OTStream) {
-    // FIXME: for some reason this IUO initializer is causing problems, maybe opentok 2.10 addresses this
-    guard let subscriber = OTSubscriber(stream: stream, delegate: nil) else { return }
+    let subscriber = OTSubscriber(stream: stream, delegate: nil)
 
     self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)
@@ -107,7 +106,7 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func removeSubscriberForStream(stream: OTStream) {
-    self.subscribers.filter({ $0.stream.streamId == stream.streamId })
+    self.subscribers.filter({ $0.stream?.streamId == stream.streamId })
       .first
       .doIfSome(self.removeSubscriber(subscriber:))
   }
