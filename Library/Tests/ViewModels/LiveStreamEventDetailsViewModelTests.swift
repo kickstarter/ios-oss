@@ -19,9 +19,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
   private let numberOfPeopleWatchingText = TestObserver<String, NoError>()
+  private let shareButtonEnabled = TestObserver<Bool, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
-  private let subscribeButtonImage = TestObserver<UIImage?, NoError>()
+  private let subscribeButtonImage = TestObserver<String?, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -38,6 +39,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.animateActivityIndicator.observe(self.animateActivityIndicator.observer)
     self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
       self.animateSubscribeButtonActivityIndicator.observer)
+    self.vm.outputs.shareButtonEnabled.observe(self.shareButtonEnabled.observer)
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
@@ -77,7 +79,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
+    self.configureShareViewModelProject.assertValueCount(0)
+    self.configureShareViewModelEvent.assertValueCount(0)
     self.animateActivityIndicator.assertValueCount(0)
+    self.shareButtonEnabled.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
@@ -86,6 +91,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.configureShareViewModelProject.assertValues([project])
     self.configureShareViewModelEvent.assertValues([event])
+
+    self.shareButtonEnabled.assertValues([true])
   }
 
   func testConfigureShareViewModel_WithoutEvent() {
@@ -96,7 +103,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
+    self.configureShareViewModelProject.assertValueCount(0)
+    self.configureShareViewModelEvent.assertValueCount(0)
     self.animateActivityIndicator.assertValueCount(0)
+    self.shareButtonEnabled.assertValueCount(0)
 
     withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(event))) {
       self.vm.inputs.viewDidLoad()
@@ -110,6 +120,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.configureShareViewModelProject.assertValues([project])
       self.configureShareViewModelEvent.assertValues([event])
+
+      self.shareButtonEnabled.assertValues([true])
     }
   }
 
@@ -180,6 +192,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
+    self.subscribeButtonImage.assertValueCount(0)
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
@@ -189,6 +202,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.subscribeLabelText.assertValues(["Keep up with future live streams"])
     self.subscribeButtonText.assertValues(["Subscribe"])
+    self.subscribeButtonImage.assertValues([nil])
 
     self.vm.inputs.subscribeButtonTapped()
 
@@ -198,6 +212,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
+    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
 
     self.vm.inputs.subscribeButtonTapped()
 
@@ -211,6 +226,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       "Keep up with future live streams"
       ])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
+    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
 
     let apiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
     withEnvironment(liveStreamService: apiService) {
@@ -227,6 +243,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
         "Keep up with future live streams"
         ])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
+      self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
     }
   }
 }

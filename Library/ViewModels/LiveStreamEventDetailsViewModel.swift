@@ -31,7 +31,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
   var subscribeButtonText: Signal<String, NoError> { get }
-  var subscribeButtonImage: Signal<UIImage?, NoError> { get }
+  var subscribeButtonImage: Signal<String?, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
 }
 
@@ -110,7 +110,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.liveStreamParagraph = event.map { $0.stream.description }
 
     self.subscribeButtonImage = subscribed.map {
-      $0 ? UIImage(named: "postcard-checkmark") : nil
+      $0 ? "postcard-checkmark" : nil
     }
 
     self.subscribeLabelText = subscribed.map {
@@ -181,7 +181,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonText: Signal<String, NoError>
-  public let subscribeButtonImage: Signal<UIImage?, NoError>
+  public let subscribeButtonImage: Signal<String?, NoError>
   public let subscribeLabelText: Signal<String, NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
