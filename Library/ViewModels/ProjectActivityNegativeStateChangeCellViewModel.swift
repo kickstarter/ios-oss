@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
   /// Call to set the activity and project.
-  func configureWith(activity activity: Activity, project: Project)
+  func configureWith(activity: Activity, project: Project)
 }
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelOutputs {
@@ -25,27 +25,27 @@ ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStat
 ProjectActivityNegativeStateChangeCellViewModelOutputs {
 
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
 
     self.title = activityAndProject.map { activity, project in
         switch activity.category {
         case .cancellation:
           return Strings.dashboard_activity_project_name_was_canceled(
-            project_name: project.name ?? "",
-            cancellation_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
-              timeStyle: .NoStyle).nonBreakingSpaced()
+            project_name: project.name,
+            cancellation_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
+              timeStyle: .none).nonBreakingSpaced()
           )
         case .failure:
           return Strings.dashboard_activity_project_name_was_unsuccessful(
-            project_name: project.name ?? "",
-            unsuccessful_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
-              timeStyle: .NoStyle).nonBreakingSpaced()
+            project_name: project.name,
+            unsuccessful_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
+              timeStyle: .none).nonBreakingSpaced()
           )
         case .suspension:
           return Strings.dashboard_activity_project_name_was_suspended(
-            project_name: project.name ?? "",
-            suspension_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .LongStyle,
-              timeStyle: .NoStyle).nonBreakingSpaced()
+            project_name: project.name,
+            suspension_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
+              timeStyle: .none).nonBreakingSpaced()
           )
         default:
           assertionFailure("Unrecognized activity: \(activity).")
@@ -54,8 +54,8 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
     }
   }
 
-  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func configureWith(activity activity: Activity, project: Project) {
+  fileprivate let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity: Activity, project: Project) {
     self.activityAndProjectProperty.value = (activity, project)
   }
 

@@ -3,14 +3,14 @@ import XCTest
 import AVFoundation
 import Foundation
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import KsApi
 import LiveStream
 
 extension XCTestCase {
 
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
-  func withEnvironment(env: Environment, @noescape body: () -> Void) {
+  func withEnvironment(_ env: Environment, body: () -> Void) {
     AppEnvironment.pushEnvironment(env)
     body()
     AppEnvironment.popEnvironment()
@@ -18,32 +18,32 @@ extension XCTestCase {
 
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(
-    apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
-               // swiftlint:disable line_length
-               assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               // swiftlint:enable line_length
-               cache: CacheProtocol = AppEnvironment.current.cache,
-               calendar: NSCalendar = AppEnvironment.current.calendar,
-               config: Config? = AppEnvironment.current.config,
-               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
-               countryCode: String = AppEnvironment.current.countryCode,
-               currentUser: User? = AppEnvironment.current.currentUser,
-               dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
-               facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
-               isVoiceOverRunning: () -> Bool = AppEnvironment.current.isVoiceOverRunning,
-               koala: Koala = AppEnvironment.current.koala,
-               language: Language = AppEnvironment.current.language,
-               launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    apiService: ServiceType = AppEnvironment.current.apiService,
+    apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    // swiftlint:disable line_length
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    // swiftlint:enable line_length
+    cache: KSCache = AppEnvironment.current.cache,
+    calendar: Calendar = AppEnvironment.current.calendar,
+    config: Config? = AppEnvironment.current.config,
+    cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
+    countryCode: String = AppEnvironment.current.countryCode,
+    currentUser: User? = AppEnvironment.current.currentUser,
+    dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+    debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
+    facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isVoiceOverRunning: @escaping () -> Bool = AppEnvironment.current.isVoiceOverRunning,
+    koala: Koala = AppEnvironment.current.koala,
+    language: Language = AppEnvironment.current.language,
+    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
                liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
-               locale: NSLocale = AppEnvironment.current.locale,
-               mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
-               timeZone: NSTimeZone = AppEnvironment.current.timeZone,
-               ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-               userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
-               @noescape body: () -> Void) {
+    locale: Locale = AppEnvironment.current.locale,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+    timeZone: TimeZone = AppEnvironment.current.timeZone,
+    ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
+    body: () -> Void) {
 
     withEnvironment(
       Environment(

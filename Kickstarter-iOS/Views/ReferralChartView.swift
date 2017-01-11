@@ -9,7 +9,7 @@ public final class ReferralChartView: UIView {
 
   public init() {
     super.init(frame: .zero)
-    self.backgroundColor = .clearColor()
+    self.backgroundColor = .clear
   }
 
   public var internalPercentage: CGFloat = 0.0 {
@@ -25,8 +25,8 @@ public final class ReferralChartView: UIView {
   }
 
   // swiftlint:disable function_body_length
-  public override func drawRect(rect: CGRect) {
-    super.drawRect(rect)
+  public override func draw(_ rect: CGRect) {
+    super.draw(rect)
 
     guard let context = UIGraphicsGetCurrentContext() else { return }
 
@@ -36,49 +36,47 @@ public final class ReferralChartView: UIView {
       CGFloat(2.0 * M_PI)
 
     UIColor.ksr_green_700.set()
-    CGContextMoveToPoint(context, self.bounds.width/2, self.bounds.height/2)
-    CGContextAddLineToPoint(context, self.bounds.width/2, 0)
-    CGContextAddArc(context,
-                    self.bounds.width/2,
-                    self.bounds.height/2,
-                    self.bounds.width/2,
-                    CGFloat(-M_PI_2),
-                    internalPercentageAngle,
-                    0)
-    CGContextClosePath(context)
-    CGContextFillPath(context)
+    context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
+    context.addLine(to: CGPoint(x: self.bounds.width/2, y: 0))
+    context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
+                   radius: self.bounds.width/2,
+                   startAngle: CGFloat(-M_PI_2),
+                   endAngle: internalPercentageAngle,
+                   clockwise: false)
+    context.closePath()
+    context.fillPath()
 
     UIColor.ksr_orange_400.set()
-    CGContextMoveToPoint(context, self.bounds.width/2, self.bounds.height/2)
-    CGContextAddLineToPoint(context,
-                            self.bounds.width/2 + self.bounds.width/2 * cos(internalPercentageAngle),
-                            self.bounds.height/2 + self.bounds.height/2 * sin(internalPercentageAngle))
-    CGContextAddArc(context,
-                    self.bounds.width/2,
-                    self.bounds.height/2,
-                    self.bounds.width/2,
-                    CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI),
-                    CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
-                    0)
-    CGContextClosePath(context)
-    CGContextFillPath(context)
+    context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
+    context.addLine(
+      to: CGPoint(
+        x: self.bounds.width/2 + self.bounds.width/2 * cos(internalPercentageAngle),
+        y: self.bounds.height/2 + self.bounds.height/2 * sin(internalPercentageAngle)
+      )
+    )
+    context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
+                   radius: self.bounds.width/2,
+                   startAngle: CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI),
+                   endAngle: CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
+                   clockwise: false)
+    context.closePath()
+    context.fillPath()
 
     UIColor.ksr_violet_500.set()
-    CGContextMoveToPoint(context, self.bounds.width/2, self.bounds.height/2)
-    CGContextAddLineToPoint(context,
-                            self.bounds.width/2 + self.bounds.width/2 *
-                              cos(internalAndExternalPercentageAngle),
-                            self.bounds.height/2 + self.bounds.height/2 *
-                              sin(internalAndExternalPercentageAngle))
-    CGContextAddArc(context,
-                    self.bounds.width/2,
-                    self.bounds.height/2,
-                    self.bounds.width/2,
-                    CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
-                    CGFloat(-M_PI_2),
-                    0)
-    CGContextClosePath(context)
-    CGContextFillPath(context)
+    context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
+    context.addLine(
+      to: CGPoint(
+        x: self.bounds.width/2 + self.bounds.width/2 * cos(internalAndExternalPercentageAngle),
+        y: self.bounds.height/2 + self.bounds.height/2 * sin(internalAndExternalPercentageAngle)
+      )
+    )
+    context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
+                   radius: self.bounds.height/2,
+                   startAngle: CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
+                   endAngle: CGFloat(-M_PI_2),
+                   clockwise: false)
+    context.closePath()
+    context.fillPath()
   }
   // swiftlint:enable function_body_length
 }

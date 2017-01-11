@@ -11,32 +11,32 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case activities
   }
 
-  internal func facebookConnect(source source: FriendsSource, visible: Bool) {
+  internal func facebookConnect(source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
   }
 
-  internal func findFriends(source source: FriendsSource, visible: Bool) {
+  internal func findFriends(source: FriendsSource, visible: Bool) {
     self.set(values: visible ? [source] : [],
              cellClass: FindFriendsHeaderCell.self,
              inSection: Section.findFriends.rawValue)
   }
 
-  internal func removeFacebookConnectRows() -> [NSIndexPath] {
+  internal func removeFacebookConnectRows() -> [IndexPath] {
     self.clearValues(section: Section.facebookConnect.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.facebookConnect.rawValue)]
+    return [IndexPath(row: 0, section: Section.facebookConnect.rawValue)]
   }
 
-  internal func removeFindFriendsRows() -> [NSIndexPath] {
+  internal func removeFindFriendsRows() -> [IndexPath] {
     self.clearValues(section: Section.findFriends.rawValue)
 
-    return [NSIndexPath(forRow: 0, inSection: Section.findFriends.rawValue)]
+    return [IndexPath(row: 0, section: Section.findFriends.rawValue)]
   }
 
-  internal func load(surveys surveys: [SurveyResponse]) {
-    let surveysWithPosition = surveys.enumerate().map { idx, survey in
+  internal func load(surveys: [SurveyResponse]) {
+    let surveysWithPosition = surveys.enumerated().map { idx, survey in
       (surveyResponse: survey, count: surveys.count, position: idx)
     }
 
@@ -45,7 +45,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
              inSection: Section.surveys.rawValue)
   }
 
-  internal func load(activities activities: [Activity]) {
+  internal func load(activities: [Activity]) {
     let section = Section.activities.rawValue
 
     self.clearValues(section: section)

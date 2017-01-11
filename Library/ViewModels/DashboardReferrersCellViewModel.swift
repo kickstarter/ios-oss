@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -19,7 +19,7 @@ public protocol DashboardReferrersCellViewModelInputs {
   func backersButtonTapped()
 
   /// Call to configure cell with cumulative and referral stats.
-  func configureWith(cumulative cumulative: ProjectStatsEnvelope.CumulativeStats,
+  func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                                 project: Project,
                                 referrers: [ProjectStatsEnvelope.ReferrerStats])
 
@@ -87,7 +87,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
   // swiftlint:disable function_body_length
   public init() {
-    let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.ignoreNil()
+    let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.skipNil()
 
     let country = cumulativeProjectStats.map { _, project, _ in project.country }
 
@@ -120,7 +120,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
       .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
       .map { Format.percentage($0) }
 
-    self.customPledgedText = combineLatest(customPledgedAmount, country)
+    self.customPledgedText = Signal.combineLatest(customPledgedAmount, country)
       .map { pledged, country in Format.currency(pledged, country: country) }
 
     self.customStackViewHidden = customReferrers.map { $0.isEmpty }
@@ -130,7 +130,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     self.externalPercentText = self.externalPercentage.map { Format.percentage($0) }
 
-    self.externalPledgedText = combineLatest(externalPledgedAmount, country)
+    self.externalPledgedText = Signal.combineLatest(externalPledgedAmount, country)
       .map { pledged, country in Format.currency(pledged, country: country) }
 
     self.internalPercentage = internalReferrers
@@ -138,7 +138,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     self.internalPercentText = self.internalPercentage.map { Format.percentage($0) }
 
-    self.internalPledgedText = combineLatest(internalPledgedAmount, country)
+    self.internalPledgedText = Signal.combineLatest(internalPledgedAmount, country)
       .map { pledged, country in Format.currency(pledged, country: country) }
 
     let sortedByPledgedOrPercent = referrers.sort { $0.pledged > $1.pledged }
@@ -157,7 +157,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     let sortedBySource = referrers
       .takeWhen(self.sourceButtonTappedProperty.signal)
-      .sort { $0.referrerName.lowercaseString < $1.referrerName.lowercaseString }
+      .sort { $0.referrerName.lowercased() < $1.referrerName.lowercased() }
 
     let allReferrers = Signal.merge(
       initialSort,
@@ -167,7 +167,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
       sortedBySource
     )
 
-    let allReferrersRowData = combineLatest(country, allReferrers)
+    let allReferrersRowData = Signal.combineLatest(country, allReferrers)
       .map { ReferrersRowData(country: $0, referrers: $1) }
 
     let showMoreReferrersButtonIsHidden = Signal.merge(
@@ -177,7 +177,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     self.showMoreReferrersButtonHidden = showMoreReferrersButtonIsHidden.skipRepeats()
 
-    self.referrersRowData = combineLatest(allReferrersRowData, showMoreReferrersButtonIsHidden)
+    self.referrersRowData = Signal.combineLatest(allReferrersRowData, showMoreReferrersButtonIsHidden)
       .map { rowData, isHidden in
         let refCount = rowData.referrers.count
         let maxReferrers = isHidden ? rowData.referrers :
@@ -190,43 +190,43 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
     cumulativeProjectStats
       .takeWhen(self.showMoreReferrersTappedProperty.signal)
-      .observeNext { _, project, _ in
+      .observeValues { _, project, _ in
         AppEnvironment.current.koala.trackDashboardSeeMoreReferrers(project: project)
     }
   }
   // swiftlint:enable function_body_length
 
-  private let backersButtonTappedProperty = MutableProperty()
+  fileprivate let backersButtonTappedProperty = MutableProperty()
   public func backersButtonTapped() {
     self.backersButtonTappedProperty.value = ()
   }
 
-  private let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
+  fileprivate let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
                                                                 Project,
                                                                 [ProjectStatsEnvelope.ReferrerStats])?>(nil)
-  public func configureWith(cumulative cumulative: ProjectStatsEnvelope.CumulativeStats,
+  public func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                                        project: Project,
                                        referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
     self.cumulativeProjectStatsProperty.value = (cumulative, project, referrers)
   }
 
-  private let percentButtonTappedProperty = MutableProperty()
+  fileprivate let percentButtonTappedProperty = MutableProperty()
   public func percentButtonTapped() {
     self.percentButtonTappedProperty.value = ()
   }
 
-  private let pledgedButtonTappedProperty = MutableProperty()
+  fileprivate let pledgedButtonTappedProperty = MutableProperty()
   public func pledgedButtonTapped() {
     self.pledgedButtonTappedProperty.value = ()
   }
 
-  private let showMoreReferrersTappedProperty = MutableProperty()
+  fileprivate let showMoreReferrersTappedProperty = MutableProperty()
   public func showMoreReferrersTapped() {
     self.showMoreReferrersTappedProperty.value = ()
   }
 
-  private let sourceButtonTappedProperty = MutableProperty()
+  fileprivate let sourceButtonTappedProperty = MutableProperty()
   public func sourceButtonTapped() {
     self.sourceButtonTappedProperty.value = ()
   }

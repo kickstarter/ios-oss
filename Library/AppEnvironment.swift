@@ -1,10 +1,11 @@
 import Argo
+import Runes
 import FBSDKCoreKit
 import Foundation
 import KsApi
 import LiveStream
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /**
@@ -17,7 +18,7 @@ public struct AppEnvironment {
   /**
    A global stack of environments.
    */
-  private static var stack: [Environment] = [Environment()]
+  fileprivate static var stack: [Environment] = [Environment()]
 
   /**
    Invoke when an access token has been acquired and you want to log the user in. Replaces the current
@@ -25,7 +26,7 @@ public struct AppEnvironment {
 
    - parameter envelope: An access token envelope with the api access token and user.
    */
-  public static func login(envelope: AccessTokenEnvelope) {
+  public static func login(_ envelope: AccessTokenEnvelope) {
     replaceCurrentEnvironment(
       apiService: current.apiService.login(OauthToken(token: envelope.accessToken)),
       currentUser: envelope.user,
@@ -39,14 +40,14 @@ public struct AppEnvironment {
 
    - parameter user: A user model.
    */
-  public static func updateCurrentUser(user: User) {
+  public static func updateCurrentUser(_ user: User) {
     replaceCurrentEnvironment(
       currentUser: user,
       koala: current.koala |> Koala.lens.loggedInUser .~ user
     )
   }
 
-  public static func updateConfig(config: Config) {
+  public static func updateConfig(_ config: Config) {
     replaceCurrentEnvironment(
       config: config,
       koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
@@ -60,7 +61,7 @@ public struct AppEnvironment {
 
     replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
-      cache: AppEnvironment.current.cache.dynamicType.init(),
+      cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
       koala: current.koala |> Koala.lens.loggedInUser .~ nil
     )
@@ -72,12 +73,13 @@ public struct AppEnvironment {
   }
 
   // Push a new environment onto the stack.
-  public static func pushEnvironment(env: Environment) {
+  public static func pushEnvironment(_ env: Environment) {
     saveEnvironment(environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults)
     stack.append(env)
   }
 
   // Pop an environment off the stack.
+  @discardableResult
   public static func popEnvironment() -> Environment? {
     let last = stack.popLast()
     let next = current ?? Environment()
@@ -88,37 +90,37 @@ public struct AppEnvironment {
   }
 
   // Replace the current environment with a new environment.
-  public static func replaceCurrentEnvironment(env: Environment) {
+  public static func replaceCurrentEnvironment(_ env: Environment) {
     pushEnvironment(env)
-    stack.removeAtIndex(stack.count - 2)
+    stack.remove(at: stack.count - 2)
   }
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
-    apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
+    apiService: ServiceType = AppEnvironment.current.apiService,
+               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
-               cache: CacheProtocol = AppEnvironment.current.cache,
-               calendar: NSCalendar = AppEnvironment.current.calendar,
+               cache: KSCache = KSCache(),
+               calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
-               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
+               cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
+               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
                facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
-               isVoiceOverRunning: (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
+               isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
                liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
-               locale: NSLocale = AppEnvironment.current.locale,
+               locale: Locale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
-               timeZone: NSTimeZone = AppEnvironment.current.timeZone,
+               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -155,30 +157,29 @@ public struct AppEnvironment {
   // Replaces the current environment onto the stack with an environment that changes only a subset
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
-    apiService apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: NSTimeInterval = AppEnvironment.current.apiDelayInterval,
-               // swiftlint:disable line_length
+    apiService: ServiceType = AppEnvironment.current.apiService,
+               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+               // swiftlint:disable:next line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               // swiftlint:enable line_length
-               cache: CacheProtocol = AppEnvironment.current.cache,
-               calendar: NSCalendar = AppEnvironment.current.calendar,
+               cache: KSCache = KSCache(),
+               calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
-               cookieStorage: NSHTTPCookieStorageType = AppEnvironment.current.cookieStorage,
+               cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
                countryCode: String = AppEnvironment.current.countryCode,
                currentUser: User? = AppEnvironment.current.currentUser,
                dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: NSTimeInterval = AppEnvironment.current.debounceInterval,
+               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
                facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
-               isVoiceOverRunning: (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
+               isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
                koala: Koala = AppEnvironment.current.koala,
                language: Language = AppEnvironment.current.language,
                launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
                liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
-               locale: NSLocale = AppEnvironment.current.locale,
+               locale: Locale = AppEnvironment.current.locale,
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerType = AppEnvironment.current.scheduler,
-               timeZone: NSTimeZone = AppEnvironment.current.timeZone,
+               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -214,10 +215,10 @@ public struct AppEnvironment {
 
   // Returns the last saved environment from user defaults.
   // swiftlint:disable function_body_length
-  public static func fromStorage(ubiquitousStore ubiquitousStore: KeyValueStoreType,
-                                                    userDefaults: KeyValueStoreType) -> Environment {
+  public static func fromStorage(ubiquitousStore: KeyValueStoreType,
+                                 userDefaults: KeyValueStoreType) -> Environment {
 
-    let data = userDefaults.dictionaryForKey(environmentStorageKey) ?? [:]
+    let data = userDefaults.dictionary(forKey: environmentStorageKey) ?? [:]
 
     var service = current.apiService
     var currentUser: User? = nil
@@ -249,9 +250,9 @@ public struct AppEnvironment {
 
     // Try restoring the base urls for the api service
     if let apiBaseUrlString = data["apiService.serverConfig.apiBaseUrl"] as? String,
-      apiBaseUrl = NSURL(string: apiBaseUrlString),
-      webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
-      webBaseUrl = NSURL(string: webBaseUrlString) {
+      let apiBaseUrl = URL(string: apiBaseUrlString),
+      let webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
+      let webBaseUrl = URL(string: webBaseUrlString) {
 
       service = Service(
         serverConfig: ServerConfig(
@@ -267,7 +268,7 @@ public struct AppEnvironment {
 
     // Try restoring the basic auth data for the api service
     if let username = data["apiService.serverConfig.basicHTTPAuth.username"] as? String,
-      password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
+      let password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
 
       service = Service(
         serverConfig: ServerConfig(
@@ -300,24 +301,26 @@ public struct AppEnvironment {
                                                    ubiquitousStore: KeyValueStoreType,
                                                    userDefaults: KeyValueStoreType) {
 
-    let data: [String:AnyObject?] = [
-      "apiService.oauthToken.token": env.apiService.oauthToken?.token,
-      "apiService.serverConfig.apiBaseUrl": env.apiService.serverConfig.apiBaseUrl.absoluteString,
-      "apiService.serverConfig.apiClientAuth.clientId": env.apiService.serverConfig.apiClientAuth.clientId,
-      "apiService.serverConfig.basicHTTPAuth.username": env.apiService.serverConfig.basicHTTPAuth?.username,
-      "apiService.serverConfig.basicHTTPAuth.password": env.apiService.serverConfig.basicHTTPAuth?.password,
-      "apiService.serverConfig.webBaseUrl": env.apiService.serverConfig.webBaseUrl.absoluteString,
-      "apiService.language": env.apiService.language,
-      "config": env.config?.encode(),
-      "currentUser": env.currentUser?.encode()
-    ]
+    var data: [String:Any] = [:]
 
-    userDefaults.setObject(data.compact(), forKey: environmentStorageKey)
+    data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
+    data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
+    // swiftlint:disable line_length
+    data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
+    data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
+    data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
+    // swiftlint:enable line_length
+    data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
+    data["apiService.language"] = env.apiService.language
+    data["config"] = env.config?.encode()
+    data["currentUser"] = env.currentUser?.encode()
+
+    userDefaults.set(data, forKey: environmentStorageKey)
   }
 }
 
 private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -> String? {
-  return userDefaults.objectForKey("com.kickstarter.access_token") as? String
+  return userDefaults.object(forKey: "com.kickstarter.access_token") as? String
 }
 
 private func removeLegacyOauthToken(fromUserDefaults userDefaults: KeyValueStoreType) {

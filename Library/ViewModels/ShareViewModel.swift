@@ -2,21 +2,36 @@
 import KsApi
 import LiveStream
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Social
 
+public struct ShareActivityCompletionData {
+  internal let activityType: UIActivityType?
+  internal let completed: Bool
+  internal let returnedItems: [Any]?
+  internal let activityError: Error?
+
+  public init(activityType: UIActivityType?,
+              completed: Bool,
+              returnedItems: [Any]?,
+              activityError: Error?) {
+    self.activityType = activityType
+    self.completed = completed
+    self.returnedItems = returnedItems
+    self.activityError = activityError
+  }
+}
+
 /// These share types provide us access to knowing when the user successfully shares through that method,
 /// or when the user cancels.
-private let firstPartyShareTypes = [UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,
-                                    UIActivityTypePostToWeibo, UIActivityTypeMessage, UIActivityTypeMail,
-                                    UIActivityTypeCopyToPasteboard, UIActivityTypeAddToReadingList,
-                                    UIActivityTypePostToTencentWeibo, UIActivityTypeAirDrop,
-                                    SafariActivityType]
+private let firstPartyShareTypes: [UIActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
+                                                      .message, .mail, .copyToPasteboard, .addToReadingList,
+                                                      .postToTencentWeibo, .airDrop, SafariActivityType]
 
 public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
-  func configureWith(shareContext shareContext: ShareContext)
+  func configureWith(shareContext: ShareContext)
 
   /// Call when the direct-share facebook button is pressed.
   func facebookButtonTapped()
@@ -25,13 +40,10 @@ public protocol ShareViewModelInputs {
   func shareButtonTapped()
 
   /// Call from the UIActivityViewController's completion handler.
-  func shareActivityCompletion(activityType activityType: String?,
-                                            completed: Bool,
-                                            returnedItems: [AnyObject]?,
-                                            activityError: NSError?)
+  func shareActivityCompletion(with data: ShareActivityCompletionData)
 
   /// Call from the SLComposeViewController's completion handler
-  func shareComposeCompletion(result result: SLComposeViewControllerResult)
+  func shareComposeCompletion(result: SLComposeViewControllerResult)
 
   /// Call when the direct-share twitter button is pressed.
   func twitterButtonTapped()
@@ -54,37 +66,39 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
   // swiftlint:disable function_body_length
   public init() {
-    let shareContext = self.shareContextProperty.signal.ignoreNil()
+    let shareContext = self.shareContextProperty.signal.skipNil()
 
     self.showShareSheet = shareContext
       .takeWhen(self.shareButtonTappedProperty.signal)
       .map(activityController(forShareContext:))
+      .skipNil()
 
     let directShareService = Signal.merge(
       self.facebookButtonTappedProperty.signal.mapConst(SLServiceTypeFacebook),
       self.twitterButtonTappedProperty.signal.mapConst(SLServiceTypeTwitter)
       )
 
-    self.showShareCompose = combineLatest(shareContext, directShareService)
+    self.showShareCompose = Signal.combineLatest(shareContext, directShareService)
       .map(shareComposeController(forShareContext:serviceType:))
+      .skipNil()
 
     let directShareCompletion = Signal.merge(
-      self.facebookButtonTappedProperty.signal.mapConst(UIActivityTypePostToFacebook),
-      self.twitterButtonTappedProperty.signal.mapConst(UIActivityTypePostToTwitter)
+      self.facebookButtonTappedProperty.signal.mapConst(UIActivityType.postToFacebook),
+      self.twitterButtonTappedProperty.signal.mapConst(UIActivityType.postToTwitter)
       )
-      .takePairWhen(self.shareComposeCompletionProperty.signal.ignoreNil())
+      .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
       .map { service, result in
-        (
-          activityType: String?(service),
-          completed: result == .Done,
-          returnedItems: [AnyObject]?.None,
-          activityError: NSError?.None
+        ShareActivityCompletionData(
+          activityType: service,
+          completed: result == .done,
+          returnedItems: nil,
+          activityError: nil
         )
     }
 
     let shareCompletion = Signal.merge(
       directShareCompletion,
-      self.shareActivityCompletionProperty.signal.ignoreNil()
+      self.shareActivityCompletionProperty.signal.skipNil()
       )
 
     let shareActivityCompletion = shareContext
@@ -95,16 +109,16 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareContext
       .takeWhen(self.shareButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackShowedShareSheet(shareContext: $0) }
+      .observeValues { AppEnvironment.current.koala.trackShowedShareSheet(shareContext: $0) }
 
     canceledShare
       .filter { _, completion in completion.activityType == nil }
       .map(first)
-      .observeNext { AppEnvironment.current.koala.trackCanceledShareSheet(shareContext: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCanceledShareSheet(shareContext: $0) }
 
     shareActivityCompletion
       .filter { _, completion in completion.activityType != nil }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShowedShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -112,25 +126,25 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareActivityCompletion
       .filter { _, completion in
-        completion.completed && firstPartyShareTypes.contains(completion.activityType ?? "")
+        completion.completed && completion.activityType.map(firstPartyShareTypes.contains) == .some(true)
       }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackShared(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
     }
 
     canceledShare
-      .filter { _, completion in firstPartyShareTypes.contains(completion.activityType ?? "") }
+      .filter { _, completion in completion.activityType.map(firstPartyShareTypes.contains) == .some(true) }
       .flatMap {
         SignalProducer(value: $0)
-          .delay(1.0, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeNext { shareContext, completion in
+      .observeValues { shareContext, completion in
         AppEnvironment.current.koala.trackCanceledShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -138,31 +152,27 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   }
   // swiftlint:enable function_body_length
 
-  private let shareContextProperty = MutableProperty<ShareContext?>(nil)
-  public func configureWith(shareContext shareContext: ShareContext) {
+  fileprivate let shareContextProperty = MutableProperty<ShareContext?>(nil)
+  public func configureWith(shareContext: ShareContext) {
     self.shareContextProperty.value = shareContext
   }
-  private let facebookButtonTappedProperty = MutableProperty()
+  fileprivate let facebookButtonTappedProperty = MutableProperty()
   public func facebookButtonTapped() {
     self.facebookButtonTappedProperty.value = ()
   }
-  private let shareButtonTappedProperty = MutableProperty()
+  fileprivate let shareButtonTappedProperty = MutableProperty()
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
   }
-  private let shareActivityCompletionProperty = MutableProperty
-    <(activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?)?>(nil)
-  public func shareActivityCompletion(activityType activityType: String?,
-                                                   completed: Bool,
-                                                   returnedItems: [AnyObject]?,
-                                                   activityError: NSError?) {
-    self.shareActivityCompletionProperty.value = (activityType, completed, returnedItems, activityError)
+  fileprivate let shareActivityCompletionProperty = MutableProperty<ShareActivityCompletionData?>(nil)
+  public func shareActivityCompletion(with data: ShareActivityCompletionData) {
+    self.shareActivityCompletionProperty.value = data
   }
-  private let shareComposeCompletionProperty = MutableProperty<SLComposeViewControllerResult?>(nil)
-  public func shareComposeCompletion(result result: SLComposeViewControllerResult) {
+  fileprivate let shareComposeCompletionProperty = MutableProperty<SLComposeViewControllerResult?>(nil)
+  public func shareComposeCompletion(result: SLComposeViewControllerResult) {
     self.shareComposeCompletionProperty.value = result
   }
-  private let twitterButtonTappedProperty = MutableProperty()
+  fileprivate let twitterButtonTappedProperty = MutableProperty()
   public func twitterButtonTapped() {
     self.twitterButtonTappedProperty.value = ()
   }
@@ -190,41 +200,36 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
   }
 }
 
-private func shareUrl(forShareContext shareContext: ShareContext) -> NSURL {
+private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
 
   switch shareContext {
   case let .creatorDashboard(project):
-    return NSURL(string: project.urls.web.project) ?? NSURL()
+    return URL(string: project.urls.web.project)
   case let .project(project):
-    return NSURL(string: project.urls.web.project) ?? NSURL()
+    return URL(string: project.urls.web.project)
   case let .thanks(project):
-    return NSURL(string: project.urls.web.project) ?? NSURL()
+    return URL(string: project.urls.web.project)
   case let .update(_, update):
-    return NSURL(string: update.urls.web.update) ?? NSURL()
+    return URL(string: update.urls.web.update)
   case let .liveStream(_, liveStreamEvent):
     return NSURL(string: liveStreamEvent.stream.webUrl) ?? NSURL()
   }
 }
 
-private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [String] {
+private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [UIActivityType] {
 
   switch shareContext {
   case let .update(_, update) where !update.isPublic:
-    return [
-      UIActivityTypeMail,
-      UIActivityTypeMessage,
-      UIActivityTypePostToFacebook,
-      UIActivityTypePostToTwitter,
-      UIActivityTypePostToWeibo
-    ]
+    return [.mail, .message, .postToFacebook, .postToTwitter, .postToWeibo]
   default:
     return []
   }
 }
 
-private func activityController(forShareContext shareContext: ShareContext) -> UIActivityViewController {
+private func activityController(forShareContext shareContext: ShareContext) -> UIActivityViewController? {
+  guard let url = shareUrl(forShareContext: shareContext) else { return nil }
+
   let provider = activityItemProvider(forShareContext: shareContext)
-  let url = shareUrl(forShareContext: shareContext)
 
   let controller = UIActivityViewController(activityItems: [provider, url],
                                             applicationActivities: [SafariActivity(url: url)])
@@ -253,14 +258,14 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
 }
 
 private func shareComposeController(forShareContext shareContext: ShareContext, serviceType: String)
-  -> SLComposeViewController {
+  -> SLComposeViewController? {
 
     let controller = SLComposeViewController(forServiceType: serviceType)
 
-    controller.addURL(shareUrl(forShareContext: shareContext))
+    shareUrl(forShareContext: shareContext).doIfSome { controller?.add($0) }
 
     if serviceType == SLServiceTypeTwitter {
-      controller.setInitialText(twitterInitialText(forShareContext: shareContext))
+      controller?.setInitialText(twitterInitialText(forShareContext: shareContext))
     }
 
     return controller

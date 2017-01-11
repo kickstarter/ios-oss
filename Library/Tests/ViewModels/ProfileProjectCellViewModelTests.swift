@@ -13,7 +13,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
   let metadataIsHidden = TestObserver<Bool, NoError>()
   let metadataText = TestObserver<String, NoError>()
   let projectName = TestObserver<String, NoError>()
-  let photoURL = TestObserver<NSURL?, NoError>()
+  let photoURL = TestObserver<URL?, NoError>()
   let progress = TestObserver<Float, NoError>()
   let progressHidden = TestObserver<Bool, NoError>()
   let stateLabelText = TestObserver<String, NoError>()
@@ -36,7 +36,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
 
   func testProjectProgressUI() {
     let liveProject = Project.template |> Project.lens.dates.deadline .~
-      self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+      (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
 
     self.vm.inputs.project(liveProject)
 
@@ -82,6 +82,6 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
 
     self.projectName.assertValues([project.name], "Project name emitted.")
     self.cellAccessibilityLabel.assertValues(["\(project.name) \(project.state.rawValue)"])
-    self.photoURL.assertValues([NSURL(string: project.photo.full)], "Project photo emitted.")
+    self.photoURL.assertValues([URL(string: project.photo.full)], "Project photo emitted.")
   }
 }

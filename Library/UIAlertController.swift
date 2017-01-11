@@ -23,18 +23,18 @@ public extension UIAlertController {
     }
   }
 
-  public static func alert(title: String? = nil,
+  public static func alert(_ title: String? = nil,
                            message: String? = nil,
                            handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
     let alertController = UIAlertController(
       title: title,
       message: message,
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: handler
       )
     )
@@ -42,16 +42,16 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func genericError(message: String) -> UIAlertController {
+  public static func genericError(_ message: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.general_error_oops(),
       message: message,
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -59,24 +59,24 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func games(subscribeHandler subscribeHandler: ((UIAlertAction) -> Void))
+  public static func games(subscribeHandler: @escaping ((UIAlertAction) -> Void))
     -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
       message: Strings.project_checkout_games_alert_want_the_coolest_games_delivered_to_your_inbox(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.project_checkout_games_alert_yes_please(),
-        style: .Default,
+        style: .default,
         handler: subscribeHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.project_checkout_games_alert_no_thanks(),
-        style: .Default,
+        style: .default,
         handler: nil
       )
     )
@@ -84,32 +84,32 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func rating(yesHandler yesHandler: ((UIAlertAction) -> Void),
-                            remindHandler: ((UIAlertAction) -> Void),
-                            noHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
+  public static func rating(yesHandler: @escaping ((UIAlertAction) -> Void),
+                            remindHandler: @escaping ((UIAlertAction) -> Void),
+                            noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.profile_settings_rating_title() ,
       message: Strings.profile_settings_rating_message() ,
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.profile_settings_rating_option_rate_now() ,
-        style: .Default,
+        style: .default,
         handler: yesHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.profile_settings_rating_option_remind_later() ,
-        style: .Default,
+        style: .default,
         handler: remindHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.profile_settings_rating_option_no_thanks() ,
-        style: .Default,
+        style: .default,
         handler: noHandler
       )
     )
@@ -117,16 +117,16 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func newsletterOptIn(newsletter: String) -> UIAlertController {
+  public static func newsletterOptIn(_ newsletter: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.profile_settings_newsletter_opt_in_title(),
       message: Strings.profile_settings_newsletter_opt_in_message(newsletter: newsletter),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -140,12 +140,12 @@ public extension UIAlertController {
       message: Strings.project_checkout_share_link_the_project_url_has_been_copied_to_your_clipboard(
         project_url: url
         ),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.project_checkout_share_link_OK(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -159,12 +159,12 @@ public extension UIAlertController {
       message: Strings.project_checkout_share_link_the_update_url_has_been_copied_to_your_clipboard(
         update_url: url
         ),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.project_checkout_share_link_OK(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -172,25 +172,27 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func confirmFollowAllFriends(friendsCount friendsCount: Int,
-                                             yesHandler: ((UIAlertAction) -> Void),
-                                             noHandler: ((UIAlertAction) -> Void)) -> UIAlertController {
+  public static func confirmFollowAllFriends(
+    friendsCount: Int,
+    yesHandler: @escaping ((UIAlertAction) -> Void),
+    noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+
     let alertController = UIAlertController(
       title: Strings.social_following_stats_button_follow_all_friends(remote_friends_count: friendsCount),
       message: Strings.social_following_nice_youre_about_to_follow_all_friends(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_navigation_buttons_ok(),
-        style: .Default,
+        style: .default,
         handler: yesHandler
       )
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_navigation_buttons_cancel(),
-        style: .Cancel,
+        style: .cancel,
         handler: noHandler
       )
     )
@@ -202,12 +204,12 @@ public extension UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_invalid_token_title(),
       message: Strings.login_tout_errors_facebook_invalid_token_message(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -215,18 +217,18 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookLoginAttemptFail(error: NSError) -> UIAlertController {
+  public static func facebookLoginAttemptFail(_ error: NSError) -> UIAlertController {
     let alertController = UIAlertController(
       title: error.userInfo[FBSDKErrorLocalizedTitleKey] as? String ??
         Strings.login_tout_errors_facebook_settings_disabled_title(),
       message: error.userInfo[FBSDKErrorLocalizedDescriptionKey] as? String ??
         Strings.login_tout_errors_facebook_settings_disabled_message(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -234,16 +236,16 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func genericFacebookError(envelope: ErrorEnvelope) -> UIAlertController {
+  public static func genericFacebookError(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ?? Strings.login_tout_errors_facebook_generic_error_message(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -251,17 +253,17 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookConnectAccountTaken(envelope: ErrorEnvelope) -> UIAlertController {
+  public static func facebookConnectAccountTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
         Strings.This_facebook_account_is_already_linked_to_another_Kickstarter_user(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )
@@ -269,17 +271,17 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookConnectEmailTaken(envelope: ErrorEnvelope) -> UIAlertController {
+  public static func facebookConnectEmailTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
         Strings.The_email_associated_with_this_Facebook_account_is_already_registered(),
-      preferredStyle: .Alert
+      preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
         title: Strings.general_alert_buttons_ok(),
-        style: .Cancel,
+        style: .cancel,
         handler: nil
       )
     )

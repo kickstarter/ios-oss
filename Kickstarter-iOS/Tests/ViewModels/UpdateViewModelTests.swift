@@ -4,22 +4,22 @@
 @testable import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 
 final class UpdateViewModelTests: TestCase {
-  private let vm: UpdateViewModelType = UpdateViewModel()
+  fileprivate let vm: UpdateViewModelType = UpdateViewModel()
 
-  private let project = .template |> Project.lens.id .~ 1
-  private let update = .template
+  fileprivate let project = .template |> Project.lens.id .~ 1
+  fileprivate let update = .template
     |> Update.lens.projectId .~ 1
 
-  private let goToComments = TestObserver<Update, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let title = TestObserver<String, NoError>()
-  private let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let goToComments = TestObserver<Update, NoError>()
+  fileprivate let goToProject = TestObserver<Project, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -28,7 +28,7 @@ final class UpdateViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.title.observe(self.title.observer)
-    self.vm.outputs.webViewLoadRequest.map { $0.URL?.absoluteString }
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.absoluteString }
       .observe(self.webViewLoadRequest.observer)
   }
 
@@ -55,18 +55,18 @@ final class UpdateViewModelTests: TestCase {
       |> Update.lens.id .~ 42
       |> Update.lens.sequence .~ 42
 
-    let prevUpdateUrl = NSURL(string: prevUpdate.urls.web.update)
-      .flatMap { $0.URLByDeletingLastPathComponent }
-      .map { $0.URLByAppendingPathComponent(String(prevUpdate.id)) }!
+    let prevUpdateUrl = URL(string: prevUpdate.urls.web.update)
+      .flatMap { $0.deletingLastPathComponent() }
+      .map { $0.appendingPathComponent(String(prevUpdate.id)) }!
 
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
 
-      let request = NSURLRequest(URL: optionalize(prevUpdateUrl)!)
+      let request = URLRequest(url: prevUpdateUrl)
       let navigationAction = WKNavigationActionData(
-        navigationType: .LinkActivated,
+        navigationType: .linkActivated,
         request: request,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
         targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -74,13 +74,12 @@ final class UpdateViewModelTests: TestCase {
 
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-      XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
       self.webViewLoadRequest.assertValues(
         [
           "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\((optionalize(prevUpdateUrl)?.absoluteString)!)" +
-            "?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
+          "\(prevUpdateUrl.absoluteString)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
         ]
       )
 
@@ -95,18 +94,18 @@ final class UpdateViewModelTests: TestCase {
 
   func testGoToProject() {
     let anotherProject = .template |> Project.lens.id .~ 42
-    let anotherProjectUrl = NSURL(string: anotherProject.urls.web.project)
-      .flatMap { $0.URLByDeletingLastPathComponent }
-      .map { $0.URLByAppendingPathComponent(String(anotherProject.id)) }!
+    let anotherProjectUrl = URL(string: anotherProject.urls.web.project)
+      .flatMap { $0.deletingLastPathComponent() }
+      .map { $0.appendingPathComponent(String(anotherProject.id)) }!
 
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
 
-      let request = NSURLRequest(URL: optionalize(anotherProjectUrl)!)
+      let request = URLRequest(url: anotherProjectUrl)
       let navigationAction = WKNavigationActionData(
-        navigationType: .LinkActivated,
+        navigationType: .linkActivated,
         request: request,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
         targetFrame: WKFrameInfoData(mainFrame: true, request: request)
@@ -114,7 +113,7 @@ final class UpdateViewModelTests: TestCase {
 
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
-      XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue, policy.rawValue)
+      XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
       self.goToProject.assertValues([anotherProject])
       self.goToComments.assertValueCount(0)
@@ -129,18 +128,18 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    let commentsRequest = NSURL(string: self.update.urls.web.update)
-      .map { $0.URLByAppendingPathComponent("comments") }
-      .flatMap(NSURLRequest.init(URL:))!
+    let commentsRequest = URL(string: self.update.urls.web.update)
+      .map { $0.appendingPathComponent("comments") }
+      .flatMap { URLRequest.init(url: $0) }!
 
     let navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: commentsRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.goToComments.assertValues([self.update])
   }
@@ -149,29 +148,29 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    let updateRequest = NSURLRequest(URL: NSURL(string: self.update.urls.web.update)!)
+    let updateRequest = URLRequest(url: URL(string: self.update.urls.web.update)!)
     var navigationAction = WKNavigationActionData(
-      navigationType: .Other,
+      navigationType: .other,
       request: updateRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: updateRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: updateRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Allow.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.webViewLoadRequest.assertValueCount(1)
 
-    let outsideUrl = NSURL(string: "http://www.wikipedia.com")!
-    let outsideRequest = NSURLRequest(URL: outsideUrl)
+    let outsideUrl = URL(string: "http://www.wikipedia.com")!
+    let outsideRequest = URLRequest(url: outsideUrl)
 
     navigationAction = WKNavigationActionData(
-      navigationType: .LinkActivated,
+      navigationType: .linkActivated,
       request: outsideRequest,
       sourceFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest),
       targetFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.Cancel.rawValue,
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
     self.goToComments.assertValueCount(0)
     self.goToProject.assertValueCount(0)

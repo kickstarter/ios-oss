@@ -1,4 +1,4 @@
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import KsApi
@@ -7,7 +7,7 @@ public protocol ResetPasswordViewModelInputs {
   /// Call when the view loads
   func viewDidLoad()
   /// Call when email textfield input is entered
-  func emailChanged(email: String?)
+  func emailChanged(_ email: String?)
   /// Call when reset button is pressed
   func resetButtonPressed()
   /// Call when OK button is pressed on reset confirmation popup
@@ -40,9 +40,9 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
   public init() {
     self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
-    self.setEmailInitial = self.emailProperty.signal.ignoreNil()
+    self.setEmailInitial = self.emailProperty.signal.skipNil()
       .takeWhen(viewDidLoadProperty.signal)
-      .take(1)
+      .take(first: 1)
 
     self.formIsValid = self.viewDidLoadProperty.signal
       .flatMap { [email = emailProperty.producer] _ in email }
@@ -50,7 +50,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
       .map(isValidEmail)
       .skipRepeats()
 
-    let resetEvent = self.emailProperty.signal.ignoreNil()
+    let resetEvent = self.emailProperty.signal.skipNil()
       .takeWhen(resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
@@ -75,26 +75,26 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    self.viewDidLoadProperty.signal.observeNext { AppEnvironment.current.koala.trackResetPassword() }
-    self.showResetSuccess.observeNext { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackResetPassword() }
+    self.showResetSuccess.observeValues { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
-  public func emailChanged(email: String?) {
+  fileprivate let emailProperty = MutableProperty<String?>(nil)
+  public func emailChanged(_ email: String?) {
     self.emailProperty.value = email
   }
 
-  private let resetButtonPressedProperty = MutableProperty()
+  fileprivate let resetButtonPressedProperty = MutableProperty()
   public func resetButtonPressed() {
     self.resetButtonPressedProperty.value = ()
   }
 
-  private let confirmResetButtonPressedProperty = MutableProperty()
+  fileprivate let confirmResetButtonPressedProperty = MutableProperty()
   public func confirmResetButtonPressed() {
     self.confirmResetButtonPressedProperty.value = ()
   }

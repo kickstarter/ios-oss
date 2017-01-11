@@ -11,7 +11,7 @@ final class KoalaTests: XCTestCase {
     let config = Config.template
       |> Config.lens.countryCode .~ "GB"
       |> Config.lens.locale .~ "en"
-    let device = MockDevice(userInterfaceIdiom: .Phone)
+    let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
                       screen: screen)
@@ -29,8 +29,8 @@ final class KoalaTests: XCTestCase {
     XCTAssertNotNil(properties?["model"])
     XCTAssertEqual(device.systemName, properties?["os"] as? String)
     XCTAssertEqual(device.systemVersion, properties?["os_version"] as? String)
-    XCTAssertEqual(screen.bounds.width, properties?["screen_width"] as? CGFloat)
-    XCTAssertEqual(screen.bounds.height, properties?["screen_height"] as? CGFloat)
+    XCTAssertEqual(UInt(screen.bounds.width), properties?["screen_width"] as? UInt)
+    XCTAssertEqual(UInt(screen.bounds.height), properties?["screen_height"] as? UInt)
 
     XCTAssertEqual("kickstarter_ios", properties?["mp_lib"] as? String)
     XCTAssertEqual("native", properties?["client_type"] as? String)
@@ -66,7 +66,7 @@ final class KoalaTests: XCTestCase {
 
   func testDeviceFormatAndClientPlatform_ForIPhoneIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(client: client, loggedInUser: nil, device: MockDevice(userInterfaceIdiom: .Phone))
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("phone", client.properties.last!["device_format"] as? String)
@@ -75,7 +75,7 @@ final class KoalaTests: XCTestCase {
 
   func testDeviceFormatAndClientPlatform_ForIPadIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(client: client, loggedInUser: nil, device: MockDevice(userInterfaceIdiom: .Pad))
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("tablet", client.properties.last!["device_format"] as? String)
@@ -84,7 +84,7 @@ final class KoalaTests: XCTestCase {
 
   func testDeviceFormatAndClientPlatform_ForTvIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(client: client, loggedInUser: nil, device: MockDevice(userInterfaceIdiom: .TV))
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("tv", client.properties.last!["device_format"] as? String)

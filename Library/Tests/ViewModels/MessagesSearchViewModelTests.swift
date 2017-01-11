@@ -3,18 +3,18 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import Prelude
 
 internal final class MessagesSearchViewModelTests: TestCase {
-  private let vm: MessagesSearchViewModelType = MessagesSearchViewModel()
+  fileprivate let vm: MessagesSearchViewModelType = MessagesSearchViewModel()
 
-  private let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  private let isSearching = TestObserver<Bool, NoError>()
-  private let hasMessageThreads = TestObserver<Bool, NoError>()
-  private let showKeyboard = TestObserver<Bool, NoError>()
-  private let goToMessageThread = TestObserver<MessageThread, NoError>()
+  fileprivate let emptyStateIsVisible = TestObserver<Bool, NoError>()
+  fileprivate let isSearching = TestObserver<Bool, NoError>()
+  fileprivate let hasMessageThreads = TestObserver<Bool, NoError>()
+  fileprivate let showKeyboard = TestObserver<Bool, NoError>()
+  fileprivate let goToMessageThread = TestObserver<MessageThread, NoError>()
 
   override func setUp() {
     super.setUp()

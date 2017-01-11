@@ -1,18 +1,18 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletContentViewModelInputs {
-  func configureWith(project project: Project)
+  func configureWith(project: Project)
   func tappedComments()
   func tappedLiveStream()
   func tappedPledgeAnyAmount()
-  func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>)
+  func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
-  func viewDidAppear(animated animated: Bool)
+  func viewDidAppear(animated: Bool)
   func viewDidLoad()
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 }
 
 public protocol ProjectPamphletContentViewModelOutputs {
@@ -34,43 +34,43 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
-    let project = combineLatest(
-      self.projectProperty.signal.ignoreNil(),
+    let project = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    self.loadProjectIntoDataSource = combineLatest(
+    self.loadProjectIntoDataSource = Signal.combineLatest(
       project,
 
       Signal.merge(
         self.viewDidAppearAnimatedProperty.signal.filter(isTrue),
         self.viewWillAppearAnimatedProperty.signal.filter(isFalse)
         )
-        .take(1)
+        .take(first: 1)
       )
       .map(first)
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
-      .take(1)
+      .take(first: 1)
       .filter(second)
       .map(first)
 
     let rewardOrBackingTapped = Signal.merge(
-      self.tappedRewardOrBackingProperty.signal.ignoreNil(),
+      self.tappedRewardOrBackingProperty.signal.skipNil(),
       self.tappedPledgeAnyAmountProperty.signal.mapConst(.left(Reward.noReward))
     )
 
     self.goToRewardPledge = project
       .takePairWhen(rewardOrBackingTapped)
       .map(goToRewardPledgeData(forProject:rewardOrBacking:))
-      .ignoreNil()
+      .skipNil()
 
     self.goToBacking = project
       .takePairWhen(rewardOrBackingTapped)
       .map(goToBackingData(forProject:rewardOrBacking:))
-      .ignoreNil()
+      .skipNil()
 
     self.goToComments = project
       .takeWhen(self.tappedCommentsProperty.signal)
@@ -82,12 +82,12 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
       .takeWhen(self.tappedLiveStreamProperty.signal)
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project project: Project) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 
-  private let tappedCommentsProperty = MutableProperty()
+  fileprivate let tappedCommentsProperty = MutableProperty()
   public func tappedComments() {
     self.tappedCommentsProperty.value = ()
   }
@@ -97,33 +97,33 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedLiveStreamProperty.value = ()
   }
 
-  private let tappedPledgeAnyAmountProperty = MutableProperty()
+  fileprivate let tappedPledgeAnyAmountProperty = MutableProperty()
   public func tappedPledgeAnyAmount() {
     self.tappedPledgeAnyAmountProperty.value = ()
   }
 
-  private let tappedRewardOrBackingProperty = MutableProperty<Either<Reward, Backing>?>(nil)
-  public func tapped(rewardOrBacking rewardOrBacking: Either<Reward, Backing>) {
+  fileprivate let tappedRewardOrBackingProperty = MutableProperty<Either<Reward, Backing>?>(nil)
+  public func tapped(rewardOrBacking: Either<Reward, Backing>) {
     self.tappedRewardOrBackingProperty.value = rewardOrBacking
   }
 
-  private let tappedUpdatesProperty = MutableProperty()
+  fileprivate let tappedUpdatesProperty = MutableProperty()
   public func tappedUpdates() {
     self.tappedUpdatesProperty.value = ()
   }
 
-  private let viewDidAppearAnimatedProperty = MutableProperty(false)
-  public func viewDidAppear(animated animated: Bool) {
+  fileprivate let viewDidAppearAnimatedProperty = MutableProperty(false)
+  public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimatedProperty.value = animated
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearAnimatedProperty = MutableProperty(false)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
@@ -153,7 +153,7 @@ private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: 
 
     switch rewardOrBacking {
     case let .left(reward):
-      guard reward.remaining != .Some(0) else { return nil }
+      guard reward.remaining != .some(0) else { return nil }
       return (project, reward)
 
     case let .right(backing):

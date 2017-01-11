@@ -1,21 +1,21 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol TwoFactorViewModelInputs {
   /// Call when code textfield is updated
-  func codeChanged(code: String?)
+  func codeChanged(_ code: String?)
 
   /// Call to set email and password
-  func email(email: String, password: String)
+  func email(_ email: String, password: String)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
   /// Call to set facebook token
-  func facebookToken(token: String)
+  func facebookToken(_ token: String)
 
   /// Call when resend button pressed
   func resendPressed()
@@ -44,7 +44,7 @@ public protocol TwoFactorViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<NSNotification, NoError> { get }
+  var postNotification: Signal<Notification, NoError> { get }
 
   /// Emits when code was resent successfully
   var resendSuccess: Signal<(), NoError> { get }
@@ -62,15 +62,15 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   TwoFactorViewModelOutputs {
 
   // A simple type to hold all the data needed to login.
-  private struct TfaData {
-    private let email: String?
-    private let password: String?
-    private let facebookToken: String?
-    private let code: String?
+  fileprivate struct TfaData {
+    fileprivate let email: String?
+    fileprivate let password: String?
+    fileprivate let facebookToken: String?
+    fileprivate let code: String?
 
     // swiftlint:disable type_name
-    private enum lens {
-      private static let code = Lens<TfaData, String?>(
+    fileprivate enum lens {
+      fileprivate static let code = Lens<TfaData, String?>(
         view: { $0.code },
         set: { TfaData(email: $1.email, password: $1.password, facebookToken: $1.facebookToken, code: $0) }
       )
@@ -82,7 +82,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public init() {
     let isLoading = MutableProperty(false)
 
-    let loginData = combineLatest(
+    let loginData = SignalProducer.combineLatest(
       self.emailProperty.producer,
       self.passwordProperty.producer,
       self.facebookTokenProperty.producer,
@@ -132,70 +132,70 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.sessionStarted, object: nil))
+      .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.viewWillAppearProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfa() }
+      .observeValues { AppEnvironment.current.koala.trackTfa() }
 
     self.facebookTokenProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
 
     self.passwordProperty.signal.ignoreValues()
       .takeWhen(self.logIntoEnvironment)
-      .observeNext { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     self.resendPressedProperty.signal
-      .observeNext { AppEnvironment.current.koala.trackTfaResendCode() }
+      .observeValues { AppEnvironment.current.koala.trackTfaResendCode() }
 
     self.facebookTokenProperty.signal
       .takeWhen(self.showError)
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
 
     self.emailProperty.signal
       .takeWhen(self.showError)
-      .observeNext { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
+      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
   // swiftlint:enable function_body_length
 
-  private let codeProperty = MutableProperty<String?>(nil)
-  public func codeChanged(code: String?) {
+  fileprivate let codeProperty = MutableProperty<String?>(nil)
+  public func codeChanged(_ code: String?) {
     self.codeProperty.value = code
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
-  private let passwordProperty = MutableProperty<String?>(nil)
-  public func email(email: String, password: String) {
+  fileprivate let emailProperty = MutableProperty<String?>(nil)
+  fileprivate let passwordProperty = MutableProperty<String?>(nil)
+  public func email(_ email: String, password: String) {
     self.emailProperty.value = email
     self.passwordProperty.value = password
   }
 
-  private let environmentLoggedInProperty = MutableProperty(())
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
-  private let facebookTokenProperty = MutableProperty<String?>(nil)
-  public func facebookToken(token: String) {
+  fileprivate let facebookTokenProperty = MutableProperty<String?>(nil)
+  public func facebookToken(_ token: String) {
     self.facebookTokenProperty.value = token
   }
 
-  private let resendPressedProperty = MutableProperty(())
+  fileprivate let resendPressedProperty = MutableProperty(())
   public func resendPressed() {
     self.resendPressedProperty.value = ()
   }
 
-  private let submitPressedProperty = MutableProperty(())
+  fileprivate let submitPressedProperty = MutableProperty(())
   public func submitPressed() {
     self.submitPressedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
@@ -204,7 +204,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public let isFormValid: Signal<Bool, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<NSNotification, NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let resendSuccess: Signal<(), NoError>
   public let showError: Signal<String, NoError>
 
@@ -212,13 +212,13 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public var outputs: TwoFactorViewModelOutputs { return self }
 }
 
-private func login(tfaData: TwoFactorViewModel.TfaData,
+private func login(_ tfaData: TwoFactorViewModel.TfaData,
                    apiService: ServiceType,
                    isLoading: MutableProperty<Bool>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
   let login: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  if let email = tfaData.email, password = tfaData.password {
+  if let email = tfaData.email, let password = tfaData.password {
     login = apiService.login(email: email, password: password, code: tfaData.code)
   } else if let facebookToken = tfaData.facebookToken {
     login = apiService.login(facebookAccessToken: facebookToken, code: tfaData.code)
@@ -227,6 +227,6 @@ private func login(tfaData: TwoFactorViewModel.TfaData,
   }
 
   return login
-    .on(started: { isLoading.value = true },
+    .on(starting: { isLoading.value = true },
       terminated: { isLoading.value = false })
 }

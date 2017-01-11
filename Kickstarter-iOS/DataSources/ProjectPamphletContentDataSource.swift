@@ -12,11 +12,11 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     case rewards
   }
 
-  internal func loadMinimal(project project: Project) {
+  internal func loadMinimal(project: Project) {
     self.set(values: [project], cellClass: ProjectPamphletMinimalCell.self, inSection: Section.main.rawValue)
   }
 
-  internal func load(project project: Project) {
+  internal func load(project: Project) {
     self.clearValues()
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
@@ -49,7 +49,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     let rewardData = project.rewards
       .filter { isMainReward(reward: $0, project: project) }
-      .sort()
+      .sorted()
       .map { (project, Either<Reward, Backing>.left($0)) }
 
     if !rewardData.isEmpty {
@@ -62,23 +62,23 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     return project.liveStreams.first.map { ProjectPamphletSubpage.liveStream(liveStream: $0, .first) }
   }
 
-  internal func indexPathForMainCell() -> NSIndexPath {
-    return NSIndexPath(forItem: 0, inSection: Section.main.rawValue)
+  internal func indexPathForMainCell() -> IndexPath {
+    return IndexPath(item: 0, section: Section.main.rawValue)
   }
 
-  internal func indexPathIsCommentsSubpage(indexPath: NSIndexPath) -> Bool {
+  internal func indexPathIsCommentsSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isComments == true
+  }
+
+  internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
+    return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
   }
 
   internal func indexPathIsLiveStreamSubpage(indexPath: NSIndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isLiveStream == true
   }
 
-  internal func indexPathIsUpdatesSubpage(indexPath: NSIndexPath) -> Bool {
-    return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
-  }
-
-  internal func indexPathIsPledgeAnyAmountCell(indexPath: NSIndexPath) -> Bool {
+  internal func indexPathIsPledgeAnyAmountCell(_ indexPath: IndexPath) -> Bool {
     guard let project = self[indexPath] as? Project else {
       return false
     }
@@ -107,7 +107,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     case let (cell as RewardsTitleCell, value as Project):
       cell.configureWith(value: value)
     default:
-      fatalError("Unrecognized (\(cell.dynamicType), \(value.dynamicType)) combo.")
+      fatalError("Unrecognized (\(type(of: cell)), \(type(of: value))) combo.")
     }
   }
 }
@@ -125,17 +125,17 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 // Determines if a reward belongs in the main list of rewards.
-private func isMainReward(reward reward: Reward, project: Project) -> Bool {
+private func isMainReward(reward: Reward, project: Project) -> Bool {
   // Don't show the no-reward reward
   guard reward.id != 0 else { return false }
   // Don't show the reward the user is backing
-  guard .Some(reward.id) != project.personalization.backing?.rewardId else { return false }
+  guard .some(reward.id) != project.personalization.backing?.rewardId else { return false }
   // Show all rewards when the project isn't live
   guard project.state == .live else { return true }
 
   let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   let startsAt = reward.startsAt ?? 0
-  let endsAt = (reward.endsAt == .Some(0) ? nil : reward.endsAt) ?? project.dates.deadline
+  let endsAt = (reward.endsAt == .some(0) ? nil : reward.endsAt) ?? project.dates.deadline
 
   return startsAt <= now && now <= endsAt
 }

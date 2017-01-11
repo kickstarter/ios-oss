@@ -5,7 +5,7 @@ internal final class LoginViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: NSBundle.framework)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
   func testView() {

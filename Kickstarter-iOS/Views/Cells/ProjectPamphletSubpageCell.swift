@@ -16,6 +16,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value subpage: ProjectPamphletSubpage) {
     self.viewModel.inputs.configureWith(subpage: subpage)
+    self.setNeedsLayout()
   }
 
   internal override func bindStyles() {
@@ -58,6 +59,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       (UIColor.init(white: 0, alpha: 0.1), 0),
       (UIColor.init(white: 0, alpha: 0), 1)
     ])
+
+    self.setNeedsLayout()
   }
 
   internal override func bindViewModel() {

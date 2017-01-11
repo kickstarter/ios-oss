@@ -3,7 +3,7 @@ import KsApi
 import Library
 
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
-  internal func loadData(projects projects: [Project], category: KsApi.Category) {
+  internal func loadData(projects: [Project], category: KsApi.Category) {
 
     self.set(values: projects, cellClass: ThanksProjectCell.self, inSection: 0)
 
@@ -25,11 +25,11 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  internal func projectAtIndexPath(indexPath: NSIndexPath) -> Project? {
+  internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
     return self[indexPath] as? Project
   }
 
-  internal func categoryAtIndexPath(indexPath: NSIndexPath) -> KsApi.Category? {
+  internal func categoryAtIndexPath(_ indexPath: IndexPath) -> KsApi.Category? {
     return self[indexPath] as? KsApi.Category
   }
 }

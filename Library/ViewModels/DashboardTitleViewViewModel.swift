@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 
 public protocol DashboardTitleViewViewModelInputs {
   /// Call to update the data for the title.
-  func updateData(data: DashboardTitleViewData)
+  func updateData(_ data: DashboardTitleViewData)
 
   /// Call when title button is tapped.
   func titleButtonTapped()
@@ -44,16 +44,16 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   DashboardTitleViewViewModelInputs, DashboardTitleViewViewModelOutputs {
   public init() {
 
-    self.titleText = self.currentProjectIndexProperty.signal.ignoreNil()
+    self.titleText = self.currentProjectIndexProperty.signal.skipNil()
       .map { Strings.dashboard_switcher_project_number(current_project_index: "\($0 + 1)") }
 
-    let isArrowHidden = self.updateDrawerStateHideArrowProperty.signal.ignoreNil().map(second)
+    let isArrowHidden = self.updateDrawerStateHideArrowProperty.signal.skipNil().map(second)
 
     self.titleButtonIsEnabled = isArrowHidden.map(negate).skipRepeats()
 
     self.hideArrow = isArrowHidden
 
-    self.updateArrowState = self.updateDrawerStateHideArrowProperty.signal.ignoreNil()
+    self.updateArrowState = self.updateDrawerStateHideArrowProperty.signal.skipNil()
       .filter { _, hideArrow in !hideArrow }
       .map(first)
 
@@ -84,13 +84,13 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   public let titleText: Signal<String, NoError>
   public let titleButtonIsEnabled: Signal<Bool, NoError>
 
-  private let currentProjectIndexProperty = MutableProperty<Int?>(nil)
-  private let updateDrawerStateHideArrowProperty = MutableProperty<(DrawerState, Bool)?>(nil)
-  public func updateData(data: DashboardTitleViewData) {
+  fileprivate let currentProjectIndexProperty = MutableProperty<Int?>(nil)
+  fileprivate let updateDrawerStateHideArrowProperty = MutableProperty<(DrawerState, Bool)?>(nil)
+  public func updateData(_ data: DashboardTitleViewData) {
     self.currentProjectIndexProperty.value = data.currentProjectIndex
     self.updateDrawerStateHideArrowProperty.value = (data.drawerState, data.isArrowHidden)
   }
-  private let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty()
   public func titleButtonTapped() {
     titleButtonTappedProperty.value = ()
   }

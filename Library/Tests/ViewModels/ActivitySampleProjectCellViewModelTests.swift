@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi

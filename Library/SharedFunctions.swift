@@ -10,7 +10,7 @@ import KsApi
 
  - returns: A boolean.
  */
-internal func userIsBacking(reward reward: Reward, inProject project: Project) -> Bool {
+internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool {
   guard let backing = project.personalization.backing else { return false }
 
   return backing.reward?.id == reward.id
@@ -27,7 +27,7 @@ internal func userIsBacking(reward reward: Reward, inProject project: Project) -
  - returns: A pledge context.
  */
 internal func pledgeContext(forProject project: Project, reward: Reward) -> Koala.PledgeContext {
-  if project.personalization.isBacking == .Some(true) {
+  if project.personalization.isBacking == .some(true) {
     return userIsBacking(reward: reward, inProject: project) ? .manageReward : .changeReward
   }
   return .newPledge
@@ -52,9 +52,9 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
     .coalesceWith(project.country)
 
   switch reward {
-  case .None, .Some(Reward.noReward):
+  case .none, .some(Reward.noReward):
     return (country.minPledge ?? 1, country.maxPledge ?? 10_000)
-  case let .Some(reward):
+  case let .some(reward):
     return (reward.minimum, country.maxPledge ?? 10_000)
   }
 }

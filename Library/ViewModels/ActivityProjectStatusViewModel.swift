@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ActivityProjectStatusViewModelInputs {
   /// Call to configure with an Activity.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 }
 
 public protocol ActivityProjectStatusViewModelOutputs {
@@ -25,7 +25,7 @@ public protocol ActivityProjectStatusViewModelOutputs {
   var percentFundedText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits a url to the project image.
-  var projectImageURL: Signal<NSURL?, NoError> { get }
+  var projectImageURL: Signal<URL?, NoError> { get }
 
   /// Emits text for the project name label.
   var projectName: Signal<String, NoError> { get }
@@ -40,8 +40,8 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
   ActivityProjectStatusViewModelInputs, ActivityProjectStatusViewModelOutputs {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
-    let project = activity.map { $0.project }.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
+    let project = activity.map { $0.project }.skipNil()
 
     self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 
@@ -62,13 +62,13 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
 
     self.percentFundedText = activity.map(percentFundedString(forActivity:))
 
-    self.projectImageURL = project.map { $0.photo.full }.map(NSURL.init(string:))
+    self.projectImageURL = project.map { $0.photo.full }.map(URL.init(string:))
 
     self.projectName = project.map { $0.name }
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
 
@@ -77,7 +77,7 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
   public let metadataBackgroundColor: Signal<UIColor, NoError>
   public let metadataText: Signal<String, NoError>
   public let percentFundedText: Signal<NSAttributedString, NoError>
-  public let projectImageURL: Signal<NSURL?, NoError>
+  public let projectImageURL: Signal<URL?, NoError>
   public let projectName: Signal<String, NoError>
 
   public var inputs: ActivityProjectStatusViewModelInputs { return self }
@@ -139,8 +139,9 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
     NSForegroundColorAttributeName: UIColor.ksr_navy_500
     ])
 
-  if let percentRange = mutableString.string.rangeOfString(percentage) {
-    let percentStartIndex = mutableString.string.startIndex.distanceTo(percentRange.startIndex)
+  if let percentRange = mutableString.string.range(of: percentage) {
+    let percentStartIndex = mutableString.string
+      .distance(from: mutableString.string.startIndex, to: percentRange.lowerBound)
     mutableString.addAttributes([
       NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
       NSForegroundColorAttributeName:

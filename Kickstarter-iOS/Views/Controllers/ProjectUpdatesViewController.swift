@@ -3,9 +3,9 @@ import Library
 import SafariServices
 
 internal final class ProjectUpdatesViewController: WebViewController {
-  private let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
+  fileprivate let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
 
-  internal static func configuredWith(project project: Project) -> ProjectUpdatesViewController {
+  internal static func configuredWith(project: Project) -> ProjectUpdatesViewController {
     let vc = ProjectUpdatesViewController()
     vc.viewModel.inputs.configureWith(project: project)
     return vc
@@ -16,7 +16,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewWillAppear(animated: Bool) {
+  internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
@@ -32,46 +32,46 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToSafariBrowser(url: $0) }
+      .observeValues { [weak self] in self?.goToSafariBrowser(url: $0) }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToUpdate(forProject: $0, update: $1) }
+      .observeValues { [weak self] in self?.goToUpdate(forProject: $0, update: $1) }
 
     self.viewModel.outputs.goToUpdateComments
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.goToComments(forUpdate: $0) }
+      .observeValues { [weak self] in self?.goToComments(forUpdate: $0) }
 
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
-      .observeNext { [weak self] in self?.webView.loadRequest($0) }
+      .observeValues { [weak self] in _ = self?.webView.load($0) }
   }
 
-  private func goToComments(forUpdate update: Update) {
+  fileprivate func goToComments(forUpdate update: Update) {
     let vc = CommentsViewController.configuredWith(update: update)
-    if self.traitCollection.userInterfaceIdiom == .Pad {
+    if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
-      self.presentViewController(nav, animated: true, completion: nil)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
 
-  private func goToSafariBrowser(url url: NSURL) {
-    let controller = SFSafariViewController(URL: url)
-    controller.modalPresentationStyle = .OverFullScreen
-    self.presentViewController(controller, animated: true, completion: nil)
+  fileprivate func goToSafariBrowser(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
-  private func goToUpdate(forProject project: Project, update: Update) {
+  fileprivate func goToUpdate(forProject project: Project, update: Update) {
     let vc = UpdateViewController.configuredWith(project: project, update: update)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  internal func webView(webView: WKWebView,
+  internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                                                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
     decisionHandler(
       self.viewModel.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationAction))
     )

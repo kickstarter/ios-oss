@@ -1,11 +1,11 @@
 import Foundation
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 #if os(iOS)
 public final class Keyboard {
-  public typealias Change = (frame: CGRect, duration: NSTimeInterval, options: UIViewAnimationOptions)
+  public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIViewAnimationOptions)
 
   public static let shared = Keyboard()
   private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
@@ -15,25 +15,25 @@ public final class Keyboard {
   }
 
   private init() {
-    NSNotificationCenter.defaultCenter().addObserver(
-      self, selector: #selector(change(_:)), name: UIKeyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(change(_:)), name: .UIKeyboardWillShow, object: nil)
 
-    NSNotificationCenter.defaultCenter().addObserver(
-      self, selector: #selector(change(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(change(_:)), name: .UIKeyboardWillHide, object: nil)
   }
 
-  @objc private func change(notification: NSNotification) {
+  @objc private func change(_ notification: Notification) {
     guard let userInfo = notification.userInfo,
-      frame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-      duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber,
-      curveNumber = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
-      curve = UIViewAnimationCurve(rawValue: curveNumber.integerValue)
+      let frame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
+      let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber,
+      let curveNumber = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
+      let curve = UIViewAnimationCurve(rawValue: curveNumber.intValue)
       else {
         return
     }
 
-    self.changeObserver.sendNext((
-      frame.CGRectValue(),
+    self.changeObserver.send(value: (
+      frame.cgRectValue,
       duration.doubleValue,
       UIViewAnimationOptions(rawValue: UInt(curve.rawValue))
     ))

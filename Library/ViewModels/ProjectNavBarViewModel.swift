@@ -1,13 +1,13 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
   func closeButtonTapped()
-  func configureWith(project project: Project, refTag: RefTag?)
-  func projectImageIsVisible(visible: Bool)
+  func configureWith(project: Project, refTag: RefTag?)
+  func projectImageIsVisible(_ visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
   func starButtonTapped()
@@ -65,8 +65,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let configuredProjectAndRefTag = combineLatest(
-      self.projectAndRefTagProperty.signal.ignoreNil(),
+    let configuredProjectAndRefTag = Signal.combineLatest(
+      self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
@@ -93,24 +93,24 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .ignoreValues()
 
     // Emits only when a user logs in after having tapped the star while logged out.
-    let userLoginAfterTappingStar = combineLatest(
+    let userLoginAfterTappingStar = Signal.combineLatest(
       self.userSessionStartedProperty.signal,
       loggedOutUserTappedStar
       )
       .ignoreValues()
-      .take(1)
+      .take(first: 1)
 
     let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
 
     let projectOnStarToggle = configuredProject
       .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
       .scan(nil) { accum, project in (accum ?? project) |> toggleStarLens }
-      .ignoreNil()
+      .skipNil()
 
     let projectOnStarToggleAndSuccess = projectOnStarToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0.project, success: true) }
           .flatMapError { _ in .init(value: (project, success: false)) }
     }
@@ -127,7 +127,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
     self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId).0.colorWithAlphaComponent(0.8)
+        discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
       }
       .skipRepeats()
 
@@ -171,11 +171,11 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
 
-      combineLatest(projectImageIsVisible, videoIsPlaying)
+      Signal.combineLatest(projectImageIsVisible, videoIsPlaying)
         .map { projectImageIsVisible, videoIsPlaying in
           (videoIsPlaying ? true : !projectImageIsVisible, true)
         }
-        .skip(1)
+        .skip(first: 1)
       )
       .skipRepeats { $0.hidden == $1.hidden }
 
@@ -193,38 +193,38 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    combineLatest(project, configuredRefTag)
+    Signal.combineLatest(project, configuredRefTag)
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { project, refTag in
+      .observeValues { project, refTag in
         AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
     }
 
     projectOnStarToggleSuccess
-      .observeNext { AppEnvironment.current.koala.trackProjectStar($0) }
+      .observeValues { AppEnvironment.current.koala.trackProjectStar($0) }
   }
   // swiftlint:enable function_body_length
 
-  private let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
-  public func configureWith(project project: Project, refTag: RefTag?) {
+  fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(project: Project, refTag: RefTag?) {
     self.projectAndRefTagProperty.value = (project, refTag)
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let projectImageIsVisibleProperty = MutableProperty(false)
-  public func projectImageIsVisible(visible: Bool) {
+  fileprivate let projectImageIsVisibleProperty = MutableProperty(false)
+  public func projectImageIsVisible(_ visible: Bool) {
     self.projectImageIsVisibleProperty.value = visible
   }
 
-  private let projectVideoDidFinishProperty = MutableProperty()
+  fileprivate let projectVideoDidFinishProperty = MutableProperty()
   public func projectVideoDidFinish() {
     self.projectVideoDidFinishProperty.value = ()
   }
 
-  private let projectVideoDidStartProperty = MutableProperty()
+  fileprivate let projectVideoDidStartProperty = MutableProperty()
   public func projectVideoDidStart() {
     self.projectVideoDidStartProperty.value = ()
   }
@@ -232,22 +232,22 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public func categoryButtonTapped() {
   }
 
-  private let starButtonTappedProperty = MutableProperty()
+  fileprivate let starButtonTappedProperty = MutableProperty()
   public func starButtonTapped() {
     self.starButtonTappedProperty.value = ()
   }
 
-  private let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty()
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

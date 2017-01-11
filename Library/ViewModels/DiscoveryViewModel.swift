@@ -1,7 +1,8 @@
 import Argo
+import Runes
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -10,19 +11,19 @@ public protocol DiscoveryViewModelInputs {
   func filter(withParams params: DiscoveryParams)
 
   /// Call when the UIPageViewController finishes transitioning.
-  func pageTransition(completed completed: Bool)
+  func pageTransition(completed: Bool)
 
   /// Call when the SortPagerViewController wants to switch to a specific sort.
-  func sortPagerSelected(sort sort: DiscoveryParams.Sort)
+  func sortPagerSelected(sort: DiscoveryParams.Sort)
 
   /// Call to disable/enable the sorts when an empty state is displayed/dismissed.
-  func setSortsEnabled(enabled: Bool)
+  func setSortsEnabled(_ enabled: Bool)
 
   /// Call from the controller's viewDidLoad.
   func viewDidLoad()
 
   /// Call from the controller's viewWillAppear.
-  func viewWillAppear(animated animated: Bool)
+  func viewWillAppear(animated: Bool)
 
   /// Call when the UIPageViewController begins a transition sequence.
   func willTransition(toPage nextPage: Int)
@@ -61,7 +62,7 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
-  private static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+  fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   // swiftlint:disable function_body_length
   public init() {
@@ -71,8 +72,8 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = self.viewWillAppearProperty.signal
-      .take(1)
-      .flatMap { [filterWithParams = filterWithParamsProperty.producer.ignoreNil()] _ in
+      .take(first: 1)
+      .flatMap { [filterWithParams = filterWithParamsProperty.producer.skipNil()] _ in
         filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
       }
       .skipRepeats()
@@ -88,69 +89,73 @@ DiscoveryViewModelOutputs {
     self.selectSortPage = Signal
       .merge(
         swipeToSort,
-        self.sortPagerSelectedSortProperty.signal.ignoreNil(),
-        currentParams.map { $0.sort }.ignoreNil()
+        self.sortPagerSelectedSortProperty.signal.skipNil(),
+        currentParams.map { $0.sort }.skipNil()
       )
       .skipRepeats()
 
     self.navigateToSort = Signal
       .merge(
         swipeToSort.map { (sort: $0, ignore: true) },
-        self.sortPagerSelectedSortProperty.signal.ignoreNil().map { (sort: $0, ignore: false) },
-        currentParams.map { $0.sort }.ignoreNil().map { (sort: $0, ignore: false) }
+        self.sortPagerSelectedSortProperty.signal.skipNil().map { (sort: $0, ignore: false) },
+        currentParams.map { $0.sort }.skipNil().map { (sort: $0, ignore: false) }
       )
       .skipRepeats(==)
       .combinePrevious((sort: .magic, ignore: true))
       .filter { _, next in !next.ignore }
       .map { previous, next in
-        (next.sort, sorts.indexOf(next.sort) < sorts.indexOf(previous.sort) ? .Reverse : .Forward)
+        let lhs = sorts.index(of: next.sort) ?? -1
+        let rhs = sorts.index(of: previous.sort) ?? 9999
+        return (next.sort, lhs < rhs ? .reverse : .forward)
     }
 
-    self.updateSortPagerStyle = self.filterWithParamsProperty.signal.ignoreNil()
+    self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()
       .map { $0.category?.root?.id }
       .skipRepeats(==)
 
-    self.sortsAreEnabled = self.setSortsEnabledProperty.signal.ignoreNil()
+    self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    self.sortPagerSelectedSortProperty.signal.ignoreNil()
+    self.sortPagerSelectedSortProperty.signal.skipNil()
       .skipRepeats(==)
-      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
+      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
 
     swipeToSort
-      .observeNext { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe) }
+      .observeValues {
+        AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe)
+    }
 
     currentParams
-      .takeWhen(self.viewWillAppearProperty.signal.ignoreNil().filter(isFalse))
-      .observeNext { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
+      .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
+      .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
   }
   // swiftlint:enable function_body_length
 
-  private let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
+  fileprivate let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func filter(withParams params: DiscoveryParams) {
     self.filterWithParamsProperty.value = params
   }
-  private let pageTransitionCompletedProperty = MutableProperty(false)
-  public func pageTransition(completed completed: Bool) {
+  fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
+  public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
   }
-  private let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
-  public func sortPagerSelected(sort sort: DiscoveryParams.Sort) {
+  fileprivate let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
+  public func sortPagerSelected(sort: DiscoveryParams.Sort) {
     self.sortPagerSelectedSortProperty.value = sort
   }
-  private let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
-  public func setSortsEnabled(enabled: Bool) {
+  fileprivate let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
+  public func setSortsEnabled(_ enabled: Bool) {
     self.setSortsEnabledProperty.value = enabled
   }
-  private let willTransitionToPageProperty = MutableProperty<Int>(0)
+  fileprivate let willTransitionToPageProperty = MutableProperty<Int>(0)
   public func willTransition(toPage nextPage: Int) {
     self.willTransitionToPageProperty.value = nextPage
   }
-  private let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  private let viewWillAppearProperty = MutableProperty<Bool?>(nil)
-  public func viewWillAppear(animated animated: Bool) {
+  fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
   }
 

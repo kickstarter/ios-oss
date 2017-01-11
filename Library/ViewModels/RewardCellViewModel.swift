@@ -1,11 +1,11 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 public protocol RewardCellViewModelInputs {
   func boundStyles()
-  func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func tapped()
 }
 
@@ -47,7 +47,7 @@ RewardCellViewModelOutputs {
 
   // swiftlint:disable function_body_length
   public init() {
-    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.ignoreNil()
+    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.skipNil()
     let project = projectAndRewardOrBacking.map(first)
     let reward = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
@@ -56,7 +56,7 @@ RewardCellViewModelOutputs {
           ?? backingReward(fromProject: project)
           ?? Reward.noReward
     }
-    let projectAndReward = zip(project, reward)
+    let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map {
       !needsConversion(projectCountry: $0.country, userCountry: AppEnvironment.current.config?.countryCode)
@@ -162,7 +162,7 @@ RewardCellViewModelOutputs {
     self.contentViewBackgroundColor = project
       .map { backgroundColor(forCategoryId: $0.category.rootId) }
 
-    let allGoneAndNotABacker = zip(reward, youreABacker)
+    let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
     self.descriptionLabelHidden = Signal.merge(
@@ -170,20 +170,20 @@ RewardCellViewModelOutputs {
       self.tappedProperty.signal.mapConst(false)
     )
 
-    self.updateTopMarginsForIsBacking = combineLatest(youreABacker, self.boundStylesProperty.signal)
+    self.updateTopMarginsForIsBacking = Signal.combineLatest(youreABacker, self.boundStylesProperty.signal)
       .map(first)
 
-    self.manageButtonHidden = zip(project, youreABacker)
+    self.manageButtonHidden = Signal.zip(project, youreABacker)
       .map { project, youreABacker in
         project.state != .live || !youreABacker
     }
 
-    self.viewPledgeButtonHidden = zip(project, youreABacker)
+    self.viewPledgeButtonHidden = Signal.zip(project, youreABacker)
       .map { project, youreABacker in
         project.state == .live || !youreABacker
     }
 
-    self.pledgeButtonHidden = zip(project, reward, youreABacker)
+    self.pledgeButtonHidden = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
         project.state != .live || reward.remaining == 0 || youreABacker
     }
@@ -194,36 +194,36 @@ RewardCellViewModelOutputs {
         : Strings.Select_this_reward()
     }
 
-    let tappable = zip(project, reward, youreABacker)
+    let tappable = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
         (project.state == .live && reward.remaining != 0) || youreABacker
     }
 
-    self.footerViewHidden = zip(rewardIsCollapsed, reward)
+    self.footerViewHidden = Signal.zip(rewardIsCollapsed, reward)
       .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
 
-    self.cardViewDropShadowHidden = combineLatest(
+    self.cardViewDropShadowHidden = Signal.combineLatest(
       tappable.map(negate),
       self.boundStylesProperty.signal
       )
       .map(first)
 
-    self.cardViewBackgroundColor = combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
+    self.cardViewBackgroundColor = Signal.combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
       .map(first)
-      .map { $0 ? .ksr_grey_100 : .whiteColor() }
+      .map { $0 ? .ksr_grey_100 : .white }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
       .filter(isTrue)
       .ignoreValues()
-      .take(1)
+      .take(first: 1)
 
     self.footerLabelText = projectAndReward
       .map(footerString(project:reward:))
 
     projectAndReward
       .takeWhen(self.notifyDelegateRewardCellWantsExpansion)
-      .observeNext { project, reward in
+      .observeValues { project, reward in
         AppEnvironment.current.koala.trackExpandedUnavailableReward(
           reward,
           project: project,
@@ -239,7 +239,7 @@ RewardCellViewModelOutputs {
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project project: Project, rewardOrBacking: Either<Reward, Backing>) {
+  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
   }
 
@@ -278,7 +278,7 @@ RewardCellViewModelOutputs {
   public var outputs: RewardCellViewModelOutputs { return self }
 }
 
-private func minimumRewardAmountTextColor(project project: Project, reward: Reward) -> UIColor {
+private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> UIColor {
   if project.state != .successful && project.state != .live && reward.remaining == 0 {
     return .ksr_text_navy_700
   } else if (project.state == .live && reward.remaining == 0 &&
@@ -299,7 +299,7 @@ private func minimumRewardAmountTextColor(project project: Project, reward: Rewa
   }
 }
 
-private func needsConversion(projectCountry projectCountry: Project.Country, userCountry: String?) -> Bool {
+private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
   return userCountry == "US" && projectCountry != .US
 }
 
@@ -315,7 +315,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .coalesceWith(.noReward)
 }
 
-private func rewardTitle(project project: Project, reward: Reward) -> String {
+private func rewardTitle(project: Project, reward: Reward) -> String {
 
   guard project.personalization.isBacking == true else {
     return reward == Reward.noReward
@@ -326,11 +326,10 @@ private func rewardTitle(project project: Project, reward: Reward) -> String {
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
 }
 
-private func footerString(project project: Project, reward: Reward) -> String {
+private func footerString(project: Project, reward: Reward) -> String {
   var parts: [String] = []
 
-  if let endsAt = reward.endsAt
-    where project.state == .live
+  if let endsAt = reward.endsAt, project.state == .live
       && endsAt > 0
       && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
 
@@ -341,7 +340,7 @@ private func footerString(project project: Project, reward: Reward) -> String {
     parts.append(Strings.Time_left_left(time_left: time + " " + unit))
   }
 
-  if let remaining = reward.remaining where reward.limit != nil && project.state == .live {
+  if let remaining = reward.remaining, reward.limit != nil && project.state == .live {
     parts.append(Strings.Left_count_left(left_count: remaining))
   }
 
@@ -351,5 +350,5 @@ private func footerString(project project: Project, reward: Reward) -> String {
 
   return parts
     .map { part in part.nonBreakingSpaced() }
-    .joinWithSeparator(" • ")
+    .joined(separator: " • ")
 }

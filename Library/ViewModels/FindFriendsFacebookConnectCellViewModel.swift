@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -10,16 +10,16 @@ public protocol FindFriendsFacebookConnectCellViewModelInputs {
   func closeButtonTapped()
 
   /// Call to set where Friends View Controller was loaded from
-  func configureWith(source source: FriendsSource)
+  func configureWith(source: FriendsSource)
 
   /// Call when Facebook Connect button is tapped
   func facebookConnectButtonTapped()
 
   /// Call when Facebook login completed with error
-  func facebookLoginFail(error error: NSError?)
+  func facebookLoginFail(error: Error?)
 
   /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult)
+  func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
@@ -42,7 +42,7 @@ public protocol FindFriendsFacebookConnectCellViewModelOutputs {
   var notifyDelegateUserFacebookConnected: Signal<(), NoError> { get }
 
   /// Emits when a user updated notification should be posted
-  var postUserUpdatedNotification: Signal<NSNotification, NoError> { get }
+  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
   /// Emits when should error alert with AlertError
   var showErrorAlert: Signal<AlertError, NoError> { get }
@@ -68,27 +68,27 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     self.attemptFacebookLogin = self.facebookConnectButtonTappedProperty.signal
 
-    let tokenString = self.facebookLoginSuccessProperty.signal.ignoreNil()
+    let tokenString = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token.tokenString ?? "" }
 
     let facebookConnect = tokenString
       .switchMap { token in
         AppEnvironment.current.apiService.facebookConnect(facebookAccessToken: token)
           .on(
-            started: {
+            starting: {
               isLoading.value = true
             },
             terminated: {
               isLoading.value = false
           })
-          .delay(AppEnvironment.current.apiDelayInterval, onScheduler: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
     self.updateUserInEnvironment = facebookConnect.values()
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
-      .mapConst(NSNotification(name: CurrentUserNotifications.userUpdated, object: nil))
+      .mapConst(Notification(name: .ksr_userUpdated))
 
     self.notifyDelegateUserFacebookConnected = self.userUpdatedProperty.signal
 
@@ -113,8 +113,10 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .filter { $0.ksrCode == .FacebookConnectEmailTaken }
       .map { AlertError.facebookConnectEmailTaken(envelope: $0) }
 
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal.ignoreNil()
-      .map { AlertError.facebookLoginAttemptFail(error: $0) }
+    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
+      .map { $0 as? NSError }
+      .skipNil()
+      .map(AlertError.facebookLoginAttemptFail)
 
     self.showErrorAlert = Signal.merge([
       genericFacebookErrorAlert,
@@ -130,47 +132,47 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     source
       .takeWhen(self.showErrorAlert)
-      .observeNext { AppEnvironment.current.koala.trackFacebookConnectError(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFacebookConnectError(source: $0) }
 
     source
       .takeWhen(self.facebookConnectButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackFacebookConnect(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackFacebookConnect(source: $0) }
 
     source
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
   }
   // swiftlint:enable function_body_length
 
   public var inputs: FindFriendsFacebookConnectCellViewModelInputs { return self }
   public var outputs: FindFriendsFacebookConnectCellViewModelOutputs { return self }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     closeButtonTappedProperty.value = ()
   }
 
-  private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
-  public func configureWith(source source: FriendsSource) {
+  fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
+  public func configureWith(source: FriendsSource) {
     configureWithProperty.value = source
   }
 
-  private let facebookConnectButtonTappedProperty = MutableProperty()
+  fileprivate let facebookConnectButtonTappedProperty = MutableProperty()
   public func facebookConnectButtonTapped() {
     facebookConnectButtonTappedProperty.value = ()
   }
 
-  private let facebookLoginFailProperty = MutableProperty<NSError?>(nil)
-  public func facebookLoginFail(error error: NSError?) {
+  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
+  public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
 
-  private let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result result: FBSDKLoginManagerLoginResult) {
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
 
-  private let userUpdatedProperty = MutableProperty()
+  fileprivate let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
   }
@@ -179,7 +181,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   public let isLoading: Signal<Bool, NoError>
   public let notifyDelegateToDismissHeader: Signal<(), NoError>
   public let notifyDelegateUserFacebookConnected: Signal<(), NoError>
-  public let postUserUpdatedNotification: Signal<NSNotification, NoError>
+  public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
   public let hideCloseButton: Signal<Bool, NoError>

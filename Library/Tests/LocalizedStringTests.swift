@@ -2,7 +2,7 @@ import XCTest
 @testable import Library
 
 class LocalizedStringTests: XCTestCase {
-  private let mockBundle = MockBundle()
+  fileprivate let mockBundle = MockBundle()
 
   func testLocalizingInGerman() {
     withEnvironment(language: .de) {

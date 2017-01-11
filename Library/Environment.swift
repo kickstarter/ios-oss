@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 import KsApi
 import LiveStream
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import FBSDKCoreKit
 
@@ -14,23 +14,22 @@ public struct Environment {
   public let apiService: ServiceType
 
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
-  public let apiDelayInterval: NSTimeInterval
+  public let apiDelayInterval: DispatchTimeInterval
 
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
   /// A type that stores a cached dictionary.
-  public let cache: CacheProtocol
+  public let cache: KSCache
 
   /// The user's calendar.
-  public let calendar: NSCalendar
+  public let calendar: Calendar
 
   /// A type that holds configuration values we download from the server.
   public let config: Config?
 
-  /// A type that exposes how to interact with cookie storage. Default value is
-  /// `NSHTTPCookieStorage.sharedHTTPCookieStorage()`
-  public let cookieStorage: NSHTTPCookieStorageType
+  /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
+  public let cookieStorage: HTTPCookieStorageProtocol
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
@@ -42,7 +41,7 @@ public struct Environment {
   public let dateType: DateProtocol.Type
 
   /// The amount of time to debounce signals by. Default value is `0.3`.
-  public let debounceInterval: NSTimeInterval
+  public let debounceInterval: DispatchTimeInterval
 
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
@@ -63,10 +62,10 @@ public struct Environment {
   public let liveStreamService: LiveStreamServiceProtocol
 
   /// The user’s current locale, which determines how numbers are formatted. Default value is
-  /// `NSLocale.currentLocale()`.
-  public let locale: NSLocale
+  /// `Locale.current`.
+  public let locale: Locale
 
-  /// A type that exposes how to interface with an NSBundle. Default value is `NSBundle.mainBundle()`.
+  /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
   /// A reachability signal producer.
@@ -74,42 +73,42 @@ public struct Environment {
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
-  public let scheduler: DateSchedulerType
+  public let scheduler: DateSchedulerProtocol
 
-  /// The user’s timezone. Default value is `NSTimeZone.localTimeZone()`.
-  public let timeZone: NSTimeZone
+  /// The user’s timezone. Default value is `TimeZone.local`.
+  public let timeZone: TimeZone
 
-  /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.defaultStore()`.
+  /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
 
-  /// A user defaults key-value store. Default value is `NSUserDefaults.standardUserDefaults()`.
+  /// A user defaults key-value store. Default value is `NSUserDefaults.standard`.
   public let userDefaults: KeyValueStoreType
 
   public init(
     apiService: ServiceType = Service(),
-    apiDelayInterval: NSTimeInterval = 0.0,
+    apiDelayInterval: DispatchTimeInterval = .seconds(0),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
-    cache: CacheProtocol = NSCache(),
-    calendar: NSCalendar = NSCalendar.currentCalendar(),
+    cache: KSCache = KSCache(),
+    calendar: Calendar = .current,
     config: Config? = nil,
-    cookieStorage: NSHTTPCookieStorageType = NSHTTPCookieStorage.sharedHTTPCookieStorage(),
+    cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
     countryCode: String = "US",
     currentUser: User? = nil,
-    dateType: DateProtocol.Type = NSDate.self,
-    debounceInterval: NSTimeInterval = 0.3,
+    dateType: DateProtocol.Type = Date.self,
+    debounceInterval: DispatchTimeInterval = .milliseconds(300),
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
-    isVoiceOverRunning: () -> Bool = UIAccessibilityIsVoiceOverRunning,
+    isVoiceOverRunning: @escaping () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
-    language: Language = Language(languageStrings: NSLocale.preferredLanguages()) ?? Language.en,
+    language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
-    locale: NSLocale = .currentLocale(),
-    mainBundle: NSBundleType = NSBundle.mainBundle(),
+    locale: Locale = .current,
+    mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
-    scheduler: DateSchedulerType = QueueScheduler.mainQueueScheduler,
-    timeZone: NSTimeZone = .localTimeZone(),
-    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.defaultStore(),
-    userDefaults: KeyValueStoreType = NSUserDefaults.standardUserDefaults()) {
+    scheduler: DateSchedulerProtocol = QueueScheduler.main,
+    timeZone: TimeZone = .current,
+    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
+    userDefaults: KeyValueStoreType = UserDefaults.standard) {
 
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
@@ -135,43 +134,5 @@ public struct Environment {
     self.timeZone = timeZone
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
-  }
-
-  private var allGlobals: [Any] {
-    return [
-      self.apiService,
-      self.apiDelayInterval,
-      self.assetImageGeneratorType,
-      self.cache,
-      self.calendar,
-      self.config,
-      self.cookieStorage,
-      self.countryCode,
-      self.currentUser,
-      self.dateType,
-      self.debounceInterval,
-      self.facebookAppDelegate,
-      self.isVoiceOverRunning,
-      self.koala,
-      self.language,
-      self.launchedCountries,
-      self.locale,
-      self.mainBundle,
-      self.reachability,
-      self.scheduler,
-      self.timeZone,
-      self.ubiquitousStore,
-      self.userDefaults,
-    ]
-  }
-}
-
-extension Environment: CustomStringConvertible, CustomDebugStringConvertible {
-  public var description: String {
-    return self.allGlobals.map { "\($0.dynamicType)" }.reduce("", combine: +)
-  }
-
-  public var debugDescription: String {
-    return self.description
   }
 }

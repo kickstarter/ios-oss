@@ -1,12 +1,12 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
 public protocol ActivitySampleBackingCellViewModelInputs {
   /// Call to configure cell with activity value.
-  func configureWith(activity activity: Activity)
+  func configureWith(activity: Activity)
 
   /// Call when the see all activity button is tapped.
   func seeAllActivityTapped()
@@ -14,7 +14,7 @@ public protocol ActivitySampleBackingCellViewModelInputs {
 
 public protocol ActivitySampleBackingCellViewModelOutputs {
   /// Emits the backer image url to be displayed.
-  var backerImageURL: Signal<NSURL?, NoError> { get }
+  var backerImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the backing message to be displayed.
   var backingTitleText: Signal<NSAttributedString, NoError> { get }
@@ -32,7 +32,7 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
   ActivitySampleBackingCellViewModelOutputs, ActivitySampleBackingCellViewModelType {
 
   public init() {
-    let activity = self.activityProperty.signal.ignoreNil()
+    let activity = self.activityProperty.signal.skipNil()
 
     self.backingTitleText = activity.map {
       let string = Strings.activity_friend_backed_project_name_by_creator_name(
@@ -45,23 +45,23 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
     }
 
     self.backerImageURL = activity
-      .map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+      .map { ($0.user?.avatar.medium).flatMap(URL.init) }
 
     self.goToActivity = self.seeAllActivityTappedProperty.signal
   }
 
-  private let activityProperty = MutableProperty<Activity?>(nil)
-  public func configureWith(activity activity: Activity) {
+  fileprivate let activityProperty = MutableProperty<Activity?>(nil)
+  public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
 
-  private let seeAllActivityTappedProperty = MutableProperty()
+  fileprivate let seeAllActivityTappedProperty = MutableProperty()
   public func seeAllActivityTapped() {
     self.seeAllActivityTappedProperty.value = ()
   }
 
   public let backingTitleText: Signal<NSAttributedString, NoError>
-  public let backerImageURL: Signal<NSURL?, NoError>
+  public let backerImageURL: Signal<URL?, NoError>
   public let goToActivity: Signal<Void, NoError>
 
   public var inputs: ActivitySampleBackingCellViewModelInputs { return self }

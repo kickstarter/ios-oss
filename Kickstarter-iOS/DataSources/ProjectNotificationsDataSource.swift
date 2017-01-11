@@ -3,7 +3,7 @@ import KsApi
 import UIKit
 
 internal final class ProjectNotificationsDataSource: ValueCellDataSource {
-  internal func load(notifications notifications: [ProjectNotification]) {
+  internal func load(notifications: [ProjectNotification]) {
     self.set(values: notifications,
              cellClass: ProjectNotificationCell.self,
              inSection: 0)
@@ -14,7 +14,7 @@ internal final class ProjectNotificationsDataSource: ValueCellDataSource {
     case let (cell as ProjectNotificationCell, value as ProjectNotification):
       cell.configureWith(value: value)
     default:
-      assertionFailure("Unrecognized (\(cell.dynamicType), \(value.dynamicType)) combo.")
+      assertionFailure("Unrecognized (\(type(of: cell)), \(type(of: value))) combo.")
     }
   }
 }

@@ -1,4 +1,5 @@
 import Argo
+import Runes
 import KsApi
 
 public enum RefTag {
@@ -189,7 +190,7 @@ extension RefTag: Hashable {
   }
 }
 
-private func sortRefTagSuffix(sort: DiscoveryParams.Sort) -> String {
+private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
   switch sort {
   case .endingSoon:
     return "_ending_soon"
@@ -205,12 +206,12 @@ private func sortRefTagSuffix(sort: DiscoveryParams.Sort) -> String {
 }
 
 extension RefTag: Decodable {
-  public static func decode(json: JSON) -> Decoded<RefTag> {
+  public static func decode(_ json: JSON) -> Decoded<RefTag> {
     switch json {
-    case let .String(code):
-      return .Success(RefTag(code: code))
+    case let .string(code):
+      return .success(RefTag(code: code))
     default:
-      return .Failure(.Custom("RefTag code must be a string."))
+      return .failure(.custom("RefTag code must be a string."))
     }
   }
 }

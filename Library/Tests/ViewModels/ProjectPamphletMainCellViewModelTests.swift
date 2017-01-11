@@ -1,5 +1,5 @@
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import XCTest
@@ -8,29 +8,29 @@ import XCTest
 @testable import Library
 
 final class ProjectPamphletMainCellViewModelTests: TestCase {
-  private let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
+  fileprivate let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  private let statsStackViewAccessibilityLabel = TestObserver<String, NoError>()
-  private let backersTitleLabelText = TestObserver<String, NoError>()
-  private let conversionLabelHidden = TestObserver<Bool, NoError>()
-  private let conversionLabelText = TestObserver<String, NoError>()
-  private let creatorImageUrl = TestObserver<String?, NoError>()
-  private let creatorLabelText = TestObserver<String, NoError>()
-  private let deadlineSubtitleLabelText = TestObserver<String, NoError>()
-  private let deadlineTitleLabelText = TestObserver<String, NoError>()
-  private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
-  private let pledgedSubtitleLabelText = TestObserver<String, NoError>()
-  private let pledgedTitleLabelText = TestObserver<String, NoError>()
-  private let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
-  private let progressPercentage = TestObserver<Float, NoError>()
-  private let projectBlurbLabelText = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<String?, NoError>()
-  private let projectNameLabelText = TestObserver<String, NoError>()
-  private let projectStateLabelText = TestObserver<String, NoError>()
-  private let projectStateLabelTextColor = TestObserver<UIColor, NoError>()
-  private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, NoError>()
-  private let stateLabelHidden = TestObserver<Bool, NoError>()
-  private let youreABackerLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let backersTitleLabelText = TestObserver<String, NoError>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let conversionLabelText = TestObserver<String, NoError>()
+  fileprivate let creatorImageUrl = TestObserver<String?, NoError>()
+  fileprivate let creatorLabelText = TestObserver<String, NoError>()
+  fileprivate let deadlineSubtitleLabelText = TestObserver<String, NoError>()
+  fileprivate let deadlineTitleLabelText = TestObserver<String, NoError>()
+  fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
+  fileprivate let pledgedSubtitleLabelText = TestObserver<String, NoError>()
+  fileprivate let pledgedTitleLabelText = TestObserver<String, NoError>()
+  fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let progressPercentage = TestObserver<Float, NoError>()
+  fileprivate let projectBlurbLabelText = TestObserver<String, NoError>()
+  fileprivate let projectImageUrl = TestObserver<String?, NoError>()
+  fileprivate let projectNameLabelText = TestObserver<String, NoError>()
+  fileprivate let projectStateLabelText = TestObserver<String, NoError>()
+  fileprivate let projectStateLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let stateLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let youreABackerLabelHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -62,7 +62,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testStatsStackViewAccessibilityLabel() {
     let project = .template
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
     self.vm.inputs.configureWith(project: project)
 
     self.statsStackViewAccessibilityLabel.assertValues(
@@ -213,7 +213,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testDeadlineLabels() {
     let project = .template
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4)
 
     self.vm.inputs.configureWith(project: project)
 

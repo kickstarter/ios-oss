@@ -7,10 +7,11 @@ import XCTest
 @testable import Library
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
-  private var cosmicSurgery: Project!
+  fileprivate var cosmicSurgery: Project!
 
   override func setUp() {
     super.setUp()
+
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
     let project = Project.cosmicSurgery
@@ -23,7 +24,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
-      mainBundle: NSBundle.framework
+      mainBundle: Bundle.framework
     )
 
     UIView.setAnimationsEnabled(false)
@@ -61,7 +62,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testNonBacker_LiveProject() {
     let project = self.cosmicSurgery
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ self.cosmicSurgery.stats.goal * 3/4
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
@@ -75,7 +76,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testNonBacker_SuccessfulProject() {
-    let deadline = self.dateType.init().dateByAddingTimeInterval(-100).timeIntervalSince1970
+    let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
 
     let project = self.cosmicSurgery
       |> Project.lens.dates.stateChangedAt .~ deadline
@@ -95,7 +96,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testBacker_LiveProject() {
     let endsAt = AppEnvironment.current.dateType.init()
-      .dateByAddingTimeInterval(60*60*24*3)
+      .addingTimeInterval(60*60*24*3)
       .timeIntervalSince1970
 
     let project = self.cosmicSurgery
@@ -110,7 +111,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         ]
       }
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ self.cosmicSurgery.stats.goal * 3/4
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
@@ -156,7 +157,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testBacker_SuccessfulProject() {
-    let deadline = self.dateType.init().dateByAddingTimeInterval(-100).timeIntervalSince1970
+    let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
 
     let project = self.cosmicSurgery
       |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
@@ -188,7 +189,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery
       |> Project.lens.rewards .~ [soldOutReward]
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ self.cosmicSurgery.stats.goal * 3/4
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
@@ -221,7 +222,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testMinimalProjectRendering() {
-    let project = self.cosmicSurgery
+    let project = self.cosmicSurgery!
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
@@ -236,7 +237,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testMinimalAndFullProjectOverlap() {
-    let project = self.cosmicSurgery
+    let project = self.cosmicSurgery!
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let minimal = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)

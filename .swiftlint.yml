@@ -1,4 +1,5 @@
 disabled_rules:
+  - closure_parameter_position
   - function_parameter_count
   - nesting
   - variable_name

@@ -7,25 +7,25 @@ import KsApi
 import PassKit
 import Prelude
 
-private let questionMark = NSCharacterSet(charactersInString: "?")
+private let questionMark = CharacterSet(charactersIn: "?")
 
 final class CheckoutViewModelTests: TestCase {
-  private let vm: CheckoutViewModelType = CheckoutViewModel()
+  fileprivate let vm: CheckoutViewModelType = CheckoutViewModel()
 
-  private let closeLoginTout = TestObserver<(), NoError>()
-  private let dismissViewController = TestObserver<(), NoError>()
-  private let evaluateJavascript = TestObserver<String, NoError>()
-  private let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
-  private let goToSafariBrowser = TestObserver<NSURL, NoError>()
-  private let goToThanks = TestObserver<Project, NoError>()
-  private let goToWebModal = TestObserver<NSURLRequest, NoError>()
-  private let openLoginTout = TestObserver<(), NoError>()
-  private let popViewController = TestObserver<(), NoError>()
-  private let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
-  private let setStripePublishableKey = TestObserver<String, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
-  private let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  private let webViewLoadRequestURL = TestObserver<String, NoError>()
+  fileprivate let closeLoginTout = TestObserver<(), NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let evaluateJavascript = TestObserver<String, NoError>()
+  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
+  fileprivate let goToThanks = TestObserver<Project, NoError>()
+  fileprivate let goToWebModal = TestObserver<URLRequest, NoError>()
+  fileprivate let openLoginTout = TestObserver<(), NoError>()
+  fileprivate let popViewController = TestObserver<(), NoError>()
+  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
+  fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
+  fileprivate let showAlert = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let webViewLoadRequestURL = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -49,14 +49,14 @@ final class CheckoutViewModelTests: TestCase {
     self.vm.outputs.webViewLoadRequest
       .map { request -> String? in
         // Trim query parameters
-        guard let url = request.URL else { return nil }
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return nil }
+        guard let url = request.url else { return nil }
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
         components.queryItems = components.queryItems?.filter {
           $0.name != "client_id" && $0.name != "oauth_token"
         }
-        return components.string?.stringByTrimmingCharactersInSet(questionMark)
+        return components.string?.trimmingCharacters(in: questionMark)
       }
-      .ignoreNil()
+      .skipNil()
       .observe(self.webViewLoadRequestURL.observer)
   }
 
@@ -69,7 +69,7 @@ final class CheckoutViewModelTests: TestCase {
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
     // 1: Cancel button tapped
     self.popViewController.assertDidNotEmitValue()
@@ -98,14 +98,14 @@ final class CheckoutViewModelTests: TestCase {
     self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
     XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
       "Not prepared"
     )
 
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPaymentsRequest().prepared(),
-        navigationType: .Other)
+        navigationType: .other)
     )
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -113,13 +113,13 @@ final class CheckoutViewModelTests: TestCase {
       [newPaymentsURL(), newPaymentsURL()]
     )
 
-    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
     // 2: Web view should not attempt to load the new pledge request
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPledgeRequest(project: project).prepared(),
-        navigationType: .Other
+        navigationType: .other
       )
     )
 
@@ -147,16 +147,16 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: editPledgeRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Click cancel link
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: cancelPledgeRequest(project: project),
-          navigationType: .LinkClicked
+          navigationType: .linkClicked
         ),
         "Not prepared"
       )
@@ -168,16 +168,16 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: cancelPledgeRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 3: Confirm cancellation
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
+          navigationType: .formSubmitted
         ),
         "Not prepared"
       )
@@ -192,7 +192,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: projectRequest(project: project), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: projectRequest(project: project), navigationType: .other)
       )
       XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
                      self.trackingClient.events)
@@ -220,16 +220,16 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: editPledgeRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Click change payment method button
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: changePaymentMethodRequest(project: project),
-          navigationType: .FormSubmitted
+          navigationType: .formSubmitted
         ),
         "Not prepared"
       )
@@ -241,16 +241,16 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: changePaymentMethodRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 3: Redirect to new payments form
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
@@ -260,15 +260,15 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .other)
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 4: Pledge with new card
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -283,7 +283,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .other)
       )
 
       // 5: Redirect to thanks
@@ -294,7 +294,7 @@ final class CheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(
             project: project, racing: false),
-          navigationType: .Other
+          navigationType: .other
         ),
         "Not prepared"
       )
@@ -319,14 +319,14 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .Other)
+          navigationType: .other)
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -334,13 +334,13 @@ final class CheckoutViewModelTests: TestCase {
         [newPaymentsURL(), newPaymentsURL()]
       )
 
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Pledge with new card
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -354,7 +354,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .other)
       )
 
       // 3: Redirect to thanks
@@ -364,7 +364,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: false),
-          navigationType: .Other
+          navigationType: .other
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
@@ -389,14 +389,14 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .Other)
+          navigationType: .other)
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -404,13 +404,13 @@ final class CheckoutViewModelTests: TestCase {
         [newPaymentsURL(), newPaymentsURL()]
       )
 
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Pledge with stored card
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -424,7 +424,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .other)
       )
 
       // 3: Redirect to thanks
@@ -434,7 +434,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: false),
-          navigationType: .Other
+          navigationType: .other
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
@@ -460,10 +460,10 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPaymentsRequest().prepared(),
-        navigationType: .Other
+        navigationType: .other
       )
     )
-    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
     // 2: Submit reward and shipping form
     self.webViewLoadRequestURL.assertValueCount(1)
@@ -471,7 +471,7 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: pledgeRequest(project: project),
-        navigationType: .FormSubmitted
+        navigationType: .formSubmitted
       ),
       "Not prepared"
     )
@@ -484,14 +484,14 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: pledgeRequest(project: project).prepared(),
-        navigationType: .Other
+        navigationType: .other
       )
     )
 
     // 3: Interrupt checkout for login/signup
     self.openLoginTout.assertDidNotEmitValue()
 
-    XCTAssertFalse(self.vm.inputs.shouldStartLoad(withRequest: signupRequest(), navigationType: .Other))
+    XCTAssertFalse(self.vm.inputs.shouldStartLoad(withRequest: signupRequest(), navigationType: .other))
     self.openLoginTout.assertValueCount(1)
 
     // 4: Login
@@ -510,11 +510,11 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: pledgeRequest(project: project).prepared(),
-        navigationType: .Other
+        navigationType: .other
       )
     )
     XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
       "Not prepared"
     )
 
@@ -528,7 +528,7 @@ final class CheckoutViewModelTests: TestCase {
     )
 
     XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .Other)
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(), navigationType: .other)
     )
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -555,10 +555,10 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: editPledgeRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Submit reward and shipping form
       self.webViewLoadRequestURL.assertValueCount(1)
@@ -566,7 +566,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: pledgeRequest(project: project),
-          navigationType: .FormSubmitted
+          navigationType: .formSubmitted
         ),
         "Not prepared"
       )
@@ -579,7 +579,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: pledgeRequest(project: project).prepared(),
-          navigationType: .Other
+          navigationType: .other
         )
       )
 
@@ -589,7 +589,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: false),
-          navigationType: .Other
+          navigationType: .other
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
@@ -609,20 +609,20 @@ final class CheckoutViewModelTests: TestCase {
 
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(),
-        navigationType: .Other)
+        navigationType: .other)
     )
     self.goToWebModal.assertValueCount(0)
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(withRequest: creatorRequest(project: project),
-        navigationType: .LinkClicked)
+        navigationType: .linkClicked)
     )
     self.goToSafariBrowser.assertValueCount(0)
     self.goToWebModal.assertValueCount(1)
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(withRequest: privacyPolicyRequest(project: project),
-        navigationType: .LinkClicked)
+        navigationType: .linkClicked)
     )
     self.goToSafariBrowser.assertValueCount(1)
     self.goToWebModal.assertValueCount(1)
@@ -644,14 +644,14 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .Other)
+          navigationType: .other)
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -659,13 +659,13 @@ final class CheckoutViewModelTests: TestCase {
         [newPaymentsURL(), newPaymentsURL()]
       )
 
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Pledge with stored card
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -679,7 +679,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .other)
       )
 
       // 3: Checkout is racing, delay a second to check status (failed!), then display failure alert.
@@ -689,12 +689,12 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: true),
-          navigationType: .Other
+          navigationType: .other
         )
       )
       self.showAlert.assertValueCount(0)
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertValueCount(0)
       self.showAlert.assertValues([failedEnvelope.stateReason])
 
@@ -724,14 +724,14 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .Other)
+          navigationType: .other)
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -739,13 +739,13 @@ final class CheckoutViewModelTests: TestCase {
         [newPaymentsURL(), newPaymentsURL()]
       )
 
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Pledge with stored card
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -759,7 +759,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: useStoredCardRequest().prepared(), navigationType: .other)
       )
 
       // 3: Checkout is racing, delay a second to check status (successful!), then go to thanks.
@@ -769,11 +769,11 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: true),
-          navigationType: .Other
+          navigationType: .other
         )
       )
 
-      self.scheduler.advanceByInterval(1)
+      self.scheduler.advance(by: .seconds(1))
       self.showAlert.assertValueCount(0)
       self.goToThanks.assertValueCount(1)
     }
@@ -796,14 +796,14 @@ final class CheckoutViewModelTests: TestCase {
     self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
     XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
       "Not prepared"
     )
 
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPaymentsRequest().prepared(),
-        navigationType: .Other)
+        navigationType: .other)
     )
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -811,7 +811,7 @@ final class CheckoutViewModelTests: TestCase {
       [newPaymentsURL(), newPaymentsURL()]
     )
 
-    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+    XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
     // 2: Project link clicked
     self.dismissViewController.assertDidNotEmitValue()
@@ -820,7 +820,7 @@ final class CheckoutViewModelTests: TestCase {
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
         withRequest: projectRequest(project: project),
-        navigationType: .LinkClicked
+        navigationType: .linkClicked
       )
     )
 
@@ -850,14 +850,14 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .Other),
+        self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest(), navigationType: .other),
         "Not prepared"
       )
 
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .Other)
+          navigationType: .other)
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -865,7 +865,7 @@ final class CheckoutViewModelTests: TestCase {
         [newPaymentsURL(), newPaymentsURL()]
       )
 
-      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .Other))
+      XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
 
       // 2: Pledge with apple pay
       self.webViewLoadRequestURL.assertValueCount(2)
@@ -878,7 +878,7 @@ final class CheckoutViewModelTests: TestCase {
             reward: reward,
             location: location
           ),
-          navigationType: .LinkClicked
+          navigationType: .linkClicked
         ),
         "Apple Pay url not allowed"
       )
@@ -902,7 +902,7 @@ final class CheckoutViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorization(
         didAuthorizePayment: .init(
           tokenData: .init(
-            paymentMethodData: .init(displayName: "AmEx 1111", network: "AmEx", type: .Credit),
+            paymentMethodData: .init(displayName: "AmEx 1111", network: .amex, type: .credit),
             transactionIdentifier: "apple_pay_deadbeef"
           )
         )
@@ -912,7 +912,8 @@ final class CheckoutViewModelTests: TestCase {
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
         self.trackingClient.events)
 
-      self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+      let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+      XCTAssertEqual(.success, status)
 
       XCTAssertEqual(
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
@@ -934,7 +935,7 @@ final class CheckoutViewModelTests: TestCase {
 
       self.evaluateJavascript.assertValues([
         "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
-          "\"apple_pay_deadbeef\",\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"}," +
+          "\"apple_pay_deadbeef\",\"payment_network\":\"AmEx\",\"payment_instrument_name\":\"AmEx 1111\"}," +
         "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
         ])
 
@@ -942,7 +943,7 @@ final class CheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertValueCount(2)
 
       XCTAssertFalse(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .FormSubmitted),
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest(), navigationType: .formSubmitted),
         "Not prepared"
       )
 
@@ -956,7 +957,7 @@ final class CheckoutViewModelTests: TestCase {
       )
 
       XCTAssertTrue(
-        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .Other)
+        self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .other)
       )
       XCTAssertEqual(
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
@@ -972,7 +973,7 @@ final class CheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(project: project, racing: false),
-          navigationType: .Other
+          navigationType: .other
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
@@ -1028,18 +1029,18 @@ final class CheckoutViewModelTests: TestCase {
 
 }
 
-internal extension NSURLRequest {
-  internal func prepared() -> NSURLRequest {
+internal extension URLRequest {
+  internal func prepared() -> URLRequest {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: self)
   }
 }
 
-private func applePayUrlRequest(project project: Project,
+private func applePayUrlRequest(project: Project,
                                         amount: Int,
                                         reward: Reward,
-                                        location: Location) -> NSURLRequest {
+                                        location: Location) -> URLRequest {
 
-  let payload = [
+  let payload: [String:Any] = [
     "country_code": project.country.countryCode,
     "currency_code": project.country.currencyCode,
     "merchant_identifier": PKPaymentAuthorizationViewController.merchantIdentifier,
@@ -1056,65 +1057,65 @@ private func applePayUrlRequest(project project: Project,
     ]
   ]
 
-  return (try? NSJSONSerialization.dataWithJSONObject(payload, options: []))
-    .flatMap { String(data: $0.base64EncodedDataWithOptions([]), encoding: NSUTF8StringEncoding) }
+  let url = (try? JSONSerialization.data(withJSONObject: payload, options: []))
+    .map { $0.base64EncodedString() }
     .map { "https://www.kickstarter.com/checkouts/1/payments/apple-pay?payload=\($0)" }
-    .flatMap(NSURL.init(string:))
-    .flatMap(NSURLRequest.init(URL:))
-    .coalesceWith(NSURLRequest())
+    .flatMap(URL.init(string:))
+
+  return URLRequest(url: url!)
 }
 
-private func cancelPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: cancelPledgeURL(project: project))!)
+private func cancelPledgeRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: cancelPledgeURL(project: project))!)
 }
 
-private func cancelPledgeURL(project project: Project) -> String {
+private func cancelPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/destroy"
 }
 
-private func changePaymentMethodRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: changePaymentMethodURL(project: project))!)
+private func changePaymentMethodRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: changePaymentMethodURL(project: project))!)
 }
 
-private func changePaymentMethodURL(project project: Project) -> String {
+private func changePaymentMethodURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/change_method"
 }
 
-private func creatorRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: creatorURL(project: project))!)
+private func creatorRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: creatorURL(project: project))!)
 }
 
-private func creatorURL(project project: Project) -> String {
+private func creatorURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/big_print?modal=true#creator"
 }
 
-private func editPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: editPledgeURL(project: project))!)
+private func editPledgeRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: editPledgeURL(project: project))!)
 }
 
-private func editPledgeURL(project project: Project) -> String {
+private func editPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/edit"
 }
 
-private func newPaymentsRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: newPaymentsURL())!)
+private func newPaymentsRequest() -> URLRequest {
+  return URLRequest(url: URL(string: newPaymentsURL())!)
 }
 
 private func newPaymentsURL() -> String {
   return "https://www.kickstarter.com/checkouts/1/payments/new"
 }
 
-private func newPledgeRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: newPledgeURL(project: project))!)
+private func newPledgeRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: newPledgeURL(project: project))!)
 }
 
-private func newPledgeURL(project project: Project) -> String {
+private func newPledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge/new"
 }
 
-private func paymentsRequest() -> NSURLRequest {
-  let request = NSMutableURLRequest(URL: NSURL(string: paymentsURL())!)
-  request.HTTPMethod = "POST"
+private func paymentsRequest() -> URLRequest {
+  var request = URLRequest(url: URL(string: paymentsURL())!)
+  request.httpMethod = "POST"
   return request
 }
 
@@ -1122,52 +1123,52 @@ private func paymentsURL() -> String {
   return "https://www.kickstarter.com/checkouts/1/payments"
 }
 
-private func pledgeRequest(project project: Project) -> NSURLRequest {
-  let request = NSMutableURLRequest(URL: NSURL(string: pledgeURL(project: project))!)
-  request.HTTPMethod = "POST"
+private func pledgeRequest(project: Project) -> URLRequest {
+  var request = URLRequest(url: URL(string: pledgeURL(project: project))!)
+  request.httpMethod = "POST"
   return request
 }
 
-private func pledgeURL(project project: Project) -> String {
+private func pledgeURL(project: Project) -> String {
   return "\(project.urls.web.project)/pledge"
 }
 
-private func privacyPolicyRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL:
-    NSURL(string: privacyPolicyURL(project: project))!
+private func privacyPolicyRequest(project: Project) -> URLRequest {
+  return URLRequest(url:
+    URL(string: privacyPolicyURL(project: project))!
   )
 }
 
-private func privacyPolicyURL(project project: Project) -> String {
+private func privacyPolicyURL(project: Project) -> String {
   return "\(project.urls.web.project)/privacy?modal=true&ref=checkout_payment_sources_page"
 }
 
-private func projectRequest(project project: Project) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: project.urls.web.project)!)
+private func projectRequest(project: Project) -> URLRequest {
+  return URLRequest(url: URL(string: project.urls.web.project)!)
 }
 
-private func signupRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: "https://www.kickstarter.com/signup?context=checkout&then=%2Ffoo")!)
+private func signupRequest() -> URLRequest {
+  return URLRequest(url: URL(string: "https://www.kickstarter.com/signup?context=checkout&then=%2Ffoo")!)
 }
 
-private func stripeRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: stripeURL())!)
+private func stripeRequest() -> URLRequest {
+  return URLRequest(url: URL(string: stripeURL())!)
 }
 
 private func stripeURL() -> String {
   return "https://js.stripe.com/v2/channel.html"
 }
 
-private func thanksRequest(project project: Project, racing: Bool) -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: thanksURL(project: project, racing: racing))!)
+private func thanksRequest(project: Project, racing: Bool) -> URLRequest {
+  return URLRequest(url: URL(string: thanksURL(project: project, racing: racing))!)
 }
 
-private func thanksURL(project project: Project, racing: Bool) -> String {
+private func thanksURL(project: Project, racing: Bool) -> String {
   return "\(project.urls.web.project)/checkouts/1/thanks\(racing ? "?racing=1" : "")"
 }
 
-private func useStoredCardRequest() -> NSURLRequest {
-  return NSURLRequest(URL: NSURL(string: useStoredCardURL())!)
+private func useStoredCardRequest() -> URLRequest {
+  return URLRequest(url: URL(string: useStoredCardURL())!)
 }
 
 private func useStoredCardURL() -> String {

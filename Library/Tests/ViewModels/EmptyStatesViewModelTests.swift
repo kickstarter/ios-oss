@@ -2,7 +2,7 @@
 @testable import KsApi
 @testable import Library
 @testable import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import XCTest
 

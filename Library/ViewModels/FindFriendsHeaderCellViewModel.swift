@@ -1,5 +1,5 @@
 import KsApi
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 import Prelude
@@ -9,7 +9,7 @@ public protocol FindFriendsHeaderCellViewModelInputs {
   func closeButtonTapped()
 
   /// Call to set source from whence this view was loaded
-  func configureWith(source source: FriendsSource)
+  func configureWith(source: FriendsSource)
 
   /// Call when Find Friends button is tapped
   func findFriendsButtonTapped()
@@ -37,21 +37,21 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
 
     self.configureWithProperty.signal
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeNext { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
+      .observeValues { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
   }
 
   public var inputs: FindFriendsHeaderCellViewModelInputs { return self }
   public var outputs: FindFriendsHeaderCellViewModelOutputs { return self }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
-  private let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.activity)
-  public func configureWith(source source: FriendsSource) {
+  fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.activity)
+  public func configureWith(source: FriendsSource) {
     self.configureWithProperty.value = source
   }
-  private let findFriendsButtonTappedProperty = MutableProperty()
+  fileprivate let findFriendsButtonTappedProperty = MutableProperty()
   public func findFriendsButtonTapped() {
     self.findFriendsButtonTappedProperty.value = ()
   }

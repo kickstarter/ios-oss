@@ -2,10 +2,10 @@ import enum UIKit.UIPressPhase
 
 public extension UIPressPhase {
   public var isStartingPhase: Bool {
-    return self == .Began
+    return self == .began
   }
 
   public var isTerminatingPhase: Bool {
-    return self == .Cancelled || self == .Ended
+    return self == .cancelled || self == .ended
   }
 }

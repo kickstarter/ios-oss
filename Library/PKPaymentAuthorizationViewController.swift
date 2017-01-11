@@ -6,14 +6,12 @@ extension PKPaymentAuthorizationViewController {
     return "merchant.com.kickstarter"
   }
 
-  public static var supportedNetworks: [String] {
-    return [
-      PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa, PKPaymentNetworkDiscover
-    ]
+  public static var supportedNetworks: [PKPaymentNetwork] {
+    return [.amex, .masterCard, .visa, .discover]
   }
 
   public static func applePayCapable() -> Bool {
-    return PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks(supportedNetworks)
+    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: supportedNetworks)
   }
 
   public static func applePayDevice() -> Bool {

@@ -5,83 +5,86 @@ import Prelude_UIKit
 import UIKit
 
 internal final class DashboardVideoCell: UITableViewCell, ValueCell {
-  private let viewModel: DashboardVideoCellViewModelType = DashboardVideoCellViewModel()
+  fileprivate let viewModel: DashboardVideoCellViewModelType = DashboardVideoCellViewModel()
 
-  @IBOutlet private weak var completionPercentageLabel: UILabel!
-  @IBOutlet private weak var externalLabel: UILabel!
-  @IBOutlet private weak var externalPlaysCountLabel: UILabel!
-  @IBOutlet private weak var externalPlaysProgressView: UIView!
-  @IBOutlet private weak var graphBackgroundView: UIView!
-  @IBOutlet private weak var internalLabel: UILabel!
-  @IBOutlet private weak var internalPlaysCountLabel: UILabel!
-  @IBOutlet private weak var internalPlaysProgressView: UIView!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var statsContainerView: UIView!
-  @IBOutlet private weak var totalPlaysContainerView: UIView!
-  @IBOutlet private weak var totalPlaysCountLabel: UILabel!
-  @IBOutlet private weak var totalPlaysStackView: UIStackView!
-  @IBOutlet private weak var videoPlaysTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var completionPercentageLabel: UILabel!
+  @IBOutlet fileprivate weak var externalLabel: UILabel!
+  @IBOutlet fileprivate weak var externalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate weak var externalPlaysProgressView: UIView!
+  @IBOutlet fileprivate weak var graphBackgroundView: UIView!
+  @IBOutlet fileprivate weak var internalLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate weak var internalPlaysProgressView: UIView!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var statsContainerView: UIView!
+  @IBOutlet fileprivate weak var totalPlaysContainerView: UIView!
+  @IBOutlet fileprivate weak var totalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate weak var totalPlaysStackView: UIStackView!
+  @IBOutlet fileprivate weak var videoPlaysTitleLabel: UILabel!
 
-  @IBOutlet private weak var graphStatsContainerView: UIView!
-  @IBOutlet private weak var graphStatsStackView: UIStackView!
+  @IBOutlet fileprivate weak var graphStatsContainerView: UIView!
+  @IBOutlet fileprivate weak var graphStatsStackView: UIStackView!
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
-    self
+    super.bindStyles()
+
+    _ = self
       |> baseTableViewCellStyle()
 
-    self.completionPercentageLabel
+    _ = self.completionPercentageLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.externalLabel
+    _ = self.externalLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.externalPlaysProgressView
+    _ = self.externalPlaysProgressView
       |> dashboardVideoExternalPlaysProgressViewStyle
 
-    self.externalPlaysCountLabel
+    _ = self.externalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.graphStatsContainerView
+    _ = self.graphStatsContainerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    self.graphBackgroundView
+    _ = self.graphBackgroundView
       |> containerViewBackgroundStyle
       |> UIView.lens.accessibilityElementsHidden .~ true
 
-    self.graphStatsStackView
+    _ = self.graphStatsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
 
-    self.internalLabel
+    _ = self.internalLabel
       |> dashboardStatSubtitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 2
 
-    self.internalPlaysProgressView
+    _ = self.internalPlaysProgressView
       |> dashboardVideoInternalPlaysProgressViewStyle
 
-    self.internalPlaysCountLabel
+    _ = self.internalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.separatorViews
+    _ = self.separatorViews
       ||> separatorStyle
 
-    self.statsContainerView
+    _ = self.statsContainerView
       |> dashboardCardStyle
 
-    self.totalPlaysContainerView
+    _ = self.totalPlaysContainerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    self.totalPlaysCountLabel
+    _ = self.totalPlaysCountLabel
       |> dashboardStatTitleLabelStyle
 
-    self.totalPlaysStackView
+    _ = self.totalPlaysStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
-    self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
+    _ = self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle
   }
 
   internal override func bindViewModel() {
@@ -94,22 +97,22 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.externalStartProgress
       .observeForUI()
-      .observeNext { [weak element = externalPlaysProgressView] progress in
+      .observeValues { [weak element = externalPlaysProgressView] progress in
         let anchorY = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
-        element?.transform = CGAffineTransformMakeScale(1.0, CGFloat(progress))
+        element?.transform = CGAffineTransform(scaleX: 1.0, y: CGFloat(progress))
     }
 
     self.viewModel.outputs.internalStartProgress
       .observeForUI()
-      .observeNext { [weak element = internalPlaysProgressView] progress in
+      .observeValues { [weak element = internalPlaysProgressView] progress in
         let anchorY = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
-        element?.transform = CGAffineTransformMakeScale(1.0, CGFloat(progress))
+        element?.transform = CGAffineTransform(scaleX: 1.0, y: CGFloat(progress))
     }
   }
 
-  internal func configureWith(value value: ProjectStatsEnvelope.VideoStats) {
+  internal func configureWith(value: ProjectStatsEnvelope.VideoStats) {
     self.viewModel.inputs.configureWith(videoStats: value)
   }
 }

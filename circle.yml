@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: 7.3
+    version: 8.2
 dependencies:
   pre:
     - make bootstrap
@@ -11,14 +11,10 @@ dependencies:
     - xcodebuild -showsdks
 test:
   pre:
-    - xcrun instruments -w 'iPhone 6 (9.3)' || true
+    - xcrun instruments -w 'iPhone 7 (10.2)' || true
     - sleep 15
   override:
-    - sudo xcode-select -s /Applications/Xcode-8.2.app
-    - set -o pipefail &&
-      swiftlint lint --strict --reporter json |
-      tee $CIRCLE_ARTIFACTS/swiftlint-report.json
-    - sudo xcode-select -s /Applications/Xcode-7.3.app
+    - make lint
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
     - SCHEME=LiveStream make test

@@ -1,6 +1,6 @@
 import KsApi
 import Prelude
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveExtensions
 import Result
 
@@ -9,7 +9,7 @@ public protocol ProjectActivityCommentCellViewModelInputs {
   func backingButtonPressed()
 
   /// Call to set the activity and project.
-  func configureWith(activity activity: Activity, project: Project)
+  func configureWith(activity: Activity, project: Project)
 
   /// Call when the comment button is pressed.
   func replyButtonPressed()
@@ -17,7 +17,7 @@ public protocol ProjectActivityCommentCellViewModelInputs {
 
 public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Emits the author's image URL.
-  var authorImageURL: Signal<NSURL?, NoError> { get }
+  var authorImageURL: Signal<URL?, NoError> { get }
 
   /// Emits the body of the comment.
   var body: Signal<String, NoError> { get }
@@ -47,10 +47,10 @@ public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCe
 ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
 
   public init() {
-    let activityAndProject = self.activityAndProjectProperty.signal.ignoreNil()
+    let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
 
-    self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(NSURL.init) }
+    self.authorImageURL = activity.map { ($0.user?.avatar.medium).flatMap(URL.init) }
 
     self.body = activity.map { $0.comment?.body ?? "" }
 
@@ -60,7 +60,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
         guard let user = activity.user else { return nil }
         return (project, user)
       }
-      .ignoreNil()
+      .skipNil()
 
     let projectComment = activityAndProject
       .filter { activity, _ in activity.category == .commentProject }
@@ -72,7 +72,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     let updateComment = activityAndProject
       .filter { activity, _ in activity.category == .commentPost }
       .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), NoError> in
-        guard let update = activity.update, comment = activity.comment else { return .empty }
+        guard let update = activity.update, let comment = activity.comment else { return .empty }
         return .init(value: (project, update, comment))
     }
 
@@ -94,22 +94,22 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     self.cellAccessibilityValue = self.body
   }
 
-  private let backingButtonPressedProperty = MutableProperty()
+  fileprivate let backingButtonPressedProperty = MutableProperty()
   public func backingButtonPressed() {
     self.backingButtonPressedProperty.value = ()
   }
 
-  private let replyButtonPressedProperty = MutableProperty()
+  fileprivate let replyButtonPressedProperty = MutableProperty()
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }
 
-  private let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
-  public func configureWith(activity activity: Activity, project: Project) {
+  fileprivate let activityAndProjectProperty = MutableProperty<(Activity, Project)?>(nil)
+  public func configureWith(activity: Activity, project: Project) {
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let authorImageURL: Signal<NSURL?, NoError>
+  public let authorImageURL: Signal<URL?, NoError>
   public let body: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
@@ -121,7 +121,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
   public var outputs: ProjectActivityCommentCellViewModelOutputs { return self }
 }
 
-private func commentOnProjectTitle(activity activity: Activity) -> String {
+private func commentOnProjectTitle(activity: Activity) -> String {
   guard let user = activity.user else { return "" }
 
   return AppEnvironment.current.currentUser == user ?
@@ -129,8 +129,8 @@ private func commentOnProjectTitle(activity activity: Activity) -> String {
     Strings.dashboard_activity_user_name_commented_on_your_project(user_name: user.name)
 }
 
-private func commentOnUpdateTitle(activity activity: Activity) -> String {
-  guard let update = activity.update, user = activity.user else { return "" }
+private func commentOnUpdateTitle(activity: Activity) -> String {
+  guard let update = activity.update, let user = activity.user else { return "" }
 
   if AppEnvironment.current.currentUser == user {
     return Strings.dashboard_activity_you_commented_on_update_number(
