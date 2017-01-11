@@ -34,22 +34,22 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     self.nameTextField.addTarget(self,
                                  action: #selector(nameTextFieldReturn),
-                                 forControlEvents: .EditingDidEndOnExit)
+                                 for: .editingDidEndOnExit)
     self.nameTextField.addTarget(self,
                                  action: #selector(nameTextFieldChanged(_:)),
-                                 forControlEvents: [.EditingDidEndOnExit, .EditingChanged])
+                                 for: [.editingDidEndOnExit, .editingChanged])
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldReturn),
-                                  forControlEvents: .EditingDidEndOnExit)
+                                  for: .editingDidEndOnExit)
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldChanged(_:)),
-                                  forControlEvents: [.EditingDidEndOnExit, .EditingChanged])
+                                  for: [.editingDidEndOnExit, .editingChanged])
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldReturn),
-                                     forControlEvents: .EditingDidEndOnExit)
+                                     for: .editingDidEndOnExit)
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
-                                     forControlEvents: [.EditingChanged])
+                                     for: [.editingChanged])
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -64,10 +64,10 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> disclaimerButtonStyle
 
     _ = self.nameTextField
-      |> UITextField.lens.returnKeyType .~ .Next
+      |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.emailTextField |> emailFieldStyle
-      <> UITextField.lens.returnKeyType .~ .Next
+      <> UITextField.lens.returnKeyType .~ .next
 
     _ = self.formBackgroundView
       |> cardStyle()
@@ -79,7 +79,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> newsletterLabelStyle
 
     _ = self.passwordTextField |> passwordFieldStyle
-      <> UITextField.lens.returnKeyType .~ .Go
+      <> UITextField.lens.returnKeyType .~ .go
 
     _ = self.rootStackView
       |> loginRootStackViewStyle
