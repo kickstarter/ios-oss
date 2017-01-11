@@ -94,7 +94,7 @@ secrets:
 
 opentok:
 	mkdir -p Frameworks/OpenTok
-	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.9.1 \
-		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.9.1/OpenTok.framework
+	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.10.0 \
+		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.10.0/OpenTok.framework
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok
