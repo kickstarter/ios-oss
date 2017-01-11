@@ -85,7 +85,8 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
   func testCountdownEnded() {
     let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.startDate .~ (self.scheduler.currentDate.timeIntervalSince1970 + 5)
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (self.scheduler.currentDate.timeIntervalSince1970 + 10)
 
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
@@ -99,10 +100,23 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.pushLiveStreamViewControllerProject.assertValueCount(0)
     self.pushLiveStreamViewControllerEvent.assertValueCount(0)
 
-    self.scheduler.advance(by: .seconds(5))
+    self.scheduler.advance(by: .seconds(2))
+
+    self.pushLiveStreamViewControllerProject.assertValueCount(0)
+    self.pushLiveStreamViewControllerEvent.assertValueCount(0)
+
+    self.scheduler.advance(by: .seconds(8))
+
+    self.pushLiveStreamViewControllerProject.assertValueCount(0)
+    self.pushLiveStreamViewControllerEvent.assertValueCount(0)
+
+    self.scheduler.advance(by: .seconds(1))
 
     self.pushLiveStreamViewControllerProject.assertValues([project])
     self.pushLiveStreamViewControllerEvent.assertValues([event])
+
+    XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow ?? false)
+    XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
   }
 
   func testClose() {

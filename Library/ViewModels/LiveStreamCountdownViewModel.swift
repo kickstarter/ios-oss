@@ -73,32 +73,32 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { max(0, $0.second ?? 0) }
       .skipRepeats()
 
-    //FIXME: Add below strings to Strings.swift
+    //FIXME: Update below after make strings
 
     self.daysString = days
       .map { (String(format: "%02d", $0), localizedString(
-        key: "dates_day", defaultValue: "days", count: 0)) }
+        key: "days", defaultValue: "days")) }
       .map(attributedCountdownString(prefix:suffix:))
 
     self.hoursString = hours
       .map { (String(format: "%02d", $0), localizedString(
-        key: "dates_hour", defaultValue: "hours", count: 0)) }
+        key: "hours", defaultValue: "hours")) }
       .map(attributedCountdownString(prefix:suffix:))
 
     self.minutesString = minutes
       .map { (String(format: "%02d", $0), localizedString(
-        key: "dates_minute", defaultValue: "minutes", count: 0)) }
+        key: "minutes", defaultValue: "minutes")) }
       .map(attributedCountdownString(prefix:suffix:))
 
     self.secondsString = seconds
       .map { (String(format: "%02d", $0), localizedString(
-        key: "dates_second", defaultValue: "seconds", count: 0)) }
+        key: "seconds", defaultValue: "seconds")) }
       .map(attributedCountdownString(prefix:suffix:))
 
     let countdownEnded = Signal.combineLatest(
       liveStream
         .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date },
-      everySecondTimer.mapConst(AppEnvironment.current.dateType.init().date)
+      everySecondTimer
       )
       .filter { startDate, now in startDate < now }
 
@@ -112,11 +112,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       Strings.Live_stream_countdown()
     )
 
-    //FIXME: write test for the event flipping to live
     self.pushLiveStreamViewController = Signal.combineLatest(
-      configData,
-      self.liveStreamEventProperty.signal.skipNil()
-        .map(LiveStreamEvent.lens.stream.liveNow .~ true)
+      configData.map(flipProjectLiveStreamToLive),
+      self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEvenToLive)
       )
       .map(unpack)
       .takeWhen(countdownEnded)
@@ -182,6 +180,20 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
   public var inputs: LiveStreamCountdownViewModelInputs { return self }
   public var outputs: LiveStreamCountdownViewModelOutputs { return self }
+}
+
+private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Project.LiveStream) ->
+  (Project, Project.LiveStream) {
+  let liveStreams = project.liveStreams.map { liveStream in
+    liveStream
+      |> Project.LiveStream.lens.isLiveNow .~ (liveStream.id == currentLiveStream.id)
+  }
+
+  return (project |> Project.lens.liveStreams .~ liveStreams, currentLiveStream)
+}
+
+private func flipLiveStreamEvenToLive(event: LiveStreamEvent) -> LiveStreamEvent {
+  return event |> LiveStreamEvent.lens.stream.liveNow .~ true
 }
 
 private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {

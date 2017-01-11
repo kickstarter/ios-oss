@@ -273,29 +273,15 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
 
 private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
   if liveStreamEvent.stream.liveNow {
-    return localizedString(
-      key: "Creator_name_is_streaming_live_on_Kickstarter",
-      defaultValue: "%{creator_name} is streaming live on Kickstarter",
-      substitutions: ["creator_name": liveStreamEvent.creator.name]
-    )
+    return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 
   if liveStreamEvent.stream.startDate < Date() {
-    return localizedString(
-      key: "Creator_name_was_streaming_live_on_Kickstarter",
-      defaultValue: "%{creator_name} was streaming live on Kickstarter",
-      substitutions: ["creator_name": liveStreamEvent.creator.name]
-    )
+    return Strings.Creator_name_was_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 
-  return localizedString(
-    key: "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration",
-    defaultValue: "%{creator_name} will be streaming live on Kickstarter %{in_duration}",
-    substitutions: [
-      "creator_name": liveStreamEvent.creator.name,
-      "in_duration": Format.relative(
-        secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970)
-    ]
-  )
+  return Strings.Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(
+    creator_name: liveStreamEvent.creator.name,
+    in_duration: Format.relative(secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970))
 }
 #endif
