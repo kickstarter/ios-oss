@@ -46,8 +46,11 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     _ = self.backingInfoButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backing_info_info_button() }
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3),
-                                                  leftRight: Styles.gridHalf(5))
+      |> UIButton.lens.contentEdgeInsets %~~ { _, button in
+        button.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(5))
+    }
 
     _ = self.deliveryLabel
       |> UILabel.lens.textColor .~ .ksr_navy_600

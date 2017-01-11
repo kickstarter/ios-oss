@@ -165,19 +165,19 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.present(helpSheet, animated: true, completion: nil)
   }
 
-  @IBAction fileprivate func newsletterSwitchChanged(_ sender: UISwitch) {
+  @objc private func newsletterSwitchChanged(_ sender: UISwitch) {
     self.viewModel.inputs.sendNewslettersToggled(sender.isOn)
   }
 
-  @IBAction fileprivate func createAccountButtonPressed() {
+  @objc private func createAccountButtonPressed() {
     self.viewModel.inputs.createAccountButtonPressed()
   }
 
-  @IBAction fileprivate func loginButtonPressed() {
+  @objc private func loginButtonPressed() {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @objc fileprivate func helpButtonPressed() {
+  @objc private func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
