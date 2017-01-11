@@ -118,12 +118,8 @@ public struct AppEnvironment {
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
-
-    var _cal = calendar
-    _cal.timeZone = timeZone
 
     pushEnvironment(
       Environment(
@@ -131,7 +127,7 @@ public struct AppEnvironment {
         apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
-        calendar: _cal,
+        calendar: calendar,
         config: config,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
@@ -147,7 +143,6 @@ public struct AppEnvironment {
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
@@ -178,7 +173,6 @@ public struct AppEnvironment {
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -204,7 +198,6 @@ public struct AppEnvironment {
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
