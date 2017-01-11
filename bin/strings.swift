@@ -77,7 +77,6 @@ func funcArguments(argumentNames: [String], count: Bool) -> String {
     .enumerate()
     .map { idx, x in
       let type = count && x.hasSuffix("_count") ? "Int" : "String"
-      if idx == 0 { return "\(x) \(x): \(type)" }
       return "\(x): \(type)"
     }
     .joinWithSeparator(", ")

@@ -303,11 +303,11 @@ public enum Strings {
    "All %{category_name} Projects"
 
    - **es**: "All %{category_name} Projects"
-   - **de**: "All %{category_name} Projects"
+   - **de**: "Alle Projekte der Kategorie %{category_name}"
    - **fr**: "Tous les projets de la catégorie %{category_name}"
    - **en**: "All %{category_name} Projects"
   */
-  public static func All_category_name_Projects(category_name category_name: String) -> String {
+  public static func All_category_name_Projects(category_name: String) -> String {
     return localizedString(
       key: "All_category_name_Projects",
       defaultValue: "All %{category_name} Projects",
@@ -383,11 +383,11 @@ public enum Strings {
    "Available to watch for %{time} more %{units}"
 
    - **es**: "Available to watch for %{time} more %{units}"
-   - **de**: "Available to watch for %{time} more %{units}"
+   - **de**: "Kann noch %{time} %{units} angesehen werden"
    - **fr**: "Plus que %{time}%{units} pour regarder cette diffusion"
    - **en**: "Available to watch for %{time} more %{units}"
   */
-  public static func Available_to_watch_for_time_more_units(time time: String, units: String) -> String {
+  public static func Available_to_watch_for_time_more_units(time: String, units: String) -> String {
     return localizedString(
       key: "Available_to_watch_for_time_more_units",
       defaultValue: "Available to watch for %{time} more %{units}",
@@ -772,11 +772,11 @@ backers"
    "<b>%{creator_name}</b> is live now"
 
    - **es**: "<b>%{creator_name}</b> is live now"
-   - **de**: "<b>%{creator_name}</b> is live now"
+   - **de**: "<b>%{creator_name}</b> ist jetzt live"
    - **fr**: "<b>%{creator_name}</b> est en direct en ce moment"
    - **en**: "<b>%{creator_name}</b> is live now"
   */
-  public static func Creator_name_is_live_now(creator_name creator_name: String) -> String {
+  public static func Creator_name_is_live_now(creator_name: String) -> String {
     return localizedString(
       key: "Creator_name_is_live_now",
       defaultValue: "<b>%{creator_name}</b> is live now",
@@ -788,11 +788,11 @@ backers"
    "%{creator_name} is streaming live on Kickstarter"
 
    - **es**: "%{creator_name} is streaming live on Kickstarter"
-   - **de**: "%{creator_name} is streaming live on Kickstarter"
+   - **de**: "%{creator_name} streamt gerade live auf Kickstarter"
    - **fr**: "%{creator_name} est en direct sur Kickstarter"
    - **en**: "%{creator_name} is streaming live on Kickstarter"
   */
-  public static func Creator_name_is_streaming_live_on_Kickstarter(creator_name creator_name: String) -> String {
+  public static func Creator_name_is_streaming_live_on_Kickstarter(creator_name: String) -> String {
     return localizedString(
       key: "Creator_name_is_streaming_live_on_Kickstarter",
       defaultValue: "%{creator_name} is streaming live on Kickstarter",
@@ -824,7 +824,7 @@ backers"
    - **fr**: "<b>%{creator_name}</b> était en direct %{time_ago}"
    - **en**: "<b>%{creator_name}</b> was live %{time_ago}"
   */
-  public static func Creator_name_was_live_time_ago(creator_name creator_name: String, time_ago: String) -> String {
+  public static func Creator_name_was_live_time_ago(creator_name: String, time_ago: String) -> String {
     return localizedString(
       key: "Creator_name_was_live_time_ago",
       defaultValue: "<b>%{creator_name}</b> was live %{time_ago}",
@@ -836,11 +836,11 @@ backers"
    "%{creator_name} was streaming live on Kickstarter"
 
    - **es**: "%{creator_name} was streaming live on Kickstarter"
-   - **de**: "%{creator_name} was streaming live on Kickstarter"
+   - **de**: "Der Stream von %{creator_name} war gerade live auf Kickstarter"
    - **fr**: "%{creator_name} était en direct sur Kickstarter"
    - **en**: "%{creator_name} was streaming live on Kickstarter"
   */
-  public static func Creator_name_was_streaming_live_on_Kickstarter(creator_name creator_name: String) -> String {
+  public static func Creator_name_was_streaming_live_on_Kickstarter(creator_name: String) -> String {
     return localizedString(
       key: "Creator_name_was_streaming_live_on_Kickstarter",
       defaultValue: "%{creator_name} was streaming live on Kickstarter",
@@ -852,11 +852,11 @@ backers"
    "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
 
    - **es**: "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
-   - **de**: "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
+   - **de**: "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen"
    - **fr**: "%{creator_name} sera en direct sur Kickstarter %{in_duration}"
    - **en**: "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
   */
-  public static func Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(creator_name creator_name: String, in_duration: String) -> String {
+  public static func Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(creator_name: String, in_duration: String) -> String {
     return localizedString(
       key: "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration",
       defaultValue: "%{creator_name} will be streaming live on Kickstarter %{in_duration}",
@@ -1012,7 +1012,7 @@ backers"
    "Failed to retrieve live stream event details"
 
    - **es**: "Failed to retrieve live stream event details"
-   - **de**: "Failed to retrieve live stream event details"
+   - **de**: "Details zu Live-Stream-Event konnten nicht geladen werden"
    - **fr**: "Impossible de récupérer les détails de la diffusion en direct"
    - **en**: "Failed to retrieve live stream event details"
   */
@@ -1028,7 +1028,7 @@ backers"
    "Failed to update subscription"
 
    - **es**: "Failed to update subscription"
-   - **de**: "Failed to update subscription"
+   - **de**: "Abo konnte nicht aktualisiert werden"
    - **fr**: "Mise à jour de l'abonnement impossible"
    - **en**: "Failed to update subscription"
   */
@@ -1718,7 +1718,7 @@ with friends."
    "Keep up with future live streams"
 
    - **es**: "Keep up with future live streams"
-   - **de**: "Keep up with future live streams"
+   - **de**: "Zeitnahe Info zu zukünftigen Live-Streams"
    - **fr**: "Soyez informé des prochaines diffusions en direct"
    - **en**: "Keep up with future live streams"
   */
@@ -1814,7 +1814,7 @@ with friends."
    "Live Stream"
 
    - **es**: "Live Stream"
-   - **de**: "Live Stream"
+   - **de**: "Live-Stream"
    - **fr**: "Diffusion en direct"
    - **en**: "Live Stream"
   */
@@ -1830,7 +1830,7 @@ with friends."
    "Live Streaming now"
 
    - **es**: "Live Streaming now"
-   - **de**: "Live Streaming now"
+   - **de**: "Jetzt live"
    - **fr**: "Diffusion en direct en cours"
    - **en**: "Live Streaming now"
   */
@@ -1846,7 +1846,7 @@ with friends."
    "Live stream countdown"
 
    - **es**: "Live stream countdown"
-   - **de**: "Live stream countdown"
+   - **de**: "Live-Stream Countdown"
    - **fr**: "Compte à rebours de la diffusion en direct"
    - **en**: "Live stream countdown"
   */
@@ -1862,7 +1862,7 @@ with friends."
    "Loading"
 
    - **es**: "Loading"
-   - **de**: "Loading"
+   - **de**: "Ladevorgang läuft"
    - **fr**: "Chargement"
    - **en**: "Loading"
   */
@@ -2073,7 +2073,7 @@ from friends yet."
    "No replay is available for this live stream."
 
    - **es**: "No replay is available for this live stream."
-   - **de**: "No replay is available for this live stream."
+   - **de**: "Kein Replay verügbar für diesen Live-Stream."
    - **fr**: "Pas de rediffusion possible pour cette diffusion en direct."
    - **en**: "No replay is available for this live stream."
   */
@@ -2523,7 +2523,7 @@ daring ideas."
    "Recorded Live"
 
    - **es**: "Recorded Live"
-   - **de**: "Recorded Live"
+   - **de**: "Live aufgenommen"
    - **fr**: "Enregistré en direct"
    - **en**: "Recorded Live"
   */
@@ -2539,11 +2539,11 @@ daring ideas."
    "Recorded live with <b>%{creator_name}</b>"
 
    - **es**: "Recorded live with <b>%{creator_name}</b>"
-   - **de**: "Recorded live with <b>%{creator_name}</b>"
+   - **de**: "Live aufgenommen von <b>%{creator_name}</b>"
    - **fr**: "Enregistré en direct avec <b>%{creator_name}</b>"
    - **en**: "Recorded live with <b>%{creator_name}</b>"
   */
-  public static func Recorded_live_with_creator_name(creator_name creator_name: String) -> String {
+  public static func Recorded_live_with_creator_name(creator_name: String) -> String {
     return localizedString(
       key: "Recorded_live_with_creator_name",
       defaultValue: "Recorded live with <b>%{creator_name}</b>",
@@ -2877,7 +2877,7 @@ catch your eye?"
    "Starting soon"
 
    - **es**: "Starting soon"
-   - **de**: "Starting soon"
+   - **de**: "Beginnt in Kürze"
    - **fr**: "Bientôt en direct"
    - **en**: "Starting soon"
   */
@@ -2893,7 +2893,7 @@ catch your eye?"
    "Subscribe"
 
    - **es**: "Subscribe"
-   - **de**: "Subscribe"
+   - **de**: "Abonnieren"
    - **fr**: "S'abonner"
    - **en**: "Subscribe"
   */
@@ -2909,7 +2909,7 @@ catch your eye?"
    "Subscribed"
 
    - **es**: "Subscribed"
-   - **de**: "Subscribed"
+   - **de**: "Abo aktiviert"
    - **fr**: "Abonné "
    - **en**: "Subscribed"
   */
@@ -2989,7 +2989,7 @@ catch your eye?"
    "The live stream failed to connect"
 
    - **es**: "The live stream failed to connect"
-   - **de**: "The live stream failed to connect"
+   - **de**: "Keine Verbindungn zu Live-Stream"
    - **fr**: "Échec de connexion à la diffusion en direct"
    - **en**: "The live stream failed to connect"
   */
@@ -3005,7 +3005,7 @@ catch your eye?"
    "The live stream was interrupted"
 
    - **es**: "The live stream was interrupted"
-   - **de**: "The live stream was interrupted"
+   - **de**: "Live-Stream wurde unterbrochen"
    - **fr**: "Diffusion en direct interrompue"
    - **en**: "The live stream was interrupted"
   */
@@ -3021,7 +3021,7 @@ catch your eye?"
    "The live stream will start soon"
 
    - **es**: "The live stream will start soon"
-   - **de**: "The live stream will start soon"
+   - **de**: "Live-Stream started in Kürze"
    - **fr**: "La diffusion en direct va bientôt commencer"
    - **en**: "The live stream will start soon"
   */
@@ -3037,7 +3037,7 @@ catch your eye?"
    "The replay will start soon"
 
    - **es**: "The replay will start soon"
-   - **de**: "The replay will start soon"
+   - **de**: "Replay started in Kürze"
    - **fr**: "La rediffusion sera bientôt disponible"
    - **en**: "The replay will start soon"
   */
@@ -3133,11 +3133,11 @@ catch your eye?"
    "Upcoming with<br/><b>%{creator_name}</b>"
 
    - **es**: "Upcoming with<br/><b>%{creator_name}</b>"
-   - **de**: "Upcoming with<br/><b>%{creator_name}</b>"
-   - **fr**: "<br /><b>%{creator_name}</b> bientôt en direct"
+   - **de**: "Demnächst: Video von <br/><b>%{creator_name}</b>"
+   - **fr**: "<br/><b>%{creator_name}</b> bientôt en direct"
    - **en**: "Upcoming with<br/><b>%{creator_name}</b>"
   */
-  public static func Upcoming_with_creator_name(creator_name creator_name: String) -> String {
+  public static func Upcoming_with_creator_name(creator_name: String) -> String {
     return localizedString(
       key: "Upcoming_with_creator_name",
       defaultValue: "Upcoming with<br/><b>%{creator_name}</b>",
@@ -3213,7 +3213,7 @@ catch your eye?"
    "Watch live"
 
    - **es**: "Watch live"
-   - **de**: "Watch live"
+   - **de**: "Live ansehen"
    - **fr**: "Regarder en direct"
    - **en**: "Watch live"
   */
@@ -7425,7 +7425,7 @@ catch your eye?"
    - **fr**: "dans %{time_count} secondes"
    - **en**: "in "%{time_count} seconds""
   */
-  public static func dates_time_in_seconds(time_count time_count: Int) -> String {
+  public static func dates_time_in_seconds(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_in_seconds",
       defaultValue: "in \"%{time_count} seconds\"",
@@ -7441,7 +7441,7 @@ catch your eye?"
    - **fr**: "dans %{time_count} s"
    - **en**: "in "%{time_count} secs""
   */
-  public static func dates_time_in_seconds_abbreviated(time_count time_count: Int) -> String {
+  public static func dates_time_in_seconds_abbreviated(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_in_seconds_abbreviated",
       defaultValue: "in \"%{time_count} secs\"",
@@ -7517,11 +7517,11 @@ catch your eye?"
    "%{time_count} secs"
 
    - **es**: "%{time_count} secs"
-   - **de**: "%{time_count} secs"
+   - **de**: "%{time_count} Sek"
    - **fr**: "%{time_count} s"
    - **en**: "%{time_count} secs"
   */
-  public static func dates_time_seconds(time_count time_count: Int) -> String {
+  public static func dates_time_seconds(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_seconds",
       defaultValue: "%{time_count} secs",
@@ -7537,7 +7537,7 @@ catch your eye?"
    - **fr**: "%{time_count} secondes"
    - **en**: "%{time_count} seconds"
   */
-  public static func dates_time_seconds_abbreviated(time_count time_count: Int) -> String {
+  public static func dates_time_seconds_abbreviated(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_seconds_abbreviated",
       defaultValue: "%{time_count} seconds",
@@ -7553,7 +7553,7 @@ catch your eye?"
    - **fr**: "il y a %{time_count} s"
    - **en**: "%{time_count} secs ago"
   */
-  public static func dates_time_seconds_ago(time_count time_count: Int) -> String {
+  public static func dates_time_seconds_ago(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_seconds_ago",
       defaultValue: "%{time_count} secs ago",
@@ -7569,7 +7569,7 @@ catch your eye?"
    - **fr**: "il y a %{time_count} secondes"
    - **en**: "%{time_count} seconds ago"
   */
-  public static func dates_time_seconds_ago_abbreviated(time_count time_count: Int) -> String {
+  public static func dates_time_seconds_ago_abbreviated(time_count: Int) -> String {
     return localizedString(
       key: "dates.time_seconds_ago_abbreviated",
       defaultValue: "%{time_count} seconds ago",

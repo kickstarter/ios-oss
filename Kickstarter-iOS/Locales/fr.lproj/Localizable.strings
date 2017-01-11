@@ -216,7 +216,7 @@
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
 "Unsaves_project" = "Annule l'enregistrement du projet.";
 "Unsuccessfully_Funded" = "Non financé.";
-"Upcoming_with_creator_name" = "<br /><b>%{creator_name}</b> bientôt en direct";
+"Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b> bientôt en direct";
 "Update_pledge" = "Modifier mon engagement";
 "View" = "Afficher";
 "View_your_pledge" = "Afficher mon engagement";

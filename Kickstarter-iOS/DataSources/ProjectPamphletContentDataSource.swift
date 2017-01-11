@@ -58,7 +58,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   private func liveStreamSubpage(forProject project: Project) -> [ProjectPamphletSubpage] {
 
-    let isLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+    let currentlyLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
       switch (lhs.isLiveNow, rhs.isLiveNow) {
       case (true, false):                 return .lt
       case (false, true):                 return .gt
@@ -77,7 +77,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     //   * live streams first
     //   * future live streams next, followed by past live streams
     //   * then sorted by start date, most recent first
-    let comparator = isLiveStreamsFirstComparator
+    let comparator = currentlyLiveStreamsFirstComparator
       <> futureLiveStreamsFirstComparator
       <> Project.LiveStream.lens.startDate.comparator.reversed
 
