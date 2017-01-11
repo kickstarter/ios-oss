@@ -44,44 +44,42 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   }
 
   func testAvailableForText() {
-    let stream = LiveStreamEvent.template.stream
-      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ 42
     let project = Project.template
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream .~ stream
+      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
+      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.availableForText.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
     self.availableForText.assertValue("Available to watch for 2 more days")
   }
 
   func testCreatorAvatarUrl() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.creator.avatar .~ "https://www.com/creator-avatar.jpg"
 
-    self.creatorAvatarUrl.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorAvatarUrl.assertValues(["https://www.kickstarter.com/creator-avatar.jpg"])
+    self.creatorAvatarUrl.assertValues(["https://www.com/creator-avatar.jpg"])
   }
 
   func testConfigureShareViewModel_WithEvent() {
     let event = LiveStreamEvent.template
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ event.id
 
     let project = Project.template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.id .~ event.id
-    ]
+      |> Project.lens.liveStreams .~ [liveStream]
 
     self.animateActivityIndicator.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.animateActivityIndicator.assertValues([false])
@@ -92,18 +90,17 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testConfigureShareViewModel_WithoutEvent() {
     let event = LiveStreamEvent.template
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ event.id
 
     let project = Project.template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.id .~ event.id
-    ]
+      |> Project.lens.liveStreams .~ [liveStream]
 
     self.animateActivityIndicator.assertValueCount(0)
 
     withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(event))) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, event: nil)
+      self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
 
       self.animateActivityIndicator.assertValues([true])
 
@@ -118,20 +115,19 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testShowErrorAlert() {
     let event = LiveStreamEvent.template
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ event.id
 
     let project = Project.template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.id .~ event.id
-    ]
+      |> Project.lens.liveStreams .~ [liveStream]
 
     self.showErrorAlert.assertValueCount(0)
     self.animateActivityIndicator.assertValueCount(0)
 
-    withEnvironment(liveStreamService: MockLiveStreamService(
-      fetchEventResult: Result(error: .genericFailure))) {
+    let apiService = MockLiveStreamService(fetchEventResult: Result(error: .genericFailure))
+    withEnvironment(liveStreamService: apiService) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, event: nil)
+      self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
 
       self.animateActivityIndicator.assertValues([true])
 
@@ -140,37 +136,32 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.animateActivityIndicator.assertValues([true, false])
     }
 
-    self.showErrorAlert.assertValues([
-      "Failed to retrieve live stream event details"
-      ])
+    self.showErrorAlert.assertValues(["Failed to retrieve live stream event details"])
   }
 
   func testLiveStreamTitle() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.stream.name .~ "Test Project"
 
-    self.liveStreamTitle.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.liveStreamTitle.assertValue("Test Project")
+    self.liveStreamTitle.assertValues(["Test Project"])
   }
 
   func testLiveStreamParagraph() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.stream.description .~ "Test LiveStreamEvent"
 
-    self.liveStreamParagraph.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.liveStreamParagraph.assertValue("Test LiveStreamEvent")
+    self.liveStreamParagraph.assertValues(["Test LiveStreamEvent"])
   }
 
   func testNumberOfPeopleWatchingText() {
-    self.numberOfPeopleWatchingText.assertValueCount(0)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: .template)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
 
@@ -184,15 +175,14 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   func testSubscribe() {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
-    let project = Project.template
-    let event = LiveStreamEvent.template
+    let event = .template
       |> LiveStreamEvent.lens.user.isSubscribed .~ false
 
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.animateSubscribeButtonActivityIndicator.assertValues([])
@@ -222,21 +212,21 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       ])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
 
-    withEnvironment(liveStreamService: MockLiveStreamService(
-      subscribeToResult: Result(error: .genericFailure))) {
-        self.vm.inputs.subscribeButtonTapped()
+    let apiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
+    withEnvironment(liveStreamService: apiService) {
+      self.vm.inputs.subscribeButtonTapped()
 
-        self.scheduler.advance()
-        self.animateSubscribeButtonActivityIndicator.assertValues(
-          [true, false, true, false, true, false]
-        )
+      self.scheduler.advance()
+      self.animateSubscribeButtonActivityIndicator.assertValues(
+        [true, false, true, false, true, false]
+      )
 
-        self.subscribeLabelText.assertValues([
-          "Keep up with future live streams",
-          "",
-          "Keep up with future live streams"
-          ])
-        self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
+      self.subscribeLabelText.assertValues([
+        "Keep up with future live streams",
+        "",
+        "Keep up with future live streams"
+        ])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
     }
   }
 }
