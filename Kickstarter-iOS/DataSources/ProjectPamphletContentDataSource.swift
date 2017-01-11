@@ -82,7 +82,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     //   * live first
     //   * past start date ordered by most recent
     //   * future start date
-    //let compare = liveComparator.compare <> pastStartDateComparator.compare <> futureStartDateComparator.compare
     return project.liveStreams
       .sorted(comparator: comparator)
       .enumerated()

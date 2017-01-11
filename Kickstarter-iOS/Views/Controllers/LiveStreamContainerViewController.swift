@@ -36,7 +36,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var titleStackView: UIStackView!
   @IBOutlet private weak var titleStackViewHeightConstraint: NSLayoutConstraint!
 
-  fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
+  fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
+    = LiveStreamEventDetailsViewModel()
   private var liveStreamViewController: LiveStreamViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
@@ -240,7 +241,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
         guard let _self = self else { return }
         let (_, event) = $0
 
-        _self.addChildLiveStreamViewController(controller: LiveStreamViewController(event: event, delegate: _self))
+        _self.addChildLiveStreamViewController(controller:
+          LiveStreamViewController(event: event, delegate: _self)
+        )
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
@@ -351,7 +354,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width / 2
 
     // FIXME: do we have to set frame like this?
-    let titleSize = self.navBarTitleLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+    let titleSize = self.navBarTitleLabel.sizeThatFits(
+      CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+    )
     self.navBarTitleStackViewBackgroundView.frame = CGRect(
       origin:self.navBarTitleStackViewBackgroundView.frame.origin,
       size: CGSize(width: Styles.grid(4) + titleSize.width, height: Styles.grid(5))
@@ -455,7 +460,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController, numberOfPeople: Int) {
+  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController,
+                                                                      numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 

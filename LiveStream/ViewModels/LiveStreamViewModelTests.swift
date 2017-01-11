@@ -1,3 +1,5 @@
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 import ReactiveSwift
 import Result
 import XCTest
@@ -13,12 +15,13 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
 
-  private let createGreenRoomObservers = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
+  private let createGreenRoomObservers
+    = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createHLSObservers = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
-  private let createNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError>()
-  private let createScaleNumberOfPeopleWatchingObservers = TestObserver<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError>()
+  private let createNumberOfPeopleWatchingObservers
+    = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
+  private let createScaleNumberOfPeopleWatchingObservers
+    = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
   private let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = TestObserver<Int, NoError>()
@@ -418,7 +421,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createGreenRoomObservers.assertValueCount(1)
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
-    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0, "Does not emit when not a scale event.")
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(
+      0, "Does not emit when not a scale event."
+    )
   }
 
   func testDoNotCreateFirebaseObservers_WhenNotLive() {

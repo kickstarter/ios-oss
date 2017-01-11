@@ -17,6 +17,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let minutes = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<String, NoError>()
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
+  private let pushLiveStreamViewControllerLiveStream = TestObserver<Project.LiveStream, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
   private let seconds = TestObserver<String, NoError>()
   private let upcomingIntroText = TestObserver<String, NoError>()
@@ -33,7 +34,9 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.projectImageUrl.map { $0.absoluteString }.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.map(first).observe(
       self.pushLiveStreamViewControllerProject.observer)
-    self.vm.outputs.pushLiveStreamViewController.map(second).observe(
+    self.vm.outputs.pushLiveStreamViewController.map(second)
+      .observe(self.pushLiveStreamViewControllerLiveStream.observer)
+    self.vm.outputs.pushLiveStreamViewController.map(third).observe(
       self.pushLiveStreamViewControllerEvent.observer)
     self.vm.outputs.secondsString.map { $0.string }.observe(self.seconds.observer)
     self.vm.outputs.upcomingIntroText.map { $0.string }.observe(self.upcomingIntroText.observer)
@@ -71,7 +74,8 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.minutes.assertValues(["24\nminutes"])
     self.seconds.assertValues(["45\nseconds"])
 
-    //FIXME: once we have a way to advance the test scheduler in such a way that time can pass we can fix this test
+    //FIXME: once we have a way to advance the test scheduler in such a way that time can pass we can fix 
+    //this test
 
     // Step 2: Set date as if two days have passed
     self.scheduler.advance(by: .seconds(2))

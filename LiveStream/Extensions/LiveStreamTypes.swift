@@ -72,7 +72,7 @@ public func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
  - error:                The LiveVideoPlaybackError returned by the LiveVideoViewController.
  - greenRoom:            The green room is active (streamer not ready to go live yet).
  - initializationFailed: LiveStreamViewController initialization failed.
- - live:                 The LiveStreamViewController is Live along with its respective LiveVideoPlaybackState 
+ - live:                 The LiveStreamViewController is Live along with its respective LiveVideoPlaybackState
                          and startTime.
  - loading:              The LiveStreamViewController is loading.
  - nonStarter:           The event failed to start and has no replay.
