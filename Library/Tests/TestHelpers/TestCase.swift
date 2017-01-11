@@ -25,7 +25,7 @@ internal class TestCase: FBSnapshotTestCase {
     super.setUp()
 
     var calendar = Calendar(identifier: .gregorian)
-    calendar.timeZone = .init(identifier: "GMT")!
+    calendar.timeZone = TimeZone(identifier: "GMT")!
 
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,

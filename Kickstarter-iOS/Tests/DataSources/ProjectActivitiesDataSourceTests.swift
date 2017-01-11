@@ -11,10 +11,10 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
 
   func testDataSource() {
     let timeZone = TimeZone(abbreviation: "UTC")!
-    var calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+    var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = timeZone
 
-    withEnvironment(calendar: calendar, timeZone: timeZone) {
+    withEnvironment(calendar: calendar) {
       let section = ProjectActivitiesDataSource.Section.activities.rawValue
       let project = Project.template
       let activities = [
@@ -53,10 +53,10 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
 
   func testGroupedDatesIsFalse() {
     let timeZone = TimeZone(abbreviation: "UTC")!
-    var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = timeZone
 
-    withEnvironment(calendar: calendar, timeZone: timeZone) {
+    withEnvironment(calendar: calendar) {
       let section = ProjectActivitiesDataSource.Section.activities.rawValue
       let project = Project.template
       let activities = [
