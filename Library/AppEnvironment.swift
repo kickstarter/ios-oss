@@ -122,13 +122,16 @@ public struct AppEnvironment {
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
+    var _cal = calendar
+    _cal.timeZone = timeZone
+
     pushEnvironment(
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
-        calendar: calendar,
+        calendar: _cal,
         config: config,
         cookieStorage: cookieStorage,
         countryCode: countryCode,
