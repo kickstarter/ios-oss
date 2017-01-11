@@ -58,28 +58,27 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   private func liveStreamSubpage(forProject project: Project) -> [ProjectPamphletSubpage] {
 
-    // A comparator of booleans that puts `true` before `false.
-    let trueFirstComparator = Prelude.Comparator<Bool> { lhs, rhs in
-      switch (lhs, rhs) {
+    let isLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      switch (lhs.isLiveNow, rhs.isLiveNow) {
       case (true, false):                 return .lt
       case (false, true):                 return .gt
       case (true, true), (false, false):  return .eq
       }
     }
 
-    // A comparator of time intervals that puts past times (relative to now) before future times.
-    let pastStartDateComparator = Prelude.Comparator<TimeInterval> { lhs, rhs in
-      lhs < AppEnvironment.current.dateType.init().timeIntervalSince1970 ? .lt
-        : lhs == rhs ? .eq
+    // A comparator of time intervals that puts future times (relative to now) before past times.
+    let futureLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      lhs.startDate > AppEnvironment.current.dateType.init().timeIntervalSince1970 ? .lt
+        : lhs.startDate == rhs.startDate ? .eq
         : .gt
     }
 
     // Sort by:
-    //   * live first
-    //   * past start date ordered by most recent
-    //   * future start date
-    let comparator = Project.LiveStream.lens.isLiveNow.lift(comparator: trueFirstComparator)
-      <> Project.LiveStream.lens.startDate.lift(comparator: pastStartDateComparator)
+    //   * live streams first
+    //   * future live streams next, followed by past live streams
+    //   * then sorted by start date, most recent first
+    let comparator = isLiveStreamsFirstComparator
+      <> futureLiveStreamsFirstComparator
       <> Project.LiveStream.lens.startDate.comparator.reversed
 
     return project.liveStreams
