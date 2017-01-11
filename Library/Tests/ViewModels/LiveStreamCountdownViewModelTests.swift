@@ -15,7 +15,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<String, NoError>()
   private let minutes = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<URL, NoError>()
+  private let projectImageUrl = TestObserver<String, NoError>()
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
   private let seconds = TestObserver<String, NoError>()
@@ -30,7 +30,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.hoursString.map { $0.string }.observe(self.hours.observer)
     self.vm.outputs.minutesString.map { $0.string }.observe(self.minutes.observer)
-    self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
+    self.vm.outputs.projectImageUrl.map { $0.absoluteString }.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.map(first).observe(
       self.pushLiveStreamViewControllerProject.observer)
     self.vm.outputs.pushLiveStreamViewController.map(second).observe(
@@ -44,16 +44,15 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.creator.name .~ "Creator Name"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStream: .template)
     self.vm.inputs.viewDidLoad()
 
     self.upcomingIntroText.assertValues(["Upcoming with\nCreator Name"])
   }
 
   func testDateComparison() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.startDate .~ MockDate(
-        timeIntervalSince1970: futureDate().timeIntervalSince1970).date.timeIntervalSince1970
+    let liveStream = .template
+      |> Project.LiveStream.lens.startDate .~ futureDate().timeIntervalSince1970
 
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
@@ -64,7 +63,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.seconds.assertValueCount(0)
 
     // Step 1: Set project and date
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
     self.vm.inputs.viewDidLoad()
 
     self.days.assertValues(["10\ndays"])
@@ -96,6 +95,8 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   }
 
   func testClose() {
+    self.vm.inputs.configureWith(project: .template, liveStream: .template)
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.closeButtonTapped()
 
     self.dismiss.assertValueCount(1)
@@ -105,7 +106,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.category.id .~ 123
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStream: .template)
     self.vm.inputs.viewDidLoad()
 
     self.categoryId.assertValue(123)
@@ -114,16 +115,14 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testProjectImageUrl() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStream: .template)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertTrue(self.projectImageUrl.lastValue?.absoluteString == "http://www.kickstarter.com/full.jpg")
+    self.projectImageUrl.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 
   func testViewControllerTitle() {
-    let project = Project.template
-
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template)
     self.vm.inputs.viewDidLoad()
 
     self.viewControllerTitle.assertValue("Live stream countdown")

@@ -12,7 +12,7 @@ public protocol LiveStreamCountdownViewModelType {
 
 public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
-  func configureWith(project: Project)
+  func configureWith(project: Project, liveStream: Project.LiveStream)
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
   func viewDidLoad()
 }
@@ -35,17 +35,20 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
   //swiftlint:disable function_body_length
   public init() {
-    let project = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+    let configData = Signal.combineLatest(
+      self.configData.signal.skipNil(),
       self.viewDidLoadProperty.signal)
       .map(first)
+
+    let project = configData.map(first)
+    let liveStream = configData.map(second)
 
     let everySecondTimer = self.viewDidLoadProperty.signal.flatMap {
       timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
         .prefix(value: AppEnvironment.current.scheduler.currentDate)
     }
 
-    let dateComponents = project.map { $0.liveStreams.first }.skipNil()
+    let dateComponents = liveStream
       .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
       .takePairWhen(everySecondTimer)
       .map { startDate, currentDate in
@@ -93,7 +96,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map(attributedCountdownString(prefix:suffix:))
 
     let countdownEnded = Signal.combineLatest(
-      project.map { $0.liveStreams.first }.skipNil()
+      liveStream
         .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date },
       everySecondTimer.mapConst(AppEnvironment.current.dateType.init().date)
       )
@@ -111,7 +114,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     //FIXME: write test for the event flipping to live
     self.pushLiveStreamViewController = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+      project,
       self.liveStreamEventProperty.signal.skipNil()
         .map(LiveStreamEvent.lens.stream.liveNow .~ true)
       )
@@ -151,9 +154,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
+  private let configData = MutableProperty<(Project, Project.LiveStream)?>(nil)
+  public func configureWith(project: Project, liveStream: Project.LiveStream) {
+    self.configData.value = (project, liveStream)
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)

@@ -156,7 +156,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     if startDate < Date() {
       vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream, event: nil)
     } else {
-      vc = LiveStreamCountdownViewController.configuredWith(project: project)
+      vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: liveStream)
     }
 
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
