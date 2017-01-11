@@ -90,7 +90,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
     self.vm.inputs.viewDidLoad()
 
     let event = LiveStreamEvent.template
