@@ -89,6 +89,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseControllerStyle()
+
     _  = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
@@ -298,8 +301,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] imageName in
-        imageName.map { self?.subscribeButton.setImage(UIImage(named: $0), for: .normal) }
+      .observeValues { [weak self] in
+        let imageName = $0.flatMap { $0 }.coalesceWith("")
+        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
     }
 
     self.availableForLabel.rac.text = self.eventDetailsViewModel.outputs.availableForText
@@ -454,7 +458,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction private func subscribe() {
+  @IBAction private func subscribe(_ sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }

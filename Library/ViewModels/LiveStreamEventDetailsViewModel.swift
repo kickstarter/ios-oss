@@ -74,7 +74,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
-          eventId: event.id, uid: userId, isSubscribed: !subscribedProperty.value
+          eventId: event.id, uid: userId, isSubscribed: subscribedProperty.value
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
@@ -102,8 +102,11 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
       }.skipNil()
 
-    self.creatorAvatarUrl = event
-      .map { URL(string: $0.creator.avatar) }
+    self.creatorAvatarUrl = Signal.merge(
+      project.mapConst(nil),
+      event
+        .map { URL(string: $0.creator.avatar) }
+    )
 
     self.creatorName = event.map { $0.creator.name }
     self.liveStreamTitle = event.map { $0.stream.projectName }
