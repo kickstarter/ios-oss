@@ -138,21 +138,21 @@ extension LiveVideoViewController: HLSPlayerViewDelegate {
 
 extension LiveVideoViewController: OTSessionDelegate {
 
-  public func sessionDidConnect(_ session: OTSession!) {
+  public func sessionDidConnect(_ session: OTSession) {
     self.viewModel.inputs.sessionDidConnect()
   }
 
-  public func sessionDidDisconnect(_ session: OTSession!) {}
+  public func sessionDidDisconnect(_ session: OTSession) {}
 
-  public func session(_ session: OTSession!, streamCreated stream: OTStream!) {
+  public func session(_ session: OTSession, streamCreated stream: OTStream) {
     self.viewModel.inputs.sessionStreamCreated(stream: stream)
   }
 
-  public func session(_ session: OTSession!, streamDestroyed stream: OTStream!) {
+  public func session(_ session: OTSession, streamDestroyed stream: OTStream) {
     self.viewModel.inputs.sessionStreamDestroyed(stream: stream)
   }
 
-  public func session(_ session: OTSession!, didFailWithError error: OTError!) {
+  public func session(_ session: OTSession, didFailWithError error: OTError) {
     self.viewModel.inputs.sessionDidFailWithError(error: error)
   }
 }
