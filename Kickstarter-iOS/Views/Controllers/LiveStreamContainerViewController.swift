@@ -41,14 +41,15 @@ internal final class LiveStreamContainerViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
-  internal static func configuredWith(project: Project, event: LiveStreamEvent?)
-    -> LiveStreamContainerViewController {
+  internal static func configuredWith(project: Project,
+                                      liveStream: Project.LiveStream,
+                                      event: LiveStreamEvent?) -> LiveStreamContainerViewController {
 
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
-      vc.viewModel.inputs.configureWith(project: project, event: event)
-      vc.eventDetailsViewModel.inputs.configureWith(project: project, event: event)
+    let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
+    vc.viewModel.inputs.configureWith(project: project, event: event)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
-      return vc
+    return vc
   }
 
   internal override func viewDidLoad() {

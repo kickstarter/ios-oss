@@ -71,7 +71,7 @@ extension LiveStreamEvent: Decodable {
       <*> json <| "id"
       <*> json <| "opentok"
       <*> json <| "stream"
-      <*> json <| "user" // FIXME: <|> .success(User(isSubscribed: false))
+      <*> (json <| "user" <|> .success(User(isSubscribed: false)))
   }
 }
 

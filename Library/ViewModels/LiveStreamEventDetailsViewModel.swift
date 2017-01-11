@@ -11,7 +11,7 @@ public protocol LiveStreamEventDetailsViewModelType {
 }
 
 public protocol LiveStreamEventDetailsViewModelInputs {
-  func configureWith(project: Project, event: LiveStreamEvent?)
+  func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
   func setNumberOfPeopleWatching(numberOfPeople: Int)
@@ -48,8 +48,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map(first)
 
     let eventEvent = configData
-      .switchMap { project, optionalEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
-        fetchEvent(forProject: project, event: optionalEvent)
+      .switchMap { project, liveStream, optionalEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+        fetchEvent(forProject: project, liveStream: liveStream, event: optionalEvent)
         .materialize()
     }
 
@@ -122,7 +122,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
 
     self.animateActivityIndicator = Signal.merge(
-      configData.filter { _, event in event == nil }.mapConst(true),
+      configData.filter { _, _, event in event == nil }.mapConst(true),
       event.mapConst(false),
       eventEvent.filter { $0.isTerminating }.mapConst(false)
     ).skipRepeats()
@@ -142,9 +142,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   }
   //swiftlint:enable function_body_length
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
-  public func configureWith(project: Project, event: LiveStreamEvent?) {
-    self.configData.value = (project, event)
+  private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
+  public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {
+    self.configData.value = (project, liveStream, event)
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -188,19 +188,16 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
 }
 
-private func fetchEvent(forProject project: Project, event: LiveStreamEvent?) ->
+private func fetchEvent(forProject project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) ->
   SignalProducer<LiveStreamEvent, LiveApiError> {
 
-  if let event = event {
-    return SignalProducer(value: event)
-  }
+    if let event = event {
+      return SignalProducer(value: event)
+    }
 
-  if let eventId = project.liveStreams.first?.id {
+
     return AppEnvironment.current.liveStreamService.fetchEvent(
-      eventId: eventId, uid: AppEnvironment.current.currentUser?.id
+      eventId: liveStream.id, uid: AppEnvironment.current.currentUser?.id
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-  }
-
-  return .empty
 }

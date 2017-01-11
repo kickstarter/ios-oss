@@ -21,7 +21,7 @@ internal final class HLSPlayerView: UIView {
       try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
     } catch {}
 
-    self.playerItem = AVPlayerItem(url: hlsStreamUrl as URL)
+    self.playerItem = AVPlayerItem(url: hlsStreamUrl)
     self.hlsPlayerLayer = AVPlayerLayer(player: AVPlayer(playerItem: self.playerItem))
     self.hlsPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
 

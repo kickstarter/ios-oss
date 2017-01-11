@@ -6,7 +6,7 @@ import Result
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project: Project)
   func tappedComments()
-  func tappedLiveStream()
+  func tapped(liveStream: Project.LiveStream)
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
@@ -18,7 +18,7 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
-  var goToLiveStream: Signal<Project, NoError> { get }
+  var goToLiveStream: Signal<(Project, Project.LiveStream), NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
@@ -79,7 +79,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
       .takeWhen(self.tappedUpdatesProperty.signal)
 
     self.goToLiveStream = project
-      .takeWhen(self.tappedLiveStreamProperty.signal)
+      .takePairWhen(self.tappedLiveStreamProperty.signal.skipNil())
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -92,9 +92,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedCommentsProperty.value = ()
   }
 
-  private let tappedLiveStreamProperty = MutableProperty()
-  public func tappedLiveStream() {
-    self.tappedLiveStreamProperty.value = ()
+  private let tappedLiveStreamProperty = MutableProperty<Project.LiveStream?>(nil)
+  public func tapped(liveStream: Project.LiveStream) {
+    self.tappedLiveStreamProperty.value = liveStream
   }
 
   fileprivate let tappedPledgeAnyAmountProperty = MutableProperty()
@@ -129,7 +129,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
-  public let goToLiveStream: Signal<Project, NoError>
+  public let goToLiveStream: Signal<(Project, Project.LiveStream), NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>

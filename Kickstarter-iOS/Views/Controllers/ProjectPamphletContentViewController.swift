@@ -78,7 +78,9 @@ internal final class ProjectPamphletContentViewController: UITableViewController
 
     self.viewModel.outputs.goToLiveStream
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToLiveStream(project: $0) }
+      .observeValues { [weak self] project, liveStream in
+        self?.goToLiveStream(project: project, liveStream: liveStream)
+    }
 
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
@@ -96,8 +98,8 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
-    } else if self.dataSource.indexPathIsLiveStreamSubpage(indexPath: indexPath) {
-      self.viewModel.inputs.tappedLiveStream()
+    } else if let liveStream = self.dataSource.liveStream(forIndexPath: indexPath) {
+      self.viewModel.inputs.tapped(liveStream: liveStream)
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -147,18 +149,15 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     }
   }
 
-  private func goToLiveStream(project: Project) {
-    let lvc = project.liveStreams.first.flatMap { liveStream -> UIViewController in
-      let startDate = Date(timeIntervalSince1970: liveStream.startDate)
+  private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
+    let vc: UIViewController
+    let startDate = Date(timeIntervalSince1970: liveStream.startDate)
 
-      if startDate < Date() {
-        return LiveStreamContainerViewController.configuredWith(project: project, event: nil)
-      }
-
-      return LiveStreamCountdownViewController.configuredWith(project: project)
+    if startDate < Date() {
+      vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream, event: nil)
+    } else {
+      vc = LiveStreamCountdownViewController.configuredWith(project: project)
     }
-
-    guard let vc = lvc else { return }
 
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]

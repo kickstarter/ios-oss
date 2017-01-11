@@ -97,7 +97,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date },
       everySecondTimer.mapConst(AppEnvironment.current.dateType.init().date)
       )
-      .filter { startDate, now in startDate >= now }
+      .filter { startDate, now in startDate < now }
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }

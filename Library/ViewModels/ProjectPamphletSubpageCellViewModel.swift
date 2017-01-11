@@ -159,7 +159,7 @@ public enum ProjectPamphletSubpage {
     }
   }
 
-  fileprivate var liveStream: Project.LiveStream? {
+  public var liveStream: Project.LiveStream? {
     if case .liveStream(let liveStream, _) = self {
       return liveStream
     }

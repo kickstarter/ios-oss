@@ -38,7 +38,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
       vc.viewModel.inputs.configureWith(project: project)
-      vc.eventDetailsViewModel.inputs.configureWith(project: project, event: nil)
+      vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: project.liveStreams.first!, event: nil)
       return vc
   }
 
@@ -178,13 +178,13 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
       .on(event: { [weak self] image in self?.projectImageView.image = nil })
-      .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0 as URL) }
+      .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
       .on(event: { [weak self] image in self?.creatorAvatarImageView.image = nil })
       .skipNil()
-      .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0 as URL) }
+      .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
 
     self.viewModel.outputs.categoryId
       .observeForUI()
@@ -225,9 +225,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] project, event in
+        // FIXME: pass the live stream into countdown too
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: $0, event: $1)
+          .configuredWith(project: project, liveStream: project.liveStreams.first!, event: event)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
