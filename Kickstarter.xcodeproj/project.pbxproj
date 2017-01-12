@@ -214,6 +214,12 @@
 		9DEE3B561D1D819D0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */; };
 		9DEE3B591D1D81C80020C2BE /* ProjectActivityBackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEE3B581D1D81C80020C2BE /* ProjectActivityBackingCellViewModelTests.swift */; };
 		A70119451CD92261009F8F65 /* CommentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */; };
+		A7066A851E27B67000E8658C /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A841E27B67000E8658C /* ReactiveSwift.framework */; };
+		A7066A861E27B67000E8658C /* ReactiveSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A841E27B67000E8658C /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7066A881E27B68300E8658C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A871E27B68200E8658C /* Result.framework */; };
+		A7066A891E27B68300E8658C /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A871E27B68200E8658C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7066A8B1E27B69700E8658C /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A8A1E27B69700E8658C /* Runes.framework */; };
+		A7066A8C1E27B69700E8658C /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7066A8A1E27B69700E8658C /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
 		A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD41CFFAB9400653B2F /* LoginIntent.swift */; };
 		A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD51CFFAB9400653B2F /* Notifications.swift */; };
@@ -983,12 +989,15 @@
 				A7C5C55C1DF899B80048D14C /* ReactiveExtensions.framework in Embed Frameworks */,
 				A7C5C5421DF894ED0048D14C /* Curry.framework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
+				A7066A891E27B68300E8658C /* Result.framework in Embed Frameworks */,
+				A7066A861E27B67000E8658C /* ReactiveSwift.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
 				A7C5C54E1DF895050048D14C /* KsApi.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
 				A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7C5C53A1DF894E00048D14C /* Prelude.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
+				A7066A8C1E27B69700E8658C /* Runes.framework in Embed Frameworks */,
 				A7C5C53E1DF894E70048D14C /* Argo.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1205,6 +1214,9 @@
 		9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCellViewModel.swift; sourceTree = "<group>"; };
 		9DEE3B581D1D81C80020C2BE /* ProjectActivityBackingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCellViewModelTests.swift; sourceTree = "<group>"; };
 		A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceTests.swift; sourceTree = "<group>"; };
+		A7066A841E27B67000E8658C /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7066A871E27B68200E8658C /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7066A8A1E27B69700E8658C /* Runes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Runes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A707BAD31CFFAB9400653B2F /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpType.swift; sourceTree = "<group>"; };
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		A707BAD51CFFAB9400653B2F /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -1575,8 +1587,11 @@
 			files = (
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
+				A7066A851E27B67000E8658C /* ReactiveSwift.framework in Frameworks */,
+				A7066A881E27B68300E8658C /* Result.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
 				A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */,
+				A7066A8B1E27B69700E8658C /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1621,7 +1636,7 @@
 				80762DF31D071BCF0074189D /* AlamofireImage.framework */,
 				80762DF51D071BCF0074189D /* AlamofireImage iOS Tests.xctest */,
 				80762DF71D071BCF0074189D /* AlamofireImage.framework */,
-				80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */,
+				80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */,
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
@@ -1635,7 +1650,7 @@
 				80762E311D071BFE0074189D /* Alamofire.framework */,
 				80762E331D071BFE0074189D /* Alamofire iOS Tests.xctest */,
 				80762E351D071BFE0074189D /* Alamofire.framework */,
-				80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */,
+				80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */,
 				80762E391D071BFE0074189D /* Alamofire.framework */,
 				80762E3B1D071BFE0074189D /* Alamofire tvOS Tests.xctest */,
 				80762E3D1D071BFE0074189D /* Alamofire.framework */,
@@ -1782,6 +1797,9 @@
 		A7424F0D1C84F40E00FDC1E4 /* Embedded */ = {
 			isa = PBXGroup;
 			children = (
+				A7066A8A1E27B69700E8658C /* Runes.framework */,
+				A7066A871E27B68200E8658C /* Result.framework */,
+				A7066A841E27B67000E8658C /* ReactiveSwift.framework */,
 				A7424F421C84F43300FDC1E4 /* iOS */,
 				A7E1C4BD1D18C871002D6DE3 /* onepassword-app-extension */,
 				A7424F411C84F41600FDC1E4 /* tvOS */,
@@ -2671,6 +2689,7 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 					A75511441C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -2681,12 +2700,13 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 					A7D1F9441C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.OMC = {
 								enabled = 1;
@@ -2788,10 +2808,10 @@
 			remoteRef = 80762DF61D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */ = {
+		80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "AlamofireImage OSX Tests.xctest";
+			path = "AlamofireImage macOS Tests.xctest";
 			remoteRef = 80762DF81D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2837,10 +2857,10 @@
 			remoteRef = 80762E341D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */ = {
+		80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Alamofire OSX Tests.xctest";
+			path = "Alamofire macOS Tests.xctest";
 			remoteRef = 80762E361D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3829,7 +3849,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Hockey.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3847,8 +3867,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
-				PROVISIONING_PROFILE = "1ac3dcfe-2fdf-4ae9-a6b1-3d1cca53500e";
-				PROVISIONING_PROFILE_SPECIFIER = circleci;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3876,7 +3896,7 @@
 		A745D1D71CAAD0A400C12802 /* Hockey */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -3940,7 +3960,7 @@
 		A745D1D91CAAD0A400C12802 /* Hockey */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -3975,6 +3995,7 @@
 		A755114D1C8642B3005355CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -4008,7 +4029,7 @@
 		A755114E1C8642B3005355CF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -4094,6 +4115,7 @@
 		A7C795A71C873A870081977F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -4128,7 +4150,7 @@
 		A7C795A81C873A870081977F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -4169,7 +4191,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/KickDebug.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -4185,6 +4207,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.alpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -4199,7 +4223,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/KickDebug.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4215,8 +4239,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
-				PROVISIONING_PROFILE = "1e4dc32d-968e-4d47-9118-b88998ebae11";
-				PROVISIONING_PROFILE_SPECIFIER = AppStore;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";

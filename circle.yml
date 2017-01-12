@@ -23,7 +23,6 @@ test:
       --output_name               "KickBeta"
       --export_method             "enterprise"
       --provisioning_profile_path "circleci-beta-dist.mobileprovision"
-      --codesigning_identity      "iPhone Distribution: Kickstarter of New York"
       --scheme                    "Kickstarter-iOS"
       --configuration             "Hockey"
   post:
