@@ -67,19 +67,19 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.countdownStackView
-      |> UIStackView.lens.alignment .~ .top
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.distribution .~ .equalCentering
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins %~~ { _, s in
-        s.traitCollection.isRegularRegular
-          ? .init(topBottom: 0, leftRight: Styles.grid(12))
-          : .init(all: 0)
-    }
 
     _ = self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(6)
       |> UIStackView.lens.distribution .~ .fill
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.isRegularRegular
+          ? .init(topBottom: 0, leftRight: Styles.grid(18))
+          : .init(topBottom: 0, leftRight: Styles.grid(6))
+    }
 
 
     self.countdownLabels?.forEach { label in
@@ -87,6 +87,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         |> UILabel.lens.textAlignment .~ .center
         |> UILabel.lens.numberOfLines .~ 2
         |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
     }
 
     self.countdownColons?.forEach { label in
@@ -113,7 +115,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> roundedStyle(cornerRadius: 2)
 
     self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
-    self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
+
+    self.creatorAvatarWidthConstraint.constant = self.creatorAvatarImageView.traitCollection.isRegularRegular
+      ? Styles.grid(40)
+      : Styles.grid(40)
 
     _ = self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
@@ -201,7 +206,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
+      .observeValues { [weak self] in
+        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
+    }
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()

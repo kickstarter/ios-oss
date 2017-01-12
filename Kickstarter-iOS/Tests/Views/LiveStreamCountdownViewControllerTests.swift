@@ -2,25 +2,15 @@ import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+@testable import LiveStream
 
 internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
-    let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
-    let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
-    let project = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ deadline
-      |> Project.lens.dates.launchedAt .~ launchedAt
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-
-    UIView.setAnimationsEnabled(false)
-
     self.recordMode = true
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
+    UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
@@ -30,15 +20,24 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
   }
 
   func testSomething() {
+    let liveStream = .template
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 195_753)
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.user.isSubscribed .~ true
+      // FIXME: i wouldnt think we would use project name 
+      |> LiveStreamEvent.lens.stream.projectName .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.stream.description .~ "175 char max. 175 char max 175 char max message with a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!"
+    let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
+
+    AppEnvironment.replaceCurrentEnvironment(liveStreamService: liveStreamService)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { lang, device in
-
-      let vc =
-        LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: .template)
+      let vc = LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: liveStream)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      self.scheduler.advance()
 
-      FBSnapshotVerifyView(vc.view, identifier: "lang_\(lang)_device_\(device)")
+      FBSnapshotVerifyView(parent.view, identifier: "lang_\(lang)_device_\(device)")
     }
   }
 }
