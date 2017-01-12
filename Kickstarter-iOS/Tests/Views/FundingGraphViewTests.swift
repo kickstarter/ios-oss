@@ -77,12 +77,40 @@ internal final class FundingGraphViewTests: TestCase {
       "Back Over Funded": backOverFunded,
       "One Day Left": oneDayLeft,
       "Completed": completedStats,
-    ]
+      ]
 
     for (key, stats) in statStates {
       self.vm.inputs.configureWith(
         fundingDateStats: fundingStats(forProject: project, pledgeValues: stats),
         project: project
+      )
+
+      graphView.project = self.graphData.lastValue!.project
+      graphView.stats = self.graphData.lastValue!.stats
+      graphView.yAxisTickSize = self.graphData.lastValue!.yAxisTickSize
+
+      FBSnapshotVerifyView(graphView, identifier: "state_\(key)")
+    }
+  }
+
+  func testOneDayProject() {
+    let oneDayProject = .template
+      |> Project.lens.stats.goal .~ 2_000
+      |> Project.lens.dates.launchedAt .~ 123456789
+      |> Project.lens.dates.deadline .~ (123456789 + 60 * 60 * 24)
+
+    let graphView = FundingGraphView(frame: CGRect(x: 0, y: 0, width: 300, height: 225))
+
+    let statStates = [
+      "Under Funded": [200, 1_000],
+      "Just Funded": [200, 2_100],
+      "Way Over Funded": [3_000, 6_000],
+      ]
+
+    for (key, stats) in statStates {
+      self.vm.inputs.configureWith(
+        fundingDateStats: fundingStats(forProject: oneDayProject, pledgeValues: stats),
+        project: oneDayProject
       )
 
       graphView.project = self.graphData.lastValue!.project
@@ -106,6 +134,6 @@ private func fundingStats(forProject project: Project, pledgeValues: [Int])
       .template
         |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
         |> ProjectStatsEnvelope.FundingDateStats.lens.date
-          .~ (project.dates.launchedAt + TimeInterval(idx * 86_400))
+          .~ (project.dates.launchedAt + TimeInterval(idx * 60 * 60 * 24))
     }
 }

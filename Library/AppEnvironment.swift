@@ -118,7 +118,6 @@ public struct AppEnvironment {
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -144,7 +143,6 @@ public struct AppEnvironment {
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
@@ -175,7 +173,6 @@ public struct AppEnvironment {
                mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
                reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
                scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
                ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
                userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -201,7 +198,6 @@ public struct AppEnvironment {
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
