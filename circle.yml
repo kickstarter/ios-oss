@@ -15,9 +15,6 @@ test:
     - xcrun instruments -w 'iPhone 7 (10.2)' || true
     - sleep 15
   override:
-    - make lint
-    - PLATFORM=iOS make test
-    - PLATFORM=iOS TARGET=Library make test
     - >
       gym
       --output_name               "KickBeta"
