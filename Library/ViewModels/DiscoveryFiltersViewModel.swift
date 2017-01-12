@@ -317,5 +317,3 @@ private func cachedCategories() -> [KsApi.Category]? {
 private func cache(categories: [KsApi.Category]) {
   AppEnvironment.current.cache[categoriesCacheKey] = categories
 }
-
-
