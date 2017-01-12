@@ -69,11 +69,18 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     _ = self.countdownStackView
       |> UIStackView.lens.alignment .~ .top
       |> UIStackView.lens.distribution .~ .equalCentering
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.isRegularRegular
+          ? .init(topBottom: 0, leftRight: Styles.grid(12))
+          : .init(all: 0)
+    }
 
     _ = self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(6)
       |> UIStackView.lens.distribution .~ .fill
+
 
     self.countdownLabels?.forEach { label in
       _ = label
