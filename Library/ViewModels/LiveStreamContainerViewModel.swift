@@ -20,7 +20,7 @@ public protocol LiveStreamContainerViewModelInputs {
 
 public protocol LiveStreamContainerViewModelOutputs {
   var availableForLabelHidden: Signal<Bool, NoError> { get }
-  var createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var creatorIntroText: Signal<NSAttributedString, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
@@ -49,7 +49,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.projectProperty.signal.skipNil(),
       self.liveStreamEventProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      ).map { project, event, _ in (project, event) }
+      ).map { project, event, _ in (project, AppEnvironment.current.currentUser?.id, event) }
 
     self.liveStreamState = Signal.combineLatest(
       Signal.merge(
@@ -212,7 +212,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   public let availableForLabelHidden: Signal<Bool, NoError>
-  public let createAndConfigureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
+  public let createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<NSAttributedString, NoError>
   public let dismiss: Signal<(), NoError>

@@ -1,5 +1,6 @@
 import FirebaseAnalytics
 import FirebaseDatabase
+import FirebaseAuth
 
 public class KsLiveApp {
 
@@ -25,6 +26,11 @@ public class KsLiveApp {
     }
 
     return app
+  }
+
+  public static func firebaseAuth() -> FIRAuth? {
+    guard let app = self.firebaseApp() else { return nil }
+    return FIRAuth(app: app)
   }
 
   public static func apiUrl() -> String {

@@ -1,5 +1,6 @@
 import Argo
 import FirebaseAnalytics
+import FirebaseAuth
 import FirebaseDatabase
 import Prelude
 import ReactiveSwift
@@ -20,19 +21,13 @@ public final class LiveStreamViewController: UIViewController {
   private var videoViewController: LiveVideoViewController?
   public weak var delegate: LiveStreamViewControllerDelegate?
 
-  public init(event: LiveStreamEvent, delegate: LiveStreamViewControllerDelegate) {
+  public init(event: LiveStreamEvent, userId: Int?, delegate: LiveStreamViewControllerDelegate) {
     super.init(nibName: nil, bundle: nil)
 
     self.delegate = delegate
     self.bindVM()
 
-    guard let app = KsLiveApp.firebaseApp() else {
-      self.viewModel.inputs.firebaseAppFailedToInitialize()
-      return
-    }
-    let databaseRef = FIRDatabase.database(app: app).reference()
-
-    self.viewModel.inputs.configureWith(databaseRef: databaseRef, event: event)
+    self.initializeFirebase(withEvent: event, userId: userId)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -64,6 +59,11 @@ public final class LiveStreamViewController: UIViewController {
         _self.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: _self,
                                                                               numberOfPeople: $0)
     }
+
+    self.viewModel.outputs.createPresenceReference
+      .map(prepare(databaseReference:config:))
+      .skipNil()
+      .observeValues { [weak self] in self?.createPresenceReference(ref: $0, refConfig: $1) }
 
     self.viewModel.outputs.createGreenRoomObservers
       .map(prepare(databaseReference:config:))
@@ -113,9 +113,42 @@ public final class LiveStreamViewController: UIViewController {
 
   deinit {
     self.firebaseRef?.removeAllObservers()
+    KsLiveApp.firebaseApp()?.delete({ _ in })
+    self.firebaseRef?.database.goOffline()
   }
 
   // MARK: Firebase
+
+  private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {
+    guard let app = KsLiveApp.firebaseApp() else {
+      self.viewModel.inputs.firebaseAppFailedToInitialize()
+      return
+    }
+    let databaseRef = FIRDatabase.database(app: app).reference()
+    self.viewModel.inputs.configureWith(databaseRef: databaseRef, event: event)
+    self.firebaseRef = databaseRef
+    self.firebaseRef?.database.goOnline()
+
+    KsLiveApp.firebaseAuth()?.signInAnonymously(completion: { [weak self] (user, _) in
+      self?.setUserIds(userId: userId, firebaseUserId: user?.uid)
+    })
+  }
+
+  private func setUserIds(userId: Int?, firebaseUserId: String?) {
+    guard let firebaseUserId = firebaseUserId else { return }
+    guard let userId = userId else {
+      self.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
+      return
+    }
+
+    self.viewModel.inputs.setUserId(userId: userId)
+  }
+
+  private func createPresenceReference(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
+    let ref = ref.child(refConfig.ref)
+    ref.setValue(true)
+    ref.onDisconnectRemoveValue()
+  }
 
   private func createFirebaseGreenRoomObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
