@@ -10,11 +10,15 @@ import XCTest
 internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
+  private let availableForLabelHidden = TestObserver<Bool, NoError>()
   private let createAndConfigureLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
+  private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderText = TestObserver<String, NoError>()
+  private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
+  private let numberWatchingButtonHidden = TestObserver<Bool, NoError>()
   private let projectImageUrl = TestObserver<URL, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
@@ -23,13 +27,17 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
     self.vm.outputs.createAndConfigureLiveStreamViewController.observe(
       self.createAndConfigureLiveStreamViewController.observer)
+    self.vm.outputs.creatorAvatarLiveDotImageViewHidden.observe(self.creatorAvatarLiveDotImageViewHidden.observer)
     self.vm.outputs.creatorIntroText.map { $0.string }.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
+    self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
+    self.vm.outputs.numberWatchingButtonHidden.observe(self.numberWatchingButtonHidden.observer)
     self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
@@ -65,8 +73,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.createAndConfigureLiveStreamViewController.lastValue == (project, event))
   }
@@ -77,12 +85,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.dismiss.assertValueCount(1)
   }
 
-  func testError() {
+  func testShowErrorAlert() {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(
       state: .live(playbackState: .error(error: .sessionInterrupted), startTime: 0))
@@ -95,12 +103,52 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     ])
   }
 
+  func testShowingAndHiding() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.navBarLiveDotImageViewHidden.assertValueCount(0)
+    self.createAndConfigureLiveStreamViewController.assertValueCount(0)
+    self.numberWatchingButtonHidden.assertValueCount(0)
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.navBarLiveDotImageViewHidden.assertValues([true])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+    self.numberWatchingButtonHidden.assertValues([true])
+    self.availableForLabelHidden.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+    self.navBarLiveDotImageViewHidden.assertValues([true, true])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true])
+    self.numberWatchingButtonHidden.assertValues([true, true])
+    self.availableForLabelHidden.assertValues([true, true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
+
+    self.navBarLiveDotImageViewHidden.assertValues([true, true, false])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true, false])
+    self.numberWatchingButtonHidden.assertValues([true, true, false])
+    self.availableForLabelHidden.assertValues([true, true, true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .playing, duration: 123))
+
+    self.navBarLiveDotImageViewHidden.assertValues([true, true, false, true])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true, false, true])
+    self.numberWatchingButtonHidden.assertValues([true, true, false, true])
+    self.availableForLabelHidden.assertValues([true, true, true, false])
+  }
+
   func testLiveStreamStates() {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
@@ -134,8 +182,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
@@ -163,8 +211,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
@@ -185,8 +233,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
