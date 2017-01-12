@@ -7,10 +7,11 @@ import UIKit
 internal final class MessageCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
-  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-  @IBOutlet fileprivate weak var nameLabel: UILabel!
-  @IBOutlet fileprivate weak var timestampLabel: UILabel!
-  @IBOutlet fileprivate weak var bodyTextView: UITextView!
+  @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var dividerView: UIView!
+  @IBOutlet private weak var nameLabel: UILabel!
+  @IBOutlet private weak var timestampLabel: UILabel!
+  @IBOutlet private weak var bodyTextView: UITextView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -29,11 +30,26 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> MessageCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> MessageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : layoutMargins
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
+
+    _ = self.bodyTextView
+      |> UITextView.lens.textColor .~ .ksr_navy_700
+      |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
+
+    _ = self.dividerView
+      |> separatorStyle
+
+    _ = self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+
+    _ = self.timestampLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_caption1()
   }
 
   internal override func bindViewModel() {

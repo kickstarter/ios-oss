@@ -23,7 +23,7 @@ internal final class MessageThreadsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as MessageThreadCell, value as MessageThread):
       cell.configureWith(value: value)
-    case (is StaticTableViewCell, is Void):
+    case (is MessageThreadEmptyStateCell, is Void):
       return
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")

@@ -75,9 +75,6 @@ public struct Environment {
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateSchedulerProtocol
 
-  /// The user’s timezone. Default value is `TimeZone.local`.
-  public let timeZone: TimeZone
-
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
 
@@ -106,7 +103,6 @@ public struct Environment {
     mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateSchedulerProtocol = QueueScheduler.main,
-    timeZone: TimeZone = .current,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
     userDefaults: KeyValueStoreType = UserDefaults.standard) {
 
@@ -131,7 +127,6 @@ public struct Environment {
     self.mainBundle = mainBundle
     self.reachability = reachability
     self.scheduler = scheduler
-    self.timeZone = timeZone
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
   }

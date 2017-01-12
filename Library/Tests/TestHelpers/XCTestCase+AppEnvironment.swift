@@ -40,7 +40,6 @@ extension XCTestCase {
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-    timeZone: TimeZone = AppEnvironment.current.timeZone,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     body: () -> Void) {
@@ -67,7 +66,6 @@ extension XCTestCase {
         locale: locale,
         mainBundle: mainBundle,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       ),
