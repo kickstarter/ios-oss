@@ -11,7 +11,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   private let availableForLabelHidden = TestObserver<Bool, NoError>()
-  private let createAndConfigureLiveStreamViewController = TestObserver<(Project, LiveStreamEvent), NoError>()
+  private let createAndConfigureLiveStreamViewController = TestObserver<(Project, Int?,
+    LiveStreamEvent), NoError>()
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
@@ -76,7 +77,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertTrue(self.createAndConfigureLiveStreamViewController.lastValue == (project, event))
+    XCTAssertTrue(self.createAndConfigureLiveStreamViewController.lastValue == (project, nil, event))
   }
 
   func testDismiss() {
@@ -252,7 +253,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 }
 
-private func == (tuple1: (Project, LiveStreamEvent)?, tuple2: (Project, LiveStreamEvent)) -> Bool {
+private func == (tuple1: (Project, Int?, LiveStreamEvent)?,
+                 tuple2: (Project, Int?, LiveStreamEvent)) -> Bool {
   if let tuple1 = tuple1 {
     return tuple1.0 == tuple2.0 && tuple1.1 == tuple2.1
   }

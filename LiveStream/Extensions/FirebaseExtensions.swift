@@ -1,7 +1,7 @@
 import FirebaseAnalytics
 import FirebaseDatabase
 
-public struct FirebaseRefConfig {
+public struct FirebaseRefConfig: Equatable {
   let orderBy: String
   let ref: String
 
@@ -9,6 +9,11 @@ public struct FirebaseRefConfig {
     self.orderBy = orderBy
     self.ref = ref
   }
+}
+
+public func == (lhs: FirebaseRefConfig, rhs: FirebaseRefConfig) -> Bool {
+  return lhs.ref == rhs.ref &&
+    lhs.orderBy == rhs.orderBy
 }
 
 internal protocol FirebaseAppType {}
