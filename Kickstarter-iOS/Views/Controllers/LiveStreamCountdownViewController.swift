@@ -63,6 +63,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseControllerStyle()
+
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
@@ -121,6 +124,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
     _ = self.creatorAvatarImageView
+      |> UIImageView.lens.image .~ nil
       |> UIImageView.lens.layer.masksToBounds .~ true
 
     _ = self.introLabel
@@ -148,7 +152,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     _ = self.activityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.animating .~ false
 
     _ = self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
@@ -193,12 +196,18 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
-      .on(event: { [weak self] image in self?.projectImageView.image = nil })
+      .on(event: { [weak self] image in
+        self?.projectImageView.af_cancelImageRequest()
+        self?.projectImageView.image = nil
+      })
       .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
-      .on(event: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .on(event: { [weak self] image in
+        self?.creatorAvatarImageView.af_cancelImageRequest()
+        self?.creatorAvatarImageView.image = nil
+      })
       .skipNil()
       .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
 
@@ -225,15 +234,16 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] imageName in
-        imageName.map { self?.subscribeButton.setImage(UIImage(named: $0), for: .normal) }
+      .observeValues { [weak self] in
+        let imageName = $0.flatMap { $0 }.coalesceWith("")
+        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
     }
 
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
+      .animateActivityIndicator
 
     self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
+      .animateActivityIndicator
 
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
@@ -304,7 +314,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction private func subscribe() {
+  @IBAction internal func subscribe(_ sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }

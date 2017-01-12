@@ -77,7 +77,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
-    self.labelText.assertValue("Live Stream")
+    self.labelText.assertValue("Past Live Stream")
     self.labelTextColor.assertValue(.ksr_text_navy_700)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)
@@ -142,7 +142,8 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testUpcomingLiveStreamsSubpage() {
     let liveStream = Project.LiveStream.template
       |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(60 * 60).timeIntervalSince1970
+      |> Project.LiveStream.lens.startDate .~ self.scheduler.currentDate
+        .addingTimeInterval(60 * 60).timeIntervalSince1970
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
 
@@ -151,7 +152,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
-    self.labelText.assertValue("Live Stream")
+    self.labelText.assertValue("Upcoming Live Stream")
     self.labelTextColor.assertValue(.ksr_text_navy_700)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)

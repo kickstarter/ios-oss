@@ -36,7 +36,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
-      liveStreamDetail.map { $0.isLiveNow ? Strings.Live_Streaming_now() : Strings.Live_Stream()},
+      liveStreamDetail.map(labelTexts(forLiveStream:)).map(first),
       updatesSubpage.mapConst(Strings.project_menu_buttons_updates())
     )
 
@@ -54,7 +54,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.countLabelText = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).map { String($0.count) },
-      liveStreamDetail.map(labelText(forLiveStream:))
+      liveStreamDetail.map(labelTexts(forLiveStream:)).map(second)
     )
 
     self.countLabelTextColor = Signal.merge(
@@ -97,18 +97,19 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }
 }
 
-private func labelText(forLiveStream liveStream: Project.LiveStream) -> String {
+private func labelTexts(forLiveStream liveStream: Project.LiveStream) -> (String, String) {
   if liveStream.isLiveNow {
-    return Strings.Watch_live()
+    return (Strings.Live_Streaming_now(), Strings.Watch_live())
   }
 
   let now = AppEnvironment.current.dateType.init()
 
   if now.timeIntervalSince1970 >= liveStream.startDate {
-    return Strings.Replay()
+    return (localizedString(key: "Past_Live_Stream", defaultValue: "Past Live Stream"), Strings.Replay())
   }
 
-  return Format.relative(secondsInUTC: liveStream.startDate, abbreviate: true)
+  return (localizedString(key: "Upcoming_Live_Stream", defaultValue: "Upcoming Live Stream"),
+          Format.relative(secondsInUTC: liveStream.startDate, abbreviate: true))
 }
 
 public enum ProjectPamphletSubpageCellPosition {

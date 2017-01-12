@@ -15,6 +15,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
 
+  private let createPresenceReference = TestObserver<FirebaseRefConfig, NoError>()
   private let createGreenRoomObservers
     = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createHLSObservers = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
@@ -35,6 +36,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
     self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
+    self.vm.outputs.createPresenceReference.map(second).observe(self.createPresenceReference.observer)
     self.vm.outputs.createGreenRoomObservers.observe(self.createGreenRoomObservers.observer)
     self.vm.outputs.createHLSObservers.observe(self.createHLSObservers.observer)
     self.vm.outputs.createNumberOfPeopleWatchingObservers
@@ -407,6 +409,41 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.firebaseAppFailedToInitialize()
 
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.initializationFailed])
+  }
+
+  func testCreateFirebasePresenceRef_LoggedOut() {
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(
+      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+
+    self.createPresenceReference.assertValueCount(0)
+
+    self.vm.inputs.setFirebaseUserId(userId: "123")
+
+    let ref = FirebaseRefConfig(ref: "/123", orderBy: "")
+
+    self.createPresenceReference.assertValues([ref])
+  }
+
+  func testCreateFirebasePresenceRef_LoggedIn() {
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(
+      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+
+    self.createPresenceReference.assertValueCount(0)
+
+    self.vm.inputs.setUserId(userId: 123)
+    self.vm.inputs.setFirebaseUserId(userId: "123")
+
+    let ref = FirebaseRefConfig(ref: "/123", orderBy: "")
+
+    self.createPresenceReference.assertValues([ref])
   }
 
   func testCreateFirebaseObservers_WhenLive() {

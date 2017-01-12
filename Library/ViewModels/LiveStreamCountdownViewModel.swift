@@ -189,7 +189,9 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
       |> Project.LiveStream.lens.isLiveNow .~ (liveStream.id == currentLiveStream.id)
   }
 
-  return (project |> Project.lens.liveStreams .~ liveStreams, currentLiveStream)
+  let flippedCurrentLiveStream = currentLiveStream |> Project.LiveStream.lens.isLiveNow .~ true
+
+  return (project |> Project.lens.liveStreams .~ liveStreams, flippedCurrentLiveStream)
 }
 
 private func flipLiveStreamEvenToLive(event: LiveStreamEvent) -> LiveStreamEvent {

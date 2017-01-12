@@ -27,6 +27,12 @@ internal protocol LiveStreamViewModelInputs {
   /// Called when the number of people watching changes in a scaled event, expects an Int
   func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
 
+  /// Called to set the user ID
+  func setUserId(userId: Int)
+
+  /// Called to set the Firebase user ID
+  func setFirebaseUserId(userId: String)
+
   /// Called when the video playback state changes
   func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
 
@@ -35,6 +41,9 @@ internal protocol LiveStreamViewModelInputs {
 }
 
 internal protocol LiveStreamViewModelOutputs {
+  /// Create the presence reference to update Firebase on connect/disconnect
+  var createPresenceReference: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
+
   /// Create green room Firebase observers
   var createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
 
@@ -181,6 +190,22 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       liveStreamEvent.map(isNonStarter(event:)).filter(isFalse).mapConst(true)
       ).map { $0 && $1 }
 
+    let userId = Signal.merge(
+      self.userIdProperty.signal.skipNil().map(String.init),
+      self.firebaseUserIdProperty.signal.skipNil()
+      ).take(first: 1)
+
+    self.createPresenceReference = Signal.zip(
+      databaseRef,
+      Signal.combineLatest(
+        liveStreamEvent.map { $0.firebase.numberPeopleWatchingPath },
+        userId
+        )
+        .map { "\($0)/\($1)" }
+        .map { FirebaseRefConfig(ref: $0, orderBy: "") },
+      createObservers.filter(isTrue)
+      ).map { dbRef, event, _ in (dbRef, event) }
+
     self.createGreenRoomObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
@@ -287,6 +312,16 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.scaleNumberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
+  private let userIdProperty = MutableProperty<Int?>(nil)
+  internal func setUserId(userId: Int) {
+    self.userIdProperty.value = userId
+  }
+
+  private let firebaseUserIdProperty = MutableProperty<String?>(nil)
+  internal func setFirebaseUserId(userId: String) {
+    self.firebaseUserIdProperty.value = userId
+  }
+
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
   internal func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
     self.videoPlaybackStateChangedProperty.value = state
@@ -297,6 +332,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.viewDidLoadProperty.value = ()
   }
 
+  internal let createPresenceReference: Signal<(FirebaseDatabaseReferenceType,
+    FirebaseRefConfig), NoError>
   internal let createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
   internal let createHLSObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
   internal let createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
