@@ -261,7 +261,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
-      .on(event: { [weak self] image in self?.projectImageView.image = nil })
+      .on(event: { [weak self] image in
+        self?.projectImageView.af_cancelImageRequest()
+        self?.projectImageView.image = nil
+      })
       .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
@@ -276,7 +279,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()
-      .on(event: { [weak self] image in self?.creatorAvatarImageView.image = nil })
+      .on(event: { [weak self] image in
+        self?.creatorAvatarImageView.af_cancelImageRequest()
+        self?.creatorAvatarImageView.image = nil
+      })
       .skipNil()
       .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
 
