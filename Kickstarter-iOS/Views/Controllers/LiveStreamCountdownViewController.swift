@@ -102,8 +102,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     _  = self.detailsContainerStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
-        top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+      |> UIStackView.lens.layoutMargins %~~ { _, v in
+        v.traitCollection.isRegularRegular
+          ? UIEdgeInsets(top: 0, left: Styles.grid(18), bottom: Styles.grid(4), right: Styles.grid(18))
+          : UIEdgeInsets(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+    }
 
     _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
@@ -115,10 +118,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> roundedStyle(cornerRadius: 2)
 
     self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
-
-    self.creatorAvatarWidthConstraint.constant = self.creatorAvatarImageView.traitCollection.isRegularRegular
-      ? Styles.grid(40)
-      : Styles.grid(40)
+    self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
     _ = self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
@@ -127,11 +127,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title3()
+      |> UILabel.lens.font %~~ { _, v in
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
+      }
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
     _ = self.liveStreamParagraphLabel
-      |> UILabel.lens.font .~ UIFont.ksr_subhead()
+      |> UILabel.lens.font %~~ { _, v in
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_subhead()
+      }
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
     _ = self.subscribeButton
