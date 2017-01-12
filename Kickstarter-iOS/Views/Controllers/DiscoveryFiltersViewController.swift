@@ -9,25 +9,33 @@ internal protocol DiscoveryFiltersViewControllerDelegate: class {
 }
 
 internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
-  @IBOutlet fileprivate weak var filtersTableView: UITableView!
+  @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var backgroundGradientView: GradientView!
+  @IBOutlet private weak var filtersTableView: UITableView!
 
-  fileprivate let dataSource = DiscoveryFiltersDataSource()
-  fileprivate let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
+  private let activityIndicator = UIActivityIndicatorView()
+  private let dataSource = DiscoveryFiltersDataSource()
+  private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
   internal weak var delegate: DiscoveryFiltersViewControllerDelegate?
 
-  internal static func configuredWith(selectedRow: SelectableRow, categories: [KsApi.Category])
+  internal static func configuredWith(selectedRow: SelectableRow)
     -> DiscoveryFiltersViewController {
 
       let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController.self)
-      vc.viewModel.inputs.configureWith(selectedRow: selectedRow, categories: categories)
+      vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
       return vc
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.backgroundGradientView.addSubview(activityIndicator)
+    NSLayoutConstraint.activate([
+      activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      // this constant should probably change based on number of cells in tableview
+      activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: Styles.grid(10))
+    ])
 
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
@@ -48,6 +56,8 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.activityIndicator.rac.animating = self.viewModel.outputs.categoriesAreLoading
 
     self.viewModel.outputs.animateInView
       .observeForUI()
@@ -73,10 +83,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       .observeForUI()
       .observeValues { [weak self] rows, id, selectedRowId in
         self?.dataSource.load(categoryRows: rows, categoryId: id)
-        self?.filtersTableView.reloadData()
-        if let indexPath = self?.dataSource.indexPath(forCategoryId: selectedRowId) {
-          self?.filtersTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
-        }
+        self?.reloadCategories(selectedRowId: selectedRowId)
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedRow
@@ -90,6 +97,11 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    _ = self.activityIndicator
+      |> UIActivityIndicatorView.lens.translatesAutoresizingMaskIntoConstraints .~ false
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
@@ -173,8 +185,22 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
                                completion: nil)
   }
 
-  @objc fileprivate func closeButtonTapped(_ button: UIButton) {
+  @objc private func closeButtonTapped(_ button: UIButton) {
     self.animateOut()
     self.delegate?.discoveryFiltersDidClose(self)
+  }
+
+  private func reloadCategories(selectedRowId: Int?) {
+    if let indexPath = self.dataSource.indexPath(forCategoryId: selectedRowId) {
+      self.filtersTableView.reloadData()
+      self.filtersTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
+    } else {
+      UIView.transition(with: self.filtersTableView,
+                        duration: 0.2,
+                        options: .transitionCrossDissolve,
+                        animations: {
+                          self.filtersTableView.reloadData()
+      }, completion: nil)
+    }
   }
 }

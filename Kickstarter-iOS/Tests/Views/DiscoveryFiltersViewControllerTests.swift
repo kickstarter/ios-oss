@@ -77,7 +77,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testDefaultRow_Selected_View() {
+/*  func testDefaultRow_Selected_View() {
     let staffPicksRow = selectableRowTemplate
       |> SelectableRow.lens.params.staffPicks .~ true
 
@@ -171,5 +171,5 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
     }
-  }
+  }*/
 }
