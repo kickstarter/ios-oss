@@ -30,12 +30,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.backgroundGradientView.addSubview(activityIndicator)
-    NSLayoutConstraint.activate([
-      activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-      // this constant should probably change based on number of cells in tableview
-      activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: Styles.grid(10))
-    ])
+    self.view.addSubview(activityIndicator)
 
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
@@ -92,6 +87,17 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         guard let _self = self else { return }
         _self.animateOut()
         _self.delegate?.discoveryFilters(_self, selectedRow: selectedRow)
+    }
+
+    self.viewModel.outputs.yConstantForActivityIndicator
+      .observeForUI()
+      .observeValues { [weak self] constant in
+        guard let _self = self else { return }
+        NSLayoutConstraint.activate([
+          _self.activityIndicator.centerXAnchor.constraint(equalTo: _self.view.centerXAnchor),
+          _self.activityIndicator.centerYAnchor.constraint(equalTo: _self.view.centerYAnchor,
+                                                           constant: constant)
+          ])
     }
   }
 
