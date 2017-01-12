@@ -98,7 +98,7 @@ public enum Format {
         dateStyle: dateStyle,
         locale: env.locale,
         timeStyle: timeStyle,
-        timeZone: env.timeZone
+        timeZone: env.calendar.timeZone
       )
     )
 
@@ -121,7 +121,7 @@ public enum Format {
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
         timeStyle: nil,
-        timeZone: AppEnvironment.current.timeZone
+        timeZone: AppEnvironment.current.calendar.timeZone
       )
     )
 

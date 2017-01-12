@@ -1,26 +1,27 @@
-import Foundation
-import UIKit
-import ReactiveExtensions
-import ReactiveSwift
-import Library
-import Prelude
 import FBSDKCoreKit
+import Foundation
+import Library
 import MessageUI
+import Prelude
+import ReactiveSwift
+import ReactiveExtensions
+import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-  @IBOutlet fileprivate weak var confirmationLabel: UILabel!
-  @IBOutlet fileprivate weak var createAccountButton: UIButton!
-  @IBOutlet fileprivate weak var emailLabel: UILabel!
-  @IBOutlet fileprivate weak var helpButton: UIButton!
-  @IBOutlet fileprivate weak var loginButton: UIButton!
-  @IBOutlet fileprivate weak var loginLabel: UILabel!
-  @IBOutlet fileprivate weak var newsletterLabel: UILabel!
-  @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
+  @IBOutlet private weak var confirmationLabel: UILabel!
+  @IBOutlet private weak var createAccountButton: UIButton!
+  @IBOutlet private weak var emailLabel: UILabel!
+  @IBOutlet private weak var helpButton: UIButton!
+  @IBOutlet private weak var loginButton: UIButton!
+  @IBOutlet private weak var loginLabel: UILabel!
+  @IBOutlet private weak var newsletterLabel: UILabel!
+  @IBOutlet private weak var newsletterSwitch: UISwitch!
+  @IBOutlet private weak var rootStackView: UIStackView!
+
+  private let helpViewModel = HelpViewModel()
   fileprivate let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
-  fileprivate let helpViewModel = HelpViewModel()
 
   internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
     -> FacebookConfirmationViewController {
@@ -36,7 +37,15 @@ internal final class FacebookConfirmationViewController: UIViewController,
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.createAccountButton.addTarget(self, action: #selector(createAccountButtonPressed),
+                                       for: .touchUpInside)
+
     self.helpButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
+
+    self.loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+
+    self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
+                                    for: .valueChanged)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -156,19 +165,19 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.present(helpSheet, animated: true, completion: nil)
   }
 
-  @IBAction fileprivate func newsletterSwitchChanged(_ sender: UISwitch) {
+  @objc private func newsletterSwitchChanged(_ sender: UISwitch) {
     self.viewModel.inputs.sendNewslettersToggled(sender.isOn)
   }
 
-  @IBAction fileprivate func createAccountButtonPressed(_ sender: AnyObject) {
+  @objc private func createAccountButtonPressed() {
     self.viewModel.inputs.createAccountButtonPressed()
   }
 
-  @IBAction fileprivate func loginButtonPressed(_ sender: BorderButton) {
+  @objc private func loginButtonPressed() {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @objc fileprivate func helpButtonPressed(_ sender: AnyObject) {
+  @objc private func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
