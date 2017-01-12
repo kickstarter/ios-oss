@@ -35,18 +35,23 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.nameTextField.addTarget(self,
                                  action: #selector(nameTextFieldReturn),
                                  for: .editingDidEndOnExit)
+
     self.nameTextField.addTarget(self,
                                  action: #selector(nameTextFieldChanged(_:)),
                                  for: [.editingDidEndOnExit, .editingChanged])
+
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldReturn),
                                   for: .editingDidEndOnExit)
+
     self.emailTextField.addTarget(self,
                                   action: #selector(emailTextFieldChanged(_:)),
                                   for: [.editingDidEndOnExit, .editingChanged])
+
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldReturn),
                                      for: .editingDidEndOnExit)
+
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: [.editingChanged])
@@ -65,21 +70,21 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     _ = self.nameTextField
       |> UITextField.lens.returnKeyType .~ .next
+      |> UITextField.lens.placeholder %~ { _ in Strings.signup_input_fields_full_name() }
 
-    _ = self.emailTextField |> emailFieldStyle
-      <> UITextField.lens.returnKeyType .~ .next
+    _ = self.emailTextField
+      |> emailFieldStyle
+      |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.formBackgroundView
       |> cardStyle()
 
-    _ = self.nameTextField
-      |> UITextField.lens.placeholder %~ { _ in Strings.signup_input_fields_full_name() }
-
     _ = self.newsletterLabel
       |> newsletterLabelStyle
 
-    _ = self.passwordTextField |> passwordFieldStyle
-      <> UITextField.lens.returnKeyType .~ .go
+    _ = self.passwordTextField
+      |> passwordFieldStyle
+      |> UITextField.lens.returnKeyType .~ .go
 
     _ = self.rootStackView
       |> loginRootStackViewStyle

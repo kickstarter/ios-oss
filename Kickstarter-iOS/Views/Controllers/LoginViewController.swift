@@ -41,6 +41,7 @@ internal final class LoginViewController: UIViewController {
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldDoneEditing),
                                      for: .editingDidEndOnExit)
+
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: .editingChanged)
