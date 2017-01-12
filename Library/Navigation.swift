@@ -357,11 +357,13 @@ private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   let thanks = curry(Navigation.Project.Checkout.thanks)
     <^> (params <|? "racing" >>- oneToBool)
 
+  let checkout = curry(Navigation.Project.checkout)
+    <^> (params <| "checkout_param" >>- stringToInt)
+    <*> thanks
+
   return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> (curry(Navigation.Project.checkout)
-      <^> (params <| "checkout_param" >>- stringToInt)
-      <*> thanks)
+    <*> checkout
     <*> params <|? "ref_tag"
 }
 
