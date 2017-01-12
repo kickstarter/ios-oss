@@ -181,7 +181,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.viewModel.outputs.projectImageUrl
       .observeForUI()
       .on(event: { [weak self] image in
-        af_cancelImageRequest
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
       })
