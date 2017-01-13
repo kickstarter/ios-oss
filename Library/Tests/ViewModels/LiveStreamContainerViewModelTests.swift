@@ -44,30 +44,36 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
   }
 
-  func testCreatorIntroText() {
+  func testCreatorIntroText_Live() {
     let stream = LiveStreamEvent.template.stream
       |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream .~ stream
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
     self.creatorIntroText.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorIntroText.assertValues([""])
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 0))
-    self.creatorIntroText.assertValues(["", "Creator Name is live now"])
+    self.creatorIntroText.assertValues(["Creator Name is live now"])
+  }
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 0))
+  func testCreatorIntroText_Replay() {
+    let stream = LiveStreamEvent.template.stream
+      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream .~ stream
+    |> LiveStreamEvent.lens.stream.liveNow .~ false
 
-    self.creatorIntroText.assertValues([
-      "",
-      "Creator Name is live now",
-      "Creator Name was live right now"
-      ])
+    self.creatorIntroText.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.creatorIntroText.assertValues(["Creator Name was live right now"])
   }
 
   func testCreateLiveStreamViewController() {
@@ -104,9 +110,29 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     ])
   }
 
-  func testShowingAndHiding() {
+  func testLabelVisibilities_Live() {
     let project = Project.template
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
+
+    self.navBarLiveDotImageViewHidden.assertValueCount(0)
+    self.createAndConfigureLiveStreamViewController.assertValueCount(0)
+    self.numberWatchingButtonHidden.assertValueCount(0)
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.navBarLiveDotImageViewHidden.assertValues([true, false])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, false])
+    self.numberWatchingButtonHidden.assertValues([true, false])
+    self.availableForLabelHidden.assertValues([true])
+  }
+
+  func testLabelVisibilities_Replay() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
     self.createAndConfigureLiveStreamViewController.assertValueCount(0)
@@ -119,29 +145,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.navBarLiveDotImageViewHidden.assertValues([true])
     self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
     self.numberWatchingButtonHidden.assertValues([true])
-    self.availableForLabelHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-    self.navBarLiveDotImageViewHidden.assertValues([true, true])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true])
-    self.numberWatchingButtonHidden.assertValues([true, true])
-    self.availableForLabelHidden.assertValues([true, true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
-
-    self.navBarLiveDotImageViewHidden.assertValues([true, true, false])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true, false])
-    self.numberWatchingButtonHidden.assertValues([true, true, false])
-    self.availableForLabelHidden.assertValues([true, true, true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123))
-
-    self.navBarLiveDotImageViewHidden.assertValues([true, true, false, true])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, true, false, true])
-    self.numberWatchingButtonHidden.assertValues([true, true, false, true])
-    self.availableForLabelHidden.assertValues([true, true, true, false])
+    self.availableForLabelHidden.assertValues([true, false])
   }
 
   func testLiveStreamStates() {

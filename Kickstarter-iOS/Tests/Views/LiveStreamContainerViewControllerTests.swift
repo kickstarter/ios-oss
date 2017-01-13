@@ -32,7 +32,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
-    
+
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(language: lang, liveStreamService: liveStreamService) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,

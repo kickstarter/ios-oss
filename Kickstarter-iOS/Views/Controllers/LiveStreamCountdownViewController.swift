@@ -180,6 +180,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
+    NotificationCenter.default
+
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
 
     self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
     self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
@@ -214,6 +219,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .skipNil()
       .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
 
+    self.eventDetailsViewModel.outputs.openLoginToutViewController
+      .observeValues { [weak self] _ in
+        self?.openLoginTout()
+    }
+
     self.viewModel.outputs.categoryId
       .observeForUI()
       .observeValues { [weak self] in
@@ -245,7 +255,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .animateActivityIndicator
 
     self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs
-      .animateActivityIndicator
+      .detailsStackViewHidden
 
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
@@ -303,6 +313,14 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     } else {
       self.present(controller, animated: true, completion: nil)
     }
+  }
+
+  private func openLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   // MARK: Actions
