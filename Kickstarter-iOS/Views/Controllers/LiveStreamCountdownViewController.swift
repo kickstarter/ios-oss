@@ -7,15 +7,16 @@ import UIKit
 
 internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private var countdownColons: [UILabel]?
-  @IBOutlet private weak var countdownContainerStackView: UIStackView!
+//  @IBOutlet private weak var countdownContainerStackView: UIStackView!
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var countdownLabels: [UILabel]?
   @IBOutlet private weak var daysLabel: UILabel!
-  @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
+//  @IBOutlet private weak var detailsContainerStackView: UIStackView!
+//  @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
@@ -36,7 +37,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal static func configuredWith(project: Project, liveStream: Project.LiveStream)
     -> LiveStreamCountdownViewController {
 
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
+      let vc = Storyboard._LiveStreamTesting.instantiate(LiveStreamCountdownViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
       return vc
@@ -68,21 +69,20 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
+      |> UIImageView.lens.backgroundColor .~ .hex(0x565656)
 
     _ = self.countdownStackView
-      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
-
-    _ = self.countdownContainerStackView
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.spacing .~ Styles.grid(6)
-      |> UIStackView.lens.distribution .~ .fill
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
           ? .init(topBottom: 0, leftRight: Styles.grid(18))
           : .init(topBottom: 0, leftRight: Styles.grid(6))
     }
+
+//    _ = self.countdownContainerStackView
+
 
 
     self.countdownLabels?.forEach { label in
@@ -103,24 +103,20 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         |> UILabel.lens.font .~ .ksr_title1(size: 24)
     }
 
-    _  = self.detailsContainerStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins %~~ { _, v in
-        v.traitCollection.isRegularRegular
-          ? UIEdgeInsets(top: 0, left: Styles.grid(18), bottom: Styles.grid(4), right: Styles.grid(18))
-          : UIEdgeInsets(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
-    }
+//    _  = self.detailsContainerStackView
+
 
     _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(8), left: Styles.grid(4),
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(4),
                                                         bottom: Styles.grid(7), right: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle(cornerRadius: 2)
 
-    self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
+//    self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
+    self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
 
     _ = self.creatorAvatarImageView
@@ -157,6 +153,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.animating .~ false
+
+    _ = self.gradientView
+      |> UIView.lens.layoutMargins .~ .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
   }
   //swiftlint:enable function_body_length
 

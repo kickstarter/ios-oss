@@ -31,7 +31,9 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
     AppEnvironment.replaceCurrentEnvironment(liveStreamService: liveStreamService)
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { lang, device in
+    let devices = [Device.phone4_7inch, Device.phone4inch, Device.pad]
+
+    combos(Language.allLanguages, devices).forEach { lang, device in
       let vc = LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: liveStream)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)

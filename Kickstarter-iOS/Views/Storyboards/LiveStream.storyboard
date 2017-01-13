@@ -390,7 +390,9 @@
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zC0-r7-m8Q">
                                                                 <rect key="frame" x="0.0" y="0.0" width="82" height="34"/>
-                                                                <state key="normal" title="Subscribe"/>
+                                                                <state key="normal" title="Subscribe">
+                                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="subscribe:" destination="BEO-q2-ob0" eventType="touchUpInside" id="m14-bA-Cbf"/>
                                                                 </connections>
