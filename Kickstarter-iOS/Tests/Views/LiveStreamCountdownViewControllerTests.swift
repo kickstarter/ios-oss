@@ -35,12 +35,20 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
     let orientations = [Orientation.landscape, .portrait]
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
-      let vc = LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: liveStream)
+      withEnvironment(language: lang) {
+        let vc = LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: liveStream)
 
-      let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
-      self.scheduler.advance()
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance()
+        parent.view.setNeedsLayout()
+        vc.view.setNeedsLayout()
+        parent.view.setNeedsUpdateConstraints()
+        vc.view.setNeedsUpdateConstraints()
 
-      FBSnapshotVerifyView(parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)")
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
     }
   }
 

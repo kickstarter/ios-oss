@@ -12,18 +12,21 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private var countdownColons: [UILabel]!
   @IBOutlet private weak var countdownStackView: UIStackView!
-  @IBOutlet private var countdownLabels: [UILabel]!
-  @IBOutlet private weak var daysLabel: UILabel!
+  @IBOutlet private weak var daysSubtitleLabel: UILabel!
+  @IBOutlet private weak var daysTitleLabel: UILabel!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
-  @IBOutlet private weak var hoursLabel: UILabel!
+  @IBOutlet private weak var hoursSubtitleLabel: UILabel!
+  @IBOutlet private weak var hoursTitleLabel: UILabel!
   @IBOutlet private weak var introLabel: UILabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
-  @IBOutlet private weak var minutesLabel: UILabel!
+  @IBOutlet private weak var minutesSubtitleLabel: UILabel!
+  @IBOutlet private weak var minutesTitleLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var secondsLabel: UILabel!
+  @IBOutlet private weak var secondsSubtitleLabel: UILabel!
+  @IBOutlet private weak var secondsTitleLabel: UILabel!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
@@ -73,21 +76,42 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
-          ? .init(topBottom: 0, leftRight: Styles.grid(18))
+          ? .init(topBottom: 0, leftRight: Styles.grid(28))
           : .init(topBottom: 0, leftRight: Styles.grid(6))
     }
 
-    _ = self.countdownLabels
-      ||> UILabel.lens.textAlignment .~ .center
-      ||> UILabel.lens.numberOfLines .~ 2
+    _ = [self.daysTitleLabel, self.hoursTitleLabel, self.minutesTitleLabel, self.secondsTitleLabel]
       ||> UILabel.lens.textColor .~ .white
-      ||> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
-      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      ||> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_title1() : .ksr_title1(size: 24)
+      }
+      ||> UILabel.lens.textAlignment .~ .center
+
+    _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel, self.secondsSubtitleLabel]
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_headline() : .ksr_subhead(size: 14)
+      }
+      ||> UILabel.lens.textAlignment .~ .center
+
+    _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
+      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
+      ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
+
+    _ = self.daysSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
+
+    _ = self.hoursSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "hours") }
+
+    _ = self.minutesSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "minutes", defaultValue: "minutes") }
+
+    _ = self.secondsSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "seconds", defaultValue: "seconds") }
 
     _ = self.countdownColons
       ||> UILabel.lens.text .~ ":"
-      ||> UILabel.lens.textAlignment .~ .center
-      ||> UILabel.lens.numberOfLines .~ 2
       ||> UILabel.lens.textColor .~ .white
       ||> UILabel.lens.font .~ .ksr_title1(size: 24)
 
@@ -158,10 +182,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
-    self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
-    self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
-    self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
+    self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
+    self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
+    self.minutesTitleLabel.rac.text = self.viewModel.outputs.minutesString
+    self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeValues { [weak self] in
