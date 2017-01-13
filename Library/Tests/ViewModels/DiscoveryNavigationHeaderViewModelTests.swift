@@ -24,7 +24,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let titleAccessibilityHint = TestObserver<String, NoError>()
   fileprivate let titleAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
-  fileprivate let showDiscoveryFiltersCats = TestObserver<[KsApi.Category], NoError>()
   fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
   fileprivate let favoriteViewIsHidden = TestObserver<Bool, NoError>()
@@ -58,8 +57,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.secondaryLabelIsHidden.observe(self.secondaryLabelIsHidden.observer)
     self.vm.outputs.titleButtonAccessibilityHint.observe(self.titleAccessibilityHint.observer)
     self.vm.outputs.titleButtonAccessibilityLabel.observe(self.titleAccessibilityLabel.observer)
-//    self.vm.outputs.showDiscoveryFilters.map(first).observe(self.showDiscoveryFiltersRow.observer)
-//    self.vm.outputs.showDiscoveryFilters.map(second).observe(self.showDiscoveryFiltersCats.observer)
+    self.vm.outputs.showDiscoveryFilters.observe(self.showDiscoveryFiltersRow.observer)
     self.vm.outputs.favoriteButtonAccessibilityLabel.observe(self.favoriteButtonAccessibilityLabel.observer)
     self.vm.outputs.favoriteViewIsDimmed.observe(self.favoriteViewIsDimmed.observer)
     self.vm.outputs.favoriteViewIsHidden.observe(self.favoriteViewIsHidden.observer)
@@ -69,119 +67,85 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   }
 
   func testShowFilters() {
-    let categories = [
-      Category.illustration,
-      .documentary,
-      .filmAndVideo,
-      .art
-    ]
-
-    let categoriesResponse = .template |> CategoriesEnvelope.lens.categories .~ categories
     let initialRow = SelectableRow(isSelected: true, params: initialParams)
     let starredRow = selectableRow |> SelectableRow.lens.params .~ starredParams
     let artRow = selectableRow |> SelectableRow.lens.params .~ categoryParams
 
-    withEnvironment(apiService: MockService(fetchCategoriesResponse: categoriesResponse)) {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
+    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(params: initialParams)
-      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+    self.showDiscoveryFiltersRow.assertValueCount(0)
+    self.dismissDiscoveryFilters.assertValueCount(0)
 
-      self.showDiscoveryFiltersRow.assertValueCount(0)
-      self.dismissDiscoveryFilters.assertValueCount(0)
+    self.vm.inputs.titleButtonTapped()
 
-      self.vm.inputs.titleButtonTapped()
+    self.showDiscoveryFiltersRow.assertValues([initialRow])
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow])
-      self.showDiscoveryFiltersCats.assertValues([categories])
+    self.vm.inputs.filtersSelected(row: starredRow)
 
-      self.vm.inputs.filtersSelected(row: starredRow)
+    self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow], "Show Filters does not emit on selection.")
+    scheduler.advance(by: .milliseconds(400))
+    self.dismissDiscoveryFilters.assertValueCount(1)
 
-      scheduler.advance(by: .milliseconds(400))
-      self.dismissDiscoveryFilters.assertValueCount(1)
+    self.vm.inputs.titleButtonTapped()
 
-      self.vm.inputs.titleButtonTapped()
+    self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow])
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow])
-      self.showDiscoveryFiltersCats.assertValues([categories, categories])
+    self.vm.inputs.titleButtonTapped()
 
-      self.vm.inputs.titleButtonTapped()
+    self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow],
+                                              "Show filters does not emit on close.")
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow],
-                                                "Show filters does not emit on close.")
+    self.vm.inputs.titleButtonTapped()
 
-      self.vm.inputs.titleButtonTapped()
+    self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow])
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow])
-      self.showDiscoveryFiltersCats.assertValues([categories, categories, categories])
+    self.vm.inputs.filtersSelected(row: artRow)
+    self.vm.inputs.titleButtonTapped()
 
-      self.vm.inputs.filtersSelected(row: artRow)
-      self.vm.inputs.titleButtonTapped()
-
-      self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow, artRow])
-      self.showDiscoveryFiltersCats.assertValues([categories, categories, categories, categories])
-    }
+    self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow, starredRow, artRow])
   }
 
   func testShowFilters_BeforeApiReturns() {
-    let categories = [
-      Category.illustration,
-      .documentary,
-      .filmAndVideo,
-      .art
-    ]
-
-    let categoriesResponse = .template |> CategoriesEnvelope.lens.categories .~ categories
     let initialRow = SelectableRow(isSelected: true, params: initialParams)
 
-    withEnvironment(apiService: MockService(fetchCategoriesResponse: categoriesResponse)) {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
 
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(params: initialParams)
+    self.showDiscoveryFiltersRow.assertValueCount(0)
+    self.dismissDiscoveryFilters.assertValueCount(0)
 
-      self.showDiscoveryFiltersRow.assertValueCount(0)
-      self.showDiscoveryFiltersCats.assertValueCount(0)
-      self.dismissDiscoveryFilters.assertValueCount(0)
+    // Tap title before the categories are fetched
+    self.vm.inputs.titleButtonTapped()
+    self.scheduler.advance(by: .milliseconds(400))
 
-      // Tap title before the categories are fetched
-      self.vm.inputs.titleButtonTapped()
-      self.scheduler.advance(by: .milliseconds(400))
+    self.showDiscoveryFiltersRow.assertValues([initialRow],
+                                              "Filters are shown even before categories are fetched.")
+    self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow],
-                                                "Filters are shown even before categories are fetched.")
-      self.showDiscoveryFiltersCats.assertValues([[]],
-                                                 "Filters are shown without categories.")
-      self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
+    // Wait enough time for categories to come back
+    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-      // Wait enough time for categories to come back
-      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+    self.showDiscoveryFiltersRow.assertValues([initialRow],
+                                              "Nothing new is emitted once categories are fetched.")
+    self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow],
-                                                "Nothing new is emitted once categories are fetched.")
-      self.showDiscoveryFiltersCats.assertValues([[]],
-                                                 "Nothing new is emitted once categories are fetched.")
-      self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
+    // Tap title again to dismiss
+    self.vm.inputs.titleButtonTapped()
+    self.scheduler.advance(by: .milliseconds(400))
 
-      // Tap title again to dismiss
-      self.vm.inputs.titleButtonTapped()
-      self.scheduler.advance(by: .milliseconds(400))
+    self.showDiscoveryFiltersRow.assertValues([initialRow], "Nothing new is emitted when dismissing.")
+    self.dismissDiscoveryFilters.assertValueCount(1, "Dismiss is emitted.")
 
-      self.showDiscoveryFiltersRow.assertValues([initialRow], "Nothing new is emitted when dismissing.")
-      self.showDiscoveryFiltersCats.assertValues([[]], "Nothing new is emitted when dismissing.")
-      self.dismissDiscoveryFilters.assertValueCount(1, "Dismiss is emitted.")
+    // Tap title again to present
+    self.vm.inputs.titleButtonTapped()
+    self.scheduler.advance(by: .milliseconds(400))
 
-      // Tap title again to present
-      self.vm.inputs.titleButtonTapped()
-      self.scheduler.advance(by: .milliseconds(400))
-
-      self.showDiscoveryFiltersRow.assertValues([initialRow, initialRow],
-                                                "Filters are shown again.")
-      self.showDiscoveryFiltersCats.assertValues([[], categories],
-                                                 "Filters are shown again, this time with categories.")
-      self.dismissDiscoveryFilters.assertValueCount(1, "Dismissing is not emitted.")
-    }
+    self.showDiscoveryFiltersRow.assertValues([initialRow, initialRow],
+                                              "Filters are shown again.")
+    self.dismissDiscoveryFilters.assertValueCount(1, "Dismissing is not emitted.")
   }
 
   func testTitleData() {
