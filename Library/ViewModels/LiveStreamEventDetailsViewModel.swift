@@ -15,6 +15,7 @@ public protocol LiveStreamEventDetailsViewModelInputs {
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
   func subscribeButtonTapped()
   func setNumberOfPeopleWatching(numberOfPeople: Int)
+  func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -27,6 +28,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
+  var openLoginToutViewController: Signal<(), NoError> { get }
   var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
@@ -68,8 +70,16 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribedProperty = MutableProperty(false)
 
+    let signedIn = Signal.zip(
+      self.subscribeButtonTappedProperty.signal,
+      self.userSessionStartedProperty.signal)
+
+    let subscribeIntent = Signal.merge(
+      signedIn.ignoreValues(),
+      self.subscribeButtonTappedProperty.signal.filter { AppEnvironment.current.currentUser != nil } )
+
     let isSubscribedEvent = event
-      .takeWhen(self.subscribeButtonTappedProperty.signal)
+      .takeWhen(subscribeIntent)
       .switchMap { event -> SignalProducer<Event<Bool, LiveApiError>, NoError> in
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
@@ -107,6 +117,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         .map { URL(string: $0.creator.avatar) }
     )
 
+    self.openLoginToutViewController = self.subscribeButtonTappedProperty.signal
+      .filter { AppEnvironment.current.currentUser == nil }
+
     self.creatorName = event.map { $0.creator.name }
     self.liveStreamTitle = event.map { $0.stream.projectName }
     self.liveStreamParagraph = event.map { $0.stream.description }
@@ -130,9 +143,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     ).skipRepeats()
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
-      self.subscribeButtonTappedProperty.signal.mapConst(true),
+      subscribeIntent.filter { AppEnvironment.current.currentUser != nil }.mapConst(true),
+      self.subscribeButtonTappedProperty.signal
+        .filter { AppEnvironment.current.currentUser != nil }
+        .mapConst(true),
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
-    )
+    ).skipRepeats()
 
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
       .map { Format.wholeNumber($0) }
@@ -147,11 +163,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
   public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {
     self.configData.value = (project, liveStream, event)
-  }
-
-  private let viewDidLoadProperty = MutableProperty()
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -170,6 +181,16 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.subscribeButtonTappedProperty.value = ()
   }
 
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
   public let animateActivityIndicator: Signal<Bool, NoError>
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
@@ -179,6 +200,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
+  public let openLoginToutViewController: Signal<(), NoError>
   public let retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>

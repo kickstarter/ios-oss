@@ -239,6 +239,16 @@ internal final class LiveStreamContainerViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
+
+    self.eventDetailsViewModel.outputs.openLoginToutViewController
+      .observeValues { [weak self] _ in
+        self?.openLoginTout()
+    }
+
     self.viewModel.outputs.createAndConfigureLiveStreamViewController
       .observeForUI()
       .observeValues { [weak self] in
@@ -338,6 +348,14 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+  }
+
+  private func openLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {

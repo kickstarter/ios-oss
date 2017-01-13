@@ -13,9 +13,9 @@ public protocol LiveStreamContainerViewModelType {
 public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project: Project, event: LiveStreamEvent?)
   func closeButtonTapped()
+  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
   func viewDidLoad()
-  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 }
 
 public protocol LiveStreamContainerViewModelOutputs {

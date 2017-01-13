@@ -19,6 +19,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
   private let numberOfPeopleWatchingText = TestObserver<String, NoError>()
+  private let openLoginToutViewController = TestObserver<(), NoError>()
   private let shareButtonEnabled = TestObserver<Bool, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
@@ -36,6 +37,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
     self.vm.outputs.liveStreamParagraph.observe(self.liveStreamParagraph.observer)
     self.vm.outputs.numberOfPeopleWatchingText.observe(self.numberOfPeopleWatchingText.observer)
+    self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
     self.vm.outputs.animateActivityIndicator.observe(self.animateActivityIndicator.observer)
     self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
       self.animateSubscribeButtonActivityIndicator.observer)
@@ -186,7 +188,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.numberOfPeopleWatchingText.assertValues(["300", "350"])
   }
 
-  func testSubscribe() {
+  func testSubscribe_LoggedIn() {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     let event = .template
@@ -247,6 +249,42 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
     }
+  }
+
+  func testSubscribe_LoginDuring() {
+    let event = .template
+      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+
+    self.subscribeLabelText.assertValueCount(0)
+    self.subscribeButtonText.assertValueCount(0)
+    self.subscribeButtonImage.assertValueCount(0)
+    self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
+    self.openLoginToutViewController.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.animateSubscribeButtonActivityIndicator.assertValues([])
+
+    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+    self.subscribeButtonText.assertValues(["Subscribe"])
+    self.subscribeButtonImage.assertValues([nil])
+    self.openLoginToutViewController.assertValueCount(0)
+
+    self.vm.inputs.subscribeButtonTapped()
+
+    self.openLoginToutViewController.assertValueCount(1)
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
+    self.vm.inputs.userSessionStarted()
+
+    self.scheduler.advance()
+
+    self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
+
+    self.subscribeLabelText.assertValues(["Keep up with future live streams", ""])
+    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
+    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
   }
 }
 

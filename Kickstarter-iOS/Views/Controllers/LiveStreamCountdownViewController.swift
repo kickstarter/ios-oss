@@ -162,6 +162,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
+
     self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
     self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
     self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
@@ -194,6 +199,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       })
       .skipNil()
       .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
+
+    self.eventDetailsViewModel.outputs.openLoginToutViewController
+      .observeValues { [weak self] _ in
+        self?.openLoginTout()
+    }
 
     self.viewModel.outputs.categoryId
       .observeForUI()
@@ -284,6 +294,14 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     } else {
       self.present(controller, animated: true, completion: nil)
     }
+  }
+
+  private func openLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   // MARK: Actions
