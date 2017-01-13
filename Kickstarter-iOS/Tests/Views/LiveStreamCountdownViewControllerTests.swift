@@ -19,7 +19,7 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView() {
+  func testStandardView() {
     let liveStream = .template
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 195_753)
     let liveStreamEvent = .template
@@ -31,15 +31,16 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
     AppEnvironment.replaceCurrentEnvironment(liveStreamService: liveStreamService)
 
-    let devices = [Device.phone4_7inch, Device.phone4inch, Device.pad]
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let orientations = [Orientation.landscape, .portrait]
 
-    combos(Language.allLanguages, devices).forEach { lang, device in
+    combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       let vc = LiveStreamCountdownViewController.configuredWith(project: .template, liveStream: liveStream)
 
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
       self.scheduler.advance()
 
-      FBSnapshotVerifyView(parent.view, identifier: "lang_\(lang)_device_\(device)")
+      FBSnapshotVerifyView(parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)")
     }
   }
 

@@ -10,13 +10,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private var countdownColons: [UILabel]?
-//  @IBOutlet private weak var countdownContainerStackView: UIStackView!
+  @IBOutlet private var countdownColons: [UILabel]!
   @IBOutlet private weak var countdownStackView: UIStackView!
-  @IBOutlet private var countdownLabels: [UILabel]?
+  @IBOutlet private var countdownLabels: [UILabel]!
   @IBOutlet private weak var daysLabel: UILabel!
-//  @IBOutlet private weak var detailsContainerStackView: UIStackView!
-//  @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
@@ -54,22 +51,21 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.navigationController?.delegate = self
-
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseControllerStyle()
+      |> LiveStreamCountdownViewController.lens.view.layoutMargins .~ .zero
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
-      |> UIImageView.lens.backgroundColor .~ .hex(0x565656)
+      |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.countdownStackView
       |> UIStackView.lens.alignment .~ .firstBaseline
@@ -81,30 +77,19 @@ internal final class LiveStreamCountdownViewController: UIViewController {
           : .init(topBottom: 0, leftRight: Styles.grid(6))
     }
 
-//    _ = self.countdownContainerStackView
+    _ = self.countdownLabels
+      ||> UILabel.lens.textAlignment .~ .center
+      ||> UILabel.lens.numberOfLines .~ 2
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
-
-
-    self.countdownLabels?.forEach { label in
-      _ = label
-        |> UILabel.lens.textAlignment .~ .center
-        |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
-    }
-
-    self.countdownColons?.forEach { label in
-      _ = label
-        |> UILabel.lens.text .~ ":"
-        |> UILabel.lens.textAlignment .~ .center
-        |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .white
-        |> UILabel.lens.font .~ .ksr_title1(size: 24)
-    }
-
-//    _  = self.detailsContainerStackView
-
+    _ = self.countdownColons
+      ||> UILabel.lens.text .~ ":"
+      ||> UILabel.lens.textAlignment .~ .center
+      ||> UILabel.lens.numberOfLines .~ 2
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.font .~ .ksr_title1(size: 24)
 
     _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
@@ -115,13 +100,10 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle(cornerRadius: 2)
 
-//    self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
-    self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
-
-    _ = self.creatorAvatarImageView
-      |> UIImageView.lens.image .~ nil
-      |> UIImageView.lens.layer.masksToBounds .~ true
+    self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
+      ? Styles.grid(20)
+      : Styles.grid(10)
 
     _ = self.introLabel
       |> UILabel.lens.numberOfLines .~ 2
@@ -131,6 +113,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
       }
       |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
       |> UILabel.lens.font %~~ { _, v in
@@ -155,12 +138,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.animating .~ false
 
     _ = self.gradientView
-      |> UIView.lens.layoutMargins .~ .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
-  }
-  //swiftlint:enable function_body_length
-
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+      |> UIView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.horizontalSizeClass == .regular
+          ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
+          : .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+    }
   }
 
   override var prefersStatusBarHidden: Bool {
@@ -170,10 +152,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
-    self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.height / 2
   }
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -233,9 +214,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] in
-        let imageName = $0.flatMap { $0 }.coalesceWith("")
-        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
+      .observeValues { [weak self] imageName in
+        self?.subscribeButton.setImage(image(named: imageName ?? ""), for: .normal)
     }
 
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
@@ -269,7 +249,6 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
   }
-  //swiftlint:enable function_body_length
 
   // FIXME: this can be an IBOutlet
   lazy var shareBarButtonItem: UIBarButtonItem = {
@@ -315,15 +294,5 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
   @IBAction internal func subscribe(_ sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
-  }
-}
-
-// FIXME: let's chat about this
-extension LiveStreamCountdownViewController: UINavigationControllerDelegate {
-
-  func navigationControllerSupportedInterfaceOrientations(
-    _ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
-
-    return .portrait
   }
 }
