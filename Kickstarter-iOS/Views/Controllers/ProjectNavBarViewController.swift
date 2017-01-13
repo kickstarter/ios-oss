@@ -93,9 +93,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "Closes_project", defaultValue: "Closes project.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
     _ = self.navContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
