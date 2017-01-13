@@ -58,6 +58,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   private func liveStreamSubpage(forProject project: Project) -> [ProjectPamphletSubpage] {
 
+    guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
+
     let currentlyLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
       switch (lhs.isLiveNow, rhs.isLiveNow) {
       case (true, false):                 return .lt

@@ -118,6 +118,16 @@ public enum ProjectPamphletSubpageCellPosition {
   case last
 }
 
+extension ProjectPamphletSubpageCellPosition: Equatable {}
+public func == (lhs: ProjectPamphletSubpageCellPosition, rhs: ProjectPamphletSubpageCellPosition) -> Bool {
+  switch (lhs, rhs) {
+  case (.first, .first), (.middle, .middle), (.last, .last):
+    return true
+  default:
+    return false
+  }
+}
+
 public enum ProjectPamphletSubpage {
   case comments(Int, ProjectPamphletSubpageCellPosition)
   case updates(Int, ProjectPamphletSubpageCellPosition)
@@ -165,5 +175,20 @@ public enum ProjectPamphletSubpage {
       return liveStream
     }
     return nil
+  }
+}
+
+extension ProjectPamphletSubpage: Equatable {}
+public func == (lhs: ProjectPamphletSubpage, rhs: ProjectPamphletSubpage) -> Bool {
+
+  switch (lhs, rhs) {
+  case let (.comments(lhsCount, lhsPos), .comments(rhsCount, rhsPos)):
+    return lhsCount == rhsCount && lhsPos == rhsPos
+  case let (.updates(lhsCount, lhsPos), .updates(rhsCount, rhsPos)):
+    return lhsCount == rhsCount && lhsPos == rhsPos
+  case let (.liveStream(lhsStream, lhsPos), .liveStream(rhsStream, rhsPos)):
+    return lhsStream == rhsStream && lhsPos == rhsPos
+  default:
+    return false
   }
 }
