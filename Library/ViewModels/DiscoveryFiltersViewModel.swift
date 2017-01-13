@@ -88,6 +88,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     self.yConstantForActivityIndicator = self.categoriesAreLoading
       .map { _ in AppEnvironment.current.currentUser == nil ? -Styles.grid(15) : Styles.grid(10) }
+      .take(first: 1)
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)

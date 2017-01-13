@@ -163,6 +163,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
+
+    self.yConstantForActivityIndicator.assertValues([Styles.grid(10)])
   }
 
   func testTopFilters_Logged_In_Social() {
@@ -187,6 +189,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
+
+    self.yConstantForActivityIndicator.assertValues([Styles.grid(10)])
   }
 
   func testTopFilters_Category_Selected() {
@@ -204,10 +208,17 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
       self.loadCategoryRows.assertValueCount(0)
+      self.categoriesAreLoading.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 
+      self.categoriesAreLoading.assertValues([true])
+      self.yConstantForActivityIndicator.assertValues([-Styles.grid(15)])
+
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+
+      self.categoriesAreLoading.assertValues([true, false])
+      self.yConstantForActivityIndicator.assertValues([-Styles.grid(15)])
 
       self.loadCategoryRows.assertValues([[artExpandableRow, filmExpandableRow]],
                                         "The root categories emit.")
@@ -274,7 +285,11 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
+    self.categoriesAreLoading.assertValues([true])
+
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+
+    self.categoriesAreLoading.assertValues([true, false])
 
     self.loadCategoryRows.assertValues(
       [
@@ -384,6 +399,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+
+    self.categoriesAreLoading.assertValueCount(0)
 
     self.loadCategoryRows.assertValues([[artExpandableRow, filmExpandableRow]],
                                        "Server did not advance, categories loaded from cache.")

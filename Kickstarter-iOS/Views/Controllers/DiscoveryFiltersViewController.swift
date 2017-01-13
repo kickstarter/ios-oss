@@ -9,8 +9,8 @@ internal protocol DiscoveryFiltersViewControllerDelegate: class {
 }
 
 internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet private weak var closeButton: UIButton!
   @IBOutlet private weak var backgroundGradientView: GradientView!
+  @IBOutlet private weak var closeButton: UIButton!
   @IBOutlet private weak var filtersTableView: UITableView!
 
   private let activityIndicator = UIActivityIndicatorView()
