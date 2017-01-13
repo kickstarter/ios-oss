@@ -251,9 +251,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.outputs.createAndConfigureLiveStreamViewController
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] _, userId, event in
         guard let _self = self else { return }
-        let (_, userId, event) = $0
 
         _self.addChildLiveStreamViewController(controller:
           LiveStreamViewController(event: event, userId: userId, delegate: _self)

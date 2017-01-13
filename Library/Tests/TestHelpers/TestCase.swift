@@ -25,11 +25,16 @@ internal class TestCase: FBSnapshotTestCase {
 
   override func setUp() {
     super.setUp()
+
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
+
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
+      calendar: calendar,
       config: self.config,
       cookieStorage: self.cookieStorage,
       countryCode: "US",
@@ -46,7 +51,6 @@ internal class TestCase: FBSnapshotTestCase {
       mainBundle: mainBundle,
       reachability: .init(value: .wifi),
       scheduler: self.scheduler,
-      timeZone: TimeZone(identifier: "GMT")!,
       ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults
     )

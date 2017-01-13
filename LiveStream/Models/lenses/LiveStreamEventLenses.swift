@@ -74,6 +74,10 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.name
   }
 
+  public var projectName: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.projectName
+  }
+
   public var replayUrl: Lens<LiveStreamEvent, String?> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.replayUrl
   }

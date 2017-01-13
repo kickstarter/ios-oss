@@ -7,13 +7,14 @@ import UIKit
 internal final class MessageThreadCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
-  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-  @IBOutlet fileprivate weak var bodyLabel: UILabel!
-  @IBOutlet fileprivate weak var dateLabel: UILabel!
-  @IBOutlet fileprivate weak var nameLabel: UILabel!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var replyIndicator: UIView?
-  @IBOutlet fileprivate weak var unreadIndicatorView: UIView?
+  @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var bodyLabel: UILabel!
+  @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet private weak var dividerView: UIView!
+  @IBOutlet private weak var nameLabel: UILabel!
+  @IBOutlet private weak var projectNameLabel: UILabel!
+  @IBOutlet private weak var replyIndicator: UIView?
+  @IBOutlet private weak var unreadIndicatorView: UIView?
 
   func configureWith(value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)
@@ -28,8 +29,27 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : layoutMargins
+          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
+
+    _ = self.bodyLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
+
+    _ = self.dateLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_caption1()
+
+    _ = self.dividerView
+      |> separatorStyle
+
+    _ = self.nameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+
+    _ = self.projectNameLabel
+      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 15.0)
   }
 
   internal override func bindViewModel() {

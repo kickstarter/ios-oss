@@ -93,6 +93,13 @@ internal final class MessagesViewController: UITableViewController {
     }
   }
 
+  internal override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+    if let cell = cell as? BackingCell, cell.delegate == nil {
+      cell.delegate = self
+    }
+  }
+
   @IBAction fileprivate func replyButtonPressed() {
     self.viewModel.inputs.replyButtonPressed()
   }
@@ -131,5 +138,11 @@ extension MessagesViewController: MessageDialogViewControllerDelegate {
 
   internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
     self.viewModel.inputs.messageSent(message)
+  }
+}
+
+extension MessagesViewController: BackingCellDelegate {
+  func backingCellGoToBackingInfo() {
+    self.viewModel.inputs.backingInfoPressed()
   }
 }

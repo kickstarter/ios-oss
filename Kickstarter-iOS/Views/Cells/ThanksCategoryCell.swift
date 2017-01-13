@@ -5,16 +5,16 @@ import UIKit
 
 internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
 
-  @IBOutlet fileprivate weak var bgView: UIView!
-  @IBOutlet fileprivate weak var exploreLabel: UILabel!
-  @IBOutlet fileprivate weak var liveProjectCountLabel: UILabel!
+  @IBOutlet private weak var bgView: GradientView!
+  @IBOutlet private weak var exploreLabel: UILabel!
+  @IBOutlet private weak var liveProjectCountLabel: UILabel!
 
   func configureWith(value category: KsApi.Category) {
-    _ = self.bgView
-      |> UIView.lens.backgroundColor .~ (UIColorFromCategoryId(category.id) ?? .ksr_text_navy_900)
+    let (startColor, endColor) = discoveryGradientColors(forCategoryId: category.root?.id)
+    self.bgView.setGradient([(startColor, 0.0), (endColor, 1.0)])
 
     _ = self.exploreLabel
-      |> UILabel.lens.textColor .~ (shouldOverlayBeDark(category) ? .ksr_text_navy_900 : .white)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.category_promo_explore_category(category_name: category.name) }
       |> UILabel.lens.font .~ .ksr_callout()
 
@@ -30,14 +30,4 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
       _ = self.liveProjectCountLabel |> UILabel.lens.hidden .~ true
     }
   }
-}
-
-private func shouldOverlayBeDark(_ category: KsApi.Category) -> Bool {
-  switch category.root?.id ?? 0 {
-  case 1, 3, 14, 15, 18:
-    return true
-  default:
-    return false
-  }
-
 }

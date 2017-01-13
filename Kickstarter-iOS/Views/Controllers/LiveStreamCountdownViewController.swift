@@ -70,19 +70,28 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.countdownStackView
-      |> UIStackView.lens.alignment .~ .top
+      |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.distribution .~ .equalCentering
 
     _ = self.countdownContainerStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(6)
       |> UIStackView.lens.distribution .~ .fill
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.isRegularRegular
+          ? .init(topBottom: 0, leftRight: Styles.grid(18))
+          : .init(topBottom: 0, leftRight: Styles.grid(6))
+    }
+
 
     self.countdownLabels?.forEach { label in
       _ = label
         |> UILabel.lens.textAlignment .~ .center
         |> UILabel.lens.numberOfLines .~ 2
         |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
     }
 
     self.countdownColons?.forEach { label in
@@ -96,8 +105,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     _  = self.detailsContainerStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
-        top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+      |> UIStackView.lens.layoutMargins %~~ { _, v in
+        v.traitCollection.isRegularRegular
+          ? UIEdgeInsets(top: 0, left: Styles.grid(18), bottom: Styles.grid(4), right: Styles.grid(18))
+          : UIEdgeInsets(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+    }
 
     _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
@@ -119,11 +131,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title3()
+      |> UILabel.lens.font %~~ { _, v in
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
+      }
       |> UILabel.lens.textColor .~ .ksr_navy_700
 
     _ = self.liveStreamParagraphLabel
-      |> UILabel.lens.font .~ UIFont.ksr_subhead()
+      |> UILabel.lens.font %~~ { _, v in
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_subhead()
+      }
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
     _ = self.subscribeButton
@@ -213,7 +229,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
+      .observeValues { [weak self] in
+        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
+    }
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()

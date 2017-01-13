@@ -67,8 +67,8 @@ public final class FundingGraphView: UIView {
       .enumerated()
       .map { index, stat in CGPoint(x: index, y: stat.cumulativePledged) }
 
-    let durationInDays = totalNumberOfDays(startDate: project.dates.launchedAt,
-                                           endDate: project.dates.deadline)
+    let durationInDays = dateToDayNumber(launchDate: project.dates.launchedAt,
+                                         currentDate: project.dates.deadline)
 
     let goal = project.stats.goal
 
@@ -255,30 +255,6 @@ private func slope(ofLine line: Line) -> CGFloat {
 private func dateToDayNumber(launchDate: TimeInterval,
                              currentDate: TimeInterval,
                              calendar: Calendar = AppEnvironment.current.calendar) -> CGFloat {
-  let startOfCurrentDate = fabs(
-    calendar.startOfDay(
-      for: Date(timeIntervalSinceReferenceDate: currentDate)).timeIntervalSince1970
-  )
 
-  let startOfLaunchDate = fabs(
-    calendar.startOfDay(
-      for: Date(timeIntervalSinceReferenceDate: launchDate)).timeIntervalSince1970
-  )
-
-  return CGFloat((startOfCurrentDate - startOfLaunchDate) / 60.0 / 60.0 / 24.0)
-}
-
-// Returns the number of days in a given date range.
-private func totalNumberOfDays(startDate: TimeInterval,
-                               endDate: TimeInterval,
-                               calendar: Calendar = AppEnvironment.current.calendar) -> CGFloat {
-  let startOfStartDate = fabs(
-    calendar.startOfDay(for: Date(timeIntervalSinceReferenceDate: startDate)).timeIntervalSince1970
-  )
-
-  let startOfEndDate = fabs(
-    calendar.startOfDay(for: Date(timeIntervalSinceReferenceDate: endDate)).timeIntervalSince1970
-  )
-
-  return CGFloat((startOfEndDate - startOfStartDate) / 60.0 / 60.0 / 24.0)
+  return CGFloat((currentDate - launchDate) / 60.0 / 60.0 / 24.0)
 }
