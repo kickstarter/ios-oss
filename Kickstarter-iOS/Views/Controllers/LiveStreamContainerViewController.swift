@@ -181,7 +181,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     _  = self.subscribeLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
-      |> UILabel.lens.numberOfLines .~ 2
+      |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.textColor .~ .white
 
     _  = self.subscribeActivityIndicatorView
@@ -234,6 +234,14 @@ internal final class LiveStreamContainerViewController: UIViewController {
     _ = self.watchingLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
+
+    _ = [self.titleStackView, self.detailsStackView, self.subscribeStackView]
+      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      ||> UIStackView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
+          : .init(all: Styles.grid(4))
+    }
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -382,7 +390,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
 
-    // FIXME: do we have to set frame like this?
     let titleSize = self.navBarTitleLabel.sizeThatFits(
       CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
     )
@@ -415,8 +422,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 
   // MARK: Subviews
-
-  // FIXME: these should all be IBOutlets
 
   lazy var navBarTitleStackViewBackgroundView = { UIView() }()
   lazy var navBarTitleStackView = { UIStackView() }()

@@ -283,8 +283,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
   }
 
-  // FIXME: this can be an IBOutlet
-  lazy var shareBarButtonItem: UIBarButtonItem = {
+  lazy private var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white

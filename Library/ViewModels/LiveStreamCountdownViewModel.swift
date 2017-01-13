@@ -73,8 +73,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { max(0, $0.second ?? 0) }
       .skipRepeats()
 
-    //FIXME: Update below after make strings
-
     self.daysString = days
       .map { String(format: "%02d", $0) }
 
