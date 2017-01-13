@@ -19,26 +19,18 @@ public final class LiveStreamViewController: UIViewController {
   fileprivate var viewModel: LiveStreamViewModelType = LiveStreamViewModel()
   private var firebaseRef: FIRDatabaseReference?
   private var videoViewController: LiveVideoViewController?
-  public weak var delegate: LiveStreamViewControllerDelegate?
+  private weak var delegate: LiveStreamViewControllerDelegate?
 
-  public init(event: LiveStreamEvent, userId: Int?, delegate: LiveStreamViewControllerDelegate) {
-    super.init(nibName: nil, bundle: nil)
-
+  public func configureWith(event: LiveStreamEvent, userId: Int?, delegate: LiveStreamViewControllerDelegate) {
     self.delegate = delegate
-    self.bindVM()
-
-    self.initializeFirebase(withEvent: event, userId: userId)
+    self.viewModel.inputs.configureWith(event: event, userId: userId)
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: aDecoder)
   }
 
-  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-    return [.portrait, .landscape]
-  }
-
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   public func bindVM() {
     self.viewModel.outputs.createVideoViewController
       .observeForUI()
@@ -94,12 +86,18 @@ public final class LiveStreamViewController: UIViewController {
         guard let _self = self else { return }
         self?.delegate?.liveStreamViewControllerStateChanged(controller: _self, state: $0)
     }
+
+    self.viewModel.outputs.initializeFirebase
+      .observeForUI()
+      .observeValues { [weak self] event, userId in
+        self?.initializeFirebase(withEvent: event, userId: userId)
+    }
   }
-  //swiftlint:enable function_body_length
 
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.bindVM()
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -125,23 +123,14 @@ public final class LiveStreamViewController: UIViewController {
       return
     }
     let databaseRef = FIRDatabase.database(app: app).reference()
-    self.viewModel.inputs.configureWith(databaseRef: databaseRef, event: event)
+    self.viewModel.inputs.createdDatabaseRef(ref: databaseRef)
     self.firebaseRef = databaseRef
     self.firebaseRef?.database.goOnline()
 
     KsLiveApp.firebaseAuth()?.signInAnonymously(completion: { [weak self] (user, _) in
-      self?.setUserIds(userId: userId, firebaseUserId: user?.uid)
+      guard let firebaseUserId = user?.uid else { return }
+      self?.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
     })
-  }
-
-  private func setUserIds(userId: Int?, firebaseUserId: String?) {
-    guard let firebaseUserId = firebaseUserId else { return }
-    guard let userId = userId else {
-      self.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
-      return
-    }
-
-    self.viewModel.inputs.setUserId(userId: userId)
   }
 
   private func createPresenceReference(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
