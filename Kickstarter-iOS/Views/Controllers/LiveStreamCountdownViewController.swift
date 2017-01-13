@@ -86,7 +86,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       }
       ||> UILabel.lens.textAlignment .~ .center
 
-    _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel, self.secondsSubtitleLabel]
+    _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel,
+         self.secondsSubtitleLabel]
       ||> UILabel.lens.textColor .~ .white
       ||> UILabel.lens.font %~~ { _, l in
         l.traitCollection.isRegularRegular ? .ksr_headline() : .ksr_subhead(size: 14)

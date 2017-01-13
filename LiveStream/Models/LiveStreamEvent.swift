@@ -14,7 +14,7 @@ public struct LiveStreamEvent: Equatable {
     public let backgroundImageUrl: String
     public let description: String
     public let hasReplay: Bool
-    public let hlsUrl: String // TODO: ask justin if this is guaranteed?
+    public let hlsUrl: String // FIXME: ask justin if this is guaranteed?
     public let isRtmp: Bool
     public let isScale: Bool
     public let liveNow: Bool

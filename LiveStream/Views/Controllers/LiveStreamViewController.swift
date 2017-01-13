@@ -21,7 +21,9 @@ public final class LiveStreamViewController: UIViewController {
   private var videoViewController: LiveVideoViewController?
   private weak var delegate: LiveStreamViewControllerDelegate?
 
-  public func configureWith(event: LiveStreamEvent, userId: Int?, delegate: LiveStreamViewControllerDelegate) {
+  public func configureWith(event: LiveStreamEvent,
+                            userId: Int?,
+                            delegate: LiveStreamViewControllerDelegate) {
     self.delegate = delegate
     self.viewModel.inputs.configureWith(event: event, userId: userId)
   }
