@@ -14,6 +14,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarLabel: UILabel!
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
+  @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var detailsLoadingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var detailsStackView: UIStackView!
@@ -36,6 +37,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var subscribeStackView: UIStackView!
 //  @IBOutlet private weak var titleDetailsSeparator: UIView!
   @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
+  @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
   @IBOutlet private weak var watchingBadgeView: UIView!
   @IBOutlet private weak var watchingLabel: UILabel!
 //  @IBOutlet private weak var titleStackViewHeightConstraint: NSLayoutConstraint!
@@ -146,9 +149,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized
       |> UILabel.lens.textColor .~ .white
 
-//    _  = self.titleDetailsSeparator
-//      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
-
     _  = self.detailsStackView
       |> UIStackView.lens.axis .~ .vertical
       |> UIStackView.lens.distribution .~ .fill
@@ -170,33 +170,29 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     _  = self.creatorAvatarLabel
       |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font .~ .ksr_footnote()
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_footnote()
+    }
 
     _  = self.creatorAvatarImageView
       |> UIImageView.lens.image .~ nil
       |> UIImageView.lens.layer.masksToBounds .~ true
 
-//    _  = self.numberWatchingButton
-//      |> baseButtonStyle
-//      |> UIButton.lens.titleColor(forState: .normal) .~ .white
-//      |> UIButton.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.1)
-//      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: -Styles.grid(2))
-//      |> UIButton.lens.image(forState: .normal) .~ UIImage(named: "eye")
-//      |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-//      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 12)
-//      |> UIButton.lens.userInteractionEnabled .~ false
-//      |> UIButton.lens.title(forState: .normal) .~ String(0)
-
-//    _  = self.numberWatchingButton.semanticContentAttribute = .forceLeftToRight
+    self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
+      ? Styles.grid(10) : Styles.grid(5)
 
     _  = self.liveStreamTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font .~ .ksr_headline(size: 18)
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_title2() : .ksr_title2(size: 18)
+      }
       |> UILabel.lens.textColor .~ .white
 
     _  = self.liveStreamParagraphLabel
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font .~ .ksr_body(size: 14)
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_body(size: 14)
+      }
       |> UILabel.lens.textColor .~ .white
 
     _  = self.subscribeLabel
@@ -254,6 +250,18 @@ internal final class LiveStreamContainerViewController: UIViewController {
     _ = self.watchingLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
+
+    if self.traitCollection.isVerticallyCompact {
+      self.videoContainerAspectRatioConstraint_4_3.isActive = false
+      self.videoContainerAspectRatioConstraint_16_9.isActive = true
+      self.view.addConstraint(self.videoContainerAspectRatioConstraint_16_9)
+      self.view.removeConstraint(self.videoContainerAspectRatioConstraint_4_3)
+    } else {
+      self.videoContainerAspectRatioConstraint_4_3.isActive = true
+      self.videoContainerAspectRatioConstraint_16_9.isActive = false
+      self.view.removeConstraint(self.videoContainerAspectRatioConstraint_16_9)
+      self.view.addConstraint(self.videoContainerAspectRatioConstraint_4_3)
+    }
 
     self.gradientView.startPoint = .zero
     self.gradientView.endPoint = .init(x: 0, y: 1)

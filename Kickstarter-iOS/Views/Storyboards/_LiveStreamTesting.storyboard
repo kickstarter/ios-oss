@@ -321,29 +321,29 @@ Mikke Snow</string>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZF-1g-t2r">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DtU-WF-2KH">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="881"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DtU-WF-2KH">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="30017"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXE-hf-dQ1">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
                                                 <subviews>
                                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQz-eQ-2Xj">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
                                                         <connections>
                                                             <segue destination="WXN-s6-i5q" kind="embed" id="bAx-yt-F2w"/>
                                                         </connections>
                                                     </containerView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
-                                                        <rect key="frame" x="8" y="120.5" width="359" height="40.5"/>
+                                                        <rect key="frame" x="8" y="121" width="359" height="41"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
-                                                                <rect key="frame" x="66" y="0.0" width="227" height="20.5"/>
+                                                                <rect key="frame" x="66" y="0.5" width="227" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="COg-em-r6I">
-                                                                <rect key="frame" x="169.5" y="20.5" width="20" height="20"/>
+                                                                <rect key="frame" x="169.5" y="21" width="20" height="20"/>
                                                             </activityIndicatorView>
                                                         </subviews>
                                                     </stackView>
@@ -356,33 +356,39 @@ Mikke Snow</string>
                                                     <constraint firstItem="A6q-eY-g0e" firstAttribute="centerY" secondItem="EXE-hf-dQ1" secondAttribute="centerY" id="Zgg-Qe-ckR"/>
                                                     <constraint firstAttribute="trailingMargin" secondItem="A6q-eY-g0e" secondAttribute="trailing" id="ffk-il-PRd"/>
                                                     <constraint firstAttribute="trailing" secondItem="SQz-eQ-2Xj" secondAttribute="trailing" id="kIS-Qc-8id"/>
+                                                    <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="16:9" id="rel-3a-meW"/>
                                                     <constraint firstItem="SQz-eQ-2Xj" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="ufd-t2-hur"/>
                                                     <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="4:3" id="zbI-0p-ahe"/>
                                                 </constraints>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="rel-3a-meW"/>
+                                                    </mask>
+                                                </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2a0-nA-tSN">
-                                                <rect key="frame" x="0.0" y="281" width="375" height="600"/>
+                                                <rect key="frame" x="0.0" y="281.5" width="375" height="29735.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfP-ry-BqJ" customClass="GradientView" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="6"/>
+                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pfP-ry-BqJ" customClass="GradientView" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="1" width="375" height="6"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="6" id="dcD-O8-Z47"/>
                                                         </constraints>
                                                     </view>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
+                                                        <rect key="frame" x="0.0" y="1" width="375" height="29735.5"/>
                                                     </imageView>
-                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WLh-x1-5QQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WLh-x1-5QQ">
+                                                        <rect key="frame" x="0.0" y="1" width="375" height="29735.5"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="81l-R3-aEj">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29735.5"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </view>
                                                         <blurEffect style="dark"/>
                                                     </visualEffectView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="L31-dg-Wj8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="L31-dg-Wj8">
+                                                        <rect key="frame" x="0.0" y="1" width="375" height="29736"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mf7-St-y8k" userLabel="Separator">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -411,8 +417,8 @@ Mikke Snow</string>
                                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Iyd-lF-bUk">
                                                                         <rect key="frame" x="192" y="0.0" width="183" height="298"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="2Pc-ON-30p">
-                                                                                <rect key="frame" x="8" y="8" width="167" height="282"/>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" misplaced="YES" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="2Pc-ON-30p">
+                                                                                <rect key="frame" x="8" y="9" width="167" height="282"/>
                                                                                 <subviews>
                                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="1CW-ht-L6b">
                                                                                         <rect key="frame" x="0.0" y="136" width="127.5" height="10"/>
@@ -468,11 +474,11 @@ Mikke Snow</string>
                                                                 </subviews>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" verticalHuggingPriority="1" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="4Bv-P0-s5k" userLabel="Spacer">
-                                                                <rect key="frame" x="0.0" y="443" width="375" height="123"/>
+                                                                <rect key="frame" x="0.0" y="443" width="375" height="29258.5"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aeZ-AT-mRr">
-                                                                <rect key="frame" x="0.0" y="566" width="375" height="34"/>
+                                                                <rect key="frame" x="0.0" y="29701.5" width="375" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Keep up with future live streams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpn-uC-rKH">
                                                                         <rect key="frame" x="0.0" y="7" width="245" height="20.5"/>
@@ -498,11 +504,11 @@ Mikke Snow</string>
                                                             </stackView>
                                                         </subviews>
                                                     </stackView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live_waves" translatesAutoresizingMaskIntoConstraints="NO" id="nnj-Xu-ndh">
-                                                        <rect key="frame" x="0.0" y="135" width="10" height="11"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="live_waves" translatesAutoresizingMaskIntoConstraints="NO" id="nnj-Xu-ndh">
+                                                        <rect key="frame" x="0.0" y="134.5" width="10" height="11"/>
                                                     </imageView>
-                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VEp-dG-snO">
-                                                        <rect key="frame" x="178" y="290" width="20" height="20"/>
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VEp-dG-snO">
+                                                        <rect key="frame" x="178" y="14858.5" width="20" height="20"/>
                                                     </activityIndicatorView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -552,8 +558,14 @@ Mikke Snow</string>
                             <constraint firstItem="DtU-WF-2KH" firstAttribute="height" relation="greaterThanOrEqual" secondItem="fQm-7K-fX2" secondAttribute="height" id="Wa5-jH-2Tq"/>
                             <constraint firstItem="aZF-1g-t2r" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="WpO-v3-ig3"/>
                             <constraint firstItem="aZF-1g-t2r" firstAttribute="top" secondItem="fQm-7K-fX2" secondAttribute="top" id="qSq-BW-k3x"/>
+                            <constraint firstItem="EXE-hf-dQ1" firstAttribute="height" relation="lessThanOrEqual" secondItem="fQm-7K-fX2" secondAttribute="height" multiplier="0.5" id="tHr-HF-awS"/>
                             <constraint firstAttribute="bottom" secondItem="aZF-1g-t2r" secondAttribute="bottom" id="ycF-rO-bS7"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="tHr-HF-awS"/>
+                            </mask>
+                        </variation>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="800"/>
@@ -562,6 +574,7 @@ Mikke Snow</string>
                         <outlet property="creatorAvatarImageView" destination="OFk-Eh-IO7" id="xIn-BR-sVB"/>
                         <outlet property="creatorAvatarLabel" destination="b4T-TV-d8A" id="XNI-OG-Xth"/>
                         <outlet property="creatorAvatarLiveDotImageView" destination="nnj-Xu-ndh" id="iyj-Ve-One"/>
+                        <outlet property="creatorAvatarWidthConstraint" destination="H2m-I9-lP7" id="0xa-0H-B72"/>
                         <outlet property="detailsContainerStackView" destination="L31-dg-Wj8" id="vgF-Vf-nX3"/>
                         <outlet property="detailsLoadingActivityIndicatorView" destination="VEp-dG-snO" id="tiz-b0-yem"/>
                         <outlet property="detailsStackView" destination="z67-JG-G9W" id="Yw5-qQ-b5M"/>
@@ -578,6 +591,8 @@ Mikke Snow</string>
                         <outlet property="subscribeLabel" destination="lpn-uC-rKH" id="wzI-4r-Im9"/>
                         <outlet property="subscribeStackView" destination="aeZ-AT-mRr" id="GH1-YE-Yn6"/>
                         <outlet property="titleStackView" destination="4NZ-o1-d3R" id="A6F-pr-wHU"/>
+                        <outlet property="videoContainerAspectRatioConstraint_16_9" destination="rel-3a-meW" id="b8e-1n-yJ8"/>
+                        <outlet property="videoContainerAspectRatioConstraint_4_3" destination="zbI-0p-ahe" id="qdO-Hx-Rkb"/>
                         <outlet property="watchingBadgeView" destination="Iyd-lF-bUk" id="fvV-PF-GwT"/>
                         <outlet property="watchingLabel" destination="k7J-KF-ySB" id="nff-Kh-jpQ"/>
                         <outletCollection property="separatorViews" destination="Mf7-St-y8k" collectionClass="NSMutableArray" id="Efr-eJ-hAI"/>
@@ -597,7 +612,7 @@ Mikke Snow</string>
                         <viewControllerLayoutGuide type="bottom" id="bsg-Iy-OKC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="s6K-At-qEA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
