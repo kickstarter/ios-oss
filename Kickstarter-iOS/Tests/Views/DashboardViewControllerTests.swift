@@ -10,7 +10,7 @@ internal final class DashboardViewControllerTests: TestCase {
 
     let project = cosmicSurgery
       |> Project.lens.dates.launchedAt .~ (self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14)
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 1209600)
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14)
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
