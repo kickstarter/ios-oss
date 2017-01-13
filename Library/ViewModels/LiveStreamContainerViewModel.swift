@@ -45,9 +45,14 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.viewDidLoadProperty.signal)
       .map(first)
 
+    let event = Signal.combineLatest(
+      self.liveStreamEventProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal)
+      .map(first)
+
     self.createAndConfigureLiveStreamViewController = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
-      self.liveStreamEventProperty.signal.skipNil(),
+      event,
       self.viewDidLoadProperty.signal
       ).map { project, event, _ in (project, AppEnvironment.current.currentUser?.id, event) }
 
@@ -84,15 +89,18 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
       }
 
-    self.loaderText = liveStreamState.map {
-      if case .live(playbackState: .loading, _) = $0 { return Strings.The_live_stream_will_start_soon() }
-      if case .greenRoom = $0 { return Strings.The_live_stream_will_start_soon() }
-      if case .replay(playbackState: .loading, _) = $0 {
-        return Strings.The_replay_will_start_soon()
-      }
+    self.loaderText = Signal.merge(
+      liveStreamState.map {
+        if case .live(playbackState: .loading, _) = $0 { return Strings.The_live_stream_will_start_soon() }
+        if case .greenRoom = $0 { return Strings.The_live_stream_will_start_soon() }
+        if case .replay(playbackState: .loading, _) = $0 {
+          return Strings.The_replay_will_start_soon()
+        }
 
-      return Strings.Loading()
-    }
+        return Strings.Loading()
+      },
+      self.showErrorAlert
+    )
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
@@ -120,15 +128,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    self.creatorIntroText = Signal.combineLatest(
-      Signal.merge(
-        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
-        project.mapConst(.loading)
-      ),
-      liveStreamEventProperty.signal.skipNil()
-      )
+    self.creatorIntroText = event
       .observeForUI()
-      .map { (state, event) -> NSAttributedString? in
+      .map { event -> NSAttributedString? in
 
         let baseAttributes = [
           NSFontAttributeName: UIFont.ksr_body(size: 13),
@@ -139,7 +141,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           NSForegroundColorAttributeName: UIColor.white
         ]
 
-        if case .live = state {
+        if event.stream.liveNow {
           let text = Strings.Creator_name_is_live_now(creator_name: event.creator.name)
 
           return text.simpleHtmlAttributedString(
@@ -148,7 +150,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           )
         }
 
-        if case .replay = state {
+        if !event.stream.liveNow {
           let text = Strings.Creator_name_was_live_time_ago(
             creator_name: event.creator.name,
             time_ago: (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
@@ -160,26 +162,27 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           )
         }
 
-        return NSAttributedString(string: "")
+        return NSAttributedString(string: event.creator.name, attributes: boldAttributes)
       }.skipNil()
 
-    let isLive: Signal<Bool, NoError> = self.liveStreamState
-      .map {
-        if case .live = $0 { return true }
-        return false
-    }
+    let hideWhenReplay = Signal.merge(
+      project.mapConst(true),
+      event
+        .map { $0.stream.liveNow }
+        .map(negate),
+      self.showErrorAlert.mapConst(true)
+    ).skipRepeats()
 
-    let isReplay: Signal<Bool, NoError> = self.liveStreamState
-      .observeForUI()
-      .map {
-        if case .replay = $0 { return true }
-        return false
-    }
+    let hideWhenLive = Signal.merge(
+      project.mapConst(true),
+      event.map { $0.stream.liveNow },
+      self.showErrorAlert.mapConst(true)
+    ).skipRepeats()
 
-    self.navBarLiveDotImageViewHidden = isLive.map(negate)
-    self.creatorAvatarLiveDotImageViewHidden = isLive.map(negate)
-    self.numberWatchingButtonHidden = isLive.map(negate)
-    self.availableForLabelHidden = isReplay.map(negate)
+    self.navBarLiveDotImageViewHidden = hideWhenReplay
+    self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
+    self.numberWatchingButtonHidden = hideWhenReplay
+    self.availableForLabelHidden = hideWhenLive
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity

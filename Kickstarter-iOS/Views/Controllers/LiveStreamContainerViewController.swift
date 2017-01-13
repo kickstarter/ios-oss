@@ -327,7 +327,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.detailsLoadingActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateActivityIndicator
 
-    self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.animateActivityIndicator
+    self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.detailsStackViewHidden
 
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator

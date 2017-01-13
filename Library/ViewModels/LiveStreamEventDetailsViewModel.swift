@@ -25,6 +25,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var availableForText: Signal<String, NoError> { get }
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var detailsStackViewHidden: Signal<Bool, NoError> { get }
   var liveStreamTitle: Signal<String, NoError> { get }
   var liveStreamParagraph: Signal<String, NoError> { get }
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
@@ -136,10 +137,16 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       $0 ? Strings.Subscribed() : Strings.Subscribe()
     }
 
+    self.showErrorAlert = Signal.merge(
+      eventEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
+      isSubscribedEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_update_subscription())
+    )
+
     self.animateActivityIndicator = Signal.merge(
       configData.filter { _, _, event in event == nil }.mapConst(true),
       event.mapConst(false),
-      eventEvent.filter { $0.isTerminating }.mapConst(false)
+      eventEvent.filter { $0.isTerminating }.mapConst(false),
+      self.showErrorAlert.mapConst(false)
     ).skipRepeats()
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
@@ -150,13 +157,14 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     ).skipRepeats()
 
+
+    self.detailsStackViewHidden = Signal.merge(
+      self.showErrorAlert.mapConst(true),
+      self.animateActivityIndicator
+    ).skipRepeats()
+
     self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
       .map { Format.wholeNumber($0) }
-
-    self.showErrorAlert = Signal.merge(
-      eventEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
-      isSubscribedEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_update_subscription())
-    )
   }
   //swiftlint:enable function_body_length
 
@@ -197,6 +205,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
   public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>
+  public let detailsStackViewHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>

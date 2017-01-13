@@ -253,7 +253,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       .animateActivityIndicator
 
     self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs
-      .animateActivityIndicator
+      .detailsStackViewHidden
 
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
