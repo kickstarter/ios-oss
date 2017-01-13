@@ -78,7 +78,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   }
 
 
-  func testSubpages_LiveStreams() {
+  func testSubpages_LiveStreams_LiveStreamFeatureTurnedOn() {
     let section = ProjectPamphletContentDataSource.Section.subpages.rawValue
 
     let currentlyLiveStream = .template
@@ -95,7 +95,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Project.lens.liveStreams .~ [pastLiveStream, currentlyLiveStream, futureLiveStream]
 
     let config = .template
-      |> Config.lens.features .~ ["ios_live_streams": false]
+      |> Config.lens.features .~ ["ios_live_streams": true]
 
     withEnvironment(config: config) {
       dataSource.load(project: project)
