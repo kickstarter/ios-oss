@@ -26,7 +26,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
   internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
     -> FacebookConfirmationViewController {
 
-      let vc = Storyboard.Login.instantiate(FacebookConfirmationViewController.self)
+      let vc: FacebookConfirmationViewController = Storyboard.Login.instantiate()
       vc.viewModel.inputs.email(email)
       vc.viewModel.inputs.facebookToken(token)
       vc.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)

@@ -12,7 +12,7 @@ internal final class DiscoveryViewController: UIViewController {
   fileprivate weak var sortPagerViewController: SortPagerViewController!
 
   internal static func instantiate() -> DiscoveryViewController {
-    return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
+    return Storyboard.Discovery.instantiate()
   }
 
   override func viewDidLoad() {

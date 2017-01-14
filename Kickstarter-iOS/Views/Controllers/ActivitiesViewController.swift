@@ -11,7 +11,7 @@ internal final class ActivitiesViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
 
   internal static func instantiate() -> ActivitiesViewController {
-    return Storyboard.Activity.instantiate(ActivitiesViewController.self)
+    return Storyboard.Activity.instantiate()
   }
 
   internal required init?(coder aDecoder: NSCoder) {

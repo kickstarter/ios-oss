@@ -12,7 +12,7 @@ internal final class MessageThreadsViewController: UITableViewController {
   @IBOutlet fileprivate weak var mailboxLabel: UILabel!
 
   internal static func configuredWith(project: Project?) -> MessageThreadsViewController {
-    let vc = Storyboard.Messages.instantiate(MessageThreadsViewController.self)
+    let vc: MessageThreadsViewController = Storyboard.Messages.instantiate()
     vc.viewModel.inputs.configureWith(project: project)
     return vc
   }

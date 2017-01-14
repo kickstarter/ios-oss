@@ -23,7 +23,7 @@ internal final class SortPagerViewController: UIViewController {
   fileprivate var sortsStackViewCenterXConstraint: NSLayoutConstraint?
 
   internal static func instantiate() -> SortPagerViewController {
-    return Storyboard.Discovery.instantiate(SortPagerViewController.self)
+    return Storyboard.Discovery.instantiate()
   }
 
   internal func configureWith(sorts: [DiscoveryParams.Sort]) {

@@ -6,7 +6,7 @@ internal final class HelpWebViewController: WebViewController {
   fileprivate let viewModel: HelpWebViewModelType = HelpWebViewModel()
 
   internal static func configuredWith(helpType: HelpType) -> HelpWebViewController {
-    let vc = Storyboard.Help.instantiate(HelpWebViewController.self)
+    let vc: HelpWebViewController = Storyboard.Help.instantiate()
     vc.viewModel.inputs.configureWith(helpType: helpType)
     return vc
   }

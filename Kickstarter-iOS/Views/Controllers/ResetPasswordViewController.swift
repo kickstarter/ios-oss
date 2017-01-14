@@ -14,7 +14,7 @@ internal final class ResetPasswordViewController: UIViewController {
   fileprivate let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
   internal static func configuredWith(email: String?) -> ResetPasswordViewController {
-    let vc = Storyboard.Login.instantiate(ResetPasswordViewController.self)
+    let vc: ResetPasswordViewController = Storyboard.Login.instantiate()
     if let email = email {
       vc.viewModel.inputs.emailChanged(email)
     }

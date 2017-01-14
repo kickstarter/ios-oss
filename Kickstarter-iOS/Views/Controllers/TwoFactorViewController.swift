@@ -93,7 +93,7 @@ internal final class TwoFactorViewController: UIViewController {
   }
 
   fileprivate static func instantiate() -> TwoFactorViewController {
-    return Storyboard.Login.instantiate(TwoFactorViewController.self)
+    return Storyboard.Login.instantiate()
   }
 
   fileprivate func showError(_ message: String) {

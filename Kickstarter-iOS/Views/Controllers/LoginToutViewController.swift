@@ -26,7 +26,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
-    let vc = Storyboard.Login.instantiate(LoginToutViewController.self)
+    let vc: LoginToutViewController = Storyboard.Login.instantiate()
     vc.viewModel.inputs.loginIntent(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())

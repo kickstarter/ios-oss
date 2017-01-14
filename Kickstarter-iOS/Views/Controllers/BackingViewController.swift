@@ -27,7 +27,7 @@ internal final class BackingViewController: UIViewController {
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
   internal static func configuredWith(project: Project, backer: User?) -> BackingViewController {
-    let vc = Storyboard.Backing.instantiate(BackingViewController.self)
+    let vc: BackingViewController = Storyboard.Backing.instantiate()
     vc.viewModel.inputs.configureWith(project: project, backer: backer)
     return vc
   }

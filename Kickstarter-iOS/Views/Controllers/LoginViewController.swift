@@ -17,7 +17,7 @@ internal final class LoginViewController: UIViewController {
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
   internal static func instantiate() -> LoginViewController {
-    return Storyboard.Login.instantiate(LoginViewController.self)
+    return Storyboard.Login.instantiate()
   }
 
   override func viewDidLoad() {

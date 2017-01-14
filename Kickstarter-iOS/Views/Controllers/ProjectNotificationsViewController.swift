@@ -7,7 +7,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
   fileprivate let dataSource = ProjectNotificationsDataSource()
 
   internal static func instantiate() -> ProjectNotificationsViewController {
-    return Storyboard.Settings.instantiate(ProjectNotificationsViewController.self)
+    return Storyboard.Settings.instantiate()
   }
 
   internal override func viewDidLoad() {

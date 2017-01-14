@@ -35,7 +35,7 @@ internal final class CommentDialogViewController: UIViewController {
 
   internal static func configuredWith(project: Project, update: Update?, recipient: User?,
                                       context: Koala.CommentDialogContext) -> CommentDialogViewController {
-    let vc = Storyboard.Comments.instantiate(CommentDialogViewController.self)
+    let vc: CommentDialogViewController = Storyboard.Comments.instantiate()
     vc.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
                                       context: context)
     return vc

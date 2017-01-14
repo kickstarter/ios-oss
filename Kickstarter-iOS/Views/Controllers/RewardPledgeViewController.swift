@@ -72,7 +72,7 @@ internal final class RewardPledgeViewController: UIViewController {
             applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
     -> RewardPledgeViewController {
 
-      let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
+      let vc: RewardPledgeViewController = Storyboard.RewardPledge.instantiate()
       vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
       return vc
   }
