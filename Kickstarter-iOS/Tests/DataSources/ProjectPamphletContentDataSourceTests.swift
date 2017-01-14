@@ -46,7 +46,6 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     }
   }
 
-
   func testSubpages_LiveStreams_LiveStreamFeatureTurnedOn() {
     let section = ProjectPamphletContentDataSource.Section.subpages.rawValue
 
