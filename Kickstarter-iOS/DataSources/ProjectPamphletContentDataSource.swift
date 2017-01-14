@@ -68,19 +68,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       }
     }
 
-    // A comparator of time intervals that puts future times (relative to now) before past times.
-    let futureLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
-      lhs.startDate > AppEnvironment.current.dateType.init().timeIntervalSince1970 ? .lt
-        : lhs.startDate == rhs.startDate ? .eq
-        : .gt
-    }
-
     // Sort by:
     //   * live streams first
-    //   * future live streams next, followed by past live streams
-    //   * then sorted by start date, most recent first
+    //   * then sorted by start date, future live streams first
     let comparator = currentlyLiveStreamsFirstComparator
-      <> futureLiveStreamsFirstComparator
       <> Project.LiveStream.lens.startDate.comparator.reversed
 
     return project.liveStreams
