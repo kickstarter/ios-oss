@@ -15,13 +15,9 @@ test:
     - xcrun instruments -w 'iPhone 7 (10.2)' || true
     - sleep 15
   override:
-    - >
-      gym
-      --output_name               "KickBeta"
-      --export_method             "enterprise"
-      --provisioning_profile_path "circleci-beta-dist.mobileprovision"
-      --scheme                    "Kickstarter-iOS"
-      --configuration             "Hockey"
+    - make lint
+    - PLATFORM=iOS make test
+    - PLATFORM=iOS TARGET=Library make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:
