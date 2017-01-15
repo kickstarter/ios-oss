@@ -83,20 +83,19 @@ extension LiveStreamEvent.Stream: Decodable {
       <*> json <| "description"
       <*> json <| "has_replay"
       <*> json <|? "hls_url"
+    let tmp2 = tmp1
       <*> json <| "is_rtmp"
       <*> json <| "is_scale"
-
-    let tmp2 = tmp1
       <*> json <| "live_now"
       <*> json <| "max_opentok_viewers"
+    let tmp3 = tmp2
       <*> json <| "name"
       <*> json <| "project_web_url"
       <*> json <| "project_name"
       <*> json <|? "replay_url"
+    return tmp3
       <*> (json <| "start_date" >>- toDate)
       <*> json <| "web_url"
-
-    return tmp2
   }
 }
 
@@ -110,10 +109,12 @@ extension LiveStreamEvent.Creator: Decodable {
 
 extension LiveStreamEvent.Firebase: Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
-    return curry(LiveStreamEvent.Firebase.init)
+    let create = curry(LiveStreamEvent.Firebase.init)
+    let tmp = create
       <^> json <| "firebase_api_key"
       <*> json <| "chat_path"
       <*> json <| "green_room_path"
+    return tmp
       <*> json <| "hls_url_path"
       <*> json <| "number_people_watching_path"
       <*> json <| "firebase_project"

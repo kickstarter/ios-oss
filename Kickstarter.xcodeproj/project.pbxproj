@@ -4862,7 +4862,6 @@
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5368,7 +5367,6 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/Stripe/",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5403,7 +5401,6 @@
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-					"$(PROJECT_DIR)/Frameworks/KsLive/Frameworks",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
