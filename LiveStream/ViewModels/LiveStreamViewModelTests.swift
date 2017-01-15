@@ -535,7 +535,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
     self.vm.inputs.setFirebaseUserId(userId: "123")
 
-    let ref = FirebaseRefConfig(ref: "/123", orderBy: "")
+    let ref = FirebaseRefConfig(ref: "/watching/123", orderBy: "")
 
     self.createPresenceReference.assertValues([ref])
   }
@@ -551,7 +551,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
     self.vm.inputs.setFirebaseUserId(userId: "123")
 
-    let ref = FirebaseRefConfig(ref: "/123", orderBy: "")
+    let ref = FirebaseRefConfig(ref: "/watching/123", orderBy: "")
 
     self.createPresenceReference.assertValues([ref])
   }
