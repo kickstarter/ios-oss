@@ -60,6 +60,14 @@ $(hooks):
 hooks: $(hooks)
 
 deploy:
+	@echo "Deploying private/$(BRANCH) to $(RELEASE)..."
+
+	@git fetch private
+
+	@if [ -z $(git rev-list private/$(BRANCH)..oss/$(BRANCH)) ]; then \
+		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
+		exit 1; \
+	fi
 	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
 	then \
 		echo "RELEASE must be 'beta' or 'itunes'."; \
@@ -71,10 +79,11 @@ deploy:
 		exit 1; \
 	fi
 
-	git fetch origin
-	git branch -f $(DIST_BRANCH) origin/$(BRANCH)
-	git push -f origin $(DIST_BRANCH)
-	git branch -d $(DIST_BRANCH)
+	@git branch -f $(DIST_BRANCH) origin/$(BRANCH)
+	@git push -f private $(DIST_BRANCH)
+	@git branch -d $(DIST_BRANCH)
+
+	@echo "Deploy has been kicked off to CircleCI!"
 
 lint:
 	swiftlint lint --reporter json

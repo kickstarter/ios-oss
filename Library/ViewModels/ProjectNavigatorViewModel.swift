@@ -75,7 +75,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     let panningData = self.panningDataProperty.signal.skipNil()
 
     let transitionPhase = panningData
-      .scan(TransitionPhase.none) { phase, data in
+      .scan(TransitionPhase.none) { phase, data -> TransitionPhase in
         if data.contentOffset.y > 0 {
           return phase == .none ? .none : .canceling
         }
