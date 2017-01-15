@@ -4,6 +4,7 @@ machine:
 dependencies:
   pre:
     - make bootstrap
+    - ls /Applications/ | grep "Xcode"
     - system_profiler SPSoftwareDataType
     - security list-keychains
     - security find-identity -p codesigning

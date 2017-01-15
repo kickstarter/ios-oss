@@ -38,20 +38,22 @@ extension PKPaymentRequest: Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<PKPaymentRequest> {
     let create = curry(PKPaymentRequest.init)
-    let snakeCase = create
+    let tmp = create
       <^> json <|  "country_code"
       <*> json <|  "currency_code"
       <*> (json <| "merchant_capabilities" <|> .success(.capability3DS))
+    let snakeCase = tmp
       <*> json <|  "merchant_identifier"
       <*> json <|| "payment_summary_items"
       <*> (json <|  "shipping_type" <|> .success(.shipping))
       <*> json <|| "supported_networks"
 
-    let camelCase = {
-      create
+    let camelCase = { () -> Decoded<PKPaymentRequest> in
+      let tmp = create
         <^> json <|  "countryCode"
         <*> json <|  "currencyCode"
         <*> (json <| "merchantCapabilities" <|> .success(.capability3DS))
+      return tmp
         <*> json <|  "merchantIdentifier"
         <*> json <|| "paymentSummaryItems"
         <*> (json <|  "shippingType" <|> .success(.shipping))

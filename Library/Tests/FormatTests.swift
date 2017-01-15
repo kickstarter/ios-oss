@@ -386,16 +386,16 @@ final class FormatTests: TestCase {
     let now = self.dateType.init()
     let justNow = now.timeIntervalSince1970 - 30
     let rightNow = now.timeIntervalSince1970 + 30
-    let minutesAgo = now.timeIntervalSince1970 - 60 * 30
-    let inMinutes = now.timeIntervalSince1970 + 60 * 30
-    let hoursAgo = now.timeIntervalSince1970 - 60 * 60
-    let inHours = now.timeIntervalSince1970 + 60 * 60
-    let yesterday = now.timeIntervalSince1970 - 60 * 60 * 24
-    let tomorrow = now.timeIntervalSince1970 + 60 * 60 * 24
-    let daysAgo = now.timeIntervalSince1970 - 60 * 60 * 24 * 2
-    let inDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 2
-    let awhileAgo = now.timeIntervalSince1970 - 60 * 60 * 24 * 30 - 60 * 60 * 24
-    let inAwhile = now.timeIntervalSince1970 + 60 * 60 * 24 * 30 + 60 * 60 * 24
+    let minutesAgo = now.timeIntervalSince1970 - (60 * 30)
+    let inMinutes = now.timeIntervalSince1970 + (60 * 30)
+    let hoursAgo = now.timeIntervalSince1970 - (60 * 60)
+    let inHours = now.timeIntervalSince1970 + (60 * 60)
+    let yesterday = now.timeIntervalSince1970 - (60 * 60 * 24)
+    let tomorrow = now.timeIntervalSince1970 + (60 * 60 * 24)
+    let daysAgo = now.timeIntervalSince1970 - (60 * 60 * 24 * 2)
+    let inDays = now.timeIntervalSince1970 + (60 * 60 * 24 * 2)
+    let awhileAgo = now.timeIntervalSince1970 - (60 * 60 * 24 * 30 + 60 * 60 * 24)
+    let inAwhile = now.timeIntervalSince1970 + (60 * 60 * 24 * 30 + 60 * 60 * 24)
 
     withEnvironment(language: .en, locale: Locale(identifier: "en"), mainBundle: MockBundle()) {
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))
