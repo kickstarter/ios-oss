@@ -1325,9 +1325,6 @@
 		014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCell.swift; sourceTree = "<group>"; };
 		01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadEmptyStateCell.swift; sourceTree = "<group>"; };
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		0151AEAD1C8F61870067F1BE /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
-		0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLabel.swift; sourceTree = "<group>"; };
-		0151AEB91C8F811C0067F1BE /* BorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
 		0156B1AC1D072CB8000C4252 /* KSCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSCacheTests.swift; sourceTree = "<group>"; };
 		0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		0156B3841D107273000C4252 /* FindFriendsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2873,7 +2870,6 @@
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				A7C7257A1C85D36D005A016B /* AVPlayerView.swift */,
-				0151AEB91C8F811C0067F1BE /* BorderButton.swift */,
 				9DBF80DE1D666CAC007F2843 /* CheckoutModels.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */,
@@ -2920,8 +2916,6 @@
 				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
-				0151AEB01C8F6FD80067F1BE /* StyledLabel.swift */,
-				0151AEAD1C8F61870067F1BE /* Styles.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,

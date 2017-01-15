@@ -71,9 +71,11 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribedProperty = MutableProperty(false)
 
-    let signedIn = Signal.zip(
+    let signedIn = Signal.combineLatest(
       self.subscribeButtonTappedProperty.signal,
-      self.userSessionStartedProperty.signal)
+      self.userSessionStartedProperty.signal
+      )
+      .take(first: 1)
 
     let subscribeIntent = Signal.merge(
       signedIn.ignoreValues(),
@@ -100,10 +102,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribed = subscribedProperty.signal
 
-    self.availableForText = Signal.combineLatest(
-      event,
-      self.viewDidLoadProperty.signal)
-      .map(first)
+    self.availableForText = event
       .map { event -> String? in
         guard let availableDate = AppEnvironment.current.calendar
           .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
@@ -114,10 +113,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
       }.skipNil()
 
-    self.creatorAvatarUrl = Signal.merge(
-      event
-        .map { URL(string: $0.creator.avatar) }
-    )
+    self.creatorAvatarUrl = event
+      .map { URL(string: $0.creator.avatar) }
 
     self.openLoginToutViewController = self.subscribeButtonTappedProperty.signal
       .filter { AppEnvironment.current.currentUser == nil }
