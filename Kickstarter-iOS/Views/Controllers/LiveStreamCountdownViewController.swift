@@ -19,7 +19,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
-  @IBOutlet private weak var introLabel: UILabel!
+  @IBOutlet private weak var introLabel: SimpleHTMLLabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
   @IBOutlet private weak var minutesSubtitleLabel: UILabel!
@@ -37,7 +37,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal static func configuredWith(project: Project, liveStream: Project.LiveStream)
     -> LiveStreamCountdownViewController {
 
-      let vc = Storyboard._LiveStreamTesting.instantiate(LiveStreamCountdownViewController.self)
+      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
       return vc
@@ -129,8 +129,26 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       ? Styles.grid(20)
       : Styles.grid(10)
 
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .center
+    let introLabelBaseFont = self.traitCollection.isRegularRegular
+      ? UIFont.ksr_subhead(size: 18)
+      : UIFont.ksr_subhead(size: 14)
+
+    let introLabelBaseAttributes = [
+      NSFontAttributeName: introLabelBaseFont,
+      NSForegroundColorAttributeName: UIColor.ksr_navy_600,
+      NSParagraphStyleAttributeName: paragraphStyle
+    ]
+
+    let introLabelBoldAttributes = [
+      NSFontAttributeName: introLabelBaseFont.bolded,
+      NSForegroundColorAttributeName: UIColor.ksr_navy_700
+    ]
     _ = self.introLabel
-      |> UILabel.lens.numberOfLines .~ 2
+      |> SimpleHTMLLabel.lens.baseAttributes .~ introLabelBaseAttributes
+      |> SimpleHTMLLabel.lens.boldAttributes .~ introLabelBoldAttributes
+      |> SimpleHTMLLabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamTitleLabel
       |> UILabel.lens.font %~~ { _, v in
@@ -161,6 +179,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.animating .~ false
 
+    self.gradientView.startPoint = .init(x: 1, y: 0)
+    self.gradientView.endPoint = .init(x: 0, y: 1)
     _ = self.gradientView
       |> UIView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.horizontalSizeClass == .regular
@@ -199,7 +219,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
-    self.introLabel.rac.attributedText = self.viewModel.outputs.upcomingIntroText
+    self.introLabel.rac.html = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
 

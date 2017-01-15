@@ -12,7 +12,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var availableForLabel: UILabel!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
-  @IBOutlet private weak var creatorAvatarLabel: UILabel!
+  @IBOutlet private weak var creatorAvatarLabel: SimpleHTMLLabel!
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
@@ -47,7 +47,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
                                       liveStream: Project.LiveStream,
                                       event: LiveStreamEvent?) -> LiveStreamContainerViewController {
 
-    let vc = Storyboard._LiveStreamTesting.instantiate(LiveStreamContainerViewController.self)
+    let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project, event: event)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
@@ -153,12 +153,23 @@ internal final class LiveStreamContainerViewController: UIViewController {
         bottom: Styles.grid(4),
         right: Styles.grid(4))
 
+    let creatorLabelFont = self.traitCollection.isRegularRegular
+      ? UIFont.ksr_title3(size: 18)
+      : UIFont.ksr_title3(size: 14)
+
+    let creatorLabelBaseAttributes = [
+      NSFontAttributeName: creatorLabelFont,
+      NSForegroundColorAttributeName: UIColor.white
+    ]
+    let creatorLabelBoldAttributes = [
+      NSFontAttributeName: creatorLabelFont.bolded
+    ]
+
     _  = self.creatorAvatarLabel
-      |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_footnote()
-    }
+      |> SimpleHTMLLabel.lens.numberOfLines .~ 0
+      |> SimpleHTMLLabel.lens.textColor .~ .white
+      |> SimpleHTMLLabel.lens.baseAttributes .~ creatorLabelBaseAttributes
+      |> SimpleHTMLLabel.lens.boldAttributes .~ creatorLabelBoldAttributes
 
     _  = self.creatorAvatarImageView
       |> UIImageView.lens.image .~ nil
@@ -302,6 +313,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
+    self.loaderStackView.rac.hidden = self.viewModel.outputs.loaderStackViewHidden
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
@@ -309,7 +321,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.creatorAvatarLabel.rac.attributedText = self.viewModel.outputs.creatorIntroText
+    self.creatorAvatarLabel.rac.html = self.viewModel.outputs.creatorIntroText
 
     self.eventDetailsViewModel.outputs.creatorAvatarUrl
       .observeForUI()

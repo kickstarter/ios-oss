@@ -17,6 +17,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
+  private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let numberWatchingButtonHidden = TestObserver<Bool, NoError>()
@@ -33,10 +34,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.createAndConfigureLiveStreamViewController.observer)
     self.vm.outputs.creatorAvatarLiveDotImageViewHidden
       .observe(self.creatorAvatarLiveDotImageViewHidden.observer)
-    self.vm.outputs.creatorIntroText.map { $0.string }.observe(self.creatorIntroText.observer)
+    self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
+    self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
     self.vm.outputs.numberWatchingButtonHidden.observe(self.numberWatchingButtonHidden.observer)
@@ -58,7 +60,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorIntroText.assertValues(["Creator Name is live now"])
+    self.creatorIntroText.assertValues(["<b>Creator Name</b> is live now"])
   }
 
   func testCreatorIntroText_Replay() {
@@ -74,7 +76,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorIntroText.assertValues(["Creator Name was live right now"])
+    self.creatorIntroText.assertValues(["<b>Creator Name</b> was live right now"])
   }
 
   func testCreateLiveStreamViewController() {
@@ -182,6 +184,25 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       .replay(playbackState: .playing, duration: 123),
       .replay(playbackState: .error(error: .failedToConnect), duration: 123)
     ])
+  }
+
+  func testLoaderStackViewHidden() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .loading, duration: 123)
+    )
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .playing, duration: 123)
+    )
+
+    self.loaderStackViewHidden.assertValues([false, true])
   }
 
   func testLoaderText() {

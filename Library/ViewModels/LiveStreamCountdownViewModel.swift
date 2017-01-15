@@ -26,14 +26,14 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<URL, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
   var secondsString: Signal<String, NoError> { get }
-  var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
+  var upcomingIntroText: Signal<String, NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
 }
 
 public final class LiveStreamCountdownViewModel: LiveStreamCountdownViewModelType,
 LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
@@ -43,9 +43,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     let project = configData.map(first)
     let liveStream = configData.map(second)
 
-    let everySecondTimer = self.viewDidLoadProperty.signal.flatMap {
-      timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
-        .prefix(value: AppEnvironment.current.scheduler.currentDate)
+    let everySecondTimer = self.viewDidLoadProperty.signal
+      .flatMap {
+        timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
+          .prefix(value: AppEnvironment.current.scheduler.currentDate)
     }
 
     let dateComponents = liveStream
@@ -55,42 +56,31 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
                                                        from: currentDate,
                                                        to: startDate)
-    }
+      }
+      .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
 
-    let days = dateComponents
-      .map { max(0, $0.day ?? 0) }
+    self.daysString = dateComponents
+      .map { max(0, $0.day) }
       .skipRepeats()
-
-    let hours = dateComponents
-      .map { max(0, $0.hour ?? 0) }
-      .skipRepeats()
-
-    let minutes = dateComponents
-      .map { max(0, $0.minute ?? 0) }
-      .skipRepeats()
-
-    let seconds = dateComponents
-      .map { max(0, $0.second ?? 0) }
-      .skipRepeats()
-
-    self.daysString = days
       .map { String(format: "%02d", $0) }
 
-    self.hoursString = hours
+    self.hoursString = dateComponents
+      .map { max(0, $0.hour) }
+      .skipRepeats()
       .map { String(format: "%02d", $0) }
 
-    self.minutesString = minutes
+    self.minutesString = dateComponents
+      .map { max(0, $0.minute) }
+      .skipRepeats()
       .map { String(format: "%02d", $0) }
 
-    self.secondsString = seconds
+    self.secondsString = dateComponents
+      .map { max(0, $0.second) }
+      .skipRepeats()
       .map { String(format: "%02d", $0) }
 
-    let countdownEnded = Signal.combineLatest(
-      liveStream
-        .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date },
-      everySecondTimer
-      )
-      .filter { startDate, now in startDate < now }
+    let countdownEnded = dateComponents
+      .filter { $0.day <= 0 && $0.hour <= 0 && $0.minute <= 0 && $0.second < 0 }
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
@@ -111,31 +101,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .take(first: 1)
 
     self.upcomingIntroText = project
-      .map { project -> NSAttributedString? in
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-
-        let baseAttributes = [
-          NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-          NSForegroundColorAttributeName: UIColor.ksr_navy_600,
-          NSParagraphStyleAttributeName: paragraphStyle
-        ]
-
-        let boldAttributes = [
-          NSFontAttributeName: UIFont.ksr_headline(size: 14),
-          NSForegroundColorAttributeName: UIColor.ksr_navy_700,
-          NSParagraphStyleAttributeName: paragraphStyle
-        ]
-
-        let text = Strings.Upcoming_with_creator_name(creator_name: project.creator.name)
-
-        return text.simpleHtmlAttributedString(
-          base: baseAttributes,
-          bold: boldAttributes
-        )
-      }.skipNil()
+      .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
   }
-  //swiftlint:enable function_body_length
 
   private let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
@@ -165,7 +132,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let projectImageUrl: Signal<URL, NoError>
   public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
   public let secondsString: Signal<String, NoError>
-  public let upcomingIntroText: Signal<NSAttributedString, NoError>
+  public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>
 
   public var inputs: LiveStreamCountdownViewModelInputs { return self }

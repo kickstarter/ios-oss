@@ -39,7 +39,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.pushLiveStreamViewController.map(third).observe(
       self.pushLiveStreamViewControllerEvent.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
-    self.vm.outputs.upcomingIntroText.map { $0.string }.observe(self.upcomingIntroText.observer)
+    self.vm.outputs.upcomingIntroText.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
   }
 
@@ -50,7 +50,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStream: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.upcomingIntroText.assertValues(["Upcoming with\nCreator Name"])
+    self.upcomingIntroText.assertValues(["Upcoming with<br/><b>Creator Name</b>"])
   }
 
   func testCountdownLabels() {
@@ -92,10 +92,11 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
 
+    let event = LiveStreamEvent.template
+
     self.vm.inputs.configureWith(project: project, liveStream: liveStream)
     self.vm.inputs.viewDidLoad()
 
-    let event = LiveStreamEvent.template
     self.vm.inputs.retrievedLiveStreamEvent(event: event)
 
     self.pushLiveStreamViewControllerProject.assertValueCount(0)
