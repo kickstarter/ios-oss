@@ -150,9 +150,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let hideWhenReplay = Signal.merge(
       project.mapConst(true),
-      event
-        .map { $0.stream.liveNow }
-        .map(negate),
+      event.map { !$0.stream.liveNow },
       self.showErrorAlert.mapConst(true)
     ).skipRepeats()
 

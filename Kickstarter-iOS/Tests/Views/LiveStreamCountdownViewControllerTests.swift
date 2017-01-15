@@ -8,7 +8,6 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
