@@ -312,9 +312,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let dictionary5 = NSMutableDictionary()
     Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
 
-    self.vm.inputs.configureWith(
-      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
-    )
+    self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -360,9 +358,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let dictionary15 = NSMutableDictionary()
     Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
 
-    self.vm.inputs.configureWith(
-      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
-    )
+    self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)

@@ -102,8 +102,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     let fadeAlpha: CGFloat = 0.4
     let fadeTransform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
-    self.liveNowImageView.alpha = fadeAlpha
-    self.liveNowImageView.transform = fadeTransform
+    self.liveNowImageView.alpha = 1
+    self.liveNowImageView.transform = .identity
 
     UIView.animateKeyframes(
       withDuration: 2,
@@ -112,16 +112,16 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       animations: { [weak v = self.liveNowImageView] in
 
         UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+          v?.alpha = fadeAlpha
+          v?.transform = fadeTransform
+        }
+
+        UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.4) {
           v?.alpha = 1
           v?.transform = .identity
         }
 
-        UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.2) {
-        }
-
-        UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
-          v?.alpha = fadeAlpha
-          v?.transform = fadeTransform
+        UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2) {
         }
 
       }, completion: nil)
