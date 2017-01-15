@@ -119,7 +119,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.textColor .~ .white
 
     _ = self.separatorViews
-      ||> separatorStyle
+      ||> UIView.lens.backgroundColor .~ .white
+      ||> UIView.lens.alpha .~ 0.2
 
     _  = self.titleStackView
       |> UIStackView.lens.axis .~ .horizontal
@@ -153,6 +154,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
         right: Styles.grid(4))
 
     _  = self.creatorAvatarLabel
+      |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font %~~ { _, l in
         l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_footnote()
@@ -257,7 +259,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.gradientView.startPoint = .zero
     self.gradientView.endPoint = .init(x: 0, y: 1)
-    self.gradientView.setGradient([(UIColor.black.withAlphaComponent(0.75), 0),
+    self.gradientView.setGradient([(UIColor.black.withAlphaComponent(0.5), 0),
                                    (UIColor.black.withAlphaComponent(0), 1.0)])
   }
 
@@ -454,13 +456,13 @@ internal final class LiveStreamContainerViewController: UIViewController {
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController,
+  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
                                                                       numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
-  internal func liveStreamViewControllerStateChanged(controller: LiveStreamViewController,
-                                       state: LiveStreamViewControllerState) {
+  internal func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
+                                                     state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }

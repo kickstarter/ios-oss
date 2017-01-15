@@ -150,19 +150,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           )
         }
 
-        if !event.stream.liveNow {
-          let text = Strings.Creator_name_was_live_time_ago(
-            creator_name: event.creator.name,
-            time_ago: (Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
-              abbreviate: true)))
+        let text = Strings.Creator_name_was_live_time_ago(
+          creator_name: event.creator.name,
+          time_ago: Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+                                    abbreviate: true)
+        )
 
-          return text.simpleHtmlAttributedString(
-            base: baseAttributes,
-            bold: boldAttributes
-          )
-        }
-
-        return NSAttributedString(string: event.creator.name, attributes: boldAttributes)
+        return text.simpleHtmlAttributedString(
+          base: baseAttributes,
+          bold: boldAttributes
+        )
       }.skipNil()
 
     let hideWhenReplay = Signal.merge(

@@ -8,10 +8,10 @@ import Result
 import UIKit
 
 public protocol LiveStreamViewControllerDelegate: class {
-  func liveStreamViewControllerStateChanged(controller: LiveStreamViewController,
+  func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                             state: LiveStreamViewControllerState)
 
-  func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController,
+  func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
                                                              numberOfPeople: Int)
 }
 
@@ -49,9 +49,8 @@ public final class LiveStreamViewController: UIViewController {
 
     self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        _self.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: _self,
-                                                                              numberOfPeople: $0)
+        self?.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: self,
+                                                                             numberOfPeople: $0)
     }
 
     self.viewModel.outputs.createPresenceReference
@@ -85,8 +84,7 @@ public final class LiveStreamViewController: UIViewController {
 
     self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.liveStreamViewControllerStateChanged(controller: _self, state: $0)
+        self?.delegate?.liveStreamViewControllerStateChanged(controller: self, state: $0)
     }
 
     self.viewModel.outputs.initializeFirebase
@@ -98,6 +96,8 @@ public final class LiveStreamViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.view.backgroundColor = .black  
 
     self.bindVM()
     self.viewModel.inputs.viewDidLoad()
