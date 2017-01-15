@@ -84,11 +84,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
       |> LiveStreamEvent.lens.stream.isScale .~ false
 
-    let dictionary5 = NSMutableDictionary()
-    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
-
-    let dictionary15 = NSMutableDictionary()
-    Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = Dictionary<Int, Int>.keyValuePairs(Array(1...5).map { ($0, $0) })
+    let dictionary15 = Dictionary<Int, Int>.keyValuePairs(Array(1...15).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -180,11 +177,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
       |> LiveStreamEvent.lens.stream.isScale .~ false
 
-    let dictionary5 = NSMutableDictionary()
-    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
-
-    let dictionary15 = NSMutableDictionary()
-    Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = Dictionary<Int, Int>.keyValuePairs(Array(1...5).map { ($0, $0) })
+    let dictionary15 = Dictionary<Int, Int>.keyValuePairs(Array(1...15).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -262,8 +256,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
 
-    let dictionary5 = NSMutableDictionary()
-    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = Dictionary<Int, Int>.keyValuePairs(Array(1...5).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -309,8 +302,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
 
-    let dictionary5 = NSMutableDictionary()
-    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = Dictionary<Int, Int>.keyValuePairs(Array(1...5).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -355,8 +347,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
 
-    let dictionary15 = NSMutableDictionary()
-    Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
+    let dictionary15 = Dictionary<Int, Int>.keyValuePairs(Array(1...15).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -382,8 +373,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
 
-    let dictionary15 = NSMutableDictionary()
-    Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
+    let dictionary15 = Dictionary<Int, Int>.keyValuePairs(Array(1...15).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -464,10 +454,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
       |> LiveStreamEvent.lens.stream.isScale .~ false
 
-    let dictionary5 = NSMutableDictionary()
-    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
-    let dictionary7 = NSMutableDictionary()
-    Array(1...7).forEach { dictionary7.setValue(Int($0), forKey: String($0)) }
+    let dictionary5 = Dictionary<Int, Int>.keyValuePairs(Array(1...5).map { ($0, $0) })
+    let dictionary7 = Dictionary<Int, Int>.keyValuePairs(Array(1...7).map { ($0, $0) })
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
