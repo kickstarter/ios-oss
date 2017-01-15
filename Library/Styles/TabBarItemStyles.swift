@@ -38,8 +38,7 @@ public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarIte
     <> UITabBarItem.lens.imageInsets .~ .init(top: paddingY, left: -offset, bottom: -paddingY, right: offset)
 }
 
-public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool)
-  -> (UITabBarItem) -> UITabBarItem {
+public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
   let offset: CGFloat = isMember ? 2.0 : 12.0
   let imageName = isLoggedIn ? "tabbar-icon-profile-logged-in" : "tabbar-icon-profile-logged-out"

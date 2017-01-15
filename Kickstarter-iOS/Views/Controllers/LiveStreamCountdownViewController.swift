@@ -34,13 +34,13 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  internal static func configuredWith(project: Project, liveStream: Project.LiveStream)
-    -> LiveStreamCountdownViewController {
+  internal static func configuredWith(project: Project,
+                                      liveStream: Project.LiveStream) -> LiveStreamCountdownViewController {
 
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-      vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
-      vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
-      return vc
+    let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
+    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+    return vc
   }
 
   internal override func viewDidLoad() {

@@ -108,7 +108,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.distribution .~ .fillEqually
 
     _  = self.loaderView
-      |> UIView.lens.backgroundColor .~ UIColor.hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .hex(0x353535)
 
     _  = self.loaderActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
@@ -147,11 +147,10 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.distribution .~ .fill
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
-      |> UIStackView.lens.layoutMargins .~ .init(
-        top: 0,
-        left: Styles.grid(4),
-        bottom: Styles.grid(4),
-        right: Styles.grid(4))
+      |> UIStackView.lens.layoutMargins .~ .init(top: 0,
+                                                 left: Styles.grid(4),
+                                                 bottom: Styles.grid(4),
+                                                 right: Styles.grid(4))
 
     let creatorLabelFont = self.traitCollection.isRegularRegular
       ? UIFont.ksr_title3(size: 18)
@@ -323,14 +322,8 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.creatorAvatarLabel.rac.html = self.viewModel.outputs.creatorIntroText
 
-    self.eventDetailsViewModel.outputs.creatorAvatarUrl
-      .observeForUI()
-      .on(event: { [weak self] image in
-        self?.creatorAvatarImageView.af_cancelImageRequest()
-        self?.creatorAvatarImageView.image = nil
-      })
-      .skipNil()
-      .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
+    // FIXME: double check this works
+    self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
 
     self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
     self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden

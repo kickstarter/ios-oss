@@ -2157,20 +2157,20 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
 				01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */,
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
-				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */,
-				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
-				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
+				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
 				9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */,
-				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
 				A796FF261D425A4500CD58AA /* ProjectStyles.swift */,
+				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
+				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
 				8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */,
 			);
 			path = Styles;
