@@ -77,7 +77,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribeIntent = Signal.merge(
       signedIn.ignoreValues(),
-      self.subscribeButtonTappedProperty.signal.filter { AppEnvironment.current.currentUser != nil } )
+      self.subscribeButtonTappedProperty.signal.filter { AppEnvironment.current.currentUser != nil }
+    )
 
     let isSubscribedEvent = event
       .takeWhen(subscribeIntent)
@@ -122,7 +123,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .filter { AppEnvironment.current.currentUser == nil }
 
     self.creatorName = event.map { $0.creator.name }
-    self.liveStreamTitle = event.map { $0.stream.projectName }
+    self.liveStreamTitle = event.map { $0.stream.name }
     self.liveStreamParagraph = event.map { $0.stream.description }
 
     self.subscribeButtonImage = subscribed.map {
@@ -156,7 +157,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         .mapConst(true),
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     ).skipRepeats()
-
 
     self.detailsStackViewHidden = Signal.merge(
       self.showErrorAlert.mapConst(true),

@@ -162,12 +162,12 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testLiveStreamTitle() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.name .~ "Test Project"
+      |> LiveStreamEvent.lens.stream.name .~ "Test Stream"
 
     self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.liveStreamTitle.assertValues(["Test Project"])
+    self.liveStreamTitle.assertValues(["Test Stream"])
   }
 
   func testLiveStreamParagraph() {

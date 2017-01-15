@@ -7,9 +7,6 @@
 [submodule "Frameworks/ios-snapshot-test-case"]
 	path = Frameworks/ios-snapshot-test-case
 	url = https://github.com/facebook/ios-snapshot-test-case.git
-[submodule "Frameworks/KsLive"]
-	path = Frameworks/KsLive
-	url = https://github.com/kickstarter/kickstarter-live-ios.git
 [submodule "Frameworks/ios-ksapi"]
 	path = Frameworks/ios-ksapi
 	url = https://github.com/kickstarter/ios-ksapi

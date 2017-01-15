@@ -123,7 +123,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
           v?.alpha = fadeAlpha
           v?.transform = fadeTransform
         }
-        
+
       }, completion: nil)
   }
 }

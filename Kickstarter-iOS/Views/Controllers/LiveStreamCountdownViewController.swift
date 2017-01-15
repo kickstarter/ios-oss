@@ -7,25 +7,26 @@ import UIKit
 
 internal final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private var countdownColons: [UILabel]?
-  @IBOutlet private weak var countdownContainerStackView: UIStackView!
+  @IBOutlet private var countdownColons: [UILabel]!
   @IBOutlet private weak var countdownStackView: UIStackView!
-  @IBOutlet private var countdownLabels: [UILabel]?
-  @IBOutlet private weak var daysLabel: UILabel!
-  @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var detailsContainerStackViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var daysSubtitleLabel: UILabel!
+  @IBOutlet private weak var daysTitleLabel: UILabel!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
-  @IBOutlet private weak var hoursLabel: UILabel!
+  @IBOutlet private weak var hoursSubtitleLabel: UILabel!
+  @IBOutlet private weak var hoursTitleLabel: UILabel!
   @IBOutlet private weak var introLabel: UILabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
-  @IBOutlet private weak var minutesLabel: UILabel!
+  @IBOutlet private weak var minutesSubtitleLabel: UILabel!
+  @IBOutlet private weak var minutesTitleLabel: UILabel!
   @IBOutlet private weak var projectImageView: UIImageView!
-  @IBOutlet private weak var secondsLabel: UILabel!
+  @IBOutlet private weak var secondsSubtitleLabel: UILabel!
+  @IBOutlet private weak var secondsTitleLabel: UILabel!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
@@ -36,7 +37,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal static func configuredWith(project: Project, liveStream: Project.LiveStream)
     -> LiveStreamCountdownViewController {
 
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
+      let vc = Storyboard._LiveStreamTesting.instantiate(LiveStreamCountdownViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
       vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
       return vc
@@ -53,13 +54,11 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.navigationController?.delegate = self
-
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -68,64 +67,67 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
+      |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.countdownStackView
-      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
-
-    _ = self.countdownContainerStackView
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.spacing .~ Styles.grid(6)
-      |> UIStackView.lens.distribution .~ .fill
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
-          ? .init(topBottom: 0, leftRight: Styles.grid(18))
+          ? .init(topBottom: 0, leftRight: Styles.grid(28))
           : .init(topBottom: 0, leftRight: Styles.grid(6))
     }
 
+    _ = [self.daysTitleLabel, self.hoursTitleLabel, self.minutesTitleLabel, self.secondsTitleLabel]
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_title1() : .ksr_title1(size: 24)
+      }
+      ||> UILabel.lens.textAlignment .~ .center
 
-    self.countdownLabels?.forEach { label in
-      _ = label
-        |> UILabel.lens.textAlignment .~ .center
-        |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
-    }
+    _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel,
+         self.secondsSubtitleLabel]
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular ? .ksr_headline() : .ksr_subhead(size: 14)
+      }
+      ||> UILabel.lens.textAlignment .~ .center
 
-    self.countdownColons?.forEach { label in
-      _ = label
-        |> UILabel.lens.text .~ ":"
-        |> UILabel.lens.textAlignment .~ .center
-        |> UILabel.lens.numberOfLines .~ 2
-        |> UILabel.lens.textColor .~ .white
-        |> UILabel.lens.font .~ .ksr_title1(size: 24)
-    }
+    _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
+      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
+      ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
-    _  = self.detailsContainerStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins %~~ { _, v in
-        v.traitCollection.isRegularRegular
-          ? UIEdgeInsets(top: 0, left: Styles.grid(18), bottom: Styles.grid(4), right: Styles.grid(18))
-          : UIEdgeInsets(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
-    }
+    _ = self.daysSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
+
+    _ = self.hoursSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "hours") }
+
+    _ = self.minutesSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "minutes", defaultValue: "minutes") }
+
+    _ = self.secondsSubtitleLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "seconds", defaultValue: "seconds") }
+
+    _ = self.countdownColons
+      ||> UILabel.lens.text .~ ":"
+      ||> UILabel.lens.textColor .~ .white
+      ||> UILabel.lens.font .~ .ksr_title1(size: 24)
 
     _ = self.detailsStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(8), left: Styles.grid(4),
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(4),
                                                         bottom: Styles.grid(7), right: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle(cornerRadius: 2)
 
-    self.detailsContainerStackViewTopConstraint.constant = -Styles.grid(4)
-    self.creatorAvatarWidthConstraint.constant = Styles.grid(10)
-
-    _ = self.creatorAvatarImageView
-      |> UIImageView.lens.image .~ nil
-      |> UIImageView.lens.layer.masksToBounds .~ true
+    self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
+    self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
+      ? Styles.grid(20)
+      : Styles.grid(10)
 
     _ = self.introLabel
       |> UILabel.lens.numberOfLines .~ 2
@@ -135,6 +137,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
       }
       |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
       |> UILabel.lens.font %~~ { _, v in
@@ -157,11 +160,13 @@ internal final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.animating .~ false
-  }
-  //swiftlint:enable function_body_length
 
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+    _ = self.gradientView
+      |> UIView.lens.layoutMargins %~~ { _, s in
+        s.traitCollection.horizontalSizeClass == .regular
+          ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
+          : .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
+    }
   }
 
   override var prefersStatusBarHidden: Bool {
@@ -171,22 +176,21 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
-    self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.height / 2
   }
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
-
     NotificationCenter.default
+
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
-    self.daysLabel.rac.attributedText = self.viewModel.outputs.daysString
-    self.hoursLabel.rac.attributedText = self.viewModel.outputs.hoursString
-    self.minutesLabel.rac.attributedText = self.viewModel.outputs.minutesString
-    self.secondsLabel.rac.attributedText = self.viewModel.outputs.secondsString
+    self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
+    self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
+    self.minutesTitleLabel.rac.text = self.viewModel.outputs.minutesString
+    self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeValues { [weak self] in
@@ -244,9 +248,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] in
-        let imageName = $0.flatMap { $0 }.coalesceWith("")
-        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
+      .observeValues { [weak self] imageName in
+        self?.subscribeButton.setImage(image(named: imageName ?? ""), for: .normal)
     }
 
     self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
@@ -280,10 +283,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
   }
-  //swiftlint:enable function_body_length
 
-  // FIXME: this can be an IBOutlet
-  lazy var shareBarButtonItem: UIBarButtonItem = {
+  lazy private var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
@@ -334,15 +335,5 @@ internal final class LiveStreamCountdownViewController: UIViewController {
 
   @IBAction internal func subscribe(_ sender: UIButton) {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
-  }
-}
-
-// FIXME: let's chat about this
-extension LiveStreamCountdownViewController: UINavigationControllerDelegate {
-
-  func navigationControllerSupportedInterfaceOrientations(
-    _ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
-
-    return .portrait
   }
 }

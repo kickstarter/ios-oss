@@ -8,7 +8,7 @@ import Stripe
 import UIKit
 
 internal final class CheckoutViewController: DeprecatedWebViewController {
-  fileprivate weak var loginToutViewController: UIViewController? = nil
+  fileprivate weak var loginToutViewController: UIViewController?
   fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
 
   internal static func configuredWith(initialRequest: URLRequest,

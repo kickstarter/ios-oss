@@ -59,7 +59,7 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       )
       .map(first)
 
-    let sessionConfig = liveStreamType
+    let openTokSessionConfig = liveStreamType
       .map { $0.openTokSessionConfig }
       .skipNil()
 
@@ -67,7 +67,7 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       .map { $0.hlsStreamUrl }
       .skipNil()
 
-    self.createAndConfigureSessionWithConfig = sessionConfig
+    self.createAndConfigureSessionWithConfig = openTokSessionConfig
 
     self.addAndConfigureSubscriber = self.sessionStreamCreatedProperty.signal.skipNil()
     self.removeSubscriber = self.sessionStreamDestroyedProperty.signal.skipNil()
@@ -75,8 +75,11 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
     self.notifyDelegateOfPlaybackStateChange = Signal.merge(
       self.hlsPlayerStateChangedProperty.signal.skipNil()
         .map(playbackState(fromHlsPlayState:)),
-      sessionConfig.mapConst(.loading),
+
+      openTokSessionConfig.mapConst(.loading),
+
       self.sessionDidConnectProperty.signal.mapConst(.playing),
+      
       self.sessionDidFailWithErrorProperty.signal.skipNil()
         .mapConst(.error(error: .sessionInterrupted))
     )

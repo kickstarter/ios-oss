@@ -35,7 +35,7 @@ extension Array where Element: Hashable {
 let counts = ["zero", "one", "two", "few", "many"]
 
 func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
-  return data.reduce([String:String]()) { accum, keyAndNested in
+  return data.reduce([String: String]()) { accum, keyAndNested in
     let (key, nested) = keyAndNested
     let newKey = prefix + key
 
@@ -75,7 +75,7 @@ func funcArgumentNames(string: String) -> [String] {
 func funcArguments(argumentNames: [String], count: Bool) -> String {
   return argumentNames
     .enumerate()
-    .map { idx, x in
+    .map { _, x in
       let type = count && x.hasSuffix("_count") ? "Int" : "String"
       return "\(x): \(type)"
     }
@@ -118,7 +118,7 @@ let stringsByLocale = endpoint
   .flatMap { $0["locales"] as? [String:[String:AnyObject]] }
   .map(Dictionary.renamed(key: "en", to: "Base"))
   .map {
-    $0.reduce([String:[String:String]]()) { accum, localeAndStrings in
+    $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
       let (locale, strings) = localeAndStrings
       return accum.withAllValuesFrom([locale: flatten(strings)])
     }
@@ -183,4 +183,3 @@ try! staticStringsFileContents.writeToFile(
   atomically: true,
   encoding: NSUTF8StringEncoding
 )
-

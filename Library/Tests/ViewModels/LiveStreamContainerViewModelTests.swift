@@ -31,7 +31,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
     self.vm.outputs.createAndConfigureLiveStreamViewController.observe(
       self.createAndConfigureLiveStreamViewController.observer)
-    self.vm.outputs.creatorAvatarLiveDotImageViewHidden.observe(self.creatorAvatarLiveDotImageViewHidden.observer)
+    self.vm.outputs.creatorAvatarLiveDotImageViewHidden
+      .observe(self.creatorAvatarLiveDotImageViewHidden.observer)
     self.vm.outputs.creatorIntroText.map { $0.string }.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)

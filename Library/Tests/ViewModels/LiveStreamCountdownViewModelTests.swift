@@ -27,10 +27,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.categoryId.observe(self.categoryId.observer)
-    self.vm.outputs.daysString.map { $0.string }.observe(self.days.observer)
+    self.vm.outputs.daysString.observe(self.days.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.hoursString.map { $0.string }.observe(self.hours.observer)
-    self.vm.outputs.minutesString.map { $0.string }.observe(self.minutes.observer)
+    self.vm.outputs.hoursString.observe(self.hours.observer)
+    self.vm.outputs.minutesString.observe(self.minutes.observer)
     self.vm.outputs.projectImageUrl.map { $0.absoluteString }.observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.map(first).observe(
       self.pushLiveStreamViewControllerProject.observer)
@@ -38,7 +38,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
       .observe(self.pushLiveStreamViewControllerLiveStream.observer)
     self.vm.outputs.pushLiveStreamViewController.map(third).observe(
       self.pushLiveStreamViewControllerEvent.observer)
-    self.vm.outputs.secondsString.map { $0.string }.observe(self.seconds.observer)
+    self.vm.outputs.secondsString.observe(self.seconds.observer)
     self.vm.outputs.upcomingIntroText.map { $0.string }.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
   }
@@ -54,8 +54,9 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   }
 
   func testCountdownLabels() {
+    let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
     let liveStream = .template
-      |> Project.LiveStream.lens.startDate .~ futureDate().timeIntervalSince1970
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + future)
 
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]
@@ -69,18 +70,18 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStream: liveStream)
     self.vm.inputs.viewDidLoad()
 
-    self.days.assertValues(["10\ndays"])
-    self.hours.assertValues(["07\nhours"])
-    self.minutes.assertValues(["24\nminutes"])
-    self.seconds.assertValues(["45\nseconds"])
+    self.days.assertValues(["02"])
+    self.hours.assertValues(["11"])
+    self.minutes.assertValues(["05"])
+    self.seconds.assertValues(["22"])
 
     // Step 2: Set date as if two seconds have passed
     self.scheduler.advance(by: .seconds(2))
 
-    self.days.assertValues(["10\ndays"])
-    self.hours.assertValues(["07\nhours"])
-    self.minutes.assertValues(["24\nminutes"])
-    self.seconds.assertValues(["45\nseconds", "44\nseconds", "43\nseconds"])
+    self.days.assertValues(["02"])
+    self.hours.assertValues(["11"])
+    self.minutes.assertValues(["05"])
+    self.seconds.assertValues(["22", "21", "20"])
   }
 
   func testCountdownEnded() {
@@ -154,30 +155,6 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.viewControllerTitle.assertValue("Live stream countdown")
   }
 }
-
-//swiftlint:disable force_unwrapping
-private func futureDate() -> Date {
-  var components = DateComponents()
-  components.year = 2016
-  components.day = 12
-  components.month = 10
-  components.hour = 8
-
-  return AppEnvironment.current.calendar.date(from: components)!
-}
-
-private func nowDate() -> Date {
-  var components = DateComponents()
-  components.year = 2016
-  components.day = 25
-  components.month = 12
-  components.hour = 12
-  components.minute = 6
-  components.second = 34
-
-  return AppEnvironment.current.calendar.date(from: components)!
-}
-//swiftlint:enable force_unwrapping
 
 private func == (tuple1: (String, String)?, tuple2: (String, String)) -> Bool {
   if let tuple1 = tuple1 {

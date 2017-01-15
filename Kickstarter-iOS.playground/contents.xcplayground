@@ -29,5 +29,6 @@
         <page name='UpdateDraft'/>
         <page name='VideoPlayer'/>
         <page name='WebModal'/>
+        <page name='LiveStream'/>
     </pages>
 </playground>

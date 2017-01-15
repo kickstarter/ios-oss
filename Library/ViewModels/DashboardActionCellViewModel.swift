@@ -92,9 +92,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
         if .some(project.creator) == AppEnvironment.current.currentUser {
           return Strings.dashboard_post_update_button_subtitle_you_have_not_posted_an_update_yet()
         } else {
-          return localizedString(
-            key: "No_one_has_posted_an_update_yet", defaultValue: "No one has posted an update yet."
-          )
+          return Strings.No_one_has_posted_an_update_yet()
         }
     }
 

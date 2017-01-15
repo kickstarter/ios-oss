@@ -19,13 +19,13 @@ public protocol LiveStreamCountdownViewModelInputs {
 
 public protocol LiveStreamCountdownViewModelOutputs {
   var categoryId: Signal<Int, NoError> { get }
-  var daysString: Signal<NSAttributedString, NoError> { get }
+  var daysString: Signal<String, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
-  var hoursString: Signal<NSAttributedString, NoError> { get }
-  var minutesString: Signal<NSAttributedString, NoError> { get }
+  var hoursString: Signal<String, NoError> { get }
+  var minutesString: Signal<String, NoError> { get }
   var projectImageUrl: Signal<URL, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
-  var secondsString: Signal<NSAttributedString, NoError> { get }
+  var secondsString: Signal<String, NoError> { get }
   var upcomingIntroText: Signal<NSAttributedString, NoError> { get }
   var viewControllerTitle: Signal<String, NoError> { get }
 }
@@ -73,27 +73,17 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { max(0, $0.second ?? 0) }
       .skipRepeats()
 
-    //FIXME: Update below after make strings
-
     self.daysString = days
-      .map { (String(format: "%02d", $0), localizedString(
-        key: "days", defaultValue: "days")) }
-      .map(attributedCountdownString(prefix:suffix:))
+      .map { String(format: "%02d", $0) }
 
     self.hoursString = hours
-      .map { (String(format: "%02d", $0), localizedString(
-        key: "hours", defaultValue: "hours")) }
-      .map(attributedCountdownString(prefix:suffix:))
+      .map { String(format: "%02d", $0) }
 
     self.minutesString = minutes
-      .map { (String(format: "%02d", $0), localizedString(
-        key: "minutes", defaultValue: "minutes")) }
-      .map(attributedCountdownString(prefix:suffix:))
+      .map { String(format: "%02d", $0) }
 
     self.secondsString = seconds
-      .map { (String(format: "%02d", $0), localizedString(
-        key: "seconds", defaultValue: "seconds")) }
-      .map(attributedCountdownString(prefix:suffix:))
+      .map { String(format: "%02d", $0) }
 
     let countdownEnded = Signal.combineLatest(
       liveStream
@@ -168,13 +158,13 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   public let categoryId: Signal<Int, NoError>
-  public let daysString: Signal<NSAttributedString, NoError>
+  public let daysString: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
-  public let hoursString: Signal<NSAttributedString, NoError>
-  public let minutesString: Signal<NSAttributedString, NoError>
+  public let hoursString: Signal<String, NoError>
+  public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL, NoError>
   public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
-  public let secondsString: Signal<NSAttributedString, NoError>
+  public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<NSAttributedString, NoError>
   public let viewControllerTitle: Signal<String, NoError>
 
@@ -196,28 +186,4 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
 
 private func flipLiveStreamEvenToLive(event: LiveStreamEvent) -> LiveStreamEvent {
   return event |> LiveStreamEvent.lens.stream.liveNow .~ true
-}
-
-private func attributedCountdownString(prefix: String, suffix: String) -> NSAttributedString {
-  let fontDescriptorAttributes = [
-    UIFontDescriptorFeatureSettingsAttribute: [
-      [
-        UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-        UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
-      ]
-    ]
-  ]
-
-  let fontDescriptor = UIFont.ksr_title1(size: 24)
-    .fontDescriptor
-    .addingAttributes(fontDescriptorAttributes)
-
-  let prefixAttributes = [NSFontAttributeName: UIFont(descriptor: fontDescriptor, size: 24)]
-  let suffixAttributes = [NSFontAttributeName: UIFont.ksr_headline(size: 14)]
-
-  let prefix = NSMutableAttributedString(string: prefix, attributes: prefixAttributes)
-  let suffix = NSAttributedString(string: "\n\(suffix)", attributes: suffixAttributes)
-  prefix.append(suffix)
-
-  return prefix
 }
