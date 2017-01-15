@@ -12,6 +12,7 @@ internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent
   func configureWith(event: LiveStreamEvent, userId: Int?)
 
+  /// Call when the firebase database is created.
   func createdDatabaseRef(ref: FirebaseDatabaseReferenceType)
 
   /// Called when the Firebase app fails to initialise
@@ -103,9 +104,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let maxOpenTokViewers = liveStreamEvent.map { $0.stream.maxOpenTokViewers }
 
     let didLiveStreamEndedNormally = liveStreamEvent
-      .map { event in
-        !event.stream.liveNow && event.stream.definitelyHasReplay
-    }
+      .map(didEndNormally(event:))
 
     let observedHlsUrlChanged = self.hlsUrlProperty.signal
       .map { $0 as? String }
@@ -123,23 +122,16 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0 > $1 }
       .take(first: 1)
 
-    let forceHls = Signal.merge(
-      self.viewDidLoadProperty.signal.ksr_delay(.seconds(10), on: scheduler).mapConst(true),
-
+    let useHlsStream = Signal.merge(
       isMaxOpenTokViewersReached,
 
-      Signal.zip(liveStreamEvent, didLiveStreamEndedNormally)
-        .map { event, endedNormally in event.stream.isRtmp || endedNormally }
+      liveStreamEvent
+        .map { event in event.stream.isRtmp || didEndNormally(event: event) }
         .filter(isTrue)
       )
       .take(first: 1)
-
-    let useHlsStream = Signal.zip(
-      forceHls,
-      didLiveStreamEndedNormally
-      )
-      .map { $0 || $1 }
-      .take(first: 1)
+      .timeout(after: 10, raising: SomeError(), on: scheduler)
+      .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
 
     let liveHlsUrl = Signal.merge(
       liveStreamEvent
@@ -149,8 +141,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
     )
 
-    let replayHlsUrl = Signal.zip(liveStreamEvent, didLiveStreamEndedNormally.filter(isTrue))
-      .map { event, _ in event.stream.replayUrl }
+    let replayHlsUrl = liveStreamEvent
+      .filter(didEndNormally(event:))
+      .map { $0.stream.replayUrl }
       .skipNil()
       .map(LiveStreamType.hlsStream)
 
@@ -177,7 +170,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let observedGreenRoomOffOrInReplay = Signal.merge(
       observedGreenRoomOffChanged.filter(isTrue),
       didLiveStreamEndedNormally.filter(isTrue)
-    )
+      )
+      .ignoreValues()
 
     self.createVideoViewController = Signal.combineLatest(
       liveStreamType,
@@ -188,9 +182,10 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
     let createObservers = Signal.zip(
-      didLiveStreamEndedNormally.filter(isFalse).mapConst(true),
-      liveStreamEvent.map(isNonStarter(event:)).filter(isFalse).mapConst(true)
-      ).map { $0 && $1 }
+      didLiveStreamEndedNormally.filter(isFalse),
+      liveStreamEvent.map(isNonStarter(event:)).filter(isFalse)
+      )
+      .ignoreValues()
 
     let combinedUserId = Signal.merge(
       userId.skipNil().map(String.init),
@@ -207,21 +202,21 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         )
         .map { "\($0)/\($1)" }
         .map { FirebaseRefConfig(ref: $0, orderBy: "") },
-      createObservers.filter(isTrue)
+      createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createGreenRoomObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") },
-      createObservers.filter(isTrue)
+      createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createHLSObservers = Signal.zip(
       databaseRef,
       liveStreamEvent
         .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") },
-      createObservers.filter(isTrue)
+      createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createNumberOfPeopleWatchingObservers = Signal.zip(
@@ -229,7 +224,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       liveStreamEvent
         .filter { !$0.stream.isScale }
         .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") },
-      createObservers.filter(isTrue)
+      createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
@@ -237,7 +232,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       liveStreamEvent
         .filter { $0.stream.isScale }
         .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") },
-      createObservers.filter(isTrue)
+      createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
@@ -369,4 +364,8 @@ private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool 
     .dateComponents([.minute], from: event.stream.startDate as Date, to: Date())
     .minute ?? 0
   return minute > 15
+}
+
+private func didEndNormally(event: LiveStreamEvent) -> Bool {
+  return !event.stream.liveNow && event.stream.definitelyHasReplay
 }
