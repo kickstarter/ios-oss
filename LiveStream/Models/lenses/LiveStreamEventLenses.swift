@@ -21,7 +21,7 @@ extension LiveStreamEvent {
         user: $1.user) }
     )
 
-    public static let openTok = Lens<LiveStreamEvent, LiveStreamEvent.OpenTok>(
+    public static let openTok = Lens<LiveStreamEvent, LiveStreamEvent.OpenTok?>(
       view: { $0.openTok },
       set: { .init(creator: $1.creator, firebase: $1.firebase, id: $1.id, openTok: $0, stream: $1.stream,
         user: $1.user) }
@@ -50,7 +50,7 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hasReplay
   }
 
-  public var hlsUrl: Lens<LiveStreamEvent, String> {
+  public var hlsUrl: Lens<LiveStreamEvent, String?> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hlsUrl
   }
 
@@ -84,20 +84,6 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
 
   public var startDate: Lens<LiveStreamEvent, Date> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.startDate
-  }
-}
-
-extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.OpenTok {
-  public var appId: Lens<LiveStreamEvent, String> {
-    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.appId
-  }
-
-  public var sessionId: Lens<LiveStreamEvent, String> {
-    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.sessionId
-  }
-
-  public var token: Lens<LiveStreamEvent, String> {
-    return LiveStreamEvent.lens.openTok • LiveStreamEvent.OpenTok.lens.token
   }
 }
 

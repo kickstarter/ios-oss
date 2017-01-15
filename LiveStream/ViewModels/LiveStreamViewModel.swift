@@ -136,8 +136,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let liveHlsUrl = Signal.merge(
       liveStreamEvent
         .filter { $0.stream.liveNow }
-        .map { LiveStreamType.hlsStream(hlsStreamUrl: $0.stream.hlsUrl) },
-
+        .map { $0.stream.hlsUrl }
+        .skipNil()
+        .map(LiveStreamType.hlsStream),
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
     )
 
@@ -149,22 +150,20 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)
 
-    let openTokSessionConfig = liveStreamEvent.map {
+    let openTokSessionConfig = liveStreamEvent.map { $0.openTok }
+      .skipNil()
+      .map {
       LiveStreamType.openTok(
         sessionConfig: OpenTokSessionConfig(
-          apiKey: $0.openTok.appId, sessionId: $0.openTok.sessionId, token: $0.openTok.token
+          apiKey: $0.appId, sessionId: $0.sessionId, token: $0.token
         )
       )
     }
 
-    let liveStreamType = Signal.combineLatest(
-      hlsStreamUrl,
-      openTokSessionConfig,
-      useHlsStream
+    let liveStreamType = Signal.merge(
+      Signal.combineLatest(hlsStreamUrl, useHlsStream.filter(isTrue)).map(first),
+      Signal.combineLatest(openTokSessionConfig, useHlsStream.filter(isFalse)).map(first)
     )
-    .map { hlsStreamUrl, sessionConfig, useHlsStream in
-      useHlsStream ? hlsStreamUrl : sessionConfig
-    }
     .skipRepeats()
 
     let observedGreenRoomOffOrInReplay = Signal.merge(

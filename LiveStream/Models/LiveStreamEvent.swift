@@ -6,7 +6,7 @@ public struct LiveStreamEvent: Equatable {
   public let creator: Creator
   public let firebase: Firebase
   public let id: Int
-  public let openTok: OpenTok
+  public let openTok: OpenTok?
   public let stream: Stream
   public let user: User
 
@@ -14,7 +14,7 @@ public struct LiveStreamEvent: Equatable {
     public let backgroundImageUrl: String
     public let description: String
     public let hasReplay: Bool
-    public let hlsUrl: String // FIXME: ask justin if this is guaranteed?
+    public let hlsUrl: String?
     public let isRtmp: Bool
     public let isScale: Bool
     public let liveNow: Bool
@@ -69,7 +69,7 @@ extension LiveStreamEvent: Decodable {
       <^> json <| "creator"
       <*> json <| "firebase"
       <*> json <| "id"
-      <*> json <| "opentok"
+      <*> json <|? "opentok"
       <*> json <| "stream"
       <*> (json <| "user" <|> .success(User(isSubscribed: false)))
   }
@@ -82,7 +82,7 @@ extension LiveStreamEvent.Stream: Decodable {
       <^> json <| "background_image_url"
       <*> json <| "description"
       <*> json <| "has_replay"
-      <*> json <| "hls_url"
+      <*> json <|? "hls_url"
       <*> json <| "is_rtmp"
       <*> json <| "is_scale"
 

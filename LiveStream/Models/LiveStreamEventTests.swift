@@ -95,9 +95,9 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase.chatPath)
 
     // OpenTok
-    XCTAssertEqual("45698472", liveStreamEvent.value?.openTok.appId)
-    XCTAssertEqual("1_MX40NTY5ODQ3Mn5-MT", liveStreamEvent.value?.openTok.sessionId)
-    XCTAssertEqual("T1==cGFydG5lcl9pZD00=", liveStreamEvent.value?.openTok.token)
+    XCTAssertEqual("45698472", liveStreamEvent.value?.openTok?.appId)
+    XCTAssertEqual("1_MX40NTY5ODQ3Mn5-MT", liveStreamEvent.value?.openTok?.sessionId)
+    XCTAssertEqual("T1==cGFydG5lcl9pZD00=", liveStreamEvent.value?.openTok?.token)
 
     // User
     XCTAssertEqual(true, liveStreamEvent.value?.user.isSubscribed)

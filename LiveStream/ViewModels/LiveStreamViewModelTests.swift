@@ -101,13 +101,17 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary5)
 
-    let openTokStreamType = LiveStreamType.openTok(
+    guard let openTokStreamType = event.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
       sessionConfig: .init(
-        apiKey: event.openTok.appId,
-        sessionId: event.openTok.sessionId,
-        token: event.openTok.token
+        apiKey: openTok.appId,
+        sessionId: openTok.sessionId,
+        token: openTok.token)
       )
-    )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([openTokStreamType])
 
@@ -142,13 +146,17 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: 5)
 
-    let openTokStreamType = LiveStreamType.openTok(
-      sessionConfig: .init(
-        apiKey: event.openTok.appId,
-        sessionId: event.openTok.sessionId,
-        token: event.openTok.token
+    guard let openTokStreamType = event.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
+        sessionConfig: .init(
+          apiKey: openTok.appId,
+          sessionId: openTok.sessionId,
+          token: openTok.token)
       )
-    )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([openTokStreamType])
 
@@ -189,7 +197,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
 
-    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([hlsStreamType])
 
@@ -225,7 +236,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: 15)
 
-    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([hlsStreamType])
 
@@ -268,13 +282,17 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedGreenRoomOffChanged(off: true)
 
-    let openTokStreamType = LiveStreamType.openTok(
-      sessionConfig: .init(
-        apiKey: event.openTok.appId,
-        sessionId: event.openTok.sessionId,
-        token: event.openTok.token
+    guard let openTokStreamType = event.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
+        sessionConfig: .init(
+          apiKey: openTok.appId,
+          sessionId: openTok.sessionId,
+          token: openTok.token)
       )
-    )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([openTokStreamType])
     self.removeVideoViewController.assertValueCount(0)
@@ -283,6 +301,84 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createVideoViewController.assertValues([openTokStreamType])
     self.removeVideoViewController.assertValueCount(1)
+  }
+
+  func testCreateVideoViewController_OpenTokOnlyEvent() {
+    let event = .template
+      |> LiveStreamEvent.lens.stream.hlsUrl .~ nil
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+
+    let dictionary5 = NSMutableDictionary()
+    Array(1...5).forEach { dictionary5.setValue(Int($0), forKey: String($0)) }
+
+    self.vm.inputs.configureWith(
+      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.createVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: false)
+
+    self.createVideoViewController.assertValueCount(0)
+    self.removeVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary5)
+
+    self.createVideoViewController.assertValueCount(0)
+    self.removeVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
+
+    guard let openTokStreamType = event.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
+        sessionConfig: .init(
+          apiKey: openTok.appId,
+          sessionId: openTok.sessionId,
+          token: openTok.token)
+      )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
+
+    self.createVideoViewController.assertValues([openTokStreamType])
+    self.removeVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: false)
+
+    self.createVideoViewController.assertValues([openTokStreamType])
+    self.removeVideoViewController.assertValueCount(1)
+  }
+
+  func testCreateVideoViewController_HlsOnlyEvent() {
+    let event = .template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+
+    let dictionary15 = NSMutableDictionary()
+    Array(1...15).forEach { dictionary15.setValue(Int($0), forKey: String($0)) }
+
+    self.vm.inputs.configureWith(
+      databaseRef: TestFirebaseDatabaseReferenceType(), event: event
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.createVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedGreenRoomOffChanged(off: true)
+
+    self.createVideoViewController.assertValueCount(0)
+
+    self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
+
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
+
+    self.createVideoViewController.assertValues([hlsStreamType])
   }
 
   func testCreateVideoViewController_HlsUrlChanges() {
@@ -304,7 +400,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
 
-    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
 
     self.createVideoViewController.assertValues([hlsStreamType])
 
@@ -338,7 +437,11 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.scheduler.advance(by: .seconds(10))
 
-    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
+
     self.createVideoViewController.assertValues([hlsStreamType])
   }
 
@@ -409,7 +512,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(event: event, userId: nil)
 
-    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: event.stream.hlsUrl)
+    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+      XCTFail("HLS url should exist")
+      return
+    }
 
     self.vm.inputs.observedGreenRoomOffChanged(off: true)
 

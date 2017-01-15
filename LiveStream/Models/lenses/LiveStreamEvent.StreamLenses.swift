@@ -29,7 +29,7 @@ extension LiveStreamEvent.Stream {
         startDate: $1.startDate, webUrl: $1.webUrl) }
     )
 
-    public static let hlsUrl = Lens<LiveStreamEvent.Stream, String>(
+    public static let hlsUrl = Lens<LiveStreamEvent.Stream, String?>(
       view: { $0.hlsUrl },
       set: { .init(backgroundImageUrl: $1.backgroundImageUrl, description: $1.description,
         hasReplay: $1.hasReplay, hlsUrl: $0, isRtmp: $1.isRtmp, isScale: $1.isScale,
