@@ -2,7 +2,7 @@ import UIKit
 import ReactiveSwift
 
 public final class VideoGridView: UIView {
-  
+
   public func addVideoView(view: UIView) {
     self.insertSubview(view, at: 0)
     self.setNeedsLayout()

@@ -97,7 +97,7 @@ public final class LiveStreamViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.backgroundColor = .black  
+    self.view.backgroundColor = .black
 
     self.bindVM()
     self.viewModel.inputs.viewDidLoad()

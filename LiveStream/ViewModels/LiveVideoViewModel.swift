@@ -79,7 +79,7 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       openTokSessionConfig.mapConst(.loading),
 
       self.sessionDidConnectProperty.signal.mapConst(.playing),
-      
+
       self.sessionDidFailWithErrorProperty.signal.skipNil()
         .mapConst(.error(error: .sessionInterrupted))
     )

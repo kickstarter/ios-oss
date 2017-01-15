@@ -38,12 +38,13 @@ public protocol LiveStreamContainerViewModelOutputs {
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
-  //swiftlint:disable:next function_body_length
-  //swiftlint:disable:next cyclomatic_complexity
+  //swiftlint:disable function_body_length
+  //swiftlint:disable cyclomatic_complexity
   public init() {
     let project = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal)
+      self.viewDidLoadProperty.signal
+      )
       .map(first)
 
     let event = Signal.combineLatest(
@@ -166,6 +167,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.numberWatchingButtonHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
   }
+  //swiftlint:enable function_body_length
+  //swiftlint:enable cyclomatic_complexity
 
   private let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project, event: LiveStreamEvent?) {
