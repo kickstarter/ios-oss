@@ -5,13 +5,13 @@ extension LiveStreamEvent {
       name: "Creator Name"
     ),
     firebase: Firebase(
-      apiKey: "",
-      chatPath: "",
-      greenRoomPath: "",
-      hlsUrlPath: "",
-      numberPeopleWatchingPath: "",
-      project: "",
-      scaleNumberPeopleWatchingPath: ""
+      apiKey: "deadbeef",
+      chatPath: "/chat",
+      greenRoomPath: "/green-room",
+      hlsUrlPath: "/hls",
+      numberPeopleWatchingPath: "/watching",
+      project: "beefcafe",
+      scaleNumberPeopleWatchingPath: "/scale-watching"
     ),
     id: 123,
     openTok: OpenTok(
