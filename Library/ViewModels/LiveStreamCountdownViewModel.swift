@@ -139,7 +139,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public var outputs: LiveStreamCountdownViewModelOutputs { return self }
 }
 
-// FIXME: let's chat about this
 private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Project.LiveStream) ->
   (Project, Project.LiveStream) {
   let liveStreams = project.liveStreams
