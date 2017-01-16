@@ -74,8 +74,7 @@ func funcArgumentNames(string: String) -> [String] {
 
 func funcArguments(argumentNames: [String], count: Bool) -> String {
   return argumentNames
-    .enumerate()
-    .map { _, x in
+    .map { x in
       let type = count && x.hasSuffix("_count") ? "Int" : "String"
       return "\(x): \(type)"
     }
