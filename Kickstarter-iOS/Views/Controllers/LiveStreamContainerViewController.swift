@@ -322,7 +322,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
 
     self.creatorAvatarLabel.rac.html = self.viewModel.outputs.creatorIntroText
 
-    // FIXME: double check this works
     self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
 
     self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
@@ -330,7 +329,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingButtonHidden
     self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
-    self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText
+    self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText.on(event: { [weak self] _ in
+      self?.view.setNeedsLayout()
+    })
 
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
@@ -397,13 +398,23 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
 
+    self.layoutNavBarTitle()
+  }
+
+  private func layoutNavBarTitle() {
     let titleSize = self.navBarTitleLabel.sizeThatFits(
       CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
     )
-    self.navBarTitleStackViewBackgroundView.frame = CGRect(
-      origin:self.navBarTitleStackViewBackgroundView.frame.origin,
+
+    let stackViewFrame = CGRect(
+      origin: self.navBarTitleStackViewBackgroundView.frame.origin,
       size: CGSize(width: Styles.grid(4) + titleSize.width, height: Styles.grid(5))
     )
+
+    let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewFrame.width / 2),
+                         y: self.navBarTitleStackViewBackgroundView.frame.origin.y)
+
+    self.navBarTitleStackViewBackgroundView.frame = CGRect(origin: newOrigin, size: stackViewFrame.size)
   }
 
   private func showShareSheet(controller: UIActivityViewController) {
