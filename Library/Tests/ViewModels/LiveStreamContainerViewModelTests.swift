@@ -21,7 +21,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let loaderText = TestObserver<String, NoError>()
   private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let numberWatchingButtonHidden = TestObserver<Bool, NoError>()
-  private let projectImageUrl = TestObserver<URL, NoError>()
+  private let projectImageUrlString = TestObserver<String?, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
   private let titleViewText = TestObserver<String, NoError>()
@@ -42,7 +42,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
     self.vm.outputs.numberWatchingButtonHidden.observe(self.numberWatchingButtonHidden.observer)
-    self.vm.outputs.projectImageUrl.observe(self.projectImageUrl.observer)
+    self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
   }
@@ -228,10 +228,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testProjectImageUrl() {
     let project = Project.template
 
+    self.projectImageUrlString.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: nil)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertTrue(self.projectImageUrl.lastValue?.absoluteString == "http://www.kickstarter.com/full.jpg")
+    self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 
   func testShowVideoView() {

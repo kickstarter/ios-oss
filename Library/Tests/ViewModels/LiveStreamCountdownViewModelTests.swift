@@ -15,7 +15,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<String, NoError>()
   private let minutes = TestObserver<String, NoError>()
-  private let projectImageUrl = TestObserver<String, NoError>()
+  private let projectImageUrl = TestObserver<String?, NoError>()
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerLiveStream = TestObserver<Project.LiveStream, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
@@ -31,7 +31,8 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.hoursString.observe(self.hours.observer)
     self.vm.outputs.minutesString.observe(self.minutes.observer)
-    self.vm.outputs.projectImageUrl.map { $0.absoluteString }.observe(self.projectImageUrl.observer)
+    self.vm.outputs.projectImageUrl.map { $0?.absoluteString }
+      .observe(self.projectImageUrl.observer)
     self.vm.outputs.pushLiveStreamViewController.map(first).observe(
       self.pushLiveStreamViewControllerProject.observer)
     self.vm.outputs.pushLiveStreamViewController.map(second)
