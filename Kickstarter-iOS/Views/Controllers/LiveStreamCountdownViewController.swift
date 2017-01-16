@@ -223,22 +223,9 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
 
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(event: { [weak self] image in
-        self?.projectImageView.af_cancelImageRequest()
-        self?.projectImageView.image = nil
-      })
-      .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
 
-    self.eventDetailsViewModel.outputs.creatorAvatarUrl
-      .observeForUI()
-      .on(event: { [weak self] image in
-        self?.creatorAvatarImageView.af_cancelImageRequest()
-        self?.creatorAvatarImageView.image = nil
-      })
-      .skipNil()
-      .observeValues { [weak self] in self?.creatorAvatarImageView.ksr_setImageWithURL($0) }
+    self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
 
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in

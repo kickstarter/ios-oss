@@ -171,7 +171,6 @@ internal final class LiveStreamContainerViewController: UIViewController {
       |> SimpleHTMLLabel.lens.boldAttributes .~ creatorLabelBoldAttributes
 
     _  = self.creatorAvatarImageView
-      |> UIImageView.lens.image .~ nil
       |> UIImageView.lens.layer.masksToBounds .~ true
 
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -303,13 +302,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
         self?.liveStreamViewController?.view.isHidden = $0
     }
 
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(event: { [weak self] image in
-        self?.projectImageView.af_cancelImageRequest()
-        self?.projectImageView.image = nil
-      })
-      .observeValues { [weak self] in self?.projectImageView.ksr_setImageWithURL($0) }
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
     self.loaderStackView.rac.hidden = self.viewModel.outputs.loaderStackViewHidden

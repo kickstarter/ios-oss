@@ -23,7 +23,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var dismiss: Signal<(), NoError> { get }
   var hoursString: Signal<String, NoError> { get }
   var minutesString: Signal<String, NoError> { get }
-  var projectImageUrl: Signal<URL, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
   var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
   var secondsString: Signal<String, NoError> { get }
   var upcomingIntroText: Signal<String, NoError> { get }
@@ -84,7 +84,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
-      .skipNil()
 
     self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal
@@ -129,7 +128,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let dismiss: Signal<(), NoError>
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
-  public let projectImageUrl: Signal<URL, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>

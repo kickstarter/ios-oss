@@ -29,7 +29,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var loaderText: Signal<String, NoError> { get }
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
-  var projectImageUrl: Signal<URL, NoError> { get }
+  var projectImageUrl: Signal<URL?, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
   var titleViewText: Signal<String, NoError> { get }
@@ -114,7 +114,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
-      .skipNil()
 
     self.titleViewText = liveStreamState.map {
       if case .live(_, _) = $0 { return Strings.Live() }
@@ -206,7 +205,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let loaderText: Signal<String, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingButtonHidden: Signal<Bool, NoError>
-  public let projectImageUrl: Signal<URL, NoError>
+  public let projectImageUrl: Signal<URL?, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>
 
