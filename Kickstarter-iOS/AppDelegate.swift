@@ -160,26 +160,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs
       .applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
-    timer(interval: .seconds(2), on: QueueScheduler.main)
-      .take(first: 1)
-      .startWithValues { _ in
-
-        let pushData: [String:Any] = [
-          "aps": [
-            "alert": "A live stream as started!"
-          ],
-          "project": [
-            "id": 630374428
-          ],
-          "live_stream": [
-            "id": 10168
-          ],
-          ]
-
-        self.viewModel.inputs.didReceive(remoteNotification: pushData,
-                                         applicationIsActive: true)
-    }
-
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
   // swiftlint:enable function_body_length
