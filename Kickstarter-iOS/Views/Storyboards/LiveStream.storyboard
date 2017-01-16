@@ -417,8 +417,8 @@ Mikke Snow</string>
                                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Iyd-lF-bUk">
                                                                         <rect key="frame" x="192" y="0.0" width="183" height="298"/>
                                                                         <subviews>
-                                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="2Pc-ON-30p">
-                                                                                <rect key="frame" x="8" y="8.5" width="167" height="282"/>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" misplaced="YES" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="2Pc-ON-30p">
+                                                                                <rect key="frame" x="8" y="9" width="167" height="282"/>
                                                                                 <subviews>
                                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="1CW-ht-L6b">
                                                                                         <rect key="frame" x="0.0" y="136" width="127.5" height="10"/>
@@ -504,7 +504,7 @@ Mikke Snow</string>
                                                             </stackView>
                                                         </subviews>
                                                     </stackView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live_waves" translatesAutoresizingMaskIntoConstraints="NO" id="nnj-Xu-ndh">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live-waves" translatesAutoresizingMaskIntoConstraints="NO" id="nnj-Xu-ndh">
                                                         <rect key="frame" x="0.0" y="135.5" width="10" height="11"/>
                                                     </imageView>
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VEp-dG-snO">
@@ -625,6 +625,6 @@ Mikke Snow</string>
     <resources>
         <image name="cosmic-surgery" width="800" height="600"/>
         <image name="eye" width="13" height="10"/>
-        <image name="live_waves" width="10" height="11"/>
+        <image name="live-waves" width="10" height="11"/>
     </resources>
 </document>
