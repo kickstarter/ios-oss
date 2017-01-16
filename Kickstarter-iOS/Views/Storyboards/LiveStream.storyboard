@@ -369,13 +369,6 @@ Mikke Snow</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2a0-nA-tSN">
                                                 <rect key="frame" x="0.0" y="281.5" width="375" height="600.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfP-ry-BqJ" customClass="GradientView" customModule="Library">
-                                                        <rect key="frame" x="0.0" y="0.5" width="375" height="6"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="6" id="dcD-O8-Z47"/>
-                                                        </constraints>
-                                                    </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
                                                         <rect key="frame" x="0.0" y="0.5" width="375" height="600"/>
                                                     </imageView>
@@ -387,6 +380,13 @@ Mikke Snow</string>
                                                         </view>
                                                         <blurEffect style="dark"/>
                                                     </visualEffectView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfP-ry-BqJ" customClass="GradientView" customModule="Library">
+                                                        <rect key="frame" x="0.0" y="0.5" width="375" height="6"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="6" id="dcD-O8-Z47"/>
+                                                        </constraints>
+                                                    </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="L31-dg-Wj8">
                                                         <rect key="frame" x="0.0" y="0.5" width="375" height="600"/>
                                                         <subviews>
