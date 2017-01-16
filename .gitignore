@@ -73,6 +73,3 @@ fastlane/screenshots
 Screenshots/FailureDiffs/*
 
 Frameworks/OpenTok/*
-
-# AppCode
-.idea
