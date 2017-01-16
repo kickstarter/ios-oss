@@ -41,22 +41,22 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   //swiftlint:disable function_body_length
   //swiftlint:disable cyclomatic_complexity
   public init() {
-    let project = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+    let configData = Signal.combineLatest(
+      self.configData.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let event = Signal.combineLatest(
-      self.liveStreamEventProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal)
-      .map(first)
+    let project = configData.map(first)
 
-    self.createAndConfigureLiveStreamViewController = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
-      event,
-      self.viewDidLoadProperty.signal
-      ).map { project, event, _ in (project, AppEnvironment.current.currentUser?.id, event) }
+    let event = Signal.merge(
+      configData.map(second).skipNil(),
+      self.liveStreamEventProperty.signal.skipNil()
+    )
+
+    self.createAndConfigureLiveStreamViewController = Signal.combineLatest(project, event)
+      .take(first: 1)
+      .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
     self.liveStreamState = Signal.combineLatest(
       Signal.merge(
@@ -167,10 +167,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private let projectProperty = MutableProperty<Project?>(nil)
+  private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
   public func configureWith(project: Project, event: LiveStreamEvent?) {
-    self.projectProperty.value = project
-    self.liveStreamEventProperty.value = event
+    self.configData.value = (project, event)
   }
 
   private let closeButtonTappedProperty = MutableProperty()

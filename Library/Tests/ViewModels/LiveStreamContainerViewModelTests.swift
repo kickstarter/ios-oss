@@ -279,6 +279,21 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       "Recorded Live"
     ])
   }
+
+  func test_MakeSureSingleLiveStreamControllerIsCreated() {
+    let event = LiveStreamEvent.template
+
+    self.vm.inputs.configureWith(project: .template, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+    self.vm.inputs.retrievedLiveStreamEvent(event: event)
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+    self.createAndConfigureLiveStreamViewController.assertValueCount(1)
+  }
 }
 
 private func == (tuple1: (Project, Int?, LiveStreamEvent)?,

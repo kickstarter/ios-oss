@@ -8,7 +8,7 @@ import Result
 import UIKit
 
 //swiftlint:disable:next type_body_length
-internal final class LiveStreamContainerViewController: UIViewController {
+public final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var availableForLabel: UILabel!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
@@ -43,9 +43,9 @@ internal final class LiveStreamContainerViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
-  internal static func configuredWith(project: Project,
-                                      liveStream: Project.LiveStream,
-                                      event: LiveStreamEvent?) -> LiveStreamContainerViewController {
+  public static func configuredWith(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    event: LiveStreamEvent?) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project, event: event)
@@ -54,13 +54,15 @@ internal final class LiveStreamContainerViewController: UIViewController {
     return vc
   }
 
-  internal override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
+
+    self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -91,7 +93,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 
   //swiftlint:disable:next function_body_length
-  internal override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -273,7 +275,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
   }
 
   //swiftlint:disable:next function_body_length
-  internal override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     NotificationCenter.default
@@ -294,7 +296,7 @@ internal final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues(self.viewModel.inputs.retrievedLiveStreamEvent(event:))
+      .observeValues { [weak self] in self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0) }
 
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
@@ -381,11 +383,11 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  override var prefersStatusBarHidden: Bool {
+  override public var prefersStatusBarHidden: Bool {
     return true
   }
 
-  internal override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
@@ -459,18 +461,18 @@ internal final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction private func subscribe(_ sender: UIButton) {
+  @objc private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  internal func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
+  public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
                                                                       numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
-  internal func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
+  public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                                      state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
