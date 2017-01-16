@@ -66,6 +66,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+      |> LiveStreamCountdownViewController.lens.view.backgroundColor .~ .black
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill

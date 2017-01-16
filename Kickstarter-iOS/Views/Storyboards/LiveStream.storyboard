@@ -322,19 +322,19 @@ Mikke Snow</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DtU-WF-2KH">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="882"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="883"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXE-hf-dQ1">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
                                                 <subviews>
                                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQz-eQ-2Xj">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
                                                         <connections>
                                                             <segue destination="WXN-s6-i5q" kind="embed" id="bAx-yt-F2w"/>
                                                         </connections>
                                                     </containerView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
-                                                        <rect key="frame" x="8" y="120" width="359" height="40.5"/>
+                                                        <rect key="frame" x="8" y="120.5" width="359" height="40.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
                                                                 <rect key="frame" x="66" y="0.0" width="227" height="20.5"/>
@@ -358,7 +358,7 @@ Mikke Snow</string>
                                                     <constraint firstAttribute="trailing" secondItem="SQz-eQ-2Xj" secondAttribute="trailing" id="kIS-Qc-8id"/>
                                                     <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="16:9" id="rel-3a-meW"/>
                                                     <constraint firstItem="SQz-eQ-2Xj" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="ufd-t2-hur"/>
-                                                    <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="4:3" id="zbI-0p-ahe"/>
+                                                    <constraint firstAttribute="height" secondItem="EXE-hf-dQ1" secondAttribute="width" multiplier="3:4" constant="1" id="zbI-0p-ahe"/>
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -367,7 +367,7 @@ Mikke Snow</string>
                                                 </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2a0-nA-tSN">
-                                                <rect key="frame" x="0.0" y="281.5" width="375" height="600.5"/>
+                                                <rect key="frame" x="0.0" y="282.5" width="375" height="600.5"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
                                                         <rect key="frame" x="0.0" y="0.5" width="375" height="600"/>
@@ -422,6 +422,7 @@ Mikke Snow</string>
                                                                                 <subviews>
                                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="1CW-ht-L6b">
                                                                                         <rect key="frame" x="0.0" y="136" width="127.5" height="10"/>
+                                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                     </imageView>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" text="2.4k" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7J-KF-ySB">
                                                                                         <rect key="frame" x="133.5" y="131" width="33.5" height="20.5"/>
@@ -612,7 +613,7 @@ Mikke Snow</string>
                         <viewControllerLayoutGuide type="bottom" id="bsg-Iy-OKC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="s6K-At-qEA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

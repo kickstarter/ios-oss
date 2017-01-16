@@ -98,6 +98,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+      |> LiveStreamContainerViewController.lens.view.backgroundColor .~ .black
 
     _  = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
