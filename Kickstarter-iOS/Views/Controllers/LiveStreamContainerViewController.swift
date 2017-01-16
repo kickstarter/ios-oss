@@ -230,7 +230,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
 
     _  = self.navBarLiveDotImageView
-      |> UIImageView.lens.image .~ UIImage(named: "live_dot")
+      |> UIImageView.lens.image .~ UIImage(named: "live-dot")
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
 
