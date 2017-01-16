@@ -1,9 +1,10 @@
-import XCTest
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import Result
+import XCTest
 @testable import Library
+@testable import LiveStream
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
@@ -16,6 +17,10 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
+  private let goToLiveStreamProject = TestObserver<Project, NoError>()
+  private let goToLiveStreamLiveStream = TestObserver<Project.LiveStream, NoError>()
+  private let goToLiveStreamLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
+  private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let goToLogin = TestObserver<(), NoError>()
   fileprivate let goToProfile = TestObserver<(), NoError>()
   fileprivate let goToSearch = TestObserver<(), NoError>()
@@ -37,6 +42,10 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
+    self.vm.outputs.goToLiveStream.map { $0.0 }.observe(self.goToLiveStreamProject.observer)
+    self.vm.outputs.goToLiveStream.map { $0.1 }.observe(self.goToLiveStreamLiveStream.observer)
+    self.vm.outputs.goToLiveStream.map { $0.2 }.observe(self.goToLiveStreamLiveStreamEvent.observer)
+    self.vm.outputs.goToLiveStream.map { $0.3 }.observe(self.goToLiveStreamRefTag.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
@@ -61,7 +70,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.beta,
+          appIdentifier: KsApi.Secrets.HockeyAppId.beta,
           disableUpdates: false,
           userId: "0",
           userName: "anonymous"
@@ -80,7 +89,7 @@ final class AppDelegateViewModelTests: TestCase {
 
         self.configureHockey.assertValues([
           HockeyConfigData(
-            appIdentifier: Secrets.HockeyAppId.beta,
+            appIdentifier: KsApi.Secrets.HockeyAppId.beta,
             disableUpdates: false,
             userId: String(currentUser.id),
             userName: currentUser.name
@@ -97,7 +106,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
@@ -116,7 +125,7 @@ final class AppDelegateViewModelTests: TestCase {
 
         self.configureHockey.assertValues([
           HockeyConfigData(
-            appIdentifier: Secrets.HockeyAppId.production,
+            appIdentifier: KsApi.Secrets.HockeyAppId.production,
             disableUpdates: true,
             userId: String(currentUser.id),
             userName: currentUser.name
@@ -135,7 +144,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
@@ -147,13 +156,13 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
         ),
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: String(currentUser.id),
           userName: currentUser.name
@@ -165,19 +174,19 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureHockey.assertValues([
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
         ),
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: String(currentUser.id),
           userName: currentUser.name
         ),
         HockeyConfigData(
-          appIdentifier: Secrets.HockeyAppId.production,
+          appIdentifier: KsApi.Secrets.HockeyAppId.production,
           disableUpdates: true,
           userId: "0",
           userName: "anonymous"
@@ -828,6 +837,44 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
     self.presentViewController.assertValues([2])
+  }
+
+  func testOpenNotification_LiveStream() {
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ 42
+    let project = .template
+      |> Project.lens.id .~ 24
+      |> Project.lens.liveStreams .~ [
+        liveStream |> Project.LiveStream.lens.id .~ 100,
+        liveStream,
+        liveStream |> Project.LiveStream.lens.id .~ 101,
+    ]
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.id .~ liveStream.id
+
+    let pushData: [String:Any] = [
+      "aps": [
+        "alert": "A live stream as started!"
+      ],
+      "project": [
+        "id": project.id
+      ],
+      "live_stream": [
+        "id": liveStream.id
+      ],
+    ]
+
+    let apiService = MockService(fetchProjectResponse: project)
+    let liveService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
+    withEnvironment(apiService: apiService, liveStreamService: liveService) {
+
+      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+
+      self.goToLiveStreamProject.assertValues([project])
+      self.goToLiveStreamLiveStream.assertValues([liveStream])
+      self.goToLiveStreamLiveStreamEvent.assertValues([liveStreamEvent])
+      self.goToLiveStreamRefTag.assertValues([.push])
+    }
   }
 
   func testOpenNotification_UnrecognizedActivityType() {

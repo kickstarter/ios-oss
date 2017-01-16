@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class LiveStreamCountdownViewController: UIViewController {
+public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
@@ -34,8 +34,8 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  internal static func configuredWith(project: Project,
-                                      liveStream: Project.LiveStream) -> LiveStreamCountdownViewController {
+  public static func configuredWith(project: Project,
+                                    liveStream: Project.LiveStream) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
     vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
@@ -43,13 +43,15 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     return vc
   }
 
-  internal override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
+
+    self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
 
     self.navigationItem.leftBarButtonItem = closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -59,7 +61,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
   }
 
   //swiftlint:disable:next function_body_length
-  internal override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -189,17 +191,17 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     }
   }
 
-  override var prefersStatusBarHidden: Bool {
+  override public var prefersStatusBarHidden: Bool {
     return true
   }
 
-  internal override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
   }
 
   //swiftlint:disable:next function_body_length
-  internal override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
     NotificationCenter.default
 
@@ -340,7 +342,7 @@ internal final class LiveStreamCountdownViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @IBAction internal func subscribe(_ sender: UIButton) {
+  @objc private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 }
