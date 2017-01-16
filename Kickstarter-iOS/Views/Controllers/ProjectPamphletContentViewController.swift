@@ -151,9 +151,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
   private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
     let vc: UIViewController
-    let startDate = Date(timeIntervalSince1970: liveStream.startDate)
-
-    if startDate < Date() {
+    if liveStream.startDate < Date().timeIntervalSince1970 {
       vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
                                                             event: nil)
@@ -161,7 +159,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: liveStream)
     }
 
-    let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 
     self.present(nav, animated: true, completion: nil)
