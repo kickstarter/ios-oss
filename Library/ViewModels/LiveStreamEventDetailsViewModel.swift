@@ -41,14 +41,15 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
   LiveStreamEventDetailsViewModelInputs, LiveStreamEventDetailsViewModelOutputs {
 
-  //swiftlint:disable function_body_length
+  //swiftlint:disable:next function_body_length
   public init () {
-
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
+
+    let project = configData.map(first)
 
     let eventEvent = configData
       .switchMap { project, liveStream, optionalEvent in
@@ -60,25 +61,20 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.retrievedLiveStreamEvent = event
 
-    let project = configData.map(first)
-
-    self.configureShareViewModel = Signal.combineLatest(
-      project,
-      event
-    )
+    self.configureShareViewModel = Signal.combineLatest(project, event)
 
     self.shareButtonEnabled = self.configureShareViewModel.mapConst(true)
 
     let subscribedProperty = MutableProperty(false)
 
-    let signedIn = Signal.combineLatest(
+    let subscribeTappedOnLogin = Signal.combineLatest(
       self.subscribeButtonTappedProperty.signal,
       self.userSessionStartedProperty.signal
       )
       .take(first: 1)
 
     let subscribeIntent = Signal.merge(
-      signedIn.ignoreValues(),
+      subscribeTappedOnLogin.ignoreValues(),
       self.subscribeButtonTappedProperty.signal.filter { AppEnvironment.current.currentUser != nil }
     )
 
@@ -94,11 +90,13 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           .materialize()
     }
 
-    // Bind the API response values for subscribed
-    subscribedProperty <~ isSubscribedEvent.values()
+    subscribedProperty <~ Signal.merge(
+      // Bind the API response values for subscribed
+      isSubscribedEvent.values(),
 
-    // Bind the initial subscribed value
-    subscribedProperty <~ event.map { $0.user.isSubscribed }
+      // Bind the initial subscribed value
+      event.map { $0.user.isSubscribed }
+    )
 
     let subscribed = subscribedProperty.signal
 
@@ -136,8 +134,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
 
     self.showErrorAlert = Signal.merge(
-      eventEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
-      isSubscribedEvent.map { $0.error }.skipNil().mapConst(Strings.Failed_to_update_subscription())
+      eventEvent.filter { $0.error != nil }.mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
+      isSubscribedEvent.filter { $0.error != nil }.mapConst(Strings.Failed_to_update_subscription())
     )
 
     self.animateActivityIndicator = Signal.merge(
@@ -172,7 +170,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
                                                                        subscribed: isSubscribed)
     }
   }
-  //swiftlint:enable function_body_length
 
   private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
   public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {

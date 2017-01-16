@@ -66,20 +66,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    self.showErrorAlert = self.liveStreamState.map { state -> LiveVideoPlaybackError? in
-      switch state {
-      case .error(let error): return error
-      case .live(let playbackState, _):
-        if case let .error(videoError) = playbackState { return videoError }
-      case .replay(let playbackState, _):
-        if case let .error(videoError) = playbackState { return videoError }
-      case .initializationFailed:
-        return .failedToConnect
-      default:
+    self.showErrorAlert = self.liveStreamState
+      .map { state -> LiveVideoPlaybackError? in
+        switch state {
+        case .error(let error): return error
+        case .live(let playbackState, _):
+          if case let .error(videoError) = playbackState { return videoError }
+        case .replay(let playbackState, _):
+          if case let .error(videoError) = playbackState { return videoError }
+        case .initializationFailed:
+          return .failedToConnect
+        default:
+          return nil
+        }
         return nil
-      }
-
-      return nil
       }
       .skipNil()
       .map {

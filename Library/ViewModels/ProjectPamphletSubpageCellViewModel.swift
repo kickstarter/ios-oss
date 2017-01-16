@@ -53,7 +53,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       .map { $0.position == .last }
 
     self.countLabelText = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage).map { String($0.count) },
+      Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count) },
       liveStreamDetail.map(labelTexts(forLiveStream:)).map(second)
     )
 
