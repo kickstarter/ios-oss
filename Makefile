@@ -34,7 +34,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets
+dependencies: submodules configs secrets opentok
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -101,4 +101,9 @@ secrets:
 		|| true; \
 	fi
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings
+opentok:
+	mkdir -p Frameworks/OpenTok
+	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.10.0 \
+		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.10.0/OpenTok.framework
+
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok
