@@ -160,7 +160,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs
       .applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
 
-
     timer(interval: .seconds(2), on: QueueScheduler.main)
       .take(first: 1)
       .startWithValues { _ in
