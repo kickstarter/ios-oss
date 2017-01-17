@@ -80,9 +80,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = [self.daysTitleLabel, self.hoursTitleLabel, self.minutesTitleLabel, self.secondsTitleLabel]
       ||> UILabel.lens.textColor .~ .white
-      ||> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_title1() : .ksr_title1(size: 24)
-      }
+      ||> UILabel.lens.font %~~ { _, l in countdownFont(label: l) }
       ||> UILabel.lens.textAlignment .~ .center
 
     _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel,
@@ -372,4 +370,33 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @objc private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
+}
+
+// Returns a fancy monospaced font for the countdown.
+private func countdownFont(label: UILabel) -> UIFont {
+
+  let baseFont: UIFont = label.traitCollection.isRegularRegular
+    ? .ksr_title1() : .ksr_title1(size: 24)
+
+  let monospacedDescriptor = baseFont.fontDescriptor
+    .addingAttributes(
+      [
+        UIFontDescriptorFeatureSettingsAttribute: [
+          [
+            UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+            UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+          ],
+          [
+            UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
+            UIFontFeatureSelectorIdentifierKey: kStylisticAltTwoOnSelector
+          ],
+          [
+            UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
+            UIFontFeatureSelectorIdentifierKey: kStylisticAltOneOnSelector
+          ]
+        ]
+      ]
+  )
+
+  return UIFont(descriptor: monospacedDescriptor, size: 0.0)
 }
