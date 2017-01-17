@@ -199,7 +199,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIActivityIndicatorView.lens.animating .~ false
 
     _  = self.subscribeButton
-      |> whiteBorderContainerButtonStyle
+      |> whiteBorderButtonStyle
       |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
       |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(2))

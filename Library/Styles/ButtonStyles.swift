@@ -43,16 +43,6 @@ public let greenBorderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
-public let greenBorderContainerButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
-  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_green_700
-  <> UIButton.lens.titleColor(forState: .disabled) .~ UIColor.ksr_green_700.withAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_500.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(3))
-
 public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .white
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_facebookBlue
@@ -131,7 +121,7 @@ public let twitterButtonStyle = baseButtonStyle
     Strings.project_checkout_share_buttons_tweet()
 }
 
-public let whiteBorderContainerButtonStyle = baseButtonStyle
+public let whiteBorderButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .white
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
@@ -139,4 +129,4 @@ public let whiteBorderContainerButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .disabled) .~ UIColor.white.withAlphaComponent(0.5)
   <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(3))
+  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
