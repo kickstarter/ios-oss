@@ -86,6 +86,20 @@ final class LoginViewModelTests: TestCase {
     self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
   }
 
+  func testBecomefirstResponder() {
+    self.vm.inputs.viewDidLoad()
+    self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Email starts as first responder.")
+    self.passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
+
+    self.vm.inputs.emailTextFieldDoneEditing()
+    self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Password becomes first responder.")
+
+    self.vm.inputs.passwordTextFieldDoneEditing()
+    self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+    self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
+  }
+
   func testLoginError() {
     let error = ErrorEnvelope(
       errorMessages: ["Unable to log in."],
