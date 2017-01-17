@@ -36,6 +36,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var subscribeButtonAccessibilityHint: Signal<String, NoError> { get }
   var subscribeButtonAccessibilityLabel: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<String?, NoError> { get }
+  var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeLabelHidden: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
 }
@@ -245,6 +246,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let subscribeButtonAccessibilityHint: Signal<String, NoError>
   public let subscribeButtonAccessibilityLabel: Signal<String, NoError>
   public let subscribeButtonImage: Signal<String?, NoError>
+  public let subscribeButtonText: Signal<String, NoError>
   public let subscribeLabelHidden: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
 
