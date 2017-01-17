@@ -99,8 +99,8 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
   // Animates the live now icon in a pulsating fashion...
   private func attachLiveNowAnimation() {
-    let fadeAlpha: CGFloat = 0.4
-    let fadeTransform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    let fadeAlpha: CGFloat = 0.2
+    let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 
     self.liveNowImageView.alpha = 1
     self.liveNowImageView.transform = .identity

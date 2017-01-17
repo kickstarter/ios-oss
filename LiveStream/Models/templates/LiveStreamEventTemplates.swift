@@ -32,7 +32,7 @@ extension LiveStreamEvent {
       projectWebUrl: "",
       projectName: "Test Project",
       replayUrl: nil,
-      startDate: Date(),
+      startDate: Date(timeIntervalSince1970: 1234567890),
       webUrl: ""
     ),
     user: User(isSubscribed: false)

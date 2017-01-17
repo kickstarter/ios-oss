@@ -1,4 +1,5 @@
 import Argo
+import FirebaseDatabase
 import ReactiveSwift
 
 public struct LiveStreamService: LiveStreamServiceProtocol {
@@ -45,6 +46,21 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         observer.sendInterrupted()
       })
     }
+  }
+
+  public func initializeDatabase(userId: Int?,
+                                 failed: (Void) -> Void,
+                                 succeeded: (FIRDatabaseReference) -> Void) {
+
+    guard let app = KsLiveApp.firebaseApp() else {
+      failed()
+      return
+    }
+
+    let databaseRef = FIRDatabase.database(app: app).reference()
+    databaseRef.database.goOnline()
+
+    succeeded(databaseRef)
   }
 
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {

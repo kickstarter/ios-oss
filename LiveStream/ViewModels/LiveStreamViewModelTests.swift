@@ -513,7 +513,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   }
 
   func testCreateFirebasePresenceRef_LoggedOut() {
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -529,7 +531,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   }
 
   func testCreateFirebasePresenceRef_LoggedIn() {
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: 123)
     self.vm.inputs.viewDidLoad()
@@ -545,7 +549,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   }
 
   func testCreateFirebaseObservers_WhenLive() {
-    let event = LiveStreamEvent.template
+    let event = .template
+      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(event: event, userId: nil)
@@ -584,6 +590,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNumberOfPeopleObserver_WhenNotScaleEvent() {
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.isScale .~ false
 
     self.vm.inputs.configureWith(event: event, userId: nil)
@@ -596,6 +604,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNumberOfPeopleObserver_WhenScaleEvent() {
     let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.isScale .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
