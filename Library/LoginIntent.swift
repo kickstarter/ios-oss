@@ -22,7 +22,7 @@ public enum LoginIntent: String {
     case .generic:
       return "generic"
     case .liveStreamSubscribe:
-      return "liveStreamSubscribe"
+      return "live_stream_subscribe"
     case .loginTab:
       return "login_tab"
     case .messageCreator:
