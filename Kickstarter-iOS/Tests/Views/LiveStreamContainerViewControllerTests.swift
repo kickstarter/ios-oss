@@ -25,6 +25,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.stream.hasReplay .~ true
       |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
       |> LiveStreamEvent.lens.stream.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.stream.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
@@ -54,6 +55,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 86_400)
       |> Project.LiveStream.lens.isLiveNow .~ true
     let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.stream.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.stream.description .~ ("175 char max. 175 char max 175 char max message with " +
@@ -86,6 +88,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 86_400)
       |> Project.LiveStream.lens.isLiveNow .~ true
     let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.stream.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
       |> LiveStreamEvent.lens.stream.liveNow .~ true
       |> LiveStreamEvent.lens.stream.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.stream.description .~ ("175 char max. 175 char max 175 char max message with " +

@@ -1,3 +1,4 @@
+import FirebaseDatabase
 import Prelude
 import ReactiveSwift
 import Result
@@ -13,6 +14,7 @@ extension Result {
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
+  private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
   private let subscribeToResult: Result<Bool, LiveApiError>?
 
   internal init() {
@@ -20,8 +22,10 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   }
 
   internal init(fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
+                initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<Bool, LiveApiError>? = nil) {
     self.fetchEventResult = fetchEventResult
+    self.initializeDatabaseResult = initializeDatabaseResult
     self.subscribeToResult = subscribeToResult
   }
 
@@ -34,6 +38,18 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
       self.fetchEventResult?.value
         ?? .template |> LiveStreamEvent.lens.id .~ eventId
     )
+  }
+
+  internal func initializeDatabase(userId: Int?,
+                                   failed: (Void) -> Void,
+                                   succeeded: (FIRDatabaseReference) -> Void) {
+
+    switch initializeDatabaseResult {
+    case let .some(.success(ref)):
+      succeeded(ref)
+    case .some(.failure), .none:
+      failed()
+    }
   }
 
   internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool)

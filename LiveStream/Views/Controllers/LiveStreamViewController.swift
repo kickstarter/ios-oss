@@ -20,11 +20,14 @@ public final class LiveStreamViewController: UIViewController {
   private var firebaseRef: FIRDatabaseReference?
   private var videoViewController: LiveVideoViewController?
   private weak var delegate: LiveStreamViewControllerDelegate?
+  private var liveStreamService: LiveStreamServiceProtocol!
 
   public func configureWith(event: LiveStreamEvent,
                             userId: Int?,
-                            delegate: LiveStreamViewControllerDelegate) {
+                            delegate: LiveStreamViewControllerDelegate,
+                            liveStreamService: LiveStreamServiceProtocol) {
     self.delegate = delegate
+    self.liveStreamService = liveStreamService
     self.viewModel.inputs.configureWith(event: event, userId: userId)
   }
 
@@ -120,18 +123,20 @@ public final class LiveStreamViewController: UIViewController {
   // MARK: Firebase
 
   private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {
-    guard let app = KsLiveApp.firebaseApp() else {
-      self.viewModel.inputs.firebaseAppFailedToInitialize()
-      return
-    }
-    let databaseRef = FIRDatabase.database(app: app).reference()
-    self.viewModel.inputs.createdDatabaseRef(ref: databaseRef)
-    self.firebaseRef = databaseRef
-    self.firebaseRef?.database.goOnline()
 
-    KsLiveApp.firebaseAuth()?.signInAnonymously(completion: { [weak self] (user, _) in
-      guard let firebaseUserId = user?.uid else { return }
-      self?.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
+    self.liveStreamService.initializeDatabase(
+      userId: userId,
+      failed: {
+        self.viewModel.inputs.firebaseAppFailedToInitialize()
+      },
+      succeeded: { ref in
+        self.firebaseRef = ref
+        self.viewModel.inputs.createdDatabaseRef(ref: ref)
+
+        KsLiveApp.firebaseAuth()?.signInAnonymously { user, _ in
+          guard let firebaseUserId = user?.uid else { return }
+          self.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
+        }
     })
   }
 
