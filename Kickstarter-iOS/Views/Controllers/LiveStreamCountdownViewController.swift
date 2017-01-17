@@ -46,14 +46,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    let closeBarButtonItem = UIBarButtonItem()
-      |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .white
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
-
     self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
 
-    self.navigationItem.leftBarButtonItem = closeBarButtonItem
+    self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.viewModel.inputs.viewDidLoad()
@@ -73,6 +68,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.countdownStackView
+      |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
@@ -204,11 +200,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
   //swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
-    NotificationCenter.default
 
+    NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
+
+    self.countdownStackView.rac.accessibilityLabel = self.viewModel.outputs.countdownAccessibilityLabel
 
     self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
     self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
@@ -294,12 +292,36 @@ public final class LiveStreamCountdownViewController: UIViewController {
     }
   }
 
+  lazy private var closeBarButtonItem: UIBarButtonItem = {
+    let closeBarButtonItem = UIBarButtonItem()
+      |> closeBarButtonItemStyle
+      |> UIBarButtonItem.lens.tintColor .~ .white
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
+
+    closeBarButtonItem.accessibilityLabel = localizedString(
+      key: "Close_live_stream",
+      defaultValue: "Close live stream"
+    )
+
+    closeBarButtonItem.accessibilityHint = localizedString(
+      key: "Closes_the_live_stream",
+      defaultValue: "Closes the live stream."
+    )
+
+    return closeBarButtonItem
+  }()
+
   lazy private var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
       |> UIBarButtonItem.lens.enabled .~ false
+
+    shareBarButtonItem.accessibilityLabel = localizedString(
+      key: "Share_this_live_stream",
+      defaultValue: "Share this live stream."
+    )
 
     return shareBarButtonItem
   }()

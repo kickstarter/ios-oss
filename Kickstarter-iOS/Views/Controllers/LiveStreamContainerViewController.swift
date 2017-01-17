@@ -57,14 +57,9 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    let closeBarButtonItem = UIBarButtonItem()
-      |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .white
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
-
     self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
 
-    self.navigationItem.leftBarButtonItem = closeBarButtonItem
+    self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
@@ -451,12 +446,36 @@ public final class LiveStreamContainerViewController: UIViewController {
   lazy var navBarLiveDotImageView = { UIImageView() }()
   lazy var navBarTitleLabel = { UILabel() }()
 
-  lazy var shareBarButtonItem: UIBarButtonItem = {
+  lazy private var closeBarButtonItem: UIBarButtonItem = {
+    let closeBarButtonItem = UIBarButtonItem()
+      |> closeBarButtonItemStyle
+      |> UIBarButtonItem.lens.tintColor .~ .white
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
+
+    closeBarButtonItem.accessibilityLabel = localizedString(
+      key: "Close_live_stream",
+      defaultValue: "Close live stream"
+    )
+
+    closeBarButtonItem.accessibilityHint = localizedString(
+      key: "Closes_the_live_stream",
+      defaultValue: "Closes the live stream."
+    )
+
+    return closeBarButtonItem
+  }()
+
+  lazy private var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
       |> UIBarButtonItem.lens.enabled .~ false
+
+    shareBarButtonItem.accessibilityLabel = localizedString(
+      key: "Share_this_live_stream",
+      defaultValue: "Share this live stream."
+    )
 
     return shareBarButtonItem
   }()

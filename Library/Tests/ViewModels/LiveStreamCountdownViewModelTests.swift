@@ -11,6 +11,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let vm: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
 
   private let categoryId = TestObserver<Int, NoError>()
+  private let countdownAccessibilityLabel = TestObserver<String, NoError>()
   private let days = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<String, NoError>()
@@ -27,6 +28,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.categoryId.observe(self.categoryId.observer)
+    self.vm.outputs.countdownAccessibilityLabel.observe(self.countdownAccessibilityLabel.observer)
     self.vm.outputs.daysString.observe(self.days.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.hoursString.observe(self.hours.observer)
@@ -90,6 +92,22 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.hours.assertValues(["11"])
     self.minutes.assertValues(["05"])
     self.seconds.assertValues(["22", "21", "20"])
+  }
+
+  func testCountdownAccessibilityLabel() {
+    let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
+    let liveStream = .template
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + future)
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.countdownAccessibilityLabel.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
+    self.vm.inputs.viewDidLoad()
+
+    self.countdownAccessibilityLabel.assertValues(["The live stream will start in 2 days."])
   }
 
   func testCountdownEnded() {
