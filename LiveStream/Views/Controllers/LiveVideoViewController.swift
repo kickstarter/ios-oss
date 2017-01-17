@@ -98,7 +98,6 @@ public final class LiveVideoViewController: UIViewController {
     self.addChildViewController(controller)
     controller.didMove(toParentViewController: self)
 
-    self.viewModel.inputs.hlsPlayerStateChanged(state: .unknown)
     controller.player?.play()
 
     self.playerController = controller

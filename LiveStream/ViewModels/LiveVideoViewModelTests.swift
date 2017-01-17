@@ -46,7 +46,6 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
 
     // Step 2: Test state changes
-    self.vm.inputs.hlsPlayerStateChanged(state: .unknown)
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
 
     self.vm.inputs.hlsPlayerStateChanged(state: .readyToPlay)

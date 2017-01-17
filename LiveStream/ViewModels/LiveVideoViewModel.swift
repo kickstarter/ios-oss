@@ -76,6 +76,8 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       self.hlsPlayerStateChangedProperty.signal.skipNil()
         .map(playbackState(fromHlsPlayState:)),
 
+      self.addAndConfigureHLSPlayerWithStreamUrl.mapConst(.loading),
+
       openTokSessionConfig.mapConst(.loading),
 
       self.sessionDidConnectProperty.signal.mapConst(.playing),
