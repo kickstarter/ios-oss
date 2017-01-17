@@ -255,8 +255,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.navigationItem.rac.title = self.viewModel.outputs.viewControllerTitle
     self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
-    self.subscribeButton.rac.accessibilityHint = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityHint
-    self.subscribeButton.rac.accessibilityLabel = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
+    self.subscribeButton.rac.accessibilityHint
+      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityHint
+    self.subscribeButton.rac.accessibilityLabel
+      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
