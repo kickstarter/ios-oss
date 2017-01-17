@@ -5,12 +5,21 @@ internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case popularTitle
     case projects
+    case noResults
   }
 
   internal func popularTitle(isVisible visible: Bool) {
     self.set(cellIdentifiers: visible ? ["MostPopularCell"] : [],
              inSection: Section.popularTitle.rawValue)
   }
+
+  internal func noSearchResults(isVisible visible: Bool) {
+
+    self.set(cellIdentifiers: visible ? ["NoSearchResultsCell"] : [],
+             inSection: Section.noResults.rawValue)
+  }
+
+  internal func loadNoSearchResult() {}
 
   internal func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
@@ -35,6 +44,8 @@ internal final class SearchDataSource: ValueCellDataSource {
     case let (cell as MostPopularSearchProjectCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as MostPopularCell, value as Void):
+      cell.configureWith(value: value)
+    case let (cell as NoSearchResultsCell, value as Void):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

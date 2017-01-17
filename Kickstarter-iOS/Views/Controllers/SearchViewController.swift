@@ -103,6 +103,13 @@ internal final class SearchViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.isNoSearchResultsVisible
+      .observeForControllerAction()
+      .observeValues{ [weak self] visible in
+        self?.dataSource.noSearchResults(isVisible: visible)
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
