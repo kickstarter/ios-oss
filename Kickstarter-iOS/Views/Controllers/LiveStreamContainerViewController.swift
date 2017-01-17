@@ -325,9 +325,12 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingButtonHidden
     self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
-    self.navBarTitleLabel.rac.text = self.viewModel.outputs.titleViewText.on(event: { [weak self] _ in
-      self?.view.setNeedsLayout()
-    })
+    self.viewModel.outputs.titleViewText
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navBarTitleLabel.text = $0
+        self?.view.setNeedsLayout()
+    }
 
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
@@ -398,25 +401,20 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   private func layoutNavBarTitle() {
-    let titleSize = self.navBarTitleLabel.sizeThatFits(
-      CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-    )
+    let stackViewSize = self.navBarTitleStackView.systemLayoutSizeFitting(
+      CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
 
-    let stackViewFrame = CGRect(
-      origin: self.navBarTitleStackViewBackgroundView.frame.origin,
-      size: CGSize(width: Styles.grid(4) + titleSize.width, height: Styles.grid(5))
-    )
-
-    let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewFrame.width / 2),
+    let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewSize.width / 2),
                          y: self.navBarTitleStackViewBackgroundView.frame.origin.y)
 
-    self.navBarTitleStackViewBackgroundView.frame = CGRect(origin: newOrigin, size: stackViewFrame.size)
+    self.navBarTitleStackViewBackgroundView.frame = CGRect(
+      origin: newOrigin,
+      size: CGSize(width: stackViewSize.width, height: Styles.grid(5))
+    )
   }
 
   private func showShareSheet(controller: UIActivityViewController) {
-
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-
       self?.shareViewModel.inputs.shareActivityCompletion(
         with: .init(activityType: activityType,
                     completed: completed,
