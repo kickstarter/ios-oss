@@ -551,8 +551,8 @@ private func stringToInt(_ string: String) -> Decoded<Int> {
 
  - returns: An optional tuple.
  */
-private func zip <A, B> (_ a: A?, _ b: B?) -> (A, B)? {
-  if let a = a, let b = b {
+private func zip <A, B> (_ a: A?, _ b: @autoclosure () -> B?) -> (A, B)? {
+  if let a = a, let b = b() {
     return (a, b)
   }
   return nil
