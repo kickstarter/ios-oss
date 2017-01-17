@@ -490,7 +490,6 @@
 		A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */; };
 		A7BA54A81E1E4A9E00E54377 /* LiveStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54951E1E4A9E00E54377 /* LiveStreamViewController.swift */; };
 		A7BA54A91E1E4A9E00E54377 /* LiveVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54961E1E4A9E00E54377 /* LiveVideoViewController.swift */; };
-		A7BA54AA1E1E4A9E00E54377 /* HLSPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54971E1E4A9E00E54377 /* HLSPlayerView.swift */; };
 		A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54981E1E4A9E00E54377 /* VideoGridView.swift */; };
 		A7BA54AC1E1E4A9E00E54377 /* LiveStreamEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */; };
 		A7BA54AD1E1E4A9E00E54377 /* LiveStreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA549C1E1E4A9E00E54377 /* LiveStreamViewModel.swift */; };
@@ -1745,7 +1744,6 @@
 		A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTokExtensions.swift; sourceTree = "<group>"; };
 		A7BA54951E1E4A9E00E54377 /* LiveStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewController.swift; sourceTree = "<group>"; };
 		A7BA54961E1E4A9E00E54377 /* LiveVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewController.swift; sourceTree = "<group>"; };
-		A7BA54971E1E4A9E00E54377 /* HLSPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLSPlayerView.swift; sourceTree = "<group>"; };
 		A7BA54981E1E4A9E00E54377 /* VideoGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoGridView.swift; sourceTree = "<group>"; };
 		A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.swift; sourceTree = "<group>"; };
 		A7BA549C1E1E4A9E00E54377 /* LiveStreamViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModel.swift; sourceTree = "<group>"; };
@@ -2732,7 +2730,6 @@
 			isa = PBXGroup;
 			children = (
 				A7BA54941E1E4A9E00E54377 /* Controllers */,
-				A7BA54971E1E4A9E00E54377 /* HLSPlayerView.swift */,
 				A7BA54981E1E4A9E00E54377 /* VideoGridView.swift */,
 			);
 			path = Views;
@@ -4365,7 +4362,6 @@
 				A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */,
 				A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */,
 				A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
-				A7BA54AA1E1E4A9E00E54377 /* HLSPlayerView.swift in Sources */,
 				A7BA55031E1E9D4B00E54377 /* LiveStreamEvent.StreamLenses.swift in Sources */,
 				A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */,
 				A7B76C021E23E48300C8E312 /* LiveStreamServiceProtocol.swift in Sources */,

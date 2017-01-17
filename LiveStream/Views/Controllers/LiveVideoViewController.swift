@@ -1,5 +1,9 @@
 import ReactiveExtensions
 import OpenTok
+import AVFoundation
+import AVKit
+
+private let statusKeyPath = "status"
 
 public protocol LiveVideoViewControllerDelegate: class {
   func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
@@ -7,6 +11,7 @@ public protocol LiveVideoViewControllerDelegate: class {
 }
 
 public final class LiveVideoViewController: UIViewController {
+  private var playerController: AVPlayerViewController?
   fileprivate let viewModel: LiveVideoViewModelType = LiveVideoViewModel()
   private var session: OTSession?
   private var subscribers: [OTSubscriber] = []
@@ -27,6 +32,7 @@ public final class LiveVideoViewController: UIViewController {
     self.session?.disconnect(nil)
     self.session = nil
     self.subscribers.forEach(self.removeSubscriber(subscriber:))
+    self.playerController?.player?.currentItem?.removeObserver(self, forKeyPath: statusKeyPath)
   }
 
   public override func viewDidLoad() {
@@ -76,9 +82,37 @@ public final class LiveVideoViewController: UIViewController {
   private func configureHLSPlayer(streamUrl: String) {
     guard let url = URL(string: streamUrl) else { return }
 
-    let player = HLSPlayerView(hlsStreamUrl: url, delegate: self)
+    // Required for audio to play even if phone is set to silent
+    do {
+      try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
+    } catch {}
 
-    self.addVideoView(view: player)
+    let player = AVPlayer(url: url)
+    let controller = AVPlayerViewController()
+    controller.player = player
+    controller.videoGravity = AVLayerVideoGravityResizeAspectFill
+
+    player.currentItem?.addObserver(self, forKeyPath: statusKeyPath, options: .new, context: nil)
+
+    self.addVideoView(view: controller.view)
+    self.addChildViewController(controller)
+    controller.didMove(toParentViewController: self)
+
+    self.viewModel.inputs.hlsPlayerStateChanged(state: .unknown)
+    controller.player?.play()
+
+    self.playerController = controller
+  }
+
+  public override func observeValue(forKeyPath keyPath: String?,
+                                      of object: Any?,
+                                      change: [NSKeyValueChangeKey : Any]?,
+                                      context: UnsafeMutableRawPointer?) {
+    guard let status = self.playerController?.player?.currentItem?.status else { return }
+
+    if keyPath == statusKeyPath {
+      self.viewModel.inputs.hlsPlayerStateChanged(state: status)
+    }
   }
 
   private func createAndConfigureSession(sessionConfig: OpenTokSessionConfig) {
@@ -128,12 +162,6 @@ public final class LiveVideoViewController: UIViewController {
     let videoGridView = VideoGridView()
     return videoGridView
   }()
-}
-
-extension LiveVideoViewController: HLSPlayerViewDelegate {
-  func playbackStatedChanged(playerView: HLSPlayerView, state: AVPlayerItemStatus) {
-    self.viewModel.inputs.hlsPlayerStateChanged(state: state)
-  }
 }
 
 extension LiveVideoViewController: OTSessionDelegate {
