@@ -338,6 +338,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
     self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
+    self.subscribeButton.rac.accessibilityHint = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityHint
+    self.subscribeButton.rac.accessibilityLabel = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
     self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 

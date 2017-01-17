@@ -23,8 +23,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let openLoginToutViewController = TestObserver<(), NoError>()
   private let shareButtonEnabled = TestObserver<Bool, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
-  private let subscribeButtonText = TestObserver<String, NoError>()
+  private let subscribeButtonAccessibilityHint = TestObserver<String, NoError>()
+  private let subscribeButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let subscribeButtonImage = TestObserver<String?, NoError>()
+  private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -44,9 +46,48 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
       self.animateSubscribeButtonActivityIndicator.observer)
     self.vm.outputs.shareButtonEnabled.observe(self.shareButtonEnabled.observer)
+    self.vm.outputs.subscribeButtonAccessibilityHint.observe(self.subscribeButtonAccessibilityHint.observer)
+    self.vm.outputs.subscribeButtonAccessibilityLabel.observe(self.subscribeButtonAccessibilityLabel.observer)
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
+  }
+
+  func testSubscribeButtonAccessibilityHint() {
+    AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+
+    let event = .template
+      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.subscribeButtonAccessibilityHint.assertValues(["Subscribes to upcoming live streams."])
+
+    self.vm.inputs.subscribeButtonTapped()
+    self.scheduler.advance()
+
+    self.subscribeButtonAccessibilityHint.assertValues([
+      "Subscribes to upcoming live streams.",
+      "Unsubscribes from upcoming live streams."
+      ])
+  }
+
+  func testSubscribeButtonAccessibilityLabel() {
+    AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+
+    let event = .template
+      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe"])
+
+    self.vm.inputs.subscribeButtonTapped()
+    self.scheduler.advance()
+
+    self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe", "Unsubscribe"])
   }
 
   func testAvailableForText() {
