@@ -19,6 +19,7 @@ public protocol LiveStreamCountdownViewModelInputs {
 
 public protocol LiveStreamCountdownViewModelOutputs {
   var categoryId: Signal<Int, NoError> { get }
+  var countdownAccessibilityLabel: Signal<String, NoError> { get }
   var daysString: Signal<String, NoError> { get }
   var dismiss: Signal<(), NoError> { get }
   var hoursString: Signal<String, NoError> { get }
@@ -79,6 +80,13 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .skipRepeats()
       .map { String(format: "%02d", $0) }
 
+    self.countdownAccessibilityLabel = liveStream.map { liveStream in
+      localizedString(
+        key: "The_live_stream_will_start_time",
+        defaultValue: "The live stream will start %{time}.",
+        substitutions: ["time" : Format.relative(secondsInUTC: liveStream.startDate)])
+    }
+
     let countdownEnded = dateComponents
       .filter { $0.day <= 0 && $0.hour <= 0 && $0.minute <= 0 && $0.second < 0 }
 
@@ -129,6 +137,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   public let categoryId: Signal<Int, NoError>
+  public let countdownAccessibilityLabel: Signal<String, NoError>
   public let daysString: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
   public let hoursString: Signal<String, NoError>
