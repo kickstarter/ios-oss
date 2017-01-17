@@ -186,11 +186,11 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
 
-    self.numberOfPeopleWatchingText.assertValues(["300"])
+    self.numberOfPeopleWatchingText.assertValues(["0", "300"])
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 350)
 
-    self.numberOfPeopleWatchingText.assertValues(["300", "350"])
+    self.numberOfPeopleWatchingText.assertValues(["0", "300", "350"])
   }
 
   func testSubscribe_LoggedIn() {

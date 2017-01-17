@@ -158,8 +158,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.animateActivityIndicator
     ).skipRepeats()
 
-    self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
-      .map { Format.wholeNumber($0) }
+    self.numberOfPeopleWatchingText = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst("0"),
+      self.numberOfPeopleWatchingProperty.signal.skipNil().map { Format.wholeNumber($0) }
+      )
 
     configData
       .takePairWhen(isSubscribedEvent.values())
