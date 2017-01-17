@@ -93,22 +93,30 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.loaderText = Signal.merge(
       liveStreamState.map {
-        if case .live(playbackState: .loading, _) = $0 { return Strings.The_live_stream_will_start_soon() }
-        if case .greenRoom = $0 { return Strings.The_live_stream_will_start_soon() }
-        if case .replay(playbackState: .loading, _) = $0 {
+        switch $0 {
+        case .live(playbackState: .loading, _):
+          return Strings.The_live_stream_will_start_soon()
+        case .greenRoom:
+          return Strings.The_live_stream_will_start_soon()
+        case .replay(playbackState: .loading, _):
           return Strings.The_replay_will_start_soon()
+        default:
+          return Strings.Loading()
         }
-
-        return Strings.Loading()
       },
       self.showErrorAlert
     )
 
     self.loaderStackViewHidden = self.liveStreamState
       .map { state in
-        if case .live(playbackState: .playing, _) = state { return true }
-        if case .replay(playbackState: .playing, _) = state { return true }
-        return false
+        switch state {
+        case .live(playbackState: .playing, _):
+          return true
+        case .replay(playbackState: .playing, _):
+          return true
+        default:
+          return false
+        }
       }
       .skipRepeats()
 
@@ -116,18 +124,28 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { URL(string: $0.photo.full) }
 
     self.titleViewText = liveStreamState.map {
-      if case .live(_, _) = $0 { return Strings.Live() }
-      if case .greenRoom = $0 { return Strings.Starting_soon() }
-      if case .replay(_, _) = $0 { return Strings.Recorded_Live() }
-
-      return Strings.Loading()
+      switch $0 {
+      case .live(_, _):
+        return Strings.Live()
+      case .greenRoom:
+        return Strings.Starting_soon()
+      case .replay(_, _):
+        return Strings.Recorded_Live()
+      default:
+        return Strings.Loading()
+      }
     }
 
     self.videoViewControllerHidden = Signal.combineLatest(
-      self.liveStreamState.map {
-        if case .live(playbackState: .playing, _) = $0 { return false }
-        if case .replay(playbackState: .playing, _) = $0 { return false }
-        return true
+      self.liveStreamState.map { state -> Bool in
+        switch state {
+        case .live(playbackState: .playing, _):
+          return false
+        case .replay(playbackState: .playing, _):
+          return false
+        default:
+          return true
+        }
       },
       self.createAndConfigureLiveStreamViewController
       )

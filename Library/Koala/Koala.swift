@@ -1811,7 +1811,7 @@ private func properties(shareContext: ShareContext,
     result["context"] = "project"
   case let .liveStream(project, _):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
-    result["context"] = "liveStream"
+    result["context"] = "live_stream"
   case let .thanks(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"
