@@ -36,7 +36,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var subscribeButtonAccessibilityHint: Signal<String, NoError> { get }
   var subscribeButtonAccessibilityLabel: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<String?, NoError> { get }
-  var subscribeButtonText: Signal<String, NoError> { get }
+  var subscribeLabelHidden: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
 }
 
@@ -127,9 +127,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       $0 ? "postcard-checkmark" : nil
     }
 
-    self.subscribeLabelText = subscribed.map {
-      !$0 ? Strings.Keep_up_with_future_live_streams() : ""
-    }
+    self.subscribeLabelText = subscribed.map { _ in
+      Strings.Keep_up_with_future_live_streams()
+    }.take(first: 1)
 
     self.subscribeButtonText = subscribed.map {
       $0 ? Strings.Subscribed() : Strings.Subscribe()
@@ -153,6 +153,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         .filter { AppEnvironment.current.currentUser != nil }
         .mapConst(true),
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
+    ).skipRepeats()
+
+
+    self.subscribeLabelHidden = Signal.merge(
+      Signal.combineLatest(self.animateSubscribeButtonActivityIndicator, subscribed).map { $0 || $1 },
+      subscribed
     ).skipRepeats()
 
     self.detailsStackViewHidden = Signal.merge(
@@ -239,7 +245,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let subscribeButtonAccessibilityHint: Signal<String, NoError>
   public let subscribeButtonAccessibilityLabel: Signal<String, NoError>
   public let subscribeButtonImage: Signal<String?, NoError>
-  public let subscribeButtonText: Signal<String, NoError>
+  public let subscribeLabelHidden: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
