@@ -89,7 +89,8 @@ lint:
 	swiftlint lint --reporter json
 
 strings:
-	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
+	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
+		| xcrun -sdk macosx swift -
 
 secrets:
 	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
