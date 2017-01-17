@@ -84,7 +84,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       localizedString(
         key: "The_live_stream_will_start_time",
         defaultValue: "The live stream will start %{time}.",
-        substitutions: ["time" : Format.relative(secondsInUTC: liveStream.startDate)])
+        substitutions: ["time": Format.relative(secondsInUTC: liveStream.startDate)])
     }
 
     let countdownEnded = dateComponents

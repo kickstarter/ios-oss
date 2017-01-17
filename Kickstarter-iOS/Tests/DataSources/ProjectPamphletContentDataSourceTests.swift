@@ -50,17 +50,40 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let section = ProjectPamphletContentDataSource.Section.subpages.rawValue
 
     let currentlyLiveStream = .template
+      |> Project.LiveStream.lens.id .~ 1
       |> Project.LiveStream.lens.isLiveNow .~ true
-    let futureLiveStream = .template
+      |> Project.LiveStream.lens.startDate .~ MockDate().timeIntervalSince1970
+
+    let futureLiveStreamSoon = .template
+      |> Project.LiveStream.lens.id .~ 2
       |> Project.LiveStream.lens.isLiveNow .~ false
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60)
-    let pastLiveStream = .template
+
+    let futureLiveStreamWayFuture = .template
+      |> Project.LiveStream.lens.id .~ 3
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 48 * 60 * 60)
+
+    let pastLiveStreamRecent = .template
+      |> Project.LiveStream.lens.id .~ 4
       |> Project.LiveStream.lens.isLiveNow .~ false
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
+
+    let pastLiveStreamWayPast = .template
+      |> Project.LiveStream.lens.id .~ 5
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 24 * 60 * 60)
+
     let project = .template
       |> Project.lens.stats.commentsCount .~ 24
       |> Project.lens.stats.updatesCount .~ 42
-      |> Project.lens.liveStreams .~ [pastLiveStream, currentlyLiveStream, futureLiveStream]
+      |> Project.lens.liveStreams .~ [
+        futureLiveStreamWayFuture,
+        pastLiveStreamWayPast,
+        currentlyLiveStream,
+        pastLiveStreamRecent,
+        futureLiveStreamSoon,
+    ]
 
     let config = .template
       |> Config.lens.features .~ ["ios_live_streams": true]
@@ -68,17 +91,28 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     withEnvironment(config: config) {
       dataSource.load(project: project)
 
-      XCTAssertEqual(5, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+      XCTAssertEqual(7, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+
       XCTAssertEqual(.liveStream(liveStream: currentlyLiveStream, .first),
                      self.dataSource[IndexPath(row: 0, section: section)] as? ProjectPamphletSubpage)
-      XCTAssertEqual(.liveStream(liveStream: futureLiveStream, .middle),
+
+      XCTAssertEqual(.liveStream(liveStream: futureLiveStreamSoon, .middle),
                      self.dataSource[IndexPath(row: 1, section: section)] as? ProjectPamphletSubpage)
-      XCTAssertEqual(.liveStream(liveStream: pastLiveStream, .middle),
+
+      XCTAssertEqual(.liveStream(liveStream: futureLiveStreamWayFuture, .middle),
                      self.dataSource[IndexPath(row: 2, section: section)] as? ProjectPamphletSubpage)
-      XCTAssertEqual(.comments(24, .middle),
+
+      XCTAssertEqual(.liveStream(liveStream: pastLiveStreamRecent, .middle),
                      self.dataSource[IndexPath(row: 3, section: section)] as? ProjectPamphletSubpage)
-      XCTAssertEqual(.updates(42, .last),
+
+      XCTAssertEqual(.liveStream(liveStream: pastLiveStreamWayPast, .middle),
                      self.dataSource[IndexPath(row: 4, section: section)] as? ProjectPamphletSubpage)
+
+      XCTAssertEqual(.comments(24, .middle),
+                     self.dataSource[IndexPath(row: 5, section: section)] as? ProjectPamphletSubpage)
+
+      XCTAssertEqual(.updates(42, .last),
+                     self.dataSource[IndexPath(row: 6, section: section)] as? ProjectPamphletSubpage)
     }
   }
 }

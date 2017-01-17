@@ -60,6 +60,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
 
+    let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+
+    // Compares two live streams, putting live ones first.
     let currentlyLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
       switch (lhs.isLiveNow, rhs.isLiveNow) {
       case (true, false):                 return .lt
@@ -68,11 +71,27 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       }
     }
 
+    // Compares two live streams, putting the future ones first.
+    let futureLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      lhs.startDate > now && rhs.startDate > now || lhs.startDate < now && rhs.startDate < now
+        ? .eq : lhs.startDate < rhs.startDate ? .gt
+        : .lt
+    }
+
+    // Compares two live streams, putting soon-to-be-live first and way-back past last.
+    let startDateComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
+      lhs.startDate > now
+        ? (lhs.startDate == rhs.startDate ? .eq : lhs.startDate < rhs.startDate ? .lt: .gt)
+        : (lhs.startDate == rhs.startDate ? .eq : lhs.startDate < rhs.startDate ? .gt: .lt)
+    }
+
     // Sort by:
     //   * live streams first
-    //   * then sorted by start date, future live streams first
+    //   * then future streams first and past streams last
+    //   * future streams sorted by start date asc, past streams sorted by start date desc
     let comparator = currentlyLiveStreamsFirstComparator
-      <> Project.LiveStream.lens.startDate.comparator.reversed
+      <> futureLiveStreamsFirstComparator
+      <> startDateComparator
 
     return project.liveStreams
       .sorted(comparator: comparator)
