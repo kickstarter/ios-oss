@@ -325,6 +325,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingButtonHidden
     self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
+    self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
+
     self.viewModel.outputs.titleViewText
       .observeForUI()
       .observeValues { [weak self] in
