@@ -19,6 +19,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
+  private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
   private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let numberWatchingButtonHidden = TestObserver<Bool, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
@@ -40,6 +41,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
+    self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
     self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
     self.vm.outputs.numberWatchingButtonHidden.observe(self.numberWatchingButtonHidden.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
@@ -155,6 +157,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
+    self.liveStreamState.assertValueCount(0)
+
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()
 
@@ -186,9 +190,57 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     ])
   }
 
+  func testNavBarTitleViewHidden_LiveState() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.navBarTitleViewHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.navBarTitleViewHidden.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+    self.navBarTitleViewHidden.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .live(playbackState: .playing, startTime: 123)
+    )
+
+    self.navBarTitleViewHidden.assertValues([true, false])
+  }
+
+  func testNavBarTitleViewHidden_ReplayState() {
+    let project = Project.template
+    let event = LiveStreamEvent.template
+
+    self.navBarTitleViewHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    self.navBarTitleViewHidden.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+    self.navBarTitleViewHidden.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .playing, duration: 123)
+    )
+
+    self.navBarTitleViewHidden.assertValues([true, false])
+  }
+
   func testLoaderStackViewHidden() {
     let project = Project.template
     let event = LiveStreamEvent.template
+
+    self.loaderStackViewHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, event: event)
     self.vm.inputs.viewDidLoad()

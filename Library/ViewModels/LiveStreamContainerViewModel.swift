@@ -27,6 +27,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
   var loaderStackViewHidden: Signal<Bool, NoError> { get }
   var loaderText: Signal<String, NoError> { get }
+  var navBarTitleViewHidden: Signal<Bool, NoError> { get }
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
   var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
@@ -177,6 +178,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.showErrorAlert.mapConst(true)
     ).skipRepeats()
 
+    self.navBarTitleViewHidden = Signal.merge(
+      project.mapConst(true),
+      liveStreamState.map { state in
+        switch state {
+        case .live(playbackState: .playing, _):
+          return false
+        case .replay(playbackState: .playing, _):
+          return false
+        default:
+          return true
+        }
+      }
+    ).skipRepeats()
+
     self.navBarLiveDotImageViewHidden = hideWhenReplay
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingButtonHidden = hideWhenReplay
@@ -219,6 +234,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
+  public let navBarTitleViewHidden: Signal<Bool, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingButtonHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
