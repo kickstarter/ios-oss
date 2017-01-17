@@ -178,7 +178,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map { isSubscribed in
         isSubscribed
           ? localizedString(key: "Unsubscribe", defaultValue: "Unsubscribe")
-          : localizedString(key: "Subscribe", defaultValue: "Subscribe")
+          : Strings.Subscribe()
     }
 
     configData
