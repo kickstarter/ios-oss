@@ -48,7 +48,9 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func initializeDatabase(userId: Int?, failed: (Void) -> Void, succeeded: (FIRDatabaseReference) -> Void) {
+  public func initializeDatabase(userId: Int?,
+                                 failed: (Void) -> Void,
+                                 succeeded: (FIRDatabaseReference) -> Void) {
 
     guard let app = KsLiveApp.firebaseApp() else {
       failed()
