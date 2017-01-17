@@ -41,6 +41,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
                                                                   event: liveStreamEvent)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
         self.scheduler.advance()
 
         FBSnapshotVerifyView(
@@ -109,6 +110,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
+        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
         self.scheduler.advance()
 
         let stateIdentifier = state == .greenRoom ? "greenRoom"

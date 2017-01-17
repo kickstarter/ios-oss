@@ -276,7 +276,7 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 
-  if liveStreamEvent.stream.startDate < Date() {
+  if liveStreamEvent.stream.startDate < AppEnvironment.current.dateType.init().date {
     return Strings.Creator_name_was_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 

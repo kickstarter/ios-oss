@@ -33,8 +33,10 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
   var shareButtonEnabled: Signal<Bool, NoError> { get }
   var showErrorAlert: Signal<String, NoError> { get }
-  var subscribeButtonText: Signal<String, NoError> { get }
+  var subscribeButtonAccessibilityHint: Signal<String, NoError> { get }
+  var subscribeButtonAccessibilityLabel: Signal<String, NoError> { get }
   var subscribeButtonImage: Signal<String?, NoError> { get }
+  var subscribeButtonText: Signal<String, NoError> { get }
   var subscribeLabelHidden: Signal<Bool, NoError> { get }
   var subscribeLabelText: Signal<String, NoError> { get }
 }
@@ -154,7 +156,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     ).skipRepeats()
 
-
     self.subscribeLabelHidden = Signal.merge(
       Signal.combineLatest(self.animateSubscribeButtonActivityIndicator, subscribed).map { $0 || $1 },
       subscribed
@@ -165,8 +166,26 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.animateActivityIndicator
     ).skipRepeats()
 
-    self.numberOfPeopleWatchingText = self.numberOfPeopleWatchingProperty.signal.skipNil()
-      .map { Format.wholeNumber($0) }
+    self.numberOfPeopleWatchingText = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst("0"),
+      self.numberOfPeopleWatchingProperty.signal.skipNil().map { Format.wholeNumber($0) }
+      )
+
+    self.subscribeButtonAccessibilityHint = subscribed
+      .map { isSubscribed in
+        isSubscribed
+          ? localizedString(key: "Unsubscribes_from_upcoming_lives_streams.",
+                            defaultValue: "Unsubscribes from upcoming live streams.")
+          : localizedString(key: "Subscribes_to_upcoming_lives_streams",
+                            defaultValue: "Subscribes to upcoming live streams.")
+    }
+
+    self.subscribeButtonAccessibilityLabel = subscribed
+      .map { isSubscribed in
+        isSubscribed
+          ? localizedString(key: "Unsubscribe", defaultValue: "Unsubscribe")
+          : Strings.Subscribe()
+    }
 
     configData
       .takePairWhen(isSubscribedEvent.values())
@@ -223,8 +242,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
-  public let subscribeButtonText: Signal<String, NoError>
+  public let subscribeButtonAccessibilityHint: Signal<String, NoError>
+  public let subscribeButtonAccessibilityLabel: Signal<String, NoError>
   public let subscribeButtonImage: Signal<String?, NoError>
+  public let subscribeButtonText: Signal<String, NoError>
   public let subscribeLabelHidden: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
 
