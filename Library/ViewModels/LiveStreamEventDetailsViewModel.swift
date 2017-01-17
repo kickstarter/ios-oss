@@ -156,7 +156,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       isSubscribedEvent.filter { $0.isTerminating }.mapConst(false)
     ).skipRepeats()
 
-
     self.subscribeLabelHidden = Signal.merge(
       Signal.combineLatest(self.animateSubscribeButtonActivityIndicator, subscribed).map { $0 || $1 },
       subscribed
