@@ -38,6 +38,9 @@ internal protocol LiveStreamViewModelInputs {
 
   /// Call when the viewDidLoad
   func viewDidLoad()
+
+  /// Call when the viewDidDisappear
+  func viewDidDisappear()
 }
 
 internal protocol LiveStreamViewModelOutputs {
@@ -60,6 +63,9 @@ internal protocol LiveStreamViewModelOutputs {
 
   /// Create the video view controller based on the live stream type
   var createVideoViewController: Signal<LiveStreamType, NoError> { get }
+
+  /// Disable idle time so that the display does not sleep
+  var disableIdleTimer: Signal<Bool, NoError> { get }
 
   /// Emits an event and user id when the firebase database should be initialized.
   var initializeFirebase: Signal<(LiveStreamEvent, Int?), NoError> { get }
@@ -177,6 +183,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedGreenRoomOffOrInReplay
       )
       .map(first)
+
+    self.disableIdleTimer = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      self.viewDidDisappearProperty.signal.mapConst(false)
+    )
 
     self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
@@ -333,6 +344,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewDidDisappearProperty = MutableProperty()
+  internal func viewDidDisappear() {
+    self.viewDidDisappearProperty.value = ()
+  }
+
   internal let createPresenceReference: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>
   internal let createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
@@ -342,6 +358,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   internal let createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>
   internal let createVideoViewController: Signal<LiveStreamType, NoError>
+  internal let disableIdleTimer: Signal<Bool, NoError>
   internal let initializeFirebase: Signal<(LiveStreamEvent, Int?), NoError>
   internal let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged: Signal<Int, NoError>
   internal let notifyDelegateLiveStreamViewControllerStateChanged: Signal<LiveStreamViewControllerState,

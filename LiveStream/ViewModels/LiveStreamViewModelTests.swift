@@ -24,6 +24,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let createScaleNumberOfPeopleWatchingObservers
     = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
+  private let disableIdleTimer = TestObserver<Bool, NoError>()
   private let initializeFirebaseEvent = TestObserver<LiveStreamEvent, NoError>()
   private let initializeFirebaseUserId = TestObserver<Int?, NoError>()
   private let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = TestObserver<Int, NoError>()
@@ -45,6 +46,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       .observe(self.createNumberOfPeopleWatchingObservers.observer)
     self.vm.outputs.createScaleNumberOfPeopleWatchingObservers
       .observe(self.createScaleNumberOfPeopleWatchingObservers.observer)
+    self.vm.outputs.disableIdleTimer.observe(self.disableIdleTimer.observer)
 
     self.vm.outputs.initializeFirebase.map(first).observe(self.initializeFirebaseEvent.observer)
     self.vm.outputs.initializeFirebase.map(second).observe(self.initializeFirebaseUserId.observer)
@@ -564,6 +566,21 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(
       0, "Does not emit when not a scale event."
     )
+  }
+
+  func testDisableIdleTimer() {
+    let event = LiveStreamEvent.template
+
+    self.disableIdleTimer.assertValueCount(0)
+
+    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.disableIdleTimer.assertValues([true])
+
+    self.vm.inputs.viewDidDisappear()
+
+    self.disableIdleTimer.assertValues([true, false])
   }
 
   func testDoNotCreateFirebaseObservers_WhenNotLive() {

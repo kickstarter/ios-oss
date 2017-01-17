@@ -95,6 +95,12 @@ public final class LiveStreamViewController: UIViewController {
       .observeValues { [weak self] event, userId in
         self?.initializeFirebase(withEvent: event, userId: userId)
     }
+
+    self.viewModel.outputs.disableIdleTimer
+      .observeForUI()
+      .observeValues {
+        UIApplication.shared.isIdleTimerDisabled = $0
+    }
   }
 
   public override func viewDidLoad() {
