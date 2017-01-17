@@ -344,6 +344,12 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
+    self.eventDetailsViewModel.outputs.subscribeLabelHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.subscribeLabel.alpha = $0 ? 0 : 1
+    }
+
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeForUI()
       .observeValues { [weak self] in

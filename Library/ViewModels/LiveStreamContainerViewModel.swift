@@ -216,13 +216,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
-  public let showErrorAlert: Signal<String, NoError>
   public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingButtonHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
+  public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>
 
