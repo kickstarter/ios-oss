@@ -904,27 +904,6 @@
 			remoteGlobalIDString = EAA6A5101B2F154D0058E9A8;
 			remoteInfo = "Runes-watchOS";
 		};
-		A71A50DD1E2B4A6C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50901E2B4A3500574C42 /* ReactiveSwift.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D047260B19E49F82006002AA;
-			remoteInfo = "ReactiveSwift-iOS";
-		};
-		A71A50E11E2B4A7A00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50A81E2B4A3E00574C42 /* Result.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D454807C1A957361009D7229;
-			remoteInfo = "Result-iOS";
-		};
-		A71A50E51E2B4A8600574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F802D4D11A5F218E005E236C;
-			remoteInfo = "Runes-iOS";
-		};
 		A724BA621D2BFCC10041863C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -981,6 +960,13 @@
 			remoteGlobalIDString = A755113B1C8642B3005355CF;
 			remoteInfo = "Library-iOS";
 		};
+		A755EE201E2E2BF400D9A601 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F802D4D11A5F218E005E236C;
+			remoteInfo = "Runes-iOS";
+		};
 		A76E0A4B1D00C00500EC525A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -996,13 +982,6 @@
 			remoteInfo = "Kickstarter-iOS";
 		};
 		A7BA54341E1E493600E54377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7BA54281E1E493500E54377;
-			remoteInfo = LiveStream;
-		};
-		A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -1253,13 +1232,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A70969111D14373400DB39D3;
 			remoteInfo = "Prelude-UIKit-tvOSTests";
-		};
-		A7C5C5511DF895850048D14C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7BE4F121D05C10B00353EF9 /* Prelude.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A727E0211D0796D600D8FE43;
-			remoteInfo = "Prelude-UIKit-iOS";
 		};
 		A7C5C5531DF895880048D14C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3237,7 +3209,6 @@
 			dependencies = (
 				A7BA54F71E1E51F800E54377 /* PBXTargetDependency */,
 				A7C5C5541DF895880048D14C /* PBXTargetDependency */,
-				A7C5C5521DF895850048D14C /* PBXTargetDependency */,
 			);
 			name = "Library-iOS";
 			productName = "Library-iOS";
@@ -3276,6 +3247,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A755EE211E2E2BF400D9A601 /* PBXTargetDependency */,
 				A7BA54EF1E1E4C8700E54377 /* PBXTargetDependency */,
 				A7BA54ED1E1E4C4500E54377 /* PBXTargetDependency */,
 				A7BA54EB1E1E4C3F00E54377 /* PBXTargetDependency */,
@@ -3339,10 +3311,6 @@
 			);
 			dependencies = (
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
-				A7BA543D1E1E493600E54377 /* PBXTargetDependency */,
-				A71A50DE1E2B4A6C00574C42 /* PBXTargetDependency */,
-				A71A50E21E2B4A7A00574C42 /* PBXTargetDependency */,
-				A71A50E61E2B4A8600574C42 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -4657,21 +4625,6 @@
 			name = "AlamofireImage iOS";
 			targetProxy = A709698A1D14685C00DB39D3 /* PBXContainerItemProxy */;
 		};
-		A71A50DE1E2B4A6C00574C42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ReactiveSwift-iOS";
-			targetProxy = A71A50DD1E2B4A6C00574C42 /* PBXContainerItemProxy */;
-		};
-		A71A50E21E2B4A7A00574C42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Result-iOS";
-			targetProxy = A71A50E11E2B4A7A00574C42 /* PBXContainerItemProxy */;
-		};
-		A71A50E61E2B4A8600574C42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Runes-iOS";
-			targetProxy = A71A50E51E2B4A8600574C42 /* PBXContainerItemProxy */;
-		};
 		A724BA631D2BFCC10041863C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
@@ -4692,6 +4645,11 @@
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = A75511471C8642B3005355CF /* PBXContainerItemProxy */;
 		};
+		A755EE211E2E2BF400D9A601 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Runes-iOS";
+			targetProxy = A755EE201E2E2BF400D9A601 /* PBXContainerItemProxy */;
+		};
 		A76E0A4C1D00C00500EC525A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
@@ -4706,11 +4664,6 @@
 			isa = PBXTargetDependency;
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
 			targetProxy = A7BA54341E1E493600E54377 /* PBXContainerItemProxy */;
-		};
-		A7BA543D1E1E493600E54377 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7BA54281E1E493500E54377 /* LiveStream */;
-			targetProxy = A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */;
 		};
 		A7BA54E91E1E4C2B00E54377 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4741,11 +4694,6 @@
 			isa = PBXTargetDependency;
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
 			targetProxy = A7BA54F61E1E51F800E54377 /* PBXContainerItemProxy */;
-		};
-		A7C5C5521DF895850048D14C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Prelude-UIKit-iOS";
-			targetProxy = A7C5C5511DF895850048D14C /* PBXContainerItemProxy */;
 		};
 		A7C5C5541DF895880048D14C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
