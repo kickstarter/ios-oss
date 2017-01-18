@@ -13,6 +13,7 @@ extension Result {
 }
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
+  private let anonymousUserId: String?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
   private let subscribeToResult: Result<Bool, LiveApiError>?
@@ -21,12 +22,21 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.init(fetchEventResult: nil)
   }
 
-  internal init(fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
+  internal init(anonymousUserId: String? = nil,
+                fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<Bool, LiveApiError>? = nil) {
+    self.anonymousUserId = anonymousUserId
     self.fetchEventResult = fetchEventResult
     self.initializeDatabaseResult = initializeDatabaseResult
     self.subscribeToResult = subscribeToResult
+  }
+
+  internal func deleteDatabase() {
+  }
+
+  internal func signInAnonymously(completion: @escaping (String) -> Void) {
+    anonymousUserId.doIfSome(completion)
   }
 
   internal func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {

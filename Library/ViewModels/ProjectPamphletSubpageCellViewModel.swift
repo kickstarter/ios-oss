@@ -26,7 +26,7 @@ public protocol ProjectPamphletSubpageCellViewModelType {
 
 public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCellViewModelType,
 ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOutputs {
-  var st: String?
+
   public init() {
     let commentsSubpage = self.subpageProperty.signal.skipNil().filter { $0.isComments }
     let liveStreamSubpage = self.subpageProperty.signal.skipNil().filter { $0.isLiveStream }

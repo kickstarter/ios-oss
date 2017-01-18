@@ -98,11 +98,8 @@ public func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControlle
   case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime)):
     return lhsPlaybackState == rhsPlaybackState && lhsStartTime == rhsStartTime
   case (.replay(let lhsPlaybackState, let lhsDuration), .replay(let rhsPlaybackState, let rhsDuration)):
-
     return lhsPlaybackState == rhsPlaybackState && lhsDuration == rhsDuration
-
   case (.error(let lhsError), .error(let rhsError)):
-
     return lhsError == rhsError
   case (.nonStarter, .nonStarter):
     return true

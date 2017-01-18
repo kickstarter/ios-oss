@@ -1,3 +1,5 @@
+import Foundation
+
 extension LiveStreamEvent {
   internal static let template = LiveStreamEvent(
     creator: Creator(

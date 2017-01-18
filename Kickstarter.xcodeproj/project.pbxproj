@@ -477,11 +477,9 @@
 		A7B1EBB11D901DE800BEE8B3 /* ProjectPamphletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1EBB01D901DE800BEE8B3 /* ProjectPamphletViewModel.swift */; };
 		A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */; };
 		A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A7B76BCA1E23E47100C8E312 /* KsLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B76BC91E23E47100C8E312 /* KsLive.swift */; };
 		A7B76C021E23E48300C8E312 /* LiveStreamServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B76C011E23E48300C8E312 /* LiveStreamServiceProtocol.swift */; };
 		A7B76C041E23E4B500C8E312 /* MockLiveStreamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B76C031E23E4B500C8E312 /* MockLiveStreamService.swift */; };
 		A7B76C061E23E4CF00C8E312 /* LiveStreamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B76C051E23E4CF00C8E312 /* LiveStreamService.swift */; };
-		A7BA542C1E1E493600E54377 /* LiveStream.h in Headers */ = {isa = PBXBuildFile; fileRef = A7BA542B1E1E493600E54377 /* LiveStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7BA54331E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
 		A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
 		A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1749,7 +1747,6 @@
 		A7B694291C87A04C00C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		A7B694301C87A07100C49A4F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		A7B694321C87A07100C49A4F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
-		A7B76BC91E23E47100C8E312 /* KsLive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KsLive.swift; sourceTree = "<group>"; };
 		A7B76C011E23E48300C8E312 /* LiveStreamServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamServiceProtocol.swift; sourceTree = "<group>"; };
 		A7B76C031E23E4B500C8E312 /* MockLiveStreamService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLiveStreamService.swift; sourceTree = "<group>"; };
 		A7B76C051E23E4CF00C8E312 /* LiveStreamService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamService.swift; sourceTree = "<group>"; };
@@ -1764,7 +1761,6 @@
 		A7BA53F11E1E482E00E54377 /* GoogleParsingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleParsingUtilities.framework; sourceTree = "<group>"; };
 		A7BA53F31E1E482E00E54377 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = "<group>"; };
 		A7BA54291E1E493500E54377 /* LiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7BA542B1E1E493600E54377 /* LiveStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStream.h; sourceTree = "<group>"; };
 		A7BA542D1E1E493600E54377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
@@ -2680,7 +2676,6 @@
 		A7B76BC81E23E47100C8E312 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				A7B76BC91E23E47100C8E312 /* KsLive.swift */,
 				A7B76C051E23E4CF00C8E312 /* LiveStreamService.swift */,
 				A7B76C011E23E48300C8E312 /* LiveStreamServiceProtocol.swift */,
 				A7B76C031E23E4B500C8E312 /* MockLiveStreamService.swift */,
@@ -2732,7 +2727,6 @@
 		A7BA542A1E1E493600E54377 /* LiveStream */ = {
 			isa = PBXGroup;
 			children = (
-				A7BA542B1E1E493600E54377 /* LiveStream.h */,
 				A7BA542D1E1E493600E54377 /* Info.plist */,
 				A7BA54F21E1E4D5A00E54377 /* Secrets.swift */,
 				A7BA54881E1E4A9E00E54377 /* Extensions */,
@@ -3206,7 +3200,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7BA542C1E1E493600E54377 /* LiveStream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4402,7 +4395,6 @@
 				A7BA55051E1E9D4B00E54377 /* LiveStreamEventLenses.swift in Sources */,
 				A7BA54A81E1E4A9E00E54377 /* LiveStreamViewController.swift in Sources */,
 				A7B76C061E23E4CF00C8E312 /* LiveStreamService.swift in Sources */,
-				A7B76BCA1E23E47100C8E312 /* KsLive.swift in Sources */,
 				A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */,
 				A7BA54AD1E1E4A9E00E54377 /* LiveStreamViewModel.swift in Sources */,
 				A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */,
