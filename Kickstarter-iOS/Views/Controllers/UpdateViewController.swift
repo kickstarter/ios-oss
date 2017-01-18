@@ -13,7 +13,7 @@ internal final class UpdateViewController: WebViewController {
   @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
   internal static func configuredWith(project: Project, update: Update) -> UpdateViewController {
-    let vc = Storyboard.Update.instantiate(UpdateViewController.self)
+    let vc: UpdateViewController = Storyboard.Update.instantiate()
     vc.viewModel.inputs.configureWith(project: project, update: update)
     vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
     return vc

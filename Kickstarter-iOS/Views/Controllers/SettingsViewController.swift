@@ -75,7 +75,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func instantiate() -> SettingsViewController {
-    return Storyboard.Settings.instantiate(SettingsViewController.self)
+    return Storyboard.Settings.instantiate()
   }
 
   internal override func viewDidLoad() {
@@ -611,10 +611,8 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @objc fileprivate func betaDebugPushNotificationsButtonTapped() {
-    self.navigationController?.pushViewController(
-      Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
-      animated: true
-    )
+    let vc: DebugPushNotificationsViewController = Storyboard.DebugPushNotifications.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

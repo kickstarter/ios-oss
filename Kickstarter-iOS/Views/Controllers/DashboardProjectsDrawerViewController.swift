@@ -25,7 +25,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
   internal static func configuredWith(data: [ProjectsDrawerData])
     -> DashboardProjectsDrawerViewController {
 
-      let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController.self)
+      let vc: DashboardProjectsDrawerViewController = Storyboard.DashboardProjectsDrawer.instantiate()
       vc.viewModel.inputs.configureWith(data: data)
       return vc
   }

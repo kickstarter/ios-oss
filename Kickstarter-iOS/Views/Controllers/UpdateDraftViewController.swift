@@ -30,7 +30,7 @@ internal final class UpdateDraftViewController: UIViewController {
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func configuredWith(project: Project) -> UpdateDraftViewController {
-    let vc = Storyboard.UpdateDraft.instantiate(UpdateDraftViewController.self)
+    let vc: UpdateDraftViewController = Storyboard.UpdateDraft.instantiate()
     vc.viewModel.inputs.configureWith(project: project)
     return vc
   }

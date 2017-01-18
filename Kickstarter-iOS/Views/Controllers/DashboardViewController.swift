@@ -13,7 +13,7 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   internal static func instantiate() -> DashboardViewController {
-    return Storyboard.Dashboard.instantiate(DashboardViewController.self)
+    return Storyboard.Dashboard.instantiate()
   }
 
   internal func `switch`(toProject param: Param) {

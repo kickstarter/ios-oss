@@ -17,7 +17,7 @@ internal final class CommentsViewController: UITableViewController {
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
 
-      let vc = Storyboard.Comments.instantiate(CommentsViewController.self)
+      let vc: CommentsViewController = Storyboard.Comments.instantiate()
       vc.viewModel.inputs.configureWith(project: project, update: update)
       return vc
   }

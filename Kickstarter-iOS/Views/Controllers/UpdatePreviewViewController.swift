@@ -9,7 +9,7 @@ internal final class UpdatePreviewViewController: WebViewController {
   @IBOutlet fileprivate weak var publishBarButtonItem: UIBarButtonItem!
 
   internal static func configuredWith(draft: UpdateDraft) -> UpdatePreviewViewController {
-    let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController.self)
+    let vc: UpdatePreviewViewController = Storyboard.UpdateDraft.instantiate()
     vc.viewModel.inputs.configureWith(draft: draft)
     return vc
   }

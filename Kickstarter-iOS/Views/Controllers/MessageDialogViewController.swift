@@ -23,7 +23,7 @@ internal final class MessageDialogViewController: UIViewController {
   internal static func configuredWith(messageSubject: MessageSubject,
                                       context: Koala.MessageDialogContext) -> MessageDialogViewController {
 
-    let vc = Storyboard.Messages.instantiate(MessageDialogViewController.self)
+    let vc: MessageDialogViewController = Storyboard.Messages.instantiate()
     vc.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)
     vc.modalPresentationStyle = .formSheet
     return vc

@@ -12,7 +12,7 @@ internal final class ProfileViewController: UICollectionViewController {
   fileprivate let refreshControl = UIRefreshControl()
 
   internal static func instantiate() -> ProfileViewController {
-    return Storyboard.Profile.instantiate(ProfileViewController.self)
+    return Storyboard.Profile.instantiate()
   }
 
   internal override func viewDidLoad() {

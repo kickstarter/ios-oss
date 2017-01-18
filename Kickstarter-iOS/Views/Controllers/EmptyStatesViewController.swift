@@ -25,7 +25,7 @@ internal final class EmptyStatesViewController: UIViewController {
   fileprivate let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
 
   internal static func configuredWith(emptyState: EmptyState?) -> EmptyStatesViewController {
-    let vc = Storyboard.EmptyStates.instantiate(EmptyStatesViewController.self)
+    let vc: EmptyStatesViewController = Storyboard.EmptyStates.instantiate()
     vc.viewModel.inputs.configureWith(emptyState: emptyState)
     return vc
   }

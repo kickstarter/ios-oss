@@ -11,7 +11,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
-    let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
+    let vc: DiscoveryPageViewController = Storyboard.DiscoveryPage.instantiate()
     vc.viewModel.inputs.configureWith(sort: sort)
     return vc
   }

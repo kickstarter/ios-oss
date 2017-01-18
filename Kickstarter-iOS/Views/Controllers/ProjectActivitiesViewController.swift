@@ -8,7 +8,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   fileprivate let dataSource = ProjectActivitiesDataSource()
 
   internal static func configuredWith(project: Project) -> ProjectActivitiesViewController {
-    let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController.self)
+    let vc: ProjectActivitiesViewController = Storyboard.ProjectActivity.instantiate()
     vc.viewModel.inputs.configureWith(project)
     return vc
   }

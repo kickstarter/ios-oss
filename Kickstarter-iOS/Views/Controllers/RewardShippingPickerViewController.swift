@@ -30,7 +30,7 @@ internal final class RewardShippingPickerViewController: UIViewController {
                                               delegate: RewardShippingPickerViewControllerDelegate)
     -> RewardShippingPickerViewController {
 
-      let vc = Storyboard.RewardPledge.instantiate(RewardShippingPickerViewController.self)
+      let vc: RewardShippingPickerViewController = Storyboard.RewardPledge.instantiate()
       vc.viewModel.inputs.configureWith(project: project,
                                         shippingRules: shippingRules,
                                         selectedShippingRule: selectedShippingRule)

@@ -20,7 +20,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   @IBOutlet fileprivate weak var signupButton: UIButton!
 
   internal static func instantiate() -> SignupViewController {
-    let vc = Storyboard.Login.instantiate(SignupViewController.self)
+    let vc: SignupViewController = Storyboard.Login.instantiate()
     vc.helpViewModel.inputs.configureWith(helpContext: .signup)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc

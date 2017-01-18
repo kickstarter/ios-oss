@@ -8,7 +8,7 @@ internal final class WebModalViewController: WebViewController {
   fileprivate let viewModel: WebModalViewModelType = WebModalViewModel()
 
   internal static func configuredWith(request: URLRequest) -> WebModalViewController {
-    let vc = Storyboard.WebModal.instantiate(WebModalViewController.self)
+    let vc: WebModalViewController = Storyboard.WebModal.instantiate()
     vc.viewModel.inputs.configureWith(request: request)
     return vc
   }

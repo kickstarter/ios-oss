@@ -17,7 +17,7 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
   internal static func instantiate() -> SearchViewController {
-    return Storyboard.Search.instantiate(SearchViewController.self)
+    return Storyboard.Search.instantiate()
   }
 
   internal override func viewDidLoad() {
