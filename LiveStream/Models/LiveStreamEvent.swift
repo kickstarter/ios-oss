@@ -4,21 +4,21 @@ import Runes
 
 public struct LiveStreamEvent: Equatable {
   public let creator: Creator
-  public let firebase: Firebase
+  public let firebase: Firebase?
   public let id: Int
   public let openTok: OpenTok?
   public let stream: Stream
-  public let user: User
+  public let user: User?
 
   public struct Stream {
     public let backgroundImageUrl: String
     public let description: String
     public let hasReplay: Bool
     public let hlsUrl: String?
-    public let isRtmp: Bool
-    public let isScale: Bool
+    public let isRtmp: Bool?
+    public let isScale: Bool?
     public let liveNow: Bool
-    public let maxOpenTokViewers: Int
+    public let maxOpenTokViewers: Int?
     public let name: String
     public let projectWebUrl: String
     public let projectName: String
@@ -64,15 +64,20 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
 
 extension LiveStreamEvent: Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
-    let create = curry(LiveStreamEvent.init)
-    return create
-      <^> json <| "creator"
-      <*> json <| "firebase"
-      <*> json <| "id"
-      <*> json <|? "opentok"
-      <*> json <| "stream"
-      <*> (json <| "user" <|> .success(User(isSubscribed: false)))
+    return decodeLiveStreamV1(json)
   }
+}
+
+private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
+  let create = curry(LiveStreamEvent.init)
+  let tmp = create
+    <^> json <| "creator"
+    <*> json <|? "firebase"
+    <*> json <| "id"
+  return tmp
+    <*> json <|? "opentok"
+    <*> json <| "stream"
+    <*> json <|? "user"
 }
 
 extension LiveStreamEvent.Stream: Decodable {
@@ -84,10 +89,10 @@ extension LiveStreamEvent.Stream: Decodable {
       <*> json <| "has_replay"
       <*> json <|? "hls_url"
     let tmp2 = tmp1
-      <*> json <| "is_rtmp"
-      <*> json <| "is_scale"
+      <*> json <|? "is_rtmp"
+      <*> json <|? "is_scale"
       <*> json <| "live_now"
-      <*> json <| "max_opentok_viewers"
+      <*> json <|? "max_opentok_viewers"
     let tmp3 = tmp2
       <*> json <| "name"
       <*> json <| "project_web_url"

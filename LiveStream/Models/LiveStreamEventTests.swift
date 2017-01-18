@@ -100,7 +100,7 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("T1==cGFydG5lcl9pZD00=", liveStreamEvent.value?.openTok?.token)
 
     // User
-    XCTAssertEqual(true, liveStreamEvent.value?.user.isSubscribed)
+    XCTAssertEqual(true, liveStreamEvent.value?.user?.isSubscribed)
   }
   //swiftlint:enable function_body_length
 }

@@ -107,7 +107,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedScaleNumberOfPeopleWatchingChanged
     )
 
-    let maxOpenTokViewers = liveStreamEvent.map { $0.stream.maxOpenTokViewers }
+    let maxOpenTokViewers = liveStreamEvent
+      .map { $0.stream.maxOpenTokViewers }
+      .skipNil()
 
     let didLiveStreamEndedNormally = liveStreamEvent
       .map(didEndNormally(event:))
@@ -132,7 +134,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       isMaxOpenTokViewersReached,
 
       liveStreamEvent
-        .map { event in event.stream.isRtmp || didEndNormally(event: event) }
+        .map { event in event.stream.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue)
       )
       .take(first: 1)
@@ -203,11 +205,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       ).take(first: 1)
 
     let databaseRef = self.databaseRefProperty.signal.skipNil()
+    let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
 
     self.createPresenceReference = Signal.zip(
       databaseRef,
       Signal.combineLatest(
-        liveStreamEvent.map { $0.firebase.numberPeopleWatchingPath },
+        firebase.map { $0.numberPeopleWatchingPath },
         combinedUserId
         )
         .map { "\($0)/\($1)" }
@@ -217,31 +220,37 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.createGreenRoomObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") },
+      firebase.map { FirebaseRefConfig(ref: $0.greenRoomPath, orderBy: "") },
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createHLSObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") },
+      firebase.map { FirebaseRefConfig(ref: $0.hlsUrlPath, orderBy: "") },
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
+
+    let numberOfPeopleWatchingRef = liveStreamEvent
+      .filter { $0.stream.isScale == .some(false) }
+      .map { $0.firebase?.numberPeopleWatchingPath }
+      .skipNil()
+      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
 
     self.createNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .filter { !$0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") },
+      numberOfPeopleWatchingRef,
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
+    let scaleNumberOfPeopleWatchingRef = liveStreamEvent
+      .filter { $0.stream.isScale == .some(true) }
+      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
+      .skipNil()
+      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
+
     self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .filter { $0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") },
+      scaleNumberOfPeopleWatchingRef,
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 

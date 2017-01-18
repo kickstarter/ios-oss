@@ -38,7 +38,7 @@ extension LiveStreamEvent.Stream {
         startDate: $1.startDate, webUrl: $1.webUrl) }
     )
 
-    public static let isRtmp = Lens<LiveStreamEvent.Stream, Bool>(
+    public static let isRtmp = Lens<LiveStreamEvent.Stream, Bool?>(
       view: { $0.isRtmp },
       set: { .init(backgroundImageUrl: $1.backgroundImageUrl, description: $1.description,
         hasReplay: $1.hasReplay, hlsUrl: $1.hlsUrl, isRtmp: $0, isScale: $1.isScale,
@@ -47,7 +47,7 @@ extension LiveStreamEvent.Stream {
         startDate: $1.startDate, webUrl: $1.webUrl) }
     )
 
-    public static let isScale = Lens<LiveStreamEvent.Stream, Bool>(
+    public static let isScale = Lens<LiveStreamEvent.Stream, Bool?>(
       view: { $0.isScale },
       set: { .init(backgroundImageUrl: $1.backgroundImageUrl, description: $1.description,
         hasReplay: $1.hasReplay, hlsUrl: $1.hlsUrl, isRtmp: $1.isRtmp, isScale: $0,
@@ -65,7 +65,7 @@ extension LiveStreamEvent.Stream {
         startDate: $1.startDate, webUrl: $1.webUrl) }
     )
 
-    public static let maxOpenTokViewers = Lens<LiveStreamEvent.Stream, Int>(
+    public static let maxOpenTokViewers = Lens<LiveStreamEvent.Stream, Int?>(
       view: { $0.maxOpenTokViewers },
       set: { .init(backgroundImageUrl: $1.backgroundImageUrl, description: $1.description,
         hasReplay: $1.hasReplay, hlsUrl: $1.hlsUrl, isRtmp: $1.isRtmp, isScale: $1.isScale,

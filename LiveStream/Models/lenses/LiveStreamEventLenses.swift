@@ -9,7 +9,7 @@ extension LiveStreamEvent {
         user: $1.user) }
     )
 
-    public static let firebase = Lens<LiveStreamEvent, LiveStreamEvent.Firebase>(
+    public static let firebase = Lens<LiveStreamEvent, LiveStreamEvent.Firebase?>(
       view: { $0.firebase },
       set: { .init(creator: $1.creator, firebase: $0, id: $1.id, openTok: $1.openTok, stream: $1.stream,
         user: $1.user) }
@@ -33,7 +33,7 @@ extension LiveStreamEvent {
         user: $1.user) }
     )
 
-    public static let user = Lens<LiveStreamEvent, LiveStreamEvent.User>(
+    public static let user = Lens<LiveStreamEvent, LiveStreamEvent.User?>(
       view: { $0.user },
       set: { .init(creator: $1.creator, firebase: $1.firebase, id: $1.id, openTok: $1.openTok, stream:
         $1.stream, user: $0) }
@@ -54,11 +54,11 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.hlsUrl
   }
 
-  public var isRtmp: Lens<LiveStreamEvent, Bool> {
+  public var isRtmp: Lens<LiveStreamEvent, Bool?> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isRtmp
   }
 
-  public var isScale: Lens<LiveStreamEvent, Bool> {
+  public var isScale: Lens<LiveStreamEvent, Bool?> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.isScale
   }
 
@@ -66,7 +66,7 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.liveNow
   }
 
-  public var maxOpenTokViewers: Lens<LiveStreamEvent, Int> {
+  public var maxOpenTokViewers: Lens<LiveStreamEvent, Int?> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.maxOpenTokViewers
   }
 
@@ -84,12 +84,6 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
 
   public var startDate: Lens<LiveStreamEvent, Date> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.startDate
-  }
-}
-
-extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.User {
-  public var isSubscribed: Lens<LiveStreamEvent, Bool> {
-    return LiveStreamEvent.lens.user • LiveStreamEvent.User.lens.isSubscribed
   }
 }
 
