@@ -32,6 +32,7 @@ public final class LiveVideoViewController: UIViewController {
     self.session?.disconnect(nil)
     self.session = nil
     self.subscribers.forEach(self.removeSubscriber(subscriber:))
+    self.playerController?.player?.pause()
     self.playerController?.player?.currentItem?.removeObserver(self, forKeyPath: statusKeyPath)
   }
 
