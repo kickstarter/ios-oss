@@ -1561,6 +1561,25 @@ public final class Koala {
     )
   }
 
+  // MARK: Live streams
+  public func trackLiveStreamToggleSubscription(project: Project,
+                                                liveStream: Project.LiveStream,
+                                                subscribed: Bool) {
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+
+    self.track(event: subscribed ? "Subscribed Live Stream" : "Unsubscribed Live Stream",
+               properties: props)
+  }
+
+  public func trackViewedLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+
+    self.track(event: "Viewed Live Stream Countdown", properties: props)
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String:Any] = [:]) {
     self.client.track(
@@ -1790,6 +1809,9 @@ private func properties(shareContext: ShareContext,
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
+  case let .liveStream(project, _):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "live_stream"
   case let .thanks(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"
@@ -1816,6 +1838,18 @@ private func properties(reward: Reward, prefix: String = "backer_reward_") -> [S
   result["has_items"] = !reward.rewardsItems.isEmpty
 
   return result.prefixedKeys(prefix)
+}
+
+private func properties(liveStream: Project.LiveStream,
+                        prefix: String = "live_stream_") -> [String:Any] {
+  var properties: [String:Any] = [:]
+
+  properties["id"] = liveStream.id
+  properties["is_live_now"] = liveStream.isLiveNow
+  properties["name"] = liveStream.name
+  properties["start_date"] = liveStream.startDate
+
+  return properties.prefixedKeys(prefix)
 }
 
 private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {

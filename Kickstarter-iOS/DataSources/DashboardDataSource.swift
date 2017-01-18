@@ -72,8 +72,4 @@ internal final class DashboardDataSource: ValueCellDataSource {
       assertionFailure("Unrecognized (\(type(of: cell)), \(type(of: value))) combo.")
     }
   }
-
-  internal func didSelectContext(at indexPath: IndexPath) -> Bool {
-    return indexPath.section == Section.context.rawValue
-  }
 }

@@ -18,6 +18,7 @@ test:
     - make lint
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
+    - SCHEME=LiveStream make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:

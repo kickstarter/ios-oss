@@ -467,20 +467,23 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="56"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vAH-qI-wPb">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vAH-qI-wPb">
                                             <rect key="frame" x="8" y="8" width="384" height="40"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-bs-AP3">
-                                                    <rect key="frame" x="0.0" y="0.0" width="326" height="40"/>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="253" verticalHuggingPriority="251" misplaced="YES" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="946-cU-6Dn">
+                                                    <rect key="frame" x="0.0" y="13" width="0.0" height="14"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-bs-AP3">
+                                                    <rect key="frame" x="0.0" y="10" width="240" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gk5-Oh-PZV">
-                                                    <rect key="frame" x="326" y="0.0" width="58" height="40"/>
+                                                <view contentMode="scaleToFill" horizontalHuggingPriority="253" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gk5-Oh-PZV">
+                                                    <rect key="frame" x="240" y="0.0" width="144" height="40"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iVO-lV-sJE">
-                                                            <rect key="frame" x="8" y="8" width="42" height="24"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iVO-lV-sJE">
+                                                            <rect key="frame" x="8" y="8" width="266" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -527,6 +530,7 @@
                                 <connections>
                                     <outlet property="countContainerView" destination="gk5-Oh-PZV" id="yEG-Co-8xU"/>
                                     <outlet property="countLabel" destination="iVO-lV-sJE" id="v6p-Sp-bQb"/>
+                                    <outlet property="liveNowImageView" destination="946-cU-6Dn" id="Vvi-w9-CLw"/>
                                     <outlet property="rootStackView" destination="vAH-qI-wPb" id="tba-t4-MeJ"/>
                                     <outlet property="separatorView" destination="jcl-90-mB6" id="HKm-yc-N8B"/>
                                     <outlet property="subpageLabel" destination="BQJ-bs-AP3" id="LcJ-ib-NHU"/>
@@ -897,6 +901,7 @@
     </scenes>
     <resources>
         <image name="checkmark-icon" width="11" height="9"/>
+        <image name="live-indicator" width="14" height="14"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

@@ -12,7 +12,7 @@ internal final class CommentsViewController: UITableViewController {
 
   // This button needs to store a strong reference so as to not get wiped when setting hidden state.
   @IBOutlet fileprivate var commentBarButton: UIBarButtonItem!
-  fileprivate weak var loginToutViewController: UIViewController? = nil
+  fileprivate weak var loginToutViewController: UIViewController?
 
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {

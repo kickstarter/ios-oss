@@ -5,6 +5,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 import KsApi
+import LiveStream
 
 extension XCTestCase {
 
@@ -35,6 +36,7 @@ extension XCTestCase {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
@@ -60,6 +62,7 @@ extension XCTestCase {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         scheduler: scheduler,

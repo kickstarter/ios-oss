@@ -4,11 +4,11 @@ import Prelude
 import Social
 import UIKit
 
-internal protocol ProjectNavBarViewControllerDelegate: class {
+public protocol ProjectNavBarViewControllerDelegate: class {
   func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController)
 }
 
-internal final class ProjectNavBarViewController: UIViewController {
+public final class ProjectNavBarViewController: UIViewController {
   internal weak var delegate: ProjectNavBarViewControllerDelegate?
   fileprivate let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -38,7 +38,7 @@ internal final class ProjectNavBarViewController: UIViewController {
     self.viewModel.inputs.projectVideoDidStart()
   }
 
-  internal override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
@@ -64,7 +64,7 @@ internal final class ProjectNavBarViewController: UIViewController {
   }
 
   // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     self.backgroundGradientView.startPoint = .zero
@@ -93,9 +93,7 @@ internal final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "Closes_project", defaultValue: "Closes project.")
-    }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
     _ = self.navContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.gridHalf(1))
@@ -127,7 +125,7 @@ internal final class ProjectNavBarViewController: UIViewController {
   // swiftlint:enable function_body_length
 
   // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.categoryButton.rac.backgroundColor = self.viewModel.outputs.categoryButtonBackgroundColor
