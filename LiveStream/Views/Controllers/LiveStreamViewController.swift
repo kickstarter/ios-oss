@@ -122,8 +122,8 @@ public final class LiveStreamViewController: UIViewController {
 
   deinit {
     self.firebaseRef?.removeAllObservers()
-    KsLiveApp.firebaseApp()?.delete({ _ in })
     self.firebaseRef?.database.goOffline()
+    self.liveStreamService.deleteDatabase()
   }
 
   // MARK: Firebase
@@ -139,9 +139,8 @@ public final class LiveStreamViewController: UIViewController {
         self.firebaseRef = ref
         self.viewModel.inputs.createdDatabaseRef(ref: ref)
 
-        KsLiveApp.firebaseAuth()?.signInAnonymously { user, _ in
-          guard let firebaseUserId = user?.uid else { return }
-          self.viewModel.inputs.setFirebaseUserId(userId: firebaseUserId)
+        self.liveStreamService.signInAnonymously { id in
+          self.viewModel.inputs.setFirebaseUserId(userId: id)
         }
     })
   }

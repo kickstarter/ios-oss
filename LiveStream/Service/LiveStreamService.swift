@@ -1,9 +1,15 @@
 import Argo
+import FirebaseAnalytics
+import FirebaseAuth
 import FirebaseDatabase
 import ReactiveSwift
 
 public struct LiveStreamService: LiveStreamServiceProtocol {
   public init() {
+  }
+
+  public func deleteDatabase() {
+    LiveStreamService.firebaseApp()?.delete({ _ in })
   }
 
   public func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
@@ -47,12 +53,11 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       })
     }
   }
-
   public func initializeDatabase(userId: Int?,
                                  failed: (Void) -> Void,
                                  succeeded: (FIRDatabaseReference) -> Void) {
 
-    guard let app = KsLiveApp.firebaseApp() else {
+    guard let app = LiveStreamService.firebaseApp() else {
       failed()
       return
     }
@@ -62,6 +67,14 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
     succeeded(databaseRef)
   }
+
+  public func signInAnonymously(completion: @escaping (String) -> Void) {
+    LiveStreamService.firebaseAuth()?.signInAnonymously { user, _ in
+      guard let id = user?.uid else { return }
+      completion(id)
+    }
+  }
+  
 
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
 
@@ -96,5 +109,34 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           observer.sendInterrupted()
         })
       }
+  }
+
+  private static func start() {
+    let options: FIROptions = FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
+                                         bundleID: Secrets.Firebase.Huzza.Production.bundleID,
+                                         gcmSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
+                                         apiKey: Secrets.Firebase.Huzza.Production.apiKey,
+                                         clientID: Secrets.Firebase.Huzza.Production.clientID,
+                                         trackingID: "",
+                                         androidClientID: "",
+                                         databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
+                                         storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
+                                         deepLinkURLScheme: "")
+
+    FIRApp.configure(withName: Secrets.Firebase.Huzza.Production.appName, options: options)
+  }
+
+  private static func firebaseApp() -> FIRApp? {
+    guard let app = FIRApp(named: Secrets.Firebase.Huzza.Production.appName) else {
+      self.start()
+      return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
+    }
+    
+    return app
+  }
+
+  private static func firebaseAuth() -> FIRAuth? {
+    guard let app = self.firebaseApp() else { return nil }
+    return FIRAuth(app: app)
   }
 }
