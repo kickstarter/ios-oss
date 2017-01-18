@@ -36,9 +36,10 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(language: lang, liveStreamService: liveStreamService) {
-        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent)
+        let vc = LiveStreamContainerViewController.configuredWith(
+          projectLiveStreamData: (project: .template,
+                                  liveStream: liveStream,
+                                  event: liveStreamEvent))
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
@@ -68,9 +69,10 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(language: lang, liveStreamService: liveStreamService) {
-        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent)
+        let vc = LiveStreamContainerViewController.configuredWith(
+          projectLiveStreamData: (project: .template,
+                                  liveStream: liveStream,
+                                  event: liveStreamEvent))
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
@@ -104,9 +106,10 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     combos(Language.allLanguages, playbackStates).forEach { lang, state in
       withEnvironment(language: lang, liveStreamService: liveStreamService) {
-        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent)
+        let vc = LiveStreamContainerViewController.configuredWith(
+          projectLiveStreamData: (project: .template,
+                                  liveStream: liveStream,
+                                  event: liveStreamEvent))
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
