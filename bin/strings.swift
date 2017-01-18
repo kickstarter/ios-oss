@@ -4,13 +4,13 @@ let endpoint: String? =
   "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true"
 
 extension Dictionary {
-  public func withAllValuesFrom(other: Dictionary) -> Dictionary {
+  public func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
     var result = self
     other.forEach { result[$0] = $1 }
     return result
   }
 
-  static func renamed(key fromKey: Key, to toKey: Key) -> (Dictionary -> Dictionary) {
+  static func renamed(key fromKey: Key, to toKey: Key) -> ((Dictionary) -> Dictionary) {
     return { dict in
       var result = dict
       result[toKey] = result[fromKey]
@@ -21,10 +21,10 @@ extension Dictionary {
 }
 
 extension Array where Element: Hashable {
-  public func distincts(@noescape eq: (Element, Element) -> Bool) -> Array {
+  public func distincts(_ eq: (Element, Element) -> Bool) -> Array {
     var result = Array()
     forEach { x in
-      if !result.contains({ eq(x, $0) }) {
+      if !result.contains(where: { eq(x, $0) }) {
         result.append(x)
       }
     }
@@ -34,8 +34,8 @@ extension Array where Element: Hashable {
 
 let counts = ["zero", "one", "two", "few", "many"]
 
-func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
-  return data.reduce([String:String]()) { accum, keyAndNested in
+func flatten(_ data: [String:AnyObject], prefix: String = "") -> [String:String] {
+  return data.reduce([String: String]()) { accum, keyAndNested in
     let (key, nested) = keyAndNested
     let newKey = prefix + key
 
@@ -45,7 +45,7 @@ func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
 
     if let string = nested as? String {
       var values = [newKey: string]
-      if (counts.contains(key) && string.containsString("_count}")) {
+      if (counts.contains(key) && string.contains("_count}")) {
         values[prefix] = string
       }
       return accum.withAllValuesFrom(values)
@@ -55,69 +55,70 @@ func flatten(data: [String:AnyObject], prefix: String = "") -> [String:String] {
   }
 }
 
-func stringsFileContents(strings: [String:String]) -> String {
-  return strings.keys.sort()
+func stringsFileContents(_ strings: [String:String]) -> String {
+  return strings.keys.sorted()
     .filter { key in !key.hasSuffix(".") }
-    .map { key in "\"\(key)\" = \"\(escaped(string: strings[key]!))\";" }
-    .joinWithSeparator("\n")
+    .map { key in "\"\(key)\" = \"\(escaped(strings[key]!))\";" }
+    .joined(separator: "\n")
 }
 
-func funcArgumentNames(string: String) -> [String] {
+func funcArgumentNames(_ string: String) -> [String] {
   return string
-    .componentsSeparatedByString("%{")
-    .flatMap { $0.componentsSeparatedByString("}") }
-    .enumerate()
+    .components(separatedBy: "%{")
+    .flatMap { $0.components(separatedBy: "}") }
+    .enumerated()
     .filter { idx, _ in idx % 2 == 1 }
     .map { _, x in x }
     .distincts(==)
 }
 
-func funcArguments(argumentNames: [String], count: Bool) -> String {
+func funcArguments(_ argumentNames: [String], count: Bool) -> String {
   return argumentNames
     .map { x in
       let type = count && x.hasSuffix("_count") ? "Int" : "String"
       return "\(x): \(type)"
     }
-    .joinWithSeparator(", ")
+    .joined(separator: ", ")
 }
 
-func funcCount(argumentNames: [String]) -> String {
+func funcCount(_ argumentNames: [String]) -> String {
   return argumentNames
     .filter { $0.hasSuffix("_count") }
     .first ?? "nil"
 }
 
-func funcSubstitutions(string: String, count: Bool) -> String {
+func funcSubstitutions(_ string: String, count: Bool) -> String {
   let insides = string
-    .componentsSeparatedByString("%{")
-    .flatMap { $0.componentsSeparatedByString("}") }
-    .enumerate()
+    .components(separatedBy: "%{")
+    .flatMap { $0.components(separatedBy: "}") }
+    .enumerated()
     .filter { idx, _ in idx % 2 == 1 }
     .map { _, x in "\"\(x)\": \(count && x.hasSuffix("_count") ? "Format.wholeNumber(\(x))" : x)" }
     .distincts(==)
-    .joinWithSeparator(", ")
+    .joined(separator: ", ")
   if insides.characters.isEmpty {
     return "[:]"
   }
   return "[\(insides)]"
 }
 
-func escaped(string string: String) -> String {
+func escaped(_ string: String) -> String {
   return string
-    .stringByReplacingOccurrencesOfString("\n", withString: "\\n")
-    .stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+    .replacingOccurrences(of: "\n", with: "\\n")
+    .replacingOccurrences(of: "\"", with: "\\\"")
 }
 
-let stringsByLocale = endpoint
-  .flatMap(NSURL.init)
-  .flatMap { try? String(contentsOfURL: $0) }
-  .flatMap { $0.dataUsingEncoding(NSUTF8StringEncoding) }
-  .flatMap { try? NSJSONSerialization.JSONObjectWithData($0, options: []) }
+let stringsByLocale1 = endpoint
+  .flatMap(URL.init)
+  .flatMap { try? String(contentsOf: $0) }
+  .flatMap { $0.data(using: .utf8) }
+  .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+let stringsByLocale = stringsByLocale1
   .flatMap { $0 as? [String:AnyObject] }
   .flatMap { $0["locales"] as? [String:[String:AnyObject]] }
   .map(Dictionary.renamed(key: "en", to: "Base"))
   .map {
-    $0.reduce([String:[String:String]]()) { accum, localeAndStrings in
+    $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
       let (locale, strings) = localeAndStrings
       return accum.withAllValuesFrom([locale: flatten(strings)])
     }
@@ -127,7 +128,7 @@ stringsByLocale?.forEach { locale, strings in
   guard locale != "it" else { return }
   let contents = stringsFileContents(strings)
   let path = "Kickstarter-iOS/Locales/\(locale).lproj/Localizable.strings"
-  try! contents.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+  try! contents.write(toFile: path, atomically: true, encoding: .utf8)
 }
 
 var staticStringsLines: [String] = []
@@ -138,8 +139,6 @@ staticStringsLines.append("// This file is computer generated from Localizable.s
 staticStringsLines.append("//")
 staticStringsLines.append("//=======================================================================")
 staticStringsLines.append("")
-staticStringsLines.append("")
-staticStringsLines.append("")
 staticStringsLines.append("// swiftlint:disable valid_docs")
 staticStringsLines.append("// swiftlint:disable line_length")
 staticStringsLines.append("// swiftlint:disable file_length")
@@ -148,7 +147,7 @@ staticStringsLines.append("public enum Strings {")
 
 stringsByLocale?["Base"]?.keys
   .filter { key in counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
-  .sort()
+  .sorted()
   .forEach { key in
     let string = (stringsByLocale?["Base"]?[key])!
 
@@ -161,25 +160,22 @@ stringsByLocale?["Base"]?.keys
     staticStringsLines.append("  */")
     let pluralCount = key.hasSuffix(".")
     let key = pluralCount ? String(key.characters.dropLast()) : key
-    let funcName = key.stringByReplacingOccurrencesOfString(".", withString: "_")
+    let funcName = key.replacingOccurrences(of: ".", with: "_")
     let argumentNames = funcArgumentNames(string)
     staticStringsLines.append("  public static func \(funcName)(\(funcArguments(argumentNames, count: pluralCount))) -> String {")
     staticStringsLines.append("    return localizedString(")
     staticStringsLines.append("      key: \"\(key)\",")
-    staticStringsLines.append("      defaultValue: \"\(escaped(string: string))\",")
+    staticStringsLines.append("      defaultValue: \"\(escaped(string))\",")
     staticStringsLines.append("      count: \(pluralCount ? funcCount(argumentNames) : "nil"),")
     staticStringsLines.append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
     staticStringsLines.append("    )")
     staticStringsLines.append("  }")
-  }
+}
 
 staticStringsLines.append("}")
 staticStringsLines.append("")
 
-let staticStringsFileContents = staticStringsLines.joinWithSeparator("\n")
-try! staticStringsFileContents.writeToFile(
-  "Library/Strings.swift",
-  atomically: true,
-  encoding: NSUTF8StringEncoding
-)
-
+let staticStringsFileContents = staticStringsLines.joined(separator: "\n")
+try! staticStringsFileContents.write(toFile: "Library/Strings.swift",
+                                     atomically: true,
+                                     encoding: .utf8)
