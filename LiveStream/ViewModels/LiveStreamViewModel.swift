@@ -108,7 +108,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     let maxOpenTokViewers = liveStreamEvent
-      .map { $0.stream.maxOpenTokViewers }
+      .map { $0.maxOpenTokViewers }
       .skipNil()
 
     let didLiveStreamEndedNormally = liveStreamEvent
@@ -134,7 +134,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       isMaxOpenTokViewersReached,
 
       liveStreamEvent
-        .map { event in event.stream.isRtmp == .some(true) || didEndNormally(event: event) }
+        .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue)
       )
       .take(first: 1)
@@ -143,8 +143,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let liveHlsUrl = Signal.merge(
       liveStreamEvent
-        .filter { $0.stream.liveNow }
-        .map { $0.stream.hlsUrl }
+        .filter { $0.liveNow }
+        .map { $0.hlsUrl }
         .skipNil()
         .map(LiveStreamType.hlsStream),
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
@@ -152,7 +152,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let replayHlsUrl = liveStreamEvent
       .filter(didEndNormally(event:))
-      .map { $0.stream.replayUrl }
+      .map { $0.replayUrl }
       .skipNil()
       .map(LiveStreamType.hlsStream)
 
@@ -231,7 +231,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       ).map { dbRef, event, _ in (dbRef, event) }
 
     let numberOfPeopleWatchingRef = liveStreamEvent
-      .filter { $0.stream.isScale == .some(false) }
+      .filter { $0.isScale == .some(false) }
       .map { $0.firebase?.numberPeopleWatchingPath }
       .skipNil()
       .map { FirebaseRefConfig(ref: $0, orderBy: "") }
@@ -243,7 +243,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       ).map { dbRef, event, _ in (dbRef, event) }
 
     let scaleNumberOfPeopleWatchingRef = liveStreamEvent
-      .filter { $0.stream.isScale == .some(true) }
+      .filter { $0.isScale == .some(true) }
       .map { $0.firebase?.scaleNumberPeopleWatchingPath }
       .skipNil()
       .map { FirebaseRefConfig(ref: $0, orderBy: "") }
@@ -272,7 +272,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let liveState = liveStreamEvent
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { event, playbackState in
-        event.stream.liveNow && !playbackState.isError
+        event.liveNow && !playbackState.isError
       }
       .map { _, playbackState in
         LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
@@ -300,7 +300,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     self.initializeFirebase = configData
-      .filter { event, _ in event.stream.liveNow }
+      .filter { event, _ in event.liveNow }
   }
 
   private let configData = MutableProperty<(LiveStreamEvent, Int?)?>(nil)
@@ -379,18 +379,18 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 }
 
 private func isNonStarter(event: LiveStreamEvent) -> Bool {
-  return !event.stream.liveNow
-    && !event.stream.definitelyHasReplay
+  return !event.liveNow
+    && !event.definitelyHasReplay
     && startDateMoreThanFifteenMinutesAgo(event: event)
 }
 
 private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool {
   let minute = Calendar.current
-    .dateComponents([.minute], from: event.stream.startDate as Date, to: Date())
+    .dateComponents([.minute], from: event.startDate as Date, to: Date())
     .minute ?? 0
   return minute > 15
 }
 
 private func didEndNormally(event: LiveStreamEvent) -> Bool {
-  return !event.stream.liveNow && event.stream.definitelyHasReplay
+  return !event.liveNow && event.definitelyHasReplay
 }
