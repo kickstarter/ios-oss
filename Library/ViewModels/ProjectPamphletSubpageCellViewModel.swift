@@ -4,18 +4,36 @@ import Result
 import KsApi
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
+  /// Call with the ProjectPamphletSubpage
   func configureWith(subpage: ProjectPamphletSubpage)
 }
 
 public protocol ProjectPamphletSubpageCellViewModelOutputs {
+  /// Emits the background color for the count label
   var countLabelBackgroundColor: Signal<UIColor, NoError> { get }
+
+  /// Emits the border color for the count label
   var countLabelBorderColor: Signal<UIColor, NoError> { get }
+
+  /// Emits the count label's text
   var countLabelText: Signal<String, NoError> { get }
+
+  /// Emits the count label's text color
   var countLabelTextColor: Signal<UIColor, NoError> { get }
+
+  /// Emits when the live now image view should be hidden
   var liveNowImageViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the cell's primary label text
   var labelText: Signal<String, NoError> { get }
+
+  /// Emits the cell's primary label text color
   var labelTextColor: Signal<UIColor, NoError> { get }
+
+  /// Emits when the top gradient view should be hidden
   var topGradientViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when the separator view should be hidden
   var separatorViewHidden: Signal<Bool, NoError> { get }
 }
 
