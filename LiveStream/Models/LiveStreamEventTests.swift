@@ -37,7 +37,7 @@ final class LiveStreamEventTests: XCTestCase {
       ],
       "firebase": [
         "firebase_project": "huzza-web",
-        "firebase_api_key": "AIzaSyAt0TtpY7f8QL7zbuh37KwCHQzWoKJ1_pQ",
+        "firebase_api_key": "apikey",
         "green_room_path": "events/path",
         "hls_url_path": "events/path",
         "number_people_watching_path": "presence/path",
@@ -87,7 +87,7 @@ final class LiveStreamEventTests: XCTestCase {
 
     // Firebase
     XCTAssertEqual("huzza-web", liveStreamEvent.value?.firebase.project)
-    XCTAssertEqual("AIzaSyAt0TtpY7f8QL7zbuh37KwCHQzWoKJ1_pQ", liveStreamEvent.value?.firebase.apiKey)
+    XCTAssertEqual("apikey", liveStreamEvent.value?.firebase.apiKey)
     XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.greenRoomPath)
     XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.hlsUrlPath)
     XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase.numberPeopleWatchingPath)
