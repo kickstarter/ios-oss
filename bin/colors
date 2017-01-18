@@ -3,7 +3,7 @@
 import Foundation
 
 extension Dictionary {
-  func withAllValuesFrom(other: Dictionary) -> Dictionary {
+  func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
     var result = self
     other.forEach { result[$0] = $1 }
     return result
@@ -13,22 +13,22 @@ extension Dictionary {
 let inPath = "Design/Colors.json"
 let outPath = "Library/Styles/Colors.swift"
 
-let data = NSData(contentsOfFile: inPath)!
-data.length
+let data = try! Data(contentsOf: URL(fileURLWithPath: inPath))
+
 let colors =
-  (try! NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: String])
+  (try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String])
     .map { (key: $0, value: $1) }
-    .sort { $0.key < $1.key }
+    .sorted { $0.key < $1.key }
 
 let allColors = colors
   .reduce([String: [Int: String]]()) { accum, pair in
     let (name, hex) = pair
 
-    let components = name.componentsSeparatedByString("_")
+    let components = name.components(separatedBy: "_")
     guard components.count > 1 else { return accum }
-    let (color, weight) = (components[0..<components.count-1].joinWithSeparator(" "),
+    let (color, weight) = (components[0..<components.count-1].joined(separator: " "),
                            Int(components.last!)!)
-    let label = color.capitalizedString
+    let label = color.capitalized
 
     return accum.withAllValuesFrom(
       [label: (accum[label] ?? [:]).withAllValuesFrom([weight: "ksr_\(name)"])]
@@ -37,11 +37,11 @@ let allColors = colors
   .map { (k, v) -> (key: String, value: [(key: Int, value: String)]) in
     let sorted = v
       .map { (key: $0, value: $1) }
-      .sort { $0.key < $1.key }
+      .sorted { $0.key < $1.key }
 
     return (key: k, value: sorted)
   }
-  .sort { $0.key < $1.key }
+  .sorted { $0.key < $1.key }
 
 var staticStringsLines: [String] = []
 
@@ -68,13 +68,13 @@ let staticAllColors: [String] = allColors.map { label, colors in
 
   let pairs = colors
     .map { weight, name in "        \(weight): .\(name)" }
-    .joinWithSeparator(",\n")
+    .joined(separator: ",\n")
   staticVar.append(pairs)
 
   staticVar.append("      ]")
-  return staticVar.joinWithSeparator("\n")
+  return staticVar.joined(separator: "\n")
 }
-staticStringsLines.append(staticAllColors.joinWithSeparator(",\n\n"))
+staticStringsLines.append(staticAllColors.joined(separator: ",\n\n"))
 
 staticStringsLines.append("    ]")
 staticStringsLines.append("  }")
@@ -86,14 +86,13 @@ let staticVars: [String] = colors.map { name, hex in
   staticVar.append("  public static var ksr_\(name): UIColor {")
   staticVar.append("    return .hex(0x\(hex))")
   staticVar.append("  }")
-  return staticVar.joinWithSeparator("\n")
+  return staticVar.joined(separator: "\n")
 }
 
-staticStringsLines.append(staticVars.joinWithSeparator("\n\n"))
+staticStringsLines.append(staticVars.joined(separator: "\n\n"))
 staticStringsLines.append("}")
 staticStringsLines.append("") // trailing newline
 
 try! staticStringsLines
-  .joinWithSeparator("\n")
-  .writeToFile(outPath, atomically: true, encoding: NSUTF8StringEncoding)
-
+  .joined(separator: "\n")
+  .write(toFile: outPath, atomically: true, encoding: .utf8)
