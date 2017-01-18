@@ -1,5 +1,6 @@
 #if os(iOS)
 import KsApi
+import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -188,6 +189,8 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
   switch shareContext {
   case let .creatorDashboard(project):
     return ProjectActivityItemProvider(project: project)
+  case let .liveStream(_, liveStreamEvent):
+    return LiveStreamActivityItemProvider(liveStreamEvent: liveStreamEvent)
   case let .project(project):
     return ProjectActivityItemProvider(project: project)
   case let .thanks(project):
@@ -208,6 +211,8 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
     return URL(string: project.urls.web.project)
   case let .update(_, update):
     return URL(string: update.urls.web.update)
+  case let .liveStream(_, liveStreamEvent):
+    return URL(string: liveStreamEvent.stream.webUrl)
   }
 }
 
@@ -239,6 +244,8 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
   switch shareContext {
   case let .creatorDashboard(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
+  case let .liveStream(_, liveStreamEvent):
+    return twitterInitialText(forLiveStreamEvent: liveStreamEvent)
   case let .project(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .thanks(project):
@@ -262,5 +269,20 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
     }
 
     return controller
+}
+
+private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
+  if liveStreamEvent.stream.liveNow {
+    return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
+  }
+
+  if liveStreamEvent.stream.startDate < AppEnvironment.current.dateType.init().date {
+    return Strings.Creator_name_was_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
+  }
+
+  return Strings.Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(
+    creator_name: liveStreamEvent.creator.name,
+    in_duration: Format.relative(secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970)
+  )
 }
 #endif

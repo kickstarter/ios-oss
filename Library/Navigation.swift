@@ -40,6 +40,7 @@ public enum Navigation {
     case creatorBio
     case friends
     case messageCreator
+    case liveStream(eventId: Int)
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
@@ -125,6 +126,8 @@ public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
     return true
   case (.messageCreator, .messageCreator):
     return true
+  case let (.liveStream(eventId: lhs), .liveStream(eventId: rhs)):
+    return lhs == rhs
   case let (.pledge(lhsPledge), .pledge(rhsPledge)):
     return lhsPledge == rhsPledge
   case (.updates, .updates):
@@ -551,9 +554,6 @@ private func stringToInt(_ string: String) -> Decoded<Int> {
 
  - returns: An optional tuple.
  */
-private func zip <A, B> (_ a: A?, _ b: B?) -> (A, B)? {
-  if let a = a, let b = b {
-    return (a, b)
-  }
-  return nil
+private func zip <A, B> (_ x: A?, _ y: @autoclosure () -> B?) -> (A, B)? {
+  return x.flatMap { x_ in y().map { y_ in (x_, y_) } }
 }

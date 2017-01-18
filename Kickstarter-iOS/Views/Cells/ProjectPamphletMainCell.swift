@@ -113,9 +113,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.creatorButton
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        localizedString(key: "Opens_creator_profile", defaultValue: "Opens creator profile.")
-      }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_creator_profile() }
 
     _ = self.creatorImageView
       |> UIImageView.lens.clipsToBounds .~ true

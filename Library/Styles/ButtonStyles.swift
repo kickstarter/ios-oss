@@ -120,3 +120,13 @@ public let twitterButtonStyle = baseButtonStyle
   <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.project_checkout_share_buttons_tweet()
 }
+
+public let whiteBorderButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
+  <> UIButton.lens.titleColor(forState: .disabled) .~ UIColor.white.withAlphaComponent(0.5)
+  <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
+  <> UIButton.lens.layer.borderWidth .~ 1.0
+  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))

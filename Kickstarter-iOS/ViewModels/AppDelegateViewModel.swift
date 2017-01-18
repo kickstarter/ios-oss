@@ -2,6 +2,7 @@
 import Argo
 import KsApi
 import Library
+import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -90,6 +91,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, NoError> { get }
+
+  /// Emits everything needed to go a particular live stream of a project.
+  var goToLiveStream: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), NoError> { get }
@@ -316,6 +320,9 @@ AppDelegateViewModelOutputs {
           .map { params |> DiscoveryParams.lens.category .~ $0 }
     }
 
+    self.goToLiveStream = deepLink
+      .switchMap(liveStreamData(fromNavigation:))
+
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
       .ignoreValues()
@@ -345,6 +352,12 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     let projectLink = deepLink
+      .filter { link in
+        // NB: have to do this cause we handle the live stream subpage in a different manner than we do
+        // the other subpages.
+        if case .project(_, .liveStream(_), _) = link { return false }
+        return true
+      }
       .map { link -> (Param, Navigation.Project, RefTag?)? in
         guard case let .project(param, subpage, refTag) = link else { return nil }
         return (param, subpage, refTag)
@@ -444,7 +457,9 @@ AppDelegateViewModelOutputs {
       )
       .map { _ in
         let mainBundle = AppEnvironment.current.mainBundle
-        let appIdentifier = mainBundle.isRelease ? Secrets.HockeyAppId.production : Secrets.HockeyAppId.beta
+        let appIdentifier = mainBundle.isRelease
+          ? KsApi.Secrets.HockeyAppId.production
+          : KsApi.Secrets.HockeyAppId.beta
 
         return HockeyConfigData(
           appIdentifier: appIdentifier,
@@ -610,6 +625,7 @@ AppDelegateViewModelOutputs {
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
+  public let goToLiveStream: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError>
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
@@ -667,6 +683,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     case .funding, .unknown, .watch:
       return nil
     }
+  }
+
+  if let liveStream = envelope.liveStream, let project = envelope.project {
+    return .project(.id(project.id), .liveStream(eventId: liveStream.id), refTag: .push)
   }
 
   if let project = envelope.project {
@@ -830,4 +850,24 @@ extension ShortcutItem {
       )
     }
   }
+}
+
+private func liveStreamData(fromNavigation nav: Navigation)
+  -> SignalProducer<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError> {
+
+    guard case let .project(projectParam, .liveStream(eventId), refTag) = nav else { return .empty }
+
+    return SignalProducer.zip(
+      AppEnvironment.current.apiService.fetchProject(param: projectParam)
+        .demoteErrors(),
+
+      AppEnvironment.current.liveStreamService
+        .fetchEvent(eventId: eventId, uid: AppEnvironment.current.currentUser?.id)
+        .demoteErrors()
+      )
+      .map { project, liveStreamEvent -> (Project, Project.LiveStream, LiveStreamEvent, RefTag?)? in
+        guard let liveStream = project.liveStreams.first(where: { $0.id == eventId }) else { return nil }
+        return (project, liveStream, liveStreamEvent, refTag)
+      }
+      .skipNil()
 }

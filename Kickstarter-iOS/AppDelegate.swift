@@ -8,9 +8,10 @@ import HockeySDK
 #endif
 import Kickstarter_Framework
 import Library
+import LiveStream
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import Result
 import UIKit
 
@@ -40,7 +41,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
 
     #if DEBUG
-      if Secrets.isOSS {
+      if KsApi.Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
       }
     #endif
@@ -85,6 +86,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToDashboard
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
+
+    self.viewModel.outputs.goToLiveStream
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToLiveStream(project: $0, liveStream: $1, liveStreamEvent: $2, refTag: $3)
+    }
 
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
@@ -229,6 +236,32 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     self.rootTabBarController?.present(alert, animated: true, completion: nil)
+  }
+
+  private func goToLiveStream(project: Project,
+                              liveStream: Project.LiveStream,
+                              liveStreamEvent: LiveStreamEvent,
+                              refTag: RefTag?) {
+
+    let projectVc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project),
+                                                                 refTag: refTag)
+
+    let liveVc: UIViewController
+    if liveStream.startDate < AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+      liveVc = LiveStreamContainerViewController.configuredWith(project: project,
+                                                                liveStream: liveStream,
+                                                                event: liveStreamEvent)
+    } else {
+      liveVc = LiveStreamCountdownViewController.configuredWith(project: project,
+                                                                liveStream: liveStream)
+    }
+
+    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    nav.viewControllers = [liveVc]
+
+    self.rootTabBarController?.present(projectVc, animated: true) {
+      projectVc.present(nav, animated: true)
+    }
   }
 
   fileprivate func goToMessageThread(_ messageThread: MessageThread) {

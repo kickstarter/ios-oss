@@ -34,7 +34,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets
+dependencies: submodules configs secrets opentok
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -62,9 +62,11 @@ hooks: $(hooks)
 deploy:
 	@echo "Deploying private/$(BRANCH) to $(RELEASE)..."
 
+	@git fetch oss
 	@git fetch private
 
-	@if [ $(git rev-list private/$(BRANCH)..oss/$(BRANCH)) ]; then \
+	@if git rev-list private/$(BRANCH)..oss/$(BRANCH) >/dev/null; \
+	then \
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
@@ -89,7 +91,8 @@ lint:
 	swiftlint lint --reporter json
 
 strings:
-	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift | swift -
+	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
+		| xcrun -sdk macosx swift -
 
 secrets:
 	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
@@ -101,4 +104,9 @@ secrets:
 		|| true; \
 	fi
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings
+opentok:
+	mkdir -p Frameworks/OpenTok
+	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.10.0 \
+		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.10.0/OpenTok.framework
+
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok

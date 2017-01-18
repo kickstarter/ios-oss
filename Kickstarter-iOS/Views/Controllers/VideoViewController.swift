@@ -8,12 +8,12 @@ import UIKit
 private let durationKeyPath = "currentItem.duration"
 private let rateKeyPath = "rate"
 
-internal protocol VideoViewControllerDelegate: class {
+public protocol VideoViewControllerDelegate: class {
   func videoViewControllerDidFinish(_ controller: VideoViewController)
   func videoViewControllerDidStart(_ controller: VideoViewController)
 }
 
-internal final class VideoViewController: UIViewController {
+public final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
@@ -30,7 +30,7 @@ internal final class VideoViewController: UIViewController {
     return vc
   }
 
-  internal override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.playerController = self.childViewControllers.flatMap { $0 as? AVPlayerViewController }.first
@@ -40,22 +40,22 @@ internal final class VideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewDidAppear(_ animated: Bool) {
+  public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear()
   }
 
-  internal override func viewDidDisappear(_ animated: Bool) {
+  public override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
-  internal override func viewWillDisappear(_ animated: Bool) {
+  public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.viewModel.inputs.viewWillDisappear()
   }
 
-  internal override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.playButton
@@ -70,7 +70,7 @@ internal final class VideoViewController: UIViewController {
   }
 
   // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
@@ -166,7 +166,7 @@ internal final class VideoViewController: UIViewController {
     self.playerController.player?.addObserver(self, forKeyPath: rateKeyPath, options: .new, context: nil)
   }
 
-  internal override func observeValue(forKeyPath keyPath: String?, of object: Any?,
+  public override func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                                 change: [NSKeyValueChangeKey : Any]?,
                                                 context: UnsafeMutableRawPointer?) {
 
