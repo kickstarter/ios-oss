@@ -179,7 +179,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     )
 
     self.animateActivityIndicator = Signal.merge(
-      configData.filter { _, _, event in event == nil }.mapConst(true),
+      configData.filter { $0.event == nil }.mapConst(true),
       event.mapConst(false),
       eventEvent.filter { $0.isTerminating }.mapConst(false),
       self.showErrorAlert.mapConst(false)
@@ -227,9 +227,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     configData
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
-        let (project, liveStream, _) = configData
-        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: project,
-                                                                       liveStream: liveStream,
+        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.project,
+                                                                       liveStream: configData.liveStream,
                                                                        subscribed: isSubscribed)
     }
   }

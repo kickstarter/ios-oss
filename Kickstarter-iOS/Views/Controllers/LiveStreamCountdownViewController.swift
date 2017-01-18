@@ -287,8 +287,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeValues { [weak self] project, liveStream, event in
         let liveStreamContainerViewController = LiveStreamContainerViewController
           .configuredWith(projectLiveStreamData: (project: project,
-            liveStream: liveStream,
-            event: event))
+                                                  liveStream: liveStream,
+                                                  event: event))
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
