@@ -14,3 +14,9 @@ extension LiveStreamEvent.Creator {
     )
   }
 }
+
+extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Creator {
+  public var avatar: Lens<Whole, String> {
+    return LiveStreamEvent.lens.creator • LiveStreamEvent.Creator.lens.avatar
+  }
+}

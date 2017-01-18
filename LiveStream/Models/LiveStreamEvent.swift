@@ -174,6 +174,14 @@ private func toDate(dateString: String) -> Decoded<Date> {
 
 extension LiveStreamEvent {
   public enum lens {
+    public static let creator = Lens<LiveStreamEvent, LiveStreamEvent.Creator>(
+      view: { $0.creator },
+      set: { var new = $1; new.creator = $0; return new }
+    )
+    public static let description = Lens<LiveStreamEvent, String>(
+      view: { $0.description },
+      set: { var new = $1; new.description = $0; return new }
+    )
     public static let hasReplay = Lens<LiveStreamEvent, Bool>(
       view: { $0.hasReplay },
       set: { var new = $1; new.hasReplay = $0; return new }
@@ -202,6 +210,10 @@ extension LiveStreamEvent {
       view: { $0.maxOpenTokViewers },
       set: { var new = $1; new.maxOpenTokViewers = $0; return new }
     )
+    public static let name = Lens<LiveStreamEvent, String>(
+      view: { $0.name },
+      set: { var new = $1; new.name = $0; return new }
+    )
     public static let replayUrl = Lens<LiveStreamEvent, String?>(
       view: { $0.replayUrl },
       set: { var new = $1; new.replayUrl = $0; return new }
@@ -209,6 +221,10 @@ extension LiveStreamEvent {
     public static let startDate = Lens<LiveStreamEvent, Date>(
       view: { $0.startDate },
       set: { var new = $1; new.startDate = $0; return new }
+    )
+    public static let user = Lens<LiveStreamEvent, LiveStreamEvent.User?>(
+      view: { $0.user },
+      set: { var new = $1; new.user = $0; return new }
     )
   }
 }

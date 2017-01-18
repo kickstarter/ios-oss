@@ -24,8 +24,8 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
       |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + future)
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.user.isSubscribed .~ true
-      |> LiveStreamEvent.lens.stream.name .~ "Title of the live stream goes here and can be 60 chr max"
-      |> LiveStreamEvent.lens.stream.description .~ ("175 char max. 175 char max 175 char max message with " +
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
     let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
 
