@@ -53,6 +53,46 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       })
     }
   }
+
+  public func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError> {
+
+    return SignalProducer { (observer, disposable) in
+
+      guard let url = URL(string: Secrets.LiveStreams.Api.base)?
+        .appendingPathComponent("api/v1/ksr-streams") else {
+        observer.send(error: .invalidEventId)
+        return
+      }
+
+      let urlSession = URLSession(configuration: .default)
+
+      let task = urlSession.dataTask(with: url) { data, _, error in
+        guard error == nil else {
+          observer.send(error: .genericFailure)
+          return
+        }
+
+        let event = data
+          .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+          .map(JSON.init)
+          .map([LiveStreamEvent].decode)
+          .flatMap { $0.value }
+          .map(Event<[LiveStreamEvent], LiveApiError>.value)
+          .coalesceWith(.failed(.genericFailure))
+
+        observer.action(event)
+        observer.sendCompleted()
+      }
+
+      task.resume()
+
+      disposable.add({
+        task.cancel()
+        observer.sendInterrupted()
+      })
+    }
+  }
+
   public func initializeDatabase(userId: Int?,
                                  failed: (Void) -> Void,
                                  succeeded: (FIRDatabaseReference) -> Void) {

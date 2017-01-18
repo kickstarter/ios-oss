@@ -252,6 +252,7 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
 
   filters.append(.defaults |> DiscoveryParams.lens.includePOTD .~ true)
   filters.append(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
+  filters.append(.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
 
   if user != nil {
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)

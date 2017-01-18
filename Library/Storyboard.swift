@@ -15,6 +15,7 @@ public enum Storyboard: String {
   case Help
   case LaunchScreen
   case LiveStream
+  case LiveStreamDiscovery
   case Login
   case Main
   case Messages

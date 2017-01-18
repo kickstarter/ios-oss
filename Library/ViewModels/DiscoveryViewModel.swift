@@ -53,6 +53,12 @@ public protocol DiscoveryViewModelOutputs {
 
   /// Emits a category id to update the sort pager view controller style.
   var updateSortPagerStyle: Signal<Int?, NoError> { get }
+
+
+
+  var liveStreamDiscoveryViewHidden: Signal<Bool, NoError> { get }
+  var discoveryPagesViewHidden: Signal<Bool, NoError> { get }
+  var sortViewHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol DiscoveryViewModelType {
@@ -119,6 +125,15 @@ DiscoveryViewModelOutputs {
       .skipRepeats(==)
       .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
 
+    self.liveStreamDiscoveryViewHidden = currentParams
+      .map { $0.hasLiveStreams != .some(true) }
+      .skipRepeats()
+
+    self.discoveryPagesViewHidden = self.liveStreamDiscoveryViewHidden
+      .map(negate)
+
+    self.sortViewHidden = self.discoveryPagesViewHidden
+
     swipeToSort
       .observeValues {
         AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe)
@@ -167,6 +182,10 @@ DiscoveryViewModelOutputs {
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
   public let sortsAreEnabled: Signal<Bool, NoError>
   public let updateSortPagerStyle: Signal<Int?, NoError>
+
+  public let liveStreamDiscoveryViewHidden: Signal<Bool, NoError>
+  public let discoveryPagesViewHidden: Signal<Bool, NoError>
+  public let sortViewHidden: Signal<Bool, NoError>
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }

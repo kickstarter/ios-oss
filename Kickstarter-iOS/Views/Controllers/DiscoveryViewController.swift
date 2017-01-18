@@ -7,9 +7,10 @@ internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource!
 
-  fileprivate weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
-  fileprivate weak var pageViewController: UIPageViewController!
-  fileprivate weak var sortPagerViewController: SortPagerViewController!
+  private weak var liveStreamDiscoveryViewController: LiveStreamDiscoveryViewController!
+  private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
+  private weak var pageViewController: UIPageViewController!
+  private weak var sortPagerViewController: SortPagerViewController!
 
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
@@ -30,6 +31,9 @@ internal final class DiscoveryViewController: UIViewController {
       .flatMap { $0 as? DiscoveryNavigationHeaderViewController }.first
     self.navigationHeaderViewController.delegate = self
 
+    self.liveStreamDiscoveryViewController = self.childViewControllers
+      .flatMap { $0 as? LiveStreamDiscoveryViewController }.first
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -43,6 +47,24 @@ internal final class DiscoveryViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.liveStreamDiscoveryViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.liveStreamDiscoveryViewController.view.superview?.isHidden = $0
+    }
+
+    self.viewModel.outputs.discoveryPagesViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.pageViewController.view.superview?.isHidden = $0
+    }
+
+    self.viewModel.outputs.sortViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.sortPagerViewController.view.superview?.isHidden = $0
+    }
 
     self.viewModel.outputs.configureNavigationHeader
       .observeForControllerAction()

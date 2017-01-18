@@ -241,6 +241,12 @@
 		A71A50E01E2B4A7A00574C42 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50B81E2B4A3E00574C42 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71A50E31E2B4A8600574C42 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50CE1E2B4A4C00574C42 /* Runes.framework */; };
 		A71A50E41E2B4A8600574C42 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50CE1E2B4A4C00574C42 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */; };
+		A71C7FAA1E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */; };
+		A71C7FAC1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FAB1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift */; };
+		A71C7FAE1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */; };
+		A71C7FB01E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FAF1E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift */; };
+		A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */; };
 		A71F59E51D240CAF00909BE3 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E41D240CAF00909BE3 /* NavigationTests.swift */; };
 		A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* KSCache.swift */; };
 		A7208C3E1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */; };
@@ -1535,6 +1541,12 @@
 		A71A50901E2B4A3500574C42 /* ReactiveSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveSwift.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/ReactiveExtensions/Frameworks/ReactiveSwift/ReactiveSwift.xcodeproj"; sourceTree = "<group>"; };
 		A71A50A81E2B4A3E00574C42 /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/ReactiveExtensions/Frameworks/ReactiveSwift/Carthage/Checkouts/Result/Result.xcodeproj"; sourceTree = "<group>"; };
 		A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Runes.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Runes/Runes.xcodeproj"; sourceTree = "<group>"; };
+		A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStreamDiscovery.storyboard; sourceTree = "<group>"; };
+		A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewController.swift; sourceTree = "<group>"; };
+		A71C7FAB1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryCell.swift; sourceTree = "<group>"; };
+		A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryDataSource.swift; sourceTree = "<group>"; };
+		A71C7FAF1E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewControllerTests.swift; sourceTree = "<group>"; };
+		A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryTitleCell.swift; sourceTree = "<group>"; };
 		A71F59E41D240CAF00909BE3 /* NavigationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
 		A71F59E71D2424CA00909BE3 /* KSCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSCache.swift; sourceTree = "<group>"; };
 		A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAppDelegateProtocol.swift; sourceTree = "<group>"; };
@@ -2195,6 +2207,7 @@
 				A73778D51D81ABE2004C2A9B /* FundingGraphViewTests.swift */,
 				A7845B011E27D5F5005F1CE9 /* LiveStreamContainerViewControllerTests.swift */,
 				A7066AA51E27C44200E8658C /* LiveStreamCountdownViewControllerTests.swift */,
+				A71C7FAF1E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift */,
 				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
 				01EC3B981DFA0679003A673C /* ProfileViewControllerTests.swift */,
@@ -2237,6 +2250,7 @@
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
 				A787E6951E28A84B0017B186 /* LiveStream.storyboard */,
+				A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */,
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				A73923B41D272242004524C3 /* Messages.storyboard */,
@@ -2366,6 +2380,7 @@
 				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
 				A7CC14391D00E74F00035C52 /* FindFriendsHeaderCell.swift */,
 				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
+				A71C7FAB1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
 				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
@@ -2393,6 +2408,7 @@
 				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
+				A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2418,6 +2434,7 @@
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
 				D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */,
 				D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */,
+				A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
@@ -3081,6 +3098,7 @@
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
+				A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4024,6 +4042,7 @@
 				A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */,
 				A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */,
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,
+				A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */,
 				A787E6BE1E28A85A0017B186 /* LiveStream.storyboard in Resources */,
 				A78838741D8A2EFF0081E94D /* ProjectPamphlet.storyboard in Resources */,
 				01A120D11D2D646300B42F73 /* DashboardProjectsDrawer.storyboard in Resources */,
@@ -4442,9 +4461,11 @@
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
+				A71C7FAE1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
+				A71C7FAA1E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
@@ -4486,8 +4507,10 @@
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
+				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
+				A71C7FAC1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift in Sources */,
 				A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
@@ -4615,6 +4638,7 @@
 				A7CA8C471D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
 				59885A981DB6E2A900F65825 /* TwoFactorViewControllerTests.swift in Sources */,
+				A71C7FB01E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift in Sources */,
 				A799E9801E297D6E00B5C09D /* ProjectPamphletContentDataSourceTests.swift in Sources */,
 				9D525F121D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				013744FB1D99FE6A00E50C78 /* EmptyStatesViewControllerTests.swift in Sources */,

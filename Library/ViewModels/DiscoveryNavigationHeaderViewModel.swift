@@ -297,6 +297,8 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
 
   if params.staffPicks == true {
     filterText = Strings.Projects_We_Love()
+  } else if params.hasLiveStreams == .some(true) {
+    filterText = "Kickstarter Live"
   } else if params.starred == true {
     filterText = Strings.Saved()
   } else if params.social == true {
