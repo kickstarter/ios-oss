@@ -11,28 +11,69 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
+  /// Call with the Project and optional LiveStreamEvent
   func configureWith(project: Project, event: LiveStreamEvent?)
+
+  /// Called when the close button is tapped
   func closeButtonTapped()
+
+  /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
+
+  /// Called when the LiveStreamEvent was retrieved
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
+
+  /// Called when the viewDidLoad
   func viewDidLoad()
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
+  /// Emits when the replay's available for text should be hidden
   var availableForLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the text describing the replay's availability
+  var availableForText: Signal<String, NoError> { get }
+
+  /// Emits when the LiveStreamViewController should be created
   var createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
+
+  /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the intro text for the creator
   var creatorIntroText: Signal<String, NoError> { get }
+
+  /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits the current LiveStreamViewControllerState
   var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
+
+  /// Emits when the loader stack view should be hidden
   var loaderStackViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the loader's text
   var loaderText: Signal<String, NoError> { get }
+
+  /// Emits when the nav bar's title view should be hidden
   var navBarTitleViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when the live dot image in the nav bar title view should be hidden (e.g. in replay)
   var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
-  var numberWatchingButtonHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when the number of people watching badge view should be hidden
+  var numberWatchingBadgeViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
+
+  /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
+
+  /// Emits when the video view controller should be hidden (when loading or green room is active)
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the title view's text
   var titleViewText: Signal<String, NoError> { get }
 }
 
@@ -91,6 +132,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           return Strings.The_live_stream_failed_to_connect()
         }
       }
+
+    self.availableForText = event
+      .map { event -> String? in
+        guard let availableDate = AppEnvironment.current.calendar
+          .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
+          else { return nil }
+
+        let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
+
+        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
+      }.skipNil()
 
     self.loaderText = Signal.merge(
       liveStreamState.map {
@@ -194,7 +246,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.navBarLiveDotImageViewHidden = hideWhenReplay
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
-    self.numberWatchingButtonHidden = hideWhenReplay
+    self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
   }
   //swiftlint:enable function_body_length
@@ -227,6 +279,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   }
 
   public let availableForLabelHidden: Signal<Bool, NoError>
+  public let availableForText: Signal<String, NoError>
   public let createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
@@ -236,7 +289,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
-  public let numberWatchingButtonHidden: Signal<Bool, NoError>
+  public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>

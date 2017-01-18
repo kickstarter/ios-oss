@@ -11,23 +11,51 @@ public protocol LiveStreamCountdownViewModelType {
 }
 
 public protocol LiveStreamCountdownViewModelInputs {
+  /// Called when the close button is tapped
   func closeButtonTapped()
+
+  /// Call with the Project and the specific LiveStream that is being viewed
   func configureWith(project: Project, liveStream: Project.LiveStream)
+
+  /// Called when the LiveStreamEvent has been retrieved
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
+
+  /// Called when the viewDidLoad
   func viewDidLoad()
 }
 
 public protocol LiveStreamCountdownViewModelOutputs {
+  /// Emits the project's root category ID
   var categoryId: Signal<Int, NoError> { get }
+
+  /// Emits the accessibility label string for the live stream countdown
   var countdownAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits the number of days string for the countdown
   var daysString: Signal<String, NoError> { get }
+
+  /// Emits when the view controller should be dismissed
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits the number of hours string for the countdown
   var hoursString: Signal<String, NoError> { get }
+
+  /// Emits the number of minutes string for the countdown
   var minutesString: Signal<String, NoError> { get }
+
+  /// Emits the project image url
   var projectImageUrl: Signal<URL?, NoError> { get }
+
+  /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
   var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+
+  /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
+
+  /// Emits the upcoming intro text
   var upcomingIntroText: Signal<String, NoError> { get }
+
+  /// Emits the view controller's title text
   var viewControllerTitle: Signal<String, NoError> { get }
 }
 

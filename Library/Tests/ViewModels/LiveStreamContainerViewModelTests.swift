@@ -11,6 +11,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   private let availableForLabelHidden = TestObserver<Bool, NoError>()
+  private let availableForText = TestObserver<String, NoError>()
   private let createAndConfigureLiveStreamViewController = TestObserver<(Project, Int?,
     LiveStreamEvent), NoError>()
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
@@ -21,7 +22,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
   private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
-  private let numberWatchingButtonHidden = TestObserver<Bool, NoError>()
+  private let numberWatchingBadgeViewHidden = TestObserver<Bool, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
@@ -31,6 +32,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
+    self.vm.outputs.availableForText.observe(self.availableForText.observer)
     self.vm.outputs.createAndConfigureLiveStreamViewController.observe(
       self.createAndConfigureLiveStreamViewController.observer)
     self.vm.outputs.creatorAvatarLiveDotImageViewHidden
@@ -43,10 +45,26 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
     self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
-    self.vm.outputs.numberWatchingButtonHidden.observe(self.numberWatchingButtonHidden.observer)
+    self.vm.outputs.numberWatchingBadgeViewHidden.observe(self.numberWatchingBadgeViewHidden.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
+  }
+
+  func testAvailableForText() {
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ 42
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
+      |> LiveStreamEvent.lens.id .~ liveStream.id
+
+    self.availableForText.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project, event: event)
+
+    self.availableForText.assertValue("Available to watch for 2 more days")
   }
 
   func testCreatorIntroText_Live() {
@@ -122,7 +140,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
     self.createAndConfigureLiveStreamViewController.assertValueCount(0)
-    self.numberWatchingButtonHidden.assertValueCount(0)
+    self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, event: event)
@@ -130,7 +148,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarLiveDotImageViewHidden.assertValues([true, false])
     self.creatorAvatarLiveDotImageViewHidden.assertValues([true, false])
-    self.numberWatchingButtonHidden.assertValues([true, false])
+    self.numberWatchingBadgeViewHidden.assertValues([true, false])
     self.availableForLabelHidden.assertValues([true])
   }
 
@@ -141,7 +159,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
     self.createAndConfigureLiveStreamViewController.assertValueCount(0)
-    self.numberWatchingButtonHidden.assertValueCount(0)
+    self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project, event: event)
@@ -149,7 +167,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarLiveDotImageViewHidden.assertValues([true])
     self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-    self.numberWatchingButtonHidden.assertValues([true])
+    self.numberWatchingBadgeViewHidden.assertValues([true])
     self.availableForLabelHidden.assertValues([true, false])
   }
 

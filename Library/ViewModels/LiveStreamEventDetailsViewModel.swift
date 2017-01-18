@@ -11,33 +11,78 @@ public protocol LiveStreamEventDetailsViewModelType {
 }
 
 public protocol LiveStreamEventDetailsViewModelInputs {
+  /// Call with the Project, the specific LiveStream and an optional LiveStreamEvent
   func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
+
+  /// Called when the LiveStreamViewController's state changes
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
+
+  /// Called when the subscribe button is tapped
   func subscribeButtonTapped()
+
+  /// Called to set the number of people watching the live stream
   func setNumberOfPeopleWatching(numberOfPeople: Int)
+
+  /// Called when the user session starts
   func userSessionStarted()
+
+  /// Called when viewDidLoad
   func viewDidLoad()
 }
 
 public protocol LiveStreamEventDetailsViewModelOutputs {
+  /// Emits when the main activity indicator should animate (when the event is being fetched)
   var animateActivityIndicator: Signal<Bool, NoError> { get }
+
+  /// Emits when the subscribe button's activity indicator should animate
   var animateSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
-  var availableForText: Signal<String, NoError> { get }
+
+  /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
+
+  /// Emits with the Project and LiveStreamEvent for configuring the ShareViewModel
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
+
+  /// Emits when the details stack view should be hidden
   var detailsStackViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the title of the LiveStreamEvent
   var liveStreamTitle: Signal<String, NoError> { get }
+
+  /// Emits the description of the LiveStreamEvent
   var liveStreamParagraph: Signal<String, NoError> { get }
+
+  /// Emits the formatted number of people watching text
   var numberOfPeopleWatchingText: Signal<String, NoError> { get }
+
+  /// Emits when the LoginToutViewController should open (login to subscribe)
   var openLoginToutViewController: Signal<(), NoError> { get }
+
+  /// Emits when the LiveStreamEvent has been retrieved for the configuration of sibling view models
   var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
+
+  /// Emits when the share button should be enabled
   var shareButtonEnabled: Signal<Bool, NoError> { get }
+
+  /// Emits when an error has occurred
   var showErrorAlert: Signal<String, NoError> { get }
+
+  /// Emits the subscribe button's accessibility hint
   var subscribeButtonAccessibilityHint: Signal<String, NoError> { get }
+
+  /// Emits the subscribe button's accessibility label
   var subscribeButtonAccessibilityLabel: Signal<String, NoError> { get }
+
+  /// Emits the subscribe button's image
   var subscribeButtonImage: Signal<String?, NoError> { get }
+
+  /// Emits the subscribe button's title
   var subscribeButtonText: Signal<String, NoError> { get }
+
+  /// Emits when the subscribe button should be hidden
   var subscribeLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the subscribe label's text
   var subscribeLabelText: Signal<String, NoError> { get }
 }
 
@@ -102,17 +147,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     )
 
     let subscribed = subscribedProperty.signal
-
-    self.availableForText = event
-      .map { event -> String? in
-        guard let availableDate = AppEnvironment.current.calendar
-          .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
-          else { return nil }
-
-        let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
-
-        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
-      }.skipNil()
 
     self.creatorAvatarUrl = event
       .map { URL(string: $0.creator.avatar) }
@@ -230,7 +264,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
   public let animateActivityIndicator: Signal<Bool, NoError>
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
-  public let availableForText: Signal<String, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
   public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>

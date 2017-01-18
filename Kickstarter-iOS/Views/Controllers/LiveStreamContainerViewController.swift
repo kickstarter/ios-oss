@@ -322,7 +322,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
     self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden
-    self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingButtonHidden
+    self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingBadgeViewHidden
     self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
     self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
@@ -364,7 +364,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
     }
 
-    self.availableForLabel.rac.text = self.eventDetailsViewModel.outputs.availableForText
+    self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
 
     self.detailsLoadingActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateActivityIndicator

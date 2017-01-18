@@ -12,7 +12,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   private let animateActivityIndicator = TestObserver<Bool, NoError>()
   private let animateSubscribeButtonActivityIndicator = TestObserver<Bool, NoError>()
-  private let availableForText = TestObserver<String, NoError>()
   private let creatorAvatarUrl = TestObserver<String?, NoError>()
   private let configureShareViewModelProject = TestObserver<Project, NoError>()
   private let configureShareViewModelEvent = TestObserver<LiveStreamEvent, NoError>()
@@ -33,7 +32,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.availableForText.observe(self.availableForText.observer)
     self.vm.outputs.creatorAvatarUrl.map { $0?.absoluteString }.observe(self.creatorAvatarUrl.observer)
     self.vm.outputs.configureShareViewModel.map(first).observe(self.configureShareViewModelProject.observer)
     self.vm.outputs.configureShareViewModel.map(second).observe(self.configureShareViewModelEvent.observer)
@@ -90,22 +88,6 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe", "Unsubscribe"])
-  }
-
-  func testAvailableForText() {
-    let liveStream = .template
-      |> Project.LiveStream.lens.id .~ 42
-    let project = Project.template
-    let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
-      |> LiveStreamEvent.lens.id .~ liveStream.id
-
-    self.availableForText.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
-
-    self.availableForText.assertValue("Available to watch for 2 more days")
   }
 
   func testCreatorAvatarUrl() {
