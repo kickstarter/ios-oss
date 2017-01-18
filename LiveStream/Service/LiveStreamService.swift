@@ -74,7 +74,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       completion(id)
     }
   }
-  
 
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
 
