@@ -44,9 +44,6 @@ public protocol SearchViewModelOutputs {
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
-  /// Emits true when no search results should be shown, and false otherwise.
-  var isNoSearchResultsVisible: Signal<Bool, NoError> { get }
-
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
@@ -58,6 +55,9 @@ public protocol SearchViewModelOutputs {
 
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, NoError> { get }
+
+  /// Emits true when no search results should be shown, and false otherwise.
+  var showNoSearchResults: Signal<(DiscoveryParams, Bool), NoError> { get }
 }
 
 public protocol SearchViewModelType {
@@ -126,9 +126,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
-    self.isNoSearchResultsVisible = Signal.combineLatest(isLoading, .merge(clears,projects))
+    let shouldShowNoSearchResults = Signal.combineLatest(isLoading, .merge(clears,projects))
       .map { isLoading, searchResults in !isLoading && searchResults.isEmpty }
       .skipRepeats()
+
+    self.showNoSearchResults = Signal.combineLatest(requestFirstPageWith, shouldShowNoSearchResults)
 
     self.changeSearchFieldFocus = Signal.merge(
       viewWillAppearNotAnimated.mapConst((false, false)),
@@ -219,11 +221,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
-  public let isNoSearchResultsVisible: Signal<Bool, NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>
+  public let showNoSearchResults: Signal<(DiscoveryParams, Bool), NoError>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }

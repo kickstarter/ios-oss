@@ -1,15 +1,18 @@
+import KsApi
 import Library
 import Prelude
+import ReactiveSwift
 import UIKit
 
 internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel: NoSearchResultsCellViewModelType = NoSearchResultsCellViewModel()
+
   @IBOutlet fileprivate weak var noResultsLabel: UILabel!
   @IBOutlet fileprivate weak var noQueryLabel: UILabel!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-
-  internal func configureWith(value: Void) {
-    
+  internal func configureWith(value param: DiscoveryParams) {
+    self.viewModel.inputs.configureWith(param: param)
   }
 
   internal override func bindStyles() {
@@ -25,6 +28,7 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
     }
 
     _ = self.noResultsLabel
+      |> UILabel.lens.text %~ { _ in "No Results" }
       |> UILabel.lens.font .~ .ksr_body(size: 15)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
@@ -37,4 +41,9 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4), leftRight: Styles.grid(4))
   }
 
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.noQueryLabel.rac.text = self.viewModel.outputs.searchTerm
+  }
 }

@@ -1,5 +1,7 @@
-import Library
 import KsApi
+import Library
+import Prelude
+import UIKit
 
 internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
@@ -13,13 +15,11 @@ internal final class SearchDataSource: ValueCellDataSource {
              inSection: Section.popularTitle.rawValue)
   }
 
-  internal func noSearchResults(isVisible visible: Bool) {
-
-    self.set(cellIdentifiers: visible ? ["NoSearchResultsCell"] : [],
+  internal func noSearchResults(params: DiscoveryParams, visible: Bool) {
+    self.set(values: visible ? [params] : [],
+             cellClass: NoSearchResultsCell.self,
              inSection: Section.noResults.rawValue)
   }
-
-  internal func loadNoSearchResult() {}
 
   internal func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
@@ -45,7 +45,7 @@ internal final class SearchDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as MostPopularCell, value as Void):
       cell.configureWith(value: value)
-    case let (cell as NoSearchResultsCell, value as Void):
+    case let (cell as NoSearchResultsCell, value as DiscoveryParams):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
