@@ -8,7 +8,7 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: NoSearchResultsCellViewModelType = NoSearchResultsCellViewModel()
 
   @IBOutlet fileprivate weak var noResultsLabel: UILabel!
-  @IBOutlet fileprivate weak var noQueryLabel: UILabel!
+  @IBOutlet fileprivate weak var searchTermNotFoundLabel: UILabel!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
   internal func configureWith(value param: DiscoveryParams) {
@@ -32,7 +32,7 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_body(size: 15)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
-    _ = self.noQueryLabel
+    _ = self.searchTermNotFoundLabel
       |> UILabel.lens.font .~ .ksr_body(size: 15)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.numberOfLines .~ 0
@@ -44,6 +44,6 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.noQueryLabel.rac.text = self.viewModel.outputs.searchTerm
+    self.searchTermNotFoundLabel.rac.text = self.viewModel.outputs.searchTermNotFound
   }
 }

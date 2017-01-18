@@ -7,7 +7,7 @@ public protocol NoSearchResultsCellViewModelInputs {
 }
 
 public protocol NoSearchResultsCellViewModelOutputs {
-  var searchTerm: Signal<String, NoError> { get }
+  var searchTermNotFound: Signal<String, NoError> { get }
 }
 
 public protocol NoSearchResultsCellViewModelType {
@@ -18,7 +18,7 @@ public protocol NoSearchResultsCellViewModelType {
 public final class NoSearchResultsCellViewModel: NoSearchResultsCellViewModelType, NoSearchResultsCellViewModelInputs, NoSearchResultsCellViewModelOutputs {
 
   public init() {
-    self.searchTerm = self.paramProperty.signal
+    self.searchTermNotFound = self.paramProperty.signal
       .skipNil()
       .map { param in "We couldn't find anything for [\(param.query ?? "")]." }
   }
@@ -28,7 +28,7 @@ public final class NoSearchResultsCellViewModel: NoSearchResultsCellViewModelTyp
     self.paramProperty.value = param
   }
 
-  public let searchTerm: Signal<String, NoError>
+  public let searchTermNotFound: Signal<String, NoError>
 
   public var inputs: NoSearchResultsCellViewModelInputs { return self }
   public var outputs: NoSearchResultsCellViewModelOutputs { return self }
