@@ -62,9 +62,11 @@ hooks: $(hooks)
 deploy:
 	@echo "Deploying private/$(BRANCH) to $(RELEASE)..."
 
+	@git fetch oss
 	@git fetch private
 
-	@if [ $(git rev-list private/$(BRANCH)..oss/$(BRANCH)) ]; then \
+	@if git rev-list private/$(BRANCH)..oss/$(BRANCH) >/dev/null; \
+	then \
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
