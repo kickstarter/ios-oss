@@ -2,6 +2,7 @@ import FirebaseAnalytics
 import FirebaseDatabase
 import FirebaseAuth
 
+// FIXME: let's move all of this into the service and document it.
 public class KsLiveApp {
 
   private static func start() {
