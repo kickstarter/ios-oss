@@ -47,7 +47,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
-  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+  var pushLiveStreamViewController: Signal<ProjectLiveStreamData, NoError> { get }
 
   /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
@@ -171,7 +171,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
+  public let pushLiveStreamViewController: Signal<ProjectLiveStreamData, NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>
