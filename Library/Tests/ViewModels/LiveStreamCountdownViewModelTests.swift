@@ -19,7 +19,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let projectImageUrl = TestObserver<String?, NoError>()
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerLiveStream = TestObserver<Project.LiveStream, NoError>()
-  private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent?, NoError>()
+  private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
   private let seconds = TestObserver<String, NoError>()
   private let upcomingIntroText = TestObserver<String, NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
@@ -143,9 +143,9 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.pushLiveStreamViewControllerProject.assertValues([project])
     self.pushLiveStreamViewControllerEvent.assertValues([event])
 
-    XCTAssertTrue(self.pushLiveStreamViewControllerLiveStream.lastValue?.isLiveNow ?? false)
-    XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow ?? false)
-    XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue??.stream.liveNow ?? false)
+    XCTAssertEqual(true, self.pushLiveStreamViewControllerLiveStream.lastValue?.isLiveNow)
+    XCTAssertEqual(true, self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow)
+    XCTAssertEqual(true, self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow)
   }
 
   func testClose() {
