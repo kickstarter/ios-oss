@@ -103,6 +103,12 @@ public final class LiveStreamViewController: UIViewController {
     }
   }
 
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    self.viewModel.inputs.viewDidDisappear()
+  }
+
   public override func viewDidLoad() {
     super.viewDidLoad()
 
