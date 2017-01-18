@@ -130,7 +130,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       self.start()
       return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
     }
-    
+
     return app
   }
 
