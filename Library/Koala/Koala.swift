@@ -148,6 +148,48 @@ public final class Koala {
   }
 
   /**
+   Determines the place from which the live stream was presented.
+
+   - liveStreamDiscovery: The live stream discovery view.
+   - project_pamphlet: The project pamphlet view.
+   - push: A push notification.
+   */
+  public enum LiveStreamContext {
+    case liveStreamDiscovery
+    case projectPage
+    case pushNotification
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .liveStreamDiscovery: return "live_stream_discovery"
+      case .projectPage:         return "project_page"
+      case .pushNotification:    return "push_notification"
+      }
+    }
+  }
+
+  /**
+   Determines the state of the live stream in which an event occurred.
+
+   - countdown: The stream is in countdown.
+   - live: The stream is live.
+   - replay: The stream is in replay.
+   */
+  public enum LiveStreamStateContext {
+    case live
+    case countdown
+    case replay
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .countdown: return "countdown"
+      case .live:      return "live"
+      case .replay:    return "replay"
+      }
+    }
+  }
+
+  /**
    Determines the place from which the newsletter toggle was presented.
 
    - facebook: The Facebook confirmation signup screen.
@@ -1562,22 +1604,96 @@ public final class Koala {
   }
 
   // MARK: Live streams
-  public func trackLiveStreamToggleSubscription(project: Project,
+  public func trackChangedLiveStreamOrientation(project: Project,
                                                 liveStream: Project.LiveStream,
-                                                subscribed: Bool) {
+                                                context: LiveStreamStateContext,
+                                                toOrientation: UIInterfaceOrientation) {
+    let orientationString = toOrientation.isLandscape ? "landscape" : "portrait"
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+      .withAllValuesFrom(["type" : orientationString])
 
-    self.track(event: subscribed ? "Subscribed Live Stream" : "Unsubscribed Live Stream",
+    self.track(event: "Changed Live Stream Orientation", properties: props)
+  }
+
+  public func trackSharedLiveStream(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    context: LiveStreamStateContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+
+    self.track(event: "Shared Live Stream", properties: props)
+  }
+
+  public func trackLiveStreamToggleSubscription(project: Project,
+                                                liveStream: Project.LiveStream,
+                                                subscribed: Bool,
+                                                context: LiveStreamStateContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+
+    self.track(event: subscribed ?
+      "Confirmed KSR Live Subscribe Button" :
+      "Confirmed KSR Live Unsubscribe Button",
                properties: props)
   }
 
-  public func trackViewedLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+  public func trackViewedLiveStreamCountdown(project: Project,
+                                             liveStream: Project.LiveStream,
+                                             context: LiveStreamContext) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
 
     self.track(event: "Viewed Live Stream Countdown", properties: props)
+  }
+
+  public func trackViewedLiveStream(project: Project,
+                                             liveStream: Project.LiveStream,
+                                             context: LiveStreamContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+
+    self.track(event: "Viewed Live Stream", properties: props)
+  }
+
+  public func trackWatchedLiveStream(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    context: LiveStreamContext,
+                                    duration: TimeInterval) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+      .withAllValuesFrom(["duration" : duration])
+
+    self.track(event: "Watched Live Stream", properties: props)
+  }
+
+  public func trackViewedLiveStreamReplay(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    context: LiveStreamContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+
+    self.track(event: "Viewed Live Stream Replay", properties: props)
+  }
+
+  public func trackWatchedLiveStreamReplay(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    context: LiveStreamContext,
+                                    duration: TimeInterval) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["context" : context.trackingString])
+      .withAllValuesFrom(["duration" : duration])
+
+    self.track(event: "Watched Live Stream Replay", properties: props)
   }
 
   // Private tracking method that merges in default properties.

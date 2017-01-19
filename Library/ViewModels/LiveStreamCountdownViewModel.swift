@@ -15,7 +15,7 @@ public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
 
   /// Call with the Project and the specific LiveStream that is being viewed
-  func configureWith(project: Project, liveStream: Project.LiveStream)
+  func configureWith(project: Project, liveStream: Project.LiveStream, context: Koala.LiveStreamContext)
 
   /// Called when the LiveStreamEvent has been retrieved
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
@@ -128,8 +128,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     )
 
     self.pushLiveStreamViewController = Signal.combineLatest(
-      configData.map(flipProjectLiveStreamToLive),
-      self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEvenToLive)
+      configData.map { project, liveStream, _ in (project, liveStream) }.map(flipProjectLiveStreamToLive),
+      self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEventToLive)
       )
       .map(unpack)
       .takeWhen(countdownEnded)
@@ -139,8 +139,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
     configData
-      .observeValues { project, liveStream in
-        AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project, liveStream: liveStream)
+      .observeValues { project, liveStream, context in
+        AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project, liveStream: liveStream,
+                                                                    context: context)
     }
   }
 
@@ -149,9 +150,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let configData = MutableProperty<(Project, Project.LiveStream)?>(nil)
-  public func configureWith(project: Project, liveStream: Project.LiveStream) {
-    self.configData.value = (project, liveStream)
+  private let configData = MutableProperty<(Project, Project.LiveStream, Koala.LiveStreamContext)?>(nil)
+  public func configureWith(project: Project, liveStream: Project.LiveStream,
+                            context: Koala.LiveStreamContext) {
+    self.configData.value = (project, liveStream, context)
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
@@ -194,6 +196,6 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
   return (project |> Project.lens.liveStreams .~ liveStreams, flippedCurrentLiveStream)
 }
 
-private func flipLiveStreamEvenToLive(event: LiveStreamEvent) -> LiveStreamEvent {
+private func flipLiveStreamEventToLive(event: LiveStreamEvent) -> LiveStreamEvent {
   return event |> LiveStreamEvent.lens.stream.liveNow .~ true
 }

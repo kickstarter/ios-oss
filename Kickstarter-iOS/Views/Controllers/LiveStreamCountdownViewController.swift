@@ -36,11 +36,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream) -> LiveStreamCountdownViewController {
-
+                                    liveStream: Project.LiveStream,
+                                    context: Koala.LiveStreamContext) -> LiveStreamCountdownViewController {
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, context: context)
+    vc.eventDetailsViewModel.inputs.configureWith(projectLiveStreamData: (project: project,
+                                                                          liveStream: liveStream,
+                                                                          event: nil))
     return vc
   }
 
