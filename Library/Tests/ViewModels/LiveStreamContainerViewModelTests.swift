@@ -52,8 +52,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testAvailableForText() {
-    let liveStream = .template
-      |> Project.LiveStream.lens.id .~ 42
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
@@ -62,12 +61,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.availableForText.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
     self.availableForText.assertValue("Available to watch for 2 more days")
   }
 
   func testCreatorIntroText_Live() {
+    let liveStream = Project.LiveStream.template
     let stream = LiveStreamEvent.template.stream
       |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
@@ -77,13 +77,14 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.creatorIntroText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.creatorIntroText.assertValues(["<b>Creator Name</b> is live now"])
   }
 
   func testCreatorIntroText_Replay() {
+    let liveStream = Project.LiveStream.template
     let stream = LiveStreamEvent.template.stream
       |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
@@ -93,17 +94,18 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.creatorIntroText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.creatorIntroText.assertValues(["<b>Creator Name</b> was live right now"])
   }
 
   func testCreateLiveStreamViewController() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.createAndConfigureLiveStreamViewController.lastValue == (project, nil, event))
@@ -116,10 +118,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testShowErrorAlert() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(
@@ -134,6 +137,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testLabelVisibilities_Live() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
@@ -143,7 +147,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.navBarLiveDotImageViewHidden.assertValues([true, false])
@@ -153,6 +157,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testLabelVisibilities_Replay() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ false
@@ -162,7 +167,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.navBarLiveDotImageViewHidden.assertValues([true])
@@ -172,12 +177,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testLiveStreamStates() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
     self.liveStreamState.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -209,12 +215,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testNavBarTitleViewHidden_LiveState() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
     self.navBarTitleViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.navBarTitleViewHidden.assertValues([true])
@@ -232,12 +239,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testNavBarTitleViewHidden_ReplayState() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
     self.navBarTitleViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.navBarTitleViewHidden.assertValues([true])
@@ -255,12 +263,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testLoaderStackViewHidden() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
     self.loaderStackViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -276,10 +285,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testLoaderText() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -296,21 +306,23 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testProjectImageUrl() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
 
     self.projectImageUrlString.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, event: nil)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 
   func testShowVideoView() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -329,10 +341,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testTitleViewText() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, event: event)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -350,10 +363,42 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     ])
   }
 
-  func test_MakeSureSingleLiveStreamControllerIsCreated() {
+  func testTrackLiveStreamOrientationChanged() {
+    let liveStream = Project.LiveStream.template
+    let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: .template, event: event)
+    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
+
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
+
+    self.vm.inputs.deviceOrientationDidChange(orientation: .landscapeLeft)
+
+    XCTAssertEqual(["Changed Live Stream Orientation"], self.trackingClient.events)
+    XCTAssertEqual(["live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["landscape"], self.trackingClient.properties(forKey: "type", as: String.self))
+
+    self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
+
+    XCTAssertEqual(["Changed Live Stream Orientation", "Changed Live Stream Orientation"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["live", "live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["landscape", "portrait"], self.trackingClient.properties(forKey: "type", as: String.self))
+  }
+
+  func test_MakeSureSingleLiveStreamControllerIsCreated() {
+    let liveStream = Project.LiveStream.template
+    let event = LiveStreamEvent.template
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
