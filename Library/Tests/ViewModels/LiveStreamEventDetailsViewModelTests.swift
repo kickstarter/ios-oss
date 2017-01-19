@@ -254,7 +254,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
     self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
     XCTAssertEqual(["Confirmed KSR Live Subscribe Button"], self.trackingClient.events)
-    XCTAssertEqual(["live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["live_stream_live"], self.trackingClient.properties(forKey: "context", as: String.self))
 
     self.vm.inputs.subscribeButtonTapped()
 
@@ -266,8 +266,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeLabelHidden.assertValues([false, true, false])
     self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
     self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
-    XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"], self.trackingClient.events)
-    XCTAssertEqual(["live", "live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                   self.trackingClient.properties(forKey: "context", as: String.self))
 
     let apiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
     withEnvironment(liveStreamService: apiService) {

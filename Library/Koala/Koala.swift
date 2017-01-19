@@ -182,9 +182,9 @@ public final class Koala {
 
     fileprivate var trackingString: String {
       switch self {
-      case .countdown: return "countdown"
-      case .live:      return "live"
-      case .replay:    return "replay"
+      case .countdown: return "live_stream_countdown"
+      case .live:      return "live_stream_live"
+      case .replay:    return "live_stream_replay"
       }
     }
   }
@@ -828,6 +828,8 @@ public final class Koala {
 
     self.track(event: "Showed Share Sheet", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share Sheet"
       : shareContext.update != nil ? "Update Show Share Sheet"
@@ -845,6 +847,8 @@ public final class Koala {
 
     self.track(event: "Canceled Share Sheet",
                properties: props)
+
+    guard shareContext.isLiveStreamContext != true else { return }
 
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share Sheet"
@@ -866,6 +870,8 @@ public final class Koala {
                                 shareActivityType: shareActivityType)
     self.track(event: "Showed Share", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share"
       : shareContext.update != nil ? "Update Show Share"
@@ -886,6 +892,8 @@ public final class Koala {
                            shareActivityType: shareActivityType)
     self.track(event: "Canceled Share", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share"
       : shareContext.update != nil ? "Update Cancel Share"
@@ -904,6 +912,8 @@ public final class Koala {
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
     self.track(event: "Shared", properties: props)
+
+    guard shareContext.isLiveStreamContext != true else { return }
 
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Share"
@@ -1618,16 +1628,6 @@ public final class Koala {
     self.track(event: "Changed Live Stream Orientation", properties: props)
   }
 
-  public func trackSharedLiveStream(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    context: LiveStreamStateContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context" : context.trackingString])
-
-    self.track(event: "Shared Live Stream", properties: props)
-  }
-
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStream: Project.LiveStream,
                                                 subscribed: Bool,
@@ -1925,9 +1925,9 @@ private func properties(shareContext: ShareContext,
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
-  case let .liveStream(project, _):
+  case let .liveStream(project, _, context):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
-    result["context"] = "live_stream"
+    result["context"] = context.trackingString
   case let .thanks(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"

@@ -40,8 +40,9 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
 
-  /// Emits with the Project and LiveStreamEvent for configuring the ShareViewModel
-  var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
+  /// Emits with the Project, Project.LiveStream and LiveStreamEvent for configuring the ShareViewModel
+  var configureShareViewModel: Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext),
+    NoError> { get }
 
   /// Emits when the details stack view should be hidden
   var detailsStackViewHidden: Signal<Bool, NoError> { get }
@@ -98,6 +99,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map(first)
 
     let project = configData.map(first)
+    let liveStream = configData.map(second)
 
     let eventEvent = configData
       .switchMap { project, liveStream, optionalEvent in
@@ -109,7 +111,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.retrievedLiveStreamEvent = event
 
-    self.configureShareViewModel = Signal.combineLatest(project, event)
+    self.configureShareViewModel = Signal.combineLatest(
+      project, event, liveStream.map(liveStreamStateContext(forLiveStream:))
+      )
 
     self.shareButtonEnabled = self.configureShareViewModel.mapConst(true)
 
@@ -224,10 +228,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     configData
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
-        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.project,
-                                                                       liveStream: configData.liveStream,
-                                                                       subscribed: isSubscribed,
-                                                                       context: Koala.LiveStreamStateContext.live)
+        AppEnvironment.current.koala
+          .trackLiveStreamToggleSubscription(project: configData.0,
+                                             liveStream: configData.1,
+                                             subscribed: isSubscribed,
+                                             context: liveStreamStateContext(
+                                              forLiveStream: configData.1))
     }
   }
 
@@ -266,7 +272,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
-  public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>
+  public let configureShareViewModel: Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext),
+    NoError>
   public let detailsStackViewHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>

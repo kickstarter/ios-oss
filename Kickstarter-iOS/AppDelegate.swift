@@ -253,8 +253,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 event: liveStreamEvent)
     } else {
       liveVc = LiveStreamCountdownViewController
-        .configuredWith(project: projectLiveStreamData.project,
-                        liveStream: projectLiveStreamData.liveStream,
+        .configuredWith(project: project,
+                        liveStream: liveStream,
                         context: Koala.LiveStreamContext.pushNotification)
     }
 

@@ -48,7 +48,7 @@ public final class LiveStreamContainerViewController: UIViewController {
                                     event: LiveStreamEvent?) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, event: event)
+    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
     return vc
@@ -359,9 +359,10 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+      .observeValues { [weak self] project, event, context in
+        self?.shareViewModel.inputs.configureWith(
+          shareContext: ShareContext.liveStream(project, event, context)
+        )
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage

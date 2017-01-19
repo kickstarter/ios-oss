@@ -382,14 +382,15 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.deviceOrientationDidChange(orientation: .landscapeLeft)
 
     XCTAssertEqual(["Changed Live Stream Orientation"], self.trackingClient.events)
-    XCTAssertEqual(["live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["live_stream_live"], self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(["landscape"], self.trackingClient.properties(forKey: "type", as: String.self))
 
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
 
     XCTAssertEqual(["Changed Live Stream Orientation", "Changed Live Stream Orientation"],
                    self.trackingClient.events)
-    XCTAssertEqual(["live", "live"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                   self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual(["landscape", "portrait"], self.trackingClient.properties(forKey: "type", as: String.self))
   }
 
