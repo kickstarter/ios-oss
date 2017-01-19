@@ -2,95 +2,6 @@ import Library
 import LiveStream
 import Prelude
 
-import ReactiveSwift
-import Result
-
-public protocol LiveStreamDiscoveryCellViewModelInputs {
-  func configureWith(liveStreamEvent: LiveStreamEvent)
-}
-
-public protocol LiveStreamDiscoveryCellViewModelOutputs {
-  var backgroundImageUrl: Signal<URL?, NoError> { get }
-  var countdownStackViewHidden: Signal<Bool, NoError> { get }
-  var creatorImageUrl: Signal<URL?, NoError> { get }
-  var creatorLabelText: Signal<String, NoError> { get }
-  var dateLabelText: Signal<String, NoError> { get }
-  var dayCountLabelText: Signal<String, NoError> { get }
-  var hourCountLabelText: Signal<String, NoError> { get }
-  var minuteCountLabelText: Signal<String, NoError> { get }
-  var nameLabelText: Signal<String, NoError> { get }
-  var secondCountLabelText: Signal<String, NoError> { get }
-  var watchButtonHidden: Signal<Bool, NoError> { get }
-}
-
-public protocol LiveStreamDiscoveryCellViewModelType {
-  var inputs: LiveStreamDiscoveryCellViewModelInputs { get }
-  var outputs: LiveStreamDiscoveryCellViewModelOutputs { get }
-}
-
-public final class LiveStreamDiscoveryCellViewModel: LiveStreamDiscoveryCellViewModelType, LiveStreamDiscoveryCellViewModelInputs, LiveStreamDiscoveryCellViewModelOutputs {
-
-  public init() {
-    let liveStreamEvent = self.liveStreamEventProperty.signal.skipNil()
-
-    self.backgroundImageUrl = liveStreamEvent
-      .map { URL(string: $0.backgroundImageUrl) }
-
-    self.countdownStackViewHidden = liveStreamEvent
-      .map { $0.liveNow || $0.hasReplay }
-
-    self.creatorLabelText = liveStreamEvent
-      .map { Strings.project_creator_by_creator(creator_name: $0.creator.name) }
-
-    self.creatorImageUrl = liveStreamEvent
-      .map { URL(string: $0.creator.avatar) }
-
-    self.dateLabelText = liveStreamEvent
-      .map { event in
-        localizedString(
-          key: "",
-          defaultValue: "Live stream – %{date}",
-          substitutions: ["date": Format.date(secondsInUTC: event.startDate.timeIntervalSince1970, dateStyle: .medium, timeStyle: .short)]
-        )
-    }
-
-    self.nameLabelText = liveStreamEvent.map { $0.name }
-
-    self.watchButtonHidden = liveStreamEvent
-      .map { $0.hasReplay && !$0.liveNow }
-
-    let countdown = liveStreamEvent
-      .switchMap(countdown(forEvent:))
-
-    self.dayCountLabelText = countdown.map { $0.day }.skipRepeats()
-    self.hourCountLabelText = countdown.map { $0.hour }.skipRepeats()
-    self.minuteCountLabelText = countdown.map { $0.minute }.skipRepeats()
-    self.secondCountLabelText = countdown.map { $0.second }.skipRepeats()
-  }
-
-  private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func configureWith(liveStreamEvent: LiveStreamEvent) {
-    self.liveStreamEventProperty.value = liveStreamEvent
-  }
-
-  public let backgroundImageUrl: Signal<URL?, NoError>
-  public let countdownStackViewHidden: Signal<Bool, NoError>
-  public let creatorImageUrl: Signal<URL?, NoError>
-  public let creatorLabelText: Signal<String, NoError>
-  public let dateLabelText: Signal<String, NoError>
-  public let dayCountLabelText: Signal<String, NoError>
-  public let hourCountLabelText: Signal<String, NoError>
-  public let minuteCountLabelText: Signal<String, NoError>
-  public let nameLabelText: Signal<String, NoError>
-  public let secondCountLabelText: Signal<String, NoError>
-  public let watchButtonHidden: Signal<Bool, NoError>
-
-  public var inputs: LiveStreamDiscoveryCellViewModelInputs { return self }
-  public var outputs: LiveStreamDiscoveryCellViewModelOutputs { return self }
-}
-
-
-
 internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   private let viewModel: LiveStreamDiscoveryCellViewModelType = LiveStreamDiscoveryCellViewModel()
 
@@ -129,8 +40,8 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView.layoutMargins .~ .init(topBottom: Styles.grid(4), leftRight: Styles.grid(2))
 
     _ = self.backgroundImageView
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityDefaultLow
+      |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
+      |> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityDefaultHigh
       |> UIImageView.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
       |> UIImageView.lens.contentCompressionResistancePriorityForAxis(.vertical) .~ UILayoutPriorityDefaultLow
 
@@ -239,24 +150,4 @@ private func countdownFont(label: UILabel) -> UIFont {
   )
 
   return UIFont(descriptor: monospacedDescriptor, size: 0.0)
-}
-
-private func countdown(forEvent event: LiveStreamEvent)
-  -> SignalProducer<(day: String, hour: String, minute: String, second: String), NoError> {
-
-    return timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
-      .prefix(value: AppEnvironment.current.scheduler.currentDate)
-      .map { currentDate -> DateComponents in
-        AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
-                                                       from: currentDate,
-                                                       to: event.startDate)
-      }
-      .map { components -> (day: String, hour: String, minute: String, second: String) in
-        (
-          day: String(format: "%02d", max(0, components.day ?? 0)),
-          hour: String(format: "%02d", max(0, components.hour ?? 0)),
-          minute: String(format: "%02d", max(0, components.minute ?? 0)),
-          second: String(format: "%02d", max(0, components.second ?? 0))
-        )
-    }
 }

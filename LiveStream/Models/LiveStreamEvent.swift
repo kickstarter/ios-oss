@@ -174,6 +174,10 @@ private func toDate(dateString: String) -> Decoded<Date> {
 
 extension LiveStreamEvent {
   public enum lens {
+    public static let backgroundImageUrl = Lens<LiveStreamEvent, String>(
+      view: { $0.backgroundImageUrl },
+      set: { var new = $1; new.backgroundImageUrl = $0; return new }
+    )
     public static let creator = Lens<LiveStreamEvent, LiveStreamEvent.Creator>(
       view: { $0.creator },
       set: { var new = $1; new.creator = $0; return new }
