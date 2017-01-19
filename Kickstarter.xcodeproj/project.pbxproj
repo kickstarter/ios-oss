@@ -420,6 +420,7 @@
 		A7792BFE1E30B854002BAD63 /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */; };
 		A7792C3B1E30F9E1002BAD63 /* LiveStreamDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792C391E30F998002BAD63 /* LiveStreamDiscoveryViewModel.swift */; };
 		A7792C3D1E311614002BAD63 /* LiveStreamDiscoveryDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792C3C1E311614002BAD63 /* LiveStreamDiscoveryDataSourceTests.swift */; };
+		A7792C3F1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792C3E1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift */; };
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
 		A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
 		A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */; };
@@ -1699,6 +1700,7 @@
 		A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedFunctionsTests.swift; sourceTree = "<group>"; };
 		A7792C391E30F998002BAD63 /* LiveStreamDiscoveryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewModel.swift; sourceTree = "<group>"; };
 		A7792C3C1E311614002BAD63 /* LiveStreamDiscoveryDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryDataSourceTests.swift; sourceTree = "<group>"; };
+		A7792C3E1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.BackgroundImageLenses.swift; sourceTree = "<group>"; };
 		A77D7B061CBAAF5D0077586B /* Paginate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginate.swift; sourceTree = "<group>"; };
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
 		A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2827,6 +2829,7 @@
 		A7BA54F91E1E9D2200E54377 /* lenses */ = {
 			isa = PBXGroup;
 			children = (
+				A7792C3E1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift */,
 				A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */,
 				A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */,
 				A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */,
@@ -4430,6 +4433,7 @@
 				A7B76C061E23E4CF00C8E312 /* LiveStreamService.swift in Sources */,
 				A70482281E2F768D00292625 /* LiveStreamEvent.ProjectLenses.swift in Sources */,
 				A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */,
+				A7792C3F1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift in Sources */,
 				A7BA54AD1E1E4A9E00E54377 /* LiveStreamViewModel.swift in Sources */,
 				A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */,
 				A7BA54AC1E1E4A9E00E54377 /* LiveStreamEvent.swift in Sources */,

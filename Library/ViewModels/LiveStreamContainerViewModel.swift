@@ -174,7 +174,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .skipRepeats()
 
     self.projectImageUrl = event
-      .map { URL(string: $0.backgroundImageUrl) }
+      .map { URL(string: $0.backgroundImage.smallCropped) }
 
     self.titleViewText = liveStreamState.map {
       switch $0 {

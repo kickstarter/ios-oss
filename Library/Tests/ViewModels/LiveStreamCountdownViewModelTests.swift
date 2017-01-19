@@ -168,7 +168,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
   func testProjectImageUrl() {
     let event = .template
-      |> LiveStreamEvent.lens.backgroundImageUrl .~ "http://www.background.jpg"
+      |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
 
     self.vm.inputs.configureWith(project: .template, liveStream: .template)
     self.vm.inputs.viewDidLoad()

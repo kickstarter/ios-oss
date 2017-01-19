@@ -77,6 +77,7 @@ private func sectionTitle(forLiveStreamEvent liveStreamEvent: LiveStreamEvent)
 }
 
 extension LiveStreamDiscoveryTitleType {
+  /// The section of the data source that events of this type should be placed in.
   fileprivate var section: Int {
     switch self {
     case .liveNow:

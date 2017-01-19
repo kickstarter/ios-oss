@@ -33,7 +33,7 @@ LiveStreamDiscoveryCellViewModelInputs, LiveStreamDiscoveryCellViewModelOutputs 
     let liveStreamEvent = self.liveStreamEventProperty.signal.skipNil()
 
     self.backgroundImageUrl = liveStreamEvent
-      .map { URL(string: $0.backgroundImageUrl) }
+      .map { URL(string: $0.backgroundImage.smallCropped) }
 
     self.countdownStackViewHidden = liveStreamEvent
       .map { $0.liveNow || $0.hasReplay }

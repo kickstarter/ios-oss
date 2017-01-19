@@ -5,7 +5,7 @@ import Prelude
 import Runes
 
 public struct LiveStreamEvent: Equatable {
-  public fileprivate(set) var backgroundImageUrl: String
+  public fileprivate(set) var backgroundImage: BackgroundImage
   public fileprivate(set) var creator: Creator
   public fileprivate(set) var description: String
   public fileprivate(set) var firebase: Firebase?
@@ -23,6 +23,11 @@ public struct LiveStreamEvent: Equatable {
   public fileprivate(set) var startDate: Date
   public fileprivate(set) var user: User?
   public fileprivate(set) var webUrl: String
+
+  public struct BackgroundImage {
+    public fileprivate(set) var medium: String
+    public fileprivate(set) var smallCropped: String
+  }
 
   public struct Creator {
     public fileprivate(set) var avatar: String
@@ -75,7 +80,7 @@ private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
   let create = curry(LiveStreamEvent.init)
 
   let tmp1 = create
-    <^> (json <| ["stream", "background_image_url"] <|> json <| "background_image_url")
+    <^> (json <| ["stream", "background_image"] <|> json <| "background_image")
     <*> json <| "creator"
     <*> (json <| ["stream", "description"] <|> json <| "description")
     <*> json <|? "firebase"
@@ -98,6 +103,14 @@ private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
   return tmp4
     <*> json <|? "user"
     <*> (json <| ["stream", "web_url"] <|> json <| "web_url")
+}
+
+extension LiveStreamEvent.BackgroundImage: Decodable {
+  public static func decode(_ json: JSON) -> Decoded<LiveStreamEvent.BackgroundImage> {
+    return curry(LiveStreamEvent.BackgroundImage.init)
+      <^> json <| "medium"
+      <*> json <| "small_cropped"
+  }
 }
 
 extension LiveStreamEvent.Creator: Decodable {
@@ -172,9 +185,9 @@ private func toDate(dateString: String) -> Decoded<Date> {
 
 extension LiveStreamEvent {
   public enum lens {
-    public static let backgroundImageUrl = Lens<LiveStreamEvent, String>(
-      view: { $0.backgroundImageUrl },
-      set: { var new = $1; new.backgroundImageUrl = $0; return new }
+    public static let backgroundImage = Lens<LiveStreamEvent, LiveStreamEvent.BackgroundImage>(
+      view: { $0.backgroundImage },
+      set: { var new = $1; new.backgroundImage = $0; return new }
     )
     public static let creator = Lens<LiveStreamEvent, LiveStreamEvent.Creator>(
       view: { $0.creator },

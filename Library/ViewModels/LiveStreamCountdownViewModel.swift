@@ -105,7 +105,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .filter { $0.isTerminating }
 
     self.projectImageUrl = liveStreamEvent
-      .map { URL(string: $0.backgroundImageUrl) }
+      .map { URL(string: $0.backgroundImage.smallCropped) }
 
     self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal

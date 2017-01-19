@@ -42,7 +42,7 @@ final class LiveStreamDiscoveryCellViewModelTests: TestCase {
   func testBackgroundImageUrl() {
     self.vm.inputs.configureWith(
       liveStreamEvent: .template
-        |> LiveStreamEvent.lens.backgroundImageUrl .~ "http://www.image.jpg"
+        |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.image.jpg"
     )
 
     self.backgroundImageUrl.assertValues(["http://www.image.jpg"])

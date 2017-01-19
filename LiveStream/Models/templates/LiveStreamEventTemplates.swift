@@ -3,7 +3,10 @@ import Foundation
 extension LiveStreamEvent {
 
   internal static let template = LiveStreamEvent(
-    backgroundImageUrl: "",
+    backgroundImage: LiveStreamEvent.BackgroundImage(
+      medium: "http://www.background.com/medium.jpg",
+      smallCropped: "http://www.background.com/small-cropped.jpg"
+    ),
     creator: Creator(
       avatar: "https://www.kickstarter.com/creator-avatar.jpg",
       name: "Creator Name"

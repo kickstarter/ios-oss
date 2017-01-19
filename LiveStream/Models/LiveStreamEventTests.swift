@@ -18,7 +18,10 @@ final class LiveStreamEventTests: XCTestCase {
       "stream": [
         "name": "Live Stream Event Name",
         "description": "Live Stream Event Description",
-        "background_image_url": "http://www.kickstarter.com",
+        "background_image": [
+          "medium": "http://www.background.com/medium.jpg",
+          "small_cropped": "http://www.background.com/small-cropped.jpg"
+        ],
         "start_date": "2016-12-01T00:00:00.000-00:00",
         "web_url": "http://www.kickstarter.com",
         "project_web_url": "http://www.kickstarter.com",
@@ -68,7 +71,9 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual(123, liveStreamEvent.value?.id)
     XCTAssertEqual("Live Stream Event Name", liveStreamEvent.value?.name)
     XCTAssertEqual("Live Stream Event Description", liveStreamEvent.value?.description)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.backgroundImageUrl)
+    XCTAssertEqual("http://www.background.com/medium.jpg", liveStreamEvent.value?.backgroundImage.medium)
+    XCTAssertEqual("http://www.background.com/small-cropped.jpg",
+                   liveStreamEvent.value?.backgroundImage.smallCropped)
     XCTAssertEqual(date, liveStreamEvent.value?.startDate)
     XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.webUrl)
     XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.project.webUrl)
@@ -86,13 +91,13 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.creator.avatar)
 
     // Firebase
-    XCTAssertEqual("huzza-web", liveStreamEvent.value?.firebase.project)
-    XCTAssertEqual("apikey", liveStreamEvent.value?.firebase.apiKey)
-    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.greenRoomPath)
-    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.hlsUrlPath)
-    XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase.numberPeopleWatchingPath)
-    XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase.scaleNumberPeopleWatchingPath)
-    XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase.chatPath)
+    XCTAssertEqual("huzza-web", liveStreamEvent.value?.firebase?.project)
+    XCTAssertEqual("apikey", liveStreamEvent.value?.firebase?.apiKey)
+    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase?.greenRoomPath)
+    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase?.hlsUrlPath)
+    XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase?.numberPeopleWatchingPath)
+    XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase?.scaleNumberPeopleWatchingPath)
+    XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase?.chatPath)
 
     // OpenTok
     XCTAssertEqual("45698472", liveStreamEvent.value?.openTok?.appId)
@@ -112,7 +117,10 @@ final class LiveStreamEventTests: XCTestCase {
       "live_now": false,
       "event_over": false,
       "has_replay": false,
-      "background_image_url": "http://www.background.jpg",
+      "background_image": [
+        "medium": "http://www.background.com/medium.jpg",
+        "small_cropped": "http://www.background.com/small-cropped.jpg"
+      ],
       "feature_score": 0,
       "number_subscribed": 114,
       "web_url": "http://www.com",
@@ -149,7 +157,9 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertNil(liveStreamEvent?.openTok)
 
     // Stream
-    XCTAssertEqual("http://www.background.jpg", liveStreamEvent?.backgroundImageUrl)
+    XCTAssertEqual("http://www.background.com/medium.jpg", liveStreamEvent?.backgroundImage.medium)
+    XCTAssertEqual("http://www.background.com/small-cropped.jpg",
+                   liveStreamEvent?.backgroundImage.smallCropped)
     XCTAssertEqual("Blobby McBlob comin' to you live!", liveStreamEvent?.description)
     XCTAssertEqual(false, liveStreamEvent?.hasReplay)
     XCTAssertNil(liveStreamEvent?.hlsUrl)

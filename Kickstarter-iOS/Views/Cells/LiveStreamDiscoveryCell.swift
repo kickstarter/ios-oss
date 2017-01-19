@@ -68,6 +68,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.dateContainerView
+      |> UIView.lens.backgroundColor .~ .init(white: 0, alpha: 0.5)
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> roundedStyle()
 
@@ -75,6 +76,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
 
     _ = self.dateLabel
+      |> UILabel.lens.textColor .~ .init(white: 1, alpha: 0.7)
       |> UILabel.lens.font .~ .ksr_subhead()
 
     _ = self.detailsStackView
@@ -115,17 +117,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    //self.backgroundImageView.rac.imageUrl = self.viewModel.outputs.backgroundImageUrl
-
-    self.viewModel.outputs.backgroundImageUrl
-      .observeForUI()
-      .on(event: { [weak self] _ in self?.backgroundImageView.image = nil })
-      .skipNil()
-      .observeValues { [weak self] url in
-        let filter = AspectScaledToFillSizeFilter(size: CGSize(width: 200, height: 150))
-        self?.backgroundImageView.af_setImage(withURL: url, filter: filter)
-    }
-
+    self.backgroundImageView.rac.imageUrl = self.viewModel.outputs.backgroundImageUrl
     self.countdownStackView.rac.hidden = self.viewModel.outputs.countdownStackViewHidden
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.creatorImageView.rac.imageUrl = self.viewModel.outputs.creatorImageUrl

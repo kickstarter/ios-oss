@@ -293,7 +293,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   func testProjectImageUrl() {
     let event = .template
-      |> LiveStreamEvent.lens.backgroundImageUrl .~ "http://www.background.jpg"
+      |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
 
     self.vm.inputs.configureWith(project: .template, event: event)
     self.vm.inputs.viewDidLoad()
