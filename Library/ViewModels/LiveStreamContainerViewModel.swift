@@ -11,11 +11,14 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  /// Call with the Project and optional LiveStreamEvent
-  func configureWith(project: Project, event: LiveStreamEvent?)
+  /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
+  func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
 
   /// Called when the close button is tapped
   func closeButtonTapped()
+
+  /// Called when the device's orientation changed
+  func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -70,11 +73,11 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
 
-  /// Emits when the video view controller should be hidden (when loading or green room is active)
-  var videoViewControllerHidden: Signal<Bool, NoError> { get }
-
   /// Emits the title view's text
   var titleViewText: Signal<String, NoError> { get }
+
+  /// Emits when the video view controller should be hidden (when loading or green room is active)
+  var videoViewControllerHidden: Signal<Bool, NoError> { get }
 }
 
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
@@ -91,8 +94,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let project = configData.map(first)
 
+    let liveStream = configData.map(second)
+
     let event = Signal.merge(
-      configData.map(second).skipNil(),
+      configData.map(third).skipNil(),
       self.liveStreamEventProperty.signal.skipNil()
     )
 
@@ -248,18 +253,36 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
+
+    Signal.combineLatest(
+      project,
+      liveStream,
+      self.deviceOrientationDidChangeProperty.signal.skipNil()
+    )
+      .observeValues { project, liveStream, orientation in
+        AppEnvironment.current.koala
+          .trackChangedLiveStreamOrientation(project: project,
+                                             liveStream: liveStream,
+                                             context: liveStream.isLiveNow ? .live : .replay,
+                                             toOrientation: orientation)
+    }
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
-  public func configureWith(project: Project, event: LiveStreamEvent?) {
-    self.configData.value = (project, event)
+  private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
+  public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {
+    self.configData.value = (project, liveStream, event)
   }
 
   private let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
+  }
+
+  private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
+  public func deviceOrientationDidChange(orientation: UIInterfaceOrientation) {
+    self.deviceOrientationDidChangeProperty.value = orientation
   }
 
   private let liveStreamViewControllerStateChangedProperty =
