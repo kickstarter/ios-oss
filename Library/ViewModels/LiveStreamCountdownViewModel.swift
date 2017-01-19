@@ -91,9 +91,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       }
       .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
 
-    self.countdownDateLabelText = liveStream.map {
-      AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
-      .map(formattedDateString)
+    self.countdownDateLabelText = liveStream.map { $0.startDate }.map(formattedDateString)
 
     self.daysString = dateComponents
       .map { max(0, $0.day) }
