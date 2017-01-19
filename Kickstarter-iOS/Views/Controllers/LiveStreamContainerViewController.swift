@@ -279,6 +279,13 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.UIDeviceOrientationDidChange,
+                   object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation)
+    }
+
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
         self?.openLoginTout()
