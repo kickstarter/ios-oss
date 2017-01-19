@@ -10,7 +10,7 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
     sorted(liveStreamEvents: liveStreams)
       .groupedBy(sectionTitle(forLiveStreamEvent:))
       .forEach { title, events in
-        guard events.count > 0 else { return }
+        guard !events.isEmpty else { return }
         self.appendRow(value: title, cellClass: LiveStreamDiscoveryTitleCell.self, toSection: title.section)
         events.forEach { event in
           self.appendRow(value: event, cellClass: LiveStreamDiscoveryCell.self, toSection: title.section)
