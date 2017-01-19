@@ -90,7 +90,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLiveStream
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToLiveStream(project: $0, liveStream: $1, liveStreamEvent: $2, refTag: $3)
+        self?.goToLiveStream(projectLiveStreamData: $0, refTag: $1)
     }
 
     self.viewModel.outputs.goToMessageThread
@@ -238,22 +238,20 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.rootTabBarController?.present(alert, animated: true, completion: nil)
   }
 
-  private func goToLiveStream(project: Project,
-                              liveStream: Project.LiveStream,
-                              liveStreamEvent: LiveStreamEvent,
+  private func goToLiveStream(projectLiveStreamData: ProjectLiveStreamData,
                               refTag: RefTag?) {
 
-    let projectVc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project),
+    let projectVc = ProjectPamphletViewController
+      .configuredWith(projectOrParam: .left(projectLiveStreamData.project),
                                                                  refTag: refTag)
 
     let liveVc: UIViewController
-    if liveStream.startDate < AppEnvironment.current.dateType.init().timeIntervalSince1970 {
-      liveVc = LiveStreamContainerViewController.configuredWith(project: project,
-                                                                liveStream: liveStream,
-                                                                event: liveStreamEvent)
+    if projectLiveStreamData.liveStream.startDate < AppEnvironment.current.dateType.init()
+      .timeIntervalSince1970 {
+      liveVc = LiveStreamContainerViewController.configuredWith(projectLiveStreamData: projectLiveStreamData)
     } else {
-      liveVc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                                liveStream: liveStream)
+      liveVc = LiveStreamCountdownViewController.configuredWith(project: projectLiveStreamData.project,
+                                                                liveStream: projectLiveStreamData.liveStream)
     }
 
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)

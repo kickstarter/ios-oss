@@ -59,7 +59,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.user.isSubscribed .~ false
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityHint.assertValues(["Subscribes to upcoming live streams."])
@@ -79,7 +80,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.user.isSubscribed .~ false
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe"])
@@ -96,7 +98,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.creatorAvatarUrl.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.creatorAvatarUrl.assertValues(["https://www.com/creator-avatar.jpg"])
@@ -115,7 +118,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.animateActivityIndicator.assertValueCount(0)
     self.shareButtonEnabled.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: project, liveStream: liveStream,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.animateActivityIndicator.assertValues([false])
@@ -141,7 +145,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(event))) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+      self.vm.inputs.configureWith(projectLiveStreamData: (project: project, liveStream: liveStream,
+                                                           event: nil))
 
       self.animateActivityIndicator.assertValues([true])
 
@@ -171,7 +176,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let apiService = MockLiveStreamService(fetchEventResult: Result(error: .genericFailure))
     withEnvironment(liveStreamService: apiService) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+      self.vm.inputs.configureWith(projectLiveStreamData: (project: project, liveStream: liveStream,
+                                                           event: nil))
 
       self.animateActivityIndicator.assertValues([true])
       self.detailsStackViewHidden.assertValues([true])
@@ -189,7 +195,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.stream.name .~ "Test Stream"
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamTitle.assertValues(["Test Stream"])
@@ -199,14 +206,16 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.stream.description .~ "Test LiveStreamEvent"
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamParagraph.assertValues(["Test LiveStreamEvent"])
   }
 
   func testNumberOfPeopleWatchingText() {
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: .template)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: .template))
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
@@ -230,7 +239,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeButtonImage.assertValueCount(0)
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.animateSubscribeButtonActivityIndicator.assertValues([])
@@ -291,7 +301,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
     self.openLoginToutViewController.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, event: event)
+    self.vm.inputs.configureWith(projectLiveStreamData: (project: .template, liveStream: .template,
+                                                         event: event))
     self.vm.inputs.viewDidLoad()
 
     self.animateSubscribeButtonActivityIndicator.assertValues([])

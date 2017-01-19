@@ -5,6 +5,9 @@ import ReactiveExtensions
 import Result
 import Prelude
 
+public typealias ProjectLiveStreamData = (project: Project, liveStream: Project.LiveStream,
+  event: LiveStreamEvent?)
+
 public protocol LiveStreamEventDetailsViewModelType {
   var inputs: LiveStreamEventDetailsViewModelInputs { get }
   var outputs: LiveStreamEventDetailsViewModelOutputs { get }
@@ -12,7 +15,7 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   /// Call with the Project, the specific LiveStream and an optional LiveStreamEvent
-  func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
+  func configureWith(projectLiveStreamData: ProjectLiveStreamData)
 
   /// Called when the LiveStreamViewController's state changes
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -101,7 +104,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let eventEvent = configData
       .switchMap { project, liveStream, optionalEvent in
-        fetchEvent(forProject: project, liveStream: liveStream, event: optionalEvent)
+        fetchEvent(forProjectLiveStreamData: (project, liveStream: liveStream, event: optionalEvent))
           .materialize()
     }
 
@@ -176,7 +179,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     )
 
     self.animateActivityIndicator = Signal.merge(
-      configData.filter { _, _, event in event == nil }.mapConst(true),
+      configData.filter { $0.event == nil }.mapConst(true),
       event.mapConst(false),
       eventEvent.filter { $0.isTerminating }.mapConst(false),
       self.showErrorAlert.mapConst(false)
@@ -224,16 +227,15 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     configData
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
-        let (project, liveStream, _) = configData
-        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: project,
-                                                                       liveStream: liveStream,
+        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.project,
+                                                                       liveStream: configData.liveStream,
                                                                        subscribed: isSubscribed)
     }
   }
 
-  private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
-  public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {
-    self.configData.value = (project, liveStream, event)
+  private let configData = MutableProperty<ProjectLiveStreamData?>(nil)
+  public func configureWith(projectLiveStreamData: ProjectLiveStreamData) {
+    self.configData.value = projectLiveStreamData
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -286,15 +288,15 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
 }
 
-private func fetchEvent(forProject project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
+private func fetchEvent(forProjectLiveStreamData projectLiveStreamData: ProjectLiveStreamData)
   -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
-    if let event = event {
+    if let event = projectLiveStreamData.event {
       return SignalProducer(value: event)
     }
 
     return AppEnvironment.current.liveStreamService.fetchEvent(
-      eventId: liveStream.id, uid: AppEnvironment.current.currentUser?.id
+      eventId: projectLiveStreamData.liveStream.id, uid: AppEnvironment.current.currentUser?.id
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 }

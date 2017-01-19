@@ -43,7 +43,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
     vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+    vc.eventDetailsViewModel.inputs.configureWith(projectLiveStreamData: (project: project,
+                                                                          liveStream: liveStream,
+                                                                          event: nil))
     return vc
   }
 
@@ -303,7 +305,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, liveStream, event in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event)
+          .configuredWith(projectLiveStreamData: (project: project,
+                                                  liveStream: liveStream,
+                                                  event: event))
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
