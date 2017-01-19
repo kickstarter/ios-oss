@@ -26,8 +26,6 @@ internal class TestCase: FBSnapshotTestCase {
   override func setUp() {
     super.setUp()
 
-    self.recordMode = true
-
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
