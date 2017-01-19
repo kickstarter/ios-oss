@@ -60,6 +60,9 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
 
     _ = self.creatorLabel
       |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.numberOfLines .~ 2
+      |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
     _ = self.creatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)

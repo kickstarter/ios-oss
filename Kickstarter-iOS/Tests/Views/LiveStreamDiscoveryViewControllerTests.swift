@@ -10,7 +10,6 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -28,6 +27,7 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.name .~ "Comin‘ to you live!"
+      |> LiveStreamEvent.lens.creator.name .~ "A creator with a really long name to wrap onto two lines"
     let futureEvent = .template
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
       |> LiveStreamEvent.lens.liveNow .~ false
@@ -41,13 +41,14 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
 
     let events = [futureEvent, liveEvent, pastEvent]
 
-    let mockLiveService = MockLiveStreamService(fetchEventsResult: .success(events))
+    let liveStreamService = MockLiveStreamService(fetchEventsResult: .success(events))
 
     combos(Language.allLanguages, [Device.phone4_7inch, .pad]).forEach { language, device in
-      withEnvironment(language: language, liveStreamService: mockLiveService) {
+      withEnvironment(language: language, liveStreamService: liveStreamService) {
 
         let vc = Storyboard.LiveStreamDiscovery.instantiate(LiveStreamDiscoveryViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        vc.isActive(true)
         parent.view.frame.size.height = 1_400
 
         self.scheduler.advance()

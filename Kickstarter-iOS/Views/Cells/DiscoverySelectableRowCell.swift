@@ -12,11 +12,10 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       self.filterTitleLabel.text = Strings.Projects_We_Love()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_projects_we_love()
     } else if value.row.params.hasLiveStreams == .some(true) {
-
-      self.filterTitleLabel.text = localizedString(key: "Kickstarter_Live", defaultValue: "Kickstarter Live")
+      self.filterTitleLabel.text = "Kickstarter Live"
       self.filterTitleLabel.accessibilityLabel = localizedString(
-        key: "Filters_by_projects_with_a_live_stream",
-        defaultValue: "Filters by projects with a live stream."
+        key: "Filters_by_projects_with_upcoming_and_past_live_streams",
+        defaultValue: "Filters by projects with upcoming and past live streams."
       )
 
     } else if value.row.params.starred == true {

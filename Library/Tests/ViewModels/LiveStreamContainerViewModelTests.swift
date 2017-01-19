@@ -292,14 +292,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testProjectImageUrl() {
-    let project = Project.template
+    let event = .template
+      |> LiveStreamEvent.lens.backgroundImageUrl .~ "http://www.background.jpg"
 
-    self.projectImageUrlString.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project, event: nil)
+    self.vm.inputs.configureWith(project: .template, event: event)
     self.vm.inputs.viewDidLoad()
 
-    self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
+    self.projectImageUrlString.assertValues(["http://www.background.jpg"])
   }
 
   func testShowVideoView() {

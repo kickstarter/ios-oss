@@ -126,7 +126,15 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.loadTopRows.assertValues(
-      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow]],
+      [
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
+          allProjectsRow
+            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
+        ]
+      ],
       "The top filter rows load immediately with the first one selected."
     )
 
@@ -139,8 +147,18 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow, categories: categories)
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
-      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow, starredRow, recommendedRow,
-        socialRow]],
+      [
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
+          allProjectsRow
+            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
+          starredRow,
+          recommendedRow,
+          socialRow
+        ]
+      ],
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
@@ -155,8 +173,12 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.loadTopRows.assertValues(
       [
-        [ allProjectsRow |> SelectableRow.lens.isSelected .~ true,
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
+          allProjectsRow
+            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
           starredRow,
           recommendedRow,
           socialRow,
@@ -171,7 +193,16 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.configureWith(selectedRow: artSelectableRow, categories: categories)
     self.vm.inputs.viewDidLoad()
 
-    self.loadTopRows.assertValues([[allProjectsRow, staffPicksRow]])
+    self.loadTopRows.assertValues(
+      [
+        [
+          allProjectsRow,
+          staffPicksRow,
+          allProjectsRow
+            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
+        ]
+      ]
+    )
     self.loadTopRowsInitialId.assertValues([1])
   }
 
