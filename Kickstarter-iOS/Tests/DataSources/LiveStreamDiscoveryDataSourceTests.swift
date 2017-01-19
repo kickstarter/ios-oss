@@ -9,10 +9,6 @@ final class LiveStreamDiscoveryDataSourceTests: TestCase {
   let dataSource = LiveStreamDiscoveryDataSource()
   let tableView = UITableView()
 
-  func testSomething() {
-    XCTAssertTrue(true)
-  }
-
   func testStandard() {
     let currentlyLiveStream = .template
       |> LiveStreamEvent.lens.id .~ 1

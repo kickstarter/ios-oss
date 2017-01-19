@@ -4,6 +4,7 @@ import UIKit
 
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var filterTitleLabel: UILabel!
+  @IBOutlet private weak var liveIndicatorImageView: UIImageView!
 
   private var rowIsSelected: Bool = false
 
@@ -39,6 +40,10 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     self.rowIsSelected = value.row.isSelected
+    self.liveIndicatorImageView.isHidden = value.row.params.hasLiveStreams != .some(true)
+    if !self.liveIndicatorImageView.isHidden {
+      self.attachLiveNowAnimation()
+    }
   }
 
   override func bindStyles() {
@@ -52,5 +57,30 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   internal func willDisplay() {
     _ = self.filterTitleLabel
       |> discoveryFilterLabelFontStyle(isSelected: self.rowIsSelected)
+  }
+
+  // Animates the live now icon in a pulsating fashion...
+  private func attachLiveNowAnimation() {
+    let fadeAlpha: CGFloat = 0.4
+    let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+
+    self.liveIndicatorImageView.alpha = 1
+    self.liveIndicatorImageView.transform = .identity
+
+    UIView.animateKeyframes(
+      withDuration: 2,
+      delay: 0,
+      options: [.autoreverse, .repeat, .calculationModeCubic],
+      animations: { [weak v = self.liveIndicatorImageView] in
+        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+          v?.alpha = fadeAlpha
+          v?.transform = fadeTransform
+        }
+
+        UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+          v?.alpha = 1
+          v?.transform = .identity
+        }
+      }, completion: nil)
   }
 }
