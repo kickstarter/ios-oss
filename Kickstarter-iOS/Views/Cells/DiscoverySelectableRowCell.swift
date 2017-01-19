@@ -67,20 +67,14 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     self.liveIndicatorImageView.alpha = 1
     self.liveIndicatorImageView.transform = .identity
 
-    UIView.animateKeyframes(
-      withDuration: 2,
+    UIView.animate(
+      withDuration: 1,
       delay: 0,
-      options: [.autoreverse, .repeat, .calculationModeCubic],
+      options: [.autoreverse, .repeat, .curveEaseInOut],
       animations: { [weak v = self.liveIndicatorImageView] in
-        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-          v?.alpha = fadeAlpha
-          v?.transform = fadeTransform
-        }
-
-        UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-          v?.alpha = 1
-          v?.transform = .identity
-        }
-      }, completion: nil)
+        v?.alpha = fadeAlpha
+        v?.transform = fadeTransform
+      },
+      completion: nil)
   }
 }

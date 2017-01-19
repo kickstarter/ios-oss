@@ -99,31 +99,20 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
   // Animates the live now icon in a pulsating fashion...
   private func attachLiveNowAnimation() {
-    let fadeAlpha: CGFloat = 0.2
+    let fadeAlpha: CGFloat = 0.4
     let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 
     self.liveNowImageView.alpha = 1
     self.liveNowImageView.transform = .identity
 
-    UIView.animateKeyframes(
-      withDuration: 2,
+    UIView.animate(
+      withDuration: 1,
       delay: 0,
-      options: [.autoreverse, .repeat, .calculationModeCubic],
+      options: [.autoreverse, .repeat, .curveEaseInOut],
       animations: { [weak v = self.liveNowImageView] in
-
-        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
-          v?.alpha = fadeAlpha
-          v?.transform = fadeTransform
-        }
-
-        UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.4) {
-          v?.alpha = 1
-          v?.transform = .identity
-        }
-
-        UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2) {
-        }
-
-      }, completion: nil)
+        v?.alpha = fadeAlpha
+        v?.transform = fadeTransform
+      },
+      completion: nil)
   }
 }

@@ -39,6 +39,12 @@ public protocol DiscoveryViewModelOutputs {
   /// Emits an array of sorts that should be used to configure the sort pager controller.
   var configureSortPager: Signal<[DiscoveryParams.Sort], NoError> { get }
 
+  /// Emits a boolean that determines if the discovery pages view is hidden.
+  var discoveryPagesViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the live stream discovery view is hidden.
+  var liveStreamDiscoveryViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits a discovery params value that should be passed to all the pages in discovery.
   var loadFilterIntoDataSource: Signal<DiscoveryParams, NoError> { get }
 
@@ -51,12 +57,11 @@ public protocol DiscoveryViewModelOutputs {
   /// Emits to disable/enable the sorts when an empty state is displayed/dismissed.
   var sortsAreEnabled: Signal<Bool, NoError> { get }
 
+  /// Emits a boolean that determines if the sorts view is hidden.
+  var sortViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits a category id to update the sort pager view controller style.
   var updateSortPagerStyle: Signal<Int?, NoError> { get }
-
-  var liveStreamDiscoveryViewHidden: Signal<Bool, NoError> { get }
-  var discoveryPagesViewHidden: Signal<Bool, NoError> { get }
-  var sortViewHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol DiscoveryViewModelType {
@@ -68,7 +73,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 DiscoveryViewModelOutputs {
   fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
-  // swiftlint:disable function_body_length
+  // swiftlint:disable:next function_body_length
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 
@@ -141,7 +146,6 @@ DiscoveryViewModelOutputs {
       .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
       .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func filter(withParams params: DiscoveryParams) {
@@ -175,15 +179,14 @@ DiscoveryViewModelOutputs {
   public let configureNavigationHeader: Signal<DiscoveryParams, NoError>
   public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError>
   public let configureSortPager: Signal<[DiscoveryParams.Sort], NoError>
+  public let discoveryPagesViewHidden: Signal<Bool, NoError>
+  public let liveStreamDiscoveryViewHidden: Signal<Bool, NoError>
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
   public let sortsAreEnabled: Signal<Bool, NoError>
-  public let updateSortPagerStyle: Signal<Int?, NoError>
-
-  public let liveStreamDiscoveryViewHidden: Signal<Bool, NoError>
-  public let discoveryPagesViewHidden: Signal<Bool, NoError>
   public let sortViewHidden: Signal<Bool, NoError>
+  public let updateSortPagerStyle: Signal<Int?, NoError>
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }

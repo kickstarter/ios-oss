@@ -16,6 +16,7 @@ public protocol LiveStreamServiceProtocol {
   /// Fetches an event with personalization added for the user.
   func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
 
+  /// Fetches an array of live streaming events.
   func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError>
 
   /// Creates a database reference.

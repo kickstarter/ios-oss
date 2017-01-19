@@ -56,9 +56,10 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
                                                               liveStream: stream,
                                                               event: liveStreamEvent)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
-    _ = nav.view
     nav.viewControllers = [vc]
-    self.present(nav, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
   }
 
   private func goToLiveStreamCountdown(project: Project,
@@ -66,9 +67,10 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
                                        liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: stream)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
-    _ = nav.view
     nav.viewControllers = [vc]
-    self.present(nav, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
