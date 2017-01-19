@@ -24,11 +24,14 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
   internal func configureWith(value: LiveStreamDiscoveryTitleType) {
     switch value {
     case .liveNow:
-      self.titleTypeLabel.text = "Live now!"
+      self.titleTypeLabel.text = localizedString(key: "Live_now",
+                                                 defaultValue: "Live now!")
     case .recentlyLive:
-      self.titleTypeLabel.text = "Recently live"
+      self.titleTypeLabel.text = localizedString(key: "Recently_live",
+                                                 defaultValue: "Recently live")
     case .upcoming:
-      self.titleTypeLabel.text = "Upcoming!"
+      self.titleTypeLabel.text = localizedString(key: "Upcoming",
+                                                 defaultValue: "Upcoming!")
     }
   }
 
