@@ -115,11 +115,12 @@ public func countdownProducer(to date: Date)
   -> SignalProducer<(day: String, hour: String, minute: String, second: String), NoError> {
 
     let now = AppEnvironment.current.scheduler.currentDate
-    let timeUntilNextRoundSecond = now.timeIntervalSince1970 - floor(now.timeIntervalSince1970)
+    let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
 
     // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
-    let everySecond = timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
+    let everySecond = SignalProducer<(), NoError>(value: ())
       .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1000)), on: AppEnvironment.current.scheduler)
+      .flatMap { timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
 
     return SignalProducer.merge(
       SignalProducer<Date, NoError>(value: now),

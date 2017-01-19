@@ -40,7 +40,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
     }
 
     _ = self.backgroundImageView
-      |> dropShadowStyle()
+//      |> dropShadowStyle()
       |> roundedStyle()
       |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
       |> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityDefaultHigh

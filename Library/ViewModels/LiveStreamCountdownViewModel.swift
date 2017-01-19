@@ -78,15 +78,19 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.daysString = dateComponents
       .map { $0.day }
+      .skipRepeats()
 
     self.hoursString = dateComponents
       .map { $0.hour }
+      .skipRepeats()
 
     self.minutesString = dateComponents
       .map { $0.minute }
+      .skipRepeats()
 
     self.secondsString = dateComponents
       .map { $0.second }
+      .skipRepeats()
 
     self.countdownAccessibilityLabel = liveStream.map { liveStream in
       localizedString(
