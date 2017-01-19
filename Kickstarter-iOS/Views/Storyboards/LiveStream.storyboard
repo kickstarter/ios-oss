@@ -289,7 +289,7 @@ Mikke Snow</string>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="vhi-eT-x38" secondAttribute="bottom" id="4aU-Nt-g69"/>
                             <constraint firstAttribute="trailing" secondItem="vhi-eT-x38" secondAttribute="trailing" id="EqA-oD-2cM"/>
-                            <constraint firstItem="fyz-aa-gbk" firstAttribute="height" relation="lessThanOrEqual" secondItem="VdH-nM-HMI" secondAttribute="height" multiplier="0.5" id="GaM-E8-WEx"/>
+                            <constraint firstItem="fyz-aa-gbk" firstAttribute="height" relation="lessThanOrEqual" secondItem="VdH-nM-HMI" secondAttribute="height" multiplier="0.7" id="GaM-E8-WEx"/>
                             <constraint firstItem="arE-p9-kjh" firstAttribute="height" relation="greaterThanOrEqual" secondItem="VdH-nM-HMI" secondAttribute="height" id="WTS-OQ-BcE"/>
                             <constraint firstItem="vhi-eT-x38" firstAttribute="top" secondItem="VdH-nM-HMI" secondAttribute="top" id="lO2-3r-Gwy"/>
                             <constraint firstItem="vhi-eT-x38" firstAttribute="leading" secondItem="VdH-nM-HMI" secondAttribute="leading" id="xdp-if-bfq"/>
@@ -360,7 +360,7 @@ Mikke Snow</string>
                                                         </connections>
                                                     </containerView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
-                                                        <rect key="frame" x="8" y="120" width="359" height="41"/>
+                                                        <rect key="frame" x="8" y="121" width="359" height="41"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
                                                                 <rect key="frame" x="66" y="0.0" width="227" height="21"/>
