@@ -9,7 +9,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 
   public func deleteDatabase() {
-    guard let _ = type(of: self).getAppInstance() else { return }
+    guard LiveStreamService.getAppInstance() != nil else { return }
     LiveStreamService.firebaseApp()?.delete({ _ in })
   }
 
