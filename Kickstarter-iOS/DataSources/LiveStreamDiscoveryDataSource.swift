@@ -4,36 +4,21 @@ import Prelude
 import UIKit
 
 internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
-
   internal func load(liveStreams: [LiveStreamEvent]) {
-
     self.clearValues()
 
-    let sortedLiveStreams = sorted(liveStreamEvents: liveStreams)
-    sortedLiveStreams
-      .enumerated()
-      .forEach { idx, stream in
-
-        if idx == 0 {
-          self.appendRow(value: titleThatImmediatelyPrecedes(liveStreamEvent: stream),
-                         cellClass: LiveStreamDiscoveryTitleCell.self,
-                         toSection: 0)
-        } else {
-          let previousStream = sortedLiveStreams[idx - 1]
-          let title = titleThatImmediatelyPrecedes(liveStreamEvent: stream)
-          let previousTitle = titleThatImmediatelyPrecedes(liveStreamEvent: previousStream)
-
-          if title != previousTitle {
-            self.appendRow(value: title, cellClass: LiveStreamDiscoveryTitleCell.self, toSection: 0)
-          }
+    sorted(liveStreamEvents: liveStreams)
+      .groupedBy(sectionTitle(forLiveStreamEvent:))
+      .forEach { title, events in
+        guard events.count > 0 else { return }
+        self.appendRow(value: title, cellClass: LiveStreamDiscoveryTitleCell.self, toSection: title.section)
+        events.forEach { event in
+          self.appendRow(value: event, cellClass: LiveStreamDiscoveryCell.self, toSection: title.section)
         }
-
-        self.appendRow(value: stream, cellClass: LiveStreamDiscoveryCell.self, toSection: 0)
     }
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as LiveStreamDiscoveryCell, value as LiveStreamEvent):
       cell.configureWith(value: value)
@@ -84,8 +69,22 @@ private func sorted(liveStreamEvents: [LiveStreamEvent]) -> [LiveStreamEvent] {
   )
 }
 
-private func titleThatImmediatelyPrecedes(liveStreamEvent: LiveStreamEvent) -> LiveStreamDiscoveryTitleType {
-  return liveStreamEvent.liveNow ? .liveNow
-    : liveStreamEvent.startDate > AppEnvironment.current.dateType.init().date ? .upcoming
-    : .recentlyLive
+private func sectionTitle(forLiveStreamEvent liveStreamEvent: LiveStreamEvent)
+  -> LiveStreamDiscoveryTitleType {
+    return liveStreamEvent.liveNow ? .liveNow
+      : liveStreamEvent.startDate > AppEnvironment.current.dateType.init().date ? .upcoming
+      : .recentlyLive
+}
+
+extension LiveStreamDiscoveryTitleType {
+  fileprivate var section: Int {
+    switch self {
+    case .liveNow:
+      return 0
+    case .recentlyLive:
+      return 2
+    case .upcoming:
+      return 1
+    }
+  }
 }
