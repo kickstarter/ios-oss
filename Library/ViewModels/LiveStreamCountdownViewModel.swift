@@ -72,41 +72,21 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     let project = configData.map(first)
     let liveStream = configData.map(second)
 
-    let everySecondTimer = self.viewDidLoadProperty.signal
-      .flatMap {
-        timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
-          .prefix(value: AppEnvironment.current.scheduler.currentDate)
-    }
-
     let dateComponents = liveStream
-      .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
-      .takePairWhen(everySecondTimer)
-      .map { startDate, currentDate in
-        AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
-                                                       from: currentDate,
-                                                       to: startDate)
-      }
-      .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
+      .take(first: 1)
+      .switchMap { countdownProducer(to: Date(timeIntervalSince1970: $0.startDate)) }
 
     self.daysString = dateComponents
-      .map { max(0, $0.day) }
-      .skipRepeats()
-      .map { String(format: "%02d", $0) }
+      .map { $0.day }
 
     self.hoursString = dateComponents
-      .map { max(0, $0.hour) }
-      .skipRepeats()
-      .map { String(format: "%02d", $0) }
+      .map { $0.hour }
 
     self.minutesString = dateComponents
-      .map { max(0, $0.minute) }
-      .skipRepeats()
-      .map { String(format: "%02d", $0) }
+      .map { $0.minute }
 
     self.secondsString = dateComponents
-      .map { max(0, $0.second) }
-      .skipRepeats()
-      .map { String(format: "%02d", $0) }
+      .map { $0.second }
 
     self.countdownAccessibilityLabel = liveStream.map { liveStream in
       localizedString(
@@ -116,7 +96,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     }
 
     let countdownEnded = dateComponents
-      .filter { $0.day <= 0 && $0.hour <= 0 && $0.minute <= 0 && $0.second < 0 }
+      .materialize()
+      .filter { $0.isTerminating }
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }

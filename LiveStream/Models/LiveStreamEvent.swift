@@ -74,8 +74,6 @@ extension LiveStreamEvent: Decodable {
 private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
   let create = curry(LiveStreamEvent.init)
 
-  // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project` sub-key.
-  let project: Decoded<LiveStreamEvent.Project> = (json <| "stream") <|> (json <| "project")
 
   let tmp1 = create
     <^> (json <| ["stream", "background_image_url"] <|> json <| "background_image_url")
@@ -94,7 +92,8 @@ private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
     <*> (json <| ["stream", "name"] <|> json <| "name")
   let tmp4 = tmp3
     <*> json <|? "opentok"
-    <*> project
+    // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project` sub-key
+    <*> (json <| "stream" <|> json <| "project")
     <*> json <|? ["stream", "replay_url"]
     <*> ((json <| "start_date" <|> json <| ["stream", "start_date"]) >>- toDate)
   return tmp4

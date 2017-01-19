@@ -75,16 +75,16 @@ DiscoveryViewModelOutputs {
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
 
-    let currentParams = self.viewWillAppearProperty.signal
-      .take(first: 1)
-      .flatMap { [filterWithParams = filterWithParamsProperty.producer.skipNil()] _ in
-        filterWithParams.prefix(value: DiscoveryViewModel.defaultParams)
-      }
+    let currentParams = Signal.merge(
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst(DiscoveryViewModel.defaultParams),
+      self.filterWithParamsProperty.signal.skipNil()
+      )
       .skipRepeats()
 
     self.configureNavigationHeader = currentParams
 
     self.loadFilterIntoDataSource = currentParams
+      .filter { $0.hasLiveStreams != .some(true) }
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))

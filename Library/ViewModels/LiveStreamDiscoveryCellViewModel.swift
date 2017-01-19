@@ -1,4 +1,5 @@
 import LiveStream
+import Prelude
 import ReactiveSwift
 import Result
 
@@ -50,7 +51,7 @@ public final class LiveStreamDiscoveryCellViewModel: LiveStreamDiscoveryCellView
     self.watchButtonHidden = self.countdownStackViewHidden.map(negate)
 
     let countdown = liveStreamEvent
-      .switchMap(countdown(forEvent:))
+      .switchMap { countdownProducer(to: $0.startDate) }
 
     self.dayCountLabelText = countdown.map { $0.day }.skipRepeats()
     self.hourCountLabelText = countdown.map { $0.hour }.skipRepeats()
@@ -79,20 +80,6 @@ public final class LiveStreamDiscoveryCellViewModel: LiveStreamDiscoveryCellView
   public var outputs: LiveStreamDiscoveryCellViewModelOutputs { return self }
 }
 
-private struct DayHourMinuteSecond {
-  fileprivate let day: String
-  fileprivate let hour: String
-  fileprivate let minute: String
-  fileprivate let second: String
-
-  fileprivate init(dateComponents: DateComponents) {
-    self.day = String(format: "%02d", max(0, dateComponents.day ?? 0))
-    self.hour = String(format: "%02d", max(0, dateComponents.hour ?? 0))
-    self.minute = String(format: "%02d", max(0, dateComponents.minute ?? 0))
-    self.second = String(format: "%02d", max(0, dateComponents.second ?? 0))
-  }
-}
-
 private func formattedDateString(date: Date) -> String {
 
   let format = DateFormatter.dateFormat(fromTemplate: "dMMMhmzzz",
@@ -107,16 +94,4 @@ private func formattedDateString(date: Date) -> String {
     defaultValue: "Live stream – %{date}",
     substitutions: ["date": formatted]
   )
-}
-
-private func countdown(forEvent event: LiveStreamEvent) -> SignalProducer<DayHourMinuteSecond, NoError> {
-
-  return timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
-    .prefix(value: AppEnvironment.current.scheduler.currentDate)
-    .map { currentDate in
-      AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
-                                                     from: currentDate,
-                                                     to: event.startDate)
-    }
-    .map(DayHourMinuteSecond.init(dateComponents:))
 }

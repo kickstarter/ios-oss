@@ -136,7 +136,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.availableForText = event
       .map { event -> String? in
         guard let availableDate = AppEnvironment.current.calendar
-          .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
+          .date(byAdding: .day, value: 2, to: event.startDate)?.timeIntervalSince1970
           else { return nil }
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)

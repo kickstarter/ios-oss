@@ -146,6 +146,42 @@ final class LiveStreamDiscoveryCellViewModelTests: TestCase {
     self.secondCountLabelText.assertValues(["01", "00", "59"])
   }
 
+  func testCountLabels_StartingOnFractionalSecond() {
+    let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 1.5
+
+    self.vm.inputs.configureWith(
+      liveStreamEvent: .template
+        |> LiveStreamEvent.lens.liveNow .~ false
+        |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
+    )
+
+    self.dayCountLabelText.assertValues(["01"])
+    self.hourCountLabelText.assertValues(["16"])
+    self.minuteCountLabelText.assertValues(["34"])
+    self.secondCountLabelText.assertValues(["02"])
+
+    self.scheduler.advance(by: .milliseconds(500))
+
+    self.dayCountLabelText.assertValues(["01"])
+    self.hourCountLabelText.assertValues(["16"])
+    self.minuteCountLabelText.assertValues(["34"])
+    self.secondCountLabelText.assertValues(["02"])
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.dayCountLabelText.assertValues(["01"])
+    self.hourCountLabelText.assertValues(["16"])
+    self.minuteCountLabelText.assertValues(["34"])
+    self.secondCountLabelText.assertValues(["02", "01"])
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.dayCountLabelText.assertValues(["01"])
+    self.hourCountLabelText.assertValues(["16"])
+    self.minuteCountLabelText.assertValues(["34"])
+    self.secondCountLabelText.assertValues(["02", "01", "00"])
+  }
+
   func testNameLabelText() {
     self.vm.inputs.configureWith(
       liveStreamEvent: .template

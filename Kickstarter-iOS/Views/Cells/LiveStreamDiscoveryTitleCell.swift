@@ -37,5 +37,8 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins %~ {
+        .init(top: Styles.grid(4), left: $0.left, bottom: Styles.grid(2), right: $0.right)
+    }
   }
 }

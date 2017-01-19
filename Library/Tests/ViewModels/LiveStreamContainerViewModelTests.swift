@@ -56,7 +56,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> Project.LiveStream.lens.id .~ 42
     let project = Project.template
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
       |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.availableForText.assertValueCount(0)

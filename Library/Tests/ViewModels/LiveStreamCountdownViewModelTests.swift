@@ -113,7 +113,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testCountdownEnded() {
     let liveStream = Project.LiveStream.template
       |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (self.scheduler.currentDate.timeIntervalSince1970 + 10)
+      |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(10).timeIntervalSince1970
 
     let project = Project.template
       |> Project.lens.liveStreams .~ [liveStream]

@@ -22,7 +22,6 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var minutesLabel: UILabel!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var rootView: UIView!
   @IBOutlet private weak var secondCountLabel: UILabel!
   @IBOutlet private weak var secondsLabel: UILabel!
   @IBOutlet private weak var watchButton: UIButton!
@@ -36,9 +35,13 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins .~ .init(topBottom: Styles.grid(4), leftRight: Styles.grid(2))
+      |> UITableViewCell.lens.contentView.layoutMargins %~ {
+        .init(top: Styles.grid(2), left: $0.left, bottom: Styles.grid(4), right: $0.right)
+    }
 
     _ = self.backgroundImageView
+      |> dropShadowStyle()
+      |> roundedStyle()
       |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
       |> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityDefaultHigh
       |> UIImageView.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
@@ -81,14 +84,12 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
 
     _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline()
+      |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
-
-    _ = self.rootView
-      |> dropShadowStyle()
-      |> roundedStyle()
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(8), leftRight: Styles.grid(3))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(8), leftRight: Styles.grid(3))
 
     _ = self.secondsLabel
       |> UILabel.lens.text %~ { _ in localizedString(key: "seconds", defaultValue: "seconds") }
