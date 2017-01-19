@@ -9,6 +9,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 
   public func deleteDatabase() {
+    guard let _ = type(of: self).getAppInstance() else { return }
     LiveStreamService.firebaseApp()?.delete({ _ in })
   }
 
@@ -126,9 +127,9 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 
   private static func firebaseApp() -> FIRApp? {
-    guard let app = FIRApp(named: Secrets.Firebase.Huzza.Production.appName) else {
+    guard let app = self.getAppInstance() else {
       self.start()
-      return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
+      return self.getAppInstance()
     }
 
     return app
@@ -137,5 +138,9 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   private static func firebaseAuth() -> FIRAuth? {
     guard let app = self.firebaseApp() else { return nil }
     return FIRAuth(app: app)
+  }
+
+  private static func getAppInstance() -> FIRApp? {
+    return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
   }
 }
