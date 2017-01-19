@@ -1,3 +1,4 @@
+import AlamofireImage
 import Library
 import LiveStream
 import Prelude
@@ -6,6 +7,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   private let viewModel: LiveStreamDiscoveryCellViewModelType = LiveStreamDiscoveryCellViewModel()
 
   @IBOutlet private weak var backgroundImageView: UIImageView!
+  @IBOutlet private weak var blurView: UIView!
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var colonViews: [UILabel]!
   @IBOutlet private weak var creatorImageView: UIImageView!
@@ -35,17 +37,17 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~ {
-        .init(top: Styles.grid(2), left: $0.left, bottom: Styles.grid(4), right: $0.right)
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { insets, cell in
+        cell.traitCollection.isVerticallyCompact
+          ? .init(top: Styles.grid(2), left: insets.left * 6, bottom: Styles.grid(4), right: insets.right * 6)
+          : .init(top: Styles.grid(2), left: insets.left, bottom: Styles.grid(4), right: insets.right)
     }
 
     _ = self.backgroundImageView
-//      |> dropShadowStyle()
       |> roundedStyle()
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityDefaultHigh
-      |> UIImageView.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
-      |> UIImageView.lens.contentCompressionResistancePriorityForAxis(.vertical) .~ UILayoutPriorityDefaultLow
+
+    _ = self.blurView
+      |> roundedStyle()
 
     _ = self.countdownStackView
       |> UIStackView.lens.distribution .~ .equalCentering
@@ -109,7 +111,17 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.backgroundImageView.rac.imageUrl = self.viewModel.outputs.backgroundImageUrl
+    //self.backgroundImageView.rac.imageUrl = self.viewModel.outputs.backgroundImageUrl
+
+    self.viewModel.outputs.backgroundImageUrl
+      .observeForUI()
+      .on(event: { [weak self] _ in self?.backgroundImageView.image = nil })
+      .skipNil()
+      .observeValues { [weak self] url in
+        let filter = AspectScaledToFillSizeFilter(size: CGSize(width: 200, height: 150))
+        self?.backgroundImageView.af_setImage(withURL: url, filter: filter)
+    }
+
     self.countdownStackView.rac.hidden = self.viewModel.outputs.countdownStackViewHidden
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.creatorImageView.rac.imageUrl = self.viewModel.outputs.creatorImageUrl

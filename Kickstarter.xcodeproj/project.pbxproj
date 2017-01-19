@@ -418,6 +418,7 @@
 		A775B5471CA871D700BBB587 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B5451CA871D700BBB587 /* RootViewModel.swift */; };
 		A775B54C1CA87C8500BBB587 /* RootViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */; };
 		A7792BFE1E30B854002BAD63 /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */; };
+		A7792C3B1E30F9E1002BAD63 /* LiveStreamDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7792C391E30F998002BAD63 /* LiveStreamDiscoveryViewModel.swift */; };
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
 		A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
 		A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */; };
@@ -1695,6 +1696,7 @@
 		A775B5451CA871D700BBB587 /* RootViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RootViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A775B54B1CA87C8500BBB587 /* RootViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewModelTests.swift; sourceTree = "<group>"; };
 		A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedFunctionsTests.swift; sourceTree = "<group>"; };
+		A7792C391E30F998002BAD63 /* LiveStreamDiscoveryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewModel.swift; sourceTree = "<group>"; };
 		A77D7B061CBAAF5D0077586B /* Paginate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginate.swift; sourceTree = "<group>"; };
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
 		A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2493,6 +2495,7 @@
 				A77D7B341CBAC5F90077586B /* PaginateTests.swift */,
 				A75784301D84486F007B61AA /* PKPaymentRequestTests.swift */,
 				A7DC83981C9DBEFA00BB2B44 /* RefTagTests.swift */,
+				A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */,
 				A755118F1C8645A0005355CF /* String+SimpleHTMLTests.swift */,
 				9D10B94D1D354105008B8045 /* String+TruncateTests.swift */,
 				9DA8C3C21D3D4860000BB2F9 /* String+WhitespaceTests.swift */,
@@ -2503,7 +2506,6 @@
 				A78537911CB46CEE00385B73 /* Koala */,
 				A755119F1C86460B005355CF /* TestHelpers */,
 				A7830CDC1D005C3F00B5B6AE /* ViewModels */,
-				A7792BFD1E30B854002BAD63 /* SharedFunctionsTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -3160,6 +3162,7 @@
 				D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */,
 				D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */,
 				A79007011E30865500C4629C /* LiveStreamDiscoveryCellViewModel.swift */,
+				A7792C391E30F998002BAD63 /* LiveStreamDiscoveryViewModel.swift */,
 				D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */,
 				A7F4419A1D005A9400FE6FC5 /* LoginToutViewModel.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
@@ -4141,6 +4144,7 @@
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
+				A7792C3B1E30F9E1002BAD63 /* LiveStreamDiscoveryViewModel.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,

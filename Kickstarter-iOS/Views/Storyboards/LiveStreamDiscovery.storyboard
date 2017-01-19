@@ -254,6 +254,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="backgroundImageView" destination="lIk-w9-vJu" id="6HO-KS-yxu"/>
+                                    <outlet property="blurView" destination="svv-Jh-kYJ" id="15r-4U-lqm"/>
                                     <outlet property="countdownStackView" destination="8ei-fb-djW" id="IKZ-xc-c9i"/>
                                     <outlet property="creatorImageView" destination="9hy-bQ-08y" id="jgq-vy-opC"/>
                                     <outlet property="creatorLabel" destination="R75-Y9-ZHv" id="VXt-oi-w0o"/>

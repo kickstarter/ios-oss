@@ -50,8 +50,9 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.viewModel.outputs.liveStreamDiscoveryViewHidden
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.liveStreamDiscoveryViewController.view.superview?.isHidden = $0
+      .observeValues { [weak self] hidden in
+        self?.liveStreamDiscoveryViewController.view.superview?.isHidden = hidden
+        self?.liveStreamDiscoveryViewController.isActive(!hidden)
     }
 
     self.viewModel.outputs.discoveryPagesViewHidden

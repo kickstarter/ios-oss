@@ -71,6 +71,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     let project = configData.map(first)
     let liveStream = configData.map(second)
+    let liveStreamEvent = self.liveStreamEventProperty.signal.skipNil()
 
     let dateComponents = liveStream
       .take(first: 1)
@@ -103,8 +104,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .materialize()
       .filter { $0.isTerminating }
 
-    self.projectImageUrl = project
-      .map { URL(string: $0.photo.full) }
+    self.projectImageUrl = liveStreamEvent
+      .map { URL(string: $0.backgroundImageUrl) }
 
     self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal
@@ -114,7 +115,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     self.pushLiveStreamViewController = Signal.combineLatest(
       configData.map(flipProjectLiveStreamToLive),
-      self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEvenToLive)
+      liveStreamEvent.map(flipLiveStreamEvenToLive)
       )
       .map(unpack)
       .takeWhen(countdownEnded)
