@@ -17,8 +17,11 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
   fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
   fileprivate let hasProjects = TestObserver<Bool, NoError>()
+  fileprivate var noProjects = TestObserver<Bool, NoError>()
   fileprivate let resignFirstResponder = TestObserver<(), NoError>()
   fileprivate let searchFieldText = TestObserver<String, NoError>()
+  fileprivate let showNoSearchResults = TestObserver<Bool, NoError>()
+  fileprivate let showNoSearchResultsParams = TestObserver<DiscoveryParams, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -27,8 +30,11 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
+    self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
+    self.vm.outputs.showNoSearchResults.map(second).observe(self.showNoSearchResults.observer)
+    self.vm.outputs.showNoSearchResults.map(first).observe(self.showNoSearchResultsParams.observer)
   }
 
   func testCancelSearchField_WithTextChange() {
@@ -188,6 +194,26 @@ internal final class SearchViewModelTests: TestCase {
       ],
       self.trackingClient.events)
   }
+
+  func testShowNoSearchResults() {
+    let discoveryEnvelope = .template |> DiscoveryEnvelope.lens.projects .~ []
+    let apiService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
+
+    withEnvironment(apiService: apiService) {
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.vm.inputs.searchTextChanged("abcdefgh")
+
+      self.hasProjects.assertDidNotEmitValue("No projects to emit.")
+      self.showNoSearchResults.assertValues([false], "Still loading")
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([false], "No Projects to emit.")
+      self.showNoSearchResults.assertValues([false, true],"No Projects Found.")
+    }
+  }
+
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular
   // projects to get mixed up.

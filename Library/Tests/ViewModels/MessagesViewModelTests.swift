@@ -25,7 +25,7 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.vm.outputs.backingAndProject.observe(self.backingAndProject.observer)
     self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProject.observer)
-     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingUser.observer)
+    self.vm.outputs.goToBacking.map(second).observe(self.goToBackingUser.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.messages.observe(self.messages.observer)
