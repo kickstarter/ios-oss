@@ -74,7 +74,6 @@ extension LiveStreamEvent: Decodable {
 private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
   let create = curry(LiveStreamEvent.init)
 
-
   let tmp1 = create
     <^> (json <| ["stream", "background_image_url"] <|> json <| "background_image_url")
     <*> json <| "creator"

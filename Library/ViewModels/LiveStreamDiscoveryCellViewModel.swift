@@ -26,7 +26,8 @@ public protocol LiveStreamDiscoveryCellViewModelType {
   var outputs: LiveStreamDiscoveryCellViewModelOutputs { get }
 }
 
-public final class LiveStreamDiscoveryCellViewModel: LiveStreamDiscoveryCellViewModelType, LiveStreamDiscoveryCellViewModelInputs, LiveStreamDiscoveryCellViewModelOutputs {
+public final class LiveStreamDiscoveryCellViewModel: LiveStreamDiscoveryCellViewModelType,
+LiveStreamDiscoveryCellViewModelInputs, LiveStreamDiscoveryCellViewModelOutputs {
 
   public init() {
     let liveStreamEvent = self.liveStreamEventProperty.signal.skipNil()

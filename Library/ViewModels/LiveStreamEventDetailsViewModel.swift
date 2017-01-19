@@ -100,7 +100,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     let project = configData.map(first)
 
     let eventEvent = configData
-      .switchMap { project, liveStream, optionalEvent in
+      .switchMap { _, liveStream, optionalEvent in
         fetchEvent(forLiveStream: liveStream, event: optionalEvent)
           .materialize()
     }

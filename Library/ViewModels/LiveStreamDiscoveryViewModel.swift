@@ -21,7 +21,8 @@ public protocol LiveStreamDiscoveryViewModelType {
   var outputs: LiveStreamDiscoveryViewModelOutputs { get }
 }
 
-public final class LiveStreamDiscoveryViewModel: LiveStreamDiscoveryViewModelType, LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
+public final class LiveStreamDiscoveryViewModel: LiveStreamDiscoveryViewModelType,
+LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
 
   public init() {
 

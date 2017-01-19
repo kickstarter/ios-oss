@@ -32,6 +32,7 @@ internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(liveStreamEvent: value)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

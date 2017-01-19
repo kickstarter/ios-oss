@@ -106,7 +106,6 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-
   func testCountdownProducer_CompletesWhenReachesDate() {
     let countdown = countdownProducer(to: MockDate().addingTimeInterval(2).date)
 

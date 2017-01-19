@@ -49,15 +49,21 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     }
   }
 
-  private func goToLiveStreamContainer(project: Project, stream: Project.LiveStream, liveStreamEvent: LiveStreamEvent) {
-    let vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: stream, event: liveStreamEvent)
+  private func goToLiveStreamContainer(project: Project,
+                                       stream: Project.LiveStream,
+                                       liveStreamEvent: LiveStreamEvent) {
+    let vc = LiveStreamContainerViewController.configuredWith(project: project,
+                                                              liveStream: stream,
+                                                              event: liveStreamEvent)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     _ = nav.view
     nav.viewControllers = [vc]
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToLiveStreamCountdown(project: Project, stream: Project.LiveStream, liveStreamEvent: LiveStreamEvent) {
+  private func goToLiveStreamCountdown(project: Project,
+                                       stream: Project.LiveStream,
+                                       liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: stream)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     _ = nav.view
