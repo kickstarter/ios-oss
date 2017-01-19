@@ -1,7 +1,6 @@
 import Library
 import Prelude
 
-
 import Library
 import LiveStream
 import ReactiveSwift
@@ -40,8 +39,6 @@ public final class LiveStreamDiscoveryViewModel: LiveStreamDiscoveryViewModelTyp
   public var inputs: LiveStreamDiscoveryViewModelInputs { return self }
   public var outputs: LiveStreamDiscoveryViewModelOutputs { return self }
 }
-
-
 
 internal final class LiveStreamDiscoveryViewController: UITableViewController {
 

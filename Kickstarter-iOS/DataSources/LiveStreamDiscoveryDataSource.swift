@@ -47,7 +47,7 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
 
 private func sorted(liveStreamEvents: [LiveStreamEvent]) -> [LiveStreamEvent] {
 
-  let now = AppEnvironment.current.dateType.init().date 
+  let now = AppEnvironment.current.dateType.init().date
 
   // Compares two live streams, putting live ones first.
   let currentlyLiveStreamsFirstComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in

@@ -5,28 +5,27 @@ import Prelude
 internal final class LiveStreamDiscoveryCell: UITableViewCell, ValueCell {
   private let viewModel: LiveStreamDiscoveryCellViewModelType = LiveStreamDiscoveryCellViewModel()
 
-  @IBOutlet weak var backgroundImageView: UIImageView!
-  @IBOutlet weak var countdownStackView: UIStackView!
+  @IBOutlet private weak var backgroundImageView: UIImageView!
+  @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private var colonViews: [UILabel]!
-  @IBOutlet weak var creatorImageView: UIImageView!
-  @IBOutlet weak var creatorLabel: UILabel!
-  @IBOutlet weak var creatorStackView: UIStackView!
-  @IBOutlet weak var dateContainerView: UIView!
-  @IBOutlet weak var dateLabel: UILabel!
-  @IBOutlet weak var detailsStackView: UIStackView!
-  @IBOutlet weak var dayCountLabel: UILabel!
-  @IBOutlet weak var daysLabel: UILabel!
-  @IBOutlet weak var hourCountLabel: UILabel!
-  @IBOutlet weak var hoursLabel: UILabel!
-  @IBOutlet weak var minuteCountLabel: UILabel!
-  @IBOutlet weak var minutesLabel: UILabel!
-  @IBOutlet weak var nameLabel: UILabel!
-  @IBOutlet weak var rootStackView: UIStackView!
-  @IBOutlet weak var rootView: UIView!
-  @IBOutlet weak var secondCountLabel: UILabel!
-  @IBOutlet weak var secondsLabel: UILabel!
-  @IBOutlet weak var watchButton: UIButton!
-
+  @IBOutlet private weak var creatorImageView: UIImageView!
+  @IBOutlet private weak var creatorLabel: UILabel!
+  @IBOutlet private weak var creatorStackView: UIStackView!
+  @IBOutlet private weak var dateContainerView: UIView!
+  @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet private weak var detailsStackView: UIStackView!
+  @IBOutlet private weak var dayCountLabel: UILabel!
+  @IBOutlet private weak var daysLabel: UILabel!
+  @IBOutlet private weak var hourCountLabel: UILabel!
+  @IBOutlet private weak var hoursLabel: UILabel!
+  @IBOutlet private weak var minuteCountLabel: UILabel!
+  @IBOutlet private weak var minutesLabel: UILabel!
+  @IBOutlet private weak var nameLabel: UILabel!
+  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var rootView: UIView!
+  @IBOutlet private weak var secondCountLabel: UILabel!
+  @IBOutlet private weak var secondsLabel: UILabel!
+  @IBOutlet private weak var watchButton: UIButton!
 
   internal func configureWith(value: LiveStreamEvent) {
     self.viewModel.inputs.configureWith(liveStreamEvent: value)

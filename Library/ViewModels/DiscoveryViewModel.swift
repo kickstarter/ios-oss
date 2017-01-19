@@ -54,8 +54,6 @@ public protocol DiscoveryViewModelOutputs {
   /// Emits a category id to update the sort pager view controller style.
   var updateSortPagerStyle: Signal<Int?, NoError> { get }
 
-
-
   var liveStreamDiscoveryViewHidden: Signal<Bool, NoError> { get }
   var discoveryPagesViewHidden: Signal<Bool, NoError> { get }
   var sortViewHidden: Signal<Bool, NoError> { get }
