@@ -81,7 +81,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.countdownDateLabelText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, context: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.countdownDateLabelText.assertValues(["Oct 4, 9:40 AM GMT"])
