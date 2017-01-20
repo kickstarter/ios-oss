@@ -50,8 +50,8 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
-  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent,
-    Koala.LiveStreamContext), NoError> { get }
+  var pushLiveStreamViewController:
+      Signal<(Project, Project.LiveStream, LiveStreamEvent, Koala.LiveStreamContext), NoError> { get }
 
   /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
@@ -80,7 +80,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .flatMap {
         timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
           .prefix(value: AppEnvironment.current.scheduler.currentDate)
-      }
+    }
 
     let dateComponents = liveStream
       .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
@@ -139,9 +139,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEventToLive)
       )
       .map(unpack)
-      .map { project, liveStream, event in
-        (project, liveStream, event, .countdown)
-      }
+      .map { project, liveStream, event in (project, liveStream, event, .countdown) }
       .takeWhen(countdownEnded)
       .take(first: 1)
 
@@ -150,7 +148,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     configData
       .observeValues { project, liveStream, context in
-        AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project, liveStream: liveStream,
+        AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project,
+                                                                    liveStream: liveStream,
                                                                     context: context)
     }
   }
@@ -161,7 +160,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   }
 
   private let configData = MutableProperty<(Project, Project.LiveStream, Koala.LiveStreamContext)?>(nil)
-  public func configureWith(project: Project, liveStream: Project.LiveStream,
+  public func configureWith(project: Project,
+                            liveStream: Project.LiveStream,
                             context: Koala.LiveStreamContext) {
     self.configData.value = (project, liveStream, context)
   }
@@ -184,8 +184,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent,
-    Koala.LiveStreamContext), NoError>
+  public let pushLiveStreamViewController:
+    Signal<(Project, Project.LiveStream, LiveStreamEvent, Koala.LiveStreamContext), NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>

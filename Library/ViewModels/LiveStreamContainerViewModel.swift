@@ -232,7 +232,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
 
-    let everyMinuteTimer = liveStreamControllerState
+    let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
         switch state {
         case .live(playbackState: .playing, _):     return true
@@ -242,9 +242,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }
       .flatMap { _ in
         timer(interval: .seconds(60), on: AppEnvironment.current.scheduler)
-    }
-
-    let numberOfMinutesWatched = everyMinuteTimer
+      }
       .scan(0) { accum, _ in accum + 1 }
 
     configData
