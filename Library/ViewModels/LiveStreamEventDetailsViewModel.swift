@@ -274,7 +274,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
-  public let configureShareViewModel: Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext), NoError>
+  public let configureShareViewModel:
+    Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext), NoError>
   public let detailsStackViewHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
