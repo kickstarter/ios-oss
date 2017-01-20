@@ -86,9 +86,6 @@ ProjectPamphletViewModelOutputs {
       .take(first: 1)
       .map { $0 ?? $1 }
 
-    let trackingData = Signal.combineLatest(project, refTag, cookieRefTag, self.viewWillAppearAnimated.signal)
-      .map { project, refTag, cookieRefTag, _ in (project, refTag, cookieRefTag) }
-
     // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
     let projectLiveStreams: Signal<[Project.LiveStream]?, NoError> = project
       .map { $0.liveStreams }
@@ -98,9 +95,8 @@ ProjectPamphletViewModelOutputs {
       .map { $0.value }
       .take(first: 1)
 
-    Signal.combineLatest(trackingData, projectLiveStreams)
+    Signal.combineLatest(project, refTag, cookieRefTag, projectLiveStreams)
       .take(first: 1)
-      .map { ($0.0, $0.1, $0.2, $1) }
       .observeValues { project, refTag, cookieRefTag, projectLiveStreams in
         AppEnvironment.current.koala.trackProjectShow(
           project,
