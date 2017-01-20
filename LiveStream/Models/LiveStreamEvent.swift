@@ -72,37 +72,33 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
 
 extension LiveStreamEvent: Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
-    return decodeLiveStreamV1(json)
+    let create = curry(LiveStreamEvent.init)
+
+    let tmp1 = create
+      <^> (json <| ["stream", "background_image"] <|> json <| "background_image")
+      <*> json <| "creator"
+      <*> (json <| ["stream", "description"] <|> json <| "description")
+      <*> json <|? "firebase"
+    let tmp2 = tmp1
+      <*> (json <| ["stream", "has_replay"] <|> json <| "has_replay")
+      <*> json <|? ["stream", "hls_url"]
+      <*> json <| "id"
+      <*> json <|? ["stream", "is_rtmp"]
+    let tmp3 = tmp2
+      <*> json <|? ["stream", "is_scale"]
+      <*> (json <| ["stream", "live_now"] <|> json <| "live_now")
+      <*> json <|? ["stream", "max_opentok_viewers"]
+      <*> (json <| ["stream", "name"] <|> json <| "name")
+    let tmp4 = tmp3
+      <*> json <|? "opentok"
+      // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project` sub-key
+      <*> (json <| "stream" <|> json <| "project")
+      <*> json <|? ["stream", "replay_url"]
+      <*> ((json <| "start_date" <|> json <| ["stream", "start_date"]) >>- toDate)
+    return tmp4
+      <*> json <|? "user"
+      <*> (json <| ["stream", "web_url"] <|> json <| "web_url")
   }
-}
-
-private func decodeLiveStreamV1(_ json: JSON) -> Decoded<LiveStreamEvent> {
-  let create = curry(LiveStreamEvent.init)
-
-  let tmp1 = create
-    <^> (json <| ["stream", "background_image"] <|> json <| "background_image")
-    <*> json <| "creator"
-    <*> (json <| ["stream", "description"] <|> json <| "description")
-    <*> json <|? "firebase"
-  let tmp2 = tmp1
-    <*> (json <| ["stream", "has_replay"] <|> json <| "has_replay")
-    <*> json <|? ["stream", "hls_url"]
-    <*> json <| "id"
-    <*> json <|? ["stream", "is_rtmp"]
-  let tmp3 = tmp2
-    <*> json <|? ["stream", "is_scale"]
-    <*> (json <| ["stream", "live_now"] <|> json <| "live_now")
-    <*> json <|? ["stream", "max_opentok_viewers"]
-    <*> (json <| ["stream", "name"] <|> json <| "name")
-  let tmp4 = tmp3
-    <*> json <|? "opentok"
-    // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project` sub-key
-    <*> (json <| "stream" <|> json <| "project")
-    <*> json <|? ["stream", "replay_url"]
-    <*> ((json <| "start_date" <|> json <| ["stream", "start_date"]) >>- toDate)
-  return tmp4
-    <*> json <|? "user"
-    <*> (json <| ["stream", "web_url"] <|> json <| "web_url")
 }
 
 extension LiveStreamEvent.BackgroundImage: Decodable {
