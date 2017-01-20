@@ -61,8 +61,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.availableForText.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
 
     self.availableForText.assertValue("Available to watch for 2 more days")
   }
@@ -78,8 +79,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.creatorIntroText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.creatorIntroText.assertValues(["<b>Creator Name</b> is live now"])
@@ -96,8 +98,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.creatorIntroText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.creatorIntroText.assertValues(["<b>Creator Name</b> was live right now"])
@@ -108,8 +111,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.createAndConfigureLiveStreamViewController.lastValue == (project, nil, event))
@@ -126,8 +130,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event , context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(
@@ -152,8 +157,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.navBarLiveDotImageViewHidden.assertValues([true, false])
@@ -173,8 +179,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.navBarLiveDotImageViewHidden.assertValues([true])
@@ -190,8 +197,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.liveStreamState.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -229,8 +237,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarTitleViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.navBarTitleViewHidden.assertValues([true])
@@ -254,8 +263,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.navBarTitleViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.navBarTitleViewHidden.assertValues([true])
@@ -279,8 +289,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.loaderStackViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -300,8 +311,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -323,8 +335,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.projectImageUrlString.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil
-      , context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil, context: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
@@ -335,8 +346,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -359,8 +371,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
@@ -386,8 +399,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
@@ -403,8 +417,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
@@ -437,8 +452,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 0))
@@ -478,8 +494,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
     XCTAssertEqual([], self.trackingClient.properties(forKey: "type", as: String.self))
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .playing, duration: 0))
@@ -515,8 +532,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let event = LiveStreamEvent.template
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event
-      , context: .projectPage)
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, context: .projectPage
+    )
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
