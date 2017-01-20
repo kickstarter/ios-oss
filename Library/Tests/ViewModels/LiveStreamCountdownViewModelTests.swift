@@ -12,6 +12,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
   private let categoryId = TestObserver<Int, NoError>()
   private let countdownAccessibilityLabel = TestObserver<String, NoError>()
+  private let countdownDateLabelText = TestObserver<String, NoError>()
   private let days = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
   private let hours = TestObserver<String, NoError>()
@@ -29,6 +30,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.vm.outputs.categoryId.observe(self.categoryId.observer)
     self.vm.outputs.countdownAccessibilityLabel.observe(self.countdownAccessibilityLabel.observer)
+    self.vm.outputs.countdownDateLabelText.observe(self.countdownDateLabelText.observer)
     self.vm.outputs.daysString.observe(self.days.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.hoursString.observe(self.hours.observer)
@@ -67,6 +69,22 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "context", as: String.self))
+  }
+
+  func testCountdownLabelText() {
+    let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
+    let liveStream = .template
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + future)
+
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.countdownDateLabelText.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream)
+    self.vm.inputs.viewDidLoad()
+
+    self.countdownDateLabelText.assertValues(["Oct 4, 9:40 AM GMT"])
   }
 
   func testCountdownLabels() {
