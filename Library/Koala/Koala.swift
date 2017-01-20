@@ -1667,7 +1667,7 @@ public final class Koala {
   public func trackWatchedLiveStream(project: Project,
                                     liveStream: Project.LiveStream,
                                     context: LiveStreamContext,
-                                    duration: TimeInterval) {
+                                    duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["context": context.trackingString])
@@ -1689,7 +1689,7 @@ public final class Koala {
   public func trackWatchedLiveStreamReplay(project: Project,
                                     liveStream: Project.LiveStream,
                                     context: LiveStreamContext,
-                                    duration: TimeInterval) {
+                                    duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["context": context.trackingString])

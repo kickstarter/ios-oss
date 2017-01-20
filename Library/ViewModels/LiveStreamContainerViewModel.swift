@@ -159,30 +159,66 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }.skipNil()
 
     self.loaderText = Signal.merge(
-      liveStreamState.map {
+      self.liveStreamState.map {
         switch $0 {
-        case .live(playbackState: .loading, _):
-          return Strings.The_live_stream_will_start_soon()
-        case .greenRoom:
-          return Strings.The_live_stream_will_start_soon()
-        case .replay(playbackState: .loading, _):
-          return Strings.The_replay_will_start_soon()
-        default:
-          return Strings.Loading()
+        case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
+        case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
+        case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
+        default: return Strings.Loading()
         }
       },
       self.showErrorAlert
     )
 
+    let everyMinuteTimer = self.viewDidLoadProperty.signal
+      .flatMap {
+        timer(interval: .seconds(60), on: AppEnvironment.current.scheduler)
+    }
+
+    let watchedAnotherMinute = Signal.combineLatest(
+      everyMinuteTimer,
+      self.liveStreamState.filter { state -> Bool in
+        switch state {
+        case .live(playbackState: .playing, _):   return true
+        case .replay(playbackState: .playing, _): return true
+        default: return false
+        }
+      }
+      )
+      .ignoreValues()
+      .scan(0) { accum, _ in accum + 1 }
+
+    Signal.combineLatest(
+      configData.map { project, liveStream, _, context in (project, liveStream, context) },
+      watchedAnotherMinute,
+      liveStreamState
+      )
+      .map { tuple, minute, state in (tuple.0, tuple.1, tuple.2, minute, state) }
+      .observeValues { project, liveStream, context, minute, state in
+        switch state {
+        case .live:
+          AppEnvironment.current.koala
+            .trackWatchedLiveStream(project: project,
+                                    liveStream: liveStream,
+                                    context: context,
+                                    duration: minute)
+        case .replay:
+          AppEnvironment.current.koala
+            .trackWatchedLiveStreamReplay(project: project,
+                                          liveStream: liveStream,
+                                          context: context,
+                                          duration: minute)
+        case .greenRoom, .error, .initializationFailed, .loading, .nonStarter:
+          break
+        }
+    }
+
     self.loaderStackViewHidden = self.liveStreamState
       .map { state in
         switch state {
-        case .live(playbackState: .playing, _):
-          return true
-        case .replay(playbackState: .playing, _):
-          return true
-        default:
-          return false
+        case .live(playbackState: .playing, _):   return true
+        case .replay(playbackState: .playing, _): return true
+        default: return false
         }
       }
       .skipRepeats()
@@ -192,26 +228,19 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.titleViewText = liveStreamState.map {
       switch $0 {
-      case .live(_, _):
-        return Strings.Live()
-      case .greenRoom:
-        return Strings.Starting_soon()
-      case .replay(_, _):
-        return Strings.Recorded_Live()
-      default:
-        return Strings.Loading()
+      case .live(_, _):   return Strings.Live()
+      case .greenRoom:    return Strings.Starting_soon()
+      case .replay(_, _): return Strings.Recorded_Live()
+      default: return Strings.Loading()
       }
     }
 
     self.videoViewControllerHidden = Signal.combineLatest(
       self.liveStreamState.map { state -> Bool in
         switch state {
-        case .live(playbackState: .playing, _):
-          return false
-        case .replay(playbackState: .playing, _):
-          return false
-        default:
-          return true
+        case .live(playbackState: .playing, _):   return false
+        case .replay(playbackState: .playing, _): return false
+        default: return true
         }
       },
       self.createAndConfigureLiveStreamViewController
@@ -248,12 +277,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       project.mapConst(true),
       liveStreamState.map { state in
         switch state {
-        case .live(playbackState: .playing, _):
-          return false
-        case .replay(playbackState: .playing, _):
-          return false
-        default:
-          return true
+        case .live(playbackState: .playing, _):   return false
+        case .replay(playbackState: .playing, _): return false
+        default: return true
         }
       }
     ).skipRepeats()

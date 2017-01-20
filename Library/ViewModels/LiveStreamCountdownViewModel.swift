@@ -80,7 +80,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .flatMap {
         timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
           .prefix(value: AppEnvironment.current.scheduler.currentDate)
-    }
+      }
 
     let dateComponents = liveStream
       .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
