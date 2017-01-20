@@ -13,7 +13,7 @@ public protocol LiveStreamContainerViewModelType {
 public protocol LiveStreamContainerViewModelInputs {
   /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
   func configureWith(project: Project,
-                     liveStream: Project.LiveStream, // FIXME: do we need this?
+                     liveStream: Project.LiveStream, 
                      event: LiveStreamEvent?,
                      context: Koala.LiveStreamContext)
 
@@ -101,9 +101,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.createAndConfigureLiveStreamViewController = Signal.combineLatest(project, event)
       .take(first: 1)
-      .map { project, event -> (Project, Int?, LiveStreamEvent) in
-        (project, AppEnvironment.current.currentUser?.id, event)
-    }
+      .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
     let liveStreamControllerState = Signal.merge(
       self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
