@@ -154,7 +154,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     if liveStream.startDate < Date().timeIntervalSince1970 {
       vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
-                                                            event: nil)
+                                                            event: nil,
+                                                            context: .projectPage)
     } else {
       vc = LiveStreamCountdownViewController.configuredWith(project: project,
                                                             liveStream: liveStream,

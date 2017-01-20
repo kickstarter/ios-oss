@@ -155,12 +155,14 @@ public final class Koala {
    - push: A push notification.
    */
   public enum LiveStreamContext {
+    case countdownEnded
     case liveStreamDiscovery
     case projectPage
     case pushNotification
 
     fileprivate var trackingString: String {
       switch self {
+      case .countdownEnded:      return "countdown_ended"
       case .liveStreamDiscovery: return "live_stream_discovery"
       case .projectPage:         return "project_page"
       case .pushNotification:    return "push_notification"

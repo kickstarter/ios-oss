@@ -21,6 +21,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerLiveStream = TestObserver<Project.LiveStream, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
+  private let pushLiveStreamViewControllerContext = TestObserver<Koala.LiveStreamContext, NoError>()
   private let seconds = TestObserver<String, NoError>()
   private let upcomingIntroText = TestObserver<String, NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
@@ -37,12 +38,14 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.minutesString.observe(self.minutes.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }
       .observe(self.projectImageUrl.observer)
-    self.vm.outputs.pushLiveStreamViewController.map(first).observe(
+    self.vm.outputs.pushLiveStreamViewController.map { $0.0 }.observe(
       self.pushLiveStreamViewControllerProject.observer)
-    self.vm.outputs.pushLiveStreamViewController.map(second)
+    self.vm.outputs.pushLiveStreamViewController.map { $0.1 }
       .observe(self.pushLiveStreamViewControllerLiveStream.observer)
-    self.vm.outputs.pushLiveStreamViewController.map(third).observe(
+    self.vm.outputs.pushLiveStreamViewController.map { $0.2 }.observe(
       self.pushLiveStreamViewControllerEvent.observer)
+    self.vm.outputs.pushLiveStreamViewController.map { $0.3 }.observe(
+      self.pushLiveStreamViewControllerContext.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
     self.vm.outputs.upcomingIntroText.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
@@ -170,6 +173,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     XCTAssertTrue(self.pushLiveStreamViewControllerLiveStream.lastValue?.isLiveNow ?? false)
     XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow ?? false)
     XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
+    XCTAssertEqual(.countdownEnded, self.pushLiveStreamViewControllerContext.lastValue)
   }
 
   func testClose() {
