@@ -31,6 +31,9 @@ public protocol LiveStreamCountdownViewModelOutputs {
   /// Emits the accessibility label string for the live stream countdown
   var countdownAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits the countdown date label text
+  var countdownDateLabelText: Signal<String, NoError> { get }
+
   /// Emits the number of days string for the countdown
   var daysString: Signal<String, NoError> { get }
 
@@ -76,6 +79,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     let dateComponents = liveStream
       .take(first: 1)
       .switchMap { countdownProducer(to: Date(timeIntervalSince1970: $0.startDate)) }
+
+    self.countdownDateLabelText = liveStream
+      .map { Date(timeIntervalSince1970: $0.startDate) }.map(formattedDateString)
 
     self.daysString = dateComponents
       .map { $0.day }
@@ -152,6 +158,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
   public let categoryId: Signal<Int, NoError>
   public let countdownAccessibilityLabel: Signal<String, NoError>
+  public let countdownDateLabelText: Signal<String, NoError>
   public let daysString: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
   public let hoursString: Signal<String, NoError>
@@ -182,4 +189,13 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
 
 private func flipLiveStreamEvenToLive(event: LiveStreamEvent) -> LiveStreamEvent {
   return event |> LiveStreamEvent.lens.liveNow .~ true
+}
+
+private func formattedDateString(date: Date) -> String {
+
+  let format = DateFormatter.dateFormat(fromTemplate: "dMMMhmzzz",
+                                        options: 0,
+                                        locale: AppEnvironment.current.locale) ?? "MMM d, h:mm a zzz"
+
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, dateFormat: format)
 }
