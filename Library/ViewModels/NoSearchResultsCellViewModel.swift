@@ -15,7 +15,8 @@ public protocol NoSearchResultsCellViewModelType {
   var outputs: NoSearchResultsCellViewModelOutputs { get }
 }
 
-public final class NoSearchResultsCellViewModel: NoSearchResultsCellViewModelType, NoSearchResultsCellViewModelInputs, NoSearchResultsCellViewModelOutputs {
+public final class NoSearchResultsCellViewModel: NoSearchResultsCellViewModelType,
+NoSearchResultsCellViewModelInputs, NoSearchResultsCellViewModelOutputs {
 
   public init() {
     self.searchTermNotFound = self.paramProperty.signal

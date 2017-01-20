@@ -23,6 +23,7 @@ internal final class NoSearchResultsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(param: discoveryParams)
 
-    self.searchTermNotFound.assertValues(["We couldn't find anything for abcdefgh."], "Emits to the user that the search term could not be found." )
+    self.searchTermNotFound.assertValues(["We couldn't find anything for abcdefgh."],
+                                         "Emits to the user that the search term could not be found.")
   }
 }

@@ -210,10 +210,9 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasProjects.assertValues([false], "No Projects to emit.")
-      self.showNoSearchResults.assertValues([false, true],"No Projects Found.")
+      self.showNoSearchResults.assertValues([false, true], "No Projects Found.")
     }
   }
-
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular
   // projects to get mixed up.
