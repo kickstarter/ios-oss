@@ -13,7 +13,7 @@ public protocol LiveStreamContainerViewModelType {
 public protocol LiveStreamContainerViewModelInputs {
   /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
   func configureWith(project: Project,
-                     liveStream: Project.LiveStream, 
+                     liveStream: Project.LiveStream,
                      event: LiveStreamEvent?,
                      context: Koala.LiveStreamContext)
 
