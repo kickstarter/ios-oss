@@ -151,7 +151,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
   private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
     let vc: UIViewController
-    if liveStream.isLiveNow {
+    if liveStream.isLiveNow || liveStream.startDate < Date().timeIntervalSince1970 {
       vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
                                                             event: nil)
