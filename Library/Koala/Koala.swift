@@ -1621,24 +1621,31 @@ public final class Koala {
   // MARK: Live streams
   public func trackChangedLiveStreamOrientation(project: Project,
                                                 liveStream: Project.LiveStream,
-                                                context: LiveStreamStateContext,
                                                 toOrientation: UIInterfaceOrientation) {
     let orientationString = toOrientation.isLandscape ? "landscape" : "portrait"
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString, "type": orientationString])
+      .withAllValuesFrom(
+        [
+          "context": liveStreamStateContext(forLiveStream: liveStream).trackingString,
+          "type": orientationString
+        ]
+    )
 
     self.track(event: "Changed Live Stream Orientation", properties: props)
   }
 
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStream: Project.LiveStream,
-                                                subscribed: Bool,
-                                                context: LiveStreamStateContext) {
+                                                subscribed: Bool) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
+      .withAllValuesFrom(
+        [
+          "context": liveStreamStateContext(forLiveStream: liveStream).trackingString
+        ]
+    )
 
     self.track(
       event: subscribed ? "Confirmed KSR Live Subscribe Button" : "Confirmed KSR Live Unsubscribe Button",

@@ -253,7 +253,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         AppEnvironment.current.koala
           .trackChangedLiveStreamOrientation(project: project,
                                              liveStream: liveStream,
-                                             context: liveStream.isLiveNow ? .live : .replay,
                                              toOrientation: orientation)
     }
 

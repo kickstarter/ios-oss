@@ -231,10 +231,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         AppEnvironment.current.koala.trackLiveStreamToggleSubscription(
           project: configData.0,
           liveStream: configData.1,
-          subscribed: isSubscribed,
-          context: liveStreamStateContext(
-            forLiveStream: configData.1
-          )
+          subscribed: isSubscribed
         )
     }
   }
