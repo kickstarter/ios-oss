@@ -159,7 +159,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     } else {
       vc = LiveStreamCountdownViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
-                                                            context: Koala.LiveStreamContext.projectPage)
+                                                            context: .projectPage)
     }
 
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)

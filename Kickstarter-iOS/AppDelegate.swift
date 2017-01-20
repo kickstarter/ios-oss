@@ -253,10 +253,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 event: liveStreamEvent,
                                                                 context: .pushNotification)
     } else {
-      liveVc = LiveStreamCountdownViewController
-        .configuredWith(project: project,
-                        liveStream: liveStream,
-                        context: Koala.LiveStreamContext.pushNotification)
+      liveVc = LiveStreamCountdownViewController.configuredWith(project: project,
+                                                                liveStream: liveStream,
+                                                                context: .pushNotification)
     }
 
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)

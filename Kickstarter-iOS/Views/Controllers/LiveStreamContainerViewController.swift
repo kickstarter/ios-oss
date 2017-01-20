@@ -85,6 +85,18 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamViewController }
       .first
 
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation
+        )
+    }
+
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
@@ -276,18 +288,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
-
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.UIDeviceOrientationDidChange,
-                   object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.deviceOrientationDidChange(
-          orientation: UIApplication.shared.statusBarOrientation)
-    }
-
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
         self?.openLoginTout()
@@ -362,9 +362,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeValues { [weak self] project, event, context in
-        self?.shareViewModel.inputs.configureWith(
-          shareContext: ShareContext.liveStream(project, event, context)
-        )
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event, context))
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage

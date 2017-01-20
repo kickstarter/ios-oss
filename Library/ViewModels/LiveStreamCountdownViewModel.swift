@@ -140,7 +140,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       )
       .map(unpack)
       .map { project, liveStream, event in
-        (project, liveStream, event, .countdownEnded)
+        (project, liveStream, event, .countdown)
       }
       .takeWhen(countdownEnded)
       .take(first: 1)

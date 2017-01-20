@@ -93,15 +93,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    configData.observeValues { project, liveStream, _, context in
-      AppEnvironment.current.koala.trackViewedLiveStream(project: project,
-                                                         liveStream: liveStream,
-                                                         context: context)
-    }
-
     let project = configData.map { $0.0 }
-
-    let liveStream = configData.map { $0.1 }
 
     let event = Signal.merge(
       configData.map { $0.2 }.skipNil(),
@@ -169,50 +161,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       },
       self.showErrorAlert
     )
-
-    let everyMinuteTimer = self.viewDidLoadProperty.signal
-      .flatMap {
-        timer(interval: .seconds(60), on: AppEnvironment.current.scheduler)
-    }
-
-    let watchedAnotherMinute = Signal.combineLatest(
-      everyMinuteTimer,
-      self.liveStreamState.filter { state -> Bool in
-        switch state {
-        case .live(playbackState: .playing, _):   return true
-        case .replay(playbackState: .playing, _): return true
-        default: return false
-        }
-      }
-      )
-      .ignoreValues()
-      .scan(0) { accum, _ in accum + 1 }
-
-    Signal.combineLatest(
-      configData.map { project, liveStream, _, context in (project, liveStream, context) },
-      watchedAnotherMinute,
-      liveStreamState
-      )
-      .map { tuple, minute, state in (tuple.0, tuple.1, tuple.2, minute, state) }
-      .take(during: Lifetime(self.token))
-      .observeValues { project, liveStream, context, minute, state in
-        switch state {
-        case .live:
-          AppEnvironment.current.koala
-            .trackWatchedLiveStream(project: project,
-                                    liveStream: liveStream,
-                                    context: context,
-                                    duration: minute)
-        case .replay:
-          AppEnvironment.current.koala
-            .trackWatchedLiveStreamReplay(project: project,
-                                          liveStream: liveStream,
-                                          context: context,
-                                          duration: minute)
-        case .greenRoom, .error, .initializationFailed, .loading, .nonStarter:
-          break
-        }
-    }
 
     self.loaderStackViewHidden = self.liveStreamState
       .map { state in
@@ -290,25 +238,60 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
 
-    Signal.combineLatest(
-      project,
-      liveStream,
-      self.deviceOrientationDidChangeProperty.signal.skipNil()
-    )
-      .observeValues { project, liveStream, orientation in
+    let everyMinuteTimer = self.liveStreamState
+      .filter { state in
+        switch state {
+        case .live(playbackState: .playing, _):     return true
+        case .replay(playbackState: .playing, _):   return true
+        default:                                    return false
+        }
+      }
+      .flatMap { _ in
+        timer(interval: .seconds(60), on: AppEnvironment.current.scheduler)
+    }
+
+    let numberOfMinutesWatched = everyMinuteTimer
+      .scan(0) { accum, _ in accum + 1 }
+
+    configData
+      .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
+      .observeValues { data, orientation in
+        let (project, liveStream, _, _) = data
+
         AppEnvironment.current.koala
           .trackChangedLiveStreamOrientation(project: project,
                                              liveStream: liveStream,
                                              context: liveStream.isLiveNow ? .live : .replay,
                                              toOrientation: orientation)
     }
+
+    configData
+      .map { project, liveStream, _, context in (project, liveStream, context) }
+      .takePairWhen(numberOfMinutesWatched)
+      .map { tuple, minute in (tuple.0, tuple.1, tuple.2, minute) }
+      .take(during: Lifetime(self.token))
+      .observeValues { project, liveStream, context, minute in
+        AppEnvironment.current.koala.trackWatchedLiveStream(project: project,
+                                                            liveStream: liveStream,
+                                                            context: context,
+                                                            duration: minute)
+    }
+
+    configData
+      .observeValues { project, liveStream, _, context in
+        AppEnvironment.current.koala.trackViewedLiveStream(project: project,
+                                                           liveStream: liveStream,
+                                                           context: context)
+    }
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?,
-    Koala.LiveStreamContext)?>(nil)
-  public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?,
+  private typealias ConfigData = (Project, Project.LiveStream, LiveStreamEvent?, Koala.LiveStreamContext)
+  private let configData = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project,
+                            liveStream: Project.LiveStream,
+                            event: LiveStreamEvent?,
                             context: Koala.LiveStreamContext) {
     self.configData.value = (project, liveStream, event, context: context)
   }

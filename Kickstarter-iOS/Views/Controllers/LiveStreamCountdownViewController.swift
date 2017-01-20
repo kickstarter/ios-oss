@@ -41,9 +41,11 @@ public final class LiveStreamCountdownViewController: UIViewController {
   public static func configuredWith(project: Project,
                                     liveStream: Project.LiveStream,
                                     context: Koala.LiveStreamContext) -> LiveStreamCountdownViewController {
+
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
     vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, context: context)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+
     return vc
   }
 
@@ -236,9 +238,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
       .observeValues { [weak self] project, event, context in
-        self?.shareViewModel.inputs.configureWith(
-          shareContext: ShareContext.liveStream(project, event, context)
-        )
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event, context))
     }
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled

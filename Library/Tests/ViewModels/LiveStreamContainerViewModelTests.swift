@@ -487,6 +487,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   func testTrackWatchedLiveReplay() {
     let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
     let project = Project.template
     let event = LiveStreamEvent.template
 

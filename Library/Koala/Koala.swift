@@ -150,22 +150,23 @@ public final class Koala {
   /**
    Determines the place from which the live stream was presented.
 
+   - countdown: The live stream's countdown.
    - liveStreamDiscovery: The live stream discovery view.
    - project_pamphlet: The project pamphlet view.
    - push: A push notification.
    */
   public enum LiveStreamContext {
-    case countdownEnded
+    case countdown
     case liveStreamDiscovery
     case projectPage
     case pushNotification
 
     fileprivate var trackingString: String {
       switch self {
-      case .countdownEnded:      return "countdown_ended"
-      case .liveStreamDiscovery: return "live_stream_discovery"
-      case .projectPage:         return "project_page"
-      case .pushNotification:    return "push_notification"
+      case .countdown:            return "countdown"
+      case .liveStreamDiscovery:  return "live_stream_discovery"
+      case .projectPage:          return "project_page"
+      case .pushNotification:     return "push_notification"
       }
     }
   }
@@ -1675,7 +1676,11 @@ public final class Koala {
       .withAllValuesFrom(["context": context.trackingString])
       .withAllValuesFrom(["duration": duration])
 
-    self.track(event: "Watched Live Stream", properties: props)
+    if liveStream.isLiveNow {
+      self.track(event: "Watched Live Stream", properties: props)
+    } else {
+      self.track(event: "Watched Live Stream Replay", properties: props)
+    }
   }
 
   public func trackViewedLiveStreamReplay(project: Project,
@@ -1686,18 +1691,6 @@ public final class Koala {
       .withAllValuesFrom(["context": context.trackingString])
 
     self.track(event: "Viewed Live Stream Replay", properties: props)
-  }
-
-  public func trackWatchedLiveStreamReplay(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    context: LiveStreamContext,
-                                    duration: Int) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
-      .withAllValuesFrom(["duration": duration])
-
-    self.track(event: "Watched Live Stream Replay", properties: props)
   }
 
   // Private tracking method that merges in default properties.
