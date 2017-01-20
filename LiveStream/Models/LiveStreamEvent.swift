@@ -91,7 +91,7 @@ extension LiveStreamEvent: Decodable {
       <*> (json <| ["stream", "name"] <|> json <| "name")
     let tmp4 = tmp3
       <*> json <|? "opentok"
-      // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project` sub-key
+      // Sometimes the project data is included in a `stream` sub-key, and sometimes it's in a `project`.
       <*> (json <| "stream" <|> json <| "project")
       <*> json <|? ["stream", "replay_url"]
       <*> ((json <| "start_date" <|> json <| ["stream", "start_date"]) >>- toDate)

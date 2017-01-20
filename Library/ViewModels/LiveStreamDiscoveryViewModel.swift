@@ -5,14 +5,24 @@ import ReactiveSwift
 import Result
 
 public protocol LiveStreamDiscoveryViewModelInputs {
+  /// Call from parent controller when this view is shown to the user.
   func isActive(_ active: Bool)
+
+  /// Call when a live stream cell is tapped.
   func tapped(liveStreamEvent: LiveStreamEvent)
+
+  /// Call when the view loads.
   func viewDidLoad()
 }
 
 public protocol LiveStreamDiscoveryViewModelOutputs {
+  /// Emits when we should navigate to the live stream container.
   var goToLiveStreamContainer: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+
+  /// Emits when we should navigate to the live stream countdown.
   var goToLiveStreamCountdown: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+
+  /// Emits when we should load data into the data source.
   var loadDataSource: Signal<[LiveStreamEvent], NoError> { get }
 }
 
@@ -25,7 +35,6 @@ public final class LiveStreamDiscoveryViewModel: LiveStreamDiscoveryViewModelTyp
 LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
 
   public init() {
-
     let projectAndTappedLiveStreamEvent = self.tappedLiveStreamEventProperty.signal.skipNil()
       .switchMap(freshProjectAndStreamAndEvent(fromLiveStreamEvent:))
 
@@ -35,11 +44,7 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.goToLiveStreamCountdown = projectAndTappedLiveStreamEvent
       .filter { _, _, event in !event.liveNow && !event.hasReplay }
 
-    self.loadDataSource = Signal.combineLatest(
-      self.isActiveProperty.signal.filter(isTrue),
-      self.viewDidLoadProperty.signal
-      )
-      .take(first: 1)
+    self.loadDataSource = self.isActiveProperty.signal.filter(isTrue)
       .flatMap { _ in
         AppEnvironment.current.liveStreamService.fetchEvents()
           .demoteErrors()

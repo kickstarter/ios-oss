@@ -14,6 +14,7 @@ private let expandableRowTemplate = ExpandableRow(isExpanded: false,
                                                   selectableRows: [])
 
 private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
+private let liveStreamRow = allProjectsRow |> SelectableRow.lens.params.hasLiveStreams .~ true
 private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
@@ -131,8 +132,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           allProjectsRow
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
-          allProjectsRow
-            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
+          liveStreamRow,
         ]
       ],
       "The top filter rows load immediately with the first one selected."
@@ -152,8 +152,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           allProjectsRow
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
-          allProjectsRow
-            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
+          liveStreamRow,
           starredRow,
           recommendedRow,
           socialRow
@@ -177,8 +176,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           allProjectsRow
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
-          allProjectsRow
-            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true),
+          liveStreamRow,
           starredRow,
           recommendedRow,
           socialRow,
@@ -198,8 +196,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         [
           allProjectsRow,
           staffPicksRow,
-          allProjectsRow
-            |> SelectableRow.lens.params .~ (.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
+          liveStreamRow
         ]
       ]
     )
