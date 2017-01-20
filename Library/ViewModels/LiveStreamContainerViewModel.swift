@@ -160,8 +160,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.showErrorAlert
     )
 
-    self.loaderStackViewHidden = self.liveStreamState
-      .map { state in
+    let singleState = self.liveStreamState
+      .map { state -> Bool in
         switch state {
         case .live(playbackState: .playing, _):
           return true
@@ -172,6 +172,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
       }
       .skipRepeats()
+
+    self.loaderStackViewHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false).take(first: 1),
+      singleState.filter { $0 }.take(first: 1)
+    )
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
