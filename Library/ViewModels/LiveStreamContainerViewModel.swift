@@ -194,6 +194,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       liveStreamState
       )
       .map { tuple, minute, state in (tuple.0, tuple.1, tuple.2, minute, state) }
+      .take(during: Lifetime(self.token))
       .observeValues { project, liveStream, context, minute, state in
         switch state {
         case .live:
@@ -337,6 +338,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
+  // Required to limit the lifetime of the minutes watched tracking timer
+  private let token = Lifetime.Token()
 
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
