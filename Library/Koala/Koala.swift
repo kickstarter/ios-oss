@@ -1641,10 +1641,10 @@ public final class Koala {
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["context": context.trackingString])
 
-    self.track(event: subscribed ?
-      "Confirmed KSR Live Subscribe Button" :
-      "Confirmed KSR Live Unsubscribe Button",
-               properties: props)
+    self.track(
+      event: subscribed ? "Confirmed KSR Live Subscribe Button" : "Confirmed KSR Live Unsubscribe Button",
+      properties: props
+    )
   }
 
   public func trackViewedLiveStreamCountdown(project: Project,
