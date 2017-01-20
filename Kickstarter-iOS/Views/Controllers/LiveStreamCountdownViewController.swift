@@ -12,9 +12,12 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private var countdownColons: [UILabel]!
+  @IBOutlet private weak var countdownRootStackView: UIStackView!
   @IBOutlet private weak var countdownStackView: UIStackView!
   @IBOutlet private weak var daysSubtitleLabel: UILabel!
   @IBOutlet private weak var daysTitleLabel: UILabel!
+  @IBOutlet private weak var dateContainerView: UIView!
+  @IBOutlet private weak var dateLabel: UILabel!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
@@ -95,6 +98,20 @@ public final class LiveStreamCountdownViewController: UIViewController {
     _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
       ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
       ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
+
+    _ = self.countdownRootStackView
+      |> UIStackView.lens.alignment .~ .center
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
+
+    _ = self.dateContainerView
+      |> UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(3))
+      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
+      |> roundedStyle(cornerRadius: 2)
+
+    _ = self.dateLabel
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
       |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
@@ -234,6 +251,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
 
+    self.dateLabel.rac.text = self.viewModel.outputs.countdownDateLabelText
+
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
         self?.openLoginTout()
@@ -284,9 +303,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream, event in
+      .observeValues { [weak self] project, liveStream, event, context in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event)
+          .configuredWith(project: project, liveStream: liveStream, event: event, context: context)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }

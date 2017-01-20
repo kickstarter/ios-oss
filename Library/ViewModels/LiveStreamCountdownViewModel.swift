@@ -31,6 +31,9 @@ public protocol LiveStreamCountdownViewModelOutputs {
   /// Emits the accessibility label string for the live stream countdown
   var countdownAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits the countdown date label text
+  var countdownDateLabelText: Signal<String, NoError> { get }
+
   /// Emits the number of days string for the countdown
   var daysString: Signal<String, NoError> { get }
 
@@ -47,7 +50,8 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
-  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent,
+    Koala.LiveStreamContext), NoError> { get }
 
   /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
@@ -76,7 +80,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .flatMap {
         timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
           .prefix(value: AppEnvironment.current.scheduler.currentDate)
-    }
+      }
 
     let dateComponents = liveStream
       .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
@@ -87,6 +91,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
                                                        to: startDate)
       }
       .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
+
+    self.countdownDateLabelText = liveStream
+      .map { Date(timeIntervalSince1970: $0.startDate) }.map(formattedDateString)
 
     self.daysString = dateComponents
       .map { max(0, $0.day) }
@@ -132,6 +139,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEventToLive)
       )
       .map(unpack)
+      .map { project, liveStream, event in
+        (project, liveStream, event, .countdownEnded)
+      }
       .takeWhen(countdownEnded)
       .take(first: 1)
 
@@ -168,12 +178,14 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
   public let categoryId: Signal<Int, NoError>
   public let countdownAccessibilityLabel: Signal<String, NoError>
+  public let countdownDateLabelText: Signal<String, NoError>
   public let daysString: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
+  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent,
+    Koala.LiveStreamContext), NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>
@@ -198,4 +210,13 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
 
 private func flipLiveStreamEventToLive(event: LiveStreamEvent) -> LiveStreamEvent {
   return event |> LiveStreamEvent.lens.stream.liveNow .~ true
+}
+
+private func formattedDateString(date: Date) -> String {
+
+  let format = DateFormatter.dateFormat(fromTemplate: "dMMMhmzzz",
+                                        options: 0,
+                                        locale: AppEnvironment.current.locale) ?? "MMM d, h:mm a zzz"
+
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, dateFormat: format)
 }

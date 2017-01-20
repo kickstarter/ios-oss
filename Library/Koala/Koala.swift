@@ -155,12 +155,14 @@ public final class Koala {
    - push: A push notification.
    */
   public enum LiveStreamContext {
+    case countdownEnded
     case liveStreamDiscovery
     case projectPage
     case pushNotification
 
     fileprivate var trackingString: String {
       switch self {
+      case .countdownEnded:      return "countdown_ended"
       case .liveStreamDiscovery: return "live_stream_discovery"
       case .projectPage:         return "project_page"
       case .pushNotification:    return "push_notification"
@@ -1667,7 +1669,7 @@ public final class Koala {
   public func trackWatchedLiveStream(project: Project,
                                     liveStream: Project.LiveStream,
                                     context: LiveStreamContext,
-                                    duration: TimeInterval) {
+                                    duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["context": context.trackingString])
@@ -1689,7 +1691,7 @@ public final class Koala {
   public func trackWatchedLiveStreamReplay(project: Project,
                                     liveStream: Project.LiveStream,
                                     context: LiveStreamContext,
-                                    duration: TimeInterval) {
+                                    duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["context": context.trackingString])

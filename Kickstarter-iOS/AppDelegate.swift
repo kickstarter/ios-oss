@@ -250,7 +250,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     if liveStream.startDate < AppEnvironment.current.dateType.init().timeIntervalSince1970 {
       liveVc = LiveStreamContainerViewController.configuredWith(project: project,
                                                                 liveStream: liveStream,
-                                                                event: liveStreamEvent)
+                                                                event: liveStreamEvent,
+                                                                context: .pushNotification)
     } else {
       liveVc = LiveStreamCountdownViewController
         .configuredWith(project: project,
