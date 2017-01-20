@@ -17,7 +17,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let liveStreamState = TestObserver<LiveStreamViewControllerState, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
@@ -40,7 +39,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
-    self.vm.outputs.liveStreamState.observe(self.liveStreamState.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
@@ -188,46 +186,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
     self.numberWatchingBadgeViewHidden.assertValues([true])
     self.availableForLabelHidden.assertValues([true, false])
-  }
-
-  func testLiveStreamStates() {
-    let liveStream = Project.LiveStream.template
-    let project = Project.template
-    let event = LiveStreamEvent.template
-
-    self.liveStreamState.assertValueCount(0)
-
-    self.vm.inputs.configureWith(
-      project: project, liveStream: liveStream, event: event, context: .projectPage
-    )
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .live(playbackState: .error(error: .sessionInterrupted), startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .error(error: .failedToConnect),
-        duration: 123))
-
-    // Test begins with an implicit loading state before any others
-    self.liveStreamState.assertValues([
-      .loading,
-      .greenRoom,
-      .loading,
-      .live(playbackState: .loading, startTime: 123),
-      .live(playbackState: .playing, startTime: 123),
-      .live(playbackState: .error(error: .sessionInterrupted), startTime: 123),
-      .replay(playbackState: .loading, duration: 123),
-      .replay(playbackState: .playing, duration: 123),
-      .replay(playbackState: .error(error: .failedToConnect), duration: 123)
-    ])
   }
 
   func testNavBarTitleViewHidden_LiveState() {

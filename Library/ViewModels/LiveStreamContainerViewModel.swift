@@ -12,7 +12,9 @@ public protocol LiveStreamContainerViewModelType {
 
 public protocol LiveStreamContainerViewModelInputs {
   /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
-  func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?,
+  func configureWith(project: Project,
+                     liveStream: Project.LiveStream, // FIXME: do we need this?
+                     event: LiveStreamEvent?,
                      context: Koala.LiveStreamContext)
 
   /// Called when the close button is tapped
@@ -49,9 +51,6 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
-
-  /// Emits the current LiveStreamViewControllerState
-  var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
 
   /// Emits when the loader stack view should be hidden
   var loaderStackViewHidden: Signal<Bool, NoError> { get }
@@ -106,15 +105,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         (project, AppEnvironment.current.currentUser?.id, event)
     }
 
-    self.liveStreamState = Signal.combineLatest(
-      Signal.merge(
-        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
-        project.mapConst(.loading)
-      ),
-      self.viewDidLoadProperty.signal
-    ).map(first)
+    let liveStreamControllerState = Signal.merge(
+      self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
+      project.mapConst(.loading)
+    )
 
-    self.showErrorAlert = self.liveStreamState
+    self.showErrorAlert = liveStreamControllerState
       .map { state -> LiveVideoPlaybackError? in
         switch state {
         case .error(let error): return error
@@ -151,7 +147,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }.skipNil()
 
     self.loaderText = Signal.merge(
-      self.liveStreamState.map {
+      liveStreamControllerState.map {
         switch $0 {
         case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
         case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
@@ -162,7 +158,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.showErrorAlert
     )
 
-    self.loaderStackViewHidden = self.liveStreamState
+    self.loaderStackViewHidden = liveStreamControllerState
       .map { state in
         switch state {
         case .live(playbackState: .playing, _):   return true
@@ -175,7 +171,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
 
-    self.titleViewText = liveStreamState.map {
+    self.titleViewText = liveStreamControllerState.map {
       switch $0 {
       case .live(_, _):   return Strings.Live()
       case .greenRoom:    return Strings.Starting_soon()
@@ -185,7 +181,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     self.videoViewControllerHidden = Signal.combineLatest(
-      self.liveStreamState.map { state -> Bool in
+      liveStreamControllerState.map { state -> Bool in
         switch state {
         case .live(playbackState: .playing, _):   return false
         case .replay(playbackState: .playing, _): return false
@@ -224,7 +220,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.navBarTitleViewHidden = Signal.merge(
       project.mapConst(true),
-      liveStreamState.map { state in
+      liveStreamControllerState.map { state in
         switch state {
         case .live(playbackState: .playing, _):   return false
         case .replay(playbackState: .playing, _): return false
@@ -238,7 +234,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
 
-    let everyMinuteTimer = self.liveStreamState
+    let everyMinuteTimer = liveStreamControllerState
       .filter { state in
         switch state {
         case .live(playbackState: .playing, _):     return true
@@ -331,7 +327,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
-  public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
