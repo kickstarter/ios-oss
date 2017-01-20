@@ -131,7 +131,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let event = LiveStreamEvent.template
 
     self.vm.inputs.configureWith(
-      project: project, liveStream: liveStream, event: event , context: .projectPage
+      project: project, liveStream: liveStream, event: event, context: .projectPage
     )
     self.vm.inputs.viewDidLoad()
 
