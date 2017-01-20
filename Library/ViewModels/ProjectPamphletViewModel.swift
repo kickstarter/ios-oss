@@ -87,7 +87,7 @@ ProjectPamphletViewModelOutputs {
       .map { $0 ?? $1 }
 
     // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
-    let projectLiveStreams: Signal<[Project.LiveStream]?, NoError> = project
+    let projectLiveStreams = project
       .map { $0.liveStreams }
       .skipNil()
       .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
