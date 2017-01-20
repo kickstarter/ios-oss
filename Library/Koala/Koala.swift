@@ -1627,8 +1627,7 @@ public final class Koala {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
-      .withAllValuesFrom(["type": orientationString])
+      .withAllValuesFrom(["context": context.trackingString, "type": orientationString])
 
     self.track(event: "Changed Live Stream Orientation", properties: props)
   }
@@ -1673,8 +1672,7 @@ public final class Koala {
                                     duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
-      .withAllValuesFrom(["duration": duration])
+      .withAllValuesFrom(["context": context.trackingString, "duration": duration])
 
     if liveStream.isLiveNow {
       self.track(event: "Watched Live Stream", properties: props)

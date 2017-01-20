@@ -111,17 +111,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.showErrorAlert = liveStreamControllerState
       .map { state -> LiveVideoPlaybackError? in
         switch state {
-        case .error(let error): return error
-        case .live(let playbackState, _):
-          if case let .error(videoError) = playbackState { return videoError }
-        case .replay(let playbackState, _):
-          if case let .error(videoError) = playbackState { return videoError }
+        case .error(let error):
+          return error
+        case let .live(.error(videoError), _):
+          return videoError
+        case let .replay(.error(videoError), _):
+          return videoError
         case .initializationFailed:
           return .failedToConnect
         default:
           return nil
         }
-        return nil
       }
       .skipNil()
       .map {
@@ -150,7 +150,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
         case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
         case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
-        default: return Strings.Loading()
+        default:                                  return Strings.Loading()
         }
       },
       self.showErrorAlert
@@ -161,7 +161,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         switch state {
         case .live(playbackState: .playing, _):   return true
         case .replay(playbackState: .playing, _): return true
-        default: return false
+        default:                                  return false
         }
       }
       .skipRepeats()
@@ -174,7 +174,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       case .live(_, _):   return Strings.Live()
       case .greenRoom:    return Strings.Starting_soon()
       case .replay(_, _): return Strings.Recorded_Live()
-      default: return Strings.Loading()
+      default:            return Strings.Loading()
       }
     }
 
@@ -183,7 +183,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         switch state {
         case .live(playbackState: .playing, _):   return false
         case .replay(playbackState: .playing, _): return false
-        default: return true
+        default:                                  return true
         }
       },
       self.createAndConfigureLiveStreamViewController
@@ -222,7 +222,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         switch state {
         case .live(playbackState: .playing, _):   return false
         case .replay(playbackState: .playing, _): return false
-        default: return true
+        default:                                  return true
         }
       }
     ).skipRepeats()
@@ -235,9 +235,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
         switch state {
-        case .live(playbackState: .playing, _):     return true
-        case .replay(playbackState: .playing, _):   return true
-        default:                                    return false
+        case .live(playbackState: .playing, _):   return true
+        case .replay(playbackState: .playing, _): return true
+        default:                                  return false
         }
       }
       .flatMap { _ in
