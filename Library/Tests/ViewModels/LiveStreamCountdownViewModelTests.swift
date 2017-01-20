@@ -150,7 +150,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.pushLiveStreamViewControllerEvent.assertValues([event])
 
     XCTAssertTrue(self.pushLiveStreamViewControllerLiveStream.lastValue?.isLiveNow ?? false)
-    XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams.first?.isLiveNow ?? false)
+    XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams?.first?.isLiveNow ?? false)
     XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
   }
 

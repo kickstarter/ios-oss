@@ -52,8 +52,8 @@ ProjectPamphletViewModelOutputs {
       )
 
     let freshProject = projectOrParamAndIndex
-      .map { p, idx in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id), idx) }
-      .switchMap { _, param, _ -> SignalProducer<Project, NoError> in
+      .map { p, _ in p.ifLeft({ Param.id($0.id) }, ifRight: id) }
+      .switchMap { param -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -86,11 +86,28 @@ ProjectPamphletViewModelOutputs {
       .take(first: 1)
       .map { $0 ?? $1 }
 
-    Signal.combineLatest(project, refTag, cookieRefTag)
-      .takeWhen(self.viewDidAppearAnimated.signal)
+    let trackingData = Signal.combineLatest(project, refTag, cookieRefTag, self.viewWillAppearAnimated.signal)
+      .map { project, refTag, cookieRefTag, _ in (project, refTag, cookieRefTag) }
+
+    // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
+    let projectLiveStreams: Signal<[Project.LiveStream]?, NoError> = project
+      .map { $0.liveStreams }
+      .skipNil()
+      .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
+      .materialize()
+      .map { $0.value }
       .take(first: 1)
-      .observeValues { project, refTag, cookieRefTag in
-        AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
+
+    Signal.combineLatest(trackingData, projectLiveStreams)
+      .take(first: 1)
+      .map { ($0.0, $0.1, $0.2, $1) }
+      .observeValues { project, refTag, cookieRefTag, projectLiveStreams in
+        AppEnvironment.current.koala.trackProjectShow(
+          project,
+          refTag: refTag,
+          cookieRefTag: cookieRefTag,
+          liveStreamStateContext: liveStreamStateContext(fromLiveStreams: projectLiveStreams)
+        )
     }
 
     Signal.combineLatest(cookieRefTag.skipNil(), project)
@@ -195,4 +212,26 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   properties[.expires] = Date(timeIntervalSince1970: project.dates.deadline)
 
   return HTTPCookie(properties: properties)
+}
+
+// From a list of live streams, figures out which state context to give credit to for koala tracking 
+// by prioritizing states live > upcoming > replay
+private func liveStreamStateContext(fromLiveStreams liveStreams: [Project.LiveStream]?)
+  -> Koala.LiveStreamStateContext? {
+
+    // lil helper function to compare two state contexts
+    func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
+        switch (context1, context2) {
+        case (.live, .countdown), (.live, .replay), (.countdown, .replay):
+          return true
+        case (.countdown, .live), (.replay, .live), (.replay, .countdown),
+             (.live, .live), (.countdown, .countdown), (.replay, .replay):
+          return false
+        }
+    }
+
+    return (liveStreams ?? [])
+      .map(liveStreamStateContext(forLiveStream:))
+      .sorted(by: compare(context1:context2:))
+      .first
 }

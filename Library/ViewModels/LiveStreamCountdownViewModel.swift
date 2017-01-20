@@ -184,7 +184,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
 private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Project.LiveStream) ->
   (Project, Project.LiveStream) {
-  let liveStreams = project.liveStreams
+  let liveStreams = (project.liveStreams ?? [])
     .map { liveStream in
       liveStream
         |> Project.LiveStream.lens.isLiveNow .~ (liveStream.id == currentLiveStream.id)

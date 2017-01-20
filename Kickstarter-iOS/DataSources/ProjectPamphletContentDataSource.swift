@@ -93,7 +93,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       <> futureLiveStreamsFirstComparator
       <> startDateComparator
 
-    return project.liveStreams
+    return (project.liveStreams ?? [])
       .sorted(comparator: comparator)
       .enumerated()
       .map { idx, liveStream in

@@ -176,14 +176,14 @@ public final class Koala {
    - replay: The stream is in replay.
    */
   public enum LiveStreamStateContext {
-    case live
     case countdown
+    case live
     case replay
 
     fileprivate var trackingString: String {
       switch self {
-      case .countdown: return "live_stream_countdown"
       case .live:      return "live_stream_live"
+      case .countdown: return "live_stream_countdown"
       case .replay:    return "live_stream_replay"
       }
     }
@@ -1153,11 +1153,13 @@ public final class Koala {
    */
   public func trackProjectShow(_ project: Project,
                                refTag: RefTag? = nil,
-                               cookieRefTag: RefTag? = nil) {
+                               cookieRefTag: RefTag? = nil,
+                               liveStreamStateContext: LiveStreamStateContext?) {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
+    props["live_stream_type"] = liveStreamStateContext?.trackingString
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
