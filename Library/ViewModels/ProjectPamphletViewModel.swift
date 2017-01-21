@@ -52,7 +52,7 @@ ProjectPamphletViewModelOutputs {
       )
 
     let freshProject = projectOrParamAndIndex
-      .map { p, _ in p.ifLeft({ Param.id($0.id) }, ifRight: id) }
+      .map { projectOrParam, _ in projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id) }
       .switchMap { param -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
@@ -101,11 +101,7 @@ ProjectPamphletViewModelOutputs {
     Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
       .take(first: 1)
       .observeValues { project, refTag, cookieRefTag in
-        AppEnvironment.current.koala.trackProjectShow(
-          project,
-          refTag: refTag,
-          cookieRefTag: cookieRefTag
-        )
+        AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
 
     Signal.combineLatest(cookieRefTag.skipNil(), project)

@@ -40,7 +40,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
 
-  /// Emits with the Project, Project.LiveStream and LiveStreamEvent for configuring the ShareViewModel
+  /// Emits with the Project and LiveStreamEvent for configuring the ShareViewModel
   var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
 
   /// Emits when the details stack view should be hidden
@@ -224,10 +224,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     configData
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
-        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(
-          project: configData.0,
-          liveStream: configData.1,
-          subscribed: isSubscribed
+        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.0,
+                                                                       liveStream: configData.1,
+                                                                       subscribed: isSubscribed
         )
     }
   }

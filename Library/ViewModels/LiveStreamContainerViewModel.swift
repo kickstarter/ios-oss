@@ -111,25 +111,18 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.showErrorAlert = liveStreamControllerState
       .map { state -> LiveVideoPlaybackError? in
         switch state {
-        case .error(let error):
-          return error
-        case let .live(.error(videoError), _):
-          return videoError
-        case let .replay(.error(videoError), _):
-          return videoError
-        case .initializationFailed:
-          return .failedToConnect
-        default:
-          return nil
+        case .error(let error):                   return error
+        case let .live(.error(videoError), _):    return videoError
+        case let .replay(.error(videoError), _):  return videoError
+        case .initializationFailed:               return .failedToConnect
+        default:                                  return nil
         }
       }
       .skipNil()
-      .map {
-        switch $0 {
-        case .sessionInterrupted:
-          return Strings.The_live_stream_was_interrupted()
-        case .failedToConnect:
-          return Strings.The_live_stream_failed_to_connect()
+      .map { error in
+        switch error {
+        case .sessionInterrupted: return Strings.The_live_stream_was_interrupted()
+        case .failedToConnect:    return Strings.The_live_stream_failed_to_connect()
         }
       }
 
@@ -240,20 +233,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         default:                                  return false
         }
       }
-      .flatMap { _ in
-        timer(interval: .seconds(60), on: AppEnvironment.current.scheduler)
-      }
+      .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .scan(0) { accum, _ in accum + 1 }
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
         let (project, liveStream, _, _) = data
-
-        AppEnvironment.current.koala
-          .trackChangedLiveStreamOrientation(project: project,
-                                             liveStream: liveStream,
-                                             toOrientation: orientation)
+        AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
+                                                                       liveStream: liveStream,
+                                                                       toOrientation: orientation)
     }
 
     configData
