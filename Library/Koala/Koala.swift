@@ -149,27 +149,6 @@ public final class Koala {
   }
 
   /**
-   Determines the state of the live stream in which an event occurred.
-
-   - countdown: The stream is in countdown.
-   - live: The stream is live.
-   - replay: The stream is in replay.
-   */
-  public enum LiveStreamStateContext {
-    case countdown
-    case live
-    case replay
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .live:      return "live_stream_live"
-      case .countdown: return "live_stream_countdown"
-      case .replay:    return "live_stream_replay"
-      }
-    }
-  }
-
-  /**
    Determines the place from which the newsletter toggle was presented.
 
    - facebook: The Facebook confirmation signup screen.
@@ -1991,7 +1970,7 @@ extension Reward.Shipping.Preference {
   }
 }
 
-private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.LiveStreamStateContext {
+private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> LiveStreamStateContext {
   if event.stream.liveNow {
     return .live
   }
@@ -2003,7 +1982,7 @@ private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.Li
   return .countdown
 }
 
-private func stateContext(forLiveStream liveStream: Project.LiveStream) -> Koala.LiveStreamStateContext {
+private func stateContext(forLiveStream liveStream: Project.LiveStream) -> LiveStreamStateContext {
   if liveStream.isLiveNow {
     return .live
   }
@@ -2015,13 +1994,40 @@ private func stateContext(forLiveStream liveStream: Project.LiveStream) -> Koala
   return .countdown
 }
 
-private func prioritizedLivestreamState(fromProject project: Project) -> Koala.LiveStreamStateContext? {
+private func prioritizedLivestreamState(fromProject project: Project) -> LiveStreamStateContext? {
 
   guard let liveStreams = project.liveStreams else { return nil }
 
-  // lil helper function to compare two state contexts
-  func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
-    switch (context1, context2) {
+  return liveStreams.map(stateContext(forLiveStream:))
+    .sorted()
+    .first
+}
+
+// Simple enum to map states on both Project.LiveStream and LiveStreamEvent
+fileprivate enum LiveStreamStateContext: Comparable {
+  case countdown
+  case live
+  case replay
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .live:      return "live_stream_live"
+    case .countdown: return "live_stream_countdown"
+    case .replay:    return "live_stream_replay"
+    }
+  }
+
+  fileprivate static func == (lhs: LiveStreamStateContext, rhs: LiveStreamStateContext) -> Bool {
+    switch (lhs, rhs) {
+    case (.countdown, .countdown), (.live, .live), (.replay, .replay):
+      return true
+    default:
+      return false
+    }
+  }
+
+  fileprivate static func < (lhs: LiveStreamStateContext, rhs: LiveStreamStateContext) -> Bool {
+    switch (lhs, rhs) {
     case (.live, .countdown), (.live, .replay), (.countdown, .replay):
       return true
     case (.countdown, .live), (.replay, .live), (.replay, .countdown),
@@ -2029,8 +2035,4 @@ private func prioritizedLivestreamState(fromProject project: Project) -> Koala.L
       return false
     }
   }
-
-  return liveStreams.map(stateContext(forLiveStream:))
-    .sorted(by: compare(context1:context2:))
-    .first
 }
