@@ -242,10 +242,10 @@ final class KoalaTests: TestCase {
     let project = .template
       |> Project.lens.liveStreams .~ [
         .template
-          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(60 * 60).timeIntervalSince1970
+          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60)
           |> Project.LiveStream.lens.isLiveNow .~ false,
         .template
-          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).timeIntervalSince1970
+          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
           |> Project.LiveStream.lens.isLiveNow .~ false
     ]
     let koala = Koala(client: client)
@@ -261,7 +261,7 @@ final class KoalaTests: TestCase {
     let project = .template
       |> Project.lens.liveStreams .~ [
         .template
-          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).timeIntervalSince1970
+          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
           |> Project.LiveStream.lens.isLiveNow .~ false
     ]
     let koala = Koala(client: client)
