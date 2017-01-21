@@ -41,8 +41,7 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
 
   /// Emits with the Project, Project.LiveStream and LiveStreamEvent for configuring the ShareViewModel
-  var configureShareViewModel: Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext),
-    NoError> { get }
+  var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
 
   /// Emits when the details stack view should be hidden
   var detailsStackViewHidden: Signal<Bool, NoError> { get }
@@ -99,7 +98,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map(first)
 
     let project = configData.map(first)
-    let liveStream = configData.map(second)
 
     let eventEvent = configData
       .switchMap { project, liveStream, optionalEvent in
@@ -111,9 +109,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     self.retrievedLiveStreamEvent = event
 
-    self.configureShareViewModel = Signal.combineLatest(
-      project, event, liveStream.map(liveStreamStateContext(forLiveStream:))
-      )
+    self.configureShareViewModel = Signal.combineLatest(project, event)
 
     self.shareButtonEnabled = self.configureShareViewModel.mapConst(true)
 
@@ -271,8 +267,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
-  // swiftlint:disable:next line_length
-  public let configureShareViewModel: Signal<(Project, LiveStreamEvent, Koala.LiveStreamStateContext), NoError>
+  public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>
   public let detailsStackViewHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
