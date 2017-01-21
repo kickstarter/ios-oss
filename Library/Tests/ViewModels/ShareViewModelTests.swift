@@ -66,7 +66,7 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
 
-    self.vm.inputs.configureWith(shareContext: .liveStream(project, event, .replay))
+    self.vm.inputs.configureWith(shareContext: .liveStream(project, event))
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)

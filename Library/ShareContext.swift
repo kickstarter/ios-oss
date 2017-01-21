@@ -12,7 +12,7 @@ import LiveStream
  */
 public enum ShareContext {
   case creatorDashboard(Project)
-  case liveStream(Project, LiveStreamEvent, Koala.LiveStreamStateContext)
+  case liveStream(Project, LiveStreamEvent)
   case project(Project)
   case thanks(Project)
   case update(Project, Update)
@@ -39,7 +39,7 @@ public enum ShareContext {
   }
 
   public var liveStreamEvent: LiveStreamEvent? {
-    if case let .liveStream(_, liveStreamEvent, _) = self {
+    if case let .liveStream(_, liveStreamEvent) = self {
       return liveStreamEvent
     }
     return nil
@@ -48,7 +48,7 @@ public enum ShareContext {
   public var project: Project {
     switch self {
     case let .creatorDashboard(project):  return project
-    case let .liveStream(project, _, _):  return project
+    case let .liveStream(project, _):     return project
     case let .project(project):           return project
     case let .thanks(project):            return project
     case let .update(project, _):         return project
@@ -58,7 +58,7 @@ public enum ShareContext {
   public var update: Update? {
     switch self {
     case let .update(_, update):  return update
-    default:    return nil
+    default:                      return nil
     }
   }
 }

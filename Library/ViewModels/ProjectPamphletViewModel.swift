@@ -95,6 +95,8 @@ ProjectPamphletViewModelOutputs {
       .map { $0.value }
       .take(first: 1)
 
+    // FIXME: lens into project to set live streams instead of having it separate
+
     Signal.combineLatest(project, refTag, cookieRefTag, projectLiveStreams)
       .take(first: 1)
       .observeValues { project, refTag, cookieRefTag, projectLiveStreams in

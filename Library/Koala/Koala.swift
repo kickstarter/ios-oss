@@ -2,6 +2,7 @@
 // swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
+import LiveStream
 import PassKit
 import Prelude
 import UIKit
@@ -1893,9 +1894,9 @@ private func properties(shareContext: ShareContext,
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
-  case let .liveStream(project, _, context):
+  case let .liveStream(project, event):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
-    result["context"] = context.trackingString
+    result["context"] = stateContext(forLiveStreamEvent: event).trackingString
   case let .thanks(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"
@@ -1989,4 +1990,16 @@ extension Reward.Shipping.Preference {
     case .unrestricted: return "unrestricted"
     }
   }
+}
+
+private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.LiveStreamStateContext {
+    if event.stream.liveNow {
+      return .live
+    }
+
+    if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
+      return .replay
+    }
+
+    return .countdown
 }
