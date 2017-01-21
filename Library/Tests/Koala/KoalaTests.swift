@@ -1,7 +1,8 @@
 import XCTest
-@testable import Library
-@testable import KsApi
 import Prelude
+@testable import KsApi
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
 
 final class KoalaTests: XCTestCase {
 
@@ -283,5 +284,133 @@ final class KoalaTests: XCTestCase {
     XCTAssertEqual(true, properties["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties["discover_sort"] as? String)
     XCTAssertEqual(1, properties["page"] as? Int)
+  }
+
+  func testTrackChangedLiveStreamOrientation() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStream = .template
+      |> Project.LiveStream.lens.isLiveNow .~ true
+
+    koala.trackChangedLiveStreamOrientation(
+      project: .template,
+      liveStream: liveStream,
+      toOrientation: .landscapeLeft
+    )
+
+    XCTAssertEqual(["Changed Live Stream Orientation"], client.events)
+    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["landscape"], client.properties(forKey: "type", as: String.self))
+  }
+
+  func testTrackLiveStreamToggleSubscription() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackLiveStreamToggleSubscription(
+      project: .template,
+      liveStream: .template,
+      subscribed: true
+    )
+
+    XCTAssertEqual(["Confirmed KSR Live Subscribe Button"], client.events)
+    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "context", as: String.self))
+
+    koala.trackLiveStreamToggleSubscription(
+      project: .template,
+      liveStream: .template,
+      subscribed: false
+    )
+
+    XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"],
+                   client.events)
+    XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                   client.properties(forKey: "context", as: String.self))
+  }
+
+  func testTrackViewedLiveStreamCountdown() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackViewedLiveStreamCountdown(
+      project: .template,
+      liveStream: .template,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual(["Viewed Live Stream Countdown"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+  }
+
+  func testTrackViewedLiveStream() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackViewedLiveStream(
+      project: .template,
+      liveStream: .template,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual(["Viewed Live Stream"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+  }
+
+  func testTrackWatchedLiveStream_CurrentlyLive() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStream = .template
+      |> Project.LiveStream.lens.isLiveNow .~ true
+
+    koala.trackWatchedLiveStream(
+      project: .template,
+      liveStream: liveStream,
+      refTag: .projectPage,
+      duration: 2
+    )
+
+    XCTAssertEqual(["Watched Live Stream"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+    XCTAssertEqual([2], client.properties(forKey: "duration", as: Int.self))
+  }
+
+  func testTrackWatchedLiveStream_Replay() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStream = .template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+
+    koala.trackWatchedLiveStream(
+      project: .template,
+      liveStream: liveStream,
+      refTag: .projectPage,
+      duration: 2
+    )
+
+    XCTAssertEqual(["Watched Live Stream Replay"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+    XCTAssertEqual([2], client.properties(forKey: "duration", as: Int.self))
+  }
+
+  func testTrackBaseLiveStreamProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStream = .template
+      |> Project.LiveStream.lens.id .~ 42
+      |> Project.LiveStream.lens.isLiveNow .~ true
+      |> Project.LiveStream.lens.name .~ "Cool Live Stream"
+      |> Project.LiveStream.lens.startDate .~ 1234567
+
+    koala.trackViewedLiveStream(
+      project: .template,
+      liveStream: liveStream,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual([42], client.properties(forKey: "live_stream_id", as: Int.self))
+    XCTAssertEqual([true], client.properties(forKey: "live_stream_is_live_now", as: Bool.self))
+    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
+    XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
+    XCTAssertEqual([1234567], client.properties(forKey: "live_stream_start_date", as: TimeInterval.self))
   }
 }

@@ -1664,16 +1664,6 @@ public final class Koala {
     }
   }
 
-  public func trackViewedLiveStreamReplay(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    refTag: RefTag) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["ref_tag": refTag.stringTag])
-
-    self.track(event: "Viewed Live Stream Replay", properties: props)
-  }
-
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String:Any] = [:]) {
     self.client.track(
