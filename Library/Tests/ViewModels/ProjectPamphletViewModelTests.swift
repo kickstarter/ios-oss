@@ -277,9 +277,7 @@ final class ProjectPamphletViewModelTests: TestCase {
           |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(60*60).timeIntervalSince1970
     ]
 
-    self.vm.inputs.configureWith(
-      projectOrParam: .left(project), refTag: .discovery
-    )
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)

@@ -102,23 +102,3 @@ public func currencySymbol(forCountry country: Project.Country) -> String {
     return "\(String.nbsp)\(country.countryCode)\(country.currencySymbol)\(String.nbsp)"
   }
 }
-
-/**
- Returns the live stream state context for tracking
-
- - parameter liveStream: The live stream.
-
- - returns: The context that can be used for tracking.
- */
-public func liveStreamStateContext(forLiveStream liveStream: Project.LiveStream) ->
-  Koala.LiveStreamStateContext {
-    if liveStream.isLiveNow {
-      return .live
-    }
-
-    if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
-      return .replay
-    }
-
-    return .countdown
-}

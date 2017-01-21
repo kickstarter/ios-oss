@@ -95,16 +95,16 @@ ProjectPamphletViewModelOutputs {
       .map { $0.value }
       .take(first: 1)
 
-    // FIXME: lens into project to set live streams instead of having it separate
+    let projectWithLiveStreams = Signal.combineLatest(projectLiveStreams, project)
+      .map(Project.lens.liveStreams.set)
 
-    Signal.combineLatest(project, refTag, cookieRefTag, projectLiveStreams)
+    Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
       .take(first: 1)
-      .observeValues { project, refTag, cookieRefTag, projectLiveStreams in
+      .observeValues { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(
           project,
           refTag: refTag,
-          cookieRefTag: cookieRefTag,
-          liveStreamStateContext: liveStreamStateContext(fromLiveStreams: projectLiveStreams)
+          cookieRefTag: cookieRefTag
         )
     }
 
@@ -210,26 +210,4 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   properties[.expires] = Date(timeIntervalSince1970: project.dates.deadline)
 
   return HTTPCookie(properties: properties)
-}
-
-// From a list of live streams, figures out which state context to give credit to for koala tracking 
-// by prioritizing states live > upcoming > replay
-private func liveStreamStateContext(fromLiveStreams liveStreams: [Project.LiveStream]?)
-  -> Koala.LiveStreamStateContext? {
-
-    // lil helper function to compare two state contexts
-    func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
-        switch (context1, context2) {
-        case (.live, .countdown), (.live, .replay), (.countdown, .replay):
-          return true
-        case (.countdown, .live), (.replay, .live), (.replay, .countdown),
-             (.live, .live), (.countdown, .countdown), (.replay, .replay):
-          return false
-        }
-    }
-
-    return (liveStreams ?? [])
-      .map(liveStreamStateContext(forLiveStream:))
-      .sorted(by: compare(context1:context2:))
-      .first
 }

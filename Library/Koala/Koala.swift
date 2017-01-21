@@ -1133,13 +1133,12 @@ public final class Koala {
    */
   public func trackProjectShow(_ project: Project,
                                refTag: RefTag? = nil,
-                               cookieRefTag: RefTag? = nil,
-                               liveStreamStateContext: LiveStreamStateContext?) {
+                               cookieRefTag: RefTag? = nil) {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
-    props["live_stream_type"] = liveStreamStateContext?.trackingString
+    props["live_stream_type"] = prioritizedLivestreamState(fromProject: project)?.trackingString
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1605,7 +1604,7 @@ public final class Koala {
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(
         [
-          "context": liveStreamStateContext(forLiveStream: liveStream).trackingString,
+          "context": stateContext(forLiveStream: liveStream).trackingString,
           "type": orientationString
         ]
     )
@@ -1620,7 +1619,7 @@ public final class Koala {
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(
         [
-          "context": liveStreamStateContext(forLiveStream: liveStream).trackingString
+          "context": stateContext(forLiveStream: liveStream).trackingString
         ]
     )
 
@@ -1931,7 +1930,7 @@ private func properties(liveStream: Project.LiveStream,
 
   properties["id"] = liveStream.id
   properties["is_live_now"] = liveStream.isLiveNow
-  properties["state"] = liveStreamStateContext(forLiveStream: liveStream).trackingString
+  properties["state"] = stateContext(forLiveStream: liveStream).trackingString
   properties["name"] = liveStream.name
   properties["start_date"] = liveStream.startDate
 
@@ -2002,4 +2001,46 @@ private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.Li
     }
 
     return .countdown
+}
+
+/**
+ Returns the live stream state context for tracking
+
+ - parameter liveStream: The live stream.
+
+ - returns: The context that can be used for tracking.
+ */
+private func stateContext(forLiveStream liveStream: Project.LiveStream) ->
+  Koala.LiveStreamStateContext {
+    if liveStream.isLiveNow {
+      return .live
+    }
+
+    if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
+      return .replay
+    }
+
+    return .countdown
+}
+
+// From a list of live streams, figures out which state context to give credit to for koala tracking
+// by prioritizing states live > upcoming > replay
+private func prioritizedLivestreamState(fromProject project: Project) -> Koala.LiveStreamStateContext? {
+
+    guard let liveStreams = project.liveStreams else { return nil }
+
+    // lil helper function to compare two state contexts
+    func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
+      switch (context1, context2) {
+      case (.live, .countdown), (.live, .replay), (.countdown, .replay):
+        return true
+      case (.countdown, .live), (.replay, .live), (.replay, .countdown),
+           (.live, .live), (.countdown, .countdown), (.replay, .replay):
+        return false
+      }
+    }
+
+    return liveStreams.map(stateContext(forLiveStream:))
+      .sorted(by: compare(context1:context2:))
+      .first
 }

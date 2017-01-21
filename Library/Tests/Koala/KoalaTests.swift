@@ -96,10 +96,12 @@ final class KoalaTests: XCTestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ true
+    ]
 
-    koala.trackProjectShow(
-      project, refTag: .discovery, cookieRefTag: .recommended, liveStreamStateContext: .live
-    )
+    koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -143,7 +145,7 @@ final class KoalaTests: XCTestCase {
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil, liveStreamStateContext: nil)
+    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -161,7 +163,7 @@ final class KoalaTests: XCTestCase {
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil, liveStreamStateContext: nil)
+    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -179,7 +181,7 @@ final class KoalaTests: XCTestCase {
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil, liveStreamStateContext: nil)
+    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -197,7 +199,7 @@ final class KoalaTests: XCTestCase {
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil, liveStreamStateContext: nil)
+    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
