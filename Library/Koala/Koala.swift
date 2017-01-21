@@ -2003,13 +2003,6 @@ private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.Li
     return .countdown
 }
 
-/**
- Returns the live stream state context for tracking
-
- - parameter liveStream: The live stream.
-
- - returns: The context that can be used for tracking.
- */
 private func stateContext(forLiveStream liveStream: Project.LiveStream) ->
   Koala.LiveStreamStateContext {
     if liveStream.isLiveNow {
@@ -2023,8 +2016,6 @@ private func stateContext(forLiveStream liveStream: Project.LiveStream) ->
     return .countdown
 }
 
-// From a list of live streams, figures out which state context to give credit to for koala tracking
-// by prioritizing states live > upcoming > replay
 private func prioritizedLivestreamState(fromProject project: Project) -> Koala.LiveStreamStateContext? {
 
     guard let liveStreams = project.liveStreams else { return nil }
