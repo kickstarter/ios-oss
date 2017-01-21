@@ -13,25 +13,26 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("dashboard_activity", RefTag.dashboardActivity.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
     XCTAssertEqual("discovery_potd", RefTag.discoveryPotd.stringTag)
-    XCTAssertEqual("message_thread", RefTag.messageThread.stringTag)
+    XCTAssertEqual("live_stream_countdown", RefTag.liveStreamCountdown.stringTag)
+    XCTAssertEqual("live_stream_discovery", RefTag.liveStreamDiscovery.stringTag)
     XCTAssertEqual("profile_backed", RefTag.profileBacked.stringTag)
+    XCTAssertEqual("project_page", RefTag.projectPage.stringTag)
     XCTAssertEqual("push", RefTag.push.stringTag)
     XCTAssertEqual("recommended", RefTag.recommended.stringTag)
     XCTAssertEqual("search", RefTag.search.stringTag)
     XCTAssertEqual("social", RefTag.social.stringTag)
     XCTAssertEqual("thanks", RefTag.thanks.stringTag)
-
     XCTAssertEqual("category_ending_soon", RefTag.categoryWithSort(.endingSoon).stringTag)
     XCTAssertEqual("category_home", RefTag.categoryWithSort(.magic).stringTag)
     XCTAssertEqual("category_most_funded", RefTag.categoryWithSort(.mostFunded).stringTag)
     XCTAssertEqual("category_newest", RefTag.categoryWithSort(.newest).stringTag)
     XCTAssertEqual("category_popular", RefTag.categoryWithSort(.popular).stringTag)
-
     XCTAssertEqual("recommended_ending_soon", RefTag.recommendedWithSort(.endingSoon).stringTag)
     XCTAssertEqual("recommended_home", RefTag.recommendedWithSort(.magic).stringTag)
     XCTAssertEqual("recommended_most_funded", RefTag.recommendedWithSort(.mostFunded).stringTag)
     XCTAssertEqual("recommended_newest", RefTag.recommendedWithSort(.newest).stringTag)
     XCTAssertEqual("recommended_popular", RefTag.recommendedWithSort(.popular).stringTag)
+    XCTAssertEqual("update", RefTag.update.stringTag)
   }
 
   func testEquatable() {
@@ -44,8 +45,11 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.dashboardActivity, RefTag.dashboardActivity)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
     XCTAssertEqual(RefTag.discoveryPotd, RefTag.discoveryPotd)
+    XCTAssertEqual(RefTag.liveStreamCountdown, RefTag.liveStreamCountdown)
+    XCTAssertEqual(RefTag.liveStreamDiscovery, RefTag.liveStreamDiscovery)
     XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
     XCTAssertEqual(RefTag.profileBacked, RefTag.profileBacked)
+    XCTAssertEqual(RefTag.projectPage, RefTag.projectPage)
     XCTAssertEqual(RefTag.push, RefTag.push)
     XCTAssertEqual(RefTag.recommended, RefTag.recommended)
     XCTAssertEqual(RefTag.search, RefTag.search)
@@ -113,8 +117,12 @@ public final class RefTagTests: XCTestCase {
                    RefTag(code: RefTag.discoveryWithSort(.popular).stringTag))
 
     XCTAssertEqual(RefTag.discoveryPotd, RefTag(code: RefTag.discoveryPotd.stringTag))
+    XCTAssertEqual(RefTag.liveStreamCountdown, RefTag(code: RefTag.liveStreamCountdown.stringTag))
+    XCTAssertEqual(RefTag.liveStreamDiscovery, RefTag(code: RefTag.liveStreamDiscovery.stringTag))
+    XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.profileBacked, RefTag(code: RefTag.profileBacked.stringTag))
+    XCTAssertEqual(RefTag.projectPage, RefTag(code: RefTag.projectPage.stringTag))
     XCTAssertEqual(RefTag.push, RefTag(code: RefTag.push.stringTag))
     XCTAssertEqual(RefTag.recommended, RefTag(code: RefTag.recommended.stringTag))
 
@@ -156,6 +164,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.starredWithSort(.popular), RefTag(code: RefTag.starredWithSort(.popular).stringTag))
 
     XCTAssertEqual(RefTag.thanks, RefTag(code: RefTag.thanks.stringTag))
+    XCTAssertEqual(RefTag.update, RefTag(code: RefTag.update.stringTag))
     XCTAssertEqual(RefTag.unrecognized("custom"), RefTag(code: RefTag.unrecognized("custom").stringTag))
   }
 }

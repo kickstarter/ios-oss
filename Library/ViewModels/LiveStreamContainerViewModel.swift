@@ -15,7 +15,7 @@ public protocol LiveStreamContainerViewModelInputs {
   func configureWith(project: Project,
                      liveStream: Project.LiveStream,
                      event: LiveStreamEvent?,
-                     context: Koala.LiveStreamContext)
+                     refTag: RefTag)
 
   /// Called when the close button is tapped
   func closeButtonTapped()
@@ -257,34 +257,34 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     configData
-      .map { project, liveStream, _, context in (project, liveStream, context) }
+      .map { project, liveStream, _, refTag in (project, liveStream, refTag) }
       .takePairWhen(numberOfMinutesWatched)
       .map { tuple, minute in (tuple.0, tuple.1, tuple.2, minute) }
       .take(during: Lifetime(self.token))
-      .observeValues { project, liveStream, context, minute in
+      .observeValues { project, liveStream, refTag, minute in
         AppEnvironment.current.koala.trackWatchedLiveStream(project: project,
                                                             liveStream: liveStream,
-                                                            context: context,
+                                                            refTag: refTag,
                                                             duration: minute)
     }
 
     configData
-      .observeValues { project, liveStream, _, context in
+      .observeValues { project, liveStream, _, refTag in
         AppEnvironment.current.koala.trackViewedLiveStream(project: project,
                                                            liveStream: liveStream,
-                                                           context: context)
+                                                           refTag: refTag)
     }
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private typealias ConfigData = (Project, Project.LiveStream, LiveStreamEvent?, Koala.LiveStreamContext)
+  private typealias ConfigData = (Project, Project.LiveStream, LiveStreamEvent?, RefTag)
   private let configData = MutableProperty<ConfigData?>(nil)
   public func configureWith(project: Project,
                             liveStream: Project.LiveStream,
                             event: LiveStreamEvent?,
-                            context: Koala.LiveStreamContext) {
-    self.configData.value = (project, liveStream, event, context: context)
+                            refTag: RefTag) {
+    self.configData.value = (project, liveStream, event, refTag)
   }
 
   private let closeButtonTappedProperty = MutableProperty()

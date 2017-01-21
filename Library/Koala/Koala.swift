@@ -148,30 +148,6 @@ public final class Koala {
   }
 
   /**
-   Determines the place from which the live stream was presented.
-
-   - countdown: The live stream's countdown.
-   - liveStreamDiscovery: The live stream discovery view.
-   - project_pamphlet: The project pamphlet view.
-   - push: A push notification.
-   */
-  public enum LiveStreamContext {
-    case countdown
-    case liveStreamDiscovery
-    case projectPage
-    case pushNotification
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .countdown:            return "countdown"
-      case .liveStreamDiscovery:  return "live_stream_discovery"
-      case .projectPage:          return "project_page"
-      case .pushNotification:     return "push_notification"
-      }
-    }
-  }
-
-  /**
    Determines the state of the live stream in which an event occurred.
 
    - countdown: The stream is in countdown.
@@ -1655,31 +1631,31 @@ public final class Koala {
 
   public func trackViewedLiveStreamCountdown(project: Project,
                                              liveStream: Project.LiveStream,
-                                             context: LiveStreamContext) {
+                                             refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream Countdown", properties: props)
   }
 
   public func trackViewedLiveStream(project: Project,
                                              liveStream: Project.LiveStream,
-                                             context: LiveStreamContext) {
+                                             refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream", properties: props)
   }
 
   public func trackWatchedLiveStream(project: Project,
                                     liveStream: Project.LiveStream,
-                                    context: LiveStreamContext,
+                                    refTag: RefTag,
                                     duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString, "duration": duration])
+      .withAllValuesFrom(["ref_tag": refTag.stringTag, "duration": duration])
 
     if liveStream.isLiveNow {
       self.track(event: "Watched Live Stream", properties: props)
@@ -1690,10 +1666,10 @@ public final class Koala {
 
   public func trackViewedLiveStreamReplay(project: Project,
                                     liveStream: Project.LiveStream,
-                                    context: LiveStreamContext) {
+                                    refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["context": context.trackingString])
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream Replay", properties: props)
   }
@@ -1964,6 +1940,7 @@ private func properties(liveStream: Project.LiveStream,
 
   properties["id"] = liveStream.id
   properties["is_live_now"] = liveStream.isLiveNow
+  properties["state"] = liveStreamStateContext(forLiveStream: liveStream).trackingString
   properties["name"] = liveStream.name
   properties["start_date"] = liveStream.startDate
 

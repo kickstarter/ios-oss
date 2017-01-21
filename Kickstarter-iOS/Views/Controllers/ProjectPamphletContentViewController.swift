@@ -155,11 +155,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
                                                             event: nil,
-                                                            context: .projectPage)
+                                                            refTag: .projectPage)
     } else {
       vc = LiveStreamCountdownViewController.configuredWith(project: project,
                                                             liveStream: liveStream,
-                                                            context: .projectPage)
+                                                            refTag: .projectPage)
     }
 
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)

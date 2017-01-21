@@ -39,7 +39,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStream: liveStream,
                                                                   event: liveStreamEvent,
-                                                                  context: .projectPage)
+                                                                  refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
@@ -72,7 +72,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStream: liveStream,
                                                                   event: liveStreamEvent,
-                                                                  context: .projectPage)
+                                                                  refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
@@ -109,7 +109,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStream: liveStream,
                                                                   event: liveStreamEvent,
-                                                                  context: .projectPage)
+                                                                  refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         vc.liveStreamViewControllerStateChanged(controller: nil, state: state)

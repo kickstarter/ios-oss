@@ -46,13 +46,13 @@ public final class LiveStreamContainerViewController: UIViewController {
   public static func configuredWith(project: Project,
                                     liveStream: Project.LiveStream,
                                     event: LiveStreamEvent?,
-                                    context: Koala.LiveStreamContext) -> LiveStreamContainerViewController {
+                                    refTag: RefTag) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
                                       liveStream: liveStream,
                                       event: event,
-                                      context: context)
+                                      refTag: refTag)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
     return vc

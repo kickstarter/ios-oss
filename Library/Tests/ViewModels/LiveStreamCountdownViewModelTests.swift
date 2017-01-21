@@ -21,7 +21,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let pushLiveStreamViewControllerProject = TestObserver<Project, NoError>()
   private let pushLiveStreamViewControllerLiveStream = TestObserver<Project.LiveStream, NoError>()
   private let pushLiveStreamViewControllerEvent = TestObserver<LiveStreamEvent, NoError>()
-  private let pushLiveStreamViewControllerContext = TestObserver<Koala.LiveStreamContext, NoError>()
+  private let pushLiveStreamViewControllerRefTag = TestObserver<RefTag, NoError>()
   private let seconds = TestObserver<String, NoError>()
   private let upcomingIntroText = TestObserver<String, NoError>()
   private let viewControllerTitle = TestObserver<String, NoError>()
@@ -45,7 +45,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.pushLiveStreamViewController.map { $0.2 }.observe(
       self.pushLiveStreamViewControllerEvent.observer)
     self.vm.outputs.pushLiveStreamViewController.map { $0.3 }.observe(
-      self.pushLiveStreamViewControllerContext.observer)
+      self.pushLiveStreamViewControllerRefTag.observer)
     self.vm.outputs.secondsString.observe(self.seconds.observer)
     self.vm.outputs.upcomingIntroText.observe(self.upcomingIntroText.observer)
     self.vm.outputs.viewControllerTitle.observe(self.viewControllerTitle.observer)
@@ -55,23 +55,21 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.creator.name .~ "Creator Name"
 
-    self.vm.inputs.configureWith(project: project, liveStream: .template, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.upcomingIntroText.assertValues(["Upcoming with<br/><b>Creator Name</b>"])
   }
 
   func testTrackViewedLiveStreamCountdown() {
-    let context = Koala.LiveStreamContext.projectPage
-
     XCTAssertEqual([], self.trackingClient.events)
-    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, context: context)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
-    XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
   }
 
   func testCountdownLabelText() {
@@ -84,7 +82,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.countdownDateLabelText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.countdownDateLabelText.assertValues(["Oct 4, 9:40 AM GMT"])
@@ -104,7 +102,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.seconds.assertValueCount(0)
 
     // Step 1: Set project and liveStream
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.days.assertValues(["02"])
@@ -131,7 +129,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.countdownAccessibilityLabel.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.countdownAccessibilityLabel.assertValues(["The live stream will start in 2 days."])
@@ -147,7 +145,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.retrievedLiveStreamEvent(event: event)
@@ -173,11 +171,11 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     XCTAssertTrue(self.pushLiveStreamViewControllerLiveStream.lastValue?.isLiveNow ?? false)
     XCTAssertTrue(self.pushLiveStreamViewControllerProject.lastValue?.liveStreams?.first?.isLiveNow ?? false)
     XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
-    XCTAssertEqual(.countdown, self.pushLiveStreamViewControllerContext.lastValue)
+    XCTAssertEqual(.liveStreamCountdown, self.pushLiveStreamViewControllerRefTag.lastValue)
   }
 
   func testClose() {
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, context: .projectPage)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.closeButtonTapped()
 
@@ -188,7 +186,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.category.id .~ 123
 
-    self.vm.inputs.configureWith(project: project, liveStream: .template, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.categoryId.assertValue(123)
@@ -197,14 +195,14 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testProjectImageUrl() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, liveStream: .template, context: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrl.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 
   func testViewControllerTitle() {
-    self.vm.inputs.configureWith(project: .template, liveStream: .template, context: .projectPage)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.viewControllerTitle.assertValue("Live stream countdown")

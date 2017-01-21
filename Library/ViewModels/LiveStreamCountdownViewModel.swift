@@ -15,7 +15,7 @@ public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
 
   /// Call with the Project and the specific LiveStream that is being viewed
-  func configureWith(project: Project, liveStream: Project.LiveStream, context: Koala.LiveStreamContext)
+  func configureWith(project: Project, liveStream: Project.LiveStream, refTag: RefTag)
 
   /// Called when the LiveStreamEvent has been retrieved
   func retrievedLiveStreamEvent(event: LiveStreamEvent)
@@ -51,7 +51,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
 
   /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
   // swiftlint:disable:next line_length
-  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, Koala.LiveStreamContext), NoError> { get }
+  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag), NoError> { get }
 
   /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
@@ -139,7 +139,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEventToLive)
       )
       .map(unpack)
-      .map { project, liveStream, event in (project, liveStream, event, .countdown) }
+      .map { project, liveStream, event in (project, liveStream, event, .liveStreamCountdown) }
       .takeWhen(countdownEnded)
       .take(first: 1)
 
@@ -147,10 +147,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
     configData
-      .observeValues { project, liveStream, context in
+      .observeValues { project, liveStream, refTag in
         AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project,
                                                                     liveStream: liveStream,
-                                                                    context: context)
+                                                                    refTag: refTag)
     }
   }
 
@@ -159,11 +159,11 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let configData = MutableProperty<(Project, Project.LiveStream, Koala.LiveStreamContext)?>(nil)
+  private let configData = MutableProperty<(Project, Project.LiveStream, RefTag)?>(nil)
   public func configureWith(project: Project,
                             liveStream: Project.LiveStream,
-                            context: Koala.LiveStreamContext) {
-    self.configData.value = (project, liveStream, context)
+                            refTag: RefTag) {
+    self.configData.value = (project, liveStream, refTag)
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
@@ -185,7 +185,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   // swiftlint:disable:next line_length
-  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, Koala.LiveStreamContext), NoError>
+  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag), NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>

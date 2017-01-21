@@ -38,7 +38,7 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
       withEnvironment(language: lang) {
         let vc = LiveStreamCountdownViewController.configuredWith(project: .template,
                                                                   liveStream: liveStream,
-                                                                  context: .projectPage)
+                                                                  refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance()

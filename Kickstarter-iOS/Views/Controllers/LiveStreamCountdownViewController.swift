@@ -40,10 +40,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   public static func configuredWith(project: Project,
                                     liveStream: Project.LiveStream,
-                                    context: Koala.LiveStreamContext) -> LiveStreamCountdownViewController {
+                                    refTag: RefTag) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, context: context)
+    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, refTag: refTag)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
 
     return vc
@@ -303,9 +303,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream, event, context in
+      .observeValues { [weak self] project, liveStream, event, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event, context: context)
+          .configuredWith(project: project, liveStream: liveStream, event: event, refTag: refTag)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
