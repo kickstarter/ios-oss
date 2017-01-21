@@ -1992,46 +1992,45 @@ extension Reward.Shipping.Preference {
 }
 
 private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> Koala.LiveStreamStateContext {
-    if event.stream.liveNow {
-      return .live
-    }
+  if event.stream.liveNow {
+    return .live
+  }
 
-    if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
-      return .replay
-    }
+  if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
+    return .replay
+  }
 
-    return .countdown
+  return .countdown
 }
 
-private func stateContext(forLiveStream liveStream: Project.LiveStream) ->
-  Koala.LiveStreamStateContext {
-    if liveStream.isLiveNow {
-      return .live
-    }
+private func stateContext(forLiveStream liveStream: Project.LiveStream) -> Koala.LiveStreamStateContext {
+  if liveStream.isLiveNow {
+    return .live
+  }
 
-    if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
-      return .replay
-    }
+  if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
+    return .replay
+  }
 
-    return .countdown
+  return .countdown
 }
 
 private func prioritizedLivestreamState(fromProject project: Project) -> Koala.LiveStreamStateContext? {
 
-    guard let liveStreams = project.liveStreams else { return nil }
+  guard let liveStreams = project.liveStreams else { return nil }
 
-    // lil helper function to compare two state contexts
-    func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
-      switch (context1, context2) {
-      case (.live, .countdown), (.live, .replay), (.countdown, .replay):
-        return true
-      case (.countdown, .live), (.replay, .live), (.replay, .countdown),
-           (.live, .live), (.countdown, .countdown), (.replay, .replay):
-        return false
-      }
+  // lil helper function to compare two state contexts
+  func compare(context1: Koala.LiveStreamStateContext, context2: Koala.LiveStreamStateContext) -> Bool {
+    switch (context1, context2) {
+    case (.live, .countdown), (.live, .replay), (.countdown, .replay):
+      return true
+    case (.countdown, .live), (.replay, .live), (.replay, .countdown),
+         (.live, .live), (.countdown, .countdown), (.replay, .replay):
+      return false
     }
+  }
 
-    return liveStreams.map(stateContext(forLiveStream:))
-      .sorted(by: compare(context1:context2:))
-      .first
+  return liveStreams.map(stateContext(forLiveStream:))
+    .sorted(by: compare(context1:context2:))
+    .first
 }
