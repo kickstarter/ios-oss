@@ -2,11 +2,6 @@ import Argo
 import Runes
 import KsApi
 
-//case countdown
-//case liveStreamDiscovery
-//case projectPage
-//case pushNotification
-
 public enum RefTag {
   case activity
   case activitySample
