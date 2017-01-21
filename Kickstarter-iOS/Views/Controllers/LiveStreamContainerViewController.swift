@@ -363,8 +363,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeValues { [weak self] project, event, context in
-        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event, context))
+      .observeValues { [weak self] project, event in
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage

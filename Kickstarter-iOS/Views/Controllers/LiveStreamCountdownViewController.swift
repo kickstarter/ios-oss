@@ -237,8 +237,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeValues { [weak self] project, event, context in
-        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event, context))
+      .observeValues { [weak self] project, event in
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
     }
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
