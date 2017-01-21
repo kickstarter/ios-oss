@@ -366,6 +366,17 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Changed Live Stream Orientation"], client.events)
     XCTAssertEqual(["live_stream_live"], client.properties(forKey: "context", as: String.self))
     XCTAssertEqual(["landscape"], client.properties(forKey: "type", as: String.self))
+
+    koala.trackChangedLiveStreamOrientation(
+      project: .template,
+      liveStream: liveStream,
+      toOrientation: .portrait
+    )
+
+    XCTAssertEqual(["Changed Live Stream Orientation", "Changed Live Stream Orientation"], client.events)
+    XCTAssertEqual(["live_stream_live", "live_stream_live"], client.properties(forKey: "context",
+                                                                               as: String.self))
+    XCTAssertEqual(["landscape", "portrait"], client.properties(forKey: "type", as: String.self))
   }
 
   func testTrackLiveStreamToggleSubscription() {
