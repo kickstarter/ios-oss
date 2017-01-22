@@ -1,6 +1,8 @@
 disabled_rules:
+  - class_delegate_protocol
   - file_length
   - function_parameter_count
+  - large_tuple
   - nesting
   - variable_name
   - force_unwrapping
@@ -9,6 +11,7 @@ disabled_rules:
   - function_body_length
   - weak_delegate
   - trailing_comma
+  - vertical_parameter_alignment
 opt_in_rules:
   - empty_count
 line_length: 110
