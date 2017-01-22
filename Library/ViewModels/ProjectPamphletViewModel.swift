@@ -52,8 +52,8 @@ ProjectPamphletViewModelOutputs {
       )
 
     let freshProject = projectOrParamAndIndex
-      .map { p, idx in (p.left, p.ifLeft({ Param.id($0.id) }, ifRight: id), idx) }
-      .switchMap { _, param, _ -> SignalProducer<Project, NoError> in
+      .map { projectOrParam, _ in projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id) }
+      .switchMap { param -> SignalProducer<Project, NoError> in
 
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -86,8 +86,19 @@ ProjectPamphletViewModelOutputs {
       .take(first: 1)
       .map { $0 ?? $1 }
 
-    Signal.combineLatest(project, refTag, cookieRefTag)
-      .takeWhen(self.viewDidAppearAnimated.signal)
+    // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
+    let projectLiveStreams = project
+      .map { $0.liveStreams }
+      .skipNil()
+      .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
+      .materialize()
+      .map { $0.value }
+      .take(first: 1)
+
+    let projectWithLiveStreams = Signal.combineLatest(projectLiveStreams, project)
+      .map(Project.lens.liveStreams.set)
+
+    Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
       .take(first: 1)
       .observeValues { project, refTag, cookieRefTag in
         AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)

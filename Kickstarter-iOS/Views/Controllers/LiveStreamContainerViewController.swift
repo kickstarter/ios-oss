@@ -45,10 +45,14 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   public static func configuredWith(project: Project,
                                     liveStream: Project.LiveStream,
-                                    event: LiveStreamEvent?) -> LiveStreamContainerViewController {
+                                    event: LiveStreamEvent?,
+                                    refTag: RefTag) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, event: event)
+    vc.viewModel.inputs.configureWith(project: project,
+                                      liveStream: liveStream,
+                                      event: event,
+                                      refTag: refTag)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
 
     return vc
@@ -82,6 +86,18 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.liveStreamViewController = self.childViewControllers
       .flatMap { $0 as? LiveStreamViewController }
       .first
+
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation
+        )
+    }
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -274,11 +290,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
-
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
         self?.openLoginTout()
@@ -352,9 +363,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+      .observeValues { [weak self] project, event in
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage

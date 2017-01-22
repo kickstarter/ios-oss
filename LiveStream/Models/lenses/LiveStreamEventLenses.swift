@@ -85,6 +85,10 @@ extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Strea
   public var startDate: Lens<LiveStreamEvent, Date> {
     return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.startDate
   }
+
+  public var webUrl: Lens<LiveStreamEvent, String> {
+    return LiveStreamEvent.lens.stream • LiveStreamEvent.Stream.lens.webUrl
+  }
 }
 
 extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.User {
