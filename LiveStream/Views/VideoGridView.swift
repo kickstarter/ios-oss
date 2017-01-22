@@ -3,6 +3,16 @@ import ReactiveSwift
 
 public final class VideoGridView: UIView {
 
+  public init() {
+    super.init(frame: CGRect())
+
+    self.backgroundColor = .black
+  }
+  
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   public func addVideoView(view: UIView) {
     self.insertSubview(view, at: 0)
     self.setNeedsLayout()

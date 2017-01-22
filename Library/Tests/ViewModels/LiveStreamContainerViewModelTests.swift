@@ -261,6 +261,16 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       state: .replay(playbackState: .playing, duration: 123)
     )
 
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .replay(playbackState: .loading, duration: 123)
+    )
+
+    self.loaderStackViewHidden.assertValues([false, true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .greenRoom
+    )
+
     self.loaderStackViewHidden.assertValues([false, true])
   }
 

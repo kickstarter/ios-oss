@@ -424,7 +424,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   private func layoutNavBarTitle() {
     let stackViewSize = self.navBarTitleStackView.systemLayoutSizeFitting(
-      CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+      CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height))
 
     let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewSize.width / 2),
                          y: self.navBarTitleStackViewBackgroundView.frame.origin.y)

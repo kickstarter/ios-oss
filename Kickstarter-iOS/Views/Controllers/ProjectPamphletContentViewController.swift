@@ -82,6 +82,12 @@ public final class ProjectPamphletContentViewController: UITableViewController {
         self?.goToLiveStream(project: project, liveStream: liveStream)
     }
 
+    self.viewModel.outputs.goToLiveStreamCountdown
+      .observeForControllerAction()
+      .observeValues { [weak self] project, liveStream in
+        self?.goToLiveStreamCountdown(project: project, liveStream: liveStream)
+    }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdates(project: $0) }
@@ -150,22 +156,26 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
-    let vc: UIViewController
-    if liveStream.startDate < Date().timeIntervalSince1970 {
-      vc = LiveStreamContainerViewController.configuredWith(project: project,
-                                                            liveStream: liveStream,
-                                                            event: nil,
-                                                            refTag: .projectPage)
-    } else {
-      vc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                            liveStream: liveStream,
-                                                            refTag: .projectPage)
-    }
-
+    let vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream,
+                                                              event: nil, refTag: .projectPage)
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 
-    self.present(nav, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
+  }
+
+  private func goToLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+    let vc = LiveStreamCountdownViewController.configuredWith(project: project,
+                                                              liveStream: liveStream,
+                                                              refTag: .projectPage)
+    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    nav.viewControllers = [vc]
+
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
   }
 
   fileprivate func goToUpdates(project: Project) {

@@ -11,6 +11,10 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
   fileprivate let goToBacking = TestObserver<Project, NoError>()
   fileprivate let goToComments = TestObserver<Project, NoError>()
+  fileprivate let goToLiveStreamProject = TestObserver<Project, NoError>()
+  fileprivate let goToLiveStreamProjectLiveStream = TestObserver<Project.LiveStream, NoError>()
+  fileprivate let goToLiveStreamCountdownProject = TestObserver<Project, NoError>()
+  fileprivate let goToLiveStreamCountdownProjectLiveStream = TestObserver<Project.LiveStream, NoError>()
   fileprivate let goToRewardPledgeProject = TestObserver<Project, NoError>()
   fileprivate let goToRewardPledgeReward = TestObserver<Reward, NoError>()
   fileprivate let goToUpdates = TestObserver<Project, NoError>()
@@ -22,6 +26,11 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.outputs.goToBacking.observe(self.goToBacking.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
+    self.vm.outputs.goToLiveStream.map(first).observe(self.goToLiveStreamProject.observer)
+    self.vm.outputs.goToLiveStream.map(second).observe(self.goToLiveStreamProjectLiveStream.observer)
+    self.vm.outputs.goToLiveStreamCountdown.map(first).observe(self.goToLiveStreamCountdownProject.observer)
+    self.vm.outputs.goToLiveStreamCountdown.map(second).observe(self.goToLiveStreamCountdownProjectLiveStream
+      .observer)
     self.vm.outputs.goToRewardPledge.map(first).observe(self.goToRewardPledgeProject.observer)
     self.vm.outputs.goToRewardPledge.map(second).observe(self.goToRewardPledgeReward.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
@@ -57,6 +66,80 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.tappedComments()
 
     self.goToComments.assertValues([project])
+  }
+
+  func testGoToLiveStream_StreamIsLive() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ true
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.goToLiveStreamProject.assertValueCount(0)
+    self.goToLiveStreamProjectLiveStream.assertValueCount(0)
+    self.goToLiveStreamCountdownProject.assertValueCount(0)
+    self.goToLiveStreamCountdownProjectLiveStream.assertValueCount(0)
+
+    self.vm.inputs.tapped(liveStream: liveStream)
+
+    self.goToLiveStreamProject.assertValues([project])
+    self.goToLiveStreamProjectLiveStream.assertValues([liveStream])
+    self.goToLiveStreamCountdownProject.assertValueCount(0)
+    self.goToLiveStreamCountdownProjectLiveStream.assertValueCount(0)
+  }
+
+  func testGoToLiveStream_StreamIsReplay() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60)
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.goToLiveStreamProject.assertValueCount(0)
+    self.goToLiveStreamProjectLiveStream.assertValueCount(0)
+    self.goToLiveStreamCountdownProject.assertValueCount(0)
+    self.goToLiveStreamCountdownProjectLiveStream.assertValueCount(0)
+
+    self.vm.inputs.tapped(liveStream: liveStream)
+
+    self.goToLiveStreamProject.assertValues([project])
+    self.goToLiveStreamProjectLiveStream.assertValues([liveStream])
+    self.goToLiveStreamCountdownProject.assertValueCount(0)
+    self.goToLiveStreamCountdownProjectLiveStream.assertValueCount(0)
+  }
+
+  func testGoToLiveStreamCountdown() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60)
+    let project = Project.template
+      |> Project.lens.liveStreams .~ [liveStream]
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.goToLiveStreamProject.assertValueCount(0)
+    self.goToLiveStreamProjectLiveStream.assertValueCount(0)
+    self.goToLiveStreamCountdownProject.assertValueCount(0)
+    self.goToLiveStreamCountdownProjectLiveStream.assertValueCount(0)
+
+    self.vm.inputs.tapped(liveStream: liveStream)
+
+    self.goToLiveStreamProject.assertValueCount(0)
+    self.goToLiveStreamProjectLiveStream.assertValueCount(0)
+    self.goToLiveStreamCountdownProject.assertValues([project])
+    self.goToLiveStreamCountdownProjectLiveStream.assertValues([liveStream])
   }
 
   func testGoToRewardPledge_LiveProject_NoReward() {
