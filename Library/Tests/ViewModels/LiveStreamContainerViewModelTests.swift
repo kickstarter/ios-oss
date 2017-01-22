@@ -277,6 +277,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     )
 
     self.loaderStackViewHidden.assertValues([false, true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(
+      state: .greenRoom
+    )
+
+    self.loaderStackViewHidden.assertValues([false, true])
   }
 
   func testLoaderText() {
