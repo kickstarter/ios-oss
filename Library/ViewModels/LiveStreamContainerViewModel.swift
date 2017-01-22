@@ -161,7 +161,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.loaderStackViewHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false).take(first: 1),
+      self.viewDidLoadProperty.signal.mapConst(false),
       self.liveStreamState
         .map { state -> Bool in
           switch state {
@@ -173,7 +173,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
             return false
           }
         }
-        .filter { $0 }
+        .filter(isTrue)
         .take(first: 1)
     )
 
