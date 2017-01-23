@@ -88,7 +88,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.goToLiveStreamCountdown = project
       .takePairWhen(
         self.tappedLiveStreamProperty.signal.skipNil()
-          .filter( { !shouldGoToLiveStream(withLiveStream:$0) })
+          .filter({ !shouldGoToLiveStream(withLiveStream:$0) })
     )
   }
 
