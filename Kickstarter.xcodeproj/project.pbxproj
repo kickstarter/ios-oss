@@ -624,6 +624,7 @@
 		D0FD4CC91E26433C00488660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
+		D7A37D7A1E367E5A00EA066D /* SearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */; };
 		D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -1913,6 +1914,7 @@
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
+		D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3173,6 +3175,7 @@
 				A75A9DBE1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				A72C3A2F1D00F28C0075227E /* SettingsViewModel.swift */,
+				D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
 				A72C3A921D00F6C70075227E /* SortPagerViewModel.swift */,
@@ -4092,6 +4095,7 @@
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A75A9DBF1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift in Sources */,
+				D7A37D7A1E367E5A00EA066D /* SearchProjectCellViewModel.swift in Sources */,
 				A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */,
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
