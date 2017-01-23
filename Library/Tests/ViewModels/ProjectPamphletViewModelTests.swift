@@ -7,7 +7,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectPamphletViewModelTests: TestCase {
-  fileprivate let vm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+  fileprivate var vm: ProjectPamphletViewModelType!
 
   fileprivate let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
   fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
@@ -17,6 +17,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+
+    self.vm = ProjectPamphletViewModel()
 
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
@@ -105,7 +107,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
   func testTracksRefTag() {
-    let project = Project.template
+    let project = .template
+      |> Project.lens.liveStreams .~ []
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
     self.vm.inputs.viewDidLoad()
@@ -154,7 +157,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testTracksRefTag_WithBadData() {
-    let project = Project.template
+    let project = .template
+      |> Project.lens.liveStreams .~ []
 
     self.vm.inputs.configureWith(
       projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
@@ -202,5 +206,129 @@ final class ProjectPamphletViewModelTests: TestCase {
     )
     XCTAssertEqual(1, self.cookieStorage.cookies?.count,
                    "A single cookie has been set.")
+  }
+
+  func testTracking_WaitingForLiveStreams_Timeout() {
+    let project = Project.template
+
+    withEnvironment(apiDelayInterval: .seconds(10)) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertEqual([], self.trackingClient.events, "Nothing tracked because API is taking a long time.")
+
+      self.scheduler.advance(by: .seconds(5))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Event tracked once API times out.")
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "live_stream_type", as: String.self),
+                     "Live stream type not tracked because we never got data from the API.")
+
+      self.scheduler.advance(by: .seconds(10))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Nothing new tracks after waiting enough time for API to finish.")
+    }
+  }
+
+  func testTracking_WaitingForLiveStreams() {
+    let project = Project.template
+    let freshProject = project
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ true
+    ]
+
+    let apiService = MockService(fetchProjectResponse: freshProject)
+
+    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3)) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(project), refTag: .discovery
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"], self.trackingClient.events)
+      XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+
+      self.scheduler.advance(by: .seconds(10))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
+    }
+  }
+
+  func testTracking_LiveStream_Countdown() {
+    let project = .template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ false
+          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(60*60).timeIntervalSince1970
+    ]
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
+                   self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+  }
+
+  func testTracking_LiveStream_Replay() {
+    let project = .template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ false
+          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(-60*60).timeIntervalSince1970
+    ]
+
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(project), refTag: .discovery
+    )
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
+                   self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+  }
+
+  func testTracking_LiveStream_TypePriority() {
+    let project = .template
+      |> Project.lens.liveStreams .~ [
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ false
+          |> Project.LiveStream.lens.startDate .~ MockDate().addingTimeInterval(-60*60).timeIntervalSince1970,
+        .template
+          |> Project.LiveStream.lens.isLiveNow .~ true
+    ]
+
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(project), refTag: .discovery
+    )
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                   self.trackingClient.events, "A project page koala event is tracked.")
+    XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                   self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
   }
 }

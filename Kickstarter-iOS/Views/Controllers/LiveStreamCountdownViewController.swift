@@ -39,11 +39,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream) -> LiveStreamCountdownViewController {
+                                    liveStream: Project.LiveStream,
+                                    refTag: RefTag) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream)
+    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, refTag: refTag)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+
     return vc
   }
 
@@ -235,8 +237,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
 
     self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeValues { [weak self] in
-        self?.shareViewModel.inputs.configureWith(shareContext: ShareContext.liveStream($0, $1))
+      .observeValues { [weak self] project, event in
+        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
     }
 
     self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
@@ -301,9 +303,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream, event in
+      .observeValues { [weak self] project, liveStream, event, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event)
+          .configuredWith(project: project, liveStream: liveStream, event: event, refTag: refTag)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }

@@ -11,11 +11,17 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  /// Call with the Project and optional LiveStreamEvent
-  func configureWith(project: Project, event: LiveStreamEvent?)
+  /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
+  func configureWith(project: Project,
+                     liveStream: Project.LiveStream,
+                     event: LiveStreamEvent?,
+                     refTag: RefTag)
 
   /// Called when the close button is tapped
   func closeButtonTapped()
+
+  /// Called when the device's orientation changed
+  func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -46,9 +52,6 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
 
-  /// Emits the current LiveStreamViewControllerState
-  var liveStreamState: Signal<LiveStreamViewControllerState, NoError> { get }
-
   /// Emits when the loader stack view should be hidden
   var loaderStackViewHidden: Signal<Bool, NoError> { get }
 
@@ -70,11 +73,11 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
 
-  /// Emits when the video view controller should be hidden (when loading or green room is active)
-  var videoViewControllerHidden: Signal<Bool, NoError> { get }
-
   /// Emits the title view's text
   var titleViewText: Signal<String, NoError> { get }
+
+  /// Emits when the video view controller should be hidden (when loading or green room is active)
+  var videoViewControllerHidden: Signal<Bool, NoError> { get }
 }
 
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
@@ -89,10 +92,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    let project = configData.map(first)
+    let project = configData.map { $0.0 }
 
     let event = Signal.merge(
-      configData.map(second).skipNil(),
+      configData.map { $0.2 }.skipNil(),
       self.liveStreamEventProperty.signal.skipNil()
     )
 
@@ -100,36 +103,26 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .take(first: 1)
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
-    self.liveStreamState = Signal.combineLatest(
-      Signal.merge(
-        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
-        project.mapConst(.loading)
-      ),
-      self.viewDidLoadProperty.signal
-    ).map(first)
+    let liveStreamControllerState = Signal.merge(
+      self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
+      project.mapConst(.loading)
+    )
 
-    self.showErrorAlert = self.liveStreamState
+    self.showErrorAlert = liveStreamControllerState
       .map { state -> LiveVideoPlaybackError? in
         switch state {
-        case .error(let error): return error
-        case .live(let playbackState, _):
-          if case let .error(videoError) = playbackState { return videoError }
-        case .replay(let playbackState, _):
-          if case let .error(videoError) = playbackState { return videoError }
-        case .initializationFailed:
-          return .failedToConnect
-        default:
-          return nil
+        case .error(let error):                   return error
+        case let .live(.error(videoError), _):    return videoError
+        case let .replay(.error(videoError), _):  return videoError
+        case .initializationFailed:               return .failedToConnect
+        default:                                  return nil
         }
-        return nil
       }
       .skipNil()
-      .map {
-        switch $0 {
-        case .sessionInterrupted:
-          return Strings.The_live_stream_was_interrupted()
-        case .failedToConnect:
-          return Strings.The_live_stream_failed_to_connect()
+      .map { error in
+        switch error {
+        case .sessionInterrupted: return Strings.The_live_stream_was_interrupted()
+        case .failedToConnect:    return Strings.The_live_stream_failed_to_connect()
         }
       }
 
@@ -145,59 +138,52 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }.skipNil()
 
     self.loaderText = Signal.merge(
-      liveStreamState.map {
+      liveStreamControllerState.map {
         switch $0 {
-        case .live(playbackState: .loading, _):
-          return Strings.The_live_stream_will_start_soon()
-        case .greenRoom:
-          return Strings.The_live_stream_will_start_soon()
-        case .replay(playbackState: .loading, _):
-          return Strings.The_replay_will_start_soon()
-        default:
-          return Strings.Loading()
+        case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
+        case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
+        case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
+        default:                                  return Strings.Loading()
         }
       },
       self.showErrorAlert
     )
 
-    self.loaderStackViewHidden = self.liveStreamState
-      .map { state in
-        switch state {
-        case .live(playbackState: .playing, _):
-          return true
-        case .replay(playbackState: .playing, _):
-          return true
-        default:
-          return false
+    self.loaderStackViewHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      liveStreamControllerState
+        .map { state -> Bool in
+          switch state {
+          case .live(playbackState: .playing, _):
+            return true
+          case .replay(playbackState: .playing, _):
+            return true
+          default:
+            return false
+          }
         }
-      }
-      .skipRepeats()
+        .filter(isTrue)
+        .take(first: 1)
+    )
 
     self.projectImageUrl = project
       .map { URL(string: $0.photo.full) }
 
-    self.titleViewText = liveStreamState.map {
+    self.titleViewText = liveStreamControllerState.map {
       switch $0 {
-      case .live(_, _):
-        return Strings.Live()
-      case .greenRoom:
-        return Strings.Starting_soon()
-      case .replay(_, _):
-        return Strings.Recorded_Live()
-      default:
-        return Strings.Loading()
+      case .live(_, _):   return Strings.Live()
+      case .greenRoom:    return Strings.Starting_soon()
+      case .replay(_, _): return Strings.Recorded_Live()
+      default:            return Strings.Loading()
       }
     }
 
     self.videoViewControllerHidden = Signal.combineLatest(
-      self.liveStreamState.map { state -> Bool in
+      liveStreamControllerState.map { state -> Bool in
         switch state {
-        case .live(playbackState: .playing, _):
-          return false
-        case .replay(playbackState: .playing, _):
-          return false
-        default:
-          return true
+        case .live(playbackState: .playing, _):   return false
+        case .replay(playbackState: .playing, _): return false
+        default:                                  return true
         }
       },
       self.createAndConfigureLiveStreamViewController
@@ -232,14 +218,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.navBarTitleViewHidden = Signal.merge(
       project.mapConst(true),
-      liveStreamState.map { state in
+      liveStreamControllerState.map { state in
         switch state {
-        case .live(playbackState: .playing, _):
-          return false
-        case .replay(playbackState: .playing, _):
-          return false
-        default:
-          return true
+        case .live(playbackState: .playing, _):   return false
+        case .replay(playbackState: .playing, _): return false
+        default:                                  return true
         }
       }
     ).skipRepeats()
@@ -248,18 +231,66 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = hideWhenLive
+
+    let numberOfMinutesWatched = liveStreamControllerState
+      .filter { state in
+        switch state {
+        case .live(playbackState: .playing, _):   return true
+        case .replay(playbackState: .playing, _): return true
+        default:                                  return false
+        }
+      }
+      .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
+      .scan(0) { accum, _ in accum + 1 }
+
+    configData
+      .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
+      .observeValues { data, orientation in
+        let (project, liveStream, _, _) = data
+        AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
+                                                                       liveStream: liveStream,
+                                                                       toOrientation: orientation)
+    }
+
+    configData
+      .map { project, liveStream, _, refTag in (project, liveStream, refTag) }
+      .takePairWhen(numberOfMinutesWatched)
+      .map { tuple, minute in (tuple.0, tuple.1, tuple.2, minute) }
+      .take(during: Lifetime(self.token))
+      .observeValues { project, liveStream, refTag, minute in
+        AppEnvironment.current.koala.trackWatchedLiveStream(project: project,
+                                                            liveStream: liveStream,
+                                                            refTag: refTag,
+                                                            duration: minute)
+    }
+
+    configData
+      .observeValues { project, liveStream, _, refTag in
+        AppEnvironment.current.koala.trackViewedLiveStream(project: project,
+                                                           liveStream: liveStream,
+                                                           refTag: refTag)
+    }
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent?)?>(nil)
-  public func configureWith(project: Project, event: LiveStreamEvent?) {
-    self.configData.value = (project, event)
+  private typealias ConfigData = (Project, Project.LiveStream, LiveStreamEvent?, RefTag)
+  private let configData = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project,
+                            liveStream: Project.LiveStream,
+                            event: LiveStreamEvent?,
+                            refTag: RefTag) {
+    self.configData.value = (project, liveStream, event, refTag)
   }
 
   private let closeButtonTappedProperty = MutableProperty()
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
+  }
+
+  private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
+  public func deviceOrientationDidChange(orientation: UIInterfaceOrientation) {
+    self.deviceOrientationDidChangeProperty.value = orientation
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -278,13 +309,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  // Required to limit the lifetime of the minutes watched tracking timer
+  private let token = Lifetime.Token()
+
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
   public let createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
-  public let liveStreamState: Signal<LiveStreamViewControllerState, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>

@@ -250,10 +250,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     if liveStream.startDate < AppEnvironment.current.dateType.init().timeIntervalSince1970 {
       liveVc = LiveStreamContainerViewController.configuredWith(project: project,
                                                                 liveStream: liveStream,
-                                                                event: liveStreamEvent)
+                                                                event: liveStreamEvent,
+                                                                refTag: .push)
     } else {
       liveVc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                                liveStream: liveStream)
+                                                                liveStream: liveStream,
+                                                                refTag: .push)
     }
 
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
