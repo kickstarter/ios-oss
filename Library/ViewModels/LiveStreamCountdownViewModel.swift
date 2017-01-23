@@ -195,7 +195,7 @@ private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Pr
 }
 
 private func flipLiveStreamEventToLive(event: LiveStreamEvent) -> LiveStreamEvent {
-  return event |> LiveStreamEvent.lens.stream.liveNow .~ true
+  return event |> LiveStreamEvent.lens.liveNow .~ true
 }
 
 private func formattedDateString(date: Date) -> String {

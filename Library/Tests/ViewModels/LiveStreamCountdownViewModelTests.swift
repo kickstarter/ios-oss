@@ -196,7 +196,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let event = .template
       |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
 
-    self.vm.inputs.configureWith(project: project, liveStream: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template, liveStream: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.retrievedLiveStreamEvent(event: event)
 

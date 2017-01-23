@@ -94,6 +94,6 @@ private func freshProjectAndStreamAndEvent(fromLiveStreamEvent event: LiveStream
 private func projectAndLiveStreamAndEvent(forProject project: Project, liveStreamEvent: LiveStreamEvent)
   -> (Project, Project.LiveStream, LiveStreamEvent)? {
 
-    guard let stream = project.liveStreams.first(where: { $0.id == liveStreamEvent.id }) else { return nil }
+    guard let stream = project.liveStreams?.first(where: { $0.id == liveStreamEvent.id }) else { return nil }
     return (project, stream, liveStreamEvent)
 }

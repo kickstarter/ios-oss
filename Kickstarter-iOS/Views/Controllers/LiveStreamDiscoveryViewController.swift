@@ -54,7 +54,8 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
                                        liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                               liveStream: stream,
-                                                              event: liveStreamEvent)
+                                                              event: liveStreamEvent,
+                                                              refTag: .liveStreamDiscovery)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
     DispatchQueue.main.async {
@@ -65,7 +66,9 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   private func goToLiveStreamCountdown(project: Project,
                                        stream: Project.LiveStream,
                                        liveStreamEvent: LiveStreamEvent) {
-    let vc = LiveStreamCountdownViewController.configuredWith(project: project, liveStream: stream)
+    let vc = LiveStreamCountdownViewController.configuredWith(project: project,
+                                                              liveStream: stream,
+                                                              refTag: .liveStreamDiscovery)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
     DispatchQueue.main.async {

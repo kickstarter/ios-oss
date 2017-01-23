@@ -1971,11 +1971,11 @@ extension Reward.Shipping.Preference {
 }
 
 private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> LiveStreamStateContext {
-  if event.stream.liveNow {
+  if event.liveNow {
     return .live
   }
 
-  if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
+  if AppEnvironment.current.dateType.init().date >= event.startDate {
     return .replay
   }
 

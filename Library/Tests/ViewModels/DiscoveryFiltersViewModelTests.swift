@@ -14,7 +14,7 @@ private let expandableRowTemplate = ExpandableRow(isExpanded: false,
                                                   selectableRows: [])
 
 private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
-private let liveStreamRow = allProjectsRow |> SelectableRow.lens.params.hasLiveStreams .~ true
+private let liveStreamRow = selectableRowTemplate |> SelectableRow.lens.params.hasLiveStreams .~ true
 private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true

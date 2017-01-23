@@ -67,10 +67,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testCreatorIntroText_Live() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.startDate .~ MockDate().date
       |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -83,10 +85,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testCreatorIntroText_Replay() {
+    let liveStream = Project.LiveStream.template
     let project = Project.template
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ MockDate().date
+      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -292,12 +296,15 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testProjectImageUrl() {
+    let project = Project.template
+    let liveStream = Project.LiveStream.template
     let event = .template
       |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
+      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.projectImageUrlString.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: nil, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, liveStream: liveStream, event: event, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrlString.assertValues(["http://www.background.jpg"])

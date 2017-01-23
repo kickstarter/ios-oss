@@ -237,6 +237,10 @@ extension LiveStreamEvent {
       view: { $0.user },
       set: { var new = $1; new.user = $0; return new }
     )
+    public static let webUrl = Lens<LiveStreamEvent, String>(
+      view: { $0.webUrl },
+      set: { var new = $1; new.webUrl = $0; return new }
+    )
   }
 }
 
