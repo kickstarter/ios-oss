@@ -19,6 +19,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
   var goToLiveStream: Signal<(Project, Project.LiveStream), NoError> { get }
+  var goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
@@ -79,7 +80,16 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
       .takeWhen(self.tappedUpdatesProperty.signal)
 
     self.goToLiveStream = project
-      .takePairWhen(self.tappedLiveStreamProperty.signal.skipNil())
+      .takePairWhen(
+        self.tappedLiveStreamProperty.signal.skipNil()
+          .filter(shouldGoToLiveStream(withLiveStream:))
+    )
+
+    self.goToLiveStreamCountdown = project
+      .takePairWhen(
+        self.tappedLiveStreamProperty.signal.skipNil()
+          .filter( { !shouldGoToLiveStream(withLiveStream:$0) })
+    )
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -130,6 +140,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
   public let goToLiveStream: Signal<(Project, Project.LiveStream), NoError>
+  public let goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
@@ -144,6 +155,11 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
   return backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
     ?? Reward.noReward
+}
+
+private func shouldGoToLiveStream(withLiveStream liveStream: Project.LiveStream) -> Bool {
+  return liveStream.isLiveNow || liveStream.startDate <
+    AppEnvironment.current.dateType.init().timeIntervalSince1970
 }
 
 private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)

@@ -116,8 +116,11 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func createAndConfigureSession(sessionConfig: OpenTokSessionConfig) {
+    let settings = OTSessionSettings()
+    settings.connectionEventsSuppressed = true
+
     self.session = OTSession(
-      apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self
+      apiKey: sessionConfig.apiKey, sessionId: sessionConfig.sessionId, delegate: self, settings: settings
     )
     self.session?.connect(withToken: sessionConfig.token, error: nil)
   }

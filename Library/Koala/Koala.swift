@@ -2,6 +2,7 @@
 // swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
+import LiveStream
 import PassKit
 import Prelude
 import UIKit
@@ -786,6 +787,8 @@ public final class Koala {
 
     self.track(event: "Showed Share Sheet", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share Sheet"
       : shareContext.update != nil ? "Update Show Share Sheet"
@@ -803,6 +806,8 @@ public final class Koala {
 
     self.track(event: "Canceled Share Sheet",
                properties: props)
+
+    guard shareContext.isLiveStreamContext != true else { return }
 
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share Sheet"
@@ -824,6 +829,8 @@ public final class Koala {
                                 shareActivityType: shareActivityType)
     self.track(event: "Showed Share", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Show Share"
       : shareContext.update != nil ? "Update Show Share"
@@ -844,6 +851,8 @@ public final class Koala {
                            shareActivityType: shareActivityType)
     self.track(event: "Canceled Share", properties: props)
 
+    guard shareContext.isLiveStreamContext != true else { return }
+
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Cancel Share"
       : shareContext.update != nil ? "Update Cancel Share"
@@ -862,6 +871,8 @@ public final class Koala {
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
     self.track(event: "Shared", properties: props)
+
+    guard shareContext.isLiveStreamContext != true else { return }
 
     // Deprecated event
     let deprecatedEvent = shareContext.isThanksContext ? "Checkout Share"
@@ -1106,6 +1117,7 @@ public final class Koala {
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
+    props["live_stream_type"] = prioritizedLivestreamState(fromProject: project)?.trackingString
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1562,22 +1574,73 @@ public final class Koala {
   }
 
   // MARK: Live streams
+  public func trackChangedLiveStreamOrientation(project: Project,
+                                                liveStream: Project.LiveStream,
+                                                toOrientation: UIInterfaceOrientation) {
+    let orientationString = toOrientation.isLandscape ? "landscape" : "portrait"
+
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(
+        [
+          "context": stateContext(forLiveStream: liveStream).trackingString,
+          "type": orientationString
+        ]
+    )
+
+    self.track(event: "Changed Live Stream Orientation", properties: props)
+  }
+
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStream: Project.LiveStream,
                                                 subscribed: Bool) {
-
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(
+        [
+          "context": stateContext(forLiveStream: liveStream).trackingString
+        ]
+    )
 
-    self.track(event: subscribed ? "Subscribed Live Stream" : "Unsubscribed Live Stream",
-               properties: props)
+    self.track(
+      event: subscribed ? "Confirmed KSR Live Subscribe Button" : "Confirmed KSR Live Unsubscribe Button",
+      properties: props
+    )
   }
 
-  public func trackViewedLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+  public func trackViewedLiveStreamCountdown(project: Project,
+                                             liveStream: Project.LiveStream,
+                                             refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream Countdown", properties: props)
+  }
+
+  public func trackViewedLiveStream(project: Project,
+                                             liveStream: Project.LiveStream,
+                                             refTag: RefTag) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
+
+    self.track(event: "Viewed Live Stream", properties: props)
+  }
+
+  public func trackWatchedLiveStream(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    refTag: RefTag,
+                                    duration: Int) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["ref_tag": refTag.stringTag, "duration": duration])
+
+    if liveStream.isLiveNow {
+      self.track(event: "Watched Live Stream", properties: props)
+    } else {
+      self.track(event: "Watched Live Stream Replay", properties: props)
+    }
   }
 
   // Private tracking method that merges in default properties.
@@ -1809,9 +1872,9 @@ private func properties(shareContext: ShareContext,
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
-  case let .liveStream(project, _):
+  case let .liveStream(project, event):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
-    result["context"] = "live_stream"
+    result["context"] = stateContext(forLiveStreamEvent: event).trackingString
   case let .thanks(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"
@@ -1846,6 +1909,7 @@ private func properties(liveStream: Project.LiveStream,
 
   properties["id"] = liveStream.id
   properties["is_live_now"] = liveStream.isLiveNow
+  properties["state"] = stateContext(forLiveStream: liveStream).trackingString
   properties["name"] = liveStream.name
   properties["start_date"] = liveStream.startDate
 
@@ -1902,6 +1966,73 @@ extension Reward.Shipping.Preference {
     case .none:         return "none"
     case .restricted:   return "restricted"
     case .unrestricted: return "unrestricted"
+    }
+  }
+}
+
+private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> LiveStreamStateContext {
+  if event.stream.liveNow {
+    return .live
+  }
+
+  if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
+    return .replay
+  }
+
+  return .countdown
+}
+
+private func stateContext(forLiveStream liveStream: Project.LiveStream) -> LiveStreamStateContext {
+  if liveStream.isLiveNow {
+    return .live
+  }
+
+  if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
+    return .replay
+  }
+
+  return .countdown
+}
+
+private func prioritizedLivestreamState(fromProject project: Project) -> LiveStreamStateContext? {
+
+  guard let liveStreams = project.liveStreams else { return nil }
+
+  return liveStreams.map(stateContext(forLiveStream:))
+    .sorted()
+    .first
+}
+
+// Simple enum to map states on both Project.LiveStream and LiveStreamEvent
+fileprivate enum LiveStreamStateContext: Comparable {
+  case countdown
+  case live
+  case replay
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .live:      return "live_stream_live"
+    case .countdown: return "live_stream_countdown"
+    case .replay:    return "live_stream_replay"
+    }
+  }
+
+  fileprivate static func == (lhs: LiveStreamStateContext, rhs: LiveStreamStateContext) -> Bool {
+    switch (lhs, rhs) {
+    case (.countdown, .countdown), (.live, .live), (.replay, .replay):
+      return true
+    default:
+      return false
+    }
+  }
+
+  fileprivate static func < (lhs: LiveStreamStateContext, rhs: LiveStreamStateContext) -> Bool {
+    switch (lhs, rhs) {
+    case (.live, .countdown), (.live, .replay), (.countdown, .replay):
+      return true
+    case (.countdown, .live), (.replay, .live), (.replay, .countdown),
+         (.live, .live), (.countdown, .countdown), (.replay, .replay):
+      return false
     }
   }
 }

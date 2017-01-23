@@ -14,8 +14,11 @@ public enum RefTag {
   case discovery
   case discoveryPotd
   case discoveryWithSort(DiscoveryParams.Sort)
+  case liveStreamCountdown
+  case liveStreamDiscovery
   case messageThread
   case profileBacked
+  case projectPage
   case push
   case recommended
   case recommendedWithSort(DiscoveryParams.Sort)
@@ -59,8 +62,11 @@ public enum RefTag {
     case "discovery_newest":          self = .discoveryWithSort(.newest)
     case "discovery_popular":         self = .discoveryWithSort(.popular)
     case "discovery_potd":            self = .discoveryPotd
+    case "live_stream_countdown":     self = .liveStreamCountdown
+    case "live_stream_discovery":     self = .liveStreamDiscovery
     case "message_thread":            self = .messageThread
     case "profile_backed":            self = .profileBacked
+    case "project_page":              self = .projectPage
     case "push":                      self = .push
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
@@ -118,10 +124,16 @@ public enum RefTag {
       return "discovery_potd"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
+    case .liveStreamCountdown:
+      return "live_stream_countdown"
+    case .liveStreamDiscovery:
+      return "live_stream_discovery"
     case .messageThread:
       return "message_thread"
     case .profileBacked:
       return "profile_backed"
+    case .projectPage:
+      return "project_page"
     case .push:
       return "push"
     case .recommended:
@@ -155,8 +167,9 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
   case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
     (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
-    (.messageThread, .messageThread), (.profileBacked, .profileBacked), (.push, .push),
-    (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
+    (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
+    (.messageThread, .messageThread), (.profileBacked, .profileBacked), (.projectPage, .projectPage),
+    (.push, .push), (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
     (.update, .update):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):

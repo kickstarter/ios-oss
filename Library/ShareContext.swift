@@ -58,7 +58,7 @@ public enum ShareContext {
   public var update: Update? {
     switch self {
     case let .update(_, update):  return update
-    default:    return nil
+    default:                      return nil
     }
   }
 }

@@ -224,10 +224,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     configData
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
-        let (project, liveStream, _) = configData
-        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: project,
-                                                                       liveStream: liveStream,
-                                                                       subscribed: isSubscribed)
+        AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.0,
+                                                                       liveStream: configData.1,
+                                                                       subscribed: isSubscribed
+        )
     }
   }
 

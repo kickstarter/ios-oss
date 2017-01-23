@@ -866,7 +866,7 @@ private func liveStreamData(fromNavigation nav: Navigation)
         .demoteErrors()
       )
       .map { project, liveStreamEvent -> (Project, Project.LiveStream, LiveStreamEvent, RefTag?)? in
-        guard let liveStream = project.liveStreams.first(where: { $0.id == eventId }) else { return nil }
+        guard let liveStream = project.liveStreams?.first(where: { $0.id == eventId }) else { return nil }
         return (project, liveStream, liveStreamEvent, refTag)
       }
       .skipNil()
