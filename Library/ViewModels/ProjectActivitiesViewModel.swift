@@ -201,8 +201,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   private let projectActivityCommentCellGoToSendReplyProperty
     = MutableProperty<(Project, Update?, Comment)?>(nil)
   public func projectActivityCommentCellGoToSendReply(project: Project,
-                                                              update: Update?,
-                                                              comment: Comment) {
+                                                      update: Update?,
+                                                      comment: Comment) {
     self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
   }
 

@@ -183,7 +183,7 @@ public final class LiveStreamViewController: UIViewController {
   }
 
   private func createFirebaseScaleNumberOfPeopleWatchingObservers(ref: FIRDatabaseReference,
-                                                             refConfig: FirebaseRefConfig) {
+                                                                  refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
     query.observe(.value, with: { [weak self] snapshot in
@@ -214,7 +214,7 @@ public final class LiveStreamViewController: UIViewController {
 
 extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
-                                            state: LiveVideoPlaybackState) {
+                                                          state: LiveVideoPlaybackState) {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }

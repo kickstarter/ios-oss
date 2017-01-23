@@ -162,7 +162,7 @@ internal final class BackingViewController: UIViewController {
   }
 
   fileprivate func goToMessageCreator(messageSubject: MessageSubject,
-                                                 context: Koala.MessageDialogContext) {
+                                      context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet

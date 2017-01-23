@@ -70,7 +70,7 @@ internal final class MessageThreadsViewController: UITableViewController {
 
   internal override func tableView(_ tableView: UITableView,
                                    willDisplay cell: UITableViewCell,
-                                                   forRowAt indexPath: IndexPath) {
+                                   forRowAt indexPath: IndexPath) {
 
     self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
                                          outOf: self.dataSource.numberOfItems())

@@ -109,7 +109,7 @@ private func metadataColor(forActivityCategory category: Activity.Category) -> U
 }
 
 private func metadataString(forActivityCategory category: Activity.Category,
-                                                isCreatorUser: Bool, friendName: String) -> String {
+                            isCreatorUser: Bool, friendName: String) -> String {
   switch category {
   case .cancellation:
     return Strings.Project_Cancelled()

@@ -112,7 +112,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
   public func shouldStartLoad(withRequest request: URLRequest,
-                                          navigationType: UIWebViewNavigationType) -> Bool {
+                              navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }

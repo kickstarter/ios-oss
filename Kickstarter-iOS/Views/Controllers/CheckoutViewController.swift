@@ -12,8 +12,8 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
 
   internal static func configuredWith(initialRequest: URLRequest,
-                                                     project: Project,
-                                                     reward: Reward) -> CheckoutViewController {
+                                      project: Project,
+                                      reward: Reward) -> CheckoutViewController {
 
       let vc = Storyboard.Checkout.instantiate(CheckoutViewController.self)
       vc.viewModel.inputs.configureWith(
@@ -184,7 +184,7 @@ extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
   internal func paymentAuthorizationViewController(
     _ controller: PKPaymentAuthorizationViewController,
     didAuthorizePayment payment: PKPayment,
-                        completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
 
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 

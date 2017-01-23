@@ -455,8 +455,8 @@ public final class Koala {
 
   // MARK: Checkout Events
   public func trackCheckoutCancel(project: Project,
-                                          reward: Reward,
-                                          pledgeContext: PledgeContext) {
+                                  reward: Reward,
+                                  pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -467,10 +467,10 @@ public final class Koala {
   }
 
   public func trackClickedRewardPledgeButton(project: Project,
-                                                     reward: Reward,
-                                                     buttonType: ClickedRewardPledgeButtonType,
-                                                     pageContext: CheckoutPageContext,
-                                                     pledgeContext: PledgeContext) {
+                                             reward: Reward,
+                                             buttonType: ClickedRewardPledgeButtonType,
+                                             pageContext: CheckoutPageContext,
+                                             pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -484,12 +484,12 @@ public final class Koala {
   }
 
   public func trackClickedRewardPledgeButton(project: Project,
-                                                     reward: Reward,
-                                                     errorText: String,
-                                                     errorType: ErroredRewardPledgeButtonClickType,
-                                                     paymentMethod: PaymentMethod?,
-                                                     pageContext: CheckoutPageContext,
-                                                     pledgeContext: PledgeContext) {
+                                             reward: Reward,
+                                             errorText: String,
+                                             errorType: ErroredRewardPledgeButtonClickType,
+                                             paymentMethod: PaymentMethod?,
+                                             pageContext: CheckoutPageContext,
+                                             pledgeContext: PledgeContext) {
 
     var extraProps = [
       "error_text": errorText,
@@ -675,9 +675,9 @@ public final class Koala {
   }
 
   public func trackLoadOlderComments(project: Project,
-                                             update: Update?,
-                                             page: Int,
-                                             context: CommentsContext) {
+                                     update: Update?,
+                                     page: Int,
+                                     context: CommentsContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
@@ -695,8 +695,8 @@ public final class Koala {
   }
 
   public func trackOpenedCommentEditor(project: Project,
-                                               update: Update?,
-                                               context: CommentDialogContext) {
+                                       update: Update?,
+                                       context: CommentDialogContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
@@ -712,8 +712,8 @@ public final class Koala {
   }
 
   public func trackCanceledCommentEditor(project: Project,
-                                                 update: Update?,
-                                                 context: CommentDialogContext) {
+                                         update: Update?,
+                                         context: CommentDialogContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
@@ -729,8 +729,8 @@ public final class Koala {
   }
 
   public func trackPostedComment(project: Project,
-                                         update: Update?,
-                                         context: CommentDialogContext) {
+                                 update: Update?,
+                                 context: CommentDialogContext) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
@@ -825,8 +825,8 @@ public final class Koala {
    */
   public func trackShowedShare(shareContext: ShareContext, shareActivityType: UIActivityType?) {
     let props = properties(shareContext: shareContext,
-                                loggedInUser: self.loggedInUser,
-                                shareActivityType: shareActivityType)
+                           loggedInUser: self.loggedInUser,
+                           shareActivityType: shareActivityType)
     self.track(event: "Showed Share", properties: props)
 
     guard shareContext.isLiveStreamContext != true else { return }
@@ -1196,9 +1196,9 @@ public final class Koala {
    - parameter context: The context from which the newsletter preference is set.
    */
   public func trackChangeNewsletter(newsletterType newsletter: Newsletter,
-                                                   sendNewsletter: Bool,
-                                                   project: Project?,
-                                                   context: NewsletterContext) {
+                                    sendNewsletter: Bool,
+                                    project: Project?,
+                                    context: NewsletterContext) {
 
     let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
       .withAllValuesFrom(["context": context.trackingString, "type": newsletter.trackingString])
@@ -1302,7 +1302,7 @@ public final class Koala {
   }
 
   public func trackCompletedAddUpdateDraftAttachment(forProject project: Project,
-                                                           attachedFrom source: AttachmentSource) {
+                                                     attachedFrom source: AttachmentSource) {
     var props = updateDraftProperties(project: project)
     props["type"] = source.rawValue
     self.track(event: "Completed Add Attachment", properties: props)
@@ -1452,8 +1452,8 @@ public final class Koala {
   // MARK: Apple Pay events
 
   public func trackShowApplePaySheet(project: Project,
-                                             reward: Reward,
-                                             pledgeContext: PledgeContext) {
+                                     reward: Reward,
+                                     pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1467,8 +1467,8 @@ public final class Koala {
   }
 
   public func trackApplePayAuthorizedPayment(project: Project,
-                                                     reward: Reward,
-                                                     pledgeContext: PledgeContext) {
+                                             reward: Reward,
+                                             pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1481,8 +1481,8 @@ public final class Koala {
   }
 
   public func trackStripeTokenCreatedForApplePay(project: Project,
-                                                         reward: Reward,
-                                                         pledgeContext: PledgeContext) {
+                                                 reward: Reward,
+                                                 pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1494,8 +1494,8 @@ public final class Koala {
   }
 
   public func trackStripeTokenErroredForApplePay(project: Project,
-                                                         reward: Reward,
-                                                         pledgeContext: PledgeContext) {
+                                                 reward: Reward,
+                                                 pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1507,8 +1507,8 @@ public final class Koala {
   }
 
   public func trackApplePayFinished(project: Project,
-                                            reward: Reward,
-                                            pledgeContext: PledgeContext) {
+                                    reward: Reward,
+                                    pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1518,8 +1518,8 @@ public final class Koala {
   }
 
   public func trackApplePaySheetCanceled(project: Project,
-                                                 reward: Reward,
-                                                 pledgeContext: PledgeContext) {
+                                         reward: Reward,
+                                         pledgeContext: PledgeContext) {
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(reward: reward))
@@ -1619,8 +1619,8 @@ public final class Koala {
   }
 
   public func trackViewedLiveStream(project: Project,
-                                             liveStream: Project.LiveStream,
-                                             refTag: RefTag) {
+                                    liveStream: Project.LiveStream,
+                                    refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
@@ -1629,9 +1629,9 @@ public final class Koala {
   }
 
   public func trackWatchedLiveStream(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    refTag: RefTag,
-                                    duration: Int) {
+                                     liveStream: Project.LiveStream,
+                                     refTag: RefTag,
+                                     duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["ref_tag": refTag.stringTag, "duration": duration])
@@ -1737,8 +1737,8 @@ public final class Koala {
 }
 
 private func properties(project: Project,
-                                loggedInUser: User?,
-                                prefix: String = "project_") -> [String:Any] {
+                        loggedInUser: User?,
+                        prefix: String = "project_") -> [String:Any] {
 
   var props: [String:Any] = [:]
 
