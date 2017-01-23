@@ -64,16 +64,16 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     let fadeAlpha: CGFloat = 0.4
     let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 
-    self.liveIndicatorImageView.alpha = 1
-    self.liveIndicatorImageView.transform = .identity
+    self.liveIndicatorImageView.alpha = fadeAlpha
+    self.liveIndicatorImageView.transform = fadeTransform
 
     UIView.animate(
       withDuration: 1,
       delay: 0,
       options: [.autoreverse, .repeat, .curveEaseInOut],
       animations: { [weak v = self.liveIndicatorImageView] in
-        v?.alpha = fadeAlpha
-        v?.transform = fadeTransform
+        v?.alpha = 1
+        v?.transform = .identity
       },
       completion: nil)
   }

@@ -102,16 +102,16 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     let fadeAlpha: CGFloat = 0.4
     let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 
-    self.liveNowImageView.alpha = 1
-    self.liveNowImageView.transform = .identity
+    self.liveNowImageView.alpha = fadeAlpha
+    self.liveNowImageView.transform = fadeTransform
 
     UIView.animate(
       withDuration: 1,
       delay: 0,
       options: [.autoreverse, .repeat, .curveEaseInOut],
       animations: { [weak v = self.liveNowImageView] in
-        v?.alpha = fadeAlpha
-        v?.transform = fadeTransform
+        v?.alpha = 1
+        v?.transform = .identity
       },
       completion: nil)
   }
