@@ -1,13 +1,10 @@
 disabled_rules:
-  - class_delegate_protocol
   - closure_parameter_position
   - function_parameter_count
-  - large_tuple
   - nesting
   - variable_name
   - weak_delegate
   - trailing_comma
-  - vertical_parameter_alignment
 opt_in_rules:
   - empty_count
   - force_unwrapping
