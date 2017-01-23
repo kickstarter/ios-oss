@@ -5,8 +5,8 @@ import XCTest
 
 private func KSRAssertMatch(_ expected: Navigation,
                             _ path: String,
-                              file: StaticString = #file,
-                              line: UInt = #line) {
+                            file: StaticString = #file,
+                            line: UInt = #line) {
 
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
   let match = URL(string: "\(baseUrl)\(path)")

@@ -5,14 +5,14 @@ import ReactiveSwift
 import KsApi
 import UIKit
 
-internal protocol ActivityUpdateCellDelegate {
+internal protocol ActivityUpdateCellDelegate: class {
   /// Call with the activity value when navigating to the activity's project.
   func activityUpdateCellTappedProjectImage(activity: Activity)
 }
 
 internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
   fileprivate var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
-  internal var delegate: ActivityUpdateCellDelegate?
+  internal weak var delegate: ActivityUpdateCellDelegate?
 
   @IBOutlet fileprivate weak var bodyLabel: UILabel!
   @IBOutlet fileprivate weak var cardView: UIView!

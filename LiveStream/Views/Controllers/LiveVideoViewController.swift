@@ -105,9 +105,9 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   public override func observeValue(forKeyPath keyPath: String?,
-                                      of object: Any?,
-                                      change: [NSKeyValueChangeKey : Any]?,
-                                      context: UnsafeMutableRawPointer?) {
+                                    of object: Any?,
+                                    change: [NSKeyValueChangeKey : Any]?,
+                                    context: UnsafeMutableRawPointer?) {
     guard let status = self.playerController?.player?.currentItem?.status else { return }
 
     if keyPath == statusKeyPath {

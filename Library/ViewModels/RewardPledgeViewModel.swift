@@ -872,10 +872,10 @@ RewardPledgeViewModelOutputs {
 // swiftlint:enable type_body_length
 
 private func paymentRequest(forProject project: Project,
-                                       reward: Reward,
-                                       pledgeAmount: Int,
-                                       selectedShippingRule: ShippingRule?,
-                                       merchantIdentifier: String) -> PKPaymentRequest {
+                            reward: Reward,
+                            pledgeAmount: Int,
+                            selectedShippingRule: ShippingRule?,
+                            merchantIdentifier: String) -> PKPaymentRequest {
   let request = PKPaymentRequest()
   request.merchantIdentifier = merchantIdentifier
   request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks
@@ -893,9 +893,9 @@ private func paymentRequest(forProject project: Project,
 }
 
 private func paymentSummaryItems(forProject project: Project,
-                                            reward: Reward,
-                                            pledgeAmount: Int,
-                                            selectedShippingRule: ShippingRule?) -> [PKPaymentSummaryItem] {
+                                 reward: Reward,
+                                 pledgeAmount: Int,
+                                 selectedShippingRule: ShippingRule?) -> [PKPaymentSummaryItem] {
 
   var paymentSummaryItems: [PKPaymentSummaryItem] = []
 
@@ -979,11 +979,10 @@ private func backingError(forProject project: Project, amount: Int, reward: Rewa
   return nil
 }
 
-private func createPledge(
-  project: Project,
-          reward: Reward?,
-          amount: Int,
-          shipping: ShippingRule?) -> SignalProducer<URLRequest, PledgeError> {
+private func createPledge(project: Project,
+                          reward: Reward?,
+                          amount: Int,
+                          shipping: ShippingRule?) -> SignalProducer<URLRequest, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
@@ -1010,11 +1009,10 @@ private func createPledge(
   }
 }
 
-private func updatePledge(
-  project: Project,
-          reward: Reward?,
-          amount: Int,
-          shipping: ShippingRule?) -> SignalProducer<URLRequest?, PledgeError> {
+private func updatePledge(project: Project,
+                          reward: Reward?,
+                          amount: Int,
+                          shipping: ShippingRule?) -> SignalProducer<URLRequest?, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)

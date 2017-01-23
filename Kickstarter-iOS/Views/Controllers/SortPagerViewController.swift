@@ -116,7 +116,7 @@ internal final class SortPagerViewController: UIViewController {
   }
 
   override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation,
-                                                 duration: TimeInterval) {
+                           duration: TimeInterval) {
     self.viewModel.inputs.willRotateToInterfaceOrientation()
   }
 

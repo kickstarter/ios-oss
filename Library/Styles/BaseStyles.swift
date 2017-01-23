@@ -71,9 +71,8 @@ public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles
 public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 
-public func dropShadowStyle <V: UIViewProtocol> (
-  radius: CGFloat = 2.0,
-         offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
+public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
+                                                 offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
       <> V.lens.layer.shadowOpacity .~ 1

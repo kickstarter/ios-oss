@@ -335,9 +335,9 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
   public func configureWith(initialRequest: URLRequest,
-                                           project: Project,
-                                           reward: Reward,
-                                           applePayCapable: Bool) {
+                            project: Project,
+                            reward: Reward,
+                            applePayCapable: Bool) {
 
     self.configDataProperty.value = ConfigData(initialRequest: initialRequest,
                                                project: project,
@@ -366,7 +366,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
   fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
   public func shouldStartLoad(withRequest request: URLRequest,
-                                          navigationType: UIWebViewNavigationType) -> Bool {
+                              navigationType: UIWebViewNavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
