@@ -23,8 +23,7 @@ public protocol DashboardRewardsCellViewModelInputs {
   func backersButtonTapped()
 
   /// Call when load cell with project.
-  func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats],
-                                 project: Project)
+  func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats], project: Project)
 
   /// Call when Pledged button is tapped.
   func pledgedButtonTapped()
@@ -132,8 +131,7 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   }
   fileprivate let statsProjectProperty =
     MutableProperty<([ProjectStatsEnvelope.RewardStats], Project)?>(nil)
-  public func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats],
-                                        project: Project) {
+  public func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats], project: Project) {
     self.statsProjectProperty.value = (rewardStats, project)
   }
   fileprivate let pledgedButtonTappedProperty = MutableProperty()
@@ -150,9 +148,8 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   }
 }
 
-private func allRewardsStats(rewards: [Reward],
-                                     stats: [ProjectStatsEnvelope.RewardStats]) ->
-  [ProjectStatsEnvelope.RewardStats] {
+private func allRewardsStats(rewards: [Reward], stats: [ProjectStatsEnvelope.RewardStats])
+  -> [ProjectStatsEnvelope.RewardStats] {
 
     let statsIds = stats.map { $0.rewardId }
 

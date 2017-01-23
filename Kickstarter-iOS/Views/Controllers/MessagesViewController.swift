@@ -109,7 +109,7 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   fileprivate func presentMessageDialog(messageThread: MessageThread,
-                                                  context: Koala.MessageDialogContext) {
+                                        context: Koala.MessageDialogContext) {
     let dialog = MessageDialogViewController
       .configuredWith(messageSubject: .messageThread(messageThread), context: context)
     dialog.modalPresentationStyle = .formSheet

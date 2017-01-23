@@ -12,9 +12,9 @@ public protocol ProjectNavigatorViewModelInputs {
 
   /// Call with panning data.
   func panning(contentOffset: CGPoint,
-                             translation: CGPoint,
-                             velocity: CGPoint,
-                             isDragging: Bool)
+               translation: CGPoint,
+               velocity: CGPoint,
+               isDragging: Bool)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -161,9 +161,9 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
   fileprivate let panningDataProperty = MutableProperty<PanningData?>(nil)
   public func panning(contentOffset: CGPoint,
-                                    translation: CGPoint,
-                                    velocity: CGPoint,
-                                    isDragging: Bool) {
+                      translation: CGPoint,
+                      velocity: CGPoint,
+                      isDragging: Bool) {
     self.panningDataProperty.value = PanningData(contentOffset: contentOffset,
                                                  isDragging: isDragging,
                                                  translation: translation,

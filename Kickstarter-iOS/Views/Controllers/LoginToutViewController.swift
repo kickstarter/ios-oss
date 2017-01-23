@@ -154,7 +154,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
                                             didFinishWith result: MFMailComposeResult,
-                                                                error: Error?) {
+                                            error: Error?) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }
@@ -177,7 +177,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   fileprivate func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
-                                                               facebookToken token: String) {
+                                                      facebookToken token: String) {
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)

@@ -513,12 +513,12 @@ public final class LiveStreamContainerViewController: UIViewController {
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
-                                                                      numberOfPeople: Int) {
+                                                                    numberOfPeople: Int) {
     self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
   public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
-                                                     state: LiveStreamViewControllerState) {
+                                                   state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }

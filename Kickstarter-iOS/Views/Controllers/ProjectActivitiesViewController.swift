@@ -120,7 +120,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToSendMessage(backing: Backing,
-                                        context: Koala.MessageDialogContext) {
+                                context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: .backing(backing), context: context)
     vc.modalPresentationStyle = .formSheet
     vc.delegate = self

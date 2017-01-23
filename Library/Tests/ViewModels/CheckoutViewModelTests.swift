@@ -1036,9 +1036,9 @@ internal extension URLRequest {
 }
 
 private func applePayUrlRequest(project: Project,
-                                        amount: Int,
-                                        reward: Reward,
-                                        location: Location) -> URLRequest {
+                                amount: Int,
+                                reward: Reward,
+                                location: Location) -> URLRequest {
 
   let payload: [String:Any] = [
     "country_code": project.country.countryCode,

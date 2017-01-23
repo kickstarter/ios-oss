@@ -189,7 +189,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
                                             didFinishWith result: MFMailComposeResult,
-                                                                error: Error?) {
+                                            error: Error?) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }

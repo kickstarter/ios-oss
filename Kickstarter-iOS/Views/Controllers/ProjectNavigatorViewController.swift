@@ -24,9 +24,9 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
   internal static func configuredWith(
     project: Project,
-            refTag: RefTag,
-            initialPlaylist: [Project]? = nil,
-            navigatorDelegate: ProjectNavigatorDelegate?) -> ProjectNavigatorViewController {
+    refTag: RefTag,
+    initialPlaylist: [Project]? = nil,
+    navigatorDelegate: ProjectNavigatorDelegate?) -> ProjectNavigatorViewController {
 
     let vc = ProjectNavigatorViewController(
       initialProject: project,
@@ -39,9 +39,9 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
   }
 
   fileprivate init(initialProject: Project,
-               initialPlaylist: [Project]?,
-               refTag: RefTag,
-               navigatorDelegate: ProjectNavigatorDelegate?) {
+                   initialPlaylist: [Project]?,
+                   refTag: RefTag,
+                   navigatorDelegate: ProjectNavigatorDelegate?) {
 
     self.pageDataSource = ProjectNavigatorPagesDataSource(refTag: refTag,
                                                           initialPlaylist: initialPlaylist,
@@ -151,8 +151,8 @@ extension ProjectNavigatorViewController: UIGestureRecognizerDelegate {
 extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
   internal func pageViewController(_ pageViewController: UIPageViewController,
                                    didFinishAnimating finished: Bool,
-                                                      previousViewControllers: [UIViewController],
-                                                      transitionCompleted completed: Bool) {
+                                   previousViewControllers: [UIViewController],
+                                   transitionCompleted completed: Bool) {
 
     self.viewModel.inputs.pageTransition(completed: completed)
   }

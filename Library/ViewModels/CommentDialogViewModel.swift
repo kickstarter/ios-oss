@@ -18,8 +18,10 @@ public protocol CommentDialogViewModelInputs {
   func viewWillDisappear()
 
   /// Call with the project, update (optional), recipient (optional) and context given to the view.
-  func configureWith(project: Project, update: Update?, recipient: User?,
-                             context: Koala.CommentDialogContext)
+  func configureWith(project: Project,
+                     update: Update?,
+                     recipient: User?,
+                     context: Koala.CommentDialogContext)
 
   /// Call when the comment body text changes.
   func commentBodyChanged(_ text: String)
