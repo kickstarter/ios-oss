@@ -20,7 +20,7 @@ public final class LiveStreamViewController: UIViewController {
   private var firebaseRef: FIRDatabaseReference?
   private var videoViewController: LiveVideoViewController?
   private weak var delegate: LiveStreamViewControllerDelegate?
-  private var liveStreamService: LiveStreamServiceProtocol!
+  private var liveStreamService: LiveStreamServiceProtocol?
 
   public func configureWith(event: LiveStreamEvent,
                             userId: Int?,
@@ -129,14 +129,13 @@ public final class LiveStreamViewController: UIViewController {
   deinit {
     self.firebaseRef?.removeAllObservers()
     self.firebaseRef?.database.goOffline()
-    self.liveStreamService.deleteDatabase()
+    self.liveStreamService?.deleteDatabase()
   }
 
   // MARK: Firebase
 
   private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {
-
-    self.liveStreamService.initializeDatabase(
+    self.liveStreamService?.initializeDatabase(
       userId: userId,
       failed: {
         self.viewModel.inputs.firebaseAppFailedToInitialize()
@@ -145,7 +144,7 @@ public final class LiveStreamViewController: UIViewController {
         self.firebaseRef = ref
         self.viewModel.inputs.createdDatabaseRef(ref: ref)
 
-        self.liveStreamService.signInAnonymously { id in
+        self.liveStreamService?.signInAnonymously { id in
           self.viewModel.inputs.setFirebaseUserId(userId: id)
         }
     })
@@ -183,7 +182,7 @@ public final class LiveStreamViewController: UIViewController {
   }
 
   private func createFirebaseScaleNumberOfPeopleWatchingObservers(ref: FIRDatabaseReference,
-                                                             refConfig: FirebaseRefConfig) {
+                                                                  refConfig: FirebaseRefConfig) {
     let query = ref.child(refConfig.ref).queryOrderedByKey()
 
     query.observe(.value, with: { [weak self] snapshot in
@@ -214,7 +213,7 @@ public final class LiveStreamViewController: UIViewController {
 
 extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
-                                            state: LiveVideoPlaybackState) {
+                                                          state: LiveVideoPlaybackState) {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }

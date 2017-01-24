@@ -9,8 +9,8 @@ public protocol RewardShippingPickerViewModelInputs {
 
   /// Call with the project, shipping rules and selected shipping rule that is provided to the view.
   func configureWith(project: Project,
-                             shippingRules: [ShippingRule],
-                             selectedShippingRule: ShippingRule)
+                     shippingRules: [ShippingRule],
+                     selectedShippingRule: ShippingRule)
 
   /// Call when the done button is pressed.
   func doneButtonTapped()
@@ -104,8 +104,8 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
   fileprivate let projectAndShippingRulesAndSelectedShippingRuleProperty
     = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
   public func configureWith(project: Project,
-                                    shippingRules: [ShippingRule],
-                                    selectedShippingRule: ShippingRule) {
+                            shippingRules: [ShippingRule],
+                            selectedShippingRule: ShippingRule) {
     self.projectAndShippingRulesAndSelectedShippingRuleProperty.value
       = (project, shippingRules, selectedShippingRule)
   }

@@ -55,7 +55,7 @@ internal final class ProjectCreatorViewController: WebViewController {
 
   internal func webView(_ webView: WKWebView,
                         decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                                                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
     decisionHandler(self.viewModel.inputs.decidePolicy(forNavigationAction: navigationAction))
   }
 

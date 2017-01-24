@@ -216,7 +216,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   internal func application(_ application: UIApplication,
                             performActionFor shortcutItem: UIApplicationShortcutItem,
-                                                         completionHandler: @escaping (Bool) -> Void) {
+                            completionHandler: @escaping (Bool) -> Void) {
 
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)

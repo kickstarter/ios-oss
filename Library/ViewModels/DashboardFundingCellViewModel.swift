@@ -21,7 +21,7 @@ public func == (lhs: FundingGraphData, rhs: FundingGraphData) -> Bool {
 public protocol DashboardFundingCellViewModelInputs {
   /// Call to configure cell with funding stats and project data.
   func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
-                                      project: Project)
+                     project: Project)
 }
 
 public protocol DashboardFundingCellViewModelOutputs {
@@ -146,7 +146,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
   private let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
   public func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
-                                             project: Project) {
+                            project: Project) {
     self.statsProjectProperty.value = (stats, project)
   }
 

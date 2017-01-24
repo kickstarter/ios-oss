@@ -4,6 +4,7 @@ disabled_rules:
   - force_unwrapping
   - function_body_length
   - function_parameter_count
+  - large_tuple
   - nesting
   - type_body_length
   - variable_name

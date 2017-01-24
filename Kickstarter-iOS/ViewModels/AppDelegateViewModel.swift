@@ -535,7 +535,7 @@ AppDelegateViewModelOutputs {
   fileprivate typealias ApplicationWithOptions = (application: UIApplication?, options: [AnyHashable: Any]?)
   fileprivate let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
   public func applicationDidFinishLaunching(application: UIApplication?,
-                                                        launchOptions: [AnyHashable: Any]?) {
+                                            launchOptions: [AnyHashable: Any]?) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
 
@@ -592,9 +592,9 @@ AppDelegateViewModelOutputs {
   )
   fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
   public func applicationOpenUrl(application: UIApplication?,
-                                             url: URL,
-                                             sourceApplication: String?,
-                                             annotation: Any) -> Bool {
+                                 url: URL,
+                                 sourceApplication: String?,
+                                 annotation: Any) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
     return self.facebookOpenURLReturnValue.value
   }
