@@ -46,14 +46,11 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = [self.fundingTitleLabel, self.deadlineTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 14)
 
-    _ = self.fundingTitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
+    _ = self.fundingTitleLabel |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    _ = self.deadlineTitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+    _ = self.deadlineTitleLabel |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    _ = self.statsStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
+    _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
