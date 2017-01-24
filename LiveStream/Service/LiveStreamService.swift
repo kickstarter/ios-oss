@@ -20,7 +20,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .flatMap { "?uid=\($0)" }
         .coalesceWith("")
 
-      let urlString = "\(Secrets.LiveStream.Api.base)/api/v1/ksr-ios-streams/\(eventId)\(uidString)"
+      let urlString = "\(Secrets.LiveStreams.Api.base)/ksr-ios-streams/\(eventId)\(uidString)"
       guard let url = URL(string: urlString) else {
         observer.send(error: .invalidEventId)
         return
@@ -59,8 +59,8 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
     return SignalProducer { (observer, disposable) in
 
-      guard let url = URL(string: Secrets.LiveStream.Api.base)?
-        .appendingPathComponent("api/v1/ksr-streams") else {
+      guard let url = URL(string: Secrets.LiveStreams.Api.base)?
+        .appendingPathComponent("ksr-streams") else {
         observer.send(error: .invalidEventId)
         return
       }
@@ -120,7 +120,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer { (observer, disposable) in
 
-        let urlString = "\(Secrets.LiveStream.Api.base)/api/v1/ksr-ios-streams/\(eventId)/subscribe"
+        let urlString = "\(Secrets.LiveStreams.Api.base)/ksr-ios-streams/\(eventId)/subscribe"
         guard let url = URL(string: urlString) else {
           observer.send(error: .invalidEventId)
           return
