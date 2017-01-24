@@ -36,16 +36,16 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = [self.fundingSubtitleLabel, self.deadlineSubtitleLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 14)
+      ||> UILabel.lens.font .~ .ksr_body(size: 13)
       ||> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-       _ = self.fundingTitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+    _ = [self.fundingTitleLabel, self.deadlineTitleLabel]
+      ||> UILabel.lens.font .~ .ksr_headline(size: 13)
+
+    _ = self.fundingTitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
-    _ = self.deadlineSubtitleLabel
-         _ = self.deadlineTitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+    _ = self.deadlineTitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.columnsStackView
