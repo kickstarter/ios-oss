@@ -10,8 +10,8 @@ public protocol SearchProjectCellViewModelInputs {
 public protocol SearchProjectCellViewModelOutputs{
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
-  var fundingTitleLabelText: Signal<String, NoError> { get }
   var fundingSubtitleLabelText: Signal<String, NoError> { get }
+  var fundingTitleLabelText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> {get}
 }

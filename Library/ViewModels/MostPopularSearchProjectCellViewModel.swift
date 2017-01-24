@@ -8,8 +8,10 @@ public protocol MostPopularSearchProjectCellViewModelInputs {
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
-  var fundingLabelText: Signal<String, NoError> { get }
-  var fundingProgress: Signal<Float, NoError> { get }
+  var deadlineSubtitleLabelText: Signal<String, NoError> { get }
+  var deadlineTitleLabelText: Signal<String, NoError> { get }
+  var fundingSubtitleLabelText: Signal<String, NoError> { get }
+  var fundingTitleLabelText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
 }
@@ -25,13 +27,24 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    self.fundingLabelText = project.map {
-      Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))
+    let deadlineTitleAndSubtitle = project
+      .map {
+        $0.state == .live
+          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
+          : ("", "")
     }
 
-    self.fundingProgress = project
-      .map(Project.lens.stats.fundingProgress.view)
-      .map(clamp(0, 1))
+    self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
+    self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
+
+    let fundingTitleAndSubtitleText = project.map { project -> (String?, String?) in
+      let string = Strings.percentage_funded(percentage: Format.percentage(project.stats.percentFunded))
+      let parts = string.characters.split(separator: " ").map(String.init)
+      return (parts.first, parts.last)
+    }
+
+    self.fundingTitleLabelText = fundingTitleAndSubtitleText.map { title, _ in title ?? ""}
+    self.fundingSubtitleLabelText = fundingTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
@@ -43,8 +56,10 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     self.projectProperty.value = project
   }
 
-  public let fundingLabelText: Signal<String, NoError>
-  public let fundingProgress: Signal<Float, NoError>
+  public let deadlineSubtitleLabelText: Signal<String, NoError>
+  public let deadlineTitleLabelText: Signal<String, NoError>
+  public let fundingSubtitleLabelText: Signal<String, NoError>
+  public let fundingTitleLabelText: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 

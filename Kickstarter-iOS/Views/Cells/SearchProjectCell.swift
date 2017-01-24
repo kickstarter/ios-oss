@@ -36,21 +36,21 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
+    _ = self.fundingSubtitleLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+
     _ = self.fundingTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
-
-    _ = self.fundingSubtitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 13)
-      |> UILabel.lens.textColor .~ UIColor.ksr_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     _ = self.deadlineSubtitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 13)
-      |> UILabel.lens.textColor .~ UIColor.ksr_navy_500
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
     _ = self.deadlineTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ UIColor.ksr_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.columnsStackView
       |> UIStackView.lens.alignment .~ .top
