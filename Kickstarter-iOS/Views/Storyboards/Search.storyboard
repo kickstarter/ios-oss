@@ -205,28 +205,28 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a95-YE-evX">
-                                                            <rect key="frame" x="0.0" y="33.5" width="138" height="13.5"/>
+                                                            <rect key="frame" x="8" y="34" width="138" height="18"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="75%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYI-q3-lWp">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="13.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sYe-Fv-0w9">
-                                                                    <rect key="frame" x="24" y="0.0" width="40" height="13.5"/>
+                                                                    <rect key="frame" x="24" y="0.0" width="40" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAv-H2-A4X">
-                                                                    <rect key="frame" x="64" y="0.0" width="15" height="13.5"/>
+                                                                    <rect key="frame" x="64" y="0.0" width="15" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days to go" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2v-lu-hrL">
-                                                                    <rect key="frame" x="79" y="0.0" width="59" height="13.5"/>
+                                                                    <rect key="frame" x="79" y="0.0" width="59" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -236,10 +236,10 @@
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
+                                                        <constraint firstItem="a95-YE-evX" firstAttribute="leading" secondItem="kqx-C7-H1c" secondAttribute="leading" id="0Sp-Z2-ezO"/>
                                                         <constraint firstItem="kqx-C7-H1c" firstAttribute="top" secondItem="SOr-RI-dIj" secondAttribute="topMargin" id="9jx-kR-OOe"/>
-                                                        <constraint firstItem="a95-YE-evX" firstAttribute="leading" secondItem="SOr-RI-dIj" secondAttribute="leading" id="Gsv-XX-PSe"/>
+                                                        <constraint firstAttribute="bottom" secondItem="a95-YE-evX" secondAttribute="bottom" id="JOi-SV-y91"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="kqx-C7-H1c" secondAttribute="trailing" id="QlB-Ro-AmC"/>
-                                                        <constraint firstAttribute="bottom" secondItem="a95-YE-evX" secondAttribute="bottom" constant="5" id="aMD-KJ-oPx"/>
                                                         <constraint firstItem="a95-YE-evX" firstAttribute="top" secondItem="kqx-C7-H1c" secondAttribute="bottom" constant="5" id="dUR-fZ-xTm"/>
                                                         <constraint firstItem="kqx-C7-H1c" firstAttribute="leading" secondItem="SOr-RI-dIj" secondAttribute="leadingMargin" id="sTQ-BZ-PbH"/>
                                                     </constraints>

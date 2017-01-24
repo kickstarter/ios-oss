@@ -25,7 +25,6 @@ public final class SearchProjectCellViewModel: SearchProjectCellViewModelType,
 SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
 
   public init() {
-
     let project = self.projectProperty.signal.skipNil()
 
     let deadlineTitleAndSubtitle = project
