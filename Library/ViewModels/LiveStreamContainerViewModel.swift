@@ -241,7 +241,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
       }
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
-      .scan(0) { accum, _ in accum + 1 }
+      .mapConst(1)
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())

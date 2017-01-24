@@ -504,7 +504,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page", "project_page"], self.trackingClient.properties(
       forKey: "ref_tag", as: String.self))
-    XCTAssertEqual([nil, 1, 2], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func testTrackWatchedLiveReplay() {
@@ -547,7 +547,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page", "project_page"], self.trackingClient.properties(
       forKey: "ref_tag", as: String.self))
-    XCTAssertEqual([nil, 1, 2], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func test_MakeSureSingleLiveStreamControllerIsCreated() {
