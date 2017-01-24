@@ -1593,16 +1593,21 @@ public final class Koala {
 
   public func trackClosedLiveStream(project: Project,
                                     liveStream: Project.LiveStream,
+                                    startDate: Date,
+                                    endDate: Date,
                                     refTag: RefTag) {
+    let context = stateContext(forLiveStream: liveStream)
+
+    let duration = AppEnvironment.current.calendar
+      .dateComponents([.second], from: startDate, to: endDate).second ?? 0
+
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
+      .withAllValuesFrom(["type": context.trackingString])
+      .withAllValuesFrom(["duration": duration])
 
-    if liveStream.isLiveNow {
-      self.track(event: "Closed Live Stream", properties: props)
-    } else {
-      self.track(event: "Closed Live Stream Replay", properties: props)
-    }
+    self.track(event: "Closed Live Stream", properties: props)
   }
 
   public func trackLiveStreamToggleSubscription(project: Project,
@@ -1620,16 +1625,6 @@ public final class Koala {
       event: subscribed ? "Confirmed KSR Live Subscribe Button" : "Confirmed KSR Live Unsubscribe Button",
       properties: props
     )
-  }
-
-  public func trackClosedLiveStreamCountdown(project: Project,
-                                             liveStream: Project.LiveStream,
-                                             refTag: RefTag) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["ref_tag": refTag.stringTag])
-
-    self.track(event: "Closed Live Stream Countdown", properties: props)
   }
 
   public func trackViewedLiveStreamCountdown(project: Project,

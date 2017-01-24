@@ -182,6 +182,35 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.dismiss.assertValueCount(1)
   }
 
+  func testTrackClosedLiveStreamCountdown() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().addingTimeInterval(100)).timeIntervalSince1970
+    let project = Project.template
+
+    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, refTag: .projectPage
+    )
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
+    XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+
+    self.scheduler.advance(by: .seconds(50))
+
+    self.vm.inputs.closeButtonTapped()
+
+    XCTAssertEqual(["Viewed Live Stream Countdown", "Closed Live Stream"], self.trackingClient.events)
+    XCTAssertEqual(["project_page", "project_page"], self.trackingClient.properties(forKey: "ref_tag",
+                                                                                    as: String.self))
+    XCTAssertEqual([nil, "live_stream_countdown"], self.trackingClient.properties(forKey: "type",
+                                                                             as: String.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
+  }
+
   func testCategoryId() {
     let project = Project.template
       |> Project.lens.category.id .~ 123

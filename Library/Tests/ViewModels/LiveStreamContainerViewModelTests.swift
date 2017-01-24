@@ -394,11 +394,16 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
+    self.scheduler.advance(by: .seconds(50))
+
     self.vm.inputs.closeButtonTapped()
 
     XCTAssertEqual(["Viewed Live Stream", "Closed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page"], self.trackingClient.properties(forKey: "ref_tag",
                                                                                     as: String.self))
+    XCTAssertEqual([nil, "live_stream_live"], self.trackingClient.properties(forKey: "type",
+                                                                               as: String.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func testTrackClosedLiveStreamReplay() {
@@ -418,12 +423,19 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+    XCTAssertEqual([nil], self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual([nil], self.trackingClient.properties(forKey: "duration", as: Double.self))
+
+    self.scheduler.advance(by: .seconds(50))
 
     self.vm.inputs.closeButtonTapped()
 
-    XCTAssertEqual(["Viewed Live Stream", "Closed Live Stream Replay"], self.trackingClient.events)
+    XCTAssertEqual(["Viewed Live Stream", "Closed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page"], self.trackingClient.properties(forKey: "ref_tag",
                                                                                     as: String.self))
+    XCTAssertEqual([nil, "live_stream_replay"], self.trackingClient.properties(forKey: "type",
+                                                                               as: String.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func testTrackLiveStreamOrientationChanged() {
