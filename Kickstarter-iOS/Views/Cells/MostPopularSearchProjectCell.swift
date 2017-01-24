@@ -39,17 +39,13 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyle()
 
-    _ = self.fundingSubtitleLabel
-      |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+    _ = [self.fundingSubtitleLabel, self.deadlineSubtitleLabel]
+      ||> UILabel.lens.font .~ .ksr_body(size: 14)
+      ||> UILabel.lens.textColor .~ .ksr_text_navy_500
 
     _ = self.fundingTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_green_700
-
-    _ = self.deadlineSubtitleLabel
-      |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
     _ = self.deadlineTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
