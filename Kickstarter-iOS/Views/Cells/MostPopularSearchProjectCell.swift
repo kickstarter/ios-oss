@@ -56,11 +56,6 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.statsStackView
-      |> UIStackView.lens.layoutMargins %~~ { _, stackView in
-        stackView.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
-          : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
-      }
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.projectImageView

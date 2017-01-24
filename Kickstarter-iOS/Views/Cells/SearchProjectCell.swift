@@ -87,7 +87,6 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-
   }
 
   internal override func bindViewModel() {
