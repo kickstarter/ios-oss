@@ -13,7 +13,7 @@ public protocol SearchProjectCellViewModelOutputs{
   var fundingSubtitleLabelText: Signal<String, NoError> { get }
   var fundingTitleLabelText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
-  var projectNameLabelText: Signal<String, NoError> {get}
+  var projectNameLabelText: Signal<String, NoError> { get }
 }
 
 public protocol SearchProjectCellViewModelType {
