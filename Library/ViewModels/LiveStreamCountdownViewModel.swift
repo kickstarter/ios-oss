@@ -152,6 +152,14 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
                                                                     liveStream: liveStream,
                                                                     refTag: refTag)
     }
+
+    configData
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeValues { (project, liveStream, refTag) in
+        AppEnvironment.current.koala.trackClosedLiveStreamCountdown(project: project,
+                                                                    liveStream: liveStream,
+                                                                    refTag: refTag)
+    }
   }
 
   private let closeButtonTappedProperty = MutableProperty()

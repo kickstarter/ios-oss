@@ -418,6 +418,54 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
   }
 
+  func testTrackClosedLiveStream() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let liveStream = .template
+      |> Project.LiveStream.lens.isLiveNow .~ true
+
+    koala.trackClosedLiveStream(
+      project: .template,
+      liveStream: liveStream,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual(["Closed Live Stream"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+  }
+
+  func testTrackClosedLiveStreamCountdown() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackClosedLiveStreamCountdown(
+      project: .template,
+      liveStream: .template,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual(["Closed Live Stream Countdown"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+  }
+
+  func testTrackClosedLiveStreamReplay() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let liveStream = .template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+
+    koala.trackClosedLiveStream(
+      project: .template,
+      liveStream: liveStream,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual(["Closed Live Stream Replay"], client.events)
+    XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
+  }
+
   func testTrackViewedLiveStream() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -442,12 +490,12 @@ final class KoalaTests: TestCase {
       project: .template,
       liveStream: liveStream,
       refTag: .projectPage,
-      duration: 2
+      duration: 1
     )
 
     XCTAssertEqual(["Watched Live Stream"], client.events)
     XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
-    XCTAssertEqual([2], client.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([1], client.properties(forKey: "duration", as: Int.self))
   }
 
   func testTrackWatchedLiveStream_Replay() {

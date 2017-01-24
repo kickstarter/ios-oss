@@ -1591,6 +1591,20 @@ public final class Koala {
     self.track(event: "Changed Live Stream Orientation", properties: props)
   }
 
+  public func trackClosedLiveStream(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    refTag: RefTag) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
+
+    if liveStream.isLiveNow {
+      self.track(event: "Closed Live Stream", properties: props)
+    } else {
+      self.track(event: "Closed Live Stream Replay", properties: props)
+    }
+  }
+
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStream: Project.LiveStream,
                                                 subscribed: Bool) {
@@ -1606,6 +1620,16 @@ public final class Koala {
       event: subscribed ? "Confirmed KSR Live Subscribe Button" : "Confirmed KSR Live Unsubscribe Button",
       properties: props
     )
+  }
+
+  public func trackClosedLiveStreamCountdown(project: Project,
+                                             liveStream: Project.LiveStream,
+                                             refTag: RefTag) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
+
+    self.track(event: "Closed Live Stream Countdown", properties: props)
   }
 
   public func trackViewedLiveStreamCountdown(project: Project,

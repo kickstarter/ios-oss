@@ -253,6 +253,14 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     configData
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeValues { (project, liveStream, _, refTag) in
+        AppEnvironment.current.koala.trackClosedLiveStream(project: project,
+                                                           liveStream: liveStream,
+                                                           refTag: refTag)
+    }
+
+    configData
       .map { project, liveStream, _, refTag in (project, liveStream, refTag) }
       .takePairWhen(numberOfMinutesWatched)
       .map { tuple, minute in (tuple.0, tuple.1, tuple.2, minute) }
