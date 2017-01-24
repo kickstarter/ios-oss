@@ -1,3 +1,4 @@
+import LiveStream
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -6,7 +7,7 @@ import Result
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project: Project)
   func tappedComments()
-  func tapped(liveStream: Project.LiveStream)
+  func tapped(liveStreamEvent: LiveStreamEvent)
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
@@ -18,8 +19,8 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
-  var goToLiveStream: Signal<(Project, Project.LiveStream), NoError> { get }
-  var goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError> { get }
+  var goToLiveStream: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
@@ -82,13 +83,13 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.goToLiveStream = project
       .takePairWhen(
         self.tappedLiveStreamProperty.signal.skipNil()
-          .filter(shouldGoToLiveStream(withLiveStream:))
+          .filter(shouldGoToLiveStream(withLiveStreamEvent:))
     )
 
     self.goToLiveStreamCountdown = project
       .takePairWhen(
         self.tappedLiveStreamProperty.signal.skipNil()
-          .filter({ !shouldGoToLiveStream(withLiveStream:$0) })
+          .filter({ !shouldGoToLiveStream(withLiveStreamEvent:$0) })
     )
   }
 
@@ -102,9 +103,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedCommentsProperty.value = ()
   }
 
-  private let tappedLiveStreamProperty = MutableProperty<Project.LiveStream?>(nil)
-  public func tapped(liveStream: Project.LiveStream) {
-    self.tappedLiveStreamProperty.value = liveStream
+  private let tappedLiveStreamProperty = MutableProperty<LiveStreamEvent?>(nil)
+  public func tapped(liveStreamEvent: LiveStreamEvent) {
+    self.tappedLiveStreamProperty.value = liveStreamEvent
   }
 
   fileprivate let tappedPledgeAnyAmountProperty = MutableProperty()
@@ -139,8 +140,8 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
-  public let goToLiveStream: Signal<(Project, Project.LiveStream), NoError>
-  public let goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError>
+  public let goToLiveStream: Signal<(Project, LiveStreamEvent), NoError>
+  public let goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
@@ -157,8 +158,8 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
     ?? Reward.noReward
 }
 
-private func shouldGoToLiveStream(withLiveStream liveStream: Project.LiveStream) -> Bool {
-  return liveStream.isLiveNow || liveStream.startDate <
+private func shouldGoToLiveStream(withLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> Bool {
+  return liveStreamEvent.stream.liveNow || liveStreamEvent.stream.startDate.timeIntervalSince1970 <
     AppEnvironment.current.dateType.init().timeIntervalSince1970
 }
 

@@ -87,22 +87,23 @@ ProjectPamphletViewModelOutputs {
       .map { $0 ?? $1 }
 
     // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
-    let projectLiveStreams = project
-      .map { $0.liveStreams }
-      .skipNil()
-      .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
-      .materialize()
-      .map { $0.value }
-      .take(first: 1)
+    //let projectLiveStreams = .empty
+//      project
+//      .map { $0.liveStreams }
+//      .skipNil()
+//      .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
+//      .materialize()
+//      .map { $0.value }
+//      .take(first: 1)
 
-    let projectWithLiveStreams = Signal.combineLatest(projectLiveStreams, project)
-      .map(Project.lens.liveStreams.set)
+//    let projectWithLiveStreams = Signal.combineLatest(projectLiveStreams, project)
+//      .map(Project.lens.liveStreams.set)
 
-    Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
-      .take(first: 1)
-      .observeValues { project, refTag, cookieRefTag in
-        AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
-    }
+//    Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
+//      .take(first: 1)
+//      .observeValues { project, refTag, cookieRefTag in
+//        AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
+//    }
 
     Signal.combineLatest(cookieRefTag.skipNil(), project)
       .take(first: 1)

@@ -50,10 +50,10 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   }
 
   func testLiveStreamsSubpage() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ true
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
-    self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
+    self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
     self.countLabelTextColor.assertValue(.ksr_text_green_700)
     self.countLabelText.assertValue("Watch live")
@@ -67,10 +67,10 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   }
 
   func testReplayLiveStreamsSubpage() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ false
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
 
-    self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
+    self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("Replay")
@@ -121,7 +121,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testSubpageTypes() {
     let comments = ProjectPamphletSubpage.comments(1, .first)
     let updates = ProjectPamphletSubpage.updates(1, .first)
-    let liveStream = ProjectPamphletSubpage.liveStream(liveStream: Project.LiveStream.template, .first)
+    let liveStream = ProjectPamphletSubpage.liveStream(liveStreamEvent: LiveStreamEvent.template, .first)
 
     XCTAssertTrue(comments.isComments)
     XCTAssertFalse(comments.isLiveStream)
@@ -140,12 +140,12 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   }
 
   func testUpcomingLiveStreamsSubpage() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ self.scheduler.currentDate
-        .addingTimeInterval(60 * 60).timeIntervalSince1970
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
+        .addingTimeInterval(60 * 60)
 
-    self.vm.inputs.configureWith(subpage: .liveStream(liveStream: liveStream, .first))
+    self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
     self.countLabelTextColor.assertValue(.ksr_text_navy_700)
     self.countLabelText.assertValue("in 1 hr")

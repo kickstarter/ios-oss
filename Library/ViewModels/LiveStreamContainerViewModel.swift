@@ -11,10 +11,9 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  /// Call with the Project, Project.LiveStream and optional LiveStreamEvent
+  /// Call with the Project, Project.LiveStream and LiveStreamEvent
   func configureWith(project: Project,
-                     liveStream: Project.LiveStream,
-                     event: LiveStreamEvent?,
+                     liveStreamEvent: LiveStreamEvent,
                      refTag: RefTag)
 
   /// Called when the close button is tapped
@@ -25,9 +24,6 @@ public protocol LiveStreamContainerViewModelInputs {
 
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
-
-  /// Called when the LiveStreamEvent was retrieved
-  func retrievedLiveStreamEvent(event: LiveStreamEvent)
 
   /// Called when the viewDidLoad
   func viewDidLoad()
@@ -92,12 +88,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    let project = configData.map { $0.0 }
-
-    let event = Signal.merge(
-      configData.map { $0.2 }.skipNil(),
-      self.liveStreamEventProperty.signal.skipNil()
-    )
+    let project = configData.map(first)
+    let event = configData.map(second)
 
     self.createAndConfigureLiveStreamViewController = Signal.combineLatest(project, event)
       .take(first: 1)
@@ -246,41 +238,39 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
-        let (project, liveStream, _, _) = data
+        let (project, liveStream, _) = data
         AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
-                                                                       liveStream: liveStream,
+                                                                       liveStreamEvent: liveStream,
                                                                        toOrientation: orientation)
     }
 
     configData
-      .map { project, liveStream, _, refTag in (project, liveStream, refTag) }
       .takePairWhen(numberOfMinutesWatched)
       .map { tuple, minute in (tuple.0, tuple.1, tuple.2, minute) }
       .take(during: Lifetime(self.token))
-      .observeValues { project, liveStream, refTag, minute in
+      .observeValues { project, liveStreamEvent, refTag, minute in
         AppEnvironment.current.koala.trackWatchedLiveStream(project: project,
-                                                            liveStream: liveStream,
+                                                            liveStreamEvent: liveStreamEvent,
                                                             refTag: refTag,
                                                             duration: minute)
     }
 
     configData
-      .observeValues { project, liveStream, _, refTag in
+      .observeValues { project, liveStreamEvent, refTag in
         AppEnvironment.current.koala.trackViewedLiveStream(project: project,
-                                                           liveStream: liveStream,
+                                                           liveStreamEvent: liveStreamEvent,
                                                            refTag: refTag)
     }
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private typealias ConfigData = (Project, Project.LiveStream, LiveStreamEvent?, RefTag)
+  private typealias ConfigData = (Project, LiveStreamEvent, RefTag)
   private let configData = MutableProperty<ConfigData?>(nil)
   public func configureWith(project: Project,
-                            liveStream: Project.LiveStream,
-                            event: LiveStreamEvent?,
+                            liveStreamEvent: LiveStreamEvent,
                             refTag: RefTag) {
-    self.configData.value = (project, liveStream, event, refTag)
+    self.configData.value = (project, liveStreamEvent, refTag)
   }
 
   private let closeButtonTappedProperty = MutableProperty()
@@ -297,11 +287,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     MutableProperty<LiveStreamViewControllerState?>(nil)
   public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
     self.liveStreamViewControllerStateChangedProperty.value = state
-  }
-
-  private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func retrievedLiveStreamEvent(event: LiveStreamEvent) {
-    self.liveStreamEventProperty.value = event
   }
 
   private let viewDidLoadProperty = MutableProperty()

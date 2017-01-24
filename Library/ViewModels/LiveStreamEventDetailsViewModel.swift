@@ -11,8 +11,8 @@ public protocol LiveStreamEventDetailsViewModelType {
 }
 
 public protocol LiveStreamEventDetailsViewModelInputs {
-  /// Call with the Project, the specific LiveStream and an optional LiveStreamEvent
-  func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
+  /// Call with the Project, the specific LiveStream and LiveStreamEvent
+  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent)
 
   /// Called when the LiveStreamViewController's state changes
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -58,9 +58,6 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   /// Emits when the LoginToutViewController should open (login to subscribe)
   var openLoginToutViewController: Signal<(), NoError> { get }
 
-  /// Emits when the LiveStreamEvent has been retrieved for the configuration of sibling view models
-  var retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError> { get }
-
   /// Emits when the share button should be enabled
   var shareButtonEnabled: Signal<Bool, NoError> { get }
 
@@ -99,15 +96,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let project = configData.map(first)
 
-    let eventEvent = configData
-      .switchMap { project, liveStream, optionalEvent in
-        fetchEvent(forProject: project, liveStream: liveStream, event: optionalEvent)
-          .materialize()
-    }
-
-    let event = eventEvent.values()
-
-    self.retrievedLiveStreamEvent = event
+    let event = configData.map(second)
 
     self.configureShareViewModel = Signal.combineLatest(project, event)
 
@@ -170,17 +159,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       $0 ? Strings.Subscribed() : Strings.Subscribe()
     }
 
-    self.showErrorAlert = Signal.merge(
-      eventEvent.filter { $0.error != nil }.mapConst(Strings.Failed_to_retrieve_live_stream_event_details()),
-      isSubscribedEvent.filter { $0.error != nil }.mapConst(Strings.Failed_to_update_subscription())
-    )
+    self.showErrorAlert = isSubscribedEvent
+      .filter { $0.error != nil }
+      .mapConst(Strings.Failed_to_update_subscription())
 
-    self.animateActivityIndicator = Signal.merge(
-      configData.filter { _, _, event in event == nil }.mapConst(true),
-      event.mapConst(false),
-      eventEvent.filter { $0.isTerminating }.mapConst(false),
-      self.showErrorAlert.mapConst(false)
-    ).skipRepeats()
+    //FIXME: is this needed now at all?
+    self.animateActivityIndicator = event.mapConst(false)
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
       subscribeIntent.filter { AppEnvironment.current.currentUser != nil }.mapConst(true),
@@ -225,15 +209,15 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .takePairWhen(isSubscribedEvent.values())
       .observeValues { configData, isSubscribed in
         AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.0,
-                                                                       liveStream: configData.1,
+                                                                       liveStreamEvent: configData.1,
                                                                        subscribed: isSubscribed
         )
     }
   }
 
-  private let configData = MutableProperty<(Project, Project.LiveStream, LiveStreamEvent?)?>(nil)
-  public func configureWith(project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?) {
-    self.configData.value = (project, liveStream, event)
+  private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
+  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent) {
+    self.configData.value = (project, liveStreamEvent)
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -272,7 +256,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
   public let openLoginToutViewController: Signal<(), NoError>
-  public let retrievedLiveStreamEvent: Signal<LiveStreamEvent, NoError>
   public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonAccessibilityHint: Signal<String, NoError>
@@ -284,17 +267,4 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
   public var inputs: LiveStreamEventDetailsViewModelInputs { return self }
   public var outputs: LiveStreamEventDetailsViewModelOutputs { return self }
-}
-
-private func fetchEvent(forProject project: Project, liveStream: Project.LiveStream, event: LiveStreamEvent?)
-  -> SignalProducer<LiveStreamEvent, LiveApiError> {
-
-    if let event = event {
-      return SignalProducer(value: event)
-    }
-
-    return AppEnvironment.current.liveStreamService.fetchEvent(
-      eventId: liveStream.id, uid: AppEnvironment.current.currentUser?.id
-      )
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 }

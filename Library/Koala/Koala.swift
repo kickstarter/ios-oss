@@ -1117,7 +1117,9 @@ public final class Koala {
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
-    props["live_stream_type"] = prioritizedLivestreamState(fromProject: project)?.trackingString
+
+    //FIXME: this will need to work differently with LiveStreamEvent
+    //props["live_stream_type"] = prioritizedLivestreamState(fromProject: project)?.trackingString
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1575,15 +1577,15 @@ public final class Koala {
 
   // MARK: Live streams
   public func trackChangedLiveStreamOrientation(project: Project,
-                                                liveStream: Project.LiveStream,
+                                                liveStreamEvent: LiveStreamEvent,
                                                 toOrientation: UIInterfaceOrientation) {
     let orientationString = toOrientation.isLandscape ? "landscape" : "portrait"
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(
         [
-          "context": stateContext(forLiveStream: liveStream).trackingString,
+          "context": stateContext(forLiveStreamEvent: liveStreamEvent).trackingString,
           "type": orientationString
         ]
     )
@@ -1592,13 +1594,13 @@ public final class Koala {
   }
 
   public func trackLiveStreamToggleSubscription(project: Project,
-                                                liveStream: Project.LiveStream,
+                                                liveStreamEvent: LiveStreamEvent,
                                                 subscribed: Bool) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(
         [
-          "context": stateContext(forLiveStream: liveStream).trackingString
+          "context": stateContext(forLiveStreamEvent: liveStreamEvent).trackingString
         ]
     )
 
@@ -1609,34 +1611,34 @@ public final class Koala {
   }
 
   public func trackViewedLiveStreamCountdown(project: Project,
-                                             liveStream: Project.LiveStream,
+                                             liveStreamEvent: LiveStreamEvent,
                                              refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream Countdown", properties: props)
   }
 
   public func trackViewedLiveStream(project: Project,
-                                    liveStream: Project.LiveStream,
+                                    liveStreamEvent: LiveStreamEvent,
                                     refTag: RefTag) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     self.track(event: "Viewed Live Stream", properties: props)
   }
 
   public func trackWatchedLiveStream(project: Project,
-                                     liveStream: Project.LiveStream,
+                                     liveStreamEvent: LiveStreamEvent,
                                      refTag: RefTag,
                                      duration: Int) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(["ref_tag": refTag.stringTag, "duration": duration])
 
-    if liveStream.isLiveNow {
+    if liveStreamEvent.stream.liveNow {
       self.track(event: "Watched Live Stream", properties: props)
     } else {
       self.track(event: "Watched Live Stream Replay", properties: props)
@@ -1903,15 +1905,15 @@ private func properties(reward: Reward, prefix: String = "backer_reward_") -> [S
   return result.prefixedKeys(prefix)
 }
 
-private func properties(liveStream: Project.LiveStream,
+private func properties(liveStreamEvent: LiveStreamEvent,
                         prefix: String = "live_stream_") -> [String:Any] {
   var properties: [String:Any] = [:]
 
-  properties["id"] = liveStream.id
-  properties["is_live_now"] = liveStream.isLiveNow
-  properties["state"] = stateContext(forLiveStream: liveStream).trackingString
-  properties["name"] = liveStream.name
-  properties["start_date"] = liveStream.startDate
+  properties["id"] = liveStreamEvent.id
+  properties["is_live_now"] = liveStreamEvent.stream.liveNow
+  properties["state"] = stateContext(forLiveStreamEvent: liveStreamEvent).trackingString
+  properties["name"] = liveStreamEvent.stream.name
+  properties["start_date"] = liveStreamEvent.stream.startDate.timeIntervalSince1970
 
   return properties.prefixedKeys(prefix)
 }
@@ -1970,40 +1972,28 @@ extension Reward.Shipping.Preference {
   }
 }
 
-private func stateContext(forLiveStreamEvent event: LiveStreamEvent) -> LiveStreamStateContext {
-  if event.stream.liveNow {
+private func stateContext(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> LiveStreamStateContext {
+  if liveStreamEvent.stream.liveNow {
     return .live
   }
 
-  if AppEnvironment.current.dateType.init().date >= event.stream.startDate {
+  if AppEnvironment.current.dateType.init().date >= liveStreamEvent.stream.startDate {
     return .replay
   }
 
   return .countdown
 }
 
-private func stateContext(forLiveStream liveStream: Project.LiveStream) -> LiveStreamStateContext {
-  if liveStream.isLiveNow {
-    return .live
-  }
+//private func prioritizedLivestreamState(fromProject project: Project) -> LiveStreamStateContext? {
+//
+//  guard let liveStreams = project.liveStreams else { return nil }
+//
+//  return liveStreams.map(stateContext(forLiveStream:))
+//    .sorted()
+//    .first
+//}
 
-  if AppEnvironment.current.dateType.init().timeIntervalSince1970 >= liveStream.startDate {
-    return .replay
-  }
-
-  return .countdown
-}
-
-private func prioritizedLivestreamState(fromProject project: Project) -> LiveStreamStateContext? {
-
-  guard let liveStreams = project.liveStreams else { return nil }
-
-  return liveStreams.map(stateContext(forLiveStream:))
-    .sorted()
-    .first
-}
-
-// Simple enum to map states on both Project.LiveStream and LiveStreamEvent
+// Simple enum to map states on LiveStreamEvent
 fileprivate enum LiveStreamStateContext: Comparable {
   case countdown
   case live

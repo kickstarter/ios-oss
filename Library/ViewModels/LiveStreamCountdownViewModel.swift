@@ -1,9 +1,9 @@
+import LiveStream
+import Prelude
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
 import Result
-import Prelude
-import LiveStream
 
 public protocol LiveStreamCountdownViewModelType {
   var inputs: LiveStreamCountdownViewModelInputs { get }
@@ -15,10 +15,7 @@ public protocol LiveStreamCountdownViewModelInputs {
   func closeButtonTapped()
 
   /// Call with the Project and the specific LiveStream that is being viewed
-  func configureWith(project: Project, liveStream: Project.LiveStream, refTag: RefTag)
-
-  /// Called when the LiveStreamEvent has been retrieved
-  func retrievedLiveStreamEvent(event: LiveStreamEvent)
+  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag)
 
   /// Called when the viewDidLoad
   func viewDidLoad()
@@ -50,8 +47,7 @@ public protocol LiveStreamCountdownViewModelOutputs {
   var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits when the countdown ends and the LiveStreamViewController should be pushed on to the stack
-  // swiftlint:disable:next line_length
-  var pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag), NoError> { get }
+  var pushLiveStreamViewController: Signal<(Project, LiveStreamEvent, RefTag), NoError> { get }
 
   /// Emits the number of seconds string for the countdown
   var secondsString: Signal<String, NoError> { get }
@@ -83,7 +79,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     }
 
     let dateComponents = liveStream
-      .map { AppEnvironment.current.dateType.init(timeIntervalSince1970: $0.startDate).date }
+      .map { $0.stream.startDate }
       .takePairWhen(everySecondTimer)
       .map { startDate, currentDate in
         AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
@@ -93,7 +89,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
 
     self.countdownDateLabelText = liveStream
-      .map { Date(timeIntervalSince1970: $0.startDate) }.map(formattedDateString)
+      .map { $0.stream.startDate }.map(formattedDateString)
 
     self.daysString = dateComponents
       .map { max(0, $0.day) }
@@ -119,7 +115,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       localizedString(
         key: "The_live_stream_will_start_time",
         defaultValue: "The live stream will start %{time}.",
-        substitutions: ["time": Format.relative(secondsInUTC: liveStream.startDate)])
+        substitutions: [
+          "time": Format.relative(secondsInUTC: liveStream.stream.startDate.timeIntervalSince1970)
+        ])
     }
 
     let countdownEnded = dateComponents
@@ -134,12 +132,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       Strings.Live_stream_countdown()
     )
 
-    self.pushLiveStreamViewController = Signal.combineLatest(
-      configData.map { project, liveStream, _ in (project, liveStream) }.map(flipProjectLiveStreamToLive),
-      self.liveStreamEventProperty.signal.skipNil().map(flipLiveStreamEventToLive)
-      )
-      .map(unpack)
-      .map { project, liveStream, event in (project, liveStream, event, .liveStreamCountdown) }
+    self.pushLiveStreamViewController = configData.map { project, liveStream, _ in
+      (project, flipLiveStreamEventToLive(liveStreamEvent: liveStream))
+      }
+      .map { project, liveStream in (project, liveStream, .liveStreamCountdown) }
       .takeWhen(countdownEnded)
       .take(first: 1)
 
@@ -147,9 +143,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
     configData
-      .observeValues { project, liveStream, refTag in
+      .observeValues { project, liveStreamEvent, refTag in
         AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project,
-                                                                    liveStream: liveStream,
+                                                                    liveStreamEvent: liveStreamEvent,
                                                                     refTag: refTag)
     }
   }
@@ -159,16 +155,11 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let configData = MutableProperty<(Project, Project.LiveStream, RefTag)?>(nil)
+  private let configData = MutableProperty<(Project, LiveStreamEvent, RefTag)?>(nil)
   public func configureWith(project: Project,
-                            liveStream: Project.LiveStream,
+                            liveStreamEvent: LiveStreamEvent,
                             refTag: RefTag) {
-    self.configData.value = (project, liveStream, refTag)
-  }
-
-  private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func retrievedLiveStreamEvent(event: LiveStreamEvent) {
-    self.liveStreamEventProperty.value = event
+    self.configData.value = (project, liveStreamEvent, refTag)
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -184,8 +175,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  // swiftlint:disable:next line_length
-  public let pushLiveStreamViewController: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag), NoError>
+  public let pushLiveStreamViewController: Signal<(Project, LiveStreamEvent, RefTag), NoError>
   public let secondsString: Signal<String, NoError>
   public let upcomingIntroText: Signal<String, NoError>
   public let viewControllerTitle: Signal<String, NoError>
@@ -194,22 +184,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public var outputs: LiveStreamCountdownViewModelOutputs { return self }
 }
 
-private func flipProjectLiveStreamToLive(project: Project, currentLiveStream: Project.LiveStream) ->
-  (Project, Project.LiveStream) {
-  let liveStreams = (project.liveStreams ?? [])
-    .map { liveStream in
-      liveStream
-        |> Project.LiveStream.lens.isLiveNow .~ (liveStream.id == currentLiveStream.id)
-  }
-
-  let flippedCurrentLiveStream = currentLiveStream
-    |> Project.LiveStream.lens.isLiveNow .~ true
-
-  return (project |> Project.lens.liveStreams .~ liveStreams, flippedCurrentLiveStream)
-}
-
-private func flipLiveStreamEventToLive(event: LiveStreamEvent) -> LiveStreamEvent {
-  return event |> LiveStreamEvent.lens.stream.liveNow .~ true
+private func flipLiveStreamEventToLive(liveStreamEvent: LiveStreamEvent) -> LiveStreamEvent {
+  return liveStreamEvent |> LiveStreamEvent.lens.stream.liveNow .~ true
 }
 
 private func formattedDateString(date: Date) -> String {
