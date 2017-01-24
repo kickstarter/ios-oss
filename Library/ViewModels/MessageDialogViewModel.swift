@@ -147,7 +147,7 @@ MessageDialogViewModelOutputs {
   fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
   fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
   public func configureWith(messageSubject: MessageSubject,
-                                           context: Koala.MessageDialogContext) {
+                            context: Koala.MessageDialogContext) {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }

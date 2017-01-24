@@ -79,7 +79,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
   public func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
-                                       imageIsVisible: Bool) {
+                                     imageIsVisible: Bool) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)
   }
 

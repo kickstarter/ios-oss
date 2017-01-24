@@ -73,9 +73,9 @@ UIViewControllerAnimatedTransitioning {
   }
 
   fileprivate func animateDismissal(fromViewController fromVC: UIViewController,
-                                                   toViewController toVC: UIViewController,
-                                                   containerView: UIView,
-                                                   transitionContext: UIViewControllerContextTransitioning) {
+                                    toViewController toVC: UIViewController,
+                                    containerView: UIView,
+                                    transitionContext: UIViewControllerContextTransitioning) {
 
     containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
     containerView.insertSubview(self.darkOverlayView, belowSubview: fromVC.view)
