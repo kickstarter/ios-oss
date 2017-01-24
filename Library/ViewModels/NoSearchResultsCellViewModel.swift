@@ -21,7 +21,7 @@ NoSearchResultsCellViewModelInputs, NoSearchResultsCellViewModelOutputs {
   public init() {
     self.searchTermNotFound = self.paramProperty.signal
       .skipNil()
-      .map { param in "We couldn't find anything for \(param.query ?? "")." }
+      .map { param in Strings.We_couldnt_find_anything_for_search_term(search_term: param.query ?? "") }
   }
 
   fileprivate let paramProperty = MutableProperty<DiscoveryParams?>(nil)

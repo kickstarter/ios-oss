@@ -28,7 +28,7 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
     }
 
     _ = self.noResultsLabel
-      |> UILabel.lens.text %~ { _ in "No Results" }
+      |> UILabel.lens.text %~ { _ in Strings.No_Results() }
       |> UILabel.lens.font .~ .ksr_body(size: 15)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
