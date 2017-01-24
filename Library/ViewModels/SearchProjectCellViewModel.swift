@@ -10,7 +10,8 @@ public protocol SearchProjectCellViewModelInputs {
 public protocol SearchProjectCellViewModelOutputs{
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
-  var fundingLabelText: Signal<String, NoError> { get }
+  var fundingTitleLabelText: Signal<String, NoError> { get }
+  var fundingSubtitleLabelText: Signal<String, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> {get}
 }
@@ -37,9 +38,14 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
-    self.fundingLabelText = project.map {
-      Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))
+    let fundingTitleAndSubtitleText = project.map { project -> (String?, String?) in
+      let string = Strings.percentage_funded(percentage: Format.percentage(project.stats.percentFunded))
+      let parts = string.characters.split(separator: " ").map(String.init)
+      return (parts.first, parts.last)
     }
+
+    self.fundingTitleLabelText = fundingTitleAndSubtitleText.map { title, _ in title ?? ""}
+    self.fundingSubtitleLabelText = fundingTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     self.projectNameLabelText = project.map { $0.name }
 
@@ -53,7 +59,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
 
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
-  public let fundingLabelText: Signal<String, NoError>
+  public let fundingTitleLabelText: Signal<String, NoError>
+  public let fundingSubtitleLabelText: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 

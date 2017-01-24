@@ -13,19 +13,15 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectLabel: UILabel!
   @IBOutlet fileprivate weak var projectNameContainerView: UIView!
   @IBOutlet fileprivate weak var separateView: UIView!
-  @IBOutlet fileprivate weak var fundingLabel: UILabel!
-  @IBOutlet fileprivate  weak var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var statsStackView: UIStackView!
 
   func configureWith(value project: Project) {
     self.viewModel.inputs.configureWith(project: project)
 
-
-//    self.projectImageView.image = nil
-//    self.projectImageView.af_cancelImageRequest()
-//    if let url = URL(string: project.photo.med) {
-//      self.projectImageView.ksr_setImageWithURL(url)
-//    }
   }
 
   internal override func bindStyles() {
@@ -40,15 +36,20 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    _ = self.fundingLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 12)
+    _ = self.fundingTitleLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+
+    _ = self.fundingSubtitleLabel
+      |> UILabel.lens.font .~ UIFont.ksr_body(size: 13)
+      |> UILabel.lens.textColor .~ UIColor.ksr_navy_500
 
     _ = self.deadlineSubtitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 12)
+      |> UILabel.lens.font .~ UIFont.ksr_body(size: 13)
       |> UILabel.lens.textColor .~ UIColor.ksr_navy_500
 
     _ = self.deadlineTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 12)
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ UIColor.ksr_navy_700
 
     _ = self.columnsStackView
@@ -84,6 +85,10 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
     _ = self.separateView
       |> separatorStyle
+
+    _ = self.statsStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
   }
 
   internal override func bindViewModel() {
@@ -100,7 +105,8 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
         self?.projectImageView.af_setImage(withURL: $0)
     }
 
-    self.fundingLabel.rac.text = self.viewModel.outputs.fundingLabelText
+    self.fundingSubtitleLabel.rac.text = self.viewModel.outputs.fundingSubtitleLabelText
+    self.fundingTitleLabel.rac.text = self.viewModel.outputs.fundingTitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.projectLabel.rac.text = self.viewModel.outputs.projectNameLabelText
