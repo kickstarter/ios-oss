@@ -7,7 +7,7 @@ public protocol SearchProjectCellViewModelInputs {
   func configureWith(project: Project)
 }
 
-public protocol SearchProjectCellViewModelOutputs{
+public protocol SearchProjectCellViewModelOutputs {
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
   var fundingSubtitleLabelText: Signal<String, NoError> { get }
