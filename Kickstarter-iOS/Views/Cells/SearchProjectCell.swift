@@ -56,8 +56,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
-    _ = self.imageShadowView
-      |> dropShadowStyle()
+    _ = self.imageShadowView |> dropShadowStyle()
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
@@ -77,8 +76,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UIView.lens.layoutMargins .~ .init(top: Styles.grid(1), left: 0, bottom: 0, right: 0)
       |> UIView.lens.backgroundColor .~ .clear
 
-    _ = self.separateView
-      |> separatorStyle
+    _ = self.separateView |> separatorStyle
 
     _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
   }
