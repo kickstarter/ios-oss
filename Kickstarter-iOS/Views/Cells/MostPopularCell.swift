@@ -23,6 +23,6 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
     _ = self.mostPopularLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
-      |> UILabel.lens.text %~ { _ in Strings.search_most_popular() }
+      |> UILabel.lens.text %~ { _ in "Popular Projects"}
   }
 }

@@ -21,7 +21,6 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
   func configureWith(value project: Project) {
     self.viewModel.inputs.configureWith(project: project)
-
   }
 
   internal override func bindStyles() {
@@ -87,6 +86,11 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> separatorStyle
 
     _ = self.statsStackView
+      |> UIStackView.lens.layoutMargins %~~ { _, stackView in
+        stackView.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
+          : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
+      }
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
   }
@@ -112,5 +116,4 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     self.projectLabel.rac.text = self.viewModel.outputs.projectNameLabelText
 
   }
-
 }
