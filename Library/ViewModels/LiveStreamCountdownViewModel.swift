@@ -152,6 +152,25 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
                                                                     liveStream: liveStream,
                                                                     refTag: refTag)
     }
+
+    let startEndTimes = Signal.zip(
+      configData.map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 },
+      self.closeButtonTappedProperty.signal
+        .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
+    )
+
+    Signal.combineLatest(configData, startEndTimes)
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeValues { (configData, startEndTimes) in
+        let (project, liveStream, refTag) = configData
+        let (startTime, endTime) = startEndTimes
+
+        AppEnvironment.current.koala.trackClosedLiveStream(project: project,
+                                                           liveStream: liveStream,
+                                                           startTime: startTime,
+                                                           endTime: endTime,
+                                                           refTag: refTag)
+    }
   }
 
   private let closeButtonTappedProperty = MutableProperty()
