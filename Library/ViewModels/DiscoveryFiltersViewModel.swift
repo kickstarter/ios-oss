@@ -221,7 +221,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
  - returns: An array of expandable rows with one row expanded.
  */
 private func expandableRows(selectedRow: SelectableRow,
-                                        categories: [KsApi.Category]) -> [ExpandableRow] {
+                            categories: [KsApi.Category]) -> [ExpandableRow] {
 
   let expandableRows = categories
     .sorted { lhs, _ in !lhs.isRoot }
@@ -271,7 +271,7 @@ private func expandableRows(selectedRow: SelectableRow,
  - returns: A new array of expandable rows with the provided row's expansion toggled.
  */
 private func toggleExpansion(row rowToToggle: ExpandableRow,
-                                 in expandableRows: [ExpandableRow]) -> [ExpandableRow] {
+                             in expandableRows: [ExpandableRow]) -> [ExpandableRow] {
 
   return expandableRows
     .map { expandableRow in

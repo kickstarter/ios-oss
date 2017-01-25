@@ -3,6 +3,7 @@ import Runes
 import FBSDKCoreKit
 import Foundation
 import KsApi
+import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -97,30 +98,28 @@ public struct AppEnvironment {
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
-               // swiftlint:disable line_length
-               assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               // swiftlint:enable line_length
-               cache: KSCache = AppEnvironment.current.cache,
-               calendar: Calendar = AppEnvironment.current.calendar,
-               config: Config? = AppEnvironment.current.config,
-               cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
-               countryCode: String = AppEnvironment.current.countryCode,
-               currentUser: User? = AppEnvironment.current.currentUser,
-               dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
-               facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
-               isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
-               koala: Koala = AppEnvironment.current.koala,
-               language: Language = AppEnvironment.current.language,
-               launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-               locale: Locale = AppEnvironment.current.locale,
-               mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-               reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
-               ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-               userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
+    apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    cache: KSCache = AppEnvironment.current.cache,
+    calendar: Calendar = AppEnvironment.current.calendar,
+    config: Config? = AppEnvironment.current.config,
+    cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
+    countryCode: String = AppEnvironment.current.countryCode,
+    currentUser: User? = AppEnvironment.current.currentUser,
+    dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+    debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
+    facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
+    koala: Koala = AppEnvironment.current.koala,
+    language: Language = AppEnvironment.current.language,
+    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
+    locale: Locale = AppEnvironment.current.locale,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
+    scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+    ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
     pushEnvironment(
       Environment(
@@ -140,11 +139,11 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
@@ -155,29 +154,28 @@ public struct AppEnvironment {
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
-               apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
-               // swiftlint:disable:next line_length
-               assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               cache: KSCache = AppEnvironment.current.cache,
-               calendar: Calendar = AppEnvironment.current.calendar,
-               config: Config? = AppEnvironment.current.config,
-               cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
-               countryCode: String = AppEnvironment.current.countryCode,
-               currentUser: User? = AppEnvironment.current.currentUser,
-               dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-               debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
-               facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
-               isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
-               koala: Koala = AppEnvironment.current.koala,
-               language: Language = AppEnvironment.current.language,
-               launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-               locale: Locale = AppEnvironment.current.locale,
-               mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-               reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-               scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
-               timeZone: TimeZone = AppEnvironment.current.timeZone,
-               ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-               userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
+    apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
+    cache: KSCache = AppEnvironment.current.cache,
+    calendar: Calendar = AppEnvironment.current.calendar,
+    config: Config? = AppEnvironment.current.config,
+    cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
+    countryCode: String = AppEnvironment.current.countryCode,
+    currentUser: User? = AppEnvironment.current.currentUser,
+    dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+    debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
+    facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
+    koala: Koala = AppEnvironment.current.koala,
+    language: Language = AppEnvironment.current.language,
+    launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
+    locale: Locale = AppEnvironment.current.locale,
+    mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
+    scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+    ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
     replaceCurrentEnvironment(
       Environment(
@@ -197,11 +195,11 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         reachability: reachability,
         scheduler: scheduler,
-        timeZone: timeZone,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       )
@@ -293,8 +291,8 @@ public struct AppEnvironment {
 
   // Saves some key data for the current environment
   internal static func saveEnvironment(environment env: Environment = AppEnvironment.current,
-                                                   ubiquitousStore: KeyValueStoreType,
-                                                   userDefaults: KeyValueStoreType) {
+                                       ubiquitousStore: KeyValueStoreType,
+                                       userDefaults: KeyValueStoreType) {
 
     var data: [String:Any] = [:]
 

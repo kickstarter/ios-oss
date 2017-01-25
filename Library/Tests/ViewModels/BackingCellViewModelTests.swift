@@ -25,9 +25,9 @@ internal final class BackingCellViewModelTests: TestCase {
   }
 
   func testOutputs() {
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ NSDate().timeIntervalSince1970
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
-    let estimatedDeliveryOn = NSDate().timeIntervalSince1970
+    let estimatedDeliveryOn = Date().timeIntervalSince1970
 
     self.vm.inputs.configureWith(backing: backing, project: Project.template)
 
@@ -43,7 +43,7 @@ internal final class BackingCellViewModelTests: TestCase {
   }
 
   func testRootStackViewAlignment() {
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ NSDate().timeIntervalSince1970
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
 
     withEnvironment(isVoiceOverRunning: { true }) {

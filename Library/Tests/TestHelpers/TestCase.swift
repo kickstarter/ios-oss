@@ -5,6 +5,7 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
+@testable import LiveStream
 
 internal class TestCase: FBSnapshotTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
@@ -15,19 +16,25 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self
   internal let facebookAppDelegate = MockFacebookAppDelegate()
+  internal let liveStreamService = MockLiveStreamService(fetchEventResult: nil)
   internal let mainBundle = MockBundle()
-  internal let scheduler = TestScheduler()
+  internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let trackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
   override func setUp() {
     super.setUp()
+
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
+
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
+      calendar: calendar,
       config: self.config,
       cookieStorage: self.cookieStorage,
       countryCode: "US",
@@ -39,11 +46,11 @@ internal class TestCase: FBSnapshotTestCase {
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
+      liveStreamService: self.liveStreamService,
       locale: .init(identifier: "en_US"),
       mainBundle: mainBundle,
       reachability: .init(value: .wifi),
       scheduler: self.scheduler,
-      timeZone: TimeZone(identifier: "GMT")!,
       ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults
     )

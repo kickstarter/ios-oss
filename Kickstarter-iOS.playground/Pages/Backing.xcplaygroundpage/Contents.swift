@@ -2,7 +2,7 @@
 import Library
 import Prelude
 import Prelude_UIKit
-import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 import XCPlayground
 @testable import Kickstarter_Framework

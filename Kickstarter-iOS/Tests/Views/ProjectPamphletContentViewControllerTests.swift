@@ -159,18 +159,18 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testBacker_SuccessfulProject() {
     let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
 
+    let backing = .template
+      |> Backing.lens.amount .~ (self.cosmicSurgery.rewards.first!.minimum + 5)
+      |> Backing.lens.rewardId .~ self.cosmicSurgery.rewards.first?.id
+      |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
+
     let project = self.cosmicSurgery
       |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
       |> Project.lens.dates.stateChangedAt .~ deadline
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing %~~ { _, project in
-        .template
-          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5)
-          |> Backing.lens.rewardId .~ project.rewards.first?.id
-          |> Backing.lens.reward .~ project.rewards.first
-    }
+      |> Project.lens.personalization.backing .~ backing
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
@@ -261,6 +261,37 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       snapshotView.addSubview(minimalParent.view)
 
       FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+    }
+  }
+
+  func testNonBacker_LiveProject_WithLiveStreams() {
+    let currentlyLiveStream = .template
+      |> Project.LiveStream.lens.id .~ 1
+      |> Project.LiveStream.lens.isLiveNow .~ true
+
+    let futureLiveStream = .template
+      |> Project.LiveStream.lens.id .~ 2
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60 * 24 * 2)
+
+    let pastLiveStream = .template
+      |> Project.LiveStream.lens.id .~ 3
+      |> Project.LiveStream.lens.isLiveNow .~ false
+      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60 * 12)
+
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewards .~ []
+      |> Project.lens.liveStreams .~ [futureLiveStream, pastLiveStream, currentlyLiveStream]
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_044 : 800
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
+      }
     }
   }
 }

@@ -44,7 +44,7 @@ public final class GradientView: UIView {
     self.setGradient([(self.startColor, 0.0), (self.endColor, 1.0)])
   }
 
-  public func setGradient(_ points: [(color: UIColor?, location: Float)]) -> Void {
+  public func setGradient(_ points: [(color: UIColor?, location: Float)]) {
     self.backgroundColor = .clear
 
     self.gradientLayer?.colors = points.map { point in

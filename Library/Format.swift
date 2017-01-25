@@ -88,9 +88,9 @@ public enum Format {
    - returns: A formatted string.
    */
   public static func date(secondsInUTC seconds: TimeInterval,
-                                       dateStyle: DateFormatter.Style = .medium,
-                                       timeStyle: DateFormatter.Style = .medium,
-                                       env: Environment = AppEnvironment.current) -> String {
+                          dateStyle: DateFormatter.Style = .medium,
+                          timeStyle: DateFormatter.Style = .medium,
+                          env: Environment = AppEnvironment.current) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
@@ -98,7 +98,7 @@ public enum Format {
         dateStyle: dateStyle,
         locale: env.locale,
         timeStyle: timeStyle,
-        timeZone: env.timeZone
+        timeZone: env.calendar.timeZone
       )
     )
 
@@ -114,14 +114,14 @@ public enum Format {
    - returns: A formatted string.
    */
   public static func date(secondsInUTC seconds: TimeInterval,
-                                       dateFormat: String) -> String {
+                          dateFormat: String) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(dateFormat: dateFormat,
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
         timeStyle: nil,
-        timeZone: AppEnvironment.current.timeZone
+        timeZone: AppEnvironment.current.calendar.timeZone
       )
     )
 
@@ -140,11 +140,10 @@ public enum Format {
    - returns: A pair of strings for the numeric time value and unit.
    */
   // swiftlint:disable valid_docs
-  public static func duration(
-    secondsInUTC seconds: TimeInterval,
-                 abbreviate: Bool = false,
-                 useToGo: Bool = false,
-                 env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
+  public static func duration(secondsInUTC seconds: TimeInterval,
+                              abbreviate: Bool = false,
+                              useToGo: Bool = false,
+                              env: Environment = AppEnvironment.current) -> (time: String, unit: String) {
 
     let components = env.calendar.dateComponents([.day, .hour, .minute, .second],
                                                  from: env.dateType.init().date,
@@ -203,11 +202,10 @@ public enum Format {
 
    - returns: A formatted string.
    */
-  public static func relative(
-    secondsInUTC seconds: TimeInterval,
-                 abbreviate: Bool = false,
-                 threshold thresholdInDays: Int = defaultThresholdInDays,
-                 env: Environment = AppEnvironment.current) -> String {
+  public static func relative(secondsInUTC seconds: TimeInterval,
+                              abbreviate: Bool = false,
+                              threshold thresholdInDays: Int = defaultThresholdInDays,
+                              env: Environment = AppEnvironment.current) -> String {
 
     let components = env.calendar.dateComponents([.day, .hour, .minute, .second],
                                                  from: env.dateType.init(timeIntervalSince1970: seconds).date,

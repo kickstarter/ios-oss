@@ -14,6 +14,7 @@ public enum Storyboard: String {
   case Friends
   case Help
   case LaunchScreen
+  case LiveStream
   case Login
   case Main
   case Messages
@@ -30,7 +31,7 @@ public enum Storyboard: String {
   case WebModal
 
   public func instantiate<VC: UIViewController>(_ viewController: VC.Type,
-                          inBundle bundle: Bundle = .framework) -> VC {
+                                                inBundle bundle: Bundle = .framework) -> VC {
     guard
       let vc = UIStoryboard(name: self.rawValue, bundle: Bundle(identifier: bundle.identifier))
         .instantiateViewController(withIdentifier: VC.storyboardIdentifier) as? VC

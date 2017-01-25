@@ -68,8 +68,8 @@ internal final class RewardPledgeViewController: UIViewController {
 
   internal static func configuredWith(
     project: Project,
-            reward: Reward,
-            applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
+    reward: Reward,
+    applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
     -> RewardPledgeViewController {
 
       let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
@@ -542,8 +542,8 @@ internal final class RewardPledgeViewController: UIViewController {
   // swiftlint:enable function_body_length
 
   fileprivate func goToCheckout(initialRequest: URLRequest,
-                                           project: Project,
-                                           reward: Reward) {
+                                project: Project,
+                                reward: Reward) {
 
     let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest,
                                                    project: project,
@@ -572,8 +572,8 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   fileprivate func goToShippingPicker(project: Project,
-                                          shippingRules: [ShippingRule],
-                                          selectedShippingRule: ShippingRule) {
+                                      shippingRules: [ShippingRule],
+                                      selectedShippingRule: ShippingRule) {
     let vc = RewardShippingPickerViewController.configuredWith(project: project,
                                                                shippingRules: shippingRules,
                                                                selectedShippingRule: selectedShippingRule,

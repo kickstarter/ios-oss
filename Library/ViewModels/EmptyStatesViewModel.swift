@@ -86,10 +86,12 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     .map(first)
 
     self.backgroundGradientColorId = emptyState
-      .map { $0 == .activity ? RootCategory.comics.rawValue : nil }
+      .map { emptyState -> Int? in
+        emptyState == .activity ? RootCategory.comics.rawValue : nil
+    }
 
     self.mainButtonBackgroundColor = emptyState
-      .map { $0 == .activity
+      .map { emptyState -> UIColor in emptyState == .activity
         ? UIColor.ksr_forest_500.withAlphaComponent(0.1)
         : UIColor.ksr_green_500.withAlphaComponent(0.1)
     }
@@ -103,29 +105,29 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     self.mainButtonText = emptyState.map(buttonText(emptyState:))
 
     self.mainButtonTitleColor = emptyState
-      .map { $0 == .activity ? .ksr_forest_600 : .ksr_text_green_700 }
+      .map { $0 == .activity ? UIColor.ksr_forest_600 : UIColor.ksr_text_green_700 }
 
     self.subtitleLabelText = emptyState.map(textForSubtitle(emptyState:))
 
     self.subtitleLabelColor = emptyState
-      .map { $0 == .activity ? .ksr_forest_500 : .ksr_text_navy_700 }
+      .map { $0 == .activity ? UIColor.ksr_forest_500 : UIColor.ksr_text_navy_700 }
 
     self.titleLabelText = emptyState.map(textForTitle(emptyState:))
 
     self.titleLabelColor = emptyState
-      .map { $0 == .activity ? .ksr_forest_600 : .ksr_text_navy_700 }
+      .map { $0 == .activity ? UIColor.ksr_forest_600 : UIColor.ksr_text_navy_700 }
 
     self.backgroundStripViewAlpha = emptyState
       .map { $0 == .activity ? 0.45 : 1.0 }
 
     self.backgroundStripViewColor = emptyState
-      .map { $0 == .activity ? .white : .ksr_grey_100 }
+      .map { $0 == .activity ? UIColor.white : UIColor.ksr_grey_100 }
 
     self.notifyDelegateToGoToDiscovery = emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
       .filter { $0 != .socialDisabled && $0 != .socialNoPledges }
-      .map {
-        guard $0 != .activity else { return nil }
+      .map { emptyState -> DiscoveryParams? in
+        guard emptyState != .activity else { return nil }
         return DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .magic
     }
 

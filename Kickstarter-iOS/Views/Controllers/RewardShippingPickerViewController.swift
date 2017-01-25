@@ -25,9 +25,9 @@ internal final class RewardShippingPickerViewController: UIViewController {
   @IBOutlet fileprivate weak var titleView: UIView!
 
   internal static func configuredWith(project: Project,
-                                              shippingRules: [ShippingRule],
-                                              selectedShippingRule: ShippingRule,
-                                              delegate: RewardShippingPickerViewControllerDelegate)
+                                      shippingRules: [ShippingRule],
+                                      selectedShippingRule: ShippingRule,
+                                      delegate: RewardShippingPickerViewControllerDelegate)
     -> RewardShippingPickerViewController {
 
       let vc = Storyboard.RewardPledge.instantiate(RewardShippingPickerViewController.self)

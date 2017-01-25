@@ -9,13 +9,13 @@ public protocol LoginViewModelInputs {
   /// String value of email textfield text
   func emailChanged(_ email: String?)
 
-  /// Call when email textfield keyboard returns
+  /// Call when email textfield keyboard returns.
   func emailTextFieldDoneEditing()
 
-  /// Call when the environment has been logged into
+  /// Call when the environment has been logged into.
   func environmentLoggedIn()
 
-  /// Call when login button is pressed
+  /// Call when login button is pressed.
   func loginButtonPressed()
 
   /// Call with onepassword's available ability.
@@ -30,10 +30,10 @@ public protocol LoginViewModelInputs {
   /// String value of password textfield text
   func passwordChanged(_ password: String?)
 
-  /// Call when password textfield keyboard returns
+  /// Call when password textfield keyboard returns.
   func passwordTextFieldDoneEditing()
 
-  /// Call when reset password button is pressed
+  /// Call when reset password button is pressed.
   func resetPasswordButtonPressed()
 
   /// Call when the view did load.

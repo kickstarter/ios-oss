@@ -73,8 +73,8 @@ public struct LanguageDoubler: NSBundleType {
 
 public final class DoublerBundle: Bundle {
   public override func localizedString(forKey key: String,
-                                             value: String?,
-                                             table tableName: String?) -> String {
+                                       value: String?,
+                                       table tableName: String?) -> String {
 
     let s = super.localizedString(forKey: key, value: value, table: tableName)
     return "\(s) \(s)"

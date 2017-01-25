@@ -116,7 +116,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value: (rewardStats: [ProjectStatsEnvelope.RewardStats],
-                                            project: Project)) {
+                              project: Project)) {
     self.viewModel.inputs.configureWith(rewardStats: value.0, project: value.1)
   }
 

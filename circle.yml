@@ -4,6 +4,7 @@ machine:
 dependencies:
   pre:
     - make bootstrap
+    - ls /Applications/ | grep "Xcode"
     - system_profiler SPSoftwareDataType
     - security list-keychains
     - security find-identity -p codesigning
@@ -17,6 +18,7 @@ test:
     - make lint
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
+    - SCHEME=LiveStream make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:
@@ -36,7 +38,6 @@ deployment:
         --output_name               "KickBeta"
         --export_method             "enterprise"
         --provisioning_profile_path "circleci-beta-dist.mobileprovision"
-        --codesigning_identity      "iPhone Distribution: Kickstarter of New York"
         --scheme                    "Kickstarter-iOS"
         --configuration             "Hockey"
       - >

@@ -2,14 +2,15 @@ import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
+import LiveStream
 
-internal protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
+public protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
                               scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
 }
 
-internal final class ProjectPamphletContentViewController: UITableViewController {
+public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let dataSource = ProjectPamphletContentDataSource()
   internal weak var delegate: ProjectPamphletContentViewControllerDelegate?
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
@@ -19,7 +20,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     self.viewModel.inputs.configureWith(project: project)
   }
 
-  internal override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
@@ -30,17 +31,17 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewWillAppear(_ animated: Bool) {
+  public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
-  internal override func viewDidAppear(_ animated: Bool) {
+  public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear(animated: animated)
   }
 
-  internal override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -50,7 +51,7 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       |> UITableViewController.lens.view.backgroundColor .~ .clear
   }
 
-  internal override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.loadProjectIntoDataSource
@@ -75,6 +76,18 @@ internal final class ProjectPamphletContentViewController: UITableViewController
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToComments(project: $0) }
 
+    self.viewModel.outputs.goToLiveStream
+      .observeForControllerAction()
+      .observeValues { [weak self] project, liveStream in
+        self?.goToLiveStream(project: project, liveStream: liveStream)
+    }
+
+    self.viewModel.outputs.goToLiveStreamCountdown
+      .observeForControllerAction()
+      .observeValues { [weak self] project, liveStream in
+        self?.goToLiveStreamCountdown(project: project, liveStream: liveStream)
+    }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdates(project: $0) }
@@ -86,11 +99,13 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     }
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let (_, rewardOrBacking) = self.dataSource[indexPath] as? (Project, Either<Reward, Backing>) {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
+    } else if let liveStream = self.dataSource.liveStream(forIndexPath: indexPath) {
+      self.viewModel.inputs.tapped(liveStream: liveStream)
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -98,9 +113,9 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  public override func tableView(_ tableView: UITableView,
+                                 willDisplay cell: UITableViewCell,
+                                 forRowAt indexPath: IndexPath) {
 
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
@@ -140,12 +155,35 @@ internal final class ProjectPamphletContentViewController: UITableViewController
     }
   }
 
+  private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
+    let vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream,
+                                                              event: nil, refTag: .projectPage)
+    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    nav.viewControllers = [vc]
+
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
+  }
+
+  private func goToLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+    let vc = LiveStreamCountdownViewController.configuredWith(project: project,
+                                                              liveStream: liveStream,
+                                                              refTag: .projectPage)
+    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
+    nav.viewControllers = [vc]
+
+    DispatchQueue.main.async {
+      self.present(nav, animated: true, completion: nil)
+    }
+  }
+
   fileprivate func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+  override public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
     guard self.scrollingIsAllowed(scrollView) else {
       scrollView.contentOffset = .zero
@@ -207,11 +245,11 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
 
 extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
-  internal func videoViewControllerDidFinish(_ controller: VideoViewController) {
+  public func videoViewControllerDidFinish(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidFinish(controller)
   }
 
-  internal func videoViewControllerDidStart(_ controller: VideoViewController) {
+  public func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
   }
 }

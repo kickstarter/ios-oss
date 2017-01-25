@@ -71,3 +71,5 @@ fastlane/screenshots
 
 # FBSnapshot failures
 Screenshots/FailureDiffs/*
+
+Frameworks/OpenTok/*

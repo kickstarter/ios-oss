@@ -30,15 +30,15 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(cumulative: ProjectStatsEnvelope.CumulativeStats,
-                                project: Project,
-                                referrers: [ProjectStatsEnvelope.ReferrerStats]) {
+                     project: Project,
+                     referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
     self.set(values: [(cumulative, project, referrers)], cellClass: DashboardReferrersCell.self,
              inSection: Section.referrers.rawValue)
   }
 
   internal func load(rewardStats: [ProjectStatsEnvelope.RewardStats],
-                                 project: Project) {
+                     project: Project) {
 
     self.set(values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
              inSection: Section.rewards.rawValue)
@@ -71,9 +71,5 @@ internal final class DashboardDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (\(type(of: cell)), \(type(of: value))) combo.")
     }
-  }
-
-  internal func didSelectContext(at indexPath: IndexPath) -> Bool {
-    return indexPath.section == Section.context.rawValue
   }
 }

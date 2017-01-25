@@ -20,8 +20,8 @@ public protocol DashboardReferrersCellViewModelInputs {
 
   /// Call to configure cell with cumulative and referral stats.
   func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
-                                project: Project,
-                                referrers: [ProjectStatsEnvelope.ReferrerStats])
+                     project: Project,
+                     referrers: [ProjectStatsEnvelope.ReferrerStats])
 
   /// Call when the Percent button is tapped.
   func percentButtonTapped()
@@ -201,13 +201,12 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     self.backersButtonTappedProperty.value = ()
   }
 
-  fileprivate let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
+  private let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
                                                                 Project,
                                                                 [ProjectStatsEnvelope.ReferrerStats])?>(nil)
   public func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
-                                       project: Project,
-                                       referrers: [ProjectStatsEnvelope.ReferrerStats]) {
-
+                            project: Project,
+                            referrers: [ProjectStatsEnvelope.ReferrerStats]) {
     self.cumulativeProjectStatsProperty.value = (cumulative, project, referrers)
   }
 

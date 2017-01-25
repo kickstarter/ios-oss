@@ -1,6 +1,7 @@
 import AVFoundation
 import Foundation
 import KsApi
+import LiveStream
 import ReactiveSwift
 import Result
 import FBSDKCoreKit
@@ -57,6 +58,9 @@ public struct Environment {
   /// The current set of launched countries for Kickstarter.
   public let launchedCountries: LaunchedCountries
 
+  /// The current service being used for live stream requests.
+  public let liveStreamService: LiveStreamServiceProtocol
+
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `Locale.current`.
   public let locale: Locale
@@ -70,9 +74,6 @@ public struct Environment {
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateSchedulerProtocol
-
-  /// The user’s timezone. Default value is `TimeZone.local`.
-  public let timeZone: TimeZone
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
@@ -97,11 +98,11 @@ public struct Environment {
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
+    liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateSchedulerProtocol = QueueScheduler.main,
-    timeZone: TimeZone = .current,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
     userDefaults: KeyValueStoreType = UserDefaults.standard) {
 
@@ -121,11 +122,11 @@ public struct Environment {
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
+    self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle
     self.reachability = reachability
     self.scheduler = scheduler
-    self.timeZone = timeZone
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
   }
