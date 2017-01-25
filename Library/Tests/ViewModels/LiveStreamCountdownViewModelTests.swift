@@ -208,7 +208,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
                                                                                     as: String.self))
     XCTAssertEqual([nil, "live_stream_countdown"], self.trackingClient.properties(forKey: "type",
                                                                              as: String.self))
-    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Double.self))
   }
 
   func testCategoryId() {

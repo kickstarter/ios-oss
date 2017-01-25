@@ -428,15 +428,15 @@ final class KoalaTests: TestCase {
     koala.trackClosedLiveStream(
       project: .template,
       liveStream: liveStream,
-      startDate: MockDate().date,
-      endDate: MockDate().addingTimeInterval(300).date,
+      startTime: MockDate().date.timeIntervalSince1970,
+      endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
     )
 
     XCTAssertEqual(["Closed Live Stream"], client.events)
     XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
     XCTAssertEqual(["live_stream_live"], client.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([300], client.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([300], client.properties(forKey: "duration", as: Double.self))
   }
 
   func testTrackClosedLiveStreamCountdown() {
@@ -450,15 +450,15 @@ final class KoalaTests: TestCase {
     koala.trackClosedLiveStream(
       project: .template,
       liveStream: liveStream,
-      startDate: MockDate().date,
-      endDate: MockDate().addingTimeInterval(300).date,
+      startTime: MockDate().date.timeIntervalSince1970,
+      endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
     )
 
     XCTAssertEqual(["Closed Live Stream"], client.events)
     XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
     XCTAssertEqual(["live_stream_countdown"], client.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([300], client.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([300], client.properties(forKey: "duration", as: Double.self))
   }
 
   func testTrackClosedLiveStreamReplay() {
@@ -472,15 +472,15 @@ final class KoalaTests: TestCase {
     koala.trackClosedLiveStream(
       project: .template,
       liveStream: liveStream,
-      startDate: MockDate().date,
-      endDate: MockDate().addingTimeInterval(300).date,
+      startTime: MockDate().date.timeIntervalSince1970,
+      endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
     )
 
     XCTAssertEqual(["Closed Live Stream"], client.events)
     XCTAssertEqual(["project_page"], client.properties(forKey: "ref_tag", as: String.self))
     XCTAssertEqual(["live_stream_replay"], client.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([300], client.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([300], client.properties(forKey: "duration", as: Double.self))
   }
 
   func testTrackViewedLiveStream() {

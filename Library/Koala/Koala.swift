@@ -1593,19 +1593,16 @@ public final class Koala {
 
   public func trackClosedLiveStream(project: Project,
                                     liveStream: Project.LiveStream,
-                                    startDate: Date,
-                                    endDate: Date,
+                                    startTime: TimeInterval,
+                                    endTime: TimeInterval,
                                     refTag: RefTag) {
-    let context = stateContext(forLiveStream: liveStream)
-
-    let duration = AppEnvironment.current.calendar
-      .dateComponents([.second], from: startDate, to: endDate).second ?? 0
-
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStream: liveStream))
-      .withAllValuesFrom(["ref_tag": refTag.stringTag])
-      .withAllValuesFrom(["type": context.trackingString])
-      .withAllValuesFrom(["duration": duration])
+      .withAllValuesFrom([
+        "ref_tag": refTag.stringTag,
+        "type": stateContext(forLiveStream: liveStream).trackingString,
+        "duration": max(0, endTime - startTime)
+      ])
 
     self.track(event: "Closed Live Stream", properties: props)
   }

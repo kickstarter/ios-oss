@@ -403,7 +403,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                                                                     as: String.self))
     XCTAssertEqual([nil, "live_stream_live"], self.trackingClient.properties(forKey: "type",
                                                                                as: String.self))
-    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Double.self))
   }
 
   func testTrackClosedLiveStreamReplay() {
@@ -435,7 +435,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                                                                     as: String.self))
     XCTAssertEqual([nil, "live_stream_replay"], self.trackingClient.properties(forKey: "type",
                                                                                as: String.self))
-    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Double.self))
   }
 
   func testTrackLiveStreamOrientationChanged() {

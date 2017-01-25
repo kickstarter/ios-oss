@@ -243,12 +243,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
-    let startEndDates = Signal.zip(
-      configData.map { _ in AppEnvironment.current.scheduler.currentDate },
-      self.closeButtonTappedProperty.signal
-        .map { _ in AppEnvironment.current.scheduler.currentDate }
-    )
-
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
@@ -258,16 +252,22 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
                                                                        toOrientation: orientation)
     }
 
-    Signal.combineLatest(configData, startEndDates)
+    let startEndTimes = Signal.zip(
+      configData.map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 },
+      self.closeButtonTappedProperty.signal
+        .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
+    )
+
+    Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)
-      .map(unpack)
-      .map { (configData, startDate, endDate) in
-        (configData.0, configData.1, configData.3, startDate, endDate) }
-      .observeValues { (project, liveStream, refTag, startDate, endDate) in
+      .observeValues { (configData, startEndTimes) in
+        let (project, liveStream, _, refTag) = configData
+        let (startTime, endTime) = startEndTimes
+
         AppEnvironment.current.koala.trackClosedLiveStream(project: project,
                                                            liveStream: liveStream,
-                                                           startDate: startDate,
-                                                           endDate: endDate,
+                                                           startTime: startTime,
+                                                           endTime: endTime,
                                                            refTag: refTag)
     }
 
