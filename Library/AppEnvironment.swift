@@ -101,7 +101,7 @@ public struct AppEnvironment {
                // swiftlint:disable line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
                // swiftlint:enable line_length
-               cache: KSCache = KSCache(),
+               cache: KSCache = AppEnvironment.current.cache,
                calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
@@ -158,7 +158,7 @@ public struct AppEnvironment {
                apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
                // swiftlint:disable:next line_length
                assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-               cache: KSCache = KSCache(),
+               cache: KSCache = AppEnvironment.current.cache,
                calendar: Calendar = AppEnvironment.current.calendar,
                config: Config? = AppEnvironment.current.config,
                cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
