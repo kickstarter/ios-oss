@@ -93,7 +93,7 @@ public protocol AppDelegateViewModelOutputs {
   var goToDiscovery: Signal<DiscoveryParams?, NoError> { get }
 
   /// Emits everything needed to go a particular live stream of a project.
-  var goToLiveStream: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError> { get }
+  var goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), NoError> { get }
@@ -625,7 +625,7 @@ AppDelegateViewModelOutputs {
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
-  public let goToLiveStream: Signal<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError>
+  public let goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError>
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
@@ -853,7 +853,7 @@ extension ShortcutItem {
 }
 
 private func liveStreamData(fromNavigation nav: Navigation)
-  -> SignalProducer<(Project, Project.LiveStream, LiveStreamEvent, RefTag?), NoError> {
+  -> SignalProducer<(Project, LiveStreamEvent, RefTag?), NoError> {
 
     guard case let .project(projectParam, .liveStream(eventId), refTag) = nav else { return .empty }
 
@@ -865,9 +865,8 @@ private func liveStreamData(fromNavigation nav: Navigation)
         .fetchEvent(eventId: eventId, uid: AppEnvironment.current.currentUser?.id)
         .demoteErrors()
       )
-      .map { project, liveStreamEvent -> (Project, Project.LiveStream, LiveStreamEvent, RefTag?)? in
-        guard let liveStream = project.liveStreams?.first(where: { $0.id == eventId }) else { return nil }
-        return (project, liveStream, liveStreamEvent, refTag)
+      .map { project, liveStreamEvent -> (Project, LiveStreamEvent, RefTag?)? in
+        return (project, liveStreamEvent, refTag)
       }
       .skipNil()
 }

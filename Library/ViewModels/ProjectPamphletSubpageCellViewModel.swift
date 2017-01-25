@@ -51,7 +51,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     let liveStreamSubpage = self.subpageProperty.signal.skipNil().filter { $0.isLiveStream }
     let updatesSubpage = self.subpageProperty.signal.skipNil().filter { $0.isUpdates }
 
-    let liveStreamDetail = liveStreamSubpage.map { $0.liveStream }.skipNil()
+    let liveStreamDetail = liveStreamSubpage.map { $0.liveStreamEvent }.skipNil()
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
@@ -189,9 +189,9 @@ public enum ProjectPamphletSubpage {
     }
   }
 
-  public var liveStream: LiveStreamEvent? {
-    if case .liveStream(let liveStream, _) = self {
-      return liveStream
+  public var liveStreamEvent: LiveStreamEvent? {
+    if case .liveStream(let liveStreamEvent, _) = self {
+      return liveStreamEvent
     }
     return nil
   }

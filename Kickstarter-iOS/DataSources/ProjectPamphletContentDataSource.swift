@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import LiveStream
 import Prelude
 
 internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
@@ -21,7 +22,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
-    let liveStreamSubpages = self.liveStreamSubpage(forProject: project)
+    //FIXME: 
+    let liveStreamSubpages = [ProjectPamphletSubpage]()
 
     let values = liveStreamSubpages + [
       .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
@@ -56,15 +58,15 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
-  private func liveStreamSubpage(forProject project: Project) -> [ProjectPamphletSubpage] {
+  private func liveStreamSubpage(forLiveStreams liveStreams: [LiveStreamEvent]) -> [ProjectPamphletSubpage] {
 
     guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
 
-    let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+    let now = AppEnvironment.current.dateType.init().date
 
     // Compares two live streams, putting live ones first.
-    let currentlyLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
-      switch (lhs.isLiveNow, rhs.isLiveNow) {
+    let currentlyLiveStreamsFirstComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
+      switch (lhs.stream.liveNow, rhs.stream.liveNow) {
       case (true, false):                 return .lt
       case (false, true):                 return .gt
       case (true, true), (false, false):  return .eq
@@ -72,17 +74,20 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
 
     // Compares two live streams, putting the future ones first.
-    let futureLiveStreamsFirstComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
-      lhs.startDate > now && rhs.startDate > now || lhs.startDate < now && rhs.startDate < now
-        ? .eq : lhs.startDate < rhs.startDate ? .gt
+    let futureLiveStreamsFirstComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
+      lhs.stream.startDate > now && rhs.stream.startDate > now
+        || lhs.stream.startDate < now && rhs.stream.startDate < now
+        ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .gt
         : .lt
     }
 
     // Compares two live streams, putting soon-to-be-live first and way-back past last.
-    let startDateComparator = Prelude.Comparator<Project.LiveStream> { lhs, rhs in
-      lhs.startDate > now
-        ? (lhs.startDate == rhs.startDate ? .eq : lhs.startDate < rhs.startDate ? .lt: .gt)
-        : (lhs.startDate == rhs.startDate ? .eq : lhs.startDate < rhs.startDate ? .gt: .lt)
+    let startDateComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
+      lhs.stream.startDate > now
+        ? (lhs.stream.startDate == rhs.stream.startDate
+          ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .lt: .gt)
+        : (lhs.stream.startDate == rhs.stream.startDate
+          ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .gt: .lt)
     }
 
     // Sort by:
@@ -93,11 +98,11 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       <> futureLiveStreamsFirstComparator
       <> startDateComparator
 
-    return (project.liveStreams ?? [])
+    return liveStreams
       .sorted(comparator: comparator)
       .enumerated()
-      .map { idx, liveStream in
-        ProjectPamphletSubpage.liveStream(liveStream: liveStream, idx == 0 ? .first : .middle)
+      .map { idx, liveStreamEvent in
+        ProjectPamphletSubpage.liveStream(liveStreamEvent: liveStreamEvent, idx == 0 ? .first : .middle)
     }
   }
 
@@ -117,8 +122,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isLiveStream == true
   }
 
-  internal func liveStream(forIndexPath indexPath: IndexPath) -> Project.LiveStream? {
-    return (self[indexPath] as? ProjectPamphletSubpage)?.liveStream
+  internal func liveStream(forIndexPath indexPath: IndexPath) -> LiveStreamEvent? {
+    return (self[indexPath] as? ProjectPamphletSubpage)?.liveStreamEvent
   }
 
   internal func indexPathIsPledgeAnyAmountCell(_ indexPath: IndexPath) -> Bool {

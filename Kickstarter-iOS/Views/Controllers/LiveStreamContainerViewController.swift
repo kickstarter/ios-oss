@@ -44,16 +44,14 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    event: LiveStreamEvent?,
+                                    liveStreamEvent: LiveStreamEvent,
                                     refTag: RefTag) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
-                                      liveStream: liveStream,
-                                      event: event,
+                                      liveStreamEvent: liveStreamEvent,
                                       refTag: refTag)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
 
     return vc
   }
@@ -307,8 +305,9 @@ public final class LiveStreamContainerViewController: UIViewController {
         )
     }
 
-    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues { [weak self] in self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0) }
+    //FIXME:
+//    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
+//      .observeValues { [weak self] in self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0) }
 
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()

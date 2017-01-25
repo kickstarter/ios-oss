@@ -39,12 +39,12 @@ public final class LiveStreamCountdownViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream,
+                                    liveStreamEvent: LiveStreamEvent,
                                     refTag: RefTag) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, refTag: refTag)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+    vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
 
     return vc
   }
@@ -265,10 +265,11 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
 
-    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues { [weak self] in
-        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
-    }
+    //FIXME:
+//    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
+//      .observeValues { [weak self] in
+//        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
+//    }
 
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
@@ -303,9 +304,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream, event, refTag in
+      .observeValues { [weak self] project, liveStreamEvent, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event, refTag: refTag)
+          .configuredWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
