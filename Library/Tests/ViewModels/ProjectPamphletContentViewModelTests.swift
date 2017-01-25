@@ -119,7 +119,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToLiveStreamCountdown() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
       |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(60)
 

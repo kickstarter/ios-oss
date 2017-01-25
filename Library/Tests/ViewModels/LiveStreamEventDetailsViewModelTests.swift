@@ -215,6 +215,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.user.isSubscribed .~ false
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
 
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
