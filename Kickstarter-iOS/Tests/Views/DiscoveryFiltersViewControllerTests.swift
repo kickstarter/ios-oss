@@ -83,7 +83,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.staffPicks .~ true
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
@@ -98,7 +98,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.staffPicks .~ true
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1500
@@ -113,7 +113,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.category .~ .illustration
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
@@ -128,7 +128,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.category .~ .illustration
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
@@ -143,7 +143,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.category .~ .documentary
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: documentarySelectableRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
@@ -158,7 +158,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
       |> SelectableRow.lens.params.category .~ .tabletopGames
 
     Language.allLanguages.forEach { language in
-      withEnvironment(cache: self.cache, language: language) {
+      withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: gamesSelectableRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
