@@ -88,7 +88,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.fundingTitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
-    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlMed
     self.projectLabel.rac.text = self.viewModel.outputs.projectNameLabelText
   }
 }

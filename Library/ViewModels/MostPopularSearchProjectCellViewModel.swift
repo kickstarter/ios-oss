@@ -28,11 +28,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     let project = self.projectProperty.signal.skipNil()
 
     let deadlineTitleAndSubtitle = project
-      .map {
-        $0.state == .live
-          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
-          : ("", "")
-    }
+      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)

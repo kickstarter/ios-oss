@@ -12,7 +12,8 @@ public protocol SearchProjectCellViewModelOutputs {
   var deadlineTitleLabelText: Signal<String, NoError> { get }
   var fundingSubtitleLabelText: Signal<String, NoError> { get }
   var fundingTitleLabelText: Signal<String, NoError> { get }
-  var projectImageUrl: Signal<URL?, NoError> { get }
+  var projectImageUrlMed: Signal<URL?, NoError> { get }
+  var projectImageUrlFull: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
 }
 
@@ -42,9 +43,11 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
     self.fundingTitleLabelText = fundingTitleAndSubtitleText.map { title, _ in title ?? ""}
     self.fundingSubtitleLabelText = fundingTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
-    self.projectNameLabelText = project.map { $0.name }
+    self.projectImageUrlMed = project.map { URL(string: $0.photo.med) }
 
-    self.projectImageUrl = project.map { URL(string: $0.photo.med)}
+    self.projectImageUrlFull = project.map { URL(string: $0.photo.full) }
+
+    self.projectNameLabelText = project.map { $0.name }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -56,7 +59,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingTitleLabelText: Signal<String, NoError>
   public let fundingSubtitleLabelText: Signal<String, NoError>
-  public let projectImageUrl: Signal<URL?, NoError>
+  public let projectImageUrlMed: Signal<URL?, NoError>
+  public let projectImageUrlFull: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 
   public var inputs: SearchProjectCellViewModelInputs { return self }
