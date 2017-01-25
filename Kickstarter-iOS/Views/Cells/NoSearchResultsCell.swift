@@ -44,6 +44,6 @@ internal final class NoSearchResultsCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.searchTermNotFoundLabel.rac.text = self.viewModel.outputs.searchTermNotFound
+    self.searchTermNotFoundLabel.rac.text = self.viewModel.outputs.searchTermNotFoundLabelText
   }
 }

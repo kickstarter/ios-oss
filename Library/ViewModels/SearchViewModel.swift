@@ -126,7 +126,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
-    let shouldShowNoSearchResults = Signal.combineLatest(isLoading, .merge(clears, projects))
+    let shouldShowNoSearchResults = Signal.combineLatest(isLoading, projects)
       .map { isLoading, searchResults in !isLoading && searchResults.isEmpty }
       .skipRepeats()
 
