@@ -4,12 +4,15 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
+@testable import LiveStream
 @testable import ReactiveExtensions_TestHelpers
 
 final class ProjectPamphletViewModelTests: TestCase {
   fileprivate var vm: ProjectPamphletViewModelType!
 
   fileprivate let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
+  fileprivate let configureChildViewControllersWithLiveStreamEvents =
+    TestObserver<[LiveStreamEvent], NoError>()
   fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let setNavigationBarHidden = TestObserver<Bool, NoError>()
   fileprivate let setNavigationBarAnimated = TestObserver<Bool, NoError>()
@@ -20,9 +23,11 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.vm = ProjectPamphletViewModel()
 
-    self.vm.outputs.configureChildViewControllersWithProject.map(first)
+    self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
-    self.vm.outputs.configureChildViewControllersWithProject.map(second)
+    self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(second)
+      .observe(self.configureChildViewControllersWithLiveStreamEvents.observer)
+    self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(third)
       .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
       .observe(self.setNavigationBarHidden.observer)
@@ -41,11 +46,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[]])
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], []])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -58,11 +65,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.configureChildViewControllersWithProject.assertValues([])
     self.configureChildViewControllersWithRefTag.assertValues([])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([])
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([nil])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[]])
   }
 
   func testStatusBar() {

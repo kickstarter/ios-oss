@@ -17,13 +17,13 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     self.set(values: [project], cellClass: ProjectPamphletMinimalCell.self, inSection: Section.main.rawValue)
   }
 
-  internal func load(project: Project) {
+  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent]) {
     self.clearValues()
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
     //FIXME: 
-    let liveStreamSubpages = [ProjectPamphletSubpage]()
+    let liveStreamSubpages = self.liveStreamSubpages(forLiveStreamEvents: liveStreamEvents)
 
     let values = liveStreamSubpages + [
       .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
@@ -58,7 +58,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
-  private func liveStreamSubpage(forLiveStreams liveStreams: [LiveStreamEvent]) -> [ProjectPamphletSubpage] {
+  private func liveStreamSubpages(forLiveStreamEvents liveStreamEvents: [LiveStreamEvent]) ->
+    [ProjectPamphletSubpage] {
 
     guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
 
@@ -98,7 +99,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       <> futureLiveStreamsFirstComparator
       <> startDateComparator
 
-    return liveStreams
+    return liveStreamEvents
       .sorted(comparator: comparator)
       .enumerated()
       .map { idx, liveStreamEvent in

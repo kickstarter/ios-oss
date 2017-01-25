@@ -58,10 +58,10 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configureChildViewControllersWithProject
+    self.viewModel.outputs.configureChildViewControllersWithProjectAndLiveStreams
       .observeForUI()
-      .observeValues { [weak self] project, refTag in
-        self?.contentController.configureWith(project: project)
+      .observeValues { [weak self] project, liveStreamEvents, refTag in
+        self?.contentController.configureWith(project: project, liveStreamEvents: liveStreamEvents)
         self?.navBarController.configureWith(project: project, refTag: refTag)
     }
 

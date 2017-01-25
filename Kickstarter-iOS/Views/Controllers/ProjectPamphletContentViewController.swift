@@ -1,8 +1,8 @@
 import KsApi
+import LiveStream
 import Library
 import Prelude
 import Prelude_UIKit
-import LiveStream
 
 public protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
@@ -16,8 +16,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   fileprivate var navBarController: ProjectNavBarViewController!
 
-  internal func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent]) {
+    self.viewModel.inputs.configureWith(project: project, liveStreamEvents: liveStreamEvents)
   }
 
   public override func viewDidLoad() {
@@ -54,10 +54,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectIntoDataSource
+    self.viewModel.outputs.loadProjectAndLiveStreamsIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.dataSource.load(project: project)
+      .observeValues { [weak self] project, liveStreamEvents in
+        self?.dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
         self?.tableView.reloadData()
     }
 

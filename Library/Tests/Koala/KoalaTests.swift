@@ -93,17 +93,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("tvos", client.properties.last!["client_platform"] as? String)
   }
 
-  //FIXME: update to work with LiveStreamEvent
   func testTrackProject() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-//      |> Project.lens.liveStreams .~ [
-//        .template
-//          |> Project.LiveStream.lens.isLiveNow .~ true
-//    ]
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: .discovery,
+                           cookieRefTag: .recommended)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -146,8 +143,9 @@ final class KoalaTests: TestCase {
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -164,8 +162,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -182,8 +181,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isStarred .~ true
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -200,8 +200,9 @@ final class KoalaTests: TestCase {
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -211,14 +212,13 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties["user_has_starred"] as? Bool)
   }
 
-  //FIXME: fix to work with LiveStreamEvent
   func testProjectProperties_LiveStreams_NoLiveStreams() {
     let client = MockTrackingClient()
     let project = Project.template
-//      |> Project.lens.liveStreams .~ nil
     let koala = Koala(client: client)
+    let liveStreamEvents = [LiveStreamEvent]()
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual([nil, nil], client.properties(forKey: "live_stream_type", as: String.self))
   }

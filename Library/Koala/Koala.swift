@@ -1111,15 +1111,15 @@ public final class Koala {
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectShow(_ project: Project,
+                               liveStreamEvents: [LiveStreamEvent]?,
                                refTag: RefTag? = nil,
                                cookieRefTag: RefTag? = nil) {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
-
-    //FIXME: this will need to work differently with LiveStreamEvent
-    //props["live_stream_type"] = prioritizedLivestreamState(fromProject: project)?.trackingString
+    props["live_stream_type"] = prioritizedLiveStreamState(
+      fromLiveStreamEvents: liveStreamEvents)?.trackingString
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1984,14 +1984,15 @@ private func stateContext(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -
   return .countdown
 }
 
-//private func prioritizedLivestreamState(fromProject project: Project) -> LiveStreamStateContext? {
-//
-//  guard let liveStreams = project.liveStreams else { return nil }
-//
-//  return liveStreams.map(stateContext(forLiveStream:))
-//    .sorted()
-//    .first
-//}
+private func prioritizedLiveStreamState(fromLiveStreamEvents liveStreamEvents: [LiveStreamEvent]?) ->
+  LiveStreamStateContext? {
+
+  guard let liveStreamEvents = liveStreamEvents else { return nil }
+
+  return liveStreamEvents.map(stateContext(forLiveStreamEvent:))
+    .sorted()
+    .first
+}
 
 // Simple enum to map states on LiveStreamEvent
 fileprivate enum LiveStreamStateContext: Comparable {

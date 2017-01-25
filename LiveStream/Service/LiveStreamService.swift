@@ -20,7 +20,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .flatMap { "?uid=\($0)" }
         .coalesceWith("")
 
-      let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)\(uidString)"
+      let urlString = "\(Secrets.LiveStreams.eventEndpoint)/\(eventId)\(uidString)"
       guard let url = URL(string: urlString) else {
         observer.send(error: .invalidEventId)
         return
@@ -54,6 +54,53 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       })
     }
   }
+
+  //FIXME: Use envelope approach for full response
+  public func fetchEvents(forProjectId projectId: Int, uid: Int?) -> SignalProducer<[LiveStreamEvent],
+    LiveApiError> {
+
+    return SignalProducer { (observer, disposable) in
+      let uidString = uid
+        .flatMap { "?uid=\($0)" }
+        .coalesceWith("")
+
+      let urlString = "\(Secrets.LiveStreams.projectEndpoint)/\(projectId)\(uidString)"
+      guard let url = URL(string: urlString) else {
+        observer.send(error: .invalidEventId)
+        return
+      }
+
+      let urlSession = URLSession(configuration: .default)
+
+      let task = urlSession.dataTask(with: url) { data, _, error in
+        guard error == nil else {
+          observer.send(error: .genericFailure)
+          return
+        }
+
+        let events = data
+          .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+          .flatMap { $0 as? [String:Any] }
+          .flatMap { $0["live_streams"] as? [[String:Any]] }
+          .map(JSON.init)
+          .map([LiveStreamEvent].decode)
+          .flatMap { $0.value }
+          .map(Event<[LiveStreamEvent], LiveApiError>.value)
+          .coalesceWith(.failed(.genericFailure))
+
+        observer.action(events)
+        observer.sendCompleted()
+      }
+
+      task.resume()
+
+      disposable.add({
+        task.cancel()
+        observer.sendInterrupted()
+      })
+    }
+  }
+
   public func initializeDatabase(userId: Int?,
                                  failed: (Void) -> Void,
                                  succeeded: (FIRDatabaseReference) -> Void) {
@@ -80,7 +127,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer { (observer, disposable) in
 
-        let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)/subscribe"
+        let urlString = "\(Secrets.LiveStreams.eventEndpoint)/\(eventId)/subscribe"
         guard let url = URL(string: urlString) else {
           observer.send(error: .invalidEventId)
           return

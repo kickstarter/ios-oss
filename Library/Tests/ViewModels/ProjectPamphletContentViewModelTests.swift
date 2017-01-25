@@ -19,7 +19,9 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let goToRewardPledgeProject = TestObserver<Project, NoError>()
   fileprivate let goToRewardPledgeReward = TestObserver<Reward, NoError>()
   fileprivate let goToUpdates = TestObserver<Project, NoError>()
-  fileprivate let loadProjectIntoDataSource = TestObserver<Project, NoError>()
+  fileprivate let loadProjectAndLiveStreamsIntoDataSourceProject = TestObserver<Project, NoError>()
+  fileprivate let loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents =
+    TestObserver<[LiveStreamEvent], NoError>()
   fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
 
   override func setUp() {
@@ -34,7 +36,10 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.outputs.goToRewardPledge.map(first).observe(self.goToRewardPledgeProject.observer)
     self.vm.outputs.goToRewardPledge.map(second).observe(self.goToRewardPledgeReward.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
-    self.vm.outputs.loadProjectIntoDataSource.observe(self.loadProjectIntoDataSource.observer)
+    self.vm.outputs.loadProjectAndLiveStreamsIntoDataSource.map(first).observe(
+      self.loadProjectAndLiveStreamsIntoDataSourceProject.observer)
+    self.vm.outputs.loadProjectAndLiveStreamsIntoDataSource.map(second).observe(
+      self.loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents.observer)
     self.vm.outputs.loadMinimalProjectIntoDataSource.observe(self.loadMinimalProjectIntoDataSource.observer)
   }
 
@@ -45,7 +50,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = Backing.template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -58,7 +63,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToComments() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -73,7 +78,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let liveStreamEvent = LiveStreamEvent.template
       |> LiveStreamEvent.lens.stream.liveNow .~ true
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -98,7 +103,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(-60)
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -123,7 +128,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(60)
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -145,7 +150,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -160,7 +165,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -176,7 +181,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ 0
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -193,7 +198,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = .template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -210,7 +215,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = .template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -228,7 +233,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = .template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -248,7 +253,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
           |> Backing.lens.reward .~ .noReward
     )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -268,7 +273,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
           |> Backing.lens.reward .~ .template
     )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -284,7 +289,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -300,7 +305,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
     let reward = Reward.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -318,7 +323,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = .template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -336,7 +341,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     let backing = .template
       |> Backing.lens.reward .~ reward
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -350,7 +355,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToUpdates() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
@@ -363,30 +368,32 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testLoadProjectIntoDataSource_WhenPresentingProject() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
 
-    self.loadProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([], "Nothing emits immediately.")
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
 
     // Begin presentation. When presenting the project `animated` will be false since it is embedded in the
     // navigator controller.
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Load the full project into the data source.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject
+      .assertValues([project], "Load the full project into the data source.")
     self.loadMinimalProjectIntoDataSource.assertValues([], "Do not load the minimal version of the project.")
 
     // End presentation.
     self.vm.inputs.viewDidAppear(animated: false)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject
+      .assertValues([project], "Nothing new emits when the view is done.")
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
 
     // Simulate a new version of the project coming through
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
-    self.loadProjectIntoDataSource.assertValues(
-      [project, project], "The new project is loaded into data source"
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
+      [project, project, project], "The new project is loaded into data source"
     )
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
   }
@@ -394,34 +401,36 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testLoadProjectIntoDataSource_Swipping() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
 
-    self.loadProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([], "Nothing emits immediately.")
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
 
     // When swiping the project `animated` will be true.
     self.vm.inputs.viewWillAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([], "The full project does not load into the data source.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject
+      .assertValues([], "The full project does not load into the data source.")
     self.loadMinimalProjectIntoDataSource.assertValues(
       [project], "The minimal version of the project loads into the data source."
     )
 
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject
+      .assertValues([project], "Nothing new emits when the view is done.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }
