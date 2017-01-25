@@ -84,21 +84,11 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(event: { [weak self] _ in
-        self?.projectImageView.image = nil
-        self?.projectImageView.af_cancelImageRequest()
-      })
-      .skipNil()
-      .observeValues { [weak self] in
-        self?.projectImageView.af_setImage(withURL: $0)
-    }
-
     self.fundingSubtitleLabel.rac.text = self.viewModel.outputs.fundingSubtitleLabelText
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.fundingTitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
     self.projectLabel.rac.text = self.viewModel.outputs.projectNameLabelText
   }
 }
