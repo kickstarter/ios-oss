@@ -68,7 +68,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    self.cache["discovery_filters_view_model_categories"] = categories
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories
     UIView.setAnimationsEnabled(false)
   }
 

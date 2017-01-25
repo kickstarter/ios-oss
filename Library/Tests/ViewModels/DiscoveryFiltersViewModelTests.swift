@@ -395,7 +395,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testCategoriesFromCache() {
-    self.cache["discovery_filters_view_model_categories"] = categories
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()

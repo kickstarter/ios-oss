@@ -316,12 +316,10 @@ private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
   return faves.isEmpty ? nil : faves
 }
 
-private let categoriesCacheKey: String = "discovery_filters_view_model_categories"
-
 private func cachedCategories() -> [KsApi.Category]? {
-  return AppEnvironment.current.cache[categoriesCacheKey] as? [KsApi.Category]
+  return AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] as? [KsApi.Category]
 }
 
 private func cache(categories: [KsApi.Category]) {
-  AppEnvironment.current.cache[categoriesCacheKey] = categories
+  AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
