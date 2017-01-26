@@ -10,8 +10,8 @@ public protocol SearchProjectCellViewModelInputs {
 public protocol SearchProjectCellViewModelOutputs {
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
-  var fundingSubtitleLabelText: Signal<String, NoError> { get }
-  var fundingTitleLabelText: Signal<String, NoError> { get }
+  var fundingLargeLabelText: Signal<NSAttributedString, NoError> { get }
+  var fundingSmallLabelText: Signal<NSAttributedString, NoError> { get }
   var projectImageUrlMed: Signal<URL?, NoError> { get }
   var projectImageUrlFull: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
@@ -34,14 +34,29 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
-    let fundingTitleAndSubtitleText = project.map { project -> (String?, String?) in
-      let string = Strings.percentage_funded(percentage: Format.percentage(project.stats.percentFunded))
-      let parts = string.characters.split(separator: " ").map(String.init)
-      return (parts.first, parts.last)
+    self.fundingLargeLabelText = project.map {
+      let string = Strings.percentage_funded(percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
+      return string.simpleHtmlAttributedString(base: [
+        NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
+        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        ],
+        bold: [
+          NSFontAttributeName: UIFont.ksr_headline(size: 14.0),
+          NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+        ]) ?? NSAttributedString(string: "")
     }
 
-    self.fundingTitleLabelText = fundingTitleAndSubtitleText.map { title, _ in title ?? ""}
-    self.fundingSubtitleLabelText = fundingTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
+    self.fundingSmallLabelText = project.map {
+      let string = Strings.percentage_funded(percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
+      return string.simpleHtmlAttributedString(base: [
+        NSFontAttributeName: UIFont.ksr_subhead(size: 13.0),
+        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        ],
+                                               bold: [
+                                                NSFontAttributeName: UIFont.ksr_headline(size: 13.0),
+                                                NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+        ]) ?? NSAttributedString(string: "")
+    }
 
     self.projectImageUrlMed = project.map { URL(string: $0.photo.med) }
 
@@ -57,8 +72,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
 
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
-  public let fundingTitleLabelText: Signal<String, NoError>
-  public let fundingSubtitleLabelText: Signal<String, NoError>
+  public let fundingLargeLabelText: Signal<NSAttributedString, NoError>
+  public let fundingSmallLabelText: Signal<NSAttributedString, NoError>
   public let projectImageUrlMed: Signal<URL?, NoError>
   public let projectImageUrlFull: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>

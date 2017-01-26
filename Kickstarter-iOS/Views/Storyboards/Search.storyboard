@@ -95,7 +95,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yh6-Kf-dJc">
-                                                    <rect key="frame" x="8" y="59" width="158.5" height="17"/>
+                                                    <rect key="frame" x="8" y="59" width="112.5" height="17"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="75%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Knh-k9-dKO">
                                                             <rect key="frame" x="0.0" y="0.0" width="27.5" height="17"/>
@@ -103,20 +103,14 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="funded" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ln9-f1-TmM">
-                                                            <rect key="frame" x="27.5" y="0.0" width="46" height="17"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wtk-WC-e5G">
-                                                            <rect key="frame" x="73.5" y="0.0" width="17.5" height="17"/>
+                                                            <rect key="frame" x="27.5" y="0.0" width="17.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days to go" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pn1-pb-AIc">
-                                                            <rect key="frame" x="91" y="0.0" width="67.5" height="17"/>
+                                                            <rect key="frame" x="45" y="0.0" width="67.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -164,7 +158,6 @@
                                     <outlet property="cardView" destination="aeT-ym-cX5" id="wQc-qq-RhJ"/>
                                     <outlet property="deadlineSubtitleLabel" destination="Pn1-pb-AIc" id="pPO-FW-bec"/>
                                     <outlet property="deadlineTitleLabel" destination="wtk-WC-e5G" id="89E-nQ-YM1"/>
-                                    <outlet property="fundingSubtitleLabel" destination="Ln9-f1-TmM" id="JfK-ub-lOn"/>
                                     <outlet property="fundingTitleLabel" destination="Knh-k9-dKO" id="r2h-Lk-EKG"/>
                                     <outlet property="projectImageView" destination="gml-Ym-1bl" id="gSK-Wu-DR1"/>
                                     <outlet property="projectInfoOverlayView" destination="xnf-rz-KkX" id="Fgv-wa-3tR"/>
@@ -205,7 +198,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a95-YE-evX">
-                                                            <rect key="frame" x="8" y="34" width="138" height="18"/>
+                                                            <rect key="frame" x="8" y="34" width="98" height="18"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="75%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYI-q3-lWp">
                                                                     <rect key="frame" x="0.0" y="0.0" width="24" height="18"/>
@@ -213,20 +206,14 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sYe-Fv-0w9">
-                                                                    <rect key="frame" x="24" y="0.0" width="40" height="18"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAv-H2-A4X">
-                                                                    <rect key="frame" x="64" y="0.0" width="15" height="18"/>
+                                                                    <rect key="frame" x="24" y="0.0" width="15" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days to go" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2v-lu-hrL">
-                                                                    <rect key="frame" x="79" y="0.0" width="59" height="18"/>
+                                                                    <rect key="frame" x="39" y="0.0" width="59" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -273,7 +260,6 @@
                                     <outlet property="columnsStackView" destination="7Bu-Q1-vRs" id="KFD-Fm-ZwH"/>
                                     <outlet property="deadlineSubtitleLabel" destination="z2v-lu-hrL" id="SbE-Qf-de7"/>
                                     <outlet property="deadlineTitleLabel" destination="cAv-H2-A4X" id="Vj0-Od-zbI"/>
-                                    <outlet property="fundingSubtitleLabel" destination="sYe-Fv-0w9" id="ozk-YB-SpP"/>
                                     <outlet property="fundingTitleLabel" destination="dYI-q3-lWp" id="XLp-wi-fZ0"/>
                                     <outlet property="imageShadowView" destination="3Ie-p2-cOs" id="BU8-BU-Wek"/>
                                     <outlet property="projectImageView" destination="o5j-hv-hBJ" id="2O0-NT-KAj"/>

@@ -8,7 +8,6 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: SearchProjectCellViewModelType = SearchProjectCellViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
@@ -38,16 +37,13 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyle()
 
-    _ = [self.fundingSubtitleLabel, self.deadlineSubtitleLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 14)
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_500
+    _ = self.deadlineSubtitleLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    _ = [self.fundingTitleLabel, self.deadlineTitleLabel]
-      ||> UILabel.lens.font .~ .ksr_headline(size: 14)
-
-    _ = self.fundingTitleLabel |> UILabel.lens.textColor .~ .ksr_text_green_700
-
-    _ = self.deadlineTitleLabel |> UILabel.lens.textColor .~ .ksr_text_navy_700
+    _ = self.deadlineTitleLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
 
@@ -84,8 +80,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.fundingSubtitleLabel.rac.text = self.viewModel.outputs.fundingSubtitleLabelText
-    self.fundingTitleLabel.rac.text = self.viewModel.outputs.fundingTitleLabelText
+    self.fundingTitleLabel.rac.attributedText = self.viewModel.outputs.fundingLargeLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlFull

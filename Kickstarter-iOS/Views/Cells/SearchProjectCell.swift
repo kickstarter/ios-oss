@@ -13,7 +13,6 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectLabel: UILabel!
   @IBOutlet fileprivate weak var projectNameContainerView: UIView!
   @IBOutlet fileprivate weak var separateView: UIView!
-  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
@@ -35,16 +34,13 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    _ = [self.fundingSubtitleLabel, self.deadlineSubtitleLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 13)
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_500
+    _ = self.deadlineSubtitleLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    _ = [self.fundingTitleLabel, self.deadlineTitleLabel]
-      ||> UILabel.lens.font .~ .ksr_headline(size: 13)
-
-    _ = self.fundingTitleLabel |> UILabel.lens.textColor .~ .ksr_text_green_700
-
-    _ = self.deadlineTitleLabel |> UILabel.lens.textColor .~ .ksr_text_navy_700
+    _ =  self.deadlineTitleLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.columnsStackView
       |> UIStackView.lens.alignment .~ .top
@@ -84,8 +80,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.fundingSubtitleLabel.rac.text = self.viewModel.outputs.fundingSubtitleLabelText
-    self.fundingTitleLabel.rac.text = self.viewModel.outputs.fundingTitleLabelText
+    self.fundingTitleLabel.rac.attributedText = self.viewModel.outputs.fundingSmallLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlMed
