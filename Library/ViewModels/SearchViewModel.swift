@@ -123,7 +123,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.projects = Signal.combineLatest(self.isPopularTitleVisible, popular, .merge(clears, paginatedProjects))
+    self.projects =
+      Signal.combineLatest(self.isPopularTitleVisible, popular, .merge(clears, paginatedProjects))
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
