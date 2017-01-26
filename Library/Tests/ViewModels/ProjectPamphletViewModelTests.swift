@@ -116,7 +116,6 @@ final class ProjectPamphletViewModelTests: TestCase {
 
    //Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
   func testTracksRefTag() {
-    //FIXME: lensing in empty liveStreams was removed here, does the test still make sense?
     let project = Project.template
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
@@ -170,7 +169,6 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testTracksRefTag_WithBadData() {
-    //FIXME: lensing in empty liveStreams was removed here, does the test still make sense?
     let project = Project.template
 
     self.vm.inputs.configureWith(

@@ -31,20 +31,11 @@ public protocol LiveStreamEventDetailsViewModelInputs {
 }
 
 public protocol LiveStreamEventDetailsViewModelOutputs {
-  /// Emits when the main activity indicator should animate (when the event is being fetched)
-  var animateActivityIndicator: Signal<Bool, NoError> { get }
-
   /// Emits when the subscribe button's activity indicator should animate
   var animateSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
 
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
-
-  /// Emits with the Project and LiveStreamEvent for configuring the ShareViewModel
-  var configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError> { get }
-
-  /// Emits when the details stack view should be hidden
-  var detailsStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the title of the LiveStreamEvent
   var liveStreamTitle: Signal<String, NoError> { get }
@@ -57,9 +48,6 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 
   /// Emits when the LoginToutViewController should open (login to subscribe)
   var openLoginToutViewController: Signal<(), NoError> { get }
-
-  /// Emits when the share button should be enabled
-  var shareButtonEnabled: Signal<Bool, NoError> { get }
 
   /// Emits when an error has occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -94,13 +82,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       )
       .map(first)
 
-    let project = configData.map(first)
-
     let event = configData.map(second)
-
-    self.configureShareViewModel = Signal.combineLatest(project, event)
-
-    self.shareButtonEnabled = self.configureShareViewModel.mapConst(true)
 
     let subscribedProperty = MutableProperty(false)
 
@@ -163,9 +145,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .filter { $0.error != nil }
       .mapConst(Strings.Failed_to_update_subscription())
 
-    //FIXME: is this needed now at all?
-    self.animateActivityIndicator = event.mapConst(false)
-
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
       subscribeIntent.filter { AppEnvironment.current.currentUser != nil }.mapConst(true),
       self.subscribeButtonTappedProperty.signal
@@ -177,11 +156,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.subscribeLabelHidden = Signal.merge(
       Signal.combineLatest(self.animateSubscribeButtonActivityIndicator, subscribed).map { $0 || $1 },
       subscribed
-    ).skipRepeats()
-
-    self.detailsStackViewHidden = Signal.merge(
-      self.showErrorAlert.mapConst(true),
-      self.animateActivityIndicator
     ).skipRepeats()
 
     self.numberOfPeopleWatchingText = Signal.merge(
@@ -246,17 +220,13 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.viewDidLoadProperty.value = ()
   }
 
-  public let animateActivityIndicator: Signal<Bool, NoError>
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
-  public let configureShareViewModel: Signal<(Project, LiveStreamEvent), NoError>
-  public let detailsStackViewHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>
   public let openLoginToutViewController: Signal<(), NoError>
-  public let shareButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let subscribeButtonAccessibilityHint: Signal<String, NoError>
   public let subscribeButtonAccessibilityLabel: Signal<String, NoError>

@@ -21,6 +21,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
+  private let loaderActivityIndicatorAnimating = TestObserver<Bool, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
@@ -47,6 +48,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
+    self.vm.outputs.loaderActivityIndicatorAnimating.observe(self.loaderActivityIndicatorAnimating.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
@@ -180,6 +182,36 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.availableForLabelHidden.assertValues([true, false])
   }
 
+  func testLabelVisibilities_NonStarter() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+
+    self.navBarLiveDotImageViewHidden.assertValueCount(0)
+    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
+    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.numberWatchingBadgeViewHidden.assertValueCount(0)
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.navBarLiveDotImageViewHidden.assertValues([true])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+    self.numberWatchingBadgeViewHidden.assertValues([true])
+    self.availableForLabelHidden.assertValues([true, false])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+
+    self.navBarLiveDotImageViewHidden.assertValues([true])
+    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+    self.numberWatchingBadgeViewHidden.assertValues([true])
+    self.availableForLabelHidden.assertValues([true, false, true])
+  }
+
   func testNavBarTitleViewHidden_LiveState() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
@@ -275,6 +307,22 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       "Loading",
       "The replay will start soon"
     ])
+  }
+
+  func testLoaderIndicatorViewHidden() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+
+    self.loaderActivityIndicatorAnimating.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.loaderActivityIndicatorAnimating.assertValues([true])
+
+    self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+
+    self.loaderActivityIndicatorAnimating.assertValues([true, false])
   }
 
   func testProjectImageUrl() {

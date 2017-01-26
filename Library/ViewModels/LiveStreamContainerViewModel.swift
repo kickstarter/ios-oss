@@ -48,6 +48,9 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
 
+  /// Emits when the loader activity indicator should animate
+  var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
+
   /// Emits when the loader stack view should be hidden
   var loaderStackViewHidden: Signal<Bool, NoError> { get }
 
@@ -96,7 +99,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
     let liveStreamControllerState = Signal.merge(
-      self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
+      Signal.combineLatest(
+        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
+        self.viewDidLoadProperty.signal
+      ).map(first),
       project.mapConst(.loading)
     )
 
@@ -135,11 +141,21 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
         case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
         case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
+        case .nonStarter:                         return Strings.No_replay_is_available_for_this_live_stream()
         default:                                  return Strings.Loading()
         }
       },
       self.showErrorAlert
     )
+
+    let nonStarter = liveStreamControllerState.map { state -> Bool in
+      switch state {
+      case .nonStarter: return true
+      default:          return false
+      }
+    }
+
+    self.loaderActivityIndicatorAnimating = nonStarter.map(negate)
 
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
@@ -222,7 +238,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.navBarLiveDotImageViewHidden = hideWhenReplay
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
-    self.availableForLabelHidden = hideWhenLive
+    self.availableForLabelHidden = Signal.combineLatest(nonStarter, hideWhenLive).map { $0 || $1 }
 
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
@@ -303,6 +319,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
+  public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
