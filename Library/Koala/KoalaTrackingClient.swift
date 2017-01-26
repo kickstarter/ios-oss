@@ -148,11 +148,11 @@ public final class KoalaTrackingClient: TrackingClientType {
 
     }.resume()
     _ = semaphore.wait(timeout: .distantFuture)
-    
+
     if result == nil {
       NSLog("[Koala Request] response/error result unexpectedly nil")
     }
-    
+
     return result
   }
 
