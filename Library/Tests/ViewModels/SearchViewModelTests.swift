@@ -196,21 +196,68 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testShowNoSearchResults() {
-    let discoveryEnvelope = .template |> DiscoveryEnvelope.lens.projects .~ []
-    let apiService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
+    let projects = [
+      .template |> Project.lens.id .~ 1,
+      .template |> Project.lens.id .~ 3,
+      .template |> Project.lens.id .~ 4,
+      .template |> Project.lens.id .~ 5
+    ]
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
-    withEnvironment(apiService: apiService) {
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
+      self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
+      XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
+
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.vm.inputs.searchTextChanged("abcdefgh")
-
-      self.hasProjects.assertDidNotEmitValue("No projects to emit.")
-      self.showNoSearchResults.assertValues([false], "Still loading")
+      self.isPopularTitleVisible.assertValues([])
 
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([false], "No Projects to emit.")
-      self.showNoSearchResults.assertValues([false, true], "No Projects Found.")
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events,
+                     "The search view event tracked upon view appearing.")
+      XCTAssertEqual([true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+
+      self.vm.inputs.searchTextChanged("skull graphic tee")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.isPopularTitleVisible.assertValues([true, false],
+                                              "Popular title hide immediately upon entering search.")
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
+      self.isPopularTitleVisible.assertValues([true, false],
+                                              "Popular title visibility still not emit after time has passed.")
+      XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                     self.trackingClient.events,
+                     "A koala event is tracked for the search results.")
+      XCTAssertEqual([true, nil, true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+      XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
+
+      self.vm.inputs.willDisplayRow(7, outOf: 10)
+
+      let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+        self.hasProjects.assertValues([true, false, true],"No projects before view is visible.")
+
+        self.vm.inputs.searchTextChanged("abcdefgh")
+
+        self.hasProjects.assertValues([true, false, true, false], "Projects clear immediately upon entering search.")
+        self.showNoSearchResults.assertValues([false, false], "No query for project yet.")
+
+        self.scheduler.advance()
+
+        self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
+
+        self.showNoSearchResults.assertValues([false, false, true], "No Projects Found.")
+      }
     }
   }
 

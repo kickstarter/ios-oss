@@ -10,12 +10,12 @@ import Library
 internal final class NoSearchResultsCellViewModelTests: TestCase {
   fileprivate let vm: NoSearchResultsCellViewModelType = NoSearchResultsCellViewModel()
 
-  fileprivate let searchTermNotFound = TestObserver<String, NoError>()
+  fileprivate let searchTermNotFoundLabelText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.searchTermNotFound.observe(self.searchTermNotFound.observer)
+    self.vm.outputs.searchTermNotFoundLabelText.observe(self.searchTermNotFoundLabelText.observer)
   }
 
   func testOutputs() {
@@ -23,7 +23,7 @@ internal final class NoSearchResultsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(param: discoveryParams)
 
-    self.searchTermNotFound.assertValues(["We couldn't find anything for abcdefgh."],
+    self.searchTermNotFoundLabelText.assertValues(["We couldn't find anything for abcdefgh."],
                                          "Emits to the user that the search term could not be found.")
   }
 }
