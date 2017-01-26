@@ -151,7 +151,6 @@ public final class KoalaTrackingClient: TrackingClientType {
 
     if result == nil {
       NSLog("[Koala Request] response/error result unexpectedly nil")
-      assertionFailure()
     }
 
     return result
