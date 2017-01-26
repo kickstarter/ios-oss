@@ -158,11 +158,11 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { (configData, startEndTimes) in
-        let (project, liveStream, refTag) = configData
+        let (project, liveStreamEvent, refTag) = configData
         let (startTime, endTime) = startEndTimes
 
         AppEnvironment.current.koala.trackClosedLiveStream(project: project,
-                                                           liveStream: liveStream,
+                                                           liveStreamEvent: liveStreamEvent,
                                                            startTime: startTime,
                                                            endTime: endTime,
                                                            refTag: refTag)

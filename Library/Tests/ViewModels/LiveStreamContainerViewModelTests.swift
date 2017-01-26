@@ -395,18 +395,14 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testTrackClosedLiveStream() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ true
     let project = Project.template
-    let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(
-      project: project, liveStream: liveStream, event: event, refTag: .projectPage
-    )
+    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
@@ -425,18 +421,14 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testTrackClosedLiveStreamReplay() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ false
     let project = Project.template
-    let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(
-      project: project, liveStream: liveStream, event: event, refTag: .projectPage
-    )
+    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)

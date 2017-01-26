@@ -163,17 +163,15 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   }
 
   func testTrackClosedLiveStreamCountdown() {
-    let liveStream = Project.LiveStream.template
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().addingTimeInterval(100)).timeIntervalSince1970
     let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(100).date
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(
-      project: project, liveStream: liveStream, refTag: .projectPage
-    )
+    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
