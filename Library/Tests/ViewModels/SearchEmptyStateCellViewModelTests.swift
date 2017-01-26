@@ -7,8 +7,8 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 import Library
 
-internal final class NoSearchResultsCellViewModelTests: TestCase {
-  fileprivate let vm: NoSearchResultsCellViewModelType = NoSearchResultsCellViewModel()
+internal final class SearchEmptyStateCellViewModelTests: TestCase {
+  fileprivate let vm: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()
 
   fileprivate let searchTermNotFoundLabelText = TestObserver<String, NoError>()
 

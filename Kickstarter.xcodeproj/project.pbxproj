@@ -626,7 +626,7 @@
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
-		D7A37CF71E3278A800EA066D /* NoSearchResultsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CF61E3278A800EA066D /* NoSearchResultsCellViewModelTests.swift */; };
+		D7A37CF71E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */; };
 		D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -1918,7 +1918,7 @@
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
-		D7A37CF61E3278A800EA066D /* NoSearchResultsCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSearchResultsCellViewModelTests.swift; sourceTree = "<group>"; };
+		D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2525,7 +2525,7 @@
 				0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */,
 				01F4FE431DF7810400BB9DD4 /* ActivityProjectStatusViewModelTests.swift */,
 				598D96BC1D427B3B003F3F66 /* ActivitySampleBackingCellViewModelTests.swift */,
-				D7A37CF61E3278A800EA066D /* NoSearchResultsCellViewModelTests.swift */,
+				D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */,
 				598D96C71D42A97E003F3F66 /* ActivitySampleFollowCellViewModelTests.swift */,
 				598D96CD1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift */,
 				5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */,
@@ -3526,7 +3526,7 @@
 		80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "AlamofireImage macOS Tests.xctest";
+			path = "AlamofireImage OSX Tests.xctest";
 			remoteRef = 80762DF81D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3575,7 +3575,7 @@
 		80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Alamofire macOS Tests.xctest";
+			path = "Alamofire OSX Tests.xctest";
 			remoteRef = 80762E361D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -4366,7 +4366,7 @@
 				A7A29F4A1CC3DE5F002BE580 /* ValueCellDataSourceTests.swift in Sources */,
 				D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				A7830D2A1D005C3F00B5B6AE /* ThanksViewModelTests.swift in Sources */,
-				D7A37CF71E3278A800EA066D /* NoSearchResultsCellViewModelTests.swift in Sources */,
+				D7A37CF71E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift in Sources */,
 				A7830D001D005C3F00B5B6AE /* CommentDialogViewModelTests.swift in Sources */,
 				0156B1FC1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				0156B4301D11A062000C4252 /* AlertError+Equatable.swift in Sources */,

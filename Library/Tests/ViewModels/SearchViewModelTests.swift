@@ -20,8 +20,8 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate var noProjects = TestObserver<Bool, NoError>()
   fileprivate let resignFirstResponder = TestObserver<(), NoError>()
   fileprivate let searchFieldText = TestObserver<String, NoError>()
-  fileprivate let showNoSearchResults = TestObserver<Bool, NoError>()
-  fileprivate let showNoSearchResultsParams = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let showEmptyState = TestObserver<Bool, NoError>()
+  fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -33,8 +33,8 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
-    self.vm.outputs.showNoSearchResults.map(second).observe(self.showNoSearchResults.observer)
-    self.vm.outputs.showNoSearchResults.map(first).observe(self.showNoSearchResultsParams.observer)
+    self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
+    self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
   }
 
   func testCancelSearchField_WithTextChange() {
@@ -249,28 +249,28 @@ internal final class SearchViewModelTests: TestCase {
 
         self.hasProjects.assertValues([true, false, true, false],
                                       "Projects clear immediately upon entering search.")
-        self.showNoSearchResults.assertValues([], "No query for project yet.")
+        self.showEmptyState.assertValues([], "No query for project yet.")
 
         self.scheduler.advance()
 
         self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
-        self.showNoSearchResults.assertValues([true], "No Projects Found.")
+        self.showEmptyState.assertValues([true], "No Projects Found.")
 
         self.vm.inputs.searchTextChanged("abcdefghasfdsafd")
 
         self.hasProjects.assertValues([true, false, true, false])
-        self.showNoSearchResults.assertValues([true, false])
+        self.showEmptyState.assertValues([true, false])
 
         self.scheduler.advance()
 
         self.hasProjects.assertValues([true, false, true, false])
-        self.showNoSearchResults.assertValues([true, false, true])
+        self.showEmptyState.assertValues([true, false, true])
       }
 
       self.vm.inputs.searchTextChanged("")
 
       self.hasProjects.assertValues([true, false, true, false, true])
-      self.showNoSearchResults.assertValues([true, false, true, false])
+      self.showEmptyState.assertValues([true, false, true, false])
       self.isPopularTitleVisible.assertValues([true, false, true])
     }
   }
