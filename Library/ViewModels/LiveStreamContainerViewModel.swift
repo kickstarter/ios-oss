@@ -249,7 +249,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
       }
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
-      .scan(0) { accum, _ in accum + 1 }
+      .mapConst(1)
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
@@ -258,6 +258,25 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
                                                                        liveStreamEvent: liveStream,
                                                                        toOrientation: orientation)
+    }
+
+    let startEndTimes = Signal.zip(
+      configData.map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 },
+      self.closeButtonTappedProperty.signal
+        .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
+    )
+
+    Signal.combineLatest(configData, startEndTimes)
+      .takeWhen(self.closeButtonTappedProperty.signal)
+      .observeValues { (configData, startEndTimes) in
+        let (project, liveStream, _, refTag) = configData
+        let (startTime, endTime) = startEndTimes
+
+        AppEnvironment.current.koala.trackClosedLiveStream(project: project,
+                                                           liveStream: liveStream,
+                                                           startTime: startTime,
+                                                           endTime: endTime,
+                                                           refTag: refTag)
     }
 
     configData

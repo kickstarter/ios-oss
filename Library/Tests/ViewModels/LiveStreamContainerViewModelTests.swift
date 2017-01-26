@@ -394,6 +394,68 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
   }
 
+  func testTrackClosedLiveStream() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ true
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ true
+
+    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, refTag: .projectPage
+    )
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
+    XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+
+    self.scheduler.advance(by: .seconds(50))
+
+    self.vm.inputs.closeButtonTapped()
+
+    XCTAssertEqual(["Viewed Live Stream", "Closed Live Stream"], self.trackingClient.events)
+    XCTAssertEqual(["project_page", "project_page"], self.trackingClient.properties(forKey: "ref_tag",
+                                                                                    as: String.self))
+    XCTAssertEqual([nil, "live_stream_live"], self.trackingClient.properties(forKey: "type",
+                                                                               as: String.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Double.self))
+  }
+
+  func testTrackClosedLiveStreamReplay() {
+    let liveStream = Project.LiveStream.template
+      |> Project.LiveStream.lens.isLiveNow .~ false
+    let project = Project.template
+    let event = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.stream.liveNow .~ false
+
+    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+
+    self.vm.inputs.configureWith(
+      project: project, liveStream: liveStream, event: event, refTag: .projectPage
+    )
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
+    XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
+    XCTAssertEqual([nil], self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual([nil], self.trackingClient.properties(forKey: "duration", as: Double.self))
+
+    self.scheduler.advance(by: .seconds(50))
+
+    self.vm.inputs.closeButtonTapped()
+
+    XCTAssertEqual(["Viewed Live Stream", "Closed Live Stream"], self.trackingClient.events)
+    XCTAssertEqual(["project_page", "project_page"], self.trackingClient.properties(forKey: "ref_tag",
+                                                                                    as: String.self))
+    XCTAssertEqual([nil, "live_stream_replay"], self.trackingClient.properties(forKey: "type",
+                                                                               as: String.self))
+    XCTAssertEqual([nil, 50], self.trackingClient.properties(forKey: "duration", as: Double.self))
+  }
+
   func testTrackLiveStreamOrientationChanged() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
@@ -468,7 +530,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page", "project_page"], self.trackingClient.properties(
       forKey: "ref_tag", as: String.self))
-    XCTAssertEqual([nil, 1, 2], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func testTrackWatchedLiveReplay() {
@@ -508,7 +570,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["project_page", "project_page", "project_page"], self.trackingClient.properties(
       forKey: "ref_tag", as: String.self))
-    XCTAssertEqual([nil, 1, 2], self.trackingClient.properties(forKey: "duration", as: Int.self))
+    XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
   func test_MakeSureSingleLiveStreamControllerIsCreated() {
