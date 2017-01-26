@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */; };
+		013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
+		013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
 		013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */; };
 		013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 013744C01D999BE200E50C78 /* EmptyStates.storyboard */; };
 		013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */; };
@@ -1311,6 +1313,7 @@
 
 /* Begin PBXFileReference section */
 		0123B4AC1D919BBA004C1166 /* DiscoveryFiltersViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewControllerTests.swift; sourceTree = "<group>"; };
+		013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersLoaderCell.swift; sourceTree = "<group>"; };
 		013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewController.swift; sourceTree = "<group>"; };
 		013744C01D999BE200E50C78 /* EmptyStates.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EmptyStates.storyboard; sourceTree = "<group>"; };
 		013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModel.swift; sourceTree = "<group>"; };
@@ -2362,6 +2365,7 @@
 				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
+				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
 				0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */,
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
 				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
@@ -4480,6 +4484,7 @@
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A731BF5A1D1ED60800A734AC /* WebViewController.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,
+				013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
@@ -4570,6 +4575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
