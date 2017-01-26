@@ -232,7 +232,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
       self.isPopularTitleVisible.assertValues([true, false],
-                                              "Popular title visibility still not emit after time has passed.")
+                                            "Popular title visibility still not emit after time has passed.")
       XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
                      self.trackingClient.events,
                      "A koala event is tracked for the search results.")
@@ -245,17 +245,17 @@ internal final class SearchViewModelTests: TestCase {
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
 
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
-        self.hasProjects.assertValues([true, false, true],"No projects before view is visible.")
+        self.hasProjects.assertValues([true, false, true], "No projects before view is visible.")
 
         self.vm.inputs.searchTextChanged("abcdefgh")
 
-        self.hasProjects.assertValues([true, false, true, false], "Projects clear immediately upon entering search.")
+        self.hasProjects.assertValues([true, false, true, false],
+                                      "Projects clear immediately upon entering search.")
         self.showNoSearchResults.assertValues([false, false], "No query for project yet.")
 
         self.scheduler.advance()
 
         self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
-
         self.showNoSearchResults.assertValues([false, false, true], "No Projects Found.")
       }
     }
