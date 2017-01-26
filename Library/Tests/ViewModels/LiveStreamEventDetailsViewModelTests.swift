@@ -57,7 +57,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.viewDidLoad()
@@ -77,7 +77,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.viewDidLoad()
@@ -179,7 +179,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testLiveStreamTitle() {
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.name .~ "Test Stream"
+      |> LiveStreamEvent.lens.name .~ "Test Stream"
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.viewDidLoad()
@@ -189,7 +189,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testLiveStreamParagraph() {
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.description .~ "Test LiveStreamEvent"
+      |> LiveStreamEvent.lens.description .~ "Test LiveStreamEvent"
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.viewDidLoad()
@@ -214,8 +214,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.user.isSubscribed .~ false
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
@@ -282,7 +282,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testSubscribe_LoginDuring() {
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.user.isSubscribed .~ false
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)

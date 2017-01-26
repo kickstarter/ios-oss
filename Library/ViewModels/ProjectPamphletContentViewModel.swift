@@ -165,7 +165,7 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
 }
 
 private func shouldGoToLiveStream(withLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> Bool {
-  return liveStreamEvent.stream.liveNow || liveStreamEvent.stream.startDate.timeIntervalSince1970 <
+  return liveStreamEvent.liveNow || liveStreamEvent.startDate.timeIntervalSince1970 <
     AppEnvironment.current.dateType.init().timeIntervalSince1970
 }
 

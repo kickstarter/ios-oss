@@ -51,7 +51,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
   func testLiveStreamsSubpage() {
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
@@ -68,7 +68,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
   func testReplayLiveStreamsSubpage() {
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
@@ -141,8 +141,8 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
   func testUpcomingLiveStreamsSubpage() {
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(60 * 60)
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))

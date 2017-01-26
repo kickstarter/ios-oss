@@ -1638,7 +1638,7 @@ public final class Koala {
       .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
       .withAllValuesFrom(["ref_tag": refTag.stringTag, "duration": duration])
 
-    if liveStreamEvent.stream.liveNow {
+    if liveStreamEvent.liveNow {
       self.track(event: "Watched Live Stream", properties: props)
     } else {
       self.track(event: "Watched Live Stream Replay", properties: props)
@@ -1910,10 +1910,10 @@ private func properties(liveStreamEvent: LiveStreamEvent,
   var properties: [String:Any] = [:]
 
   properties["id"] = liveStreamEvent.id
-  properties["is_live_now"] = liveStreamEvent.stream.liveNow
+  properties["is_live_now"] = liveStreamEvent.liveNow
   properties["state"] = stateContext(forLiveStreamEvent: liveStreamEvent).trackingString
-  properties["name"] = liveStreamEvent.stream.name
-  properties["start_date"] = liveStreamEvent.stream.startDate.timeIntervalSince1970
+  properties["name"] = liveStreamEvent.name
+  properties["start_date"] = liveStreamEvent.startDate.timeIntervalSince1970
 
   return properties.prefixedKeys(prefix)
 }
@@ -1973,11 +1973,11 @@ extension Reward.Shipping.Preference {
 }
 
 private func stateContext(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> LiveStreamStateContext {
-  if liveStreamEvent.stream.liveNow {
+  if liveStreamEvent.liveNow {
     return .live
   }
 
-  if AppEnvironment.current.dateType.init().date >= liveStreamEvent.stream.startDate {
+  if AppEnvironment.current.dateType.init().date >= liveStreamEvent.startDate {
     return .replay
   }
 

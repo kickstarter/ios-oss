@@ -60,7 +60,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testAvailableForText() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().date
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
 
     self.availableForText.assertValueCount(0)
 
@@ -71,12 +71,10 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testCreatorIntroText_Live() {
-    let stream = LiveStreamEvent.template.stream
-      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream .~ stream
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -87,12 +85,10 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testCreatorIntroText_Replay() {
-    let stream = LiveStreamEvent.template.stream
-      |> LiveStreamEvent.Stream.lens.startDate .~ MockDate().date
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream .~ stream
-    |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -145,7 +141,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testLabelVisibilities_Live() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
     self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
@@ -166,7 +162,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testLabelVisibilities_Replay() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
     self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
@@ -353,7 +349,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testTrackLiveStreamOrientationChanged() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -390,7 +386,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testTrackWatchedLiveStream() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -430,7 +426,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   func testTrackWatchedLiveReplay() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))

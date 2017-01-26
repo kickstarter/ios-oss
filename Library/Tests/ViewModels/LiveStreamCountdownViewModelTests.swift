@@ -72,7 +72,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testCountdownLabelText() {
     let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().addingTimeInterval(future).date
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
 
     self.countdownDateLabelText.assertValueCount(0)
 
@@ -85,7 +85,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testCountdownLabels() {
     let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().addingTimeInterval(future).date
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
 
     self.days.assertValueCount(0)
     self.hours.assertValueCount(0)
@@ -111,7 +111,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   func testCountdownAccessibilityLabel() {
     let future: TimeInterval = TimeInterval(2*60*60*24) + TimeInterval(11*60*60) + TimeInterval(5*60) + 22
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().addingTimeInterval(future).date
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
 
     self.countdownAccessibilityLabel.assertValueCount(0)
 
@@ -123,8 +123,8 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
   func testCountdownEnded() {
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.startDate .~ MockDate().addingTimeInterval(10).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(10).date
 
     let project = Project.template
     let event = LiveStreamEvent.template
@@ -150,7 +150,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.pushLiveStreamViewControllerProject.assertValues([project])
     self.pushLiveStreamViewControllerEvent.assertValues([event])
 
-    XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.stream.liveNow ?? false)
+    XCTAssertTrue(self.pushLiveStreamViewControllerEvent.lastValue?.liveNow ?? false)
     XCTAssertEqual(.liveStreamCountdown, self.pushLiveStreamViewControllerRefTag.lastValue)
   }
 

@@ -61,7 +61,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.labelTextColor = Signal.merge(
       commentsSubpage.mapConst(.ksr_text_navy_700),
-      liveStreamDetail.map { $0.stream.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 },
+      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 },
       updatesSubpage.mapConst(.ksr_text_navy_700)
     )
 
@@ -78,22 +78,22 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.countLabelTextColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_text_navy_700),
-      liveStreamDetail.map { $0.stream.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 }
+      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 }
     )
 
     self.countLabelBorderColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clear),
-      liveStreamDetail.map { $0.stream.liveNow ? .ksr_green_500 : .clear }
+      liveStreamDetail.map { $0.liveNow ? .ksr_green_500 : .clear }
     )
 
     self.countLabelBackgroundColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_navy_300),
-      liveStreamDetail.map { $0.stream.liveNow ? .white : .ksr_navy_300 }
+      liveStreamDetail.map { $0.liveNow ? .white : .ksr_navy_300 }
     )
 
     self.liveNowImageViewHidden = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
-      liveStreamDetail.map { !$0.stream.liveNow }
+      liveStreamDetail.map { !$0.liveNow }
     )
   }
 
@@ -117,18 +117,18 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 }
 
 private func labelTexts(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> (String, String) {
-  if liveStreamEvent.stream.liveNow {
+  if liveStreamEvent.liveNow {
     return (Strings.Live_Streaming_now(), Strings.Watch_live())
   }
 
   let now = AppEnvironment.current.dateType.init()
 
-  if now.timeIntervalSince1970 >= liveStreamEvent.stream.startDate.timeIntervalSince1970 {
+  if now.timeIntervalSince1970 >= liveStreamEvent.startDate.timeIntervalSince1970 {
     return (localizedString(key: "Past_Live_Stream", defaultValue: "Past Live Stream"), Strings.Replay())
   }
 
   return (localizedString(key: "Upcoming_Live_Stream", defaultValue: "Upcoming Live Stream"),
-          Format.relative(secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970, abbreviate: true))
+          Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970, abbreviate: true))
 }
 
 public enum ProjectPamphletSubpageCellPosition {

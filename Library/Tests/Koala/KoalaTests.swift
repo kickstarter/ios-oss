@@ -362,7 +362,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackChangedLiveStreamOrientation(
       project: .template,
@@ -391,7 +391,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackLiveStreamToggleSubscription(
       project: .template,
@@ -446,7 +446,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackWatchedLiveStream(
       project: .template,
@@ -464,7 +464,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     koala.trackWatchedLiveStream(
       project: .template,
@@ -486,9 +486,9 @@ final class KoalaTests: TestCase {
 //    let koala = Koala(client: client)
 //    let liveStreamEvent = .template
 //      |> LiveStreamEvent.lens.id .~ 42
-//      |> LiveStreamEvent.lens.stream.liveNow .~ true
-//      |> LiveStreamEvent.lens.stream.name .~ "Cool Live Stream"
-//      |> LiveStreamEvent.lens.stream.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
+//      |> LiveStreamEvent.lens.liveNow .~ true
+//      |> LiveStreamEvent.lens.name .~ "Cool Live Stream"
+//      |> LiveStreamEvent.lens.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
 //
 //    koala.trackViewedLiveStream(
 //      project: .template,

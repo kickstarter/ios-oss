@@ -79,7 +79,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     }
 
     let dateComponents = liveStream
-      .map { $0.stream.startDate }
+      .map { $0.startDate }
       .takePairWhen(everySecondTimer)
       .map { startDate, currentDate in
         AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
@@ -89,7 +89,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
 
     self.countdownDateLabelText = liveStream
-      .map { $0.stream.startDate }.map(formattedDateString)
+      .map { $0.startDate }.map(formattedDateString)
 
     self.daysString = dateComponents
       .map { max(0, $0.day) }
@@ -116,7 +116,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         key: "The_live_stream_will_start_time",
         defaultValue: "The live stream will start %{time}.",
         substitutions: [
-          "time": Format.relative(secondsInUTC: liveStream.stream.startDate.timeIntervalSince1970)
+          "time": Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)
         ])
     }
 
@@ -185,7 +185,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 }
 
 private func flipLiveStreamEventToLive(liveStreamEvent: LiveStreamEvent) -> LiveStreamEvent {
-  return liveStreamEvent |> LiveStreamEvent.lens.stream.liveNow .~ true
+  return liveStreamEvent |> LiveStreamEvent.lens.liveNow .~ true
 }
 
 private func formattedDateString(date: Date) -> String {

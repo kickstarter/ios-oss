@@ -121,7 +121,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.availableForText = event
       .map { event -> String? in
         guard let availableDate = AppEnvironment.current.calendar
-          .date(byAdding: .day, value: 2, to: event.stream.startDate)?.timeIntervalSince1970
+          .date(byAdding: .day, value: 2, to: event.startDate)?.timeIntervalSince1970
           else { return nil }
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
@@ -187,24 +187,24 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.creatorIntroText = event
       .observeForUI()
       .map { event in
-        event.stream.liveNow
+        event.liveNow
           ? Strings.Creator_name_is_live_now(creator_name: event.creator.name)
           : Strings.Creator_name_was_live_time_ago(
             creator_name: event.creator.name,
-            time_ago: Format.relative(secondsInUTC: event.stream.startDate.timeIntervalSince1970,
+            time_ago: Format.relative(secondsInUTC: event.startDate.timeIntervalSince1970,
                                       abbreviate: true)
         )
     }
 
     let hideWhenReplay = Signal.merge(
       project.mapConst(true),
-      event.map { !$0.stream.liveNow },
+      event.map { !$0.liveNow },
       self.showErrorAlert.mapConst(true)
     ).skipRepeats()
 
     let hideWhenLive = Signal.merge(
       project.mapConst(true),
-      event.map { $0.stream.liveNow },
+      event.map { $0.liveNow },
       self.showErrorAlert.mapConst(true)
     ).skipRepeats()
 

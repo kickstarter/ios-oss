@@ -107,7 +107,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedScaleNumberOfPeopleWatchingChanged
     )
 
-    let maxOpenTokViewers = liveStreamEvent.map { $0.stream.maxOpenTokViewers }
+    let maxOpenTokViewers = liveStreamEvent.map { $0.maxOpenTokViewers }.skipNil()
 
     let didLiveStreamEndedNormally = liveStreamEvent
       .map(didEndNormally(event:))
@@ -132,7 +132,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       isMaxOpenTokViewersReached,
 
       liveStreamEvent
-        .map { event in event.stream.isRtmp || didEndNormally(event: event) }
+        .map { event in event.isRtmp ?? false || didEndNormally(event: event) }
         .filter(isTrue)
       )
       .take(first: 1)
@@ -141,8 +141,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let liveHlsUrl = Signal.merge(
       liveStreamEvent
-        .filter { $0.stream.liveNow }
-        .map { $0.stream.hlsUrl }
+        .filter { $0.liveNow }
+        .map { $0.hlsUrl }
         .skipNil()
         .map(LiveStreamType.hlsStream),
       observedHlsUrlChanged.map(LiveStreamType.hlsStream)
@@ -150,7 +150,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let replayHlsUrl = liveStreamEvent
       .filter(didEndNormally(event:))
-      .map { $0.stream.replayUrl }
+      .map { $0.replayUrl }
       .skipNil()
       .map(LiveStreamType.hlsStream)
 
@@ -204,10 +204,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let databaseRef = self.databaseRefProperty.signal.skipNil()
 
+    let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
+
     self.createPresenceReference = Signal.zip(
       databaseRef,
       Signal.combineLatest(
-        liveStreamEvent.map { $0.firebase.numberPeopleWatchingPath },
+        firebase.map { $0.numberPeopleWatchingPath },
         combinedUserId
         )
         .map { "\($0)/\($1)" }
@@ -217,33 +219,31 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.createGreenRoomObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.greenRoomPath, orderBy: "") },
+      firebase.map { FirebaseRefConfig(ref: $0.greenRoomPath, orderBy: "") },
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createHLSObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .map { FirebaseRefConfig(ref: $0.firebase.hlsUrlPath, orderBy: "") },
+      firebase.map { FirebaseRefConfig(ref: $0.hlsUrlPath, orderBy: "") },
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
     self.createNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .filter { !$0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.numberPeopleWatchingPath, orderBy: "") },
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
+      firebase.map { FirebaseRefConfig(ref: $0.numberPeopleWatchingPath, orderBy: "") },
+      createObservers,
+      liveStreamEvent.map { $0.isScale }.skipNil().filter(isFalse)
+      )
+      .map { dbRef, event, _, _ in (dbRef, event) }
 
     self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      liveStreamEvent
-        .filter { $0.stream.isScale }
-        .map { FirebaseRefConfig(ref: $0.firebase.scaleNumberPeopleWatchingPath, orderBy: "") },
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
+      firebase.map { FirebaseRefConfig(ref: $0.scaleNumberPeopleWatchingPath, orderBy: "") },
+      createObservers,
+      liveStreamEvent.map { $0.isScale }.skipNil().filter(isTrue)
+      )
+      .map { dbRef, event, _, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
       .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())
@@ -263,7 +263,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     let liveState = liveStreamEvent
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { event, playbackState in
-        event.stream.liveNow && !playbackState.isError
+        event.liveNow && !playbackState.isError
       }
       .map { _, playbackState in
         LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
@@ -291,7 +291,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     self.initializeFirebase = configData
-      .filter { event, _ in event.stream.liveNow }
+      .filter { event, _ in event.liveNow }
   }
 
   private let configData = MutableProperty<(LiveStreamEvent, Int?)?>(nil)
@@ -370,18 +370,18 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 }
 
 private func isNonStarter(event: LiveStreamEvent) -> Bool {
-  return !event.stream.liveNow
-    && !event.stream.definitelyHasReplay
+  return !event.liveNow
+    && !event.definitelyHasReplay
     && startDateMoreThanFifteenMinutesAgo(event: event)
 }
 
 private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool {
   let minute = Calendar.current
-    .dateComponents([.minute], from: event.stream.startDate as Date, to: Date())
+    .dateComponents([.minute], from: event.startDate as Date, to: Date())
     .minute ?? 0
   return minute > 15
 }
 
 private func didEndNormally(event: LiveStreamEvent) -> Bool {
-  return !event.stream.liveNow && event.stream.definitelyHasReplay
+  return !event.liveNow && event.definitelyHasReplay
 }

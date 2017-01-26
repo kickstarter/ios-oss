@@ -76,7 +76,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToLiveStream_StreamIsLive() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
     self.vm.inputs.viewDidLoad()
@@ -99,8 +99,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToLiveStream_StreamIsReplay() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(-60)
 
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
@@ -124,8 +124,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   func testGoToLiveStreamCountdown() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.startDate .~ self.scheduler.currentDate
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ self.scheduler.currentDate
         .addingTimeInterval(60)
 
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
