@@ -223,60 +223,58 @@ final class KoalaTests: TestCase {
     XCTAssertEqual([nil, nil], client.properties(forKey: "live_stream_type", as: String.self))
   }
 
-  //FIXME: fix to work with LiveStreamEvent
-//  func testProjectProperties_LiveStreams_CurrentlyLive() {
-//    let client = MockTrackingClient()
-//    let project = Project.template
-////      |> Project.lens.liveStreams .~ [
-////        .template
-////          |> Project.LiveStream.lens.isLiveNow .~ true,
-////        .template
-////          |> Project.LiveStream.lens.isLiveNow .~ false
-////    ]
-//    let koala = Koala(client: client)
-//
-//    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-//
-//    XCTAssertEqual(["live_stream_live", "live_stream_live"],
-//                   client.properties(forKey: "live_stream_type", as: String.self))
-//  }
+  func testProjectProperties_LiveStreams_CurrentlyLive() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let liveStreamEventLive = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+    let liveStreamEventReplay = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
 
-  //FIXME: fix to work with LiveStreamEvent
-//  func testProjectProperties_LiveStreams_Upcoming() {
-//    let client = MockTrackingClient()
-//    let project = Project.template
-////      |> Project.lens.liveStreams .~ [
-////        .template
-////          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60)
-////          |> Project.LiveStream.lens.isLiveNow .~ false,
-////        .template
-////          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
-////          |> Project.LiveStream.lens.isLiveNow .~ false
-////    ]
-//    let koala = Koala(client: client)
-//
-//    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-//
-//    XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
-//                   client.properties(forKey: "live_stream_type", as: String.self))
-//  }
+    let liveStreamEvents = [liveStreamEventLive, liveStreamEventReplay]
 
-  //FIXME: fix to work with LiveStreamEvent
-//  func testProjectProperties_LiveStreams_Replay() {
-//    let client = MockTrackingClient()
-//    let project = Project.template
-////      |> Project.lens.liveStreams .~ [
-////        .template
-////          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
-////          |> Project.LiveStream.lens.isLiveNow .~ false
-////    ]
-//    let koala = Koala(client: client)
-//
-//    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-//
-//    XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
-//                   client.properties(forKey: "live_stream_type", as: String.self))
-//  }
+    let koala = Koala(client: client)
+
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
+
+    XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                   client.properties(forKey: "live_stream_type", as: String.self))
+  }
+
+  func testProjectProperties_LiveStreams_Upcoming() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let liveStreamEventCountdown = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(+60 * 60).date
+    let liveStreamEventReplay = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    let liveStreamEvents = [liveStreamEventCountdown, liveStreamEventReplay]
+
+    let koala = Koala(client: client)
+
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
+
+    XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
+                   client.properties(forKey: "live_stream_type", as: String.self))
+  }
+
+  func testProjectProperties_LiveStreams_Replay() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    let koala = Koala(client: client)
+
+    koala.trackProjectShow(project, liveStreamEvents: [liveStreamEvent], refTag: nil, cookieRefTag: nil)
+
+    XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
+                   client.properties(forKey: "live_stream_type", as: String.self))
+  }
 
   func testDiscoveryProperties() {
     let client = MockTrackingClient()
@@ -478,28 +476,27 @@ final class KoalaTests: TestCase {
     XCTAssertEqual([2], client.properties(forKey: "duration", as: Int.self))
   }
 
-  //FIXME: fix to work with LiveStreamEvent
-//  func testTrackBaseLiveStreamProperties() {
-//    let startDate = MockDate(timeIntervalSince1970: 1234567).date
-//
-//    let client = MockTrackingClient()
-//    let koala = Koala(client: client)
-//    let liveStreamEvent = .template
-//      |> LiveStreamEvent.lens.id .~ 42
-//      |> LiveStreamEvent.lens.liveNow .~ true
-//      |> LiveStreamEvent.lens.name .~ "Cool Live Stream"
-//      |> LiveStreamEvent.lens.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
-//
-//    koala.trackViewedLiveStream(
-//      project: .template,
-//      liveStreamEvent: liveStreamEvent,
-//      refTag: .projectPage
-//    )
-//
-//    XCTAssertEqual([42], client.properties(forKey: "live_stream_id", as: Int.self))
-//    XCTAssertEqual([true], client.properties(forKey: "live_stream_is_live_now", as: Bool.self))
-//    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
-//    XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
-//    //XCTAssertEqual([startDate], client.properties(forKey: "live_stream_start_date", as: Date.self))
-//  }
+  func testTrackBaseLiveStreamProperties() {
+    let startDate = MockDate(timeIntervalSince1970: 1234567).timeIntervalSince1970
+
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.id .~ 42
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Cool Live Stream"
+      |> LiveStreamEvent.lens.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
+
+    koala.trackViewedLiveStream(
+      project: .template,
+      liveStreamEvent: liveStreamEvent,
+      refTag: .projectPage
+    )
+
+    XCTAssertEqual([42], client.properties(forKey: "live_stream_id", as: Int.self))
+    XCTAssertEqual([true], client.properties(forKey: "live_stream_is_live_now", as: Bool.self))
+    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
+    XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
+    XCTAssertEqual([startDate], client.properties(forKey: "live_stream_start_date", as: Double.self))
+  }
 }

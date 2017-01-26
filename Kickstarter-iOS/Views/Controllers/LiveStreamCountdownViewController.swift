@@ -265,12 +265,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
 
-    //FIXME:
-//    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-//      .observeValues { [weak self] in
-//        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
-//    }
-
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
       .observeValues { [weak self] in

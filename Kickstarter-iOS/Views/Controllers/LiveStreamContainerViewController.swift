@@ -305,10 +305,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         )
     }
 
-    //FIXME:
-//    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-//      .observeValues { [weak self] in self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0) }
-
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
       .observeValues { [weak self] in

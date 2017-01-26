@@ -22,7 +22,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
-    //FIXME: 
     let liveStreamSubpages = self.liveStreamSubpages(forLiveStreamEvents: liveStreamEvents)
 
     let values = liveStreamSubpages + [
