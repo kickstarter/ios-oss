@@ -135,6 +135,7 @@
 "Manage_your_reward" = "Gérer votre récompense";
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
+"No_Results" = "No Results";
 "No_comments_yet" = "Pas de commentaires.";
 "No_one_has_posted_an_update_yet" = "Pas d'actus publiées pour le moment.";
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
@@ -222,6 +223,7 @@
 "View_your_pledge" = "Afficher mon engagement";
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";
+"We_couldnt_find_anything_for_search_term" = "We couldn't find anything for %{search_term}.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
 "You_Launched" = "Projet lancé !";
 "You_backed_this_project" = "Vous avez soutenu ce projet.";

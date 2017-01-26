@@ -300,7 +300,7 @@ public enum Strings {
   /**
    "All %{category_name} Projects"
 
-   - **es**: "All %{category_name} Projects"
+   - **es**: "Todos los proyectos de la categoría %{category_name}"
    - **de**: "Alle Projekte der Kategorie %{category_name}"
    - **fr**: "Tous les projets de la catégorie %{category_name}"
    - **en**: "All %{category_name} Projects"
@@ -380,7 +380,7 @@ public enum Strings {
   /**
    "Available to watch for %{time} more %{units}"
 
-   - **es**: "Available to watch for %{time} more %{units}"
+   - **es**: "Disponible para reproducción %{time} %{units} más"
    - **de**: "Kann noch %{time} %{units} angesehen werden"
    - **fr**: "Plus que %{time}%{units} pour regarder cette diffusion"
    - **en**: "Available to watch for %{time} more %{units}"
@@ -769,7 +769,7 @@ backers"
   /**
    "<b>%{creator_name}</b> is live now"
 
-   - **es**: "<b>%{creator_name}</b> is live now"
+   - **es**: "<b>%{creator_name}</b> está transmitiendo en vivo"
    - **de**: "<b>%{creator_name}</b> ist jetzt live"
    - **fr**: "<b>%{creator_name}</b> est en direct en ce moment"
    - **en**: "<b>%{creator_name}</b> is live now"
@@ -785,7 +785,7 @@ backers"
   /**
    "%{creator_name} is streaming live on Kickstarter"
 
-   - **es**: "%{creator_name} is streaming live on Kickstarter"
+   - **es**: "%{creator_name} está transmitiendo en vivo en Kickstarter"
    - **de**: "%{creator_name} streamt gerade live auf Kickstarter"
    - **fr**: "%{creator_name} est en direct sur Kickstarter"
    - **en**: "%{creator_name} is streaming live on Kickstarter"
@@ -817,7 +817,7 @@ backers"
   /**
    "<b>%{creator_name}</b> was live %{time_ago}"
 
-   - **es**: "<b>%{creator_name}</b> was live %{time_ago}"
+   - **es**: "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}"
    - **de**: "<b>%{creator_name}</b> war vor %{time_ago} live"
    - **fr**: "<b>%{creator_name}</b> était en direct %{time_ago}"
    - **en**: "<b>%{creator_name}</b> was live %{time_ago}"
@@ -833,7 +833,7 @@ backers"
   /**
    "%{creator_name} was streaming live on Kickstarter"
 
-   - **es**: "%{creator_name} was streaming live on Kickstarter"
+   - **es**: "%{creator_name} estuvo transmitiendo en vivo en Kickstarter"
    - **de**: "Der Stream von %{creator_name} war gerade live auf Kickstarter"
    - **fr**: "%{creator_name} était en direct sur Kickstarter"
    - **en**: "%{creator_name} was streaming live on Kickstarter"
@@ -849,7 +849,7 @@ backers"
   /**
    "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
 
-   - **es**: "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
+   - **es**: "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}"
    - **de**: "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen"
    - **fr**: "%{creator_name} sera en direct sur Kickstarter %{in_duration}"
    - **en**: "%{creator_name} will be streaming live on Kickstarter %{in_duration}"
@@ -1009,7 +1009,7 @@ backers"
   /**
    "Failed to retrieve live stream event details"
 
-   - **es**: "Failed to retrieve live stream event details"
+   - **es**: "No se pudo cargar la información acerca del evento en vivo"
    - **de**: "Details zu Live-Stream-Event konnten nicht geladen werden"
    - **fr**: "Impossible de récupérer les détails de la diffusion en direct"
    - **en**: "Failed to retrieve live stream event details"
@@ -1025,7 +1025,7 @@ backers"
   /**
    "Failed to update subscription"
 
-   - **es**: "Failed to update subscription"
+   - **es**: "No se pudo actualizar la suscripción"
    - **de**: "Abo konnte nicht aktualisiert werden"
    - **fr**: "Mise à jour de l'abonnement impossible"
    - **en**: "Failed to update subscription"
@@ -1715,7 +1715,7 @@ with friends."
   /**
    "Keep up with future live streams"
 
-   - **es**: "Keep up with future live streams"
+   - **es**: "Recibe info sobre live streams futuros"
    - **de**: "Zeitnahe Info zu zukünftigen Live-Streams"
    - **fr**: "Soyez informé des prochaines diffusions en direct"
    - **en**: "Keep up with future live streams"
@@ -1795,7 +1795,7 @@ with friends."
   /**
    "Live"
 
-   - **es**: "Live"
+   - **es**: "En vivo"
    - **de**: "Live"
    - **fr**: "En direct"
    - **en**: "Live"
@@ -1811,7 +1811,7 @@ with friends."
   /**
    "Live Stream"
 
-   - **es**: "Live Stream"
+   - **es**: "Live Streaming"
    - **de**: "Live-Stream"
    - **fr**: "Diffusion en direct"
    - **en**: "Live Stream"
@@ -1827,7 +1827,7 @@ with friends."
   /**
    "Live Streaming now"
 
-   - **es**: "Live Streaming now"
+   - **es**: "En vivo ahora"
    - **de**: "Jetzt live"
    - **fr**: "Diffusion en direct en cours"
    - **en**: "Live Streaming now"
@@ -1843,7 +1843,7 @@ with friends."
   /**
    "Live stream countdown"
 
-   - **es**: "Live stream countdown"
+   - **es**: "Live Stream - Cuenta atrás"
    - **de**: "Live-Stream Countdown"
    - **fr**: "Compte à rebours de la diffusion en direct"
    - **en**: "Live stream countdown"
@@ -1859,7 +1859,7 @@ with friends."
   /**
    "Loading"
 
-   - **es**: "Loading"
+   - **es**: "Cargando"
    - **de**: "Ladevorgang läuft"
    - **fr**: "Chargement"
    - **en**: "Loading"
@@ -1875,7 +1875,7 @@ with friends."
   /**
    "Log in or sign up to subscribe"
 
-   - **es**: "Log in or sign up to subscribe"
+   - **es**: "Para activar la suscripción, por favor inicia sesión o regístrate"
    - **de**: "Bitte einloggen oder registrieren"
    - **fr**: "Connectez-vous ou inscrivez-vous pour vous abonner"
    - **en**: "Log in or sign up to subscribe"
@@ -2017,6 +2017,22 @@ with friends."
     )
   }
   /**
+   "No Results"
+
+   - **es**: "No Results"
+   - **de**: "No Results"
+   - **fr**: "No Results"
+   - **en**: "No Results"
+  */
+  public static func No_Results() -> String {
+    return localizedString(
+      key: "No_Results",
+      defaultValue: "No Results",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No comments yet."
 
    - **es**: "No hay comentarios todavia."
@@ -2070,7 +2086,7 @@ from friends yet."
   /**
    "No replay is available for this live stream."
 
-   - **es**: "No replay is available for this live stream."
+   - **es**: "Este Live Stream no cuenta con repetición."
    - **de**: "Kein Replay verügbar für diesen Live-Stream."
    - **fr**: "Pas de rediffusion possible pour cette diffusion en direct."
    - **en**: "No replay is available for this live stream."
@@ -2520,7 +2536,7 @@ daring ideas."
   /**
    "Recorded Live"
 
-   - **es**: "Recorded Live"
+   - **es**: "Grabado en vivo"
    - **de**: "Live aufgenommen"
    - **fr**: "Enregistré en direct"
    - **en**: "Recorded Live"
@@ -2536,7 +2552,7 @@ daring ideas."
   /**
    "Recorded live with <b>%{creator_name}</b>"
 
-   - **es**: "Recorded live with <b>%{creator_name}</b>"
+   - **es**: "Grabado en vivo por <b>%{creator_name}</b>"
    - **de**: "Live aufgenommen von <b>%{creator_name}</b>"
    - **fr**: "Enregistré en direct avec <b>%{creator_name}</b>"
    - **en**: "Recorded live with <b>%{creator_name}</b>"
@@ -2552,7 +2568,7 @@ daring ideas."
   /**
    "Replay"
 
-   - **es**: "Replay"
+   - **es**: "Repetición"
    - **de**: "Replay"
    - **fr**: "Rediffuser"
    - **en**: "Replay"
@@ -2874,7 +2890,7 @@ catch your eye?"
   /**
    "Starting soon"
 
-   - **es**: "Starting soon"
+   - **es**: "Comienza en breve"
    - **de**: "Beginnt in Kürze"
    - **fr**: "Bientôt en direct"
    - **en**: "Starting soon"
@@ -2890,7 +2906,7 @@ catch your eye?"
   /**
    "Subscribe"
 
-   - **es**: "Subscribe"
+   - **es**: "Suscribir"
    - **de**: "Abonnieren"
    - **fr**: "S'abonner"
    - **en**: "Subscribe"
@@ -2906,7 +2922,7 @@ catch your eye?"
   /**
    "Subscribed"
 
-   - **es**: "Subscribed"
+   - **es**: "Suscripción activa"
    - **de**: "Abo aktiviert"
    - **fr**: "Abonné "
    - **en**: "Subscribed"
@@ -2986,7 +3002,7 @@ catch your eye?"
   /**
    "The live stream failed to connect"
 
-   - **es**: "The live stream failed to connect"
+   - **es**: "No se pudo conectar la transmisión en directo"
    - **de**: "Keine Verbindungn zu Live-Stream"
    - **fr**: "Échec de connexion à la diffusion en direct"
    - **en**: "The live stream failed to connect"
@@ -3002,7 +3018,7 @@ catch your eye?"
   /**
    "The live stream was interrupted"
 
-   - **es**: "The live stream was interrupted"
+   - **es**: "Transmisión en vivo fue interrumpida"
    - **de**: "Live-Stream wurde unterbrochen"
    - **fr**: "Diffusion en direct interrompue"
    - **en**: "The live stream was interrupted"
@@ -3018,7 +3034,7 @@ catch your eye?"
   /**
    "The live stream will start soon"
 
-   - **es**: "The live stream will start soon"
+   - **es**: "Transmisión en vivo comienza en breve"
    - **de**: "Live-Stream started in Kürze"
    - **fr**: "La diffusion en direct va bientôt commencer"
    - **en**: "The live stream will start soon"
@@ -3034,7 +3050,7 @@ catch your eye?"
   /**
    "The replay will start soon"
 
-   - **es**: "The replay will start soon"
+   - **es**: "Repetición comienza en breve"
    - **de**: "Replay started in Kürze"
    - **fr**: "La rediffusion sera bientôt disponible"
    - **en**: "The replay will start soon"
@@ -3130,7 +3146,7 @@ catch your eye?"
   /**
    "Upcoming with<br/><b>%{creator_name}</b>"
 
-   - **es**: "Upcoming with<br/><b>%{creator_name}</b>"
+   - **es**: "Próximamente: Video de <br/><b>%{creator_name}</b>"
    - **de**: "Demnächst: Video von <br/><b>%{creator_name}</b>"
    - **fr**: "<br/><b>%{creator_name}</b> bientôt en direct"
    - **en**: "Upcoming with<br/><b>%{creator_name}</b>"
@@ -3210,7 +3226,7 @@ catch your eye?"
   /**
    "Watch live"
 
-   - **es**: "Watch live"
+   - **es**: "Ver en vivo"
    - **de**: "Live ansehen"
    - **fr**: "Regarder en direct"
    - **en**: "Watch live"
@@ -3221,6 +3237,22 @@ catch your eye?"
       defaultValue: "Watch live",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "We couldn't find anything for %{search_term}."
+
+   - **es**: "We couldn't find anything for %{search_term}."
+   - **de**: "We couldn't find anything for %{search_term}."
+   - **fr**: "We couldn't find anything for %{search_term}."
+   - **en**: "We couldn't find anything for %{search_term}."
+  */
+  public static func We_couldnt_find_anything_for_search_term(search_term: String) -> String {
+    return localizedString(
+      key: "We_couldnt_find_anything_for_search_term",
+      defaultValue: "We couldn't find anything for %{search_term}.",
+      count: nil,
+      substitutions: ["search_term": search_term]
     )
   }
   /**
@@ -7418,8 +7450,8 @@ catch your eye?"
   /**
    "in "%{time_count} seconds""
 
-   - **es**: "in "%{time_count} seconds""
-   - **de**: "in "%{time_count} seconds""
+   - **es**: "en "%{time_count} segundos""
+   - **de**: "in "%{time_count} Sekunden""
    - **fr**: "dans %{time_count} secondes"
    - **en**: "in "%{time_count} seconds""
   */
@@ -7434,8 +7466,8 @@ catch your eye?"
   /**
    "in "%{time_count} secs""
 
-   - **es**: "in "%{time_count} secs""
-   - **de**: "in "%{time_count} secs""
+   - **es**: "en "%{time_count} segs""
+   - **de**: "in "%{time_count} Sek""
    - **fr**: "dans %{time_count} s"
    - **en**: "in "%{time_count} secs""
   */
@@ -7514,7 +7546,7 @@ catch your eye?"
   /**
    "%{time_count} secs"
 
-   - **es**: "%{time_count} secs"
+   - **es**: "%{time_count} segs"
    - **de**: "%{time_count} Sek"
    - **fr**: "%{time_count} s"
    - **en**: "%{time_count} secs"
@@ -7530,8 +7562,8 @@ catch your eye?"
   /**
    "%{time_count} seconds"
 
-   - **es**: "%{time_count} seconds"
-   - **de**: "%{time_count} seconds"
+   - **es**: "%{time_count} segundos"
+   - **de**: "%{time_count} Sekunden"
    - **fr**: "%{time_count} secondes"
    - **en**: "%{time_count} seconds"
   */
@@ -7546,8 +7578,8 @@ catch your eye?"
   /**
    "%{time_count} secs ago"
 
-   - **es**: "%{time_count} secs ago"
-   - **de**: "%{time_count} secs ago"
+   - **es**: "hace %{time_count} segs"
+   - **de**: "vor %{time_count} Sek"
    - **fr**: "il y a %{time_count} s"
    - **en**: "%{time_count} secs ago"
   */
@@ -7562,8 +7594,8 @@ catch your eye?"
   /**
    "%{time_count} seconds ago"
 
-   - **es**: "%{time_count} seconds ago"
-   - **de**: "%{time_count} seconds ago"
+   - **es**: "hace %{time_count} segundos"
+   - **de**: "vor %{time_count} Sekunden"
    - **fr**: "il y a %{time_count} secondes"
    - **en**: "%{time_count} seconds ago"
   */
