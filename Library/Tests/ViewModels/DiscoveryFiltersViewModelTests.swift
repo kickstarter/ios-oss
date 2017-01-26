@@ -51,7 +51,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
   private let loadFavoriteRows = TestObserver<[SelectableRow], NoError>()
   private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
-  private let yConstantForActivityIndicator = TestObserver<CGFloat, NoError>()
 
   private let categoriesResponse = .template |> CategoriesEnvelope.lens.categories .~ categories
 
@@ -68,7 +67,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateOfSelectedRow.observe(self.notifyDelegateOfSelectedRow.observer)
     self.vm.outputs.loadFavoriteRows.map(first).observe(self.loadFavoriteRows.observer)
     self.vm.outputs.loadFavoriteRows.map(second).observe(self.loadFavoriteRowsId.observer)
-    self.vm.outputs.yConstantForActivityIndicator.observe(self.yConstantForActivityIndicator.observer)
   }
 
   func testAnimateIn_Default() {
@@ -163,8 +161,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
-
-    self.yConstantForActivityIndicator.assertValues([Styles.grid(10)])
   }
 
   func testTopFilters_Logged_In_Social() {
@@ -189,8 +185,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
-
-    self.yConstantForActivityIndicator.assertValues([Styles.grid(10)])
   }
 
   func testTopFilters_Category_Selected() {
@@ -213,12 +207,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.categoriesAreLoading.assertValues([true])
-      self.yConstantForActivityIndicator.assertValues([-Styles.grid(15)])
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
       self.categoriesAreLoading.assertValues([true, false])
-      self.yConstantForActivityIndicator.assertValues([-Styles.grid(15)])
 
       self.loadCategoryRows.assertValues([[artExpandableRow, filmExpandableRow]],
                                         "The root categories emit.")
