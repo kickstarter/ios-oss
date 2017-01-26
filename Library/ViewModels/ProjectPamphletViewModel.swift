@@ -70,27 +70,22 @@ ProjectPamphletViewModelOutputs {
     let refTag = self.refTagProperty.signal
       .map { $0.map(cleanUp(refTag:)) }
 
-    let liveStreamEventsFetch = projectOrParamAndIndex
-      .map { projectOrParam, _ in projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id) }
-      .map { $0.id }
-      .skipNil()
+    let liveStreamEventsFetch = project
       .take(first: 1)
-      .switchMap { id -> SignalProducer<[LiveStreamEvent], NoError> in
+      .switchMap { project -> SignalProducer<[LiveStreamEvent], NoError> in
         AppEnvironment.current.liveStreamService
-          .fetchEvents(forProjectId: id, uid: AppEnvironment.current.currentUser?.id)
+          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
       }
 
-    let liveStreamEventsProperty = MutableProperty<[LiveStreamEvent]>([])
-    let liveStreamEvents = liveStreamEventsProperty.signal
-    liveStreamEventsProperty <~ liveStreamEventsFetch
+    let liveStreamEvents = Signal.merge(
+      self.viewDidLoadProperty.signal.flatMap { SignalProducer(value: []) },
+      liveStreamEventsFetch
+    )
 
     self.configureChildViewControllersWithProjectAndLiveStreams =
       Signal.combineLatest(project, liveStreamEvents, refTag)
-
-    // Set initial value for above to emit immediately
-    liveStreamEventsProperty.value = []
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 

@@ -20,7 +20,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .flatMap { "?uid=\($0)" }
         .coalesceWith("")
 
-      let urlString = "\(Secrets.LiveStreams.eventEndpoint)/\(eventId)\(uidString)"
+      let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)\(uidString)"
       guard let url = URL(string: urlString) else {
         observer.send(error: .invalidEventId)
         return
@@ -64,7 +64,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .flatMap { "?uid=\($0)" }
         .coalesceWith("")
 
-      let urlString = "\(Secrets.LiveStreams.projectEndpoint)/\(projectId)\(uidString)"
+      let urlString = "\(Secrets.LiveStreams.Api.base)/projects/\(projectId)\(uidString)"
       guard let url = URL(string: urlString) else {
         observer.send(error: .invalidEventId)
         return
@@ -127,7 +127,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer { (observer, disposable) in
 
-        let urlString = "\(Secrets.LiveStreams.eventEndpoint)/\(eventId)/subscribe"
+        let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)/subscribe"
         guard let url = URL(string: urlString) else {
           observer.send(error: .invalidEventId)
           return

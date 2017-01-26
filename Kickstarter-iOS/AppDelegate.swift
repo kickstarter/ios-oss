@@ -246,7 +246,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                  refTag: refTag)
 
     let liveVc: UIViewController
-    if liveStreamEvent.stream.startDate < AppEnvironment.current.dateType.init().date {
+    if liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date {
       liveVc = LiveStreamContainerViewController.configuredWith(project: project,
                                                                 liveStreamEvent: liveStreamEvent,
                                                                 refTag: .push)

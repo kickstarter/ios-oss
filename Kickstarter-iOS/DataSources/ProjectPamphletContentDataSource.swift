@@ -67,7 +67,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     // Compares two live streams, putting live ones first.
     let currentlyLiveStreamsFirstComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
-      switch (lhs.stream.liveNow, rhs.stream.liveNow) {
+      switch (lhs.liveNow, rhs.liveNow) {
       case (true, false):                 return .lt
       case (false, true):                 return .gt
       case (true, true), (false, false):  return .eq
@@ -76,19 +76,19 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     // Compares two live streams, putting the future ones first.
     let futureLiveStreamsFirstComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
-      lhs.stream.startDate > now && rhs.stream.startDate > now
-        || lhs.stream.startDate < now && rhs.stream.startDate < now
-        ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .gt
+      lhs.startDate > now && rhs.startDate > now
+        || lhs.startDate < now && rhs.startDate < now
+        ? .eq : lhs.startDate < rhs.startDate ? .gt
         : .lt
     }
 
     // Compares two live streams, putting soon-to-be-live first and way-back past last.
     let startDateComparator = Prelude.Comparator<LiveStreamEvent> { lhs, rhs in
-      lhs.stream.startDate > now
-        ? (lhs.stream.startDate == rhs.stream.startDate
-          ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .lt: .gt)
-        : (lhs.stream.startDate == rhs.stream.startDate
-          ? .eq : lhs.stream.startDate < rhs.stream.startDate ? .gt: .lt)
+      lhs.startDate > now
+        ? (lhs.startDate == rhs.startDate
+          ? .eq : lhs.startDate < rhs.startDate ? .lt: .gt)
+        : (lhs.startDate == rhs.startDate
+          ? .eq : lhs.startDate < rhs.startDate ? .gt: .lt)
     }
 
     // Sort by:
