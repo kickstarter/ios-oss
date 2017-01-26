@@ -128,8 +128,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.viewModel.outputs.showDiscoveryFilters
       .observeForControllerAction()
-      .observeValues { [weak self] row, cats in
-        self?.showDiscoveryFilters(selectedRow: row, categories: cats)
+      .observeValues { [weak self] in
+        self?.showDiscoveryFilters(selectedRow: $0)
     }
 
     self.viewModel.outputs.dismissDiscoveryFilters
@@ -189,8 +189,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  fileprivate func showDiscoveryFilters(selectedRow: SelectableRow, categories: [KsApi.Category]) {
-    let vc = DiscoveryFiltersViewController.configuredWith(selectedRow: selectedRow, categories: categories)
+  fileprivate func showDiscoveryFilters(selectedRow: SelectableRow) {
+    let vc = DiscoveryFiltersViewController.configuredWith(selectedRow: selectedRow)
     vc.delegate = self
     vc.modalPresentationStyle = .overFullScreen
     self.present(vc, animated: false, completion: nil)

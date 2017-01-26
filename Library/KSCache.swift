@@ -3,6 +3,10 @@ import Foundation
 public final class KSCache {
   private let cache = NSCache<NSString, AnyObject>()
 
+  public static let ksr_activityFriendsFollowing = "activity_friend_follow_view_model"
+  public static let ksr_discoveryFiltersCategories = "discovery_filters_view_model_categories"
+  public static let ksr_findFriendsFollowing = "find_friends_follow_view_model"
+
   public init() {
   }
 
