@@ -240,8 +240,6 @@ internal final class SearchViewModelTests: TestCase {
                      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
       XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
-      self.vm.inputs.willDisplayRow(7, outOf: 10)
-
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
 
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
@@ -251,13 +249,29 @@ internal final class SearchViewModelTests: TestCase {
 
         self.hasProjects.assertValues([true, false, true, false],
                                       "Projects clear immediately upon entering search.")
-        self.showNoSearchResults.assertValues([false, false], "No query for project yet.")
+        self.showNoSearchResults.assertValues([], "No query for project yet.")
 
         self.scheduler.advance()
 
         self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
-        self.showNoSearchResults.assertValues([false, false, true], "No Projects Found.")
+        self.showNoSearchResults.assertValues([true], "No Projects Found.")
+
+        self.vm.inputs.searchTextChanged("abcdefghasfdsafd")
+
+        self.hasProjects.assertValues([true, false, true, false])
+        self.showNoSearchResults.assertValues([true, false])
+
+        self.scheduler.advance()
+
+        self.hasProjects.assertValues([true, false, true, false])
+        self.showNoSearchResults.assertValues([true, false, true])
       }
+
+      self.vm.inputs.searchTextChanged("")
+
+      self.hasProjects.assertValues([true, false, true, false, true])
+      self.showNoSearchResults.assertValues([true, false, true, false])
+      self.isPopularTitleVisible.assertValues([true, false, true])
     }
   }
 

@@ -57,7 +57,7 @@ public protocol SearchViewModelOutputs {
   var searchFieldText: Signal<String, NoError> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
-  var showNoSearchResults: Signal<(DiscoveryParams, Bool), NoError> { get }
+  var showEmptyState: Signal<(DiscoveryParams, Bool), NoError> { get }
 }
 
 public protocol SearchViewModelType {
@@ -113,24 +113,29 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
     }
 
-    let (projects, isLoading, page) = paginate(
+    let (paginatedProjects, isLoading, page) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: true,
+      clearOnNewRequest: false,
+      skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.projects = Signal.combineLatest(self.isPopularTitleVisible, popular, .merge(clears, projects))
+    self.projects = Signal.combineLatest(self.isPopularTitleVisible, popular, .merge(clears, paginatedProjects))
       .map { showPopular, popular, searchResults in showPopular ? popular : searchResults }
       .skipRepeats(==)
 
-    let shouldShowNoSearchResults = Signal.combineLatest(isLoading, projects)
-      .map { isLoading, searchResults in !isLoading && searchResults.isEmpty }
+    let shouldShowEmptyState = Signal.merge(
+      query.mapConst(false),
+      paginatedProjects.map { $0.isEmpty }
+      )
       .skipRepeats()
+      .skip(first: 1)
 
-    self.showNoSearchResults = Signal.combineLatest(requestFirstPageWith, shouldShowNoSearchResults)
+    self.showEmptyState = requestFirstPageWith
+      .takePairWhen(shouldShowEmptyState)
 
     self.changeSearchFieldFocus = Signal.merge(
       viewWillAppearNotAnimated.mapConst((false, false)),
@@ -151,7 +156,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     viewWillAppearNotAnimated
       .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
 
-    let hasResults = Signal.combineLatest(projects, isLoading)
+    let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(negate • second)
       .map(first)
       .map { !$0.isEmpty }
@@ -225,7 +230,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>
-  public let showNoSearchResults: Signal<(DiscoveryParams, Bool), NoError>
+  public let showEmptyState: Signal<(DiscoveryParams, Bool), NoError>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }
