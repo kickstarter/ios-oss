@@ -103,6 +103,13 @@ internal final class SearchViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.showEmptyState
+      .observeForControllerAction()
+      .observeValues { [weak self] params, visible in
+        self?.dataSource.load(params: params, visible: visible)
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
