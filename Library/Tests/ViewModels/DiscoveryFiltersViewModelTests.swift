@@ -42,10 +42,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm = DiscoveryFiltersViewModel()
 
   private let animateInView = TestObserver<Int?, NoError>()
-  private let loadingIndicatorIsHidden = TestObserver<Bool, NoError>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
   private let loadCategoryRowsInitialId = TestObserver<Int?, NoError>()
   private let loadCategoryRowsSelectedId = TestObserver<Int?, NoError>()
+  private let loadingIndicatorisVisible = TestObserver<Bool, NoError>()
   private let loadTopRows = TestObserver<[SelectableRow], NoError>()
   private let loadTopRowsInitialId = TestObserver<Int?, NoError>()
   private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
@@ -58,7 +58,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.animateInView.observe(self.animateInView.observer)
-    self.vm.outputs.loadingIndicatorIsHidden.observe(self.loadingIndicatorIsHidden.observer)
+    self.vm.outputs.loadingIndicatorIsVisible.observe(self.loadingIndicatorisVisible.observer)
     self.vm.outputs.loadCategoryRows.map(first).observe(self.loadCategoryRows.observer)
     self.vm.outputs.loadCategoryRows.map(second).observe(self.loadCategoryRowsInitialId.observer)
     self.vm.outputs.loadCategoryRows.map { $0.2 }.observe(self.loadCategoryRowsSelectedId.observer)
@@ -202,15 +202,15 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
       self.loadCategoryRows.assertValueCount(0)
-      self.loadingIndicatorIsHidden.assertValueCount(0)
+      self.loadingIndicatorisVisible.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 
-      self.loadingIndicatorIsHidden.assertValues([true])
+      self.loadingIndicatorisVisible.assertValues([true])
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-      self.loadingIndicatorIsHidden.assertValues([true, false])
+      self.loadingIndicatorisVisible.assertValues([true, false])
 
       self.loadCategoryRows.assertValues([[artExpandableRow, filmExpandableRow]],
                                         "The root categories emit.")
@@ -277,11 +277,11 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.loadingIndicatorIsHidden.assertValues([true])
+    self.loadingIndicatorisVisible.assertValues([true])
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.loadingIndicatorIsHidden.assertValues([true, false])
+    self.loadingIndicatorisVisible.assertValues([true, false])
 
     self.loadCategoryRows.assertValues(
       [
@@ -392,7 +392,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
-    self.loadingIndicatorIsHidden.assertValueCount(0)
+    self.loadingIndicatorisVisible.assertValueCount(0)
 
     self.loadCategoryRows.assertValues([[artExpandableRow, filmExpandableRow]],
                                        "Server did not advance, categories loaded from cache.")

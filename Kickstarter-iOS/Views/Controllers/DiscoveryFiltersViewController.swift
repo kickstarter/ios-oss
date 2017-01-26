@@ -55,10 +55,10 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         self?.animateIn(categoryId: $0)
     }
 
-    self.viewModel.outputs.loadingIndicatorIsHidden
+    self.viewModel.outputs.loadingIndicatorIsVisible
       .observeForUI()
-      .observeValues { [weak self] areLoading in
-        if areLoading {
+      .observeValues { [weak self] isVisible in
+        if isVisible {
           self?.dataSource.loadCategoriesLoaderRow()
         } else {
           self?.deleteCategoriesLoaderRow()

@@ -25,7 +25,7 @@ public protocol DiscoveryFiltersViewModelOutputs {
   var animateInView: Signal<Int?, NoError> { get }
 
   /// Emits whether the categories are loading for the activity indicator view.
-  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get }
+  var loadingIndicatorIsVisible: Signal<Bool, NoError> { get }
 
   /**
    Emits an array of expandable rows to put into the categories section of filters,
@@ -80,8 +80,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
       .map { $0.params.category?.rootId }
 
-    let areLoading = MutableProperty(false)
-    self.loadingIndicatorIsHidden = areLoading.signal
+    let loaderIsVisible = MutableProperty(false)
+    self.loadingIndicatorIsVisible = loaderIsVisible.signal
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
@@ -91,8 +91,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { areLoading.value = true },
-              terminated: { areLoading.value = false })
+          .on(starting: { loaderIsVisible.value = true },
+              terminated: { loaderIsVisible.value = false })
           .map { $0.categories }
           .materialize()
       }
@@ -190,7 +190,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   }
 
   public let animateInView: Signal<Int?, NoError>
-  public let loadingIndicatorIsHidden: Signal<Bool, NoError>
+  public let loadingIndicatorIsVisible: Signal<Bool, NoError>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
   NoError>
   public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
