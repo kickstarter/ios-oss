@@ -35,7 +35,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
     self.fundingLargeLabelText = project.map {
-      let string = Strings.percentage_funded(percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
+      let string = Strings.percentage_funded(
+        percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
       return string.simpleHtmlAttributedString(base: [
         NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
         NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
@@ -47,7 +48,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
     }
 
     self.fundingSmallLabelText = project.map {
-      let string = Strings.percentage_funded(percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
+      let string = Strings.percentage_funded(
+        percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
       return string.simpleHtmlAttributedString(base: [
         NSFontAttributeName: UIFont.ksr_subhead(size: 13.0),
         NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
