@@ -15,7 +15,7 @@ extension Result {
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let anonymousUserId: String?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
-  private let fetchEventsForProjectResult: Result<[LiveStreamEvent], LiveApiError>?
+  private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
   private let subscribeToResult: Result<Bool, LiveApiError>?
 
@@ -25,7 +25,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   internal init(anonymousUserId: String? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
-                fetchEventsForProjectResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
+                fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<Bool, LiveApiError>? = nil) {
     self.anonymousUserId = anonymousUserId
@@ -53,15 +53,17 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func fetchEvents(forProjectId projectId: Int, uid: Int?) -> SignalProducer<[LiveStreamEvent],
-    LiveApiError> {
+  internal func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
+    SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
     if let error = self.fetchEventResult?.error {
       return SignalProducer(error: error)
     }
 
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [LiveStreamEvent.template])
+
     return SignalProducer(value:
       self.fetchEventsForProjectResult?.value
-        ?? [LiveStreamEvent.template]
+        ?? envelope
     )
   }
 

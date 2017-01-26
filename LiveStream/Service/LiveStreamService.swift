@@ -55,9 +55,9 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  //FIXME: Use envelope approach for full response
-  public func fetchEvents(forProjectId projectId: Int, uid: Int?) -> SignalProducer<[LiveStreamEvent],
-    LiveApiError> {
+  
+  public func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
+    SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
       let uidString = uid
@@ -78,17 +78,15 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           return
         }
 
-        let events = data
+        let envelope = data
           .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-          .flatMap { $0 as? [String:Any] }
-          .flatMap { $0["live_streams"] as? [[String:Any]] }
           .map(JSON.init)
-          .map([LiveStreamEvent].decode)
+          .map(LiveStreamEventsEnvelope.decode)
           .flatMap { $0.value }
-          .map(Event<[LiveStreamEvent], LiveApiError>.value)
+          .map(Event<LiveStreamEventsEnvelope, LiveApiError>.value)
           .coalesceWith(.failed(.genericFailure))
 
-        observer.action(events)
+        observer.action(envelope)
         observer.sendCompleted()
       }
 

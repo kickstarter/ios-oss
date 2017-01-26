@@ -72,7 +72,7 @@ ProjectPamphletViewModelOutputs {
 
     let liveStreamEventsFetch = project
       .take(first: 1)
-      .switchMap { project -> SignalProducer<[LiveStreamEvent], NoError> in
+      .switchMap { project -> SignalProducer<LiveStreamEventsEnvelope, NoError> in
         AppEnvironment.current.liveStreamService
           .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -81,7 +81,7 @@ ProjectPamphletViewModelOutputs {
 
     let liveStreamEvents = Signal.merge(
       self.viewDidLoadProperty.signal.flatMap { SignalProducer(value: []) },
-      liveStreamEventsFetch
+      liveStreamEventsFetch.map { $0.liveStreamEvents }
     )
 
     self.configureChildViewControllersWithProjectAndLiveStreams =

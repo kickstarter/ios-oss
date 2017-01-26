@@ -255,7 +255,9 @@ final class ProjectPamphletViewModelTests: TestCase {
     let liveStreamEvent = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ true
 
-    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result([liveStreamEvent]))
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [liveStreamEvent])
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
 
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(
@@ -287,7 +289,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(60*60).date
 
-    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result([liveStreamEvent]))
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [liveStreamEvent])
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
 
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
@@ -319,7 +323,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60*60).date
 
-    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result([liveStreamEvent]))
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [liveStreamEvent])
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
 
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
@@ -353,9 +359,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60*60).date
 
-    let result = Result<[LiveStreamEvent], LiveApiError>([liveStreamEventLive, liveStreamEventReplay])
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1,
+                                            liveStreamEvents: [liveStreamEventLive, liveStreamEventReplay])
 
-    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: result)
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
 
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)

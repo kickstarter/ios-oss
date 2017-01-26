@@ -17,7 +17,8 @@ public protocol LiveStreamServiceProtocol {
   func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
 
   /// Fetches an array of events with personalization added for the user.
-  func fetchEvents(forProjectId projectId: Int, uid: Int?) -> SignalProducer<[LiveStreamEvent], LiveApiError>
+  func fetchEvents(forProjectId projectId: Int, uid: Int?) -> SignalProducer<LiveStreamEventsEnvelope,
+    LiveApiError>
 
   /// Creates a database reference.
   func initializeDatabase(userId: Int?, failed: (Void) -> Void, succeeded: (FIRDatabaseReference) -> Void)
