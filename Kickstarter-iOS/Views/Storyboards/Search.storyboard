@@ -99,7 +99,7 @@
                                                                     <rect key="frame" x="0.0" y="9" width="261" height="3"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zHj-GC-Cpo">
-                                                                            <rect key="frame" x="0.0" y="0.5" width="261" height="3"/>
+                                                                            <rect key="frame" x="0.0" y="1" width="261" height="3"/>
                                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </view>
                                                                     </subviews>
@@ -244,7 +244,7 @@
                                     <outlet property="separateView" destination="TX0-Jd-jBC" id="04v-VK-gDm"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoSearchResultsCell" rowHeight="130" id="PTr-E5-epG" customClass="NoSearchResultsCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchEmptyStateCell" rowHeight="130" id="PTr-E5-epG" customClass="SearchEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="538" width="400" height="130"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PTr-E5-epG" id="DaR-k8-izN">
