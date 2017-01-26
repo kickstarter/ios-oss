@@ -55,7 +55,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         self?.animateIn(categoryId: $0)
     }
 
-    self.viewModel.outputs.categoriesAreLoading
+    self.viewModel.outputs.loadingIndicatorIsHidden
       .observeForUI()
       .observeValues { [weak self] areLoading in
         if areLoading {

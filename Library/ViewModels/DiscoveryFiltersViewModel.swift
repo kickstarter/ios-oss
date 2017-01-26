@@ -25,7 +25,7 @@ public protocol DiscoveryFiltersViewModelOutputs {
   var animateInView: Signal<Int?, NoError> { get }
 
   /// Emits whether the categories are loading for the activity indicator view.
-  var categoriesAreLoading: Signal<Bool, NoError> { get }
+  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get }
 
   /**
    Emits an array of expandable rows to put into the categories section of filters,
@@ -81,13 +81,13 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { $0.params.category?.rootId }
 
     let areLoading = MutableProperty(false)
-    self.categoriesAreLoading = areLoading.signal
+    self.loadingIndicatorIsHidden = areLoading.signal
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
 
     let categoriesEvent = cachedCats
-      .filter { $0 == nil || ($0?.isEmpty ?? true) }
+      .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -163,8 +163,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let initialSelectedRowProperty =
-    MutableProperty<SelectableRow?>(nil)
+  fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
   public func configureWith(selectedRow: SelectableRow) {
     self.initialSelectedRowProperty.value = selectedRow
   }
@@ -191,7 +190,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   }
 
   public let animateInView: Signal<Int?, NoError>
-  public let categoriesAreLoading: Signal<Bool, NoError>
+  public let loadingIndicatorIsHidden: Signal<Bool, NoError>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
   NoError>
   public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
