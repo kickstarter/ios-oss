@@ -59,7 +59,8 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
       return SignalProducer(error: error)
     }
 
-    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [LiveStreamEvent.template])
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1,
+                                            liveStreamEvents: [LiveStreamEvent.template])
 
     return SignalProducer(value:
       self.fetchEventsForProjectResult?.value

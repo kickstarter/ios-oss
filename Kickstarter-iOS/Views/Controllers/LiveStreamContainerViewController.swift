@@ -334,7 +334,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.view.setNeedsLayout()
     }
 
-    self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating.on(value: {print($0)})
+    self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText

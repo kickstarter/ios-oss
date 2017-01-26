@@ -35,6 +35,7 @@ public protocol ProjectPamphletContentViewModelType {
 public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewModelType,
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
+  //swiftlint:disable:next function_body_length
   public init() {
     let project = Signal.combineLatest(
       self.configDataProperty.signal.skipNil().map(first),

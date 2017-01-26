@@ -55,7 +55,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  
   public func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
     SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
 
