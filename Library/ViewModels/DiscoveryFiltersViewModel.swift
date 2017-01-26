@@ -45,9 +45,6 @@ public protocol DiscoveryFiltersViewModelOutputs {
 
   /// A bool that determines whether a cell should be animated when it is displayed.
   var shouldAnimateSelectableCell: Bool { get }
-
-  /// Emits a constant to add to the activity indicator centerYAnchor constraint.
-  var yConstantForActivityIndicator: Signal<CGFloat, NoError> { get }
 }
 
 public protocol DiscoveryFiltersViewModelType {
@@ -85,10 +82,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let areLoading = MutableProperty(false)
     self.categoriesAreLoading = areLoading.signal
-
-    self.yConstantForActivityIndicator = self.categoriesAreLoading
-      .map { _ in AppEnvironment.current.currentUser == nil ? -Styles.grid(15) : Styles.grid(10) }
-      .take(first: 1)
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
@@ -204,7 +197,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
   public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
   public let notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError>
-  public let yConstantForActivityIndicator: Signal<CGFloat, NoError>
 
   public var inputs: DiscoveryFiltersViewModelInputs { return self }
   public var outputs: DiscoveryFiltersViewModelOutputs { return self }

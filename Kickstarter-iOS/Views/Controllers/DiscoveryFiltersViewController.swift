@@ -13,7 +13,6 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   @IBOutlet private weak var closeButton: UIButton!
   @IBOutlet private weak var filtersTableView: UITableView!
 
-  private let activityIndicator = UIActivityIndicatorView()
   private let dataSource = DiscoveryFiltersDataSource()
   private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
@@ -29,8 +28,6 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.view.addSubview(activityIndicator)
 
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
@@ -52,12 +49,20 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.activityIndicator.rac.animating = self.viewModel.outputs.categoriesAreLoading
-
     self.viewModel.outputs.animateInView
       .observeForUI()
       .observeValues { [weak self] in
         self?.animateIn(categoryId: $0)
+    }
+
+    self.viewModel.outputs.categoriesAreLoading
+      .observeForUI()
+      .observeValues { [weak self] areLoading in
+        if areLoading {
+          self?.dataSource.loadCategoriesLoaderRow()
+        } else {
+          self?.deleteCategoriesLoaderRow()
+        }
     }
 
     self.viewModel.outputs.loadTopRows
@@ -88,26 +93,10 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         _self.animateOut()
         _self.delegate?.discoveryFilters(_self, selectedRow: selectedRow)
     }
-
-    self.viewModel.outputs.yConstantForActivityIndicator
-      .observeForUI()
-      .observeValues { [weak self] constant in
-        guard let _self = self else { return }
-        NSLayoutConstraint.activate([
-          _self.activityIndicator.centerXAnchor.constraint(equalTo: _self.view.centerXAnchor),
-          _self.activityIndicator.centerYAnchor.constraint(equalTo: _self.view.centerYAnchor,
-                                                           constant: constant)
-          ])
-    }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self.activityIndicator
-      |> UIActivityIndicatorView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
@@ -144,7 +133,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     }
   }
 
-  fileprivate func animateIn(categoryId: Int?) {
+  private func animateIn(categoryId: Int?) {
     let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
     self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     self.backgroundGradientView.alpha = 0
@@ -171,7 +160,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
                                completion: nil)
   }
 
-  fileprivate func animateOut() {
+  private func animateOut() {
     UIView.animate(withDuration: 0.1,
                                delay: 0.0,
                                options: .curveEaseOut,
@@ -208,5 +197,13 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
                           self.filtersTableView.reloadData()
       }, completion: nil)
     }
+  }
+
+  private func deleteCategoriesLoaderRow() {
+    self.filtersTableView.beginUpdates()
+
+    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .top)
+
+    self.filtersTableView.endUpdates()
   }
 }
