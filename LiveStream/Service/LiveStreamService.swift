@@ -65,7 +65,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       let urlString = "\(Secrets.LiveStreams.Api.base)/projects/\(projectId)\(uidString)"
       guard let url = URL(string: urlString) else {
-        observer.send(error: .invalidEventId)
+        observer.send(error: .invalidProjectId)
         return
       }
 

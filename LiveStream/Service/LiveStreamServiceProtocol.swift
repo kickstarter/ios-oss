@@ -5,6 +5,7 @@ public enum LiveApiError: Error {
   case genericFailure
   case invalidEventId
   case invalidJson
+  case invalidProjectId
 }
 
 public protocol LiveStreamServiceProtocol {

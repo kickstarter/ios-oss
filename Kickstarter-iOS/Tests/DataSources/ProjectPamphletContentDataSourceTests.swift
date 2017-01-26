@@ -1,6 +1,7 @@
 import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
+@testable import LiveStream
 @testable import KsApi
 import Prelude
 
@@ -15,7 +16,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Project.lens.stats.commentsCount .~ 24
       |> Project.lens.stats.updatesCount .~ 42
 
-    dataSource.load(project: project)
+    dataSource.load(project: project, liveStreamEvents: [])
 
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
     XCTAssertEqual(.comments(24, .first),
@@ -30,13 +31,12 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let project = .template
       |> Project.lens.stats.commentsCount .~ 24
       |> Project.lens.stats.updatesCount .~ 42
-      |> Project.lens.liveStreams .~ [.template]
 
     let config = .template
       |> Config.lens.features .~ ["ios_live_streams": false]
 
     withEnvironment(config: config) {
-      dataSource.load(project: project)
+      dataSource.load(project: project, liveStreamEvents: [.template])
 
       XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
       XCTAssertEqual(.comments(24, .first),
@@ -49,63 +49,66 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   func testSubpages_LiveStreams_LiveStreamFeatureTurnedOn() {
     let section = ProjectPamphletContentDataSource.Section.subpages.rawValue
 
+
+
     let currentlyLiveStream = .template
-      |> Project.LiveStream.lens.id .~ 1
-      |> Project.LiveStream.lens.isLiveNow .~ true
-      |> Project.LiveStream.lens.startDate .~ MockDate().timeIntervalSince1970
+      |> LiveStreamEvent.lens.id .~ 1
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
 
     let futureLiveStreamSoon = .template
-      |> Project.LiveStream.lens.id .~ 2
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60)
+      |> LiveStreamEvent.lens.id .~ 2
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(60 * 60).date
 
     let futureLiveStreamWayFuture = .template
-      |> Project.LiveStream.lens.id .~ 3
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 48 * 60 * 60)
+      |> LiveStreamEvent.lens.id .~ 3
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(48 * 60 * 60).date
 
     let pastLiveStreamRecent = .template
-      |> Project.LiveStream.lens.id .~ 4
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
+      |> LiveStreamEvent.lens.id .~ 4
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
 
     let pastLiveStreamWayPast = .template
-      |> Project.LiveStream.lens.id .~ 5
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 24 * 60 * 60)
+      |> LiveStreamEvent.lens.id .~ 5
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-24 * 60 * 60).date
 
     let project = .template
       |> Project.lens.stats.commentsCount .~ 24
       |> Project.lens.stats.updatesCount .~ 42
-      |> Project.lens.liveStreams .~ [
-        futureLiveStreamWayFuture,
-        pastLiveStreamWayPast,
-        currentlyLiveStream,
-        pastLiveStreamRecent,
-        futureLiveStreamSoon,
+
+    let liveStreamEvents = [
+      futureLiveStreamWayFuture,
+      pastLiveStreamWayPast,
+      currentlyLiveStream,
+      pastLiveStreamRecent,
+      futureLiveStreamSoon,
     ]
 
     let config = .template
       |> Config.lens.features .~ ["ios_live_streams": true]
 
     withEnvironment(config: config) {
-      dataSource.load(project: project)
+      dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
 
       XCTAssertEqual(7, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
-      XCTAssertEqual(.liveStream(liveStream: currentlyLiveStream, .first),
+      XCTAssertEqual(.liveStream(liveStreamEvent: currentlyLiveStream, .first),
                      self.dataSource[IndexPath(row: 0, section: section)] as? ProjectPamphletSubpage)
 
-      XCTAssertEqual(.liveStream(liveStream: futureLiveStreamSoon, .middle),
+      XCTAssertEqual(.liveStream(liveStreamEvent: futureLiveStreamSoon, .middle),
                      self.dataSource[IndexPath(row: 1, section: section)] as? ProjectPamphletSubpage)
 
-      XCTAssertEqual(.liveStream(liveStream: futureLiveStreamWayFuture, .middle),
+      XCTAssertEqual(.liveStream(liveStreamEvent: futureLiveStreamWayFuture, .middle),
                      self.dataSource[IndexPath(row: 2, section: section)] as? ProjectPamphletSubpage)
 
-      XCTAssertEqual(.liveStream(liveStream: pastLiveStreamRecent, .middle),
+      XCTAssertEqual(.liveStream(liveStreamEvent: pastLiveStreamRecent, .middle),
                      self.dataSource[IndexPath(row: 3, section: section)] as? ProjectPamphletSubpage)
 
-      XCTAssertEqual(.liveStream(liveStream: pastLiveStreamWayPast, .middle),
+      XCTAssertEqual(.liveStream(liveStreamEvent: pastLiveStreamWayPast, .middle),
                      self.dataSource[IndexPath(row: 4, section: section)] as? ProjectPamphletSubpage)
 
       XCTAssertEqual(.comments(24, .middle),

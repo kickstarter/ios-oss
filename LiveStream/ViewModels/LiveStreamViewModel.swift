@@ -132,7 +132,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       isMaxOpenTokViewersReached,
 
       liveStreamEvent
-        .map { event in event.isRtmp ?? false || didEndNormally(event: event) }
+        .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue)
       )
       .take(first: 1)

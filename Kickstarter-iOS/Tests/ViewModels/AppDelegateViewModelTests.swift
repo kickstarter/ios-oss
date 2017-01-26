@@ -18,7 +18,6 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
   private let goToLiveStreamProject = TestObserver<Project, NoError>()
-  private let goToLiveStreamLiveStream = TestObserver<Project.LiveStream, NoError>()
   private let goToLiveStreamLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
   private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let goToLogin = TestObserver<(), NoError>()
@@ -42,10 +41,9 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
-    self.vm.outputs.goToLiveStream.map { $0.0 }.observe(self.goToLiveStreamProject.observer)
-    self.vm.outputs.goToLiveStream.map { $0.1 }.observe(self.goToLiveStreamLiveStream.observer)
-    self.vm.outputs.goToLiveStream.map { $0.2 }.observe(self.goToLiveStreamLiveStreamEvent.observer)
-    self.vm.outputs.goToLiveStream.map { $0.3 }.observe(self.goToLiveStreamRefTag.observer)
+    self.vm.outputs.goToLiveStream.map(first).observe(self.goToLiveStreamProject.observer)
+    self.vm.outputs.goToLiveStream.map(second).observe(self.goToLiveStreamLiveStreamEvent.observer)
+    self.vm.outputs.goToLiveStream.map(third).observe(self.goToLiveStreamRefTag.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
@@ -840,17 +838,10 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_LiveStream() {
-    let liveStream = .template
-      |> Project.LiveStream.lens.id .~ 42
     let project = .template
       |> Project.lens.id .~ 24
-      |> Project.lens.liveStreams .~ [
-        liveStream |> Project.LiveStream.lens.id .~ 100,
-        liveStream,
-        liveStream |> Project.LiveStream.lens.id .~ 101,
-    ]
     let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.id .~ liveStream.id
+      |> LiveStreamEvent.lens.id .~ 42
 
     let pushData: [String:Any] = [
       "aps": [
@@ -860,7 +851,7 @@ final class AppDelegateViewModelTests: TestCase {
         "id": project.id
       ],
       "live_stream": [
-        "id": liveStream.id
+        "id": liveStreamEvent.id
       ],
     ]
 
@@ -871,7 +862,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
 
       self.goToLiveStreamProject.assertValues([project])
-      self.goToLiveStreamLiveStream.assertValues([liveStream])
       self.goToLiveStreamLiveStreamEvent.assertValues([liveStreamEvent])
       self.goToLiveStreamRefTag.assertValues([.push])
     }

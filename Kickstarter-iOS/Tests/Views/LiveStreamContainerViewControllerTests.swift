@@ -19,26 +19,22 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
   }
 
   func testReplay() {
-    let liveStream = .template
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 86_400)
-      |> Project.LiveStream.lens.isLiveNow .~ false
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.hasReplay .~ true
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.com"
       |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
-    let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
 
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
-      withEnvironment(language: lang, liveStreamService: liveStreamService) {
+      withEnvironment(language: lang) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent,
+                                                                  liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
@@ -53,25 +49,20 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
   }
 
   func testLive() {
-    let liveStream = .template
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 86_400)
-      |> Project.LiveStream.lens.isLiveNow .~ true
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
-    let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
 
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
-      withEnvironment(language: lang, liveStreamService: liveStreamService) {
+      withEnvironment(language: lang) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent,
+                                                                  liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
@@ -86,17 +77,12 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
   }
 
   func testPlaybackStates() {
-
-    let liveStream = .template
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 86_400)
-      |> Project.LiveStream.lens.isLiveNow .~ true
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
-    let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
 
     let playbackStates: [LiveStreamViewControllerState] = [
       .greenRoom,
@@ -105,10 +91,9 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     ]
 
     combos(Language.allLanguages, playbackStates).forEach { lang, state in
-      withEnvironment(language: lang, liveStreamService: liveStreamService) {
+      withEnvironment(language: lang) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
-                                                                  event: liveStreamEvent,
+                                                                  liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)

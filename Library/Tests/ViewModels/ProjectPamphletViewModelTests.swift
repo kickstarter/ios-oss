@@ -114,7 +114,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.setNavigationBarAnimated.assertValues([false, true, false])
   }
 
-   //Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
+  // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
   func testTracksRefTag() {
     let project = Project.template
 

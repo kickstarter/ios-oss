@@ -80,7 +80,7 @@ ProjectPamphletViewModelOutputs {
       }
 
     let liveStreamEvents = Signal.merge(
-      self.viewDidLoadProperty.signal.flatMap { SignalProducer(value: []) },
+      self.viewDidLoadProperty.signal.mapConst([]),
       liveStreamEventsFetch.map { $0.liveStreamEvents }
     )
 
