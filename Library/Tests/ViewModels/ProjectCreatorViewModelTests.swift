@@ -87,11 +87,11 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToSafariBrowser.assertValues([])
 
     let googleRequest = URLRequest(
-      url: URL(string: "https://www.google.com")!
+      url: URL(string: "http://www.google.com")!
     )
     policy = self.vm.inputs.decidePolicy(
       forNavigationAction: WKNavigationActionData(
-        navigationType: .other,
+        navigationType: .linkActivated,
         request: googleRequest,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: googleRequest),
         targetFrame: WKFrameInfoData(mainFrame: true, request: googleRequest)
@@ -120,7 +120,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     )
     let policy = self.vm.inputs.decidePolicy(
       forNavigationAction: WKNavigationActionData(
-        navigationType: .other,
+        navigationType: .linkActivated,
         request: googleRequest,
         sourceFrame: WKFrameInfoData(mainFrame: true, request: googleRequest),
         targetFrame: WKFrameInfoData(mainFrame: true, request: googleRequest)
