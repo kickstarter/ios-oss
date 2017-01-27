@@ -18,7 +18,7 @@ public protocol DiscoveryPageViewModelInputs {
   func tapped(project: Project)
 
   /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at index: Int)
+  func transitionedToProject(at row: Int, outOf totalRows: Int)
 
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
@@ -107,8 +107,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       )
       .map(DiscoveryParams.lens.sort.set)
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
-      .map { row, total in row >= total - 3 && row > 0 }
+    let isCloseToBottom = Signal.merge(
+      self.willDisplayRowProperty.signal.skipNil(),
+      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
+      )
+      .map { row, total in
+        row >= total - 3 && row > 0
+      }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
@@ -219,7 +224,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { $0 == nil && $1 == .magic }
       .skipRepeats()
 
-    self.scrollToProjectRow = transitionedToProjectIndexProperty.signal.skipNil()
+    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     requestFirstPageWith
       .takePairWhen(pageCount)
@@ -250,9 +255,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func tapped(project: Project) {
     self.tappedProject.value = project
   }
-  private let transitionedToProjectIndexProperty = MutableProperty<Int?>(nil)
-  public func transitionedToProject(at index: Int) {
-    self.transitionedToProjectIndexProperty.value = index
+  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
+    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
   fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {

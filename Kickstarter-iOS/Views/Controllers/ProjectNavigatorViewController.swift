@@ -133,6 +133,10 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     return self.viewControllers?.first
   }
 
+  internal func updatePlaylist(_ playlist: [Project]) {
+    self.pageDataSource.updatePlaylist(playlist)
+  }
+
   fileprivate func setInitialPagerViewController() {
     guard let navController = self.pageDataSource.initialController(),
       let projectController = self.pageDataSource.initialPamphletController() else {

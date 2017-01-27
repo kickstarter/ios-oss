@@ -18,6 +18,12 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     self.padControllers(toLength: self.playlist.count)
   }
 
+  internal func updatePlaylist(_ playlist: [Project]) {
+    self.playlist = playlist
+
+    //self.padControllers(toLength: self.playlist.count)
+  }
+
   internal func initialController() -> UIViewController? {
     return self.playlist.index(of: self.initialProject).flatMap(self.controllerFor(index:))
   }
