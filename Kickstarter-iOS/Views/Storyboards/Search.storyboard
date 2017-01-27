@@ -270,6 +270,49 @@
                                     <outlet property="statsStackView" destination="a95-YE-evX" id="tTO-Cr-5is"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchEmptyStateCell" rowHeight="100" id="WYW-Pu-OiW" customClass="SearchEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="538" width="400" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WYW-Pu-OiW" id="eto-yV-UJW">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CeY-z0-Oah">
+                                            <rect key="frame" x="28" y="38" width="344" height="44"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bOf-C3-twa">
+                                                    <rect key="frame" x="0.0" y="0.0" width="344" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VXw-Yz-oBn">
+                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="23.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8LY-WF-1iH">
+                                                            <rect key="frame" x="0.0" y="23.5" width="344" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="CeY-z0-Oah" secondAttribute="trailing" constant="20" id="7DU-Dr-k7A"/>
+                                        <constraint firstItem="CeY-z0-Oah" firstAttribute="leading" secondItem="eto-yV-UJW" secondAttribute="leadingMargin" constant="20" id="FdZ-NI-UK0"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="CeY-z0-Oah" secondAttribute="bottom" constant="10" id="GBj-pC-yPW"/>
+                                        <constraint firstItem="CeY-z0-Oah" firstAttribute="top" secondItem="eto-yV-UJW" secondAttribute="topMargin" constant="30" id="oYm-8w-K9D"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="noResultsLabel" destination="VXw-Yz-oBn" id="w3C-Hf-X2A"/>
+                                    <outlet property="rootStackView" destination="bOf-C3-twa" id="Htj-DY-vIu"/>
+                                    <outlet property="searchTermNotFoundLabel" destination="8LY-WF-1iH" id="tCo-cA-NzV"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="GNf-h9-HSf" id="X7j-wQ-5o5"/>

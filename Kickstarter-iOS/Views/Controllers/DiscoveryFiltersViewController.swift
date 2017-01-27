@@ -9,20 +9,20 @@ internal protocol DiscoveryFiltersViewControllerDelegate: class {
 }
 
 internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
-  @IBOutlet fileprivate weak var filtersTableView: UITableView!
+  @IBOutlet private weak var backgroundGradientView: GradientView!
+  @IBOutlet private weak var closeButton: UIButton!
+  @IBOutlet private weak var filtersTableView: UITableView!
 
-  fileprivate let dataSource = DiscoveryFiltersDataSource()
-  fileprivate let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
+  private let dataSource = DiscoveryFiltersDataSource()
+  private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
   internal weak var delegate: DiscoveryFiltersViewControllerDelegate?
 
-  internal static func configuredWith(selectedRow: SelectableRow, categories: [KsApi.Category])
+  internal static func configuredWith(selectedRow: SelectableRow)
     -> DiscoveryFiltersViewController {
 
       let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController.self)
-      vc.viewModel.inputs.configureWith(selectedRow: selectedRow, categories: categories)
+      vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
       return vc
   }
 
@@ -55,6 +55,16 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         self?.animateIn(categoryId: $0)
     }
 
+    self.viewModel.outputs.loadingIndicatorIsVisible
+      .observeForUI()
+      .observeValues { [weak self] isVisible in
+        if isVisible {
+          self?.dataSource.loadCategoriesLoaderRow()
+        } else {
+          self?.deleteCategoriesLoaderRow()
+        }
+    }
+
     self.viewModel.outputs.loadTopRows
       .observeForUI()
       .observeValues { [weak self] rows, id in
@@ -73,10 +83,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       .observeForUI()
       .observeValues { [weak self] rows, id, selectedRowId in
         self?.dataSource.load(categoryRows: rows, categoryId: id)
-        self?.filtersTableView.reloadData()
-        if let indexPath = self?.dataSource.indexPath(forCategoryId: selectedRowId) {
-          self?.filtersTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
-        }
+        self?.reloadCategories(selectedRowId: selectedRowId)
     }
 
     self.viewModel.outputs.notifyDelegateOfSelectedRow
@@ -126,7 +133,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     }
   }
 
-  fileprivate func animateIn(categoryId: Int?) {
+  private func animateIn(categoryId: Int?) {
     let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
     self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     self.backgroundGradientView.alpha = 0
@@ -153,7 +160,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
                                completion: nil)
   }
 
-  fileprivate func animateOut() {
+  private func animateOut() {
     UIView.animate(withDuration: 0.1,
                                delay: 0.0,
                                options: .curveEaseOut,
@@ -173,8 +180,30 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
                                completion: nil)
   }
 
-  @objc fileprivate func closeButtonTapped(_ button: UIButton) {
+  @objc private func closeButtonTapped(_ button: UIButton) {
     self.animateOut()
     self.delegate?.discoveryFiltersDidClose(self)
+  }
+
+  private func reloadCategories(selectedRowId: Int?) {
+    if let indexPath = self.dataSource.indexPath(forCategoryId: selectedRowId) {
+      self.filtersTableView.reloadData()
+      self.filtersTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
+    } else {
+      UIView.transition(with: self.filtersTableView,
+                        duration: 0.2,
+                        options: .transitionCrossDissolve,
+                        animations: {
+                          self.filtersTableView.reloadData()
+      }, completion: nil)
+    }
+  }
+
+  private func deleteCategoriesLoaderRow() {
+    self.filtersTableView.beginUpdates()
+
+    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .top)
+
+    self.filtersTableView.endUpdates()
   }
 }
