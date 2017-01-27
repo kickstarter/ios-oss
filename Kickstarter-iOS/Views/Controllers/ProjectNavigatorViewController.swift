@@ -38,20 +38,27 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     return vc
   }
 
-  fileprivate init(initialProject: Project,
-                   initialPlaylist: [Project]?,
-                   refTag: RefTag,
-                   navigatorDelegate: ProjectNavigatorDelegate?) {
+  private init(initialProject: Project,
+               initialPlaylist: [Project]?,
+               refTag: RefTag,
+               navigatorDelegate: ProjectNavigatorDelegate?) {
 
     self.pageDataSource = ProjectNavigatorPagesDataSource(refTag: refTag,
                                                           initialPlaylist: initialPlaylist,
                                                           initialProject: initialProject)
     self.navigatorDelegate = navigatorDelegate
-    self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
+
+    if let initController = self.pageDataSource.initialController() {
+      let initialIndex = self.pageDataSource.indexFor(controller: initController)
+      let configData = NavigatorConfigData(index: initialIndex,
+                                           project: initialProject,
+                                           refTag: refTag)
+      self.viewModel.inputs.configureWith(configData: configData)
+    }
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
-               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(5)])
+               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(1)])
   }
 
   internal required init?(coder: NSCoder) {
@@ -154,7 +161,10 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
                                    previousViewControllers: [UIViewController],
                                    transitionCompleted completed: Bool) {
 
-    self.viewModel.inputs.pageTransition(completed: completed)
+    guard let prevController = previousViewControllers.first else { return }
+
+    let previousIndex = self.pageDataSource.indexFor(controller: prevController)
+    self.viewModel.inputs.pageTransition(completed: completed, from: previousIndex)
   }
 
   internal func pageViewController(
@@ -169,7 +179,9 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
 
     vc.delegate = self
 
-    self.viewModel.inputs.willTransition(toProject: project)
+    let newIndex = self.pageDataSource.indexFor(controller: nav)
+
+    self.viewModel.inputs.willTransition(toProject: project, at: newIndex)
   }
 }
 

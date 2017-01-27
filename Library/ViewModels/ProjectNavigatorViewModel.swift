@@ -4,11 +4,11 @@ import ReactiveSwift
 import Result
 
 public protocol ProjectNavigatorViewModelInputs {
-  /// Call with the config data give to the view.
-  func configureWith(project: Project, refTag: RefTag)
+  /// Call with the config data to give to the view.
+  func configureWith(configData: NavigatorConfigData)
 
-  /// Call when the UIPageViewController finishes transitioning.
-  func pageTransition(completed: Bool)
+  /// Call when the UIPageViewController finishes transitioning with previous index value.
+  func pageTransition(completed: Bool, from index: Int?)
 
   /// Call with panning data.
   func panning(contentOffset: CGPoint,
@@ -19,8 +19,8 @@ public protocol ProjectNavigatorViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when the UIPageViewController begins a transition sequence to a project.
-  func willTransition(toProject project: Project)
+  /// Call when the UIPageViewController begins a transition sequence to a project with its index.
+  func willTransition(toProject project: Project, at index: Int?)
 }
 
 public protocol ProjectNavigatorViewModelOutputs {
@@ -62,15 +62,15 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       )
       .map(first)
 
-    let swipedToProject = self.willTransitionToProjectProperty.signal.skipNil()
-      .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
+    let swipedToProjectAtIndex = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
+      .takeWhen(self.pageTransitionCompletedFromIndexProperty.signal.skipNil().map(first).filter(isTrue))
 
     let currentProject = Signal.merge(
       configData.map { $0.project },
-      swipedToProject
+      swipedToProjectAtIndex.map(first)
     )
 
-    self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
+    self.setNeedsStatusBarAppearanceUpdate = swipedToProjectAtIndex.ignoreValues()
 
     let panningData = self.panningDataProperty.signal.skipNil()
 
@@ -122,10 +122,19 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .map { $0 == .started || $0 == .updating }
       .skipRepeats()
 
+    let swipedToProjectAtIndexFromIndex = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
+      .takePairWhen(
+        self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
+          .filter { completed, index in completed }
+          .map(second)
+      )
+      .map { (project: $0.0, currentIndex: $0.1, previousIndex: $1) }
+
     configData
-      .takePairWhen(swipedToProject)
-      .observeValues { configData, project in
-        AppEnvironment.current.koala.trackSwipedProject(project, refTag: configData.refTag)
+      .takePairWhen(swipedToProjectAtIndexFromIndex)
+      .observeValues { configData, pii in
+        let type = swipeType(currentIndex: pii.currentIndex, previousIndex: pii.previousIndex)
+        AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag, type: type)
     }
 
     Signal.combineLatest(configData, currentProject)
@@ -139,14 +148,14 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     }
   }
 
-  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(project: Project, refTag: RefTag) {
-    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
+  fileprivate let configDataProperty = MutableProperty<NavigatorConfigData?>(nil)
+  public func configureWith(configData: NavigatorConfigData) {
+    self.configDataProperty.value = configData
   }
 
-  fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
-  public func pageTransition(completed: Bool) {
-    self.pageTransitionCompletedProperty.value = completed
+  fileprivate let pageTransitionCompletedFromIndexProperty = MutableProperty<(Bool, Int?)?>(nil)
+  public func pageTransition(completed: Bool, from index: Int?) {
+    self.pageTransitionCompletedFromIndexProperty.value = (completed, index)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty()
@@ -154,9 +163,9 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let willTransitionToProjectProperty = MutableProperty<Project?>(nil)
-  public func willTransition(toProject project: Project) {
-    self.willTransitionToProjectProperty.value = project
+  fileprivate let willTransitionToProjectAtIndexProperty = MutableProperty<(Project, Int?)?>(nil)
+  public func willTransition(toProject project: Project, at index: Int?) {
+    self.willTransitionToProjectAtIndexProperty.value = (project, index)
   }
 
   fileprivate let panningDataProperty = MutableProperty<PanningData?>(nil)
@@ -182,9 +191,20 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public var outputs: ProjectNavigatorViewModelOutputs { return self }
 }
 
-private struct ConfigData {
-  fileprivate let project: Project
-  fileprivate let refTag: RefTag
+private func swipeType(currentIndex: Int?, previousIndex: Int?) -> String {
+  return (currentIndex ?? 0) > (previousIndex ?? 0) ? "next" : "previous"
+}
+
+public struct NavigatorConfigData {
+  public let index: Int?
+  public let project: Project
+  public let refTag: RefTag
+
+  public init(index: Int?, project: Project, refTag: RefTag) {
+    self.index = index
+    self.project = project
+    self.refTag = refTag
+  }
 }
 
 private struct PanningData {

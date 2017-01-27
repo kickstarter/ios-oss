@@ -1125,10 +1125,11 @@ public final class Koala {
     self.track(event: "Viewed Project Page", properties: props)
   }
 
-  public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
+  public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: String) {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
+    props["type"] = type
 
     self.track(event: "Swiped Project", properties: props)
     self.track(event: "Project Navigate", properties: props)
