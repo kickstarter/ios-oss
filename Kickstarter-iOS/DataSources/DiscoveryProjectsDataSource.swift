@@ -52,6 +52,10 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     return self[indexPath] as? Project
   }
 
+  internal func indexPath(for projectRow: Int) -> IndexPath {
+    return IndexPath(item: projectRow, section: Section.projects.rawValue)
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {

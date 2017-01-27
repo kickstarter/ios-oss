@@ -140,4 +140,7 @@ internal final class ProfileViewController: UICollectionViewController {
 }
 
 extension ProfileViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+
+  }
 }

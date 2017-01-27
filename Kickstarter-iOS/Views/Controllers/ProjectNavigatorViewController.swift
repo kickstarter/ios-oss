@@ -4,6 +4,8 @@ import Prelude
 import UIKit
 
 internal protocol ProjectNavigatorDelegate: class {
+  /// Call when a page view controller has completed transitioning.
+  func transitionedToProject(at index: Int)
 }
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
@@ -97,6 +99,12 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.transitionAnimator.finish()
+    }
+
+    self.viewModel.outputs.notifyDelegateTransitionedToProjectIndex
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navigatorDelegate?.transitionedToProject(at: $0)
     }
 
     self.viewModel.outputs.setTransitionAnimatorIsInFlight

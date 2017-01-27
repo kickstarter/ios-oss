@@ -33,6 +33,9 @@ public protocol ProjectNavigatorViewModelOutputs {
   /// Emits when the transition animator should be finished.
   var finishInteractiveTransition: Signal<(), NoError> { get }
 
+  /// Emits when to notify delegate that a transition was completed with the current row index.
+  var notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError> { get }
+
   /// Emits when the initial view controllers should be set on the page controller.
   var setInitialPagerViewController: Signal<(), NoError> { get }
 
@@ -130,6 +133,10 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       )
       .map { (project: $0.0, currentIndex: $0.1, previousIndex: $1) }
 
+    self.notifyDelegateTransitionedToProjectIndex = swipedToProjectAtIndexFromIndex
+      .map { $0.currentIndex }
+      .skipNil()
+
     configData
       .takePairWhen(swipedToProjectAtIndexFromIndex)
       .observeValues { configData, pii in
@@ -182,6 +189,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public let cancelInteractiveTransition: Signal<(), NoError>
   public let dismissViewController: Signal<(), NoError>
   public let finishInteractiveTransition: Signal<(), NoError>
+  public let notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError>
   public let setInitialPagerViewController: Signal<(), NoError>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let setTransitionAnimatorIsInFlight: Signal<Bool, NoError>

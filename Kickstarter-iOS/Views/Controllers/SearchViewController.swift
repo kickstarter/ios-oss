@@ -191,4 +191,7 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+
+  }
 }

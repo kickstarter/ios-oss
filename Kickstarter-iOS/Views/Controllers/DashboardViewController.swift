@@ -280,4 +280,7 @@ extension DashboardViewController: DashboardTitleViewDelegate {
 }
 
 extension DashboardViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+
+  }
 }

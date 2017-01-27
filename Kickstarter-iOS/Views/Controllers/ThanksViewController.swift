@@ -274,4 +274,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 }
 
 extension ThanksViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+
+  }
 }

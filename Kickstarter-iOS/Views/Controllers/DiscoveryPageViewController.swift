@@ -140,6 +140,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
         _ = self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
     }
 
+    self.viewModel.outputs.scrollToProjectRow
+      .observeForUI()
+      .observeValues { [weak self] row in
+        guard let _self = self else { return }
+        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row), at: .top, animated: false)
+    }
+
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] emptyState in
@@ -255,4 +262,7 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+    self.viewModel.inputs.transitionedToProject(at: index)
+  }
 }

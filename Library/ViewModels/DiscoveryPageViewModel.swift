@@ -17,6 +17,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user taps on a project.
   func tapped(project: Project)
 
+  /// Call when the project navigator has transitioned to a new project with its index.
+  func transitionedToProject(at index: Int)
+
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
@@ -66,6 +69,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
+
+  /// Emits when should scroll to project with row number.
+  var scrollToProjectRow: Signal<Int, NoError> { get }
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, NoError> { get }
@@ -213,6 +219,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { $0 == nil && $1 == .magic }
       .skipRepeats()
 
+    self.scrollToProjectRow = transitionedToProjectIndexProperty.signal.skipNil()
+
     requestFirstPageWith
       .takePairWhen(pageCount)
       .observeValues { params, page in
@@ -241,6 +249,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let tappedProject = MutableProperty<Project?>(nil)
   public func tapped(project: Project) {
     self.tappedProject.value = project
+  }
+  private let transitionedToProjectIndexProperty = MutableProperty<Int?>(nil)
+  public func transitionedToProject(at index: Int) {
+    self.transitionedToProjectIndexProperty.value = index
   }
   fileprivate let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
@@ -276,6 +288,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projects: Signal<[Project], NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
+  public let scrollToProjectRow: Signal<Int, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 
