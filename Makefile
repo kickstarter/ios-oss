@@ -65,7 +65,8 @@ deploy:
 	@git fetch oss
 	@git fetch private
 
-	@if [ $(git rev-list private/$(BRANCH)..oss/$(BRANCH)) ]; \
+	@revs=$(git rev-list private/$(BRANCH)..oss/$(BRANCH))
+	@if [ $revs ]; \
 	then \
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
