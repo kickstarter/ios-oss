@@ -1978,8 +1978,7 @@ extension Koala {
 
 extension Reward.Shipping.Preference {
   fileprivate var trackingString: String {
-    switch self
-    {
+    switch self {
     case .none:         return "none"
     case .restricted:   return "restricted"
     case .unrestricted: return "unrestricted"
