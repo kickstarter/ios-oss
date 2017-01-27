@@ -2061,7 +2061,7 @@
 				80762DF31D071BCF0074189D /* AlamofireImage.framework */,
 				80762DF51D071BCF0074189D /* AlamofireImage iOS Tests.xctest */,
 				80762DF71D071BCF0074189D /* AlamofireImage.framework */,
-				80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */,
+				80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */,
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
@@ -2075,7 +2075,7 @@
 				80762E311D071BFE0074189D /* Alamofire.framework */,
 				80762E331D071BFE0074189D /* Alamofire iOS Tests.xctest */,
 				80762E351D071BFE0074189D /* Alamofire.framework */,
-				80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */,
+				80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */,
 				80762E391D071BFE0074189D /* Alamofire.framework */,
 				80762E3B1D071BFE0074189D /* Alamofire tvOS Tests.xctest */,
 				80762E3D1D071BFE0074189D /* Alamofire.framework */,
@@ -3527,7 +3527,7 @@
 			remoteRef = 80762DF61D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */ = {
+		80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "AlamofireImage OSX Tests.xctest";
@@ -3576,7 +3576,7 @@
 			remoteRef = 80762E341D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */ = {
+		80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Alamofire OSX Tests.xctest";
