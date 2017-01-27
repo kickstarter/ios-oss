@@ -214,14 +214,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let hideWhenReplay = Signal.merge(
       project.mapConst(true),
-      event.map { !$0.liveNow },
-      self.showErrorAlert.mapConst(true)
+      event.map { !$0.liveNow }
     ).skipRepeats()
 
     let hideWhenLive = Signal.merge(
       project.mapConst(true),
-      event.map { $0.liveNow },
-      self.showErrorAlert.mapConst(true)
+      event.map { $0.liveNow }
     ).skipRepeats()
 
     self.navBarTitleViewHidden = Signal.merge(
