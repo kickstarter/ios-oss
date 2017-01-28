@@ -20,8 +20,6 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
 
   internal func updatePlaylist(_ playlist: [Project]) {
     self.playlist = playlist
-
-    //self.padControllers(toLength: self.playlist.count)
   }
 
   internal func initialController() -> UIViewController? {
