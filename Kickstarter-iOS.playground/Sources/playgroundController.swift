@@ -3,7 +3,7 @@ import UIKit
 // swiftlint:disable function_body_length
 
 public enum Device {
-  case phone4inchShorter
+  case phone3_5inch
   case phone4inch
   case phone4_7inch
   case phone5_5inch
@@ -43,14 +43,14 @@ public func playgroundControllers(device: Device = .phone4_7inch,
 
     let traits: UITraitCollection
     switch (device, orientation) {
-    case (.phone4inchShorter, .portrait):
+    case (.phone3_5inch, .portrait):
       parent.view.frame = .init(x: 0, y: 0, width: 320, height: 480)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .regular),
         .init(userInterfaceIdiom: .phone)
         ])
-    case (.phone4inchShorter, .landscape):
+    case (.phone3_5inch, .landscape):
       parent.view.frame = .init(x: 0, y: 0, width: 480, height: 320)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
