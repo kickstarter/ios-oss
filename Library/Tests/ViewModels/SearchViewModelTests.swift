@@ -17,8 +17,11 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
   fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
   fileprivate let hasProjects = TestObserver<Bool, NoError>()
+  fileprivate var noProjects = TestObserver<Bool, NoError>()
   fileprivate let resignFirstResponder = TestObserver<(), NoError>()
   fileprivate let searchFieldText = TestObserver<String, NoError>()
+  fileprivate let showEmptyState = TestObserver<Bool, NoError>()
+  fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -27,8 +30,11 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
+    self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
+    self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
+    self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
   }
 
   func testCancelSearchField_WithTextChange() {
@@ -187,6 +193,86 @@ internal final class SearchViewModelTests: TestCase {
         "Discover Search Results Load More", "Loaded More Search Results", "Discover Search", "Viewed Search"
       ],
       self.trackingClient.events)
+  }
+
+  func testShowNoSearchResults() {
+    let projects = [
+      .template |> Project.lens.id .~ 1,
+      .template |> Project.lens.id .~ 3,
+      .template |> Project.lens.id .~ 4,
+      .template |> Project.lens.id .~ 5
+    ]
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
+      self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
+      XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
+
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.isPopularTitleVisible.assertValues([])
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
+      self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
+      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events,
+                     "The search view event tracked upon view appearing.")
+      XCTAssertEqual([true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+
+      self.vm.inputs.searchTextChanged("skull graphic tee")
+
+      self.hasProjects.assertValues([true, false], "Projects clear immediately upon entering search.")
+      self.isPopularTitleVisible.assertValues([true, false],
+                                              "Popular title hide immediately upon entering search.")
+
+      self.scheduler.advance()
+
+      self.hasProjects.assertValues([true, false, true], "Projects emit after waiting enough time.")
+      self.isPopularTitleVisible.assertValues([true, false],
+                                            "Popular title visibility still not emit after time has passed.")
+      XCTAssertEqual(["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+                     self.trackingClient.events,
+                     "A koala event is tracked for the search results.")
+      XCTAssertEqual([true, nil, true, nil],
+                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+      XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
+
+      let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+        self.hasProjects.assertValues([true, false, true], "No projects before view is visible.")
+
+        self.vm.inputs.searchTextChanged("abcdefgh")
+
+        self.hasProjects.assertValues([true, false, true, false],
+                                      "Projects clear immediately upon entering search.")
+        self.showEmptyState.assertValues([], "No query for project yet.")
+
+        self.scheduler.advance()
+
+        self.hasProjects.assertValues([true, false, true, false], "No Projects to emit.")
+        self.showEmptyState.assertValues([true], "No Projects Found.")
+
+        self.vm.inputs.searchTextChanged("abcdefghasfdsafd")
+
+        self.hasProjects.assertValues([true, false, true, false])
+        self.showEmptyState.assertValues([true, false])
+
+        self.scheduler.advance()
+
+        self.hasProjects.assertValues([true, false, true, false])
+        self.showEmptyState.assertValues([true, false, true])
+      }
+
+      self.vm.inputs.searchTextChanged("")
+
+      self.hasProjects.assertValues([true, false, true, false, true])
+      self.showEmptyState.assertValues([true, false, true, false])
+      self.isPopularTitleVisible.assertValues([true, false, true])
+    }
   }
 
   // Confirms that clearing search during an in-flight search doesn't cause search results and popular

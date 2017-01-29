@@ -303,11 +303,11 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
     guard
       let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
       let imageData = UIImageJPEGRepresentation(image, 0.9),
-      let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-      let file = URL(string: caches)?.appendingPathComponent("\(image.hash).jpg")
+      let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
       else { fatalError() }
 
-    _ = try? imageData.write(to: file, options: [.atomic])
+    let file = URL(fileURLWithPath: caches).appendingPathComponent("\(image.hash).jpg")
+    try? imageData.write(to: file, options: [.atomic])
 
     self.viewModel.inputs.imagePicked(url: file,
                                       fromSource: AttachmentSource(sourceType: picker.sourceType))
