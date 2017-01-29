@@ -404,7 +404,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(3))
 
       self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(
+        playbackState: .playing, startTime: 123))
       self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
       self.vm.inputs.liveStreamViewControllerStateChanged(
         state: .replay(playbackState: .playing, duration: 123))
@@ -646,10 +647,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.configureLiveStreamViewControllerUserId.assertValues([nil])
       self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
 
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(
+        playbackState: .loading, duration: 0))
       self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
 
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(
+        playbackState: .loading, duration: 0))
       self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
 
       self.configureLiveStreamViewControllerProject.assertValues([project])

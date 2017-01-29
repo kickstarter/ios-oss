@@ -143,7 +143,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         let task = urlSession.dataTask(with: request) { data, _, _ in
           let result = data
