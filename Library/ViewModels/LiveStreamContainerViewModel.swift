@@ -36,8 +36,8 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits the text describing the replay's availability
   var availableForText: Signal<String, NoError> { get }
 
-  /// Emits when the LiveStreamViewController should be created
-  var createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
+  /// Emits when the LiveStreamViewController should be configured
+  var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
 
   /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
@@ -91,10 +91,23 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    let project = configData.map(first)
-    let event = configData.map(second)
+    let initialEvent = configData.map(second)
 
-    self.createAndConfigureLiveStreamViewController = Signal.combineLatest(project, event)
+    let updatedEventFetch = initialEvent
+      .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+        AppEnvironment.current.liveStreamService
+          .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    let project = configData.map(first)
+    let event = Signal.merge(
+      initialEvent,
+      updatedEventFetch.values()
+    )
+
+    self.configureLiveStreamViewController = Signal.combineLatest(project, event.skip(first: 1))
       .take(first: 1)
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
@@ -106,7 +119,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       project.mapConst(.loading)
     )
 
-    self.showErrorAlert = liveStreamControllerState
+    let eventFetchError = updatedEventFetch.errors().map { _ in
+      return Strings.The_live_stream_failed_to_connect()
+    }
+
+    let liveStreamControllerStateError = liveStreamControllerState
       .map { state -> LiveVideoPlaybackError? in
         switch state {
         case .error(let error):                   return error
@@ -117,12 +134,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
       }
       .skipNil()
-      .map { error in
+      .map { error -> String in
         switch error {
         case .sessionInterrupted: return Strings.The_live_stream_was_interrupted()
         case .failedToConnect:    return Strings.The_live_stream_failed_to_connect()
         }
       }
+
+    self.showErrorAlert = Signal.merge(
+      eventFetchError,
+      liveStreamControllerStateError
+    )
 
     self.availableForText = event
       .map { event -> String? in
@@ -194,7 +216,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         default:                                  return true
         }
       },
-      self.createAndConfigureLiveStreamViewController
+      self.configureLiveStreamViewController
       )
       .map(first)
 
@@ -213,12 +235,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     let hideWhenReplay = Signal.merge(
-      project.mapConst(true),
+      self.viewDidLoadProperty.signal.mapConst(true),
       event.map { !$0.liveNow }
     ).skipRepeats()
 
     let hideWhenLive = Signal.merge(
-      project.mapConst(true),
+      self.viewDidLoadProperty.signal.mapConst(true),
       event.map { $0.liveNow }
     ).skipRepeats()
 
@@ -332,7 +354,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
-  public let createAndConfigureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
+  public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>

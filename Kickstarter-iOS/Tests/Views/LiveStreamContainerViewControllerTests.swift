@@ -1,4 +1,5 @@
 import Prelude
+import Result
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -31,15 +32,18 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
-      withEnvironment(language: lang) {
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
-        self.scheduler.advance()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -59,15 +63,18 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
-      withEnvironment(language: lang) {
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
-        self.scheduler.advance()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -90,16 +97,19 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       .live(playbackState: .playing, startTime: 0)
     ]
 
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
     combos(Language.allLanguages, playbackStates).forEach { lang, state in
-      withEnvironment(language: lang) {
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
         vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
         vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
-        self.scheduler.advance()
 
         let stateIdentifier = state == .greenRoom ? "greenRoom"
           : state == .loading ? "loading"

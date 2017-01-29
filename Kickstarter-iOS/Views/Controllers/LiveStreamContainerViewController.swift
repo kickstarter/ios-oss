@@ -287,7 +287,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.openLoginTout()
     }
 
-    self.viewModel.outputs.createAndConfigureLiveStreamViewController
+    self.viewModel.outputs.configureLiveStreamViewController
       .observeForUI()
       .observeValues { [weak self] _, userId, event in
         guard let _self = self else { return }

@@ -12,11 +12,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   private let availableForLabelHidden = TestObserver<Bool, NoError>()
   private let availableForText = TestObserver<String, NoError>()
-  private let createAndConfigureLiveStreamViewControllerProject =
+  private let configureLiveStreamViewControllerProject =
     TestObserver<Project, NoError>()
-  private let createAndConfigureLiveStreamViewControllerUserId =
+  private let configureLiveStreamViewControllerUserId =
     TestObserver<Int?, NoError>()
-  private let createAndConfigureLiveStreamViewControllerLiveStreamEvent =
+  private let configureLiveStreamViewControllerLiveStreamEvent =
     TestObserver<LiveStreamEvent, NoError>()
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
@@ -37,12 +37,12 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
     self.vm.outputs.availableForText.observe(self.availableForText.observer)
-    self.vm.outputs.createAndConfigureLiveStreamViewController.map(first).observe(
-      self.createAndConfigureLiveStreamViewControllerProject.observer)
-    self.vm.outputs.createAndConfigureLiveStreamViewController.map(second).observe(
-      self.createAndConfigureLiveStreamViewControllerUserId.observer)
-    self.vm.outputs.createAndConfigureLiveStreamViewController.map(third).observe(
-      self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.observer)
+    self.vm.outputs.configureLiveStreamViewController.map(first).observe(
+      self.configureLiveStreamViewControllerProject.observer)
+    self.vm.outputs.configureLiveStreamViewController.map(second).observe(
+      self.configureLiveStreamViewControllerUserId.observer)
+    self.vm.outputs.configureLiveStreamViewController.map(third).observe(
+      self.configureLiveStreamViewControllerLiveStreamEvent.observer)
     self.vm.outputs.creatorAvatarLiveDotImageViewHidden
       .observe(self.creatorAvatarLiveDotImageViewHidden.observer)
     self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
@@ -100,20 +100,26 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.creatorIntroText.assertValues(["<b>Creator Name</b> was live right now"])
   }
 
-  func testCreateLiveStreamViewController() {
+  func testConfigureLiveStreamViewController() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
 
-    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.createAndConfigureLiveStreamViewControllerProject.assertValues([project])
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValues([nil])
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    }
   }
 
   func testDismiss() {
@@ -140,25 +146,52 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     ])
   }
 
+  func testShowErrorAlert_FailedToFetchProject() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(error: .genericFailure))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.showErrorAlert.assertValues(["The live stream failed to connect"])
+    }
+  }
+
   func testLabelVisibilities_Live() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.navBarLiveDotImageViewHidden.assertValues([true, false])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true, false])
-    self.numberWatchingBadgeViewHidden.assertValues([true, false])
-    self.availableForLabelHidden.assertValues([true])
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.navBarLiveDotImageViewHidden.assertValues([false, true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([false, true])
+      self.numberWatchingBadgeViewHidden.assertValues([false, true])
+      self.availableForLabelHidden.assertValues([true])
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.navBarLiveDotImageViewHidden.assertValues([false, true, false])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([false, true, false])
+      self.numberWatchingBadgeViewHidden.assertValues([false, true, false])
+      self.availableForLabelHidden.assertValues([true])
+    }
   }
 
   func testLabelVisibilities_Replay() {
@@ -167,19 +200,30 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ false
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.navBarLiveDotImageViewHidden.assertValues([true])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-    self.numberWatchingBadgeViewHidden.assertValues([true])
-    self.availableForLabelHidden.assertValues([true, false])
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.navBarLiveDotImageViewHidden.assertValues([true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+      self.numberWatchingBadgeViewHidden.assertValues([true])
+      self.availableForLabelHidden.assertValues([false, true])
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.navBarLiveDotImageViewHidden.assertValues([true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+      self.numberWatchingBadgeViewHidden.assertValues([true])
+      self.availableForLabelHidden.assertValues([false, true, false])
+    }
   }
 
   func testLabelVisibilities_NonStarter() {
@@ -190,26 +234,37 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> LiveStreamEvent.lens.replayUrl .~ nil
 
     self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
     self.numberWatchingBadgeViewHidden.assertValueCount(0)
     self.availableForLabelHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.navBarLiveDotImageViewHidden.assertValues([true])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-    self.numberWatchingBadgeViewHidden.assertValues([true])
-    self.availableForLabelHidden.assertValues([true, false])
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+      self.navBarLiveDotImageViewHidden.assertValues([true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+      self.numberWatchingBadgeViewHidden.assertValues([true])
+      self.availableForLabelHidden.assertValues([false, true])
 
-    self.navBarLiveDotImageViewHidden.assertValues([true])
-    self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-    self.numberWatchingBadgeViewHidden.assertValues([true])
-    self.availableForLabelHidden.assertValues([true, false, true])
+      self.scheduler.advance(by: .seconds(3))
+
+      self.navBarLiveDotImageViewHidden.assertValues([true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+      self.numberWatchingBadgeViewHidden.assertValues([true])
+      self.availableForLabelHidden.assertValues([false, true, false])
+
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+
+      self.navBarLiveDotImageViewHidden.assertValues([true])
+      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
+      self.numberWatchingBadgeViewHidden.assertValues([true])
+      self.availableForLabelHidden.assertValues([false, true, false, true])
+    }
   }
 
   func testNavBarTitleViewHidden_LiveState() {
@@ -343,19 +398,25 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123))
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.videoViewControllerHidden.assertValues([
-      true,
-      true,
-      false,
-      true,
-      false
-    ])
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.scheduler.advance(by: .seconds(3))
+
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 123))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+      self.vm.inputs.liveStreamViewControllerStateChanged(
+        state: .replay(playbackState: .playing, duration: 123))
+
+      self.videoViewControllerHidden.assertValues([
+        true,
+        true,
+        false,
+        true,
+        false
+      ])
+    }
   }
 
   func testTitleViewText() {
@@ -565,25 +626,35 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
-  func test_MakeSureSingleLiveStreamControllerIsCreated() {
+  func testMakeSureSingleLiveStreamControllerIsCreated() {
     let liveStreamEvent = LiveStreamEvent.template
     let project = Project.template
 
-    self.createAndConfigureLiveStreamViewControllerProject.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+      self.scheduler.advance(by: .seconds(3))
 
-    self.createAndConfigureLiveStreamViewControllerProject.assertValues([project])
-    self.createAndConfigureLiveStreamViewControllerUserId.assertValues([nil])
-    self.createAndConfigureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .loading, duration: 0))
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
+
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    }
   }
 }
