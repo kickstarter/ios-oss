@@ -575,6 +575,22 @@ backers"
     )
   }
   /**
+   "Close live stream"
+
+   - **es**: "Cerrar Live Stream"
+   - **de**: "Live-Stream schließen"
+   - **fr**: "Fermer la diffusion en direct"
+   - **en**: "Close live stream"
+  */
+  public static func Close_live_stream() -> String {
+    return localizedString(
+      key: "Close_live_stream",
+      defaultValue: "Close live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Close project"
 
    - **es**: "Cerrar proyecto"
@@ -602,6 +618,22 @@ backers"
     return localizedString(
       key: "Closes_filters",
       defaultValue: "Closes filters.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Closes live stream."
+
+   - **es**: "Cierra Live-Stream."
+   - **de**: "Schließt Live-Stream."
+   - **fr**: "Ferme la diffusion en direct."
+   - **en**: "Closes live stream."
+  */
+  public static func Closes_live_stream() -> String {
+    return localizedString(
+      key: "Closes_live_stream",
+      defaultValue: "Closes live stream.",
       count: nil,
       substitutions: [:]
     )
@@ -1599,6 +1631,22 @@ backers"
     )
   }
   /**
+   "Get notified about this creator’s live streams"
+
+   - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
+   - **de**: "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten."
+   - **fr**: "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur."
+   - **en**: "Get notified about this creator’s live streams"
+  */
+  public static func Get_notified_about_this_creators_live_streams() -> String {
+    return localizedString(
+      key: "Get_notified_about_this_creators_live_streams",
+      defaultValue: "Get notified about this creator’s live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -1825,22 +1873,6 @@ with friends."
     )
   }
   /**
-   "Live Streaming now"
-
-   - **es**: "En vivo ahora"
-   - **de**: "Jetzt live"
-   - **fr**: "Diffusion en direct en cours"
-   - **en**: "Live Streaming now"
-  */
-  public static func Live_Streaming_now() -> String {
-    return localizedString(
-      key: "Live_Streaming_now",
-      defaultValue: "Live Streaming now",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Live stream countdown"
 
    - **es**: "Live Stream - Cuenta atrás"
@@ -1852,6 +1884,38 @@ with friends."
     return localizedString(
       key: "Live_stream_countdown",
       defaultValue: "Live stream countdown",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Live stream – %{date}"
+
+   - **es**: "Live-Stream – %{date}"
+   - **de**: "Live-Stream – %{date}"
+   - **fr**: "Diffusion en direct – %{date}"
+   - **en**: "Live stream – %{date}"
+  */
+  public static func Live_stream_date(date: String) -> String {
+    return localizedString(
+      key: "Live_stream_date",
+      defaultValue: "Live stream – %{date}",
+      count: nil,
+      substitutions: ["date": date]
+    )
+  }
+  /**
+   "Live streaming now"
+
+   - **es**: "En vivo ahora"
+   - **de**: "Wird gerade live gestreamt"
+   - **fr**: "Diffusion en direct en cours"
+   - **en**: "Live streaming now"
+  */
+  public static func Live_streaming_now() -> String {
+    return localizedString(
+      key: "Live_streaming_now",
+      defaultValue: "Live streaming now",
       count: nil,
       substitutions: [:]
     )
@@ -2019,9 +2083,9 @@ with friends."
   /**
    "No Results"
 
-   - **es**: "No Results"
-   - **de**: "No Results"
-   - **fr**: "No Results"
+   - **es**: "Sin resultados"
+   - **de**: "Keine Ergebnisse"
+   - **fr**: "Pas de résultats"
    - **en**: "No Results"
   */
   public static func No_Results() -> String {
@@ -2113,6 +2177,22 @@ from friends yet."
       defaultValue: "Once you back a project, we’ll share personalized recommendations in this space.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Only %{amount_of_time} left to watch this."
+
+   - **es**: "Queda poco tiempo para verlo (%{amount_of_time})."
+   - **de**: "Nur noch %{amount_of_time} live!"
+   - **fr**: "Plus que %{amount_of_time} pour regarder cette diffusion."
+   - **en**: "Only %{amount_of_time} left to watch this."
+  */
+  public static func Only_amount_of_time_left_to_watch_this(amount_of_time: String) -> String {
+    return localizedString(
+      key: "Only_amount_of_time_left_to_watch_this",
+      defaultValue: "Only %{amount_of_time} left to watch this.",
+      count: nil,
+      substitutions: ["amount_of_time": amount_of_time]
     )
   }
   /**
@@ -2404,6 +2484,22 @@ from friends yet."
     )
   }
   /**
+   "Popular Projects"
+
+   - **es**: "Proyectos populares"
+   - **de**: "Beliebte Projekte"
+   - **fr**: "Les tendances"
+   - **en**: "Popular Projects"
+  */
+  public static func Popular_Projects() -> String {
+    return localizedString(
+      key: "Popular_Projects",
+      defaultValue: "Popular Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **es**: "Proyecto cancelado."
@@ -2513,6 +2609,22 @@ daring ideas."
     return localizedString(
       key: "Read_more_about_the_campaign_arrow",
       defaultValue: "Read more about the campaign  →",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recent live stream"
+
+   - **es**: "Live-Stream reciente"
+   - **de**: "Kürzlich gesendeter Live-Stream"
+   - **fr**: "Diffusion en direct récente"
+   - **en**: "Recent live stream"
+  */
+  public static func Recent_live_stream() -> String {
+    return localizedString(
+      key: "Recent_live_stream",
+      defaultValue: "Recent live stream",
       count: nil,
       substitutions: [:]
     )
@@ -2758,6 +2870,22 @@ daring ideas."
     )
   }
   /**
+   "Share this live stream."
+
+   - **es**: "Compartir este Live-Stream."
+   - **de**: "Live-Stream teilen."
+   - **fr**: "Partager cette diffusion en direct."
+   - **en**: "Share this live stream."
+  */
+  public static func Share_this_live_stream() -> String {
+    return localizedString(
+      key: "Share_this_live_stream",
+      defaultValue: "Share this live stream.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Share this project on Facebook."
 
    - **es**: "Compartir este proyecto en Facebook."
@@ -2936,6 +3064,22 @@ catch your eye?"
     )
   }
   /**
+   "Subscribes to upcoming live streams."
+
+   - **es**: "Activa subscripción a futuros Live-Streams."
+   - **de**: "Zukünftige Live-Streams abonnieren."
+   - **fr**: "Abonnement aux diffusions en direct à venir."
+   - **en**: "Subscribes to upcoming live streams."
+  */
+  public static func Subscribes_to_upcoming_lives_streams() -> String {
+    return localizedString(
+      key: "Subscribes_to_upcoming_lives_streams",
+      defaultValue: "Subscribes to upcoming live streams.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Survey"
 
    - **es**: "Cuestionario"
@@ -3048,6 +3192,22 @@ catch your eye?"
     )
   }
   /**
+   "The live stream will start %{time}."
+
+   - **es**: "Live-Stream comienza en %{time}."
+   - **de**: "Dieser Live-Stream started in %{time}."
+   - **fr**: "La diffusion en direct commence dans %{time}."
+   - **en**: "The live stream will start %{time}."
+  */
+  public static func The_live_stream_will_start_time(time: String) -> String {
+    return localizedString(
+      key: "The_live_stream_will_start_time",
+      defaultValue: "The live stream will start %{time}.",
+      count: nil,
+      substitutions: ["time": time]
+    )
+  }
+  /**
    "The replay will start soon"
 
    - **es**: "Repetición comienza en breve"
@@ -3128,6 +3288,38 @@ catch your eye?"
     )
   }
   /**
+   "Unsubscribe"
+
+   - **es**: "Anular suscripción"
+   - **de**: "Abo abbestellen"
+   - **fr**: "Se désabonner"
+   - **en**: "Unsubscribe"
+  */
+  public static func Unsubscribe() -> String {
+    return localizedString(
+      key: "Unsubscribe",
+      defaultValue: "Unsubscribe",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Unsubscribes from upcoming live streams."
+
+   - **es**: "Desactiva subscripción a futuros Live-Streams."
+   - **de**: "Abo für zukünftige Live-Streams abbestellen."
+   - **fr**: "Désabonnement des diffusions en direct à venir."
+   - **en**: "Unsubscribes from upcoming live streams."
+  */
+  public static func Unsubscribes_from_upcoming_lives_streams() -> String {
+    return localizedString(
+      key: "Unsubscribes_from_upcoming_lives_streams",
+      defaultValue: "Unsubscribes from upcoming live streams.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Unsuccessfully Funded."
 
    - **es**: "Financiación falló."
@@ -3139,6 +3331,22 @@ catch your eye?"
     return localizedString(
       key: "Unsuccessfully_Funded",
       defaultValue: "Unsuccessfully Funded.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Upcoming live stream"
+
+   - **es**: "Futuro Live-Stream"
+   - **de**: "Nächster Live-Stream"
+   - **fr**: "Diffusion en direct à venir"
+   - **en**: "Upcoming live stream"
+  */
+  public static func Upcoming_live_stream() -> String {
+    return localizedString(
+      key: "Upcoming_live_stream",
+      defaultValue: "Upcoming live stream",
       count: nil,
       substitutions: [:]
     )
@@ -3240,17 +3448,17 @@ catch your eye?"
     )
   }
   /**
-   "We couldn't find anything for %{search_term}."
+   "We couldn't find anything for “%{search_term}”."
 
-   - **es**: "We couldn't find anything for %{search_term}."
-   - **de**: "We couldn't find anything for %{search_term}."
-   - **fr**: "We couldn't find anything for %{search_term}."
-   - **en**: "We couldn't find anything for %{search_term}."
+   - **es**: "La búsqueda "%{search_term}" no dio resultados."
+   - **de**: "Es wurden keine Ergebnisse für die Suche "%{search_term}" gefunden."
+   - **fr**: "Pas de résultats pour « %{search_term} »."
+   - **en**: "We couldn't find anything for “%{search_term}”."
   */
   public static func We_couldnt_find_anything_for_search_term(search_term: String) -> String {
     return localizedString(
       key: "We_couldnt_find_anything_for_search_term",
-      defaultValue: "We couldn't find anything for %{search_term}.",
+      defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
     )
@@ -7624,6 +7832,22 @@ catch your eye?"
     )
   }
   /**
+   "days"
+
+   - **es**: "días"
+   - **de**: "Tage"
+   - **fr**: "jours"
+   - **en**: "days"
+  */
+  public static func days() -> String {
+    return localizedString(
+      key: "days",
+      defaultValue: "days",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Changes sort."
 
    - **es**: "Clasif. de cambios."
@@ -8892,7 +9116,7 @@ catch your eye?"
 
    - **es**: "Popular"
    - **de**: "Beliebte Projekte"
-   - **fr**: "Populaires"
+   - **fr**: "Tendances"
    - **en**: "Popular"
   */
   public static func discovery_popular() -> String {
@@ -9052,7 +9276,7 @@ catch your eye?"
 
    - **es**: "Popularidad"
    - **de**: "Beliebtheit"
-   - **fr**: "Popularité"
+   - **fr**: "Tendances"
    - **en**: "Popularity"
   */
   public static func discovery_sort_types_popularity() -> String {
@@ -9779,6 +10003,22 @@ catch your eye?"
     return localizedString(
       key: "general.switch_toggle_on",
       defaultValue: "ON",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "hours"
+
+   - **es**: "horas"
+   - **de**: "Stunden"
+   - **fr**: "heures"
+   - **en**: "hours"
+  */
+  public static func hours() -> String {
+    return localizedString(
+      key: "hours",
+      defaultValue: "hours",
       count: nil,
       substitutions: [:]
     )
@@ -10991,6 +11231,22 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
       defaultValue: "sent %{sent_date}",
       count: nil,
       substitutions: ["sent_date": sent_date]
+    )
+  }
+  /**
+   "minutes"
+
+   - **es**: "minutos"
+   - **de**: "Min"
+   - **fr**: "minutes"
+   - **en**: "minutes"
+  */
+  public static func minutes() -> String {
+    return localizedString(
+      key: "minutes",
+      defaultValue: "minutes",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -14003,6 +14259,22 @@ Thank you for your support!"
     return localizedString(
       key: "search.most_popular",
       defaultValue: "Most Popular",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "seconds"
+
+   - **es**: "segundos"
+   - **de**: "Sekunden"
+   - **fr**: "secondes"
+   - **en**: "seconds"
+  */
+  public static func seconds() -> String {
+    return localizedString(
+      key: "seconds",
+      defaultValue: "seconds",
       count: nil,
       substitutions: [:]
     )

@@ -117,7 +117,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
 private func labelTexts(forLiveStream liveStream: Project.LiveStream) -> (String, String) {
   if liveStream.isLiveNow {
-    return (Strings.Live_Streaming_now(), Strings.Watch_live())
+    return (Strings.Live_streaming_now(), Strings.Watch_live())
   }
 
   let now = AppEnvironment.current.dateType.init()

@@ -5,14 +5,14 @@ import Prelude_UIKit
 import UIKit
 
 internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: MostPopularSearchProjectCellViewModelType
-    = MostPopularSearchProjectCellViewModel()
+  fileprivate let viewModel: SearchProjectCellViewModelType = SearchProjectCellViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var fundingLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
-  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var fundingStackView: UIStackView!
+  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var dateStackView: UIStackView!
+  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var statsStackView: UIStackView!
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
   @IBOutlet fileprivate weak var projectInfoOverlayView: UIView!
   @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
@@ -38,18 +38,17 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyle()
 
-    _ = self.fundingLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
+    _ = self.dateStackView |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+
+    _ = self.deadlineSubtitleLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-    _ = self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_green_400
+    _ = self.deadlineTitleLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_500
-
-    _ = self.fundingStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
+    _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
@@ -83,27 +82,10 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.fundingLabel.rac.text = self.viewModel.outputs.fundingLabelText
-
-    self.viewModel.outputs.fundingProgress
-      .observeForUI()
-      .observeValues { [weak self] in
-        let anchorX = $0 == 0 ? 0 : 0.5 / $0
-        self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
-        self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat($0), y: 1.0)
-    }
-
-    self.viewModel.outputs.projectImageUrl
-      .observeForUI()
-      .on(event: { [weak self] _ in
-        self?.projectImageView.image = nil
-        self?.projectImageView.af_cancelImageRequest()
-      })
-      .skipNil()
-      .observeValues { [weak self] in
-        self?.projectImageView.af_setImage(withURL: $0)
-    }
-
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
+    self.fundingTitleLabel.rac.attributedText = self.viewModel.outputs.fundingLargeLabelText
+    self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
+    self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlFull
   }
 }
