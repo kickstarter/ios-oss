@@ -626,11 +626,12 @@
 		D0FD4CC91E26433C00488660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
-		D7A37D7A1E367E5A00EA066D /* SearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37CF71E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */; };
+		D7A37D7A1E367E5A00EA066D /* SearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */; };
 		D7A9BE131DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
+		D7DE5EFC1E3BAB0500035D2B /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DE5EC01E3BAAC200035D2B /* SearchViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1920,11 +1921,12 @@
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
-		D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
+		D7A37D781E367E5A00EA066D /* SearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		D7A9BE121DC125B800422B31 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
+		D7DE5EC01E3BAAC200035D2B /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2063,7 +2065,7 @@
 				80762DF31D071BCF0074189D /* AlamofireImage.framework */,
 				80762DF51D071BCF0074189D /* AlamofireImage iOS Tests.xctest */,
 				80762DF71D071BCF0074189D /* AlamofireImage.framework */,
-				80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */,
+				80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */,
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
@@ -2077,7 +2079,7 @@
 				80762E311D071BFE0074189D /* Alamofire.framework */,
 				80762E331D071BFE0074189D /* Alamofire iOS Tests.xctest */,
 				80762E351D071BFE0074189D /* Alamofire.framework */,
-				80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */,
+				80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */,
 				80762E391D071BFE0074189D /* Alamofire.framework */,
 				80762E3B1D071BFE0074189D /* Alamofire tvOS Tests.xctest */,
 				80762E3D1D071BFE0074189D /* Alamofire.framework */,
@@ -2217,6 +2219,7 @@
 				59885A9D1DB6EFD900F65825 /* ResetPasswordViewControllerTests.swift */,
 				A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */,
 				A73778D71D81C201004C2A9B /* SettingsViewControllerTests.swift */,
+				D7DE5EC01E3BAAC200035D2B /* SearchViewControllerTests.swift */,
 				59885A991DB6EA5700F65825 /* SignupViewControllerTests.swift */,
 				01F42A191D9328490084719D /* SortPagerViewControllerTests.swift */,
 				59885A971DB6E2A900F65825 /* TwoFactorViewControllerTests.swift */,
@@ -3530,7 +3533,7 @@
 			remoteRef = 80762DF61D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */ = {
+		80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "AlamofireImage OSX Tests.xctest";
@@ -3579,7 +3582,7 @@
 			remoteRef = 80762E341D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */ = {
+		80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Alamofire OSX Tests.xctest";
@@ -4613,6 +4616,7 @@
 				01EC3B991DFA0679003A673C /* ProfileViewControllerTests.swift in Sources */,
 				A72D943B1CB3477000A88249 /* MockBundle.swift in Sources */,
 				A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */,
+				D7DE5EFC1E3BAB0500035D2B /* SearchViewControllerTests.swift in Sources */,
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,
 				9D3A6B4C1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,

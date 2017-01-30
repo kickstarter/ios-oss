@@ -9,6 +9,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate weak var cardView: UIView!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var dateStackView: UIStackView!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var statsStackView: UIStackView!
@@ -36,6 +37,10 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     _ = self.cardView
       |> dropShadowStyle()
+
+    _ = self.dateStackView
+      |> UIStackView.lens.distribution .~ .fill
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)

@@ -17,6 +17,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate weak var dateStackView: UIStackView!
 
   func configureWith(value project: Project) {
     self.viewModel.inputs.configureWith(project: project)
@@ -33,6 +34,10 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(24))
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
+
+    _ = self.dateStackView
+      |> UIStackView.lens.distribution .~ .fill
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 13)
