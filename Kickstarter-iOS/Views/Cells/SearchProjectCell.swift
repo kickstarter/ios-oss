@@ -35,9 +35,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
     }
 
-    _ = self.dateStackView
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+    _ = self.dateStackView |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 13)
