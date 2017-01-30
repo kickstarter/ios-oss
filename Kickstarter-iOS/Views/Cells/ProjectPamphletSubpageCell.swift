@@ -90,6 +90,19 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self.subpageLabel.rac.text = self.viewModel.outputs.labelText
     self.subpageLabel.rac.textColor = self.viewModel.outputs.labelTextColor
+
+    self.viewModel.outputs.opacityForViews
+      .observeForUI()
+      .observeValues { [weak self] alpha in
+        guard let _self = self else { return }
+        UIView.animate(withDuration: (alpha == 0 ? 0.0 : 0.2), delay: 0.0, options: .curveEaseOut,
+                       animations: {
+                        _self.subpageLabel.alpha = alpha
+                        _self.countLabel.alpha = alpha
+                        _self.countContainerView.alpha = alpha
+        },
+                       completion: nil)
+    }
   }
 
   internal override func layoutSubviews() {

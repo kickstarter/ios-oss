@@ -54,6 +54,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.readMoreButton.addTarget(self,
                                   action: #selector(readMoreButtonTapped),
                                   for: .touchUpInside)
+
+    self.viewModel.inputs.awakeFromNib()
   }
 
   internal func configureWith(value project: Project) {
@@ -232,6 +234,18 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.projectPamphletMainCell(_self, goToCreatorForProject: $0)
+    }
+
+    self.viewModel.outputs.opacityForViews
+      .observeForUI()
+      .observeValues { [weak self] alpha in
+        guard let _self = self else { return }
+        UIView.animate(withDuration: (alpha == 0.0 ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut,
+                       animations: {
+                        _self.creatorStackView.alpha = alpha
+                        _self.statsStackView.alpha = alpha
+                        _self.blurbAndReadMoreStackView.alpha = alpha
+        }, completion: nil)
     }
 
     self.viewModel.outputs.progressPercentage

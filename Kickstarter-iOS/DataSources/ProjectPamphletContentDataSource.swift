@@ -24,8 +24,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     let liveStreamSubpages = self.liveStreamSubpage(forProject: project)
 
     let values = liveStreamSubpages + [
-      .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
-      .updates(project.stats.updatesCount ?? 0, .last)
+      .comments(project.stats.commentsCount as Int?, liveStreamSubpages.isEmpty ? .first : .middle),
+      .updates(project.stats.updatesCount as Int?, .last)
       ]
 
     self.set(

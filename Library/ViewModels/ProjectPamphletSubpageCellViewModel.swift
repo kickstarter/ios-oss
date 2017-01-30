@@ -30,6 +30,9 @@ public protocol ProjectPamphletSubpageCellViewModelOutputs {
   /// Emits the cell's primary label text color
   var labelTextColor: Signal<UIColor, NoError> { get }
 
+  /// Emits an alpha value for views to create transition after full project loads.
+  var opacityForViews: Signal<CGFloat, NoError> { get }
+
   /// Emits when the top gradient view should be hidden
   var topGradientViewHidden: Signal<Bool, NoError> { get }
 
@@ -71,7 +74,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       .map { $0.position == .last }
 
     self.countLabelText = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count) },
+      Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count ?? 0) },
       liveStreamDetail.map(labelTexts(forLiveStream:)).map(second)
     )
 
@@ -94,6 +97,12 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
       liveStreamDetail.map { !$0.isLiveNow }
     )
+
+    self.opacityForViews = Signal.merge(
+      Signal.merge(commentsSubpage, updatesSubpage)
+        .map { $0.count == nil ? 0.0 : 1.0 },
+      liveStreamDetail.mapConst(1.0)
+    )
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)
@@ -108,6 +117,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public let liveNowImageViewHidden: Signal<Bool, NoError>
   public let labelText: Signal<String, NoError>
   public let labelTextColor: Signal<UIColor, NoError>
+  public let opacityForViews: Signal<CGFloat, NoError>
   public let topGradientViewHidden: Signal<Bool, NoError>
   public let separatorViewHidden: Signal<Bool, NoError>
 
@@ -147,11 +157,11 @@ public func == (lhs: ProjectPamphletSubpageCellPosition, rhs: ProjectPamphletSub
 }
 
 public enum ProjectPamphletSubpage {
-  case comments(Int, ProjectPamphletSubpageCellPosition)
-  case updates(Int, ProjectPamphletSubpageCellPosition)
+  case comments(Int?, ProjectPamphletSubpageCellPosition)
+  case updates(Int?, ProjectPamphletSubpageCellPosition)
   case liveStream(liveStream: Project.LiveStream, ProjectPamphletSubpageCellPosition)
 
-  public var count: Int {
+  public var count: Int? {
     switch self {
     case let .comments(count, _): return count
     case let .updates(count, _): return count

@@ -83,7 +83,7 @@ public final class VideoViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         guard let _self = self else { return }
-        UIView.animate(withDuration: (isHidden ? 0.0 : 0.8), delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: (isHidden ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut, animations: {
           _self.videoOverlayView.alpha = isHidden ? 0.0 : 0.1
           _self.playButton.alpha = isHidden ? 0.0 : 1.0
         }, completion: nil)
