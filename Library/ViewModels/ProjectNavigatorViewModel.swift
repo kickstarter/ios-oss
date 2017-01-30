@@ -199,10 +199,8 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public var outputs: ProjectNavigatorViewModelOutputs { return self }
 }
 
-// make enum inside koala
-
-private func swipeType(currentIndex: Int?, previousIndex: Int?) -> String {
-  return (currentIndex ?? 0) > (previousIndex ?? 0) ? "next" : "previous"
+private func swipeType(currentIndex: Int?, previousIndex: Int?) -> Koala.SwipeType {
+  return (currentIndex ?? 0) > (previousIndex ?? 0) ? .next : .previous
 }
 
 public struct NavigatorConfigData {
