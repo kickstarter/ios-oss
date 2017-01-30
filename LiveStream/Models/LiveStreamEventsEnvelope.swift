@@ -4,7 +4,7 @@ import Curry
 import Prelude
 import Runes
 
-public struct LiveStreamEventsEnvelope: Equatable {
+public struct LiveStreamEventsEnvelope {
   public fileprivate(set) var numberOfLiveStreams: Int
   public fileprivate(set) var liveStreamEvents: [LiveStreamEvent]
 }
@@ -28,21 +28,4 @@ extension LiveStreamEventsEnvelope {
       set: { var new = $1; new.liveStreamEvents = $0; return new }
     )
   }
-}
-
-public func == (lhs: LiveStreamEventsEnvelope, rhs: LiveStreamEventsEnvelope) -> Bool {
-  return lhs.numberOfLiveStreams == rhs.numberOfLiveStreams
-    && lhs.liveStreamEvents == rhs.liveStreamEvents
-}
-
-private func == (lhs: [LiveStreamEvent], rhs: [LiveStreamEvent]) -> Bool {
-  if lhs.count != rhs.count { return false }
-
-  for i in 0...lhs.count {
-    if lhs[i].id != rhs[i].id {
-      return false
-    }
-  }
-
-  return true
 }
