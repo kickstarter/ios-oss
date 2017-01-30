@@ -177,7 +177,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }
     }
 
-    self.loaderActivityIndicatorAnimating = nonStarter.map(negate)
+    self.loaderActivityIndicatorAnimating = Signal.merge(
+      nonStarter.map(negate),
+      self.showErrorAlert.mapConst(false)
+    )
 
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),

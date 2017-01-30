@@ -152,6 +152,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(error: .genericFailure))
 
+    self.showErrorAlert.assertValueCount(0)
+    self.loaderActivityIndicatorAnimating.assertValueCount(0)
+
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
@@ -159,6 +162,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(3))
 
       self.showErrorAlert.assertValues(["The live stream failed to connect"])
+      self.loaderActivityIndicatorAnimating.assertValues([true, false])
     }
   }
 
