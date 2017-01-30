@@ -29,10 +29,11 @@ internal final class SearchViewContollerTests: TestCase {
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ project
-    
+
     combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
+        withEnvironment(
+          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
 
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -50,7 +51,8 @@ internal final class SearchViewContollerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
+        withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
 
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -77,7 +79,8 @@ internal final class SearchViewContollerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-        withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
+        withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
 
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
