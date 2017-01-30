@@ -30,9 +30,6 @@ public protocol ProjectPamphletSubpageCellViewModelOutputs {
   /// Emits the cell's primary label text color
   var labelTextColor: Signal<UIColor, NoError> { get }
 
-  /// Emits an alpha value for views to create transition after full project loads.
-  var opacityForViews: Signal<CGFloat, NoError> { get }
-
   /// Emits when the top gradient view should be hidden
   var topGradientViewHidden: Signal<Bool, NoError> { get }
 
@@ -97,12 +94,6 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
       liveStreamDetail.map { !$0.isLiveNow }
     )
-
-    self.opacityForViews = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage)
-        .map { $0.count == nil ? 0.0 : 1.0 },
-      liveStreamDetail.mapConst(1.0)
-    )
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)
@@ -117,7 +108,6 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public let liveNowImageViewHidden: Signal<Bool, NoError>
   public let labelText: Signal<String, NoError>
   public let labelTextColor: Signal<UIColor, NoError>
-  public let opacityForViews: Signal<CGFloat, NoError>
   public let topGradientViewHidden: Signal<Bool, NoError>
   public let separatorViewHidden: Signal<Bool, NoError>
 
