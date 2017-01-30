@@ -128,7 +128,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     let swipedToProjectAtIndexFromIndex = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
       .takePairWhen(
         self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
-          .filter { completed, index in completed }
+          .filter { completed, _ in completed }
           .map(second)
       )
       .map { (project: $0.0, currentIndex: $0.1, previousIndex: $1) }

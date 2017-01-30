@@ -89,7 +89,6 @@ public final class VideoViewController: UIViewController {
         }, completion: nil)
     }
 
-
     self.viewModel.outputs.addCompletionObserver
       .observeForUI()
       .observeValues { [weak self] time in
