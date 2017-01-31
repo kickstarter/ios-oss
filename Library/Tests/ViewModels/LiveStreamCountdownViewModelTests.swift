@@ -205,7 +205,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvent: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
-    self.projectImageUrl.assertValues(["http://www.kickstarter.com/full.jpg"])
+    self.projectImageUrl.assertValues([nil, "http://www.kickstarter.com/full.jpg"])
   }
 
   func testViewControllerTitle() {

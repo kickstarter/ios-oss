@@ -392,7 +392,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvent: .template, refTag: .projectPage)
     self.vm.inputs.viewDidLoad()
 
-    self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
+    self.projectImageUrlString.assertValues([nil, "http://www.kickstarter.com/full.jpg"])
   }
 
   func testShowVideoView() {

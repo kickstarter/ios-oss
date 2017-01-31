@@ -123,8 +123,13 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     let countdownEnded = dateComponents
       .filter { $0.day <= 0 && $0.hour <= 0 && $0.minute <= 0 && $0.second < 0 }
 
-    self.projectImageUrl = project
-      .map { URL(string: $0.photo.full) }
+    self.projectImageUrl = Signal.merge(
+      configData.mapConst(nil),
+      Signal.combineLatest(
+        project.map { URL(string: $0.photo.full) },
+        configData.ignoreValues()
+        ).map(first)
+    )
 
     self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal

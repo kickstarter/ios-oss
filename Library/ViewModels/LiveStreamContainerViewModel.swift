@@ -199,8 +199,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         .take(first: 1)
     )
 
-    self.projectImageUrl = project
-      .map { URL(string: $0.photo.full) }
+    self.projectImageUrl = Signal.merge(
+      configData.mapConst(nil),
+      Signal.combineLatest(
+        project.map { URL(string: $0.photo.full) },
+        configData.ignoreValues()
+      ).map(first)
+    )
 
     self.titleViewText = liveStreamControllerState.map {
       switch $0 {
