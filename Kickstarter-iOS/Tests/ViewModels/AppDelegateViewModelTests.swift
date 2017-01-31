@@ -1017,7 +1017,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testPerformShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ MockDate().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
@@ -1036,7 +1036,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_ProjectOfTheDay() {
     let potd = .template
-      |> Project.lens.dates.potdAt .~ Date().timeIntervalSince1970
+      |> Project.lens.dates.potdAt .~ MockDate().timeIntervalSince1970
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {

@@ -732,7 +732,8 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
       .demoteErrors()
       .map { env -> Navigation? in
-        guard let project = env.projects.first, project.isPotdToday() else { return nil }
+        guard let project = env.projects.first, project.isPotdToday(
+          today: AppEnvironment.current.dateType.init().date) else { return nil }
         return .project(.id(project.id), .root, refTag: RefTag.unrecognized("shortcut"))
     }
 
