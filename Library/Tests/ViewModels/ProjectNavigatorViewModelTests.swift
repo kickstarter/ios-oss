@@ -308,11 +308,11 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
-    self.vm.inputs.willTransition(toProject: playlist[1])
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
-    self.vm.inputs.pageTransition(completed: true)
+    self.vm.inputs.pageTransition(completed: true, from: 0)
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
   }

@@ -5,7 +5,7 @@ import Result
 
 public protocol ProjectNavigatorViewModelInputs {
   /// Call with the config data to give to the view.
-  func configureWith(configData: NavigatorConfigData)
+  func configureWith(project: Project, refTag: RefTag)
 
   /// Call when the UIPageViewController finishes transitioning with previous index value.
   func pageTransition(completed: Bool, from index: Int?)
@@ -155,9 +155,9 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     }
   }
 
-  fileprivate let configDataProperty = MutableProperty<NavigatorConfigData?>(nil)
-  public func configureWith(configData: NavigatorConfigData) {
-    self.configDataProperty.value = configData
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project, refTag: RefTag) {
+    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
 
   fileprivate let pageTransitionCompletedFromIndexProperty = MutableProperty<(Bool, Int?)?>(nil)
@@ -203,16 +203,9 @@ private func swipeType(currentIndex: Int?, previousIndex: Int?) -> Koala.SwipeTy
   return (currentIndex ?? 0) > (previousIndex ?? 0) ? .next : .previous
 }
 
-public struct NavigatorConfigData {
-  public let index: Int?
-  public let project: Project
-  public let refTag: RefTag
-
-  public init(index: Int?, project: Project, refTag: RefTag) {
-    self.index = index
-    self.project = project
-    self.refTag = refTag
-  }
+private struct ConfigData {
+  fileprivate let project: Project
+  fileprivate let refTag: RefTag
 }
 
 private struct PanningData {

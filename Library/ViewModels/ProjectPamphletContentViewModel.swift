@@ -43,12 +43,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
     self.loadProjectIntoDataSource = Signal.combineLatest(
       project,
-      self.viewWillAppearAnimatedProperty.signal
-      /*Signal.merge(
-        self.viewDidAppearAnimatedProperty.signal.filter(isTrue),
-        self.viewWillAppearAnimatedProperty.signal.filter(isFalse)
-        )*/
-        .take(first: 1)
+      self.viewWillAppearAnimatedProperty.signal.take(first: 1)
       )
       .map(first)
 

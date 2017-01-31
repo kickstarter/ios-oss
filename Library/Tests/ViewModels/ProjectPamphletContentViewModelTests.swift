@@ -392,7 +392,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
   }
 
-  func testLoadProjectIntoDataSource_Swipping() {
+  func testLoadProjectIntoDataSource_Swiping() {
     let project = Project.template
 
     self.vm.inputs.configureWith(project: project)
@@ -404,25 +404,28 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     // When swiping the project `animated` will be true.
     self.vm.inputs.viewWillAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([], "The full project does not load into the data source.")
+    self.loadProjectIntoDataSource.assertValues(
+      [project], "The skeleton of the full project loads into the data source."
+    )
+
     self.loadMinimalProjectIntoDataSource.assertValues(
       [project], "The minimal version of the project loads into the data source."
     )
 
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.configureWith(project: project)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
-    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
+    self.loadProjectIntoDataSource.assertValues([project, project], "Full project emits.")
+    self.loadMinimalProjectIntoDataSource.assertValues([project], "Minimal project does not emit again.")
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadProjectIntoDataSource.assertValues([project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+    self.loadProjectIntoDataSource.assertValues([project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }

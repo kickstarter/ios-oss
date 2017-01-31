@@ -50,13 +50,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
                                                           initialProject: initialProject)
     self.navigatorDelegate = navigatorDelegate
 
-    if let initController = self.pageDataSource.initialController() {
-      let initialIndex = self.pageDataSource.indexFor(controller: initController)
-      let configData = NavigatorConfigData(index: initialIndex,
-                                           project: initialProject,
-                                           refTag: refTag)
-      self.viewModel.inputs.configureWith(configData: configData)
-    }
+    self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
