@@ -37,6 +37,10 @@ internal final class SearchDataSource: ValueCellDataSource {
     }
   }
 
+  internal func indexPath(for projectRow: Int) -> IndexPath {
+    return IndexPath(row: projectRow, section: Section.projects.rawValue)
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as SearchProjectCell, value as Project):

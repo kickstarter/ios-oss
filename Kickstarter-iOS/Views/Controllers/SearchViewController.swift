@@ -94,6 +94,7 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
+        self?.updateProjectPlaylist(projects)
     }
 
     self.viewModel.outputs.isPopularTitleVisible
@@ -123,6 +124,13 @@ internal final class SearchViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
+    }
+
+    self.viewModel.outputs.scrollToProjectRow
+      .observeForUI()
+      .observeValues { [weak self] row in
+        guard let _self = self else { return }
+        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row), at: .top, animated: false)
     }
   }
 
@@ -169,6 +177,11 @@ internal final class SearchViewController: UITableViewController {
                                          outOf: self.dataSource.numberOfItems())
   }
 
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
+  }
+
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -199,6 +212,6 @@ extension SearchViewController: UITextFieldDelegate {
 
 extension SearchViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
-
+    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }

@@ -21,6 +21,9 @@ public protocol SearchViewModelInputs {
   /// Call when the user taps the return key.
   func searchTextEditingDidEnd()
 
+  /// Call when the project navigator has transitioned to a new project with its index.
+  func transitionedToProject(at row: Int, outOf totalRows: Int)
+
   /// Call when the view will appear.
   func viewWillAppear(animated: Bool)
 
@@ -55,6 +58,9 @@ public protocol SearchViewModelOutputs {
 
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, NoError> { get }
+
+  /// Emits when should scroll to project with row number.
+  var scrollToProjectRow: Signal<Int, NoError> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), NoError> { get }
@@ -98,7 +104,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { !$0.isEmpty }
       .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+    let isCloseToBottom = Signal.merge(
+      self.willDisplayRowProperty.signal.skipNil(),
+      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
+      )
       .map { row, total in row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
@@ -154,6 +163,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.searchTextEditingDidEndProperty.signal,
         self.cancelButtonPressedProperty.signal
     )
+
+    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // koala
 
@@ -213,14 +224,19 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextEditingDidEndProperty.value = ()
   }
 
-  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
-  public func viewWillAppear(animated: Bool) {
-    self.viewWillAppearAnimatedProperty.value = animated
-  }
-
   fileprivate let tappedProjectProperty = MutableProperty<Project?>(nil)
   public func tapped(project: Project) {
     self.tappedProjectProperty.value = project
+  }
+
+  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
+    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
+  }
+
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
+    self.viewWillAppearAnimatedProperty.value = animated
   }
 
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
@@ -234,6 +250,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>
+  public let scrollToProjectRow: Signal<Int, NoError>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), NoError>
 
   public var inputs: SearchViewModelInputs { return self }
