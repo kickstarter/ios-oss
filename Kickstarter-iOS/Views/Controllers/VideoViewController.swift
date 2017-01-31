@@ -37,10 +37,6 @@ public final class VideoViewController: UIViewController {
 
     self.playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
-    // add outputs
-    self.playButton.alpha = 0.0
-    self.videoOverlayView.alpha = 0.0
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -76,16 +72,17 @@ public final class VideoViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    //self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
+    self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
     self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
 
-    self.viewModel.outputs.playButtonHidden
+    self.viewModel.outputs.opacityForViews
       .observeForUI()
-      .observeValues { [weak self] isHidden in
+      .observeValues { [weak self] alpha in
         guard let _self = self else { return }
-        UIView.animate(withDuration: (isHidden ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut, animations: {
-          _self.videoOverlayView.alpha = isHidden ? 0.0 : 0.1
-          _self.playButton.alpha = isHidden ? 0.0 : 1.0
+        UIView.animate(withDuration: (alpha == 0.0 ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut,
+                       animations: {
+          _self.videoOverlayView.alpha = (alpha == 0.0 ? 0.0 : 0.1)
+          _self.playButton.alpha = alpha
         }, completion: nil)
     }
 

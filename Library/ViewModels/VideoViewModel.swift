@@ -53,6 +53,9 @@ public protocol VideoViewModelOutputs {
   var notifyDelegateThatVideoDidFinish: Signal<(), NoError> { get }
   var notifyDelegateThatVideoDidStart: Signal<(), NoError> { get }
 
+  /// Emits alpha value for play button and video overlay for transitioning.
+  var opacityForViews: Signal<CGFloat, NoError> { get }
+
   /// Emits when the video should be paused.
   var pauseVideo: Signal<Void, NoError> { get }
 
@@ -153,7 +156,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.projectImageHidden = Signal.merge(elementsHiddenOnPlayback, project.mapConst(false))
       .skipRepeats()
 
-    self.playButtonHidden = Signal.merge(project.map { $0.video == nil }, elementsHiddenOnPlayback)
+    self.playButtonHidden = Signal.merge(
+      project.map { $0.video == nil },
+      elementsHiddenOnPlayback
+      )
       .skipRepeats()
 
     self.projectImageURL = project.map { URL(string: $0.photo.full) }.skipRepeats(==)
@@ -180,6 +186,13 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     self.notifyDelegateThatVideoDidFinish = reachedEndOfVideo.ignoreValues()
     self.notifyDelegateThatVideoDidStart = self.playButtonTappedProperty.signal
+
+    self.opacityForViews = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(0.0),
+      self.playButtonHidden.filter(isFalse)
+        .takeWhen(self.viewDidAppearProperty.signal)
+        .mapConst(1.0)
+    )
 
     project
       .takeWhen(videoCompleted)
@@ -244,6 +257,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public let incrementVideoStart: Signal<VoidEnvelope, NoError>
   public let notifyDelegateThatVideoDidFinish: Signal<(), NoError>
   public let notifyDelegateThatVideoDidStart: Signal<(), NoError>
+  public let opacityForViews: Signal<CGFloat, NoError>
   public let pauseVideo: Signal<Void, NoError>
   public let playVideo: Signal<Void, NoError>
   public var playButtonHidden: Signal<Bool, NoError>
