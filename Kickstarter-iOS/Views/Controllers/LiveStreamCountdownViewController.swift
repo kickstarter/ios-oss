@@ -77,6 +77,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular

@@ -8,8 +8,10 @@ public protocol MostPopularSearchProjectCellViewModelInputs {
 }
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
-  var fundingLabelText: Signal<String, NoError> { get }
-  var fundingProgress: Signal<Float, NoError> { get }
+  var deadlineSubtitleLabelText: Signal<String, NoError> { get }
+  var deadlineTitleLabelText: Signal<String, NoError> { get }
+  var fundingSubtitleLabelText: Signal<String, NoError> { get }
+  var fundingTitleLabelText: Signal<NSAttributedString, NoError> { get }
   var projectImageUrl: Signal<URL?, NoError> { get }
   var projectNameLabelText: Signal<String, NoError> { get }
 }
@@ -25,13 +27,26 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    self.fundingLabelText = project.map {
-      Strings.percentage_funded(percentage: Format.percentage($0.stats.percentFunded))
+    let deadlineTitleAndSubtitle = project
+      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) }
+
+    self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
+    self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
+
+   self.fundingTitleLabelText = project.map {
+      let string = Strings.percentage_funded(
+        percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
+      return string.simpleHtmlAttributedString(base: [
+        NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
+        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        ],
+        bold: [
+          NSFontAttributeName: UIFont.ksr_headline(size: 14.0),
+          NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+        ]) ?? NSAttributedString(string: "")
     }
 
-    self.fundingProgress = project
-      .map(Project.lens.stats.fundingProgress.view)
-      .map(clamp(0, 1))
+    self.fundingSubtitleLabelText = .empty
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
@@ -43,8 +58,10 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     self.projectProperty.value = project
   }
 
-  public let fundingLabelText: Signal<String, NoError>
-  public let fundingProgress: Signal<Float, NoError>
+  public let deadlineSubtitleLabelText: Signal<String, NoError>
+  public let deadlineTitleLabelText: Signal<String, NoError>
+  public let fundingSubtitleLabelText: Signal<String, NoError>
+  public let fundingTitleLabelText: Signal<NSAttributedString, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let projectNameLabelText: Signal<String, NoError>
 

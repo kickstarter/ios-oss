@@ -180,10 +180,8 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let hideProjectsCreated: Signal<Bool, NoError>
 }
 
-internal let findFriendsCacheKey: String = "find_friends_follow_view_model"
-
 private func cached(friend: User) -> User {
-  if let friendCache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool] {
+  if let friendCache = AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] as? [Int:Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
     return friend |> User.lens.isFriend .~ isFriend
   } else {
@@ -192,11 +190,11 @@ private func cached(friend: User) -> User {
 }
 
 private func cache(friend: User, isFriend: Bool) {
-  AppEnvironment.current.cache[findFriendsCacheKey] =
-    AppEnvironment.current.cache[findFriendsCacheKey] ?? [Int: Bool]()
+  AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] =
+    AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] ?? [Int: Bool]()
 
-  var cache = AppEnvironment.current.cache[findFriendsCacheKey] as? [Int:Bool]
+  var cache = AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] as? [Int:Bool]
   cache?[friend.id] = isFriend
 
-  AppEnvironment.current.cache[findFriendsCacheKey] = cache
+  AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] = cache
 }

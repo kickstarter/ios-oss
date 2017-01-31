@@ -267,6 +267,26 @@
                                             <outlet property="highlightView" destination="VVS-EI-b5h" id="ZaC-kh-C1f"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoveryFiltersLoaderCell" id="dox-Ww-A5M" customClass="DiscoveryFiltersLoaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="207" width="375" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dox-Ww-A5M" id="hbF-w4-zs9">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Qf2-5A-IVT">
+                                                    <rect key="frame" x="177" y="17" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Qf2-5A-IVT" firstAttribute="centerX" secondItem="hbF-w4-zs9" secondAttribute="centerX" id="VEk-CC-7CC"/>
+                                                <constraint firstItem="Qf2-5A-IVT" firstAttribute="centerY" secondItem="hbF-w4-zs9" secondAttribute="centerY" id="jun-r6-PZF"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="Qf2-5A-IVT" id="qJc-HG-dow"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>

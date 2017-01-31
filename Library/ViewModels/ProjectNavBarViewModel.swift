@@ -144,7 +144,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.goToLoginTout = loggedOutUserTappedStar
 
     self.showProjectStarredPrompt = projectOnStarToggleSuccess
-      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours }
+      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
+        today: AppEnvironment.current.dateType.init().date) }
       .map { _ in Strings.project_star_confirmation() }
 
     self.starButtonSelected = project

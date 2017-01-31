@@ -65,7 +65,7 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   var secondaryLabelText: Signal<String, NoError> { get }
 
   /// Emits when discovery filters view controller should be presented.
-  var showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError> { get }
+  var showDiscoveryFilters: Signal<SelectableRow, NoError> { get }
 
   /// Emits to show an onboarding alert for first time tapping the favorite button with the category name.
   var showFavoriteOnboardingAlert: Signal<String, NoError> { get }
@@ -93,15 +93,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
   // swiftlint:disable function_body_length
   public init() {
-    let categories = self.viewDidLoadProperty.signal
-      .switchMap {
-        AppEnvironment.current.apiService.fetchCategories()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.categories }
-          .prefix(value: [])
-          .demoteErrors()
-      }
-
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
@@ -174,13 +165,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       self.secondaryLabelText.signal.mapConst((1.0, true)).take(first: 1)
     )
 
-    let categoriesWithParams = Signal.combineLatest(categories, (Signal.merge(
+    let rowForFilters = Signal.merge(
       self.paramsProperty.signal.skipNil().map { SelectableRow(isSelected: true, params: $0) },
       self.filtersSelectedRowProperty.signal.skipNil()
-      )))
-      .map { categories, row in (row: row, categories: categories) }
+    )
 
-    self.showDiscoveryFilters = categoriesWithParams
+    self.showDiscoveryFilters = rowForFilters
       .takeWhen(paramsAndFiltersAreHidden.filter { !$0.filtersAreHidden })
 
     self.subviewColor = primaryColor
@@ -280,7 +270,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let primaryLabelText: Signal<String, NoError>
   public let secondaryLabelIsHidden: Signal<Bool, NoError>
   public let secondaryLabelText: Signal<String, NoError>
-  public let showDiscoveryFilters: Signal<(row: SelectableRow, categories: [KsApi.Category]), NoError>
+  public let showDiscoveryFilters: Signal<SelectableRow, NoError>
   public let showFavoriteOnboardingAlert: Signal<String, NoError>
   public let subviewColor: Signal<UIColor, NoError>
   public let titleButtonAccessibilityHint: Signal<String, NoError>

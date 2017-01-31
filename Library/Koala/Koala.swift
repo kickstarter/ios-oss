@@ -1591,6 +1591,22 @@ public final class Koala {
     self.track(event: "Changed Live Stream Orientation", properties: props)
   }
 
+  public func trackClosedLiveStream(project: Project,
+                                    liveStream: Project.LiveStream,
+                                    startTime: TimeInterval,
+                                    endTime: TimeInterval,
+                                    refTag: RefTag) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStream: liveStream))
+      .withAllValuesFrom([
+        "ref_tag": refTag.stringTag,
+        "type": stateContext(forLiveStream: liveStream).trackingString,
+        "duration": max(0, endTime - startTime)
+      ])
+
+    self.track(event: "Closed Live Stream", properties: props)
+  }
+
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStream: Project.LiveStream,
                                                 subscribed: Bool) {
@@ -1755,7 +1771,7 @@ private func properties(project: Project,
   props["update_count"] = project.stats.updatesCount
   props["comments_count"] = project.stats.commentsCount
 
-  let now = Date().timeIntervalSince1970
+  let now = MockDate().timeIntervalSince1970
   props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
   props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 

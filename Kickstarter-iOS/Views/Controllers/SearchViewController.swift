@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 internal final class SearchViewController: UITableViewController {
-  fileprivate let viewModel: SearchViewModelType = SearchViewModel()
+  internal let viewModel: SearchViewModelType = SearchViewModel()
   fileprivate let dataSource = SearchDataSource()
 
   @IBOutlet fileprivate weak var cancelButton: UIButton!
@@ -90,16 +90,23 @@ internal final class SearchViewController: UITableViewController {
   internal override func bindViewModel() {
 
     self.viewModel.outputs.projects
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.isPopularTitleVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] visible in
         self?.dataSource.popularTitle(isVisible: visible)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.showEmptyState
+      .observeForUI()
+      .observeValues { [weak self] params, visible in
+        self?.dataSource.load(params: params, visible: visible)
         self?.tableView.reloadData()
     }
 
@@ -113,7 +120,7 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
     self.viewModel.outputs.changeSearchFieldFocus
-      .observeForControllerAction()
+      .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
