@@ -95,10 +95,19 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let updatedEventFetch = initialEvent
       .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
-        AppEnvironment.current.liveStreamService
-          .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+
+        timer(interval: .seconds(5), on: AppEnvironment.current.scheduler)
+          .prefix(value: Date())
+          .flatMap { _ in
+            AppEnvironment.current.liveStreamService
+              .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
+              .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+              .materialize()
+          }
+          .filter { event in
+            event.value?.liveNow == .some(true) || event.value?.hasReplay == .some(true) || event.error != nil
+          }
+          .take(first: 1)
     }
 
     let project = configData.map(first)
@@ -107,8 +116,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       updatedEventFetch.values()
     )
 
-    self.configureLiveStreamViewController = Signal.combineLatest(project, event.skip(first: 1))
-      .take(first: 1)
+    self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
     let liveStreamControllerState = Signal.merge(
