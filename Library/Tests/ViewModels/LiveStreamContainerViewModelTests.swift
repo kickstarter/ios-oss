@@ -382,7 +382,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> Project.LiveStream.lens.isLiveNow .~ true
     let project = Project.template
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -412,7 +412,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> Project.LiveStream.lens.isLiveNow .~ false
     let project = Project.template
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))

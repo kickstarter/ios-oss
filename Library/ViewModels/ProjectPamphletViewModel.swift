@@ -57,6 +57,9 @@ ProjectPamphletViewModelOutputs {
 
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(event: { e in
+            print(e)
+          })
           .demoteErrors()
     }
 
