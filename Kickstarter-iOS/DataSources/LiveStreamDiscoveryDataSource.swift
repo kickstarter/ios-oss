@@ -11,9 +11,13 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
       .groupedBy(sectionTitle(forLiveStreamEvent:))
       .forEach { title, events in
         guard !events.isEmpty else { return }
-        self.appendRow(value: title, cellClass: LiveStreamDiscoveryTitleCell.self, toSection: title.section)
+        self.appendRow(value: title,
+                       cellClass: LiveStreamDiscoveryTitleCell.self,
+                       toSection: sectionFor(titleType: title))
         events.forEach { event in
-          self.appendRow(value: event, cellClass: LiveStreamDiscoveryCell.self, toSection: title.section)
+          self.appendRow(value: event,
+                         cellClass: LiveStreamDiscoveryCell.self,
+                         toSection: sectionFor(titleType: title))
         }
     }
   }
@@ -76,16 +80,14 @@ private func sectionTitle(forLiveStreamEvent liveStreamEvent: LiveStreamEvent)
       : .recentlyLive
 }
 
-extension LiveStreamDiscoveryTitleType {
-  /// The section of the data source that events of this type should be placed in.
-  fileprivate var section: Int {
-    switch self {
-    case .liveNow:
-      return 0
-    case .recentlyLive:
-      return 2
-    case .upcoming:
-      return 1
-    }
+/// The section of the data source that events of this type should be placed in.
+private func sectionFor(titleType: LiveStreamDiscoveryTitleType) -> Int {
+  switch titleType {
+  case .liveNow:
+    return 0
+  case .recentlyLive:
+    return 2
+  case .upcoming:
+    return 1
   }
 }
