@@ -295,7 +295,7 @@ private func saveSeen(activities: [Activity]) {
 
 private func refTag(fromParams params: DiscoveryParams, project: Project) -> RefTag {
 
-  if project.isPotdToday() {
+  if project.isPotdToday(today: AppEnvironment.current.dateType.init().date) {
     return .discoveryPotd
   } else if params.category != nil {
     return .categoryWithSort(params.sort ?? .magic)
