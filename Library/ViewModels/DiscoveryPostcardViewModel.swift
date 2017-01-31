@@ -143,9 +143,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.metadataViewHidden = project
       .map { p in
+        let today = AppEnvironment.current.dateType.init().date
         let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
                          (p.personalization.isStarred == nil || p.personalization.isStarred == false) &&
-                         !p.isPotdToday() && !p.isFeaturedToday()
+          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
 
         return noMetadata
       }
@@ -266,13 +267,15 @@ private func fundingStatusText(forProject project: Project) -> String {
 
 // Returns the disparate metadata data for a project based on metadata precedence.
 private func postcardMetadata(forProject project: Project) -> PostcardMetadataData? {
+  let today = AppEnvironment.current.dateType.init().date
+
   if project.personalization.isBacking == true {
     return PostcardMetadataType.backing.data(forProject: project)
   } else if project.personalization.isStarred == true {
     return PostcardMetadataType.starred.data(forProject: project)
-  } else if project.isPotdToday() {
+  } else if project.isPotdToday(today: today) {
     return PostcardMetadataType.potd.data(forProject: project)
-  } else if project.isFeaturedToday() {
+  } else if project.isFeaturedToday(today: today) {
     return PostcardMetadataType.featured.data(forProject: project)
   } else {
     return nil
