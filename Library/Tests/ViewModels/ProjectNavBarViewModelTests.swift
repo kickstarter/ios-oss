@@ -264,7 +264,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     let project = .template
       |> Project.lens.personalization.isStarred .~ false
-      |> Project.lens.dates.deadline .~ (Date().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Project.lens.dates.deadline .~ (MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
