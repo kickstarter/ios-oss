@@ -38,23 +38,21 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
 
     self.viewModel.outputs.goToLiveStreamCountdown
       .observeForControllerAction()
-      .observeValues { [weak self] project, stream, event in
-        self?.goToLiveStreamCountdown(project: project, stream: stream, liveStreamEvent: event)
+      .observeValues { [weak self] project, event in
+        self?.goToLiveStreamCountdown(project: project, liveStreamEvent: event)
     }
 
     self.viewModel.outputs.goToLiveStreamContainer
       .observeForControllerAction()
-      .observeValues { [weak self] project, stream, event in
-        self?.goToLiveStreamContainer(project: project, stream: stream, liveStreamEvent: event)
+      .observeValues { [weak self] project, event in
+        self?.goToLiveStreamContainer(project: project, liveStreamEvent: event)
     }
   }
 
   private func goToLiveStreamContainer(project: Project,
-                                       stream: Project.LiveStream,
                                        liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamContainerViewController.configuredWith(project: project,
-                                                              liveStream: stream,
-                                                              event: liveStreamEvent,
+                                                              liveStreamEvent: liveStreamEvent,
                                                               refTag: .liveStreamDiscovery)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
@@ -64,10 +62,9 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   }
 
   private func goToLiveStreamCountdown(project: Project,
-                                       stream: Project.LiveStream,
                                        liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                              liveStream: stream,
+                                                              liveStreamEvent: liveStreamEvent,
                                                               refTag: .liveStreamDiscovery)
     let nav = UINavigationController.init(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]

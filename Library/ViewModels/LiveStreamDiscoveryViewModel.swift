@@ -17,10 +17,10 @@ public protocol LiveStreamDiscoveryViewModelInputs {
 
 public protocol LiveStreamDiscoveryViewModelOutputs {
   /// Emits when we should navigate to the live stream container.
-  var goToLiveStreamContainer: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+  var goToLiveStreamContainer: Signal<(Project, LiveStreamEvent), NoError> { get }
 
   /// Emits when we should navigate to the live stream countdown.
-  var goToLiveStreamCountdown: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError> { get }
+  var goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError> { get }
 
   /// Emits when we should load data into the data source.
   var loadDataSource: Signal<[LiveStreamEvent], NoError> { get }
@@ -39,10 +39,10 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
       .switchMap(freshProjectAndStreamAndEvent(fromLiveStreamEvent:))
 
     self.goToLiveStreamContainer = projectAndTappedLiveStreamEvent
-      .filter { _, _, event in event.liveNow || event.hasReplay }
+      .filter { _, event in event.liveNow || event.hasReplay }
 
     self.goToLiveStreamCountdown = projectAndTappedLiveStreamEvent
-      .filter { _, _, event in !event.liveNow && !event.hasReplay }
+      .filter { _, event in !event.liveNow && !event.hasReplay }
 
     self.loadDataSource = self.isActiveProperty.signal.filter(isTrue)
       .flatMap { _ in
@@ -66,8 +66,8 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToLiveStreamContainer: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
-  public let goToLiveStreamCountdown: Signal<(Project, Project.LiveStream, LiveStreamEvent), NoError>
+  public let goToLiveStreamContainer: Signal<(Project, LiveStreamEvent), NoError>
+  public let goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError>
   public let loadDataSource: Signal<[LiveStreamEvent], NoError>
 
   public var inputs: LiveStreamDiscoveryViewModelInputs { return self }
@@ -75,7 +75,7 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
 }
 
 private func freshProjectAndStreamAndEvent(fromLiveStreamEvent event: LiveStreamEvent)
-  -> SignalProducer<(Project, Project.LiveStream, LiveStreamEvent), NoError> {
+  -> SignalProducer<(Project, LiveStreamEvent), NoError> {
 
     guard let id = event.project.id else { return .empty }
 
@@ -92,8 +92,7 @@ private func freshProjectAndStreamAndEvent(fromLiveStreamEvent event: LiveStream
 }
 
 private func projectAndLiveStreamAndEvent(forProject project: Project, liveStreamEvent: LiveStreamEvent)
-  -> (Project, Project.LiveStream, LiveStreamEvent)? {
+  -> (Project, LiveStreamEvent)? {
 
-    guard let stream = project.liveStreams?.first(where: { $0.id == liveStreamEvent.id }) else { return nil }
-    return (project, stream, liveStreamEvent)
+    return (project, liveStreamEvent)
 }

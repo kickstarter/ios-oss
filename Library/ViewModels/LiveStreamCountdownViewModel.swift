@@ -71,11 +71,10 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     let project = configData.map(first)
     let liveStream = configData.map(second)
-    let liveStreamEvent = self.liveStreamEventProperty.signal.skipNil()
 
     let dateComponents = liveStream
-      .map { $0.startDate }
-      .switchMap { countdownProducer(to: Date(timeIntervalSince1970: $0.startDate)) }
+      .take(first: 1)
+      .switchMap { countdownProducer(to: $0.startDate) }
 
     self.countdownDateLabelText = liveStream
       .map { $0.startDate }.map(formattedDateString)
@@ -107,7 +106,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
 
     let countdownEnded = dateComponents
       .materialize()
-      .filter { $0.isTerminating }
+      .filter {
+        $0.isTerminating
+    }
 
     self.projectImageUrl = project.flatMap { project in
       SignalProducer(value: URL(string: project.photo.full))
@@ -120,11 +121,12 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       Strings.Live_stream_countdown()
     )
 
-    self.pushLiveStreamViewController = configData.map { project, liveStream, _ in
-      (project, flipLiveStreamEventToLive(liveStreamEvent: liveStream))
+    self.pushLiveStreamViewController = configData
+      .takeWhen(countdownEnded)
+      .map { project, liveStream, _ in
+        (project, flipLiveStreamEventToLive(liveStreamEvent: liveStream))
       }
       .map { project, liveStream in (project, liveStream, .liveStreamCountdown) }
-      .takeWhen(countdownEnded)
       .take(first: 1)
 
     self.upcomingIntroText = project

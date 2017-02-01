@@ -253,9 +253,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       databaseRef,
       scaleNumberOfPeopleWatchingRef,
       createObservers
-      liveStreamEvent.map { $0.isScale }.skipNil().filter(isTrue)
       )
-      .map { dbRef, event, _, _ in (dbRef, event) }
+      .map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
       .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())

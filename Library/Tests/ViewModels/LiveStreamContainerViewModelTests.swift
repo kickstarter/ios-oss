@@ -78,7 +78,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.startDate .~ MockDate().date
       |> LiveStreamEvent.lens.liveNow .~ true
-      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -93,7 +92,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     let liveStreamEvent = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.startDate .~ MockDate().date
-      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.creatorIntroText.assertValueCount(0)
 
@@ -455,10 +453,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   func testProjectImageUrl() {
     let project = Project.template
-    let liveStream = Project.LiveStream.template
     let event = .template
       |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
-      |> LiveStreamEvent.lens.id .~ liveStream.id
 
     self.projectImageUrlString.assertValueCount(0)
 
