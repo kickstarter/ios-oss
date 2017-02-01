@@ -152,8 +152,8 @@
                                     <outlet property="dividerView" destination="v05-To-rtd" id="wy7-Rt-5m5"/>
                                     <outlet property="nameLabel" destination="hgR-mz-tiu" id="Jal-Jf-CZV"/>
                                     <outlet property="projectNameLabel" destination="9d8-NG-RaR" id="9B9-UD-XH7"/>
-                                    <outlet property="replyIndicator" destination="PGN-kk-HxE" id="ywS-dQ-DIj"/>
-                                    <outlet property="unreadIndicatorView" destination="3ZH-YI-NS3" id="4oG-x3-AkS"/>
+                                    <outlet property="replyIndicator" destination="PGN-kk-HxE" id="dCz-hH-nQH"/>
+                                    <outlet property="unreadIndicatorView" destination="3ZH-YI-NS3" id="eAU-vM-yeL"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageThreadsEmptyState" rowHeight="240" id="vqA-cz-Nls" customClass="MessageThreadEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -196,20 +196,20 @@
                     <navigationItem key="navigationItem" id="a3v-ch-wXy">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="hXL-pP-icR">
-                            <rect key="frame" x="61" y="5.5" width="478" height="33"/>
+                            <rect key="frame" x="61" y="6" width="478" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="djz-c8-ji0">
                                     <rect key="frame" x="211" y="0.0" width="57" height="33"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znl-pP-aP1" userLabel="Inbox">
-                                            <rect key="frame" x="0.0" y="6.5" width="42" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="6" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-down" translatesAutoresizingMaskIntoConstraints="NO" id="EW3-b0-MFq">
-                                            <rect key="frame" x="46" y="13.5" width="11" height="6"/>
+                                            <rect key="frame" x="46" y="14" width="11" height="6"/>
                                         </imageView>
                                     </subviews>
                                 </stackView>
@@ -273,14 +273,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="GVL-Pw-yP3" userLabel="Project image">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="GVL-Pw-yP3" userLabel="Project image">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="100" id="elb-Ir-lqs"/>
                                             </constraints>
                                         </imageView>
-                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1kj-f5-IW7" userLabel="Overlay">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kj-f5-IW7" userLabel="Overlay">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="g2Q-TP-sni">
@@ -357,8 +357,8 @@
                                                 </button>
                                             </subviews>
                                         </stackView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zmT-ss-9s7" userLabel="Divider">
-                                            <rect key="frame" x="0.0" y="150" width="600" height="1"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmT-ss-9s7" userLabel="Divider">
+                                            <rect key="frame" x="0.0" y="150" width="375" height="1"/>
                                             <color key="backgroundColor" red="0.89870691299438477" green="0.89870691299438477" blue="0.89870691299438477" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="5ug-wE-GoS"/>
@@ -426,8 +426,8 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kdj-gb-c9F" userLabel="Body text view">
-                                            <rect key="frame" x="16" y="100" width="568" height="100"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kdj-gb-c9F" userLabel="Body text view">
+                                            <rect key="frame" x="16" y="66" width="343" height="134"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam augue dolor, accumsan nec aliquam a, porttitor sed dui. Integer iaculis ipsum fringilla metus porttitor euismod. Donec in libero vitae lectus ultrices vehicula id eget dolor. Nulla lacinia erat a ullamcorper sollicitudin.</string>
@@ -435,8 +435,8 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
                                         </textView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6eM-fG-YW9" userLabel="Divider">
-                                            <rect key="frame" x="0.0" y="223" width="600" height="1"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6eM-fG-YW9" userLabel="Divider">
+                                            <rect key="frame" x="0.0" y="223" width="375" height="1"/>
                                             <color key="backgroundColor" red="0.89870691299438477" green="0.89870691299438477" blue="0.89870691299438477" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="rKw-M9-ENJ"/>
