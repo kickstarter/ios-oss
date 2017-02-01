@@ -32,7 +32,7 @@ deployment:
   ios_beta:
     branch: beta-dist
     commands:
-      - agvtool new-version -all $(($(date +%s)/100))
+      - agvtool new-version -all $(date +%s)
       - >
         gym
         --output_name               "KickBeta"
@@ -59,7 +59,7 @@ deployment:
   ios_itc:
     branch: itunes-dist
     commands:
-      - agvtool new-version -all $(($(date +%s)/100))
+      - agvtool new-version -all $(date +%s)
       - >
         gym
         --output_name               "Kickstarter"
