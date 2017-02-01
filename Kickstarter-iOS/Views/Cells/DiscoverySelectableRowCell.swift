@@ -42,7 +42,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     self.rowIsSelected = value.row.isSelected
     self.liveIndicatorImageView.isHidden = value.row.params.hasLiveStreams != .some(true)
     if !self.liveIndicatorImageView.isHidden {
-      self.attachLiveNowAnimation()
+      self.liveIndicatorImageView.attachLiveNowAnimation()
     }
   }
 
@@ -57,24 +57,5 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   internal func willDisplay() {
     _ = self.filterTitleLabel
       |> discoveryFilterLabelFontStyle(isSelected: self.rowIsSelected)
-  }
-
-  // Animates the live now icon in a pulsating fashion...
-  private func attachLiveNowAnimation() {
-    let fadeAlpha: CGFloat = 0.4
-    let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-
-    self.liveIndicatorImageView.alpha = fadeAlpha
-    self.liveIndicatorImageView.transform = fadeTransform
-
-    UIView.animate(
-      withDuration: 1,
-      delay: 0,
-      options: [.autoreverse, .repeat, .curveEaseInOut],
-      animations: { [weak v = self.liveIndicatorImageView] in
-        v?.alpha = 1
-        v?.transform = .identity
-      },
-      completion: nil)
   }
 }

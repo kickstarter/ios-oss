@@ -17,7 +17,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   internal func configureWith(value subpage: ProjectPamphletSubpage) {
     self.viewModel.inputs.configureWith(subpage: subpage)
     self.setNeedsLayout()
-    self.attachLiveNowAnimation()
+    self.liveNowImageView.attachLiveNowAnimation()
   }
 
   internal override func bindStyles() {
@@ -95,24 +95,5 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   internal override func layoutSubviews() {
     super.layoutSubviews()
     self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
-  }
-
-  // Animates the live now icon in a pulsating fashion...
-  private func attachLiveNowAnimation() {
-    let fadeAlpha: CGFloat = 0.4
-    let fadeTransform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-
-    self.liveNowImageView.alpha = fadeAlpha
-    self.liveNowImageView.transform = fadeTransform
-
-    UIView.animate(
-      withDuration: 1,
-      delay: 0,
-      options: [.autoreverse, .repeat, .curveEaseInOut],
-      animations: { [weak v = self.liveNowImageView] in
-        v?.alpha = 1
-        v?.transform = .identity
-      },
-      completion: nil)
   }
 }

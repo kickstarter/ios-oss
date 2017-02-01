@@ -221,6 +221,7 @@
 		A707BAD61CFFAB9400653B2F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
 		A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD41CFFAB9400653B2F /* LoginIntent.swift */; };
 		A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD51CFFAB9400653B2F /* Notifications.swift */; };
+		A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */; };
 		A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
 		A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E311D071BFE0074189D /* Alamofire.framework */; };
 		A709698D1D1468A200DB39D3 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DF31D071BCF0074189D /* AlamofireImage.framework */; };
@@ -1541,6 +1542,7 @@
 		A707BAD31CFFAB9400653B2F /* HelpType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpType.swift; sourceTree = "<group>"; };
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		A707BAD51CFFAB9400653B2F /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LivePulsatingAnimation.swift"; sourceTree = "<group>"; };
 		A709697D1D143D1300DB39D3 /* AlertError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertError.swift; sourceTree = "<group>"; };
 		A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewController.swift; sourceTree = "<group>"; };
 		A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewController.swift; sourceTree = "<group>"; };
@@ -2075,6 +2077,7 @@
 				015B78841D47FF51003216AC /* MFMailComposeViewController.swift */,
 				A724BA651D2C03930041863C /* NSBundle-Framework.swift */,
 				A74BEF181DE3474C008D5E63 /* UIImageView+URL.swift */,
+				A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */,
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
 			);
 			name = Library;
@@ -2094,7 +2097,7 @@
 				80762DF31D071BCF0074189D /* AlamofireImage.framework */,
 				80762DF51D071BCF0074189D /* AlamofireImage iOS Tests.xctest */,
 				80762DF71D071BCF0074189D /* AlamofireImage.framework */,
-				80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */,
+				80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */,
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
@@ -2108,7 +2111,7 @@
 				80762E311D071BFE0074189D /* Alamofire.framework */,
 				80762E331D071BFE0074189D /* Alamofire iOS Tests.xctest */,
 				80762E351D071BFE0074189D /* Alamofire.framework */,
-				80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */,
+				80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */,
 				80762E391D071BFE0074189D /* Alamofire.framework */,
 				80762E3B1D071BFE0074189D /* Alamofire tvOS Tests.xctest */,
 				80762E3D1D071BFE0074189D /* Alamofire.framework */,
@@ -3580,10 +3583,10 @@
 			remoteRef = 80762DF61D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762DF91D071BCF0074189D /* AlamofireImage OSX Tests.xctest */ = {
+		80762DF91D071BCF0074189D /* AlamofireImage macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "AlamofireImage OSX Tests.xctest";
+			path = "AlamofireImage macOS Tests.xctest";
 			remoteRef = 80762DF81D071BCF0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -3629,10 +3632,10 @@
 			remoteRef = 80762E341D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		80762E371D071BFE0074189D /* Alamofire OSX Tests.xctest */ = {
+		80762E371D071BFE0074189D /* Alamofire macOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Alamofire OSX Tests.xctest";
+			path = "Alamofire macOS Tests.xctest";
 			remoteRef = 80762E361D071BFE0074189D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -4533,6 +4536,7 @@
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
+				A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */,
 				A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
