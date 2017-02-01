@@ -104,10 +104,6 @@ internal final class MessagesViewController: UITableViewController {
     self.viewModel.inputs.replyButtonPressed()
   }
 
-  @IBAction fileprivate func backingInfoButtonPressed() {
-    self.viewModel.inputs.backingInfoPressed()
-  }
-
   fileprivate func presentMessageDialog(messageThread: MessageThread,
                                         context: Koala.MessageDialogContext) {
     let dialog = MessageDialogViewController

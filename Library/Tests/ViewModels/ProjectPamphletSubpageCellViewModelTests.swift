@@ -60,7 +60,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelBorderColor.assertValue(.ksr_green_500)
     self.countLabelBackgroundColor.assertValue(.white)
     self.liveNowImageViewHidden.assertValue(false)
-    self.labelText.assertValue("Live Streaming now")
+    self.labelText.assertValue("Live streaming now")
     self.labelTextColor.assertValue(.ksr_text_green_700)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)
