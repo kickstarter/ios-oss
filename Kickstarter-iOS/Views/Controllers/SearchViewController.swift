@@ -120,7 +120,7 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
     self.viewModel.outputs.changeSearchFieldFocus
-      .observeForUI()
+      .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
