@@ -42,9 +42,11 @@ internal final class WebModalViewModelTests: TestCase {
     self.webViewLoadRequestIsPrepared.assertValues([true])
 
     let decision = self.vm.inputs.decidePolicyFor(
-      navigationAction: MockNavigationAction(
+      navigationAction: WKNavigationActionData(
         navigationType: .other,
-        request: request
+        request: request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
       )
     )
 

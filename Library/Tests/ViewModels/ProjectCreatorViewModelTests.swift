@@ -31,10 +31,15 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
+    let creatorBioRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!
+    )
     var policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
+      forNavigationAction: WKNavigationActionData(
         navigationType: .other,
-        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        request: creatorBioRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest)
       )
     )
     XCTAssertEqual(.allow, policy)
@@ -42,10 +47,15 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToMessageDialogContext.assertValues([])
     self.goToMessageDialogSubject.assertValues([])
 
+    let messagesRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
+    )
     policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
+      forNavigationAction: WKNavigationActionData(
         navigationType: .linkActivated,
-        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!)
+        request: messagesRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest)
       )
     )
     XCTAssertEqual(.cancel, policy)
@@ -61,20 +71,30 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goToSafariBrowser.assertValues([])
 
+    let creatorBioRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!
+    )
     var policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
+      forNavigationAction: WKNavigationActionData(
         navigationType: .other,
-        request: .init(url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!)
+        request: creatorBioRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest)
       )
     )
     XCTAssertEqual(.allow, policy)
 
     self.goToSafariBrowser.assertValues([])
 
+    let googleRequest = URLRequest(
+      url: URL(string: "http://www.google.com")!
+    )
     policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
+      forNavigationAction: WKNavigationActionData(
         navigationType: .linkActivated,
-        request: .init(url: URL(string: "http://www.google.com")!)
+        request: googleRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: googleRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: googleRequest)
       )
     )
     XCTAssertEqual(.cancel, policy)
@@ -95,10 +115,15 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.loadWebViewRequest.assertValues([creatorBioRequest])
 
+    let googleRequest = URLRequest(
+      url: URL(string: "https://www.google.com")!
+    )
     let policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: MockNavigationAction(
+      forNavigationAction: WKNavigationActionData(
         navigationType: .linkActivated,
-        request: .init(url: URL(string: "http://www.google.com")!)
+        request: googleRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: googleRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: googleRequest)
       )
     )
     XCTAssertEqual(.cancel, policy)
