@@ -16,7 +16,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var detailsLoadingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
@@ -44,16 +43,15 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream,
-                                    event: LiveStreamEvent?,
+                                    liveStreamEvent: LiveStreamEvent,
                                     refTag: RefTag) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
-                                      liveStream: liveStream,
-                                      event: event,
+                                      liveStreamEvent: liveStreamEvent,
                                       refTag: refTag)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: event)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc
   }
@@ -126,7 +124,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     _  = self.loaderActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.animating .~ true
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
     _  = self.loaderLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -212,7 +210,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     _  = self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.animating .~ false
 
     _  = self.subscribeButton
       |> whiteBorderButtonStyle
@@ -221,11 +218,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(2))
 
     _  = self.subscribeButton.semanticContentAttribute = .forceRightToLeft
-
-    _  = self.detailsLoadingActivityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.animating .~ false
 
     _  = self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2
@@ -295,7 +287,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.openLoginTout()
     }
 
-    self.viewModel.outputs.createAndConfigureLiveStreamViewController
+    self.viewModel.outputs.configureLiveStreamViewController
       .observeForUI()
       .observeValues { [weak self] _, userId, event in
         guard let _self = self else { return }
@@ -306,9 +298,6 @@ public final class LiveStreamContainerViewController: UIViewController {
           liveStreamService: AppEnvironment.current.liveStreamService
         )
     }
-
-    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues { [weak self] in self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0) }
 
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
@@ -345,6 +334,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.view.setNeedsLayout()
     }
 
+    self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
     self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
@@ -354,17 +344,11 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.subscribeButton.rac.accessibilityLabel
       = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
     self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
-    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
 
     self.eventDetailsViewModel.outputs.subscribeLabelHidden
       .observeForUI()
       .observeValues { [weak self] in
         self?.subscribeLabel.alpha = $0 ? 0 : 1
-    }
-
-    self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeValues { [weak self] project, event in
-        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
     }
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
@@ -375,11 +359,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
-
-    self.detailsLoadingActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
-      .animateActivityIndicator
-
-    self.detailsContainerStackView.rac.hidden = self.eventDetailsViewModel.outputs.detailsStackViewHidden
 
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
@@ -486,7 +465,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
-      |> UIBarButtonItem.lens.enabled .~ false
 
     shareBarButtonItem.accessibilityLabel = localizedString(
       key: "Share_this_live_stream",

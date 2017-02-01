@@ -205,6 +205,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       ).take(first: 1)
 
     let databaseRef = self.databaseRefProperty.signal.skipNil()
+
     let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
 
     self.createPresenceReference = Signal.zip(
@@ -252,7 +253,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       databaseRef,
       scaleNumberOfPeopleWatchingRef,
       createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
+      liveStreamEvent.map { $0.isScale }.skipNil().filter(isTrue)
+      )
+      .map { dbRef, event, _, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
       .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())

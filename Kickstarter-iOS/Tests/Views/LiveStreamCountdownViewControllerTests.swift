@@ -20,9 +20,8 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
   func testStandardView() {
     let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 19
-    let liveStream = .template
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + future)
     let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: true)
       |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
@@ -37,7 +36,7 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(language: lang) {
         let vc = LiveStreamCountdownViewController.configuredWith(project: .template,
-                                                                  liveStream: liveStream,
+                                                                  liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)

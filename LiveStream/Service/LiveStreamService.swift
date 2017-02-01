@@ -16,12 +16,12 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
-      let uidString = uid
-        .flatMap { "?uid=\($0)" }
-        .coalesceWith("")
+      let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
+        .appendingPathComponent("\(eventId)")
+      var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+      components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
 
-      let urlString = "\(Secrets.LiveStreams.Api.base)/ksr-ios-streams/\(eventId)\(uidString)"
-      guard let url = URL(string: urlString) else {
+      guard let url = components?.url else {
         observer.send(error: .invalidEventId)
         return
       }
@@ -55,13 +55,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError> {
+  public func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
+    SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
+      let apiUrl = URL(string: Secrets.LiveStreams.Api.base)?
+        .appendingPathComponent("projects")
+        .appendingPathComponent("\(projectId)")
+      var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+      components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
 
-      guard let url = URL(string: Secrets.LiveStreams.Api.base)?
+      guard let url = components?.url else {
         .appendingPathComponent("ksr-streams") else {
-        observer.send(error: .invalidEventId)
+        observer.send(error: .invalidProjectId)
         return
       }
 
@@ -73,15 +79,15 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           return
         }
 
-        let event = data
+        let envelope = data
           .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
           .map(JSON.init)
-          .map([LiveStreamEvent].decode)
+          .map(LiveStreamEventsEnvelope.decode)
           .flatMap { $0.value }
-          .map(Event<[LiveStreamEvent], LiveApiError>.value)
+          .map(Event<LiveStreamEventsEnvelope, LiveApiError>.value)
           .coalesceWith(.failed(.genericFailure))
 
-        observer.action(event)
+        observer.action(envelope)
         observer.sendCompleted()
       }
 
@@ -119,18 +125,26 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
+        let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
+          .appendingPathComponent("\(eventId)")
+          .appendingPathComponent("subscribe")
+        let components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
 
-        let urlString = "\(Secrets.LiveStreams.Api.base)/ksr-ios-streams/\(eventId)/subscribe"
-        guard let url = URL(string: urlString) else {
+        guard let url = components?.url else {
           observer.send(error: .invalidEventId)
           return
         }
 
         let urlSession = URLSession(configuration: .default)
 
+        let params = [
+          "uid": String(uid),
+          "subscribe": String(!isSubscribed)
+        ]
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))".data(using: .utf8)
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         let task = urlSession.dataTask(with: request) { data, _, _ in
           let result = data

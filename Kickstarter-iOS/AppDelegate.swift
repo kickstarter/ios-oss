@@ -90,7 +90,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLiveStream
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToLiveStream(project: $0, liveStream: $1, liveStreamEvent: $2, refTag: $3)
+        self?.goToLiveStream(project: $0, liveStreamEvent: $1, refTag: $2)
     }
 
     self.viewModel.outputs.goToMessageThread
@@ -239,7 +239,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func goToLiveStream(project: Project,
-                              liveStream: Project.LiveStream,
                               liveStreamEvent: LiveStreamEvent,
                               refTag: RefTag?) {
 
@@ -247,14 +246,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                  refTag: refTag)
 
     let liveVc: UIViewController
-    if liveStream.startDate < AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+    if liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date {
       liveVc = LiveStreamContainerViewController.configuredWith(project: project,
-                                                                liveStream: liveStream,
-                                                                event: liveStreamEvent,
+                                                                liveStreamEvent: liveStreamEvent,
                                                                 refTag: .push)
     } else {
       liveVc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                                liveStream: liveStream,
+                                                                liveStreamEvent: liveStreamEvent,
                                                                 refTag: .push)
     }
 

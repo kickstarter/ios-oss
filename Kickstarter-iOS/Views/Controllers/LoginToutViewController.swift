@@ -232,7 +232,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.dismiss(animated: true, completion: nil)
   }
 
-  @objc fileprivate func helpButtonPressed() {
+  @IBAction fileprivate func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 

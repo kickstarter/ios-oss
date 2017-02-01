@@ -244,9 +244,6 @@ Mikke Snow</string>
                                                         </subviews>
                                                         <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
                                                     </stackView>
-                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2RK-Lp-TCe">
-                                                        <rect key="frame" x="178" y="250" width="20" height="20"/>
-                                                    </activityIndicatorView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hai-7O-ju2" customClass="CircleAvatarImageView" customModule="Library">
                                                         <rect key="frame" x="157.5" y="-54" width="60" height="60"/>
                                                         <color key="backgroundColor" red="0.85490196080000003" green="0.90980392160000001" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -258,12 +255,10 @@ Mikke Snow</string>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.85490196080000003" green="0.90980392160000001" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstItem="2RK-Lp-TCe" firstAttribute="centerX" secondItem="P4I-CT-M0j" secondAttribute="centerX" id="29I-5K-4BZ"/>
                                                     <constraint firstItem="ssk-Zb-17W" firstAttribute="leading" secondItem="Dny-J6-PD8" secondAttribute="leading" id="7Om-jf-eXC"/>
                                                     <constraint firstItem="ssk-Zb-17W" firstAttribute="bottom" secondItem="Dny-J6-PD8" secondAttribute="bottom" id="8TW-ok-JUY"/>
                                                     <constraint firstItem="ssk-Zb-17W" firstAttribute="top" secondItem="Hai-7O-ju2" secondAttribute="centerY" id="Ate-4O-cGO"/>
                                                     <constraint firstAttribute="trailingMargin" secondItem="Dny-J6-PD8" secondAttribute="trailing" id="YLO-Am-vCw"/>
-                                                    <constraint firstItem="2RK-Lp-TCe" firstAttribute="centerY" secondItem="P4I-CT-M0j" secondAttribute="centerY" id="YLZ-Cu-1RO"/>
                                                     <constraint firstItem="Hai-7O-ju2" firstAttribute="centerX" secondItem="E7V-Lm-PY3" secondAttribute="centerX" id="Yvq-Nn-S0f"/>
                                                     <constraint firstAttribute="bottomMargin" secondItem="Dny-J6-PD8" secondAttribute="bottom" id="Zyw-1G-WU2"/>
                                                     <constraint firstItem="Dny-J6-PD8" firstAttribute="top" secondItem="P4I-CT-M0j" secondAttribute="topMargin" id="dSe-A6-Tne"/>
@@ -298,7 +293,6 @@ Mikke Snow</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
-                        <outlet property="activityIndicatorView" destination="2RK-Lp-TCe" id="Jei-fc-08o"/>
                         <outlet property="countdownRootStackView" destination="wME-a6-25D" id="hnH-eR-vLI"/>
                         <outlet property="countdownStackView" destination="wac-fk-fOa" id="lig-zy-jQ5"/>
                         <outlet property="creatorAvatarBottomConstraint" destination="sPp-1O-6QM" id="83b-Xm-snT"/>
@@ -360,16 +354,16 @@ Mikke Snow</string>
                                                         </connections>
                                                     </containerView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
-                                                        <rect key="frame" x="8" y="121" width="359" height="41"/>
+                                                        <rect key="frame" x="8" y="121.5" width="359" height="40.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
-                                                                <rect key="frame" x="66" y="0.0" width="227" height="21"/>
+                                                                <rect key="frame" x="66" y="0.0" width="227" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="COg-em-r6I">
-                                                                <rect key="frame" x="170" y="21" width="20" height="20"/>
+                                                                <rect key="frame" x="169.5" y="20.5" width="20" height="20"/>
                                                             </activityIndicatorView>
                                                         </subviews>
                                                     </stackView>
@@ -435,7 +429,7 @@ Mikke Snow</string>
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Mikke Snow is live now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4T-TV-d8A" customClass="SimpleHTMLLabel" customModule="Library">
-                                                                        <rect key="frame" x="42" y="139" width="138" height="21"/>
+                                                                        <rect key="frame" x="42" y="139" width="138" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <nil key="highlightedColor"/>
@@ -447,11 +441,11 @@ Mikke Snow</string>
                                                                                 <rect key="frame" x="8" y="9" width="167" height="282"/>
                                                                                 <subviews>
                                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="1CW-ht-L6b">
-                                                                                        <rect key="frame" x="0.0" y="136" width="127" height="10"/>
+                                                                                        <rect key="frame" x="0.0" y="136" width="127.5" height="10"/>
                                                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                     </imageView>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" text="2.4k" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7J-KF-ySB">
-                                                                                        <rect key="frame" x="133" y="131" width="34" height="21"/>
+                                                                                        <rect key="frame" x="133.5" y="131" width="33.5" height="20.5"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                         <nil key="highlightedColor"/>
@@ -477,22 +471,22 @@ Mikke Snow</string>
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="z67-JG-G9W">
-                                                                <rect key="frame" x="0.0" y="300" width="375" height="144"/>
+                                                                <rect key="frame" x="0.0" y="300" width="375" height="143"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available to watch for 48 more hours" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHa-bW-Ndv">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title of the live stream goes here and can be 60 chr max" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nVg-Ji-VFG">
-                                                                        <rect key="frame" x="0.0" y="21" width="375" height="41"/>
+                                                                        <rect key="frame" x="0.0" y="20.5" width="375" height="41"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Okx-Yf-NSd">
-                                                                        <rect key="frame" x="0.0" y="62" width="375" height="82"/>
+                                                                        <rect key="frame" x="0.0" y="61.5" width="375" height="81.5"/>
                                                                         <string key="text">175 char max. 175 char max 175 char max message with a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!</string>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -501,14 +495,14 @@ Mikke Snow</string>
                                                                 </subviews>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" verticalHuggingPriority="1" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="4Bv-P0-s5k" userLabel="Spacer">
-                                                                <rect key="frame" x="0.0" y="444" width="375" height="122"/>
+                                                                <rect key="frame" x="0.0" y="443" width="375" height="123"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aeZ-AT-mRr">
                                                                 <rect key="frame" x="0.0" y="566" width="375" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Keep up with future live streams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpn-uC-rKH">
-                                                                        <rect key="frame" x="0.0" y="7" width="245" height="21"/>
+                                                                        <rect key="frame" x="0.0" y="7" width="245" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -534,9 +528,6 @@ Mikke Snow</string>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="live-waves" translatesAutoresizingMaskIntoConstraints="NO" id="nnj-Xu-ndh">
                                                         <rect key="frame" x="0.0" y="135" width="10" height="11"/>
                                                     </imageView>
-                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VEp-dG-snO">
-                                                        <rect key="frame" x="178" y="290" width="20" height="20"/>
-                                                    </activityIndicatorView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -546,12 +537,10 @@ Mikke Snow</string>
                                                     <constraint firstItem="aj9-Dn-I4f" firstAttribute="top" secondItem="2a0-nA-tSN" secondAttribute="top" id="DB9-OK-TNL"/>
                                                     <constraint firstItem="WLh-x1-5QQ" firstAttribute="trailing" secondItem="aj9-Dn-I4f" secondAttribute="trailing" id="EK4-C3-PhI"/>
                                                     <constraint firstItem="pfP-ry-BqJ" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="KJu-9L-LeV"/>
-                                                    <constraint firstItem="VEp-dG-snO" firstAttribute="centerX" secondItem="2a0-nA-tSN" secondAttribute="centerX" id="TZ3-tB-GbS"/>
                                                     <constraint firstItem="WLh-x1-5QQ" firstAttribute="leading" secondItem="aj9-Dn-I4f" secondAttribute="leading" id="XVM-C7-umT"/>
                                                     <constraint firstItem="aj9-Dn-I4f" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="bAa-38-1G3"/>
                                                     <constraint firstItem="WLh-x1-5QQ" firstAttribute="top" secondItem="aj9-Dn-I4f" secondAttribute="top" id="cl3-vh-JUk"/>
                                                     <constraint firstItem="L31-dg-Wj8" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="eaI-nR-6DN"/>
-                                                    <constraint firstItem="VEp-dG-snO" firstAttribute="centerY" secondItem="2a0-nA-tSN" secondAttribute="centerY" id="f1l-vI-2vf"/>
                                                     <constraint firstAttribute="height" constant="300" id="i22-fj-2se"/>
                                                     <constraint firstAttribute="bottom" secondItem="aj9-Dn-I4f" secondAttribute="bottom" id="ifr-uf-Lg3"/>
                                                     <constraint firstAttribute="trailing" secondItem="aj9-Dn-I4f" secondAttribute="trailing" id="jFS-V3-NjB"/>
@@ -603,7 +592,6 @@ Mikke Snow</string>
                         <outlet property="creatorAvatarLiveDotImageView" destination="nnj-Xu-ndh" id="iyj-Ve-One"/>
                         <outlet property="creatorAvatarWidthConstraint" destination="H2m-I9-lP7" id="0xa-0H-B72"/>
                         <outlet property="detailsContainerStackView" destination="L31-dg-Wj8" id="vgF-Vf-nX3"/>
-                        <outlet property="detailsLoadingActivityIndicatorView" destination="VEp-dG-snO" id="tiz-b0-yem"/>
                         <outlet property="detailsStackView" destination="z67-JG-G9W" id="Yw5-qQ-b5M"/>
                         <outlet property="gradientView" destination="pfP-ry-BqJ" id="xzv-WK-5c4"/>
                         <outlet property="liveStreamParagraphLabel" destination="Okx-Yf-NSd" id="3AJ-P2-nQv"/>
