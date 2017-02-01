@@ -7,7 +7,6 @@ import ReactiveSwift
 import UIKit
 
 public final class LiveStreamCountdownViewController: UIViewController {
-  @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
@@ -39,12 +38,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
-                                    liveStream: Project.LiveStream,
+                                    liveStreamEvent: LiveStreamEvent,
                                     refTag: RefTag) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStream: liveStream, refTag: refTag)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStream: liveStream, event: nil)
+    vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc
   }
@@ -193,14 +193,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.subscribeButton.semanticContentAttribute = .forceRightToLeft
 
-    _ = self.activityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-
     _ = self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.animating .~ false
 
     self.gradientView.startPoint = .init(x: 1, y: 0)
     self.gradientView.endPoint = .init(x: 0, y: 1)
@@ -237,13 +232,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.minutesTitleLabel.rac.text = self.viewModel.outputs.minutesString
     self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
 
-    self.eventDetailsViewModel.outputs.configureShareViewModel
-      .observeValues { [weak self] project, event in
-        self?.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, event))
-    }
-
-    self.shareBarButtonItem.rac.enabled = self.eventDetailsViewModel.outputs.shareButtonEnabled
-
     self.introLabel.rac.html = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
@@ -266,11 +254,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     }
 
-    self.eventDetailsViewModel.outputs.retrievedLiveStreamEvent
-      .observeValues { [weak self] in
-        self?.viewModel.inputs.retrievedLiveStreamEvent(event: $0)
-    }
-
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -290,12 +273,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.subscribeButton.setImage(image(named: imageName ?? ""), for: .normal)
     }
 
-    self.activityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
-      .animateActivityIndicator
-
-    self.detailsStackView.rac.hidden = self.eventDetailsViewModel.outputs
-      .detailsStackViewHidden
-
     self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
       .animateSubscribeButtonActivityIndicator
 
@@ -304,9 +281,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.viewModel.outputs.pushLiveStreamViewController
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream, event, refTag in
+      .observeValues { [weak self] project, liveStreamEvent, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStream: liveStream, event: event, refTag: refTag)
+          .configuredWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
@@ -346,7 +323,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
-      |> UIBarButtonItem.lens.enabled .~ false
 
     shareBarButtonItem.accessibilityLabel = localizedString(
       key: "Share_this_live_stream",
