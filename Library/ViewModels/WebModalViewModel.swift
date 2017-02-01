@@ -12,8 +12,7 @@ public protocol WebModalViewModelInputs {
   func configureWith(request: URLRequest)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction: WKNavigationActionProtocol)
-    -> WKNavigationActionPolicy
+  func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -56,10 +55,9 @@ public final class WebModalViewModel: WebModalViewModelType {
     self.requestProperty.value = request
   }
 
-  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionProtocol?>(nil)
+  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
-  public func decidePolicyFor(navigationAction: WKNavigationActionProtocol)
-    -> WKNavigationActionPolicy {
+  public func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy {
       self.policyForNavigationActionProperty.value = navigationAction
       return self.policyDecisionProperty.value
   }

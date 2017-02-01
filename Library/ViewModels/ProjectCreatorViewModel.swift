@@ -10,7 +10,7 @@ public protocol ProjectCreatorViewModelInputs {
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
-  func decidePolicy(forNavigationAction action: WKNavigationActionProtocol) -> WKNavigationActionPolicy
+  func decidePolicy(forNavigationAction action: WKNavigationActionData) -> WKNavigationActionPolicy
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -76,10 +76,9 @@ ProjectCreatorViewModelOutputs {
     self.projectProperty.value = project
   }
 
-  fileprivate let navigationAction = MutableProperty<WKNavigationActionProtocol?>(nil)
+  fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
-  public func decidePolicy(forNavigationAction action: WKNavigationActionProtocol)
-    -> WKNavigationActionPolicy {
+  public func decidePolicy(forNavigationAction action: WKNavigationActionData) -> WKNavigationActionPolicy {
     self.navigationAction.value = action
     return self.decidedPolicy.value
   }
