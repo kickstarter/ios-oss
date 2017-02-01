@@ -8,7 +8,9 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
     self.clearValues()
 
     liveStreams
-      .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator)
+      .sorted(comparator:
+        LiveStreamEvent.canonicalLiveStreamEventComparator(now: AppEnvironment.current.dateType.init().date)
+      )
       .groupedBy(sectionTitle(forLiveStreamEvent:))
       .forEach { title, events in
         guard !events.isEmpty else { return }

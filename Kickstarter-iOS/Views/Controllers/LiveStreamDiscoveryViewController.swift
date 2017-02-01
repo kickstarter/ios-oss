@@ -47,6 +47,10 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
       .observeValues { [weak self] project, event in
         self?.goToLiveStreamContainer(project: project, liveStreamEvent: event)
     }
+
+    self.viewModel.outputs.showAlert
+      .observeForUI()
+      .observeValues { [weak self] in self?.showAlert(message: $0) }
   }
 
   private func goToLiveStreamContainer(project: Project,
@@ -71,6 +75,11 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     DispatchQueue.main.async {
       self.present(nav, animated: true, completion: nil)
     }
+  }
+
+  private func showAlert(message: String) {
+    let vc = UIAlertController.alert("", message: message, handler: nil)
+    self.present(vc, animated: true, completion: nil)
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

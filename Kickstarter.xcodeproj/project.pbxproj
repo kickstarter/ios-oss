@@ -222,6 +222,7 @@
 		A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD41CFFAB9400653B2F /* LoginIntent.swift */; };
 		A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD51CFFAB9400653B2F /* Notifications.swift */; };
 		A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */; };
+		A708F1291E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A708F1281E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift */; };
 		A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
 		A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E311D071BFE0074189D /* Alamofire.framework */; };
 		A709698D1D1468A200DB39D3 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DF31D071BCF0074189D /* AlamofireImage.framework */; };
@@ -1543,6 +1544,7 @@
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		A707BAD51CFFAB9400653B2F /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LivePulsatingAnimation.swift"; sourceTree = "<group>"; };
+		A708F1281E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewModelTests.swift; sourceTree = "<group>"; };
 		A709697D1D143D1300DB39D3 /* AlertError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertError.swift; sourceTree = "<group>"; };
 		A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewController.swift; sourceTree = "<group>"; };
 		A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewController.swift; sourceTree = "<group>"; };
@@ -2573,7 +2575,6 @@
 				0156B1FB1D074285000C4252 /* ActivityFriendFollowCellViewModelTests.swift */,
 				01F4FE431DF7810400BB9DD4 /* ActivityProjectStatusViewModelTests.swift */,
 				598D96BC1D427B3B003F3F66 /* ActivitySampleBackingCellViewModelTests.swift */,
-				D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */,
 				598D96C71D42A97E003F3F66 /* ActivitySampleFollowCellViewModelTests.swift */,
 				598D96CD1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift */,
 				5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */,
@@ -2614,6 +2615,7 @@
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
 				D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */,
 				A79007031E30884700C4629C /* LiveStreamDiscoveryCellViewModelTests.swift */,
+				A708F1281E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift */,
 				D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
 				A7830CE61D005C3F00B5B6AE /* LoginViewModelTests.swift */,
@@ -2648,6 +2650,7 @@
 				A7D1CE811D5556C100E621C2 /* RewardCellViewModelTests.swift */,
 				A7A978AA1D71E88100ABA1D6 /* RewardPledgeViewModelTests.swift */,
 				A7A978AD1D71E99900ABA1D6 /* RewardShippingPickerViewModelTests.swift */,
+				D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */,
 				A7830CF51D005C3F00B5B6AE /* SearchViewModelTests.swift */,
 				A72C3A321D00F29A0075227E /* SettingsViewModelTests.swift */,
 				A75C81221D210EE200B5AD03 /* ShareViewModelTests.swift */,
@@ -4385,6 +4388,7 @@
 				A76FAF271DB98AD000C6BF33 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				9D10B94E1D354105008B8045 /* String+TruncateTests.swift in Sources */,
 				5970738E1D061A9900B00444 /* ProjectNotificationsViewModelTest.swift in Sources */,
+				A708F1291E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift in Sources */,
 				01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */,

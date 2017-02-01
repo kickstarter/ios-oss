@@ -63,7 +63,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
 
     return liveStreamEvents
-      .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator)
+      .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(
+        now: AppEnvironment.current.dateType.init().date)
+      )
       .enumerated()
       .map { idx, liveStreamEvent in
         ProjectPamphletSubpage.liveStream(liveStreamEvent: liveStreamEvent, idx == 0 ? .first : .middle)
