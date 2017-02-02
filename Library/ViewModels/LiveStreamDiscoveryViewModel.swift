@@ -58,11 +58,16 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
         )
     )
 
-    self.loadDataSource = self.isActiveProperty.signal.filter(isTrue)
+    let freshLiveStreamEvents = self.isActiveProperty.signal.filter(isTrue)
       .flatMap { _ in
         AppEnvironment.current.liveStreamService.fetchEvents()
           .demoteErrors()
     }
+
+    self.loadDataSource = Signal.merge(
+      self.isActiveProperty.signal.filter(isFalse).mapConst([]),
+      freshLiveStreamEvents
+    )
   }
 
   private let isActiveProperty = MutableProperty(false)

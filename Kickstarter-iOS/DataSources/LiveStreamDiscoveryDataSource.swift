@@ -19,7 +19,7 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
                        toSection: sectionFor(titleType: title))
         events.forEach { event in
           self.appendRow(value: event,
-                         cellClass: LiveStreamDiscoveryCell.self,
+                         cellClass: LiveStreamDiscoveryLiveNowCell.self,
                          toSection: sectionFor(titleType: title))
         }
     }
@@ -28,6 +28,8 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as LiveStreamDiscoveryCell, value as LiveStreamEvent):
+      cell.configureWith(value: value)
+    case let (cell as LiveStreamDiscoveryLiveNowCell, value as LiveStreamEvent):
       cell.configureWith(value: value)
     case let (cell as LiveStreamDiscoveryTitleCell, value as LiveStreamDiscoveryTitleType):
       cell.configureWith(value: value)

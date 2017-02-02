@@ -19,20 +19,24 @@ internal func == (lhs: LiveStreamDiscoveryTitleType, rhs: LiveStreamDiscoveryTit
 }
 
 internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
+  @IBOutlet private weak var liveIndicatorView: UIView!
+  @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var titleTypeLabel: UILabel!
 
   internal func configureWith(value: LiveStreamDiscoveryTitleType) {
     switch value {
     case .liveNow:
       self.titleTypeLabel.text = localizedString(key: "Live_now",
-                                                 defaultValue: "Live now!")
+                                                 defaultValue: "Live now")
     case .recentlyLive:
-      self.titleTypeLabel.text = localizedString(key: "Recently_live",
-                                                 defaultValue: "Recently live")
+      self.titleTypeLabel.text = localizedString(key: "Replay_past_live_streams",
+                                                 defaultValue: "Replay past live streams")
     case .upcoming:
-      self.titleTypeLabel.text = localizedString(key: "Upcoming",
-                                                 defaultValue: "Upcoming!")
+      self.titleTypeLabel.text = localizedString(key: "Upcoming_live_streams",
+                                                 defaultValue: "Upcoming live streams")
     }
+
+    self.liveIndicatorView.isHidden = value != .liveNow
   }
 
   internal override func bindStyles() {
@@ -45,5 +49,16 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
           ? .init(top: Styles.grid(4), left: insets.left * 8, bottom: Styles.grid(2), right: insets.right)
           : .init(top: Styles.grid(4), left: insets.left * 2, bottom: Styles.grid(2), right: insets.right)
     }
+
+    _ = self.rootStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
+    _ = self.liveIndicatorView
+      |> roundedStyle(cornerRadius: self.liveIndicatorView.frame.width / 2)
+      |> UIView.lens.backgroundColor .~ .ksr_green_500
+
+    _ = self.titleTypeLabel
+      |> UILabel.lens.font .~ UIFont.ksr_title1(size: 16)
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
   }
 }
