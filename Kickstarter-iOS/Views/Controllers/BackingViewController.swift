@@ -124,8 +124,7 @@ internal final class BackingViewController: UIViewController {
     self.backerRewardDescriptionLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerRewardDescriptionAccessibilityLabel
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
-    self.backerSequenceLabel.rac.accessibilityLabel =
-      self.viewModel.outputs.backerSequenceAccessibilityLabel
+    self.backerSequenceLabel.rac.accessibilityLabel = self.viewModel.outputs.backerSequenceAccessibilityLabel
     self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
     self.backerShippingAmountLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerShippingAmountAccessibilityLabel

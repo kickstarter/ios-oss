@@ -93,7 +93,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    _ = [self.minimumStackView, self.titleDescriptionStackView, self.itemsContainerStackView, self.footerStackView]
+    _ = [self.minimumStackView, self.titleDescriptionStackView,
+         self.itemsContainerStackView, self.footerStackView]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
@@ -126,7 +127,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "Estimated_delivery", defaultValue: "Estimated delivery:") }
+      |> UILabel.lens.text %~ { _ in
+        localizedString(key: "Estimated_delivery", defaultValue: "Estimated delivery:") }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 

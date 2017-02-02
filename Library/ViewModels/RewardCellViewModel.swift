@@ -160,9 +160,7 @@ RewardCellViewModelOutputs {
        shouldCollapse(reward: reward, forProject: project)
     }
 
-    self.allGoneHidden =
-      // FIXME: use new helper here
-      projectAndReward
+    self.allGoneHidden = projectAndReward
         .map { project, reward in
           reward.remaining != 0
             || userIsBacking(reward: reward, inProject: project)
@@ -174,7 +172,6 @@ RewardCellViewModelOutputs {
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
-    // FIXME: get rid of zip and use helper instead
     self.footerStackViewHidden = projectAndReward
       .map { project, reward in
         reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
