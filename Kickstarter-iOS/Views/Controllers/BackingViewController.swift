@@ -139,7 +139,8 @@ internal final class BackingViewController: UIViewController {
       .observeForControllerAction()
       .on(event: { [weak backerAvatarImageView] _ in
         backerAvatarImageView?.af_cancelImageRequest()
-        backerAvatarImageView?.image = nil })
+        backerAvatarImageView?.image = nil
+      })
       .skipNil()
       .observeValues { [weak backerAvatarImageView] url in
         backerAvatarImageView?.af_setImage(withURL: url)
