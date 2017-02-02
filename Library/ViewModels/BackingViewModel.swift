@@ -64,6 +64,11 @@ public protocol BackingViewModelOutputs {
   /// Emits the accessibility label for backer's description of shipping.
   var backerShippingDescriptionAccessibilityLabel: Signal<String, NoError> { get }
 
+  /// Emits the estimated delivery date.
+  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
+
+  var estimatedDeliveryStackViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits with the project when should go to message creator screen.
   var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
@@ -159,6 +164,17 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
     self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
+    self.estimatedDeliveryDateLabelText = reward
+      .map { reward in
+        reward.estimatedDeliveryOn.map {
+          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy")
+        }
+      }
+      .skipNil()
+
+    self.estimatedDeliveryStackViewHidden = reward
+      .map { $0.estimatedDeliveryOn == nil }
+
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
       .takeWhen(self.viewMessagesTappedProperty.signal)
@@ -225,6 +241,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerShippingAmountAccessibilityLabel: Signal<String, NoError>
   public let backerShippingDescription: Signal<String, NoError>
   public let backerShippingDescriptionAccessibilityLabel: Signal<String, NoError>
+  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
+  public let estimatedDeliveryStackViewHidden: Signal<Bool, NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>

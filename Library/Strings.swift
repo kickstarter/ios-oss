@@ -8330,7 +8330,7 @@ catch your eye?"
   /**
    "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
 
-   - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
+   - **es**: "De momento tiene %{backers_count} patrocinadorefs, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
    - **en**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"

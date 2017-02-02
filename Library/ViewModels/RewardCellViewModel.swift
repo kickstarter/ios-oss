@@ -18,8 +18,9 @@ public protocol RewardCellViewModelOutputs {
   var conversionLabelText: Signal<String, NoError> { get }
   var descriptionLabelHidden: Signal<Bool, NoError> { get }
   var descriptionLabelText: Signal<String, NoError> { get }
+  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
   var footerLabelText: Signal<String, NoError> { get }
-  var footerViewHidden: Signal<Bool, NoError> { get }
+  var footerStackViewHidden: Signal<Bool, NoError> { get }
   var items: Signal<[String], NoError> { get }
   var itemsContainerHidden: Signal<Bool, NoError> { get }
   var manageButtonHidden: Signal<Bool, NoError> { get }
@@ -128,6 +129,14 @@ RewardCellViewModelOutputs {
           : Strings.Your_reward()
     }
 
+    self.estimatedDeliveryDateLabelText = reward
+      .map { reward in
+        reward.estimatedDeliveryOn.map {
+          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy")
+      }
+    }
+    .skipNil()
+
     let rewardItemsIsEmpty = reward
       .map { $0.rewardsItems.isEmpty }
 
@@ -148,15 +157,15 @@ RewardCellViewModelOutputs {
 
     let rewardIsCollapsed = projectAndReward
       .map { project, reward in
-        reward.remaining == 0
-          && !userIsBacking(reward: reward, inProject: project)
-          && project.state == .live
+       shouldCollapse(reward: reward, forProject: project)
     }
 
-    self.allGoneHidden = projectAndReward
-      .map { project, reward in
-        reward.remaining != 0
-          || userIsBacking(reward: reward, inProject: project)
+    self.allGoneHidden =
+      // FIXME: use new helper here
+      projectAndReward
+        .map { project, reward in
+          reward.remaining != 0
+            || userIsBacking(reward: reward, inProject: project)
     }
 
     self.contentViewBackgroundColor = project
@@ -164,6 +173,13 @@ RewardCellViewModelOutputs {
 
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
+
+    // FIXME: get rid of zip and use helper instead
+    self.footerStackViewHidden = projectAndReward
+      .map { project, reward in
+        reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
+      }
+      .mergeWith(self.tappedProperty.signal.mapConst(false))
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,
@@ -198,9 +214,6 @@ RewardCellViewModelOutputs {
       .map { project, reward, youreABacker in
         (project.state == .live && reward.remaining != 0) || youreABacker
     }
-
-    self.footerViewHidden = Signal.zip(rewardIsCollapsed, reward)
-      .map { rewardIsCollapsed, reward in rewardIsCollapsed || reward == .noReward }
 
     self.cardViewDropShadowHidden = Signal.combineLatest(
       tappable.map(negate),
@@ -256,8 +269,9 @@ RewardCellViewModelOutputs {
   public let conversionLabelText: Signal<String, NoError>
   public let descriptionLabelHidden: Signal<Bool, NoError>
   public let descriptionLabelText: Signal<String, NoError>
+  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
   public let footerLabelText: Signal<String, NoError>
-  public let footerViewHidden: Signal<Bool, NoError>
+  public let footerStackViewHidden: Signal<Bool, NoError>
   public let items: Signal<[String], NoError>
   public let itemsContainerHidden: Signal<Bool, NoError>
   public let manageButtonHidden: Signal<Bool, NoError>
@@ -351,4 +365,10 @@ private func footerString(project: Project, reward: Reward) -> String {
   return parts
     .map { part in part.nonBreakingSpaced() }
     .joined(separator: " • ")
+}
+
+private func shouldCollapse(reward: Reward, forProject project: Project) -> Bool {
+  return reward.remaining == .some(0)
+    && !userIsBacking(reward: reward, inProject: project)
+    && project.state == .live
 }

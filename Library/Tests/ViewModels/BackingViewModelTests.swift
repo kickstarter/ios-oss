@@ -24,6 +24,7 @@ internal final class BackingViewModelTests: TestCase {
   internal let backerShippingAmountAccessibilityLabel = TestObserver<String, NoError>()
   internal let backerShippingDescription = TestObserver<String, NoError>()
   internal let backerShippingDescriptionAccessibilityLabel = TestObserver<String, NoError>()
+  internal let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
   internal let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
   internal let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
   internal let goToMessagesBacking = TestObserver<Backing, NoError>()
@@ -56,6 +57,7 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.backerShippingDescription.observe(backerShippingDescription.observer)
     self.vm.outputs.backerShippingDescriptionAccessibilityLabel
       .observe(backerShippingDescriptionAccessibilityLabel.observer)
+    self.vm.outputs.estimatedDeliveryDateLabelText.observe(estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.goToMessageCreator.map(first).observe(goToMessageCreatorSubject.observer)
     self.vm.outputs.goToMessageCreator.map(second).observe(goToMessageCreatorContext.observer)
     self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
@@ -298,6 +300,22 @@ internal final class BackingViewModelTests: TestCase {
 
         self.backerShippingDescriptionAccessibilityLabel.assertValues([ "Ships only to Litville, Legitas"],
                                                     "Backer label emits reward description")
+    }
+  }
+
+  func testEstimatedDeliveryDateLabelText() {
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ 1468527587.32843
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: .template
+      |> Backing.lens.reward .~ reward)) {
+        self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
+
+        self.backerPledgeAmountAndDateAccessibilityLabel.assertValues([])
+
+        self.vm.inputs.viewDidLoad()
+
+        self.estimatedDeliveryDateLabelText.assertValues(["July 2016"],
+                                                                      "Emits estimated delivery date")
     }
   }
 
