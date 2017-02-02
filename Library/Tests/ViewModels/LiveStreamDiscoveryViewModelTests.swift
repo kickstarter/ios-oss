@@ -22,9 +22,11 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.goToLiveStreamContainer.map(first).observe(self.goToLiveStreamContainerProject.observer)
-    self.vm.outputs.goToLiveStreamContainer.map(second).observe(self.goToLiveStreamContainerLiveStreamEvent.observer)
+    self.vm.outputs.goToLiveStreamContainer.map(second)
+      .observe(self.goToLiveStreamContainerLiveStreamEvent.observer)
     self.vm.outputs.goToLiveStreamCountdown.map(first).observe(self.goToLiveStreamCountdownProject.observer)
-    self.vm.outputs.goToLiveStreamCountdown.map(second).observe(self.goToLiveStreamCountdownLiveStreamEvent.observer)
+    self.vm.outputs.goToLiveStreamCountdown.map(second)
+      .observe(self.goToLiveStreamCountdownLiveStreamEvent.observer)
     self.vm.outputs.loadDataSource.observe(self.loadDataSource.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
   }
