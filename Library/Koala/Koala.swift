@@ -155,8 +155,8 @@ public final class Koala {
 
     fileprivate var trackingString: String {
       switch self {
-      case .next:  return "next"
-      case .previous:    return "previous"
+      case .next:     return "next"
+      case .previous: return "previous"
       }
     }
   }
@@ -1142,7 +1142,7 @@ public final class Koala {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
-    props["type"] = type
+    props["type"] = type.trackingString
 
     self.track(event: "Swiped Project", properties: props)
     self.track(event: "Project Navigate", properties: props)

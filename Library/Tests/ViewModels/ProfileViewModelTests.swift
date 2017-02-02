@@ -9,14 +9,16 @@ import Prelude
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class ProfileViewModelTests: TestCase {
-  let vm = ProfileViewModel()
-  let user = TestObserver<User, NoError>()
-  let hasBackedProjects = TestObserver<Bool, NoError>()
-  let goToProject = TestObserver<Project, NoError>()
-  let goToProjects = TestObserver<[Project], NoError>()
-  let goToRefTag = TestObserver<RefTag, NoError>()
-  let goToSettings = TestObserver<Void, NoError>()
-  let showEmptyState = TestObserver<Bool, NoError>()
+  private let vm = ProfileViewModel()
+  private let user = TestObserver<User, NoError>()
+  private let hasAddedProjects = TestObserver<Bool, NoError>()
+  private let hasBackedProjects = TestObserver<Bool, NoError>()
+  private let goToProject = TestObserver<Project, NoError>()
+  private let goToProjects = TestObserver<[Project], NoError>()
+  private let goToRefTag = TestObserver<RefTag, NoError>()
+  private let goToSettings = TestObserver<Void, NoError>()
+  private let scrollToProjectItem = TestObserver<Int, NoError>()
+  private let showEmptyState = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -26,7 +28,14 @@ internal final class ProfileViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
     self.vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
     self.vm.outputs.goToSettings.observe(goToSettings.observer)
+    self.vm.outputs.scrollToProjectItem.observe(self.scrollToProjectItem.observer)
     self.vm.outputs.showEmptyState.observe(showEmptyState.observer)
+
+    self.vm.outputs.backedProjects
+      .map { $0.count }
+      .combinePrevious(0)
+      .map { prev, next in next > prev }
+      .observe(self.hasAddedProjects.observer)
   }
 
   func testGoToSettings() {
@@ -129,6 +138,50 @@ internal final class ProfileViewModelTests: TestCase {
       self.hasBackedProjects.assertValues([false], "Backed projects does not emit.")
       self.showEmptyState.assertValues([true], "Empty state does not emit.")
       XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
+    }
+  }
+
+  func testScrollAndUpdateProjects_ViaProjectNavigator() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv), currentUser: .template) {
+      self.vm.inputs.viewWillAppear(false)
+
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects are loaded.")
+
+      self.vm.inputs.projectTapped(playlist[4])
+      self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
+
+      self.scrollToProjectItem.assertValues([5])
+
+      self.vm.inputs.transitionedToProject(at: 6, outOf: playlist.count)
+
+      self.scrollToProjectItem.assertValues([5, 6])
+
+      self.vm.inputs.transitionedToProject(at: 7, outOf: playlist.count)
+
+      self.scrollToProjectItem.assertValues([5, 6, 7])
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+        self.vm.inputs.transitionedToProject(at: 8, outOf: playlist.count)
+
+        self.scheduler.advance()
+
+        self.scrollToProjectItem.assertValues([5, 6, 7, 8])
+        self.hasAddedProjects.assertValues([true, true], "More projects are loaded.")
+
+        self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
+        
+        self.scrollToProjectItem.assertValues([5, 6, 7, 8, 7])
+      }
     }
   }
 }

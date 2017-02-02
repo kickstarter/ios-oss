@@ -13,13 +13,13 @@ internal final class VideoViewModelTests: TestCase {
   internal let configurePlayerWithURL = TestObserver<String, NoError>()
   internal let incrementVideoCompletion = TestObserver<VoidEnvelope, NoError>()
   internal let incrementVideoStart = TestObserver<VoidEnvelope, NoError>()
+  internal let opacityForViews = TestObserver<CGFloat, NoError>()
   internal let pauseVideo = TestObserver<Void, NoError>()
   internal let playVideo = TestObserver<Void, NoError>()
   internal let playButtonHidden = TestObserver<Bool, NoError>()
   internal let projectImageHidden = TestObserver<Bool, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
   internal let seekToBeginning = TestObserver<Void, NoError>()
-  internal let videoOverlayViewHidden = TestObserver<Bool, NoError>()
   internal let videoViewHidden = TestObserver<Bool, NoError>()
 
   let pauseRate = 0.0
@@ -41,8 +41,8 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.outputs.playButtonHidden.observe(self.playButtonHidden.observer)
     self.vm.outputs.projectImageHidden.observe(self.projectImageHidden.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
+    self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.seekToBeginning.observe(self.seekToBeginning.observer)
-    self.vm.outputs.videoOverlayViewHidden.observe(self.videoOverlayViewHidden.observer)
     self.vm.outputs.videoViewHidden.observe(self.videoViewHidden.observer)
   }
 
@@ -134,7 +134,6 @@ internal final class VideoViewModelTests: TestCase {
 
     self.playButtonHidden.assertValues([false])
     self.projectImageHidden.assertValues([false])
-    self.videoOverlayViewHidden.assertValues([false])
     self.videoViewHidden.assertValues([true])
 
     self.vm.inputs.playButtonTapped()
@@ -144,7 +143,6 @@ internal final class VideoViewModelTests: TestCase {
     self.playVideo.assertValueCount(1)
     self.playButtonHidden.assertValues([false, true])
     self.projectImageHidden.assertValues([false, true], "Overlaid views hidden when video starts.")
-    self.videoOverlayViewHidden.assertValues([false, true])
     self.videoViewHidden.assertValues([true, false])
 
     self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
@@ -154,7 +152,6 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
     self.playButtonHidden.assertValues([false, true, false])
     self.projectImageHidden.assertValues([false, true, false], "Overlaid views reappear at end.")
-    self.videoOverlayViewHidden.assertValues([false, true, false])
     self.videoViewHidden.assertValues([true, false, true])
   }
 
@@ -182,7 +179,6 @@ internal final class VideoViewModelTests: TestCase {
     self.addCompletionObserver.assertValues([])
     self.playButtonHidden.assertValues([true])
     self.projectImageHidden.assertValues([false])
-    self.videoOverlayViewHidden.assertValues([true])
     self.videoViewHidden.assertValues([true])
   }
 
@@ -274,5 +270,19 @@ internal final class VideoViewModelTests: TestCase {
                     "Project Video Pause", "Paused Project Video",
                     "Project Video Complete", "Completed Project Video",
                     "Project Video Resume", "Resumed Project Video"], self.trackingClient.events)
+  }
+
+  func testViewTransition() {
+    self.vm.inputs.configureWith(project: Project.template)
+
+    self.opacityForViews.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.opacityForViews.assertValues([0.0])
+
+    self.vm.inputs.viewDidAppear()
+
+    self.opacityForViews.assertValues([0.0, 1.0], "Fade in controls after view appears.")
   }
 }

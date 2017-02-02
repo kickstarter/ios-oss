@@ -19,6 +19,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   fileprivate let deadlineTitleLabelText = TestObserver<String, NoError>()
   fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
+  private let opacityForViews = TestObserver<CGFloat, NoError>()
   fileprivate let pledgedSubtitleLabelText = TestObserver<String, NoError>()
   fileprivate let pledgedTitleLabelText = TestObserver<String, NoError>()
   fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
@@ -46,6 +47,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewBackgroundColor
       .observe(self.fundingProgressBarViewBackgroundColor.observer)
+    self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelTextColor.observe(self.pledgedTitleLabelTextColor.observer)
@@ -377,5 +379,17 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
 
     self.stateLabelHidden.assertValues([false])
+  }
+
+  func testViewTransition() {
+    self.opacityForViews.assertValueCount(0)
+
+    self.vm.inputs.awakeFromNib()
+
+    self.opacityForViews.assertValues([0.0])
+
+    self.vm.inputs.configureWith(project: Project.template)
+
+    self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
 }

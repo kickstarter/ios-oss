@@ -127,7 +127,7 @@ internal final class SearchViewController: UITableViewController {
     }
 
     self.viewModel.outputs.scrollToProjectRow
-      .observeForUI()
+      .observeForControllerAction() // NB: this also is required to prevent NSException.
       .observeValues { [weak self] row in
         guard let _self = self else { return }
         _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row), at: .top, animated: false)

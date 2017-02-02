@@ -15,10 +15,12 @@ internal final class SearchViewModelTests: TestCase {
 
   fileprivate let changeSearchFieldFocusFocused = TestObserver<Bool, NoError>()
   fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
-  fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
+  private let hasAddedProjects = TestObserver<Bool, NoError>()
   fileprivate let hasProjects = TestObserver<Bool, NoError>()
+  fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
   fileprivate var noProjects = TestObserver<Bool, NoError>()
   fileprivate let resignFirstResponder = TestObserver<(), NoError>()
+  private let scrollToProjectRow = TestObserver<Int, NoError>()
   fileprivate let searchFieldText = TestObserver<String, NoError>()
   fileprivate let showEmptyState = TestObserver<Bool, NoError>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, NoError>()
@@ -33,8 +35,15 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
     self.vm.outputs.searchFieldText.observe(self.searchFieldText.observer)
+     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
     self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
+
+    self.vm.outputs.projects
+      .map { $0.count }
+      .combinePrevious(0)
+      .map { prev, next in next > prev }
+      .observe(self.hasAddedProjects.observer)
   }
 
   func testCancelSearchField_WithTextChange() {
@@ -453,6 +462,53 @@ internal final class SearchViewModelTests: TestCase {
           "Loaded Search Results", "Discover Search Results", "Loaded Search Results"
         ],
         self.trackingClient.events)
+    }
+  }
+
+  func testScrollAndUpdateProjects_ViaProjectNavigator() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 82) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects are loaded.")
+
+      self.vm.inputs.tapped(project: playlist[4])
+
+      self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5])
+
+      self.vm.inputs.transitionedToProject(at: 6, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5, 6])
+
+      self.vm.inputs.transitionedToProject(at: 7, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5, 6, 7])
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+        self.vm.inputs.transitionedToProject(at: 8, outOf: playlist.count)
+
+        self.scheduler.advance()
+
+        self.scrollToProjectRow.assertValues([5, 6, 7, 8])
+
+        // this works in practice, gotta figure out what i'm missing in the test.
+        self.hasAddedProjects.assertValues([true, true], "More projects are loaded.")
+
+        self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
+        
+        self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
+      }
     }
   }
 }

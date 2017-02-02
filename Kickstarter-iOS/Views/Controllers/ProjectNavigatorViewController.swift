@@ -186,7 +186,6 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
     vc.delegate = self
 
     let newIndex = self.pageDataSource.indexFor(controller: nav)
-
     self.viewModel.inputs.willTransition(toProject: project, at: newIndex)
   }
 }

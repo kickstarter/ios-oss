@@ -32,9 +32,15 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   override func tearDown() {
     AppEnvironment.popEnvironment()
-    UIView.setAnimationsEnabled(true)
+    UIView.setAnimationsEnabled(false)
     super.tearDown()
   }
+
+  /* Failures are due to the play button not showing up because viewDidAppear does not get called on
+   VideoViewController (viewDidLoad is the last lifecycle method called on this VC).
+   Option A: Keep the play button off the new screenshots. Option B: Figure out how to call viewDidAppear.
+   Let's chat.
+  */
 
   func testAllCategoryGroups() {
 
@@ -235,6 +241,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
     }
   }
+
+  // we'll have to chat about this one since the transition is different now
 
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!

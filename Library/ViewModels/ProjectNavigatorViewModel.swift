@@ -65,15 +65,16 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       )
       .map(first)
 
-    let swipedToProjectAtIndex = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
+    let swipedToProject = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
       .takeWhen(self.pageTransitionCompletedFromIndexProperty.signal.skipNil().map(first).filter(isTrue))
+      .map(first)
 
     let currentProject = Signal.merge(
       configData.map { $0.project },
-      swipedToProjectAtIndex.map(first)
+      swipedToProject
     )
 
-    self.setNeedsStatusBarAppearanceUpdate = swipedToProjectAtIndex.ignoreValues()
+    self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
 
     let panningData = self.panningDataProperty.signal.skipNil()
 

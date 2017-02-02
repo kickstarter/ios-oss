@@ -38,6 +38,7 @@ internal final class SearchDataSource: ValueCellDataSource {
   }
 
   internal func indexPath(for projectRow: Int) -> IndexPath {
+
     return IndexPath(row: projectRow, section: Section.projects.rawValue)
   }
 

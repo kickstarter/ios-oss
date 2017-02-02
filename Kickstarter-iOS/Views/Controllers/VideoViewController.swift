@@ -74,6 +74,7 @@ public final class VideoViewController: UIViewController {
 
     self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
     self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
+    self.videoOverlayView.rac.hidden = self.viewModel.outputs.playButtonHidden
 
     self.viewModel.outputs.opacityForViews
       .observeForUI()
@@ -81,8 +82,8 @@ public final class VideoViewController: UIViewController {
         guard let _self = self else { return }
         UIView.animate(withDuration: (alpha == 0.0 ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut,
                        animations: {
-          _self.videoOverlayView.alpha = (alpha == 0.0 ? 0.0 : 0.1)
-          _self.playButton.alpha = alpha
+                        _self.videoOverlayView.alpha = (alpha == 0.0 ? 0.0 : 0.1)
+                        _self.playButton.alpha = alpha
         }, completion: nil)
     }
 
