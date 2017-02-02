@@ -417,7 +417,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       [project], "The minimal version of the project loads into the data source."
     )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
       .assertValues([project, project], "Full project emits.")
@@ -425,10 +425,12 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")

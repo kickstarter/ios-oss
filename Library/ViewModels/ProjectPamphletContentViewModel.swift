@@ -37,25 +37,19 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
   public init() {
-    let project = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil().map(first),
+    let projectAndLiveStreamEvents = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    let liveStreamEvents = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil().map(second),
-      self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    let project = projectAndLiveStreamEvents.map(first)
 
     self.loadProjectAndLiveStreamsIntoDataSource = Signal.combineLatest(
-      project,
-      liveStreamEvents,
+      projectAndLiveStreamEvents,
       self.viewWillAppearAnimatedProperty.signal.take(first: 1)
-        .take(first: 1)
       )
-      .map { project, liveStreamEvents, _ in (project, liveStreamEvents) }
+      .map { projectAndLive, _ in (projectAndLive.0, projectAndLive.1) }
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
