@@ -21,7 +21,6 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate weak var activityButton: UIButton!
   @IBOutlet fileprivate weak var activityRowStackView: UIStackView!
-  @IBOutlet fileprivate var drillDownIndicatorImageViews: [UIImageView]!
   @IBOutlet fileprivate weak var lastUpdatePublishedAtLabel: UILabel!
   @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var messagesRowStackView: UIStackView!

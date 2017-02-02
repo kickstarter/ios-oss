@@ -1,4 +1,5 @@
 import KsApi
+import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -18,7 +19,8 @@ public protocol ProjectPamphletViewModelInputs {
 
 public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
-  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError> { get }
+  var configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
+    RefTag?), NoError> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
@@ -68,7 +70,22 @@ ProjectPamphletViewModelOutputs {
     let refTag = self.refTagProperty.signal
       .map { $0.map(cleanUp(refTag:)) }
 
-    self.configureChildViewControllersWithProject = Signal.combineLatest(project, refTag)
+    let liveStreamEventsFetch = project
+      .take(first: 1)
+      .switchMap { project -> SignalProducer<LiveStreamEventsEnvelope, NoError> in
+        AppEnvironment.current.liveStreamService
+          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+      }
+
+    let liveStreamEvents = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst([]),
+      liveStreamEventsFetch.map { $0.liveStreamEvents }
+    )
+
+    self.configureChildViewControllersWithProjectAndLiveStreams =
+      Signal.combineLatest(project, liveStreamEvents, refTag)
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -87,21 +104,20 @@ ProjectPamphletViewModelOutputs {
       .map { $0 ?? $1 }
 
     // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
-    let projectLiveStreams = project
-      .map { $0.liveStreams }
-      .skipNil()
+    let trackLiveStreamEvents = liveStreamEvents
+      .skip(first: 1) // Skip first as we are prefixing with an empty array
       .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
       .materialize()
       .map { $0.value }
       .take(first: 1)
 
-    let projectWithLiveStreams = Signal.combineLatest(projectLiveStreams, project)
-      .map(Project.lens.liveStreams.set)
-
-    Signal.combineLatest(projectWithLiveStreams, refTag, cookieRefTag)
+    Signal.combineLatest(project, trackLiveStreamEvents, refTag, cookieRefTag)
       .take(first: 1)
-      .observeValues { project, refTag, cookieRefTag in
-        AppEnvironment.current.koala.trackProjectShow(project, refTag: refTag, cookieRefTag: cookieRefTag)
+      .observeValues { project, liveStreamEvents, refTag, cookieRefTag in
+        AppEnvironment.current.koala.trackProjectShow(project,
+                                                      liveStreamEvents: liveStreamEvents,
+                                                      refTag: refTag,
+                                                      cookieRefTag: cookieRefTag)
     }
 
     Signal.combineLatest(cookieRefTag.skipNil(), project)
@@ -133,7 +149,8 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
-  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
+  public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
+    RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value

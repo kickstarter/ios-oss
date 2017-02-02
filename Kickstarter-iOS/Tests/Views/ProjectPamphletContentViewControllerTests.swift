@@ -5,6 +5,7 @@ import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+@testable import LiveStream
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
   fileprivate var cosmicSurgery: Project!
@@ -265,29 +266,40 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testNonBacker_LiveProject_WithLiveStreams() {
     let currentlyLiveStream = .template
-      |> Project.LiveStream.lens.id .~ 1
-      |> Project.LiveStream.lens.isLiveNow .~ true
+      |> LiveStreamEvent.lens.id .~ 1
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     let futureLiveStream = .template
-      |> Project.LiveStream.lens.id .~ 2
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60 * 24 * 2)
+      |> LiveStreamEvent.lens.id .~ 2
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(60 * 60 * 24 * 2).date
 
     let pastLiveStream = .template
-      |> Project.LiveStream.lens.id .~ 3
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60 * 12)
+      |> LiveStreamEvent.lens.id .~ 3
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60 * 12).date
 
     let project = self.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.rewards .~ []
-      |> Project.lens.liveStreams .~ [futureLiveStream, pastLiveStream, currentlyLiveStream]
+
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 3,
+                                            liveStreamEvents: [
+                                              currentlyLiveStream,
+                                              futureLiveStream,
+                                              pastLiveStream])
+
+    let liveService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
+    let apiService = MockService(fetchProjectResponse: project)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
+      withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3), language: language,
+                      liveStreamService: liveService) {
+
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_044 : 800
+        self.scheduler.advance(by: .seconds(3))
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }

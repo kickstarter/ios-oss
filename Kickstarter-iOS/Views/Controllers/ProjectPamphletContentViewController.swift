@@ -1,8 +1,8 @@
 import KsApi
+import LiveStream
 import Library
 import Prelude
 import Prelude_UIKit
-import LiveStream
 
 public protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
@@ -16,8 +16,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   fileprivate var navBarController: ProjectNavBarViewController!
 
-  internal func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent]) {
+    self.viewModel.inputs.configureWith(project: project, liveStreamEvents: liveStreamEvents)
   }
 
   public override func viewDidLoad() {
@@ -54,10 +54,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectIntoDataSource
+    self.viewModel.outputs.loadProjectAndLiveStreamsIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.dataSource.load(project: project)
+      .observeValues { [weak self] project, liveStreamEvents in
+        self?.dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
         self?.tableView.reloadData()
     }
 
@@ -78,14 +78,14 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.viewModel.outputs.goToLiveStream
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream in
-        self?.goToLiveStream(project: project, liveStream: liveStream)
+      .observeValues { [weak self] project, liveStreamEvent in
+        self?.goToLiveStream(project: project, liveStreamEvent: liveStreamEvent)
     }
 
     self.viewModel.outputs.goToLiveStreamCountdown
       .observeForControllerAction()
-      .observeValues { [weak self] project, liveStream in
-        self?.goToLiveStreamCountdown(project: project, liveStream: liveStream)
+      .observeValues { [weak self] project, liveStreamEvent in
+        self?.goToLiveStreamCountdown(project: project, liveStreamEvent: liveStreamEvent)
     }
 
     self.viewModel.outputs.goToUpdates
@@ -104,8 +104,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
-    } else if let liveStream = self.dataSource.liveStream(forIndexPath: indexPath) {
-      self.viewModel.inputs.tapped(liveStream: liveStream)
+    } else if let liveStreamEvent = self.dataSource.liveStream(forIndexPath: indexPath) {
+      self.viewModel.inputs.tapped(liveStreamEvent: liveStreamEvent)
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -155,9 +155,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
-  private func goToLiveStream(project: Project, liveStream: Project.LiveStream) {
-    let vc = LiveStreamContainerViewController.configuredWith(project: project, liveStream: liveStream,
-                                                              event: nil, refTag: .projectPage)
+  private func goToLiveStream(project: Project, liveStreamEvent: LiveStreamEvent) {
+    let vc = LiveStreamContainerViewController.configuredWith(project: project,
+                                                              liveStreamEvent: liveStreamEvent,
+                                                              refTag: .projectPage)
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 
@@ -166,9 +167,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
-  private func goToLiveStreamCountdown(project: Project, liveStream: Project.LiveStream) {
+  private func goToLiveStreamCountdown(project: Project, liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                              liveStream: liveStream,
+                                                              liveStreamEvent: liveStreamEvent,
                                                               refTag: .projectPage)
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]

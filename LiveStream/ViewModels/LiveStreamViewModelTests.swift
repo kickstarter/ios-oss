@@ -59,7 +59,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testInitalizeFirebase_LiveEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -70,8 +70,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testInitalizeFirebase_ReplayEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ true
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -82,9 +82,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_UnderMaxOpenTokViews() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ false
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ false
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
@@ -130,9 +130,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_UnderMaxOpenTokViews_ForScaleEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -175,9 +175,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_OverMaxOpenTokViews_NonScaleEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ false
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ false
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
@@ -193,7 +193,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -216,10 +216,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_OverMaxOpenTokViews_ForScaleEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ true
-    |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.stream.mp4"
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ true
+    |> LiveStreamEvent.lens.hlsUrl .~ "http://www.mp4"
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -232,7 +232,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: 15)
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -255,8 +255,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_TogglingGreenRoom() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
 
@@ -300,9 +300,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_OpenTokOnlyEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.hlsUrl .~ nil
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.hlsUrl .~ nil
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
 
@@ -346,8 +346,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_HlsOnlyEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
@@ -362,7 +362,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -372,8 +372,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_HlsUrlChanges() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
@@ -388,7 +388,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary15)
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -411,8 +411,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_NumberOfPeopleTimesOut() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -425,7 +425,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.scheduler.advance(by: .seconds(10))
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -435,16 +435,16 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateVideoViewController_Replay() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ true
-      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
-      |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
 
-    guard let replayUrl = event.stream.replayUrl else { XCTAssertTrue(false); return }
+    guard let replayUrl = event.replayUrl else { XCTAssertTrue(false); return }
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
 
     self.createVideoViewController.assertValues([hlsStreamType])
@@ -452,9 +452,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamNumberOfPeopleWatchingChanged_NonScaleEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ false
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ false
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary7 = [Int: Int].keyValuePairs(Array(1...7).map { ($0, $0) })
@@ -473,9 +473,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamNumberOfPeopleWatchingChanged_ScaleEvent() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.maxOpenTokViewers .~ 10
-      |> LiveStreamEvent.lens.stream.isScale .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
+      |> LiveStreamEvent.lens.isScale .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -492,13 +492,13 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   func testCreateVideoViewController_RTMPStreamDefaultsToHLS() {
     // Step 1: Configure with an rtmp event stream
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.isRtmp .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.isRtmp .~ true
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(event: event, userId: nil)
 
-    guard let hlsStreamType = event.stream.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
+    guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
       return
     }
@@ -516,8 +516,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateFirebasePresenceRef_LoggedOut() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -534,8 +534,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateFirebasePresenceRef_LoggedIn() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: 123)
     self.vm.inputs.viewDidLoad()
@@ -552,8 +552,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testCreateFirebaseObservers_WhenLive() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(event: event, userId: nil)
@@ -585,16 +585,16 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testDoNotCreateFirebaseObservers_WhenNotLive() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ true
-      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
-      |> LiveStreamEvent.lens.stream.hlsUrl .~ "http://www.live.mp4"
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
 
-    guard let replayUrl = event.stream.replayUrl else { XCTAssertTrue(false); return }
+    guard let replayUrl = event.replayUrl else { XCTAssertTrue(false); return }
     let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
 
     self.createVideoViewController.assertValues([hlsStreamType])
@@ -607,9 +607,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNumberOfPeopleObserver_WhenNotScaleEvent() {
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.isScale .~ false
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.isScale .~ false
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -621,9 +621,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNumberOfPeopleObserver_WhenScaleEvent() {
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.startDate .~ Date().addingTimeInterval(-60*60)
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
-      |> LiveStreamEvent.lens.stream.isScale .~ true
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.isScale .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -635,7 +635,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_LifeCycle() {
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ true
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -680,10 +680,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_NotLive_NoReplay() {
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ false
-      |> LiveStreamEvent.lens.stream.replayUrl .~ nil
-      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -16 * 60)
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ false
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -16 * 60)
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -693,10 +693,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_NotLive_Replay_NoReplayUrl() {
     let event = .template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ true
-      |> LiveStreamEvent.lens.stream.replayUrl .~ nil
-      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
@@ -706,10 +706,10 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_ReplayState() {
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.liveNow .~ false
-      |> LiveStreamEvent.lens.stream.hasReplay .~ true
-      |> LiveStreamEvent.lens.stream.replayUrl .~ "http://www.replay.mp4"
-      |> LiveStreamEvent.lens.stream.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
