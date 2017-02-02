@@ -60,7 +60,7 @@ internal final class ShareViewModelTests: TestCase {
   func testShowShareSheet_LiveStream() {
     let project = Project.template
     let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.stream.webUrl .~ "http://www.kickstarter.com"
+      |> LiveStreamEvent.lens.webUrl .~ "http://www.kickstarter.com"
 
     self.showShareSheet.assertValueCount(0)
     XCTAssertEqual([], self.trackingClient.events)

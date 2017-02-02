@@ -1,6 +1,7 @@
 import Prelude
 import ReactiveSwift
 import Result
+import LiveStream
 import KsApi
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
@@ -50,17 +51,17 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     let liveStreamSubpage = self.subpageProperty.signal.skipNil().filter { $0.isLiveStream }
     let updatesSubpage = self.subpageProperty.signal.skipNil().filter { $0.isUpdates }
 
-    let liveStreamDetail = liveStreamSubpage.map { $0.liveStream }.skipNil()
+    let liveStreamDetail = liveStreamSubpage.map { $0.liveStreamEvent }.skipNil()
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
-      liveStreamDetail.map(labelTexts(forLiveStream:)).map(first),
+      liveStreamDetail.map(labelTexts(forLiveStreamEvent:)).map(first),
       updatesSubpage.mapConst(Strings.project_menu_buttons_updates())
     )
 
     self.labelTextColor = Signal.merge(
       commentsSubpage.mapConst(.ksr_text_navy_700),
-      liveStreamDetail.map { $0.isLiveNow ? .ksr_text_green_700 : .ksr_text_navy_700 },
+      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 },
       updatesSubpage.mapConst(.ksr_text_navy_700)
     )
 
@@ -72,27 +73,27 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.countLabelText = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count ?? 0) },
-      liveStreamDetail.map(labelTexts(forLiveStream:)).map(second)
+      liveStreamDetail.map(labelTexts(forLiveStreamEvent:)).map(second)
     )
 
     self.countLabelTextColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_text_navy_700),
-      liveStreamDetail.map { $0.isLiveNow ? .ksr_text_green_700 : .ksr_text_navy_700 }
+      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_navy_700 }
     )
 
     self.countLabelBorderColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clear),
-      liveStreamDetail.map { $0.isLiveNow ? .ksr_green_500 : .clear }
+      liveStreamDetail.map { $0.liveNow ? .ksr_green_500 : .clear }
     )
 
     self.countLabelBackgroundColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_navy_300),
-      liveStreamDetail.map { $0.isLiveNow ? .white : .ksr_navy_300 }
+      liveStreamDetail.map { $0.liveNow ? .white : .ksr_navy_300 }
     )
 
     self.liveNowImageViewHidden = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(true),
-      liveStreamDetail.map { !$0.isLiveNow }
+      liveStreamDetail.map { !$0.liveNow }
     )
   }
 
@@ -115,19 +116,19 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }
 }
 
-private func labelTexts(forLiveStream liveStream: Project.LiveStream) -> (String, String) {
-  if liveStream.isLiveNow {
+private func labelTexts(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> (String, String) {
+  if liveStreamEvent.liveNow {
     return (Strings.Live_streaming_now(), Strings.Watch_live())
   }
 
   let now = AppEnvironment.current.dateType.init()
 
-  if now.timeIntervalSince1970 >= liveStream.startDate {
+  if now.timeIntervalSince1970 >= liveStreamEvent.startDate.timeIntervalSince1970 {
     return (localizedString(key: "Past_Live_Stream", defaultValue: "Past Live Stream"), Strings.Replay())
   }
 
   return (localizedString(key: "Upcoming_Live_Stream", defaultValue: "Upcoming Live Stream"),
-          Format.relative(secondsInUTC: liveStream.startDate, abbreviate: true))
+          Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970, abbreviate: true))
 }
 
 public enum ProjectPamphletSubpageCellPosition {
@@ -149,7 +150,7 @@ public func == (lhs: ProjectPamphletSubpageCellPosition, rhs: ProjectPamphletSub
 public enum ProjectPamphletSubpage {
   case comments(Int?, ProjectPamphletSubpageCellPosition)
   case updates(Int?, ProjectPamphletSubpageCellPosition)
-  case liveStream(liveStream: Project.LiveStream, ProjectPamphletSubpageCellPosition)
+  case liveStream(liveStreamEvent: LiveStreamEvent, ProjectPamphletSubpageCellPosition)
 
   public var count: Int? {
     switch self {
@@ -188,9 +189,9 @@ public enum ProjectPamphletSubpage {
     }
   }
 
-  public var liveStream: Project.LiveStream? {
-    if case .liveStream(let liveStream, _) = self {
-      return liveStream
+  public var liveStreamEvent: LiveStreamEvent? {
+    if case .liveStream(let liveStreamEvent, _) = self {
+      return liveStreamEvent
     }
     return nil
   }

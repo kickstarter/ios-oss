@@ -2,6 +2,7 @@ import XCTest
 import Prelude
 @testable import KsApi
 @testable import Library
+@testable import LiveStream
 @testable import ReactiveExtensions_TestHelpers
 
 final class KoalaTests: TestCase {
@@ -96,12 +97,13 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.isLiveNow .~ true
+    let liveStreamEvents = [
+      LiveStreamEvent.template
+       |> LiveStreamEvent.lens.liveNow .~ true
     ]
 
-    koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: .discovery,
+                           cookieRefTag: .recommended)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -144,8 +146,9 @@ final class KoalaTests: TestCase {
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -162,8 +165,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -180,8 +184,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isStarred .~ true
     let loggedInUser = User.template |> User.lens.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -198,8 +203,9 @@ final class KoalaTests: TestCase {
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let liveStreamEvents = [LiveStreamEvent.template]
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(2, client.properties.count)
 
     let properties = client.properties.last!
@@ -211,27 +217,28 @@ final class KoalaTests: TestCase {
 
   func testProjectProperties_LiveStreams_NoLiveStreams() {
     let client = MockTrackingClient()
-    let project = .template
-      |> Project.lens.liveStreams .~ nil
+    let project = Project.template
     let koala = Koala(client: client)
+    let liveStreamEvents = [LiveStreamEvent]()
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual([nil, nil], client.properties(forKey: "live_stream_type", as: String.self))
   }
 
   func testProjectProperties_LiveStreams_CurrentlyLive() {
     let client = MockTrackingClient()
-    let project = .template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.isLiveNow .~ true,
-        .template
-          |> Project.LiveStream.lens.isLiveNow .~ false
-    ]
+    let project = Project.template
+    let liveStreamEventLive = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+    let liveStreamEventReplay = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    let liveStreamEvents = [liveStreamEventLive, liveStreamEventReplay]
+
     let koala = Koala(client: client)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual(["live_stream_live", "live_stream_live"],
                    client.properties(forKey: "live_stream_type", as: String.self))
@@ -239,18 +246,19 @@ final class KoalaTests: TestCase {
 
   func testProjectProperties_LiveStreams_Upcoming() {
     let client = MockTrackingClient()
-    let project = .template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 + 60 * 60)
-          |> Project.LiveStream.lens.isLiveNow .~ false,
-        .template
-          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
-          |> Project.LiveStream.lens.isLiveNow .~ false
-    ]
+    let project = Project.template
+    let liveStreamEventCountdown = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(+60 * 60).date
+    let liveStreamEventReplay = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    let liveStreamEvents = [liveStreamEventCountdown, liveStreamEventReplay]
+
     let koala = Koala(client: client)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: liveStreamEvents, refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
                    client.properties(forKey: "live_stream_type", as: String.self))
@@ -258,15 +266,14 @@ final class KoalaTests: TestCase {
 
   func testProjectProperties_LiveStreams_Replay() {
     let client = MockTrackingClient()
-    let project = .template
-      |> Project.lens.liveStreams .~ [
-        .template
-          |> Project.LiveStream.lens.startDate .~ (MockDate().timeIntervalSince1970 - 60 * 60)
-          |> Project.LiveStream.lens.isLiveNow .~ false
-    ]
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
     let koala = Koala(client: client)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectShow(project, liveStreamEvents: [liveStreamEvent], refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
                    client.properties(forKey: "live_stream_type", as: String.self))
@@ -354,12 +361,13 @@ final class KoalaTests: TestCase {
   func testTrackChangedLiveStreamOrientation() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ true
+
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackChangedLiveStreamOrientation(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       toOrientation: .landscapeLeft
     )
 
@@ -369,7 +377,7 @@ final class KoalaTests: TestCase {
 
     koala.trackChangedLiveStreamOrientation(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       toOrientation: .portrait
     )
 
@@ -383,9 +391,12 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+
     koala.trackLiveStreamToggleSubscription(
       project: .template,
-      liveStream: .template,
+      liveStreamEvent: liveStreamEvent,
       subscribed: true
     )
 
@@ -394,7 +405,7 @@ final class KoalaTests: TestCase {
 
     koala.trackLiveStreamToggleSubscription(
       project: .template,
-      liveStream: .template,
+      liveStreamEvent: liveStreamEvent,
       subscribed: false
     )
 
@@ -410,7 +421,7 @@ final class KoalaTests: TestCase {
 
     koala.trackViewedLiveStreamCountdown(
       project: .template,
-      liveStream: .template,
+      liveStreamEvent: .template,
       refTag: .projectPage
     )
 
@@ -422,12 +433,12 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ true
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackClosedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       startTime: MockDate().date.timeIntervalSince1970,
       endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
@@ -443,13 +454,13 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().addingTimeInterval(60)).timeIntervalSince1970
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(60)).date
 
     koala.trackClosedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       startTime: MockDate().date.timeIntervalSince1970,
       endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
@@ -465,13 +476,13 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ false
-      |> Project.LiveStream.lens.startDate .~ (MockDate().addingTimeInterval(-60)).timeIntervalSince1970
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-60)).date
 
     koala.trackClosedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       startTime: MockDate().date.timeIntervalSince1970,
       endTime: MockDate().addingTimeInterval(300).timeIntervalSince1970,
       refTag: .projectPage
@@ -489,7 +500,7 @@ final class KoalaTests: TestCase {
 
     koala.trackViewedLiveStream(
       project: .template,
-      liveStream: .template,
+      liveStreamEvent: .template,
       refTag: .projectPage
     )
 
@@ -500,12 +511,12 @@ final class KoalaTests: TestCase {
   func testTrackWatchedLiveStream_CurrentlyLive() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ true
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
 
     koala.trackWatchedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       refTag: .projectPage,
       duration: 1
     )
@@ -518,12 +529,12 @@ final class KoalaTests: TestCase {
   func testTrackWatchedLiveStream_Replay() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
-    let liveStream = .template
-      |> Project.LiveStream.lens.isLiveNow .~ false
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
 
     koala.trackWatchedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       refTag: .projectPage,
       duration: 2
     )
@@ -534,17 +545,19 @@ final class KoalaTests: TestCase {
   }
 
   func testTrackBaseLiveStreamProperties() {
+    let startDate = MockDate(timeIntervalSince1970: 1234567).timeIntervalSince1970
+
     let client = MockTrackingClient()
     let koala = Koala(client: client)
-    let liveStream = .template
-      |> Project.LiveStream.lens.id .~ 42
-      |> Project.LiveStream.lens.isLiveNow .~ true
-      |> Project.LiveStream.lens.name .~ "Cool Live Stream"
-      |> Project.LiveStream.lens.startDate .~ 1234567
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.id .~ 42
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Cool Live Stream"
+      |> LiveStreamEvent.lens.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
 
     koala.trackViewedLiveStream(
       project: .template,
-      liveStream: liveStream,
+      liveStreamEvent: liveStreamEvent,
       refTag: .projectPage
     )
 
@@ -552,6 +565,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual([true], client.properties(forKey: "live_stream_is_live_now", as: Bool.self))
     XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
     XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
-    XCTAssertEqual([1234567], client.properties(forKey: "live_stream_start_date", as: TimeInterval.self))
+    XCTAssertEqual([startDate], client.properties(forKey: "live_stream_start_date", as: Double.self))
   }
 }

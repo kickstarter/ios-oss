@@ -1,3 +1,4 @@
+// swiftlint:disable function_body_length
 import XCTest
 import Argo
 @testable import LiveStream
@@ -10,7 +11,6 @@ public extension Decodable {
 
 final class LiveStreamEventTests: XCTestCase {
 
-  //swiftlint:disable function_body_length
   func testParseJSON() {
     let json: [String:Any] = [
       "success": true,
@@ -18,7 +18,10 @@ final class LiveStreamEventTests: XCTestCase {
       "stream": [
         "name": "Live Stream Event Name",
         "description": "Live Stream Event Description",
-        "background_image_url": "http://www.kickstarter.com",
+        "background_image": [
+          "medium": "http://www.background.com/medium.jpg",
+          "small_cropped": "http://www.background.com/small-cropped.jpg"
+        ],
         "start_date": "2016-12-01T00:00:00.000-00:00",
         "web_url": "http://www.kickstarter.com",
         "project_web_url": "http://www.kickstarter.com",
@@ -66,33 +69,35 @@ final class LiveStreamEventTests: XCTestCase {
     // Stream
     XCTAssertNil(liveStreamEvent.error)
     XCTAssertEqual(123, liveStreamEvent.value?.id)
-    XCTAssertEqual("Live Stream Event Name", liveStreamEvent.value?.stream.name)
-    XCTAssertEqual("Live Stream Event Description", liveStreamEvent.value?.stream.description)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.stream.backgroundImageUrl)
-    XCTAssertEqual(date, liveStreamEvent.value?.stream.startDate)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.stream.webUrl)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.stream.projectWebUrl)
-    XCTAssertEqual("Live Stream Project Name", liveStreamEvent.value?.stream.projectName)
-    XCTAssertEqual(false, liveStreamEvent.value?.stream.isRtmp)
-    XCTAssertEqual(300, liveStreamEvent.value?.stream.maxOpenTokViewers)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.stream.hlsUrl)
-    XCTAssertEqual(true, liveStreamEvent.value?.stream.liveNow)
-    XCTAssertEqual(false, liveStreamEvent.value?.stream.isScale)
-    XCTAssertEqual(true, liveStreamEvent.value?.stream.hasReplay)
-    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.stream.replayUrl)
+    XCTAssertEqual("Live Stream Event Name", liveStreamEvent.value?.name)
+    XCTAssertEqual("Live Stream Event Description", liveStreamEvent.value?.description)
+    XCTAssertEqual("http://www.background.com/medium.jpg", liveStreamEvent.value?.backgroundImage.medium)
+    XCTAssertEqual("http://www.background.com/small-cropped.jpg",
+                   liveStreamEvent.value?.backgroundImage.smallCropped)
+    XCTAssertEqual(date, liveStreamEvent.value?.startDate)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.webUrl)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.project.webUrl)
+    XCTAssertEqual("Live Stream Project Name", liveStreamEvent.value?.project.name)
+    XCTAssertEqual(false, liveStreamEvent.value?.isRtmp)
+    XCTAssertEqual(300, liveStreamEvent.value?.maxOpenTokViewers)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.hlsUrl)
+    XCTAssertEqual(true, liveStreamEvent.value?.liveNow)
+    XCTAssertEqual(false, liveStreamEvent.value?.isScale)
+    XCTAssertEqual(true, liveStreamEvent.value?.hasReplay)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.replayUrl)
 
     // Creator
     XCTAssertEqual("Creator Name", liveStreamEvent.value?.creator.name)
     XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent.value?.creator.avatar)
 
     // Firebase
-    XCTAssertEqual("huzza-web", liveStreamEvent.value?.firebase.project)
-    XCTAssertEqual("apikey", liveStreamEvent.value?.firebase.apiKey)
-    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.greenRoomPath)
-    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase.hlsUrlPath)
-    XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase.numberPeopleWatchingPath)
-    XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase.scaleNumberPeopleWatchingPath)
-    XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase.chatPath)
+    XCTAssertEqual("huzza-web", liveStreamEvent.value?.firebase?.project)
+    XCTAssertEqual("apikey", liveStreamEvent.value?.firebase?.apiKey)
+    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase?.greenRoomPath)
+    XCTAssertEqual("events/path", liveStreamEvent.value?.firebase?.hlsUrlPath)
+    XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase?.numberPeopleWatchingPath)
+    XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase?.scaleNumberPeopleWatchingPath)
+    XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase?.chatPath)
 
     // OpenTok
     XCTAssertEqual("45698472", liveStreamEvent.value?.openTok?.appId)
@@ -100,7 +105,76 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("T1==cGFydG5lcl9pZD00=", liveStreamEvent.value?.openTok?.token)
 
     // User
-    XCTAssertEqual(true, liveStreamEvent.value?.user.isSubscribed)
+    XCTAssertEqual(true, liveStreamEvent.value?.user?.isSubscribed)
   }
-  //swiftlint:enable function_body_length
+
+  func testDecoding_JSONFromListStream() {
+    let json: [String:Any] = [
+      "id": 123,
+      "name": "Blob Live!",
+      "description": "Blobby McBlob comin' to you live!",
+      "start_date": "2017-01-18T04:30:00.000-08:00",
+      "live_now": false,
+      "event_over": false,
+      "has_replay": false,
+      "background_image": [
+        "medium": "http://www.background.com/medium.jpg",
+        "small_cropped": "http://www.background.com/small-cropped.jpg"
+      ],
+      "feature_score": 0,
+      "number_subscribed": 114,
+      "web_url": "http://www.com",
+      "project": [
+        "uid": 2047782949,
+        "name": "Blob around the world",
+        "web_url": "http://www.project.com",
+        "deadline": "2016-09-08T15:19:45.000-07:00",
+        "cover_image_url": "http://www.cover.jpg"
+      ],
+      "creator": [
+        "uid": "1590380888",
+        "creator_name": "Blobby McBlob",
+        "creator_avatar": "http://www.creator.jpg"
+      ]
+    ]
+
+    let liveStreamEventDecoded = LiveStreamEvent.decodeJSONDictionary(json)
+    let liveStreamEvent = liveStreamEventDecoded.value
+
+    XCTAssertNotNil(liveStreamEvent)
+    XCTAssertNil(liveStreamEventDecoded.error)
+
+    XCTAssertEqual(123, liveStreamEvent?.id)
+
+    // Creator
+    XCTAssertEqual("http://www.creator.jpg", liveStreamEvent?.creator.avatar)
+    XCTAssertEqual("Blobby McBlob", liveStreamEvent?.creator.name)
+
+    // Firebase
+    XCTAssertNil(liveStreamEvent?.firebase)
+
+    // Opentok
+    XCTAssertNil(liveStreamEvent?.openTok)
+
+    // Stream
+    XCTAssertEqual("http://www.background.com/medium.jpg", liveStreamEvent?.backgroundImage.medium)
+    XCTAssertEqual("http://www.background.com/small-cropped.jpg",
+                   liveStreamEvent?.backgroundImage.smallCropped)
+    XCTAssertEqual("Blobby McBlob comin' to you live!", liveStreamEvent?.description)
+    XCTAssertEqual(false, liveStreamEvent?.hasReplay)
+    XCTAssertNil(liveStreamEvent?.hlsUrl)
+    XCTAssertNil(liveStreamEvent?.isRtmp)
+    XCTAssertNil(liveStreamEvent?.isScale)
+    XCTAssertEqual(false, liveStreamEvent?.liveNow)
+    XCTAssertNil(liveStreamEvent?.maxOpenTokViewers)
+    XCTAssertEqual("Blob Live!", liveStreamEvent?.name)
+    XCTAssertEqual("http://www.project.com", liveStreamEvent?.project.webUrl)
+    XCTAssertEqual("Blob around the world", liveStreamEvent?.project.name)
+    XCTAssertNil(liveStreamEvent?.replayUrl)
+    XCTAssertEqual(Date(timeIntervalSince1970: 1484742600), liveStreamEvent?.startDate)
+    XCTAssertEqual("http://www.com", liveStreamEvent?.webUrl)
+
+    // User
+    XCTAssertNil(liveStreamEvent?.user)
+  }
 }

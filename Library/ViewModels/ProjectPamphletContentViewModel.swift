@@ -1,12 +1,13 @@
 import KsApi
+import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletContentViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent])
   func tappedComments()
-  func tapped(liveStream: Project.LiveStream)
+  func tapped(liveStreamEvent: LiveStreamEvent)
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
@@ -18,12 +19,12 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
-  var goToLiveStream: Signal<(Project, Project.LiveStream), NoError> { get }
-  var goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError> { get }
+  var goToLiveStream: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
-  var loadProjectIntoDataSource: Signal<Project, NoError> { get }
+  var loadProjectAndLiveStreamsIntoDataSource: Signal<(Project, [LiveStreamEvent]), NoError> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -34,18 +35,27 @@ public protocol ProjectPamphletContentViewModelType {
 public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewModelType,
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
+  //swiftlint:disable:next function_body_length
   public init() {
     let project = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+      self.configDataProperty.signal.skipNil().map(first),
       self.viewDidLoadProperty.signal
       )
       .map(first)
 
-    self.loadProjectIntoDataSource = Signal.combineLatest(
-      project,
-      self.viewWillAppearAnimatedProperty.signal.take(first: 1)
+    let liveStreamEvents = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil().map(second),
+      self.viewDidLoadProperty.signal
       )
       .map(first)
+
+    self.loadProjectAndLiveStreamsIntoDataSource = Signal.combineLatest(
+      project,
+      liveStreamEvents,
+      self.viewWillAppearAnimatedProperty.signal.take(first: 1)
+        .take(first: 1)
+      )
+      .map { project, liveStreamEvents, _ in (project, liveStreamEvents) }
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
@@ -77,19 +87,19 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.goToLiveStream = project
       .takePairWhen(
         self.tappedLiveStreamProperty.signal.skipNil()
-          .filter(shouldGoToLiveStream(withLiveStream:))
+          .filter(shouldGoToLiveStream(withLiveStreamEvent:))
     )
 
     self.goToLiveStreamCountdown = project
       .takePairWhen(
         self.tappedLiveStreamProperty.signal.skipNil()
-          .filter({ !shouldGoToLiveStream(withLiveStream:$0) })
+          .filter({ !shouldGoToLiveStream(withLiveStreamEvent:$0) })
     )
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
+  fileprivate let configDataProperty = MutableProperty<(Project, [LiveStreamEvent])?>(nil)
+  public func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent]) {
+    self.configDataProperty.value = (project, liveStreamEvents)
   }
 
   fileprivate let tappedCommentsProperty = MutableProperty()
@@ -97,9 +107,9 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedCommentsProperty.value = ()
   }
 
-  private let tappedLiveStreamProperty = MutableProperty<Project.LiveStream?>(nil)
-  public func tapped(liveStream: Project.LiveStream) {
-    self.tappedLiveStreamProperty.value = liveStream
+  private let tappedLiveStreamProperty = MutableProperty<LiveStreamEvent?>(nil)
+  public func tapped(liveStreamEvent: LiveStreamEvent) {
+    self.tappedLiveStreamProperty.value = liveStreamEvent
   }
 
   fileprivate let tappedPledgeAnyAmountProperty = MutableProperty()
@@ -134,12 +144,12 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
-  public let goToLiveStream: Signal<(Project, Project.LiveStream), NoError>
-  public let goToLiveStreamCountdown: Signal<(Project, Project.LiveStream), NoError>
+  public let goToLiveStream: Signal<(Project, LiveStreamEvent), NoError>
+  public let goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
-  public let loadProjectIntoDataSource: Signal<Project, NoError>
+  public let loadProjectAndLiveStreamsIntoDataSource: Signal<(Project, [LiveStreamEvent]), NoError>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }
@@ -152,9 +162,9 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
     ?? Reward.noReward
 }
 
-private func shouldGoToLiveStream(withLiveStream liveStream: Project.LiveStream) -> Bool {
-  return liveStream.isLiveNow || liveStream.startDate <
-    AppEnvironment.current.dateType.init().timeIntervalSince1970
+private func shouldGoToLiveStream(withLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> Bool {
+  return liveStreamEvent.liveNow
+    || liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date
 }
 
 private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)

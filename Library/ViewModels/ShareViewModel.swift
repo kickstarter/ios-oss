@@ -212,7 +212,7 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
   case let .update(_, update):
     return URL(string: update.urls.web.update)
   case let .liveStream(_, liveStreamEvent):
-    return URL(string: liveStreamEvent.stream.webUrl)
+    return URL(string: liveStreamEvent.webUrl)
   }
 }
 
@@ -272,17 +272,17 @@ private func shareComposeController(forShareContext shareContext: ShareContext, 
 }
 
 private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
-  if liveStreamEvent.stream.liveNow {
+  if liveStreamEvent.liveNow {
     return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 
-  if liveStreamEvent.stream.startDate < AppEnvironment.current.dateType.init().date {
+  if liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date {
     return Strings.Creator_name_was_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
   }
 
   return Strings.Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(
     creator_name: liveStreamEvent.creator.name,
-    in_duration: Format.relative(secondsInUTC: liveStreamEvent.stream.startDate.timeIntervalSince1970)
+    in_duration: Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970)
   )
 }
 #endif
