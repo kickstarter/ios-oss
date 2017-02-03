@@ -261,6 +261,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       snapshotView.addSubview(fullParent.view)
       snapshotView.addSubview(minimalParent.view)
 
+      self.scheduler.advance()
+
       FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
     }
   }
