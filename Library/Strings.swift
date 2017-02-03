@@ -991,17 +991,17 @@ backers"
     )
   }
   /**
-   "Estimated to fulfill:"
+   "Estimated delivery:"
 
-   - **es**: "Fecha de envío:"
-   - **de**: "Versanddatum:"
-   - **fr**: "Livraison prévue :"
-   - **en**: "Estimated to fulfill:"
+   - **es**: "Entrega estimada:"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **fr**: "Livraison prévue :"
+   - **en**: "Estimated delivery:"
   */
-  public static func Estimated_to_fulfill() -> String {
+  public static func Estimated_delivery() -> String {
     return localizedString(
-      key: "Estimated_to_fulfill",
-      defaultValue: "Estimated to fulfill:",
+      key: "Estimated_delivery",
+      defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
     )
@@ -8330,7 +8330,7 @@ catch your eye?"
   /**
    "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"
 
-   - **es**: "De momento tiene %{backers_count} patrocinadorefs, financiado al %{percent_funded}, tiempo restante: %{time_left}"
+   - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
    - **en**: "%{backers_count} backers total, %{percent_funded} funded, %{time_left} to go"

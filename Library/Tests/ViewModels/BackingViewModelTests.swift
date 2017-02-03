@@ -315,7 +315,7 @@ internal final class BackingViewModelTests: TestCase {
         self.vm.inputs.viewDidLoad()
 
         self.estimatedDeliveryDateLabelText.assertValues(["July 2016"],
-                                                                      "Emits estimated delivery date")
+                                                         "Emits estimated delivery date")
     }
   }
 

@@ -17,15 +17,16 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var backerShippingDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliverySeperatorView: UIView!
+  @IBOutlet fileprivate weak var estimatedDeliverySeparatorView: UIView!
   @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
+  @IBOutlet fileprivate weak var pledgeDescriptorLabel: UILabel!
   @IBOutlet fileprivate weak var pledgedLabel: UILabel!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
   @IBOutlet fileprivate weak var rewardSeperatorView: UIView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingSeperatorView: UIView!
+  @IBOutlet fileprivate weak var shippingSeparatorView: UIView!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
@@ -94,18 +95,23 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_shipping_title() }
 
-    _ = self.shippingSeperatorView |> separatorStyle
+    _ = self.shippingSeparatorView |> separatorStyle
 
     _ = self.viewMessagesButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> neutralButtonStyle
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
 
-    _ = self.estimatedDeliverySeperatorView |> separatorStyle
+    _ = self.estimatedDeliverySeparatorView |> separatorStyle
 
     _ = self.estimatedDeliveryLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_estimated_delivery() }
+
+    _ = self.pledgeDescriptorLabel
+      |> UILabel.lens.text %~ { _ in localizedString(key: "Pledge_was_successfully_charged", defaultValue: "Pledge was successfully charged")  }
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.font .~ .ksr_caption1()
   }
 
   internal override func bindViewModel() {
@@ -134,6 +140,7 @@ internal final class BackingViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
+    self.pledgeDescriptorLabel.rac.hidden = self.viewModel.outputs.pledgeDescriptorLabelHidden
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()

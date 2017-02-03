@@ -161,9 +161,9 @@ RewardCellViewModelOutputs {
     }
 
     self.allGoneHidden = projectAndReward
-        .map { project, reward in
-          reward.remaining != 0
-            || userIsBacking(reward: reward, inProject: project)
+      .map { project, reward in
+        reward.remaining != 0
+          || userIsBacking(reward: reward, inProject: project)
     }
 
     self.contentViewBackgroundColor = project

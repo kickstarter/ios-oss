@@ -875,7 +875,7 @@
                                     <outlet property="conversionLabel" destination="huA-3e-RdV" id="bEN-8t-mwN"/>
                                     <outlet property="descriptionLabel" destination="5mC-Is-30T" id="N5s-Uw-S1v"/>
                                     <outlet property="estimatedDeliveryDateLabel" destination="hoO-yK-PJt" id="vsy-zB-1qT"/>
-                                    <outlet property="estimatedDeliveryDateStackView" destination="09L-F5-Sq8" id="o2a-l1-f88"/>
+                                    <outlet property="estimatedDeliveryDateStackView" destination="09L-F5-Sq8" id="fts-G6-nsI"/>
                                     <outlet property="estimatedDeliveryLabel" destination="cRf-ln-jjY" id="8Qj-Jc-6Hp"/>
                                     <outlet property="footerLabel" destination="H2p-lE-T7C" id="JIo-gb-Aes"/>
                                     <outlet property="footerStackView" destination="XPe-m0-NFv" id="U5b-6C-nFm"/>

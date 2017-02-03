@@ -127,8 +127,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "Estimated_delivery", defaultValue: "Estimated delivery:") }
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
