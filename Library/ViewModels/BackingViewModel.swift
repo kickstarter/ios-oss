@@ -82,9 +82,6 @@ public protocol BackingViewModelOutputs {
   /// Emits the button title for messaging a backer or creator.
   var messageButtonTitleText: Signal<String, NoError> { get }
 
-  /// Emits a boolean that determines if pledge descriptor should be hidden.
-  var pledgeDescriptorLabelHidden: Signal<Bool, NoError> { get }
-
   /// Emits the axis of the stackview.
   var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
 }
@@ -179,9 +176,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.estimatedDeliveryStackViewHidden = reward
       .map { $0.estimatedDeliveryOn == nil }
 
-    self.pledgeDescriptorLabelHidden = backing
-      .map { $0.status != .collected }
-
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
       .takeWhen(self.viewMessagesTappedProperty.signal)
@@ -254,7 +248,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
-  public let pledgeDescriptorLabelHidden: Signal<Bool, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
@@ -266,7 +259,7 @@ private func statusString(_ forStatus: Backing.Status) -> String {
     case .canceled:
       return Strings.project_view_pledge_status_canceled()
     case .collected:
-      return localizedString(key: "Successful", defaultValue: "Successful") //change this
+      return Strings.project_view_pledge_status_collected()
     case .dropped:
       return Strings.project_view_pledge_status_dropped()
     case .errored:

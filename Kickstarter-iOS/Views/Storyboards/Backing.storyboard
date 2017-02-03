@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RLM-IU-xTK">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="635"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="609.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="nI1-GY-e29">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -75,7 +75,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QTY-Pv-YR5">
-                                                <rect key="frame" x="0.0" y="170" width="375" height="97"/>
+                                                <rect key="frame" x="0.0" y="170" width="375" height="71.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BU-fE-wPG">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="20.5"/>
@@ -95,23 +95,17 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t3c-hi-OTL">
-                                                        <rect key="frame" x="0.0" y="76.5" width="42" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IV2-f6-IYa">
-                                                <rect key="frame" x="0.0" y="287" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="261.5" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Etl-Lk-4og"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="be0-w7-lzS">
-                                                <rect key="frame" x="0.0" y="308" width="375" height="142.5"/>
+                                                <rect key="frame" x="0.0" y="282.5" width="375" height="142.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HmT-8H-RAb">
                                                         <rect key="frame" x="0.0" y="0.0" width="57.5" height="20.5"/>
@@ -131,14 +125,14 @@ Also includes the pdf and all other digital downloads.</string>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9U-vT-Vgd">
-                                                <rect key="frame" x="0.0" y="470.5" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="445" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Ytn-Lw-d0V"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="R5n-8H-pPh">
-                                                <rect key="frame" x="0.0" y="491.5" width="375" height="61.5"/>
+                                                <rect key="frame" x="0.0" y="466" width="375" height="61.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shipping" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4f-14-9v4">
                                                         <rect key="frame" x="0.0" y="0.0" width="67.5" height="20.5"/>
@@ -169,14 +163,14 @@ Also includes the pdf and all other digital downloads.</string>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r4q-Oe-XKB">
-                                                <rect key="frame" x="0.0" y="573" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="547.5" width="375" height="1"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="xjR-bj-7Pl"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LiG-hP-kPr">
-                                                <rect key="frame" x="0.0" y="594" width="375" height="41"/>
+                                                <rect key="frame" x="0.0" y="568.5" width="375" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fy7-rv-6PL">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
@@ -239,7 +233,6 @@ Also includes the pdf and all other digital downloads.</string>
                         <outlet property="estimatedDeliverySeparatorView" destination="r4q-Oe-XKB" id="nQg-GV-5PH"/>
                         <outlet property="estimatedDeliveryStackView" destination="LiG-hP-kPr" id="wcA-WZ-205"/>
                         <outlet property="messageCreatorButton" destination="emc-GM-WzE" id="qdi-LP-xUY"/>
-                        <outlet property="pledgeDescriptorLabel" destination="t3c-hi-OTL" id="Mih-Hl-Gxk"/>
                         <outlet property="pledgedLabel" destination="3BU-fE-wPG" id="Jzo-xV-9eN"/>
                         <outlet property="rewardLabel" destination="HmT-8H-RAb" id="3hR-Gz-zno"/>
                         <outlet property="rewardSeperatorView" destination="IV2-f6-IYa" id="43q-hB-wIj"/>

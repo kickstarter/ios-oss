@@ -20,7 +20,6 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var estimatedDeliverySeparatorView: UIView!
   @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
-  @IBOutlet fileprivate weak var pledgeDescriptorLabel: UILabel!
   @IBOutlet fileprivate weak var pledgedLabel: UILabel!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
   @IBOutlet fileprivate weak var rewardSeperatorView: UIView!
@@ -107,11 +106,6 @@ internal final class BackingViewController: UIViewController {
     _ = self.estimatedDeliveryLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_estimated_delivery() }
-
-    _ = self.pledgeDescriptorLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "Pledge_was_successfully_charged", defaultValue: "Pledge was successfully charged")  }
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
-      |> UILabel.lens.font .~ .ksr_caption1()
   }
 
   internal override func bindViewModel() {
@@ -140,7 +134,6 @@ internal final class BackingViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-    self.pledgeDescriptorLabel.rac.hidden = self.viewModel.outputs.pledgeDescriptorLabelHidden
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()
