@@ -30,8 +30,6 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.streamPlayerView.layer.contentsGravity = AVLayerVideoGravityResizeAspectFill
-
     _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { insets, cell in
@@ -108,6 +106,8 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.streamPlayerView.playerLayer?.player = url.map(AVPlayer.init(url:))
     self.streamPlayerView.playerLayer?.player?.play()
     self.streamPlayerView.playerLayer?.player?.isMuted = true
+    self.streamPlayerView.playerLayer?.contentsGravity = AVLayerVideoGravityResizeAspectFill
+    self.streamPlayerView.backgroundColor = .black
 
     UIView.animate(withDuration: 0.3) {
       self.streamPlayerView.alpha = 1
