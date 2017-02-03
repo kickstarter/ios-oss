@@ -37,12 +37,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  /* Failures are due to the play button not showing up because viewDidAppear does not get called on
-   VideoViewController (viewDidLoad is the last lifecycle method called on this VC).
-   Option A: Keep the play button off the new screenshots. Option B: Figure out how to call viewDidAppear.
-   Let's chat.
-  */
-
   func testAllCategoryGroups() {
 
     let project = self.cosmicSurgery
@@ -61,7 +55,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       parent.view.frame.size.height = device == .pad ? 1_400 : 1_000
 
       FBSnapshotVerifyView(
-        vc.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
+        parent.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
       )
     }
   }
@@ -243,8 +237,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     }
   }
 
-  // we'll have to chat about this one since the transition is different now
-
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!
 
@@ -302,13 +294,12 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let apiService = MockService(fetchProjectResponse: project)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3), language: language,
-                      liveStreamService: liveService) {
+      withEnvironment(apiService: apiService, language: language, liveStreamService: liveService) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_044 : 800
-        self.scheduler.advance(by: .seconds(3))
+        self.scheduler.advance()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }

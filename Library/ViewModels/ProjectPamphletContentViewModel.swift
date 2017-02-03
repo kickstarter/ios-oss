@@ -45,9 +45,27 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
     let project = projectAndLiveStreamEvents.map(first)
 
+    let loadDataSourceOnSwipeCompletion = self.viewDidAppearAnimatedProperty.signal
+      .filter(isTrue)
+      .ignoreValues()
+      .flatMap { _ in
+        // NB: skip a run loop to ease the initial rendering of the cells and the swipe animation
+        SignalProducer(value: ()).delay(0, on: AppEnvironment.current.scheduler)
+    }
+    
+    let loadDataSourceOnModalCompletion = self.viewWillAppearAnimatedProperty.signal
+      .filter(isFalse)
+      .ignoreValues()
+
+    let timeToLoadDataSource = Signal.merge(
+      loadDataSourceOnSwipeCompletion,
+      loadDataSourceOnModalCompletion
+      )
+      .take(first: 1)
+
     self.loadProjectAndLiveStreamsIntoDataSource = Signal.combineLatest(
       projectAndLiveStreamEvents,
-      self.viewWillAppearAnimatedProperty.signal.take(first: 1)
+      timeToLoadDataSource
       )
       .map { projectAndLive, _ in (projectAndLive.0, projectAndLive.1) }
 

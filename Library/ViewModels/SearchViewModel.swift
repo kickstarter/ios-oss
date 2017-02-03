@@ -108,7 +108,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
-      .map { row, total in row >= total - 3 }
+      .map { row, total in
+        row >= total - 3
+      }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()

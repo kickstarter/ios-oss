@@ -55,7 +55,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   internal func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
     SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
-    if let error = self.fetchEventResult?.error {
+    if let error = self.fetchEventsForProjectResult?.error {
       return SignalProducer(error: error)
     }
 

@@ -479,10 +479,32 @@ internal final class SearchViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.vm.inputs.willDisplayRow(0, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(1, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(2, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(3, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(4, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(5, outOf: playlist.count)
+
       self.hasAddedProjects.assertValues([true], "Projects are loaded.")
 
-      self.vm.inputs.tapped(project: playlist[4])
+      self.vm.inputs.searchFieldDidBeginEditing()
+      self.vm.inputs.searchTextChanged("robots")
 
+      self.hasAddedProjects.assertValues([true, false], "Empty array emits.")
+
+      self.scheduler.advance()
+
+      self.vm.inputs.willDisplayRow(0, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(1, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(2, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(3, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(4, outOf: playlist.count)
+      self.vm.inputs.willDisplayRow(5, outOf: playlist.count)
+
+      self.hasAddedProjects.assertValues([true, false, true], "New projects are loaded.")
+
+      self.vm.inputs.tapped(project: playlist[4])
       self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
 
       self.scrollToProjectRow.assertValues([5])
@@ -502,8 +524,7 @@ internal final class SearchViewModelTests: TestCase {
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8])
 
-        // this works in practice, gotta figure out what i'm missing in the test.
-        self.hasAddedProjects.assertValues([true, true], "More projects are loaded.")
+        self.hasAddedProjects.assertValues([true, false, true, true], "Paginated projects are loaded.")
 
         self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 

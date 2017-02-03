@@ -50,9 +50,9 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
-    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [.template]])
+    self.configureChildViewControllersWithProject.assertValues([project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template]])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -69,9 +69,9 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
-    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template]])
+    self.configureChildViewControllersWithProject.assertValues([project])
+    self.configureChildViewControllersWithRefTag.assertValues([nil])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[.template]])
   }
 
   func testStatusBar() {
@@ -234,12 +234,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual([], self.trackingClient.events, "Nothing tracked because API is taking a long time.")
 
-      self.scheduler.advance(by: .seconds(5))
+      self.scheduler.advance(by: .seconds(10))
 
-      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+      XCTAssertEqual([],
                      self.trackingClient.events,
                      "Event tracked once API times out.")
-      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "live_stream_type", as: String.self),
+      XCTAssertEqual([],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self),
                      "Live stream type not tracked because we never got data from the API.")
 
       self.scheduler.advance(by: .seconds(10))
@@ -247,6 +248,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(["Project Page", "Viewed Project Page"],
                      self.trackingClient.events,
                      "Nothing new tracks after waiting enough time for API to finish.")
+      XCTAssertEqual([nil, nil],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self),
+                     "Live stream type not tracked because we never got data from the API.")
     }
   }
 
@@ -271,15 +275,17 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(3))
 
-      XCTAssertEqual(["Project Page", "Viewed Project Page"], self.trackingClient.events)
-      XCTAssertEqual(["live_stream_live", "live_stream_live"],
+      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
 
-      self.scheduler.advance(by: .seconds(10))
+      self.scheduler.advance(by: .seconds(3))
 
       XCTAssertEqual(["Project Page", "Viewed Project Page"],
                      self.trackingClient.events,
                      "Waiting more time doesn't track another event.")
+      XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
   }
 
@@ -303,15 +309,17 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(3))
 
-      XCTAssertEqual(["Project Page", "Viewed Project Page"],
-                     self.trackingClient.events, "A project page koala event is tracked.")
-      XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
+      XCTAssertEqual([],
+                     self.trackingClient.events,
+                     "A project page koala event is tracked.")
+      XCTAssertEqual([],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
 
-      self.scheduler.advance(by: .seconds(10))
+      self.scheduler.advance(by: .seconds(3))
 
       XCTAssertEqual(["Project Page", "Viewed Project Page"],
-                     self.trackingClient.events, "Waiting more time doesn't track another event.")
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
       XCTAssertEqual(["live_stream_countdown", "live_stream_countdown"],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
@@ -337,15 +345,51 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(3))
 
-      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+      XCTAssertEqual([],
                      self.trackingClient.events, "A project page koala event is tracked.")
-      XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
+      XCTAssertEqual([],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
 
-      self.scheduler.advance(by: .seconds(10))
+      self.scheduler.advance(by: .seconds(3))
 
       XCTAssertEqual(["Project Page", "Viewed Project Page"],
-                     self.trackingClient.events, "Waiting more time doesn't track another event.")
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
+      XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+    }
+  }
+
+  func testTracking_LiveStream_ConfigWithParam() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60*60).date
+
+    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 1, liveStreamEvents: [liveStreamEvent])
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(1)), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      XCTAssertEqual([],
+                     self.trackingClient.events,
+                     "A project page koala event is tracked.")
+      XCTAssertEqual([],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+
+      self.scheduler.advance(by: .seconds(3))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
       XCTAssertEqual(["live_stream_replay", "live_stream_replay"],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
@@ -374,16 +418,42 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(3))
 
-      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+      XCTAssertEqual([],
                      self.trackingClient.events, "A project page koala event is tracked.")
-      XCTAssertEqual(["live_stream_live", "live_stream_live"],
+      XCTAssertEqual([],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
 
-      self.scheduler.advance(by: .seconds(10))
+      self.scheduler.advance(by: .seconds(3))
 
       XCTAssertEqual(["Project Page", "Viewed Project Page"],
-                     self.trackingClient.events, "Waiting more time doesn't track another event.")
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
       XCTAssertEqual(["live_stream_live", "live_stream_live"],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+    }
+  }
+
+  func testTracking_LiveStreamError_WithProject() {
+    let project = Project.template
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(error: .genericFailure))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(project), refTag: .discovery
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
+      XCTAssertEqual([nil, nil],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
   }
