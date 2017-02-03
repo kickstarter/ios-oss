@@ -19,6 +19,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var dateLabel: UILabel!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
+  @IBOutlet private weak var goToProjectButton: UIButton!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
@@ -30,6 +31,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var secondsSubtitleLabel: UILabel!
   @IBOutlet private weak var secondsTitleLabel: UILabel!
+  @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
@@ -56,6 +58,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
+
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -207,6 +211,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
           ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
           : .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
     }
+
+    _ = self.separatorViews
+      ||> separatorStyle
   }
 
   override public var prefersStatusBarHidden: Bool {
@@ -375,5 +382,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   @objc private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
+  }
+
+  @objc private func goToProjectButtonPressed() {
   }
 }

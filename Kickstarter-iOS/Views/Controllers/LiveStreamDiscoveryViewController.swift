@@ -53,6 +53,17 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
       .observeValues { [weak self] in self?.showAlert(message: $0) }
   }
 
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+  }
+
+  internal override func tableView(_ tableView: UITableView,
+                                   didEndDisplaying cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+    
+  }
+
   private func goToLiveStreamContainer(project: Project,
                                        liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamContainerViewController.configuredWith(project: project,
