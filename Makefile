@@ -113,6 +113,7 @@ endif
 opentok:
 	if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
 	then \
+		mkdir -p Frameworks/OpenTok; \
 		curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-$(OPENTOK_VERSION) \
 		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-$(OPENTOK_VERSION)/OpenTok.framework \
 		|| true; \
