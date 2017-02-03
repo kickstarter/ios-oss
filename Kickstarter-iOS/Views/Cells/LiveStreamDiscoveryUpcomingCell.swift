@@ -4,25 +4,27 @@ import Prelude
 import UIKit
 
 internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, ValueCell {
-  private let viewModel: LiveStreamDiscoveryUpcomingAndReplayCellViewModelType = LiveStreamDiscoveryUpcomingAndReplayCellViewModel()
+  private let viewModel: LiveStreamDiscoveryUpcomingAndReplayCellViewModelType
+    = LiveStreamDiscoveryUpcomingAndReplayCellViewModel()
 
-  @IBOutlet weak var cardView: UIView!
-  @IBOutlet weak var creatorImageView: CircleAvatarImageView!
-  @IBOutlet weak var creatorLabel: SimpleHTMLLabel!
-  @IBOutlet weak var infoStackView: UIStackView!
-  @IBOutlet weak var dateContainerView: UIView!
-  @IBOutlet weak var dateLabel: UILabel!
-  @IBOutlet weak var imageOverlayView: UIView!
-  @IBOutlet weak var replayButton: UIButton!
-  @IBOutlet weak var streamAvailabilityLabel: UILabel!
-  @IBOutlet weak var streamImageView: UIImageView!
-  @IBOutlet weak var streamTitleContainerView: UIView!
-  @IBOutlet weak var streamTitleLabel: UILabel!
+  @IBOutlet private weak var cardView: UIView!
+  @IBOutlet private weak var creatorImageView: CircleAvatarImageView!
+  @IBOutlet private weak var creatorLabel: SimpleHTMLLabel!
+  @IBOutlet private weak var infoStackView: UIStackView!
+  @IBOutlet private weak var dateContainerView: UIView!
+  @IBOutlet private weak var dateLabel: UILabel!
+  @IBOutlet private weak var imageOverlayView: UIView!
+  @IBOutlet private weak var replayButton: UIButton!
+  @IBOutlet private weak var streamAvailabilityLabel: UILabel!
+  @IBOutlet private weak var streamImageView: UIImageView!
+  @IBOutlet private weak var streamTitleContainerView: UIView!
+  @IBOutlet private weak var streamTitleLabel: UILabel!
 
   internal func configureWith(value: LiveStreamEvent) {
     self.viewModel.inputs.configureWith(liveStreamEvent: value)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -76,10 +78,11 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
       |> UIButton.lens.enabled .~ false
       |> UIButton.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
-      |> UIButton.lens.title(forState: .normal) .~ Strings.Replay()
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Replay() }
       |> UIButton.lens.titleLabel.font .~ .ksr_title3(size: 16)
       |> UIButton.lens.adjustsImageWhenDisabled .~ false
-      |> UIButton.lens.image(forState: .normal) .~ Library.image(named: "replay-icon", tintColor: .ksr_text_navy_900)
+      |> UIButton.lens.image(forState: .normal) .~
+        Library.image(named: "replay-icon", tintColor: .ksr_text_navy_900)
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.gridHalf(3),
                                                   left: Styles.grid(4),
                                                   bottom: Styles.gridHalf(3),

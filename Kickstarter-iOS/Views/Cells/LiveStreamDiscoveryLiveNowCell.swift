@@ -6,7 +6,8 @@ import Prelude
 import UIKit
 
 internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell {
-  private let viewModel: LiveStreamDiscoveryLiveNowCellViewModelType = LiveStreamDiscoveryLiveNowCellViewModel()
+  private let viewModel: LiveStreamDiscoveryLiveNowCellViewModelType
+    = LiveStreamDiscoveryLiveNowCellViewModel()
 
   @IBOutlet private weak var cardView: UIView!
   @IBOutlet private weak var creatorImageView: UIImageView!
@@ -25,6 +26,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.viewModel.inputs.configureWith(liveStreamEvent: value)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -54,7 +56,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.gridHalf(3))
 
     _ = self.liveLabel
-      |> UILabel.lens.text .~ Strings.Live()
+      |> UILabel.lens.text %~ { _ in Strings.Live() }
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_title3(size: 13)
       |> UILabel.lens.numberOfLines .~ 0
