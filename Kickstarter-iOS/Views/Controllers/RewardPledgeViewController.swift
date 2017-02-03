@@ -612,6 +612,20 @@ internal final class RewardPledgeViewController: UIViewController {
     }
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.descriptionLabel.frame.height
+
+   let this = self.descriptionLabel.systemLayoutSizeFitting(
+      CGSize.init(width: self.descriptionLabel.frame.width, height: 9999),
+      withHorizontalFittingPriority: UILayoutPriorityRequired,
+      verticalFittingPriority: UILayoutPriorityRequired
+    )
+
+    print("THIS HERE \(this)")
+  }
+
   @objc fileprivate func shippingButtonTapped() {
     self.viewModel.inputs.shippingButtonTapped()
   }
