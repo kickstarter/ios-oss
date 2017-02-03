@@ -413,6 +413,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
+    self.scheduler.advance()
+
     self.loadProjectAndLiveStreamsIntoDataSourceProject
       .assertValues([project], "The skeleton of the full project loads into the data source.")
 
