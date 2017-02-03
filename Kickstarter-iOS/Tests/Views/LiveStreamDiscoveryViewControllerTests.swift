@@ -49,7 +49,7 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
         let vc = Storyboard.LiveStreamDiscovery.instantiate(LiveStreamDiscoveryViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         vc.isActive(true)
-        parent.view.frame.size.height = 1_400
+        parent.view.frame.size.height = device == .pad ? 1_500 : 1_100
 
         self.scheduler.advance()
 

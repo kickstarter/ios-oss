@@ -319,6 +319,7 @@
 		A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EF6D11DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift */; };
 		A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */; };
 		A742CC7D1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */; };
+		A742CCA51E440EA80029D256 /* LiveStreamDiscoveryUpcomingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingCell.swift */; };
 		A743817B1D33E03D00040A95 /* ActivityFriendBackingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A743817A1D33E03D00040A95 /* ActivityFriendBackingViewModelTests.swift */; };
 		A74382051D3458C900040A95 /* PaddingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74382041D3458C900040A95 /* PaddingCell.swift */; };
 		A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0201CA897FF00C12802 /* SearchViewController.swift */; };
@@ -1635,6 +1636,7 @@
 		A73EF6D11DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewModel.swift; sourceTree = "<group>"; };
 		A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPagesDataSource.swift; sourceTree = "<group>"; };
 		A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryLiveNowCell.swift; sourceTree = "<group>"; };
+		A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryUpcomingCell.swift; sourceTree = "<group>"; };
 		A743817A1D33E03D00040A95 /* ActivityFriendBackingViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingViewModelTests.swift; sourceTree = "<group>"; };
 		A74382041D3458C900040A95 /* PaddingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingCell.swift; sourceTree = "<group>"; };
 		A745D0201CA897FF00C12802 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -2425,6 +2427,7 @@
 				A71C7FAB1E2FA47A0051E5E3 /* LiveStreamDiscoveryCell.swift */,
 				A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */,
 				A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */,
+				A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
 				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
@@ -4571,6 +4574,7 @@
 				013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
+				A742CCA51E440EA80029D256 /* LiveStreamDiscoveryUpcomingCell.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				593AC5CF1D33F4BF002613F4 /* DashboardFundingCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,

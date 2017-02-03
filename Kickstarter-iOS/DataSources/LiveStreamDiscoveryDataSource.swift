@@ -18,9 +18,15 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
                        cellClass: LiveStreamDiscoveryTitleCell.self,
                        toSection: sectionFor(titleType: title))
         events.forEach { event in
-          self.appendRow(value: event,
-                         cellClass: LiveStreamDiscoveryLiveNowCell.self,
-                         toSection: sectionFor(titleType: title))
+          if title == .liveNow {
+            self.appendRow(value: event,
+                           cellClass: LiveStreamDiscoveryLiveNowCell.self,
+                           toSection: sectionFor(titleType: title))
+          } else {
+            self.appendRow(value: event,
+                           cellClass: LiveStreamDiscoveryUpcomingCell.self,
+                           toSection: sectionFor(titleType: title))
+          }
         }
     }
   }
@@ -30,6 +36,8 @@ internal final class LiveStreamDiscoveryDataSource: ValueCellDataSource {
     case let (cell as LiveStreamDiscoveryCell, value as LiveStreamEvent):
       cell.configureWith(value: value)
     case let (cell as LiveStreamDiscoveryLiveNowCell, value as LiveStreamEvent):
+      cell.configureWith(value: value)
+    case let (cell as LiveStreamDiscoveryUpcomingCell, value as LiveStreamEvent):
       cell.configureWith(value: value)
     case let (cell as LiveStreamDiscoveryTitleCell, value as LiveStreamDiscoveryTitleType):
       cell.configureWith(value: value)

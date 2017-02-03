@@ -108,6 +108,10 @@ extension LiveStreamEvent: Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
     let create = curry(LiveStreamEvent.init)
 
+    let hlsUrl: Decoded<String?> = (json <| ["stream", "hls_url"] <|> json <| "hls_url")
+      .map(Optional.some)
+      <|> .success(nil)
+
     let tmp1 = create
       <^> (json <| ["stream", "background_image"] <|> json <| "background_image")
       <*> json <| "creator"
@@ -115,7 +119,7 @@ extension LiveStreamEvent: Decodable {
       <*> json <|? "firebase"
     let tmp2 = tmp1
       <*> (json <| ["stream", "has_replay"] <|> json <| "has_replay")
-      <*> json <|? ["stream", "hls_url"]
+      <*> hlsUrl
       <*> json <| "id"
       <*> json <|? ["stream", "is_rtmp"]
     let tmp3 = tmp2
