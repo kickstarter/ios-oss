@@ -52,7 +52,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
         // NB: skip a run loop to ease the initial rendering of the cells and the swipe animation
         SignalProducer(value: ()).delay(0, on: AppEnvironment.current.scheduler)
     }
-    
+
     let loadDataSourceOnModalCompletion = self.viewWillAppearAnimatedProperty.signal
       .filter(isFalse)
       .ignoreValues()

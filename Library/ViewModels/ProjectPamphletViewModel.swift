@@ -193,7 +193,6 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-
 private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>)
   -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
 
