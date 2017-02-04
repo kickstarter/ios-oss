@@ -111,14 +111,15 @@ ifeq ($(CURRENT_OPENTOK_VERSION),)
 	CURRENT_OPENTOK_VERSION = first
 endif
 opentok:
-	if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
+	@if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
 	then \
+		echo "Downloading OpenTok v$(OPENTOK_VERSION)"; \
 		mkdir -p Frameworks/OpenTok; \
 		curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-$(OPENTOK_VERSION) \
 		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-$(OPENTOK_VERSION)/OpenTok.framework \
 		|| true; \
 	fi
-	if [ -e Frameworks/OpenTok/OpenTok.framework ]; \
+	@if [ -e Frameworks/OpenTok/OpenTok.framework ]; \
 	then \
 		echo "$(OPENTOK_VERSION)" > $(VERSION_FILE); \
 	fi
