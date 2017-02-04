@@ -2,6 +2,8 @@ machine:
   xcode:
     version: 8.2
 dependencies:
+  cache_directories:
+    Frameworks/OpenTok
   pre:
     - make bootstrap
     - ls /Applications/ | grep "Xcode"
