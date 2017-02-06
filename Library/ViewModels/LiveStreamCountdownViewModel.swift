@@ -146,7 +146,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .takeWhen(self.goToProjectButtonPressedProperty.signal)
       .map { project, _, _, _ in (project, RefTag.liveStreamCountdown) }
 
-    self.goToProjectButtonContainerHidden = configData.map { _, _, _, presentedFromProject in presentedFromProject }
+    self.goToProjectButtonContainerHidden = configData
+      .map { _, _, _, presentedFromProject in presentedFromProject }
 
     configData
       .observeValues { project, liveStreamEvent, refTag, _ in

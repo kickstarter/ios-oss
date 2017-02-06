@@ -1,3 +1,4 @@
+// swiftlint:disable:next file_length
 import KsApi
 import LiveStream
 import ReactiveSwift
