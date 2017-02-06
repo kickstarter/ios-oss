@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -240,7 +240,7 @@
                                             <rect key="frame" x="8" y="8" width="384" height="244"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="L5c-1Y-4qI" customClass="CircleAvatarImageView" customModule="Library">
-                                                    <rect key="frame" x="8" y="8.5" width="24" height="24"/>
+                                                    <rect key="frame" x="8" y="8" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="L5c-1Y-4qI" secondAttribute="height" multiplier="1:1" id="0Zb-r8-ojR"/>
                                                         <constraint firstAttribute="width" constant="24" id="gfe-M3-Wws"/>
@@ -385,8 +385,8 @@
                                                         <constraint firstAttribute="width" constant="80" id="vCB-Xb-z6f"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="peK-ts-qtm" customClass="StyledLabel" customModule="Library">
-                                                    <rect key="frame" x="8" y="22" width="276" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HERTZFELDT ON BLU-RAY" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="peK-ts-qtm" customClass="StyledLabel" customModule="Library">
+                                                    <rect key="frame" x="8" y="21.5" width="276" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -403,7 +403,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kau-0I-djy" userLabel="Project image button">
-                                                    <rect key="frame" x="296" y="8" width="80" height="45"/>
+                                                    <rect key="frame" x="-8" y="0.0" width="400" height="65"/>
                                                     <connections>
                                                         <action selector="tappedProjectImage" destination="Wv6-wT-OF6" eventType="touchUpInside" id="YQY-qk-5Bt"/>
                                                     </connections>
@@ -438,20 +438,17 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="YEW-km-DyF" secondAttribute="trailing" id="255-wa-bCx"/>
                                                 <constraint firstItem="S1L-AK-J7o" firstAttribute="leading" secondItem="G9B-h5-vdo" secondAttribute="leading" id="6gQ-ie-wnM"/>
                                                 <constraint firstItem="dQE-cC-7qh" firstAttribute="top" secondItem="S1L-AK-J7o" secondAttribute="bottom" constant="18" id="9Ve-8B-HNP"/>
-                                                <constraint firstItem="kau-0I-djy" firstAttribute="top" secondItem="YEW-km-DyF" secondAttribute="top" id="BhI-FF-YiJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="dQE-cC-7qh" secondAttribute="bottom" id="Dgt-Z9-uFk"/>
                                                 <constraint firstItem="YEW-km-DyF" firstAttribute="top" secondItem="G9B-h5-vdo" secondAttribute="topMargin" id="Dqa-hA-LCm"/>
                                                 <constraint firstItem="peK-ts-qtm" firstAttribute="centerY" secondItem="YEW-km-DyF" secondAttribute="centerY" id="GO7-0G-vLa"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="dQE-cC-7qh" secondAttribute="trailing" id="ILD-9W-z6d"/>
                                                 <constraint firstItem="peK-ts-qtm" firstAttribute="trailing" secondItem="YEW-km-DyF" secondAttribute="leading" constant="-12" id="PVZ-WC-Bhj"/>
-                                                <constraint firstItem="kau-0I-djy" firstAttribute="leading" secondItem="YEW-km-DyF" secondAttribute="leading" id="TXU-2T-Jcn"/>
                                                 <constraint firstItem="S1L-AK-J7o" firstAttribute="top" secondItem="YEW-km-DyF" secondAttribute="bottom" constant="12" id="VCx-RE-beB"/>
-                                                <constraint firstItem="kau-0I-djy" firstAttribute="height" secondItem="YEW-km-DyF" secondAttribute="height" id="Wh2-2d-mNS"/>
+                                                <constraint firstItem="kau-0I-djy" firstAttribute="bottom" secondItem="S1L-AK-J7o" secondAttribute="top" id="bka-T4-CJe"/>
                                                 <constraint firstItem="peK-ts-qtm" firstAttribute="leading" secondItem="G9B-h5-vdo" secondAttribute="leadingMargin" id="hgd-M6-Udw"/>
                                                 <constraint firstItem="dQE-cC-7qh" firstAttribute="leading" secondItem="G9B-h5-vdo" secondAttribute="leadingMargin" id="lJV-ui-qRq"/>
-                                                <constraint firstItem="kau-0I-djy" firstAttribute="width" secondItem="YEW-km-DyF" secondAttribute="width" id="mgz-Cq-afb"/>
-                                                <constraint firstItem="kau-0I-djy" firstAttribute="trailing" secondItem="YEW-km-DyF" secondAttribute="trailing" id="qXp-NS-Lfm"/>
                                                 <constraint firstAttribute="trailing" secondItem="S1L-AK-J7o" secondAttribute="trailing" id="xiL-Wl-cAg"/>
+                                                <constraint firstItem="kau-0I-djy" firstAttribute="top" secondItem="G9B-h5-vdo" secondAttribute="top" id="yvg-Ir-4uf"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -460,7 +457,9 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="G9B-h5-vdo" secondAttribute="trailing" id="F3q-1J-TwN"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="x1V-JC-eSG" secondAttribute="bottom" id="FTe-hA-1Ed"/>
                                         <constraint firstItem="x1V-JC-eSG" firstAttribute="leading" secondItem="iJG-Og-j2a" secondAttribute="leadingMargin" id="HhT-Pl-zJT"/>
+                                        <constraint firstAttribute="trailing" secondItem="kau-0I-djy" secondAttribute="trailing" id="Ye2-3a-AKx"/>
                                         <constraint firstItem="G9B-h5-vdo" firstAttribute="top" secondItem="iJG-Og-j2a" secondAttribute="topMargin" id="aKs-af-zo7"/>
+                                        <constraint firstItem="kau-0I-djy" firstAttribute="leading" secondItem="iJG-Og-j2a" secondAttribute="leading" id="pVD-BB-msD"/>
                                         <constraint firstItem="G9B-h5-vdo" firstAttribute="leading" secondItem="iJG-Og-j2a" secondAttribute="leadingMargin" id="tEc-Zi-E2m"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="G9B-h5-vdo" secondAttribute="bottom" constant="6" id="unG-NV-Jlj"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="x1V-JC-eSG" secondAttribute="trailing" id="z3X-zu-Zk8"/>
@@ -835,6 +834,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="1900"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ifw-fv-O5y">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <action selector="refresh" destination="tvn-h8-peN" eventType="valueChanged" id="Y88-qG-zKz"/>

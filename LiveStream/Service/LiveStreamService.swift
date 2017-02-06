@@ -177,7 +177,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))".data(using: .utf8)
+        request.httpBody = formData(withDictionary: params).data(using: .utf8)
 
         let task = urlSession.dataTask(with: request) { data, _, _ in
           let result = data
@@ -230,4 +230,14 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   private static func getAppInstance() -> FIRApp? {
     return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
   }
+}
+
+fileprivate func formData(withDictionary dictionary: [String:String]) -> String {
+  let params = dictionary.flatMap { key, value -> String? in
+    guard let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+
+    return "\(key)=\(value)"
+  }
+
+  return params.joined(separator: "&")
 }

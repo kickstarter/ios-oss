@@ -33,7 +33,7 @@ public let updateBackersOnlyButtonStyle =
       image(named: "update-draft-visibility-backers-only-icon")
     }
     <> UIButton.lens.tintColor .~ .ksr_navy_600
-    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Add_attachments() }
+    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
     <> UIButton.lens.title(forState: .selected) %~ { _ in
       Strings.dashboard_post_update_compose_private_label()
     }
