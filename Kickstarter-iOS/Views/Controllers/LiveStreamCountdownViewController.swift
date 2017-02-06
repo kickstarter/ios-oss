@@ -20,6 +20,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var goToProjectButton: UIButton!
+  @IBOutlet private weak var goToProjectButtonContainer: UIView!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
@@ -41,10 +42,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   public static func configuredWith(project: Project,
                                     liveStreamEvent: LiveStreamEvent,
-                                    refTag: RefTag) -> LiveStreamCountdownViewController {
+                                    refTag: RefTag,
+                                    presentedFromProject: Bool) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+    vc.viewModel.inputs.configureWith(project: project,
+                                      liveStreamEvent: liveStreamEvent,
+                                      refTag: refTag,
+                                      presentedFromProject: presentedFromProject)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
@@ -60,6 +65,11 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -212,6 +222,18 @@ public final class LiveStreamCountdownViewController: UIViewController {
           : .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
     }
 
+    _ = self.goToProjectButton
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
+        localizedString(key: "Go_to_project_page", defaultValue: "Go to project page")
+      }
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
+      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
+      |> UIButton.lens.titleLabel.font %~~ { _, button in
+        button.traitCollection.isRegularRegular
+          ? .ksr_headline()
+          : .ksr_headline(size: 13)
+      }
+
     _ = self.separatorViews
       ||> separatorStyle
   }
@@ -229,27 +251,18 @@ public final class LiveStreamCountdownViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
-
     self.countdownStackView.rac.accessibilityLabel = self.viewModel.outputs.countdownAccessibilityLabel
-
     self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
     self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
     self.minutesTitleLabel.rac.text = self.viewModel.outputs.minutesString
     self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
-
     self.introLabel.rac.html = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-
     self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
-
     self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
-
     self.dateLabel.rac.text = self.viewModel.outputs.countdownDateLabelText
+    self.goToProjectButtonContainer.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
@@ -292,7 +305,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, liveStreamEvent, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+          .configuredWith(project: project,
+                          liveStreamEvent: liveStreamEvent,
+                          refTag: refTag,
+                          presentedFromProject: false)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
@@ -306,6 +322,15 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
+
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+  }
+
+  private func goTo(project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.present(vc, animated: true, completion: nil)
   }
 
   lazy private var closeBarButtonItem: UIBarButtonItem = {
@@ -385,5 +410,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
   }
 
   @objc private func goToProjectButtonPressed() {
+    self.viewModel.inputs.goToProjectButtonPressed()
   }
 }

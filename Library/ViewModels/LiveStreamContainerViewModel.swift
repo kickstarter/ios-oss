@@ -14,13 +14,16 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Call with the Project, Project.LiveStream and LiveStreamEvent
   func configureWith(project: Project,
                      liveStreamEvent: LiveStreamEvent,
-                     refTag: RefTag)
+                     refTag: RefTag,
+                     presentedFromProject: Bool)
 
   /// Called when the close button is tapped
   func closeButtonTapped()
 
   /// Called when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
+
+  func goToProjectButtonPressed()
 
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -47,6 +50,12 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits a project and ref tag when we should navigate to the project
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
+
+  /// Emits a boolean that determines if the project button container is hidden.
+  var goToProjectButtonContainerHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the loader activity indicator should animate
   var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
@@ -91,7 +100,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    let initialEvent = configData.map(second)
+    let initialEvent = configData.map { _, event, _, _ in event }
 
     let updatedEventFetch = initialEvent
       .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
@@ -110,7 +119,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           .take(first: 1)
     }
 
-    let project = configData.map(first)
+    let project = configData.map { project, _, _, _ in project }
     let event = Signal.merge(
       initialEvent,
       updatedEventFetch.values()
@@ -273,6 +282,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.numberWatchingBadgeViewHidden = hideWhenReplay
     self.availableForLabelHidden = Signal.combineLatest(nonStarter, hideWhenLive).map { $0 || $1 }
 
+    self.goToProject = configData
+      .takeWhen(self.goToProjectButtonPressedProperty.signal)
+      .map { project, liveStreamEvent, _, _ in
+        (project, liveStreamEvent.liveNow ? .liveStream : .liveStreamReplay)
+    }
+
+    self.goToProjectButtonContainerHidden = configData
+      .map { _, _, _, presentedFromProject in presentedFromProject }
+
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
         switch state {
@@ -287,7 +305,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
-        let (project, liveStream, _) = data
+        let (project, liveStream, _, _) = data
         AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
                                                                        liveStreamEvent: liveStream,
                                                                        toOrientation: orientation)
@@ -302,7 +320,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { (configData, startEndTimes) in
-        let (project, liveStreamEvent, refTag) = configData
+        let (project, liveStreamEvent, refTag, _) = configData
         let (startTime, endTime) = startEndTimes
 
         AppEnvironment.current.koala.trackClosedLiveStream(project: project,
@@ -324,7 +342,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     configData
-      .observeValues { project, liveStreamEvent, refTag in
+      .observeValues { project, liveStreamEvent, refTag, _ in
         AppEnvironment.current.koala.trackViewedLiveStream(project: project,
                                                            liveStreamEvent: liveStreamEvent,
                                                            refTag: refTag)
@@ -333,12 +351,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
 
-  private typealias ConfigData = (Project, LiveStreamEvent, RefTag)
+  private typealias ConfigData = (Project, LiveStreamEvent, RefTag, Bool)
   private let configData = MutableProperty<ConfigData?>(nil)
   public func configureWith(project: Project,
                             liveStreamEvent: LiveStreamEvent,
-                            refTag: RefTag) {
-    self.configData.value = (project, liveStreamEvent, refTag)
+                            refTag: RefTag,
+                            presentedFromProject: Bool) {
+    self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
   private let closeButtonTappedProperty = MutableProperty()
@@ -349,6 +368,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
   public func deviceOrientationDidChange(orientation: UIInterfaceOrientation) {
     self.deviceOrientationDidChangeProperty.value = orientation
+  }
+
+  private let goToProjectButtonPressedProperty = MutableProperty()
+  public func goToProjectButtonPressed() {
+    self.goToProjectButtonPressedProperty.value = ()
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -371,6 +395,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
