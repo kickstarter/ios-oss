@@ -92,7 +92,6 @@ ProjectPamphletViewModelOutputs {
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
