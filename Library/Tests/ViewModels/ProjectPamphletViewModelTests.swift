@@ -457,4 +457,29 @@ final class ProjectPamphletViewModelTests: TestCase {
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
   }
+
+  func testTracking_LiveStreamError_WithParams() {
+    let project = Project.template
+
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: Result(error: .genericFailure))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .right(.id(project.id)), refTag: .discovery
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      XCTAssertEqual(["Project Page", "Viewed Project Page"],
+                     self.trackingClient.events,
+                     "Waiting more time doesn't track another event.")
+      XCTAssertEqual([nil, nil],
+                     self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
+    }
+  }
 }

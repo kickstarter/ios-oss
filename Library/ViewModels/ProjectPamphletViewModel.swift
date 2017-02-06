@@ -75,11 +75,10 @@ ProjectPamphletViewModelOutputs {
       .take(first: 1)
 
     Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag, cookieRefTag)
-      .map { ($0.0, $0.1, $0.2, $1) }
+      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1) }
       .filter { _, liveStreamEvents, _, _ in liveStreamEvents != nil }
       .take(first: 1)
       .observeValues { project, liveStreamEvents, refTag, cookieRefTag in
-
         AppEnvironment.current.koala.trackProjectShow(project,
                                                       liveStreamEvents: liveStreamEvents,
                                                       refTag: refTag,
@@ -93,12 +92,9 @@ ProjectPamphletViewModelOutputs {
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  fileprivate let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
-  fileprivate let refTagProperty = MutableProperty<RefTag?>(nil)
+
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
-    self.projectOrParamProperty.value = projectOrParam
-    self.refTagProperty.value = refTag
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
