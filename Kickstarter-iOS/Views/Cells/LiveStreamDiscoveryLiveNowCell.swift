@@ -26,6 +26,10 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.viewModel.inputs.configureWith(liveStreamEvent: value)
   }
 
+  internal func didEndDisplay() {
+    self.viewModel.inputs.didEndDisplay()
+  }
+
   // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
@@ -98,6 +102,16 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     self.streamImageView.rac.imageUrl = self.viewModel.outputs.streamImageUrl
     self.streamTitleLabel.rac.text = self.viewModel.outputs.streamTitleLabel
+
+    self.viewModel.outputs.stopVideo
+      .observeForUI()
+      .observeValues { [weak self] in self?.stopVideo() }
+  }
+
+  private func stopVideo() {
+    self.streamPlayerView.alpha = 0
+    self.streamPlayerView.playerLayer?.player?.pause()
+    self.streamPlayerView.playerLayer?.player = nil
   }
 
   private func loadVideo(url: URL?) {
@@ -106,7 +120,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.streamPlayerView.playerLayer?.player = url.map(AVPlayer.init(url:))
     self.streamPlayerView.playerLayer?.player?.play()
     self.streamPlayerView.playerLayer?.player?.isMuted = true
-    self.streamPlayerView.playerLayer?.contentsGravity = AVLayerVideoGravityResizeAspectFill
+    self.streamPlayerView.playerLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
     self.streamPlayerView.backgroundColor = .black
 
     UIView.animate(withDuration: 0.3) {

@@ -466,6 +466,7 @@
 		A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537BB1CB5416700385B73 /* UIDeviceType.swift */; };
 		A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537E11CB5422100385B73 /* UIScreenType.swift */; };
 		A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */; };
+		A785D1501E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A785D14F1E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift */; };
 		A787E6BE1E28A85A0017B186 /* LiveStream.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A787E6951E28A84B0017B186 /* LiveStream.storyboard */; };
 		A78838741D8A2EFF0081E94D /* ProjectPamphlet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */; };
 		A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */; };
@@ -1756,6 +1757,7 @@
 		A78537BB1CB5416700385B73 /* UIDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceType.swift; sourceTree = "<group>"; };
 		A78537E11CB5422100385B73 /* UIScreenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScreenType.swift; sourceTree = "<group>"; };
 		A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSHTTPCookieStorageType.swift; sourceTree = "<group>"; };
+		A785D14F1E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryLiveNowCellViewModelTests.swift; sourceTree = "<group>"; };
 		A787E6951E28A84B0017B186 /* LiveStream.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStream.storyboard; sourceTree = "<group>"; };
 		A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProjectPamphlet.storyboard; sourceTree = "<group>"; };
 		A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavBarViewController.swift; sourceTree = "<group>"; };
@@ -2617,6 +2619,7 @@
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
 				D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */,
+				A785D14F1E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift */,
 				A708F1281E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift */,
 				D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */,
 				A7830CE51D005C3F00B5B6AE /* LoginToutViewModelTests.swift */,
@@ -4448,6 +4451,7 @@
 				598D96BF1D427B8A003F3F66 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
 				A71545211DD0D96B00A2F186 /* ProjectNavigatorViewModelTests.swift in Sources */,
 				9DA8C3C31D3D4860000BB2F9 /* String+WhitespaceTests.swift in Sources */,
+				A785D1501E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift in Sources */,
 				597073C31D07626700B00444 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				9D9F58171D13240B00CE81DE /* ProjectActivitiesViewModelTests.swift in Sources */,
 				D049C8D71DFFFACE00349FE6 /* LiveStreamCountdownViewModelTests.swift in Sources */,

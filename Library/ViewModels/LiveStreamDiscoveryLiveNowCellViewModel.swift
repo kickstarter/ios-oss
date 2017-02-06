@@ -4,13 +4,18 @@ import ReactiveSwift
 import Result
 
 public protocol LiveStreamDiscoveryLiveNowCellViewModelInputs {
+  /// Call with the config data given to the view.
   func configureWith(liveStreamEvent: LiveStreamEvent)
+
+  /// Call when the cell ends displaying in the view.
+  func didEndDisplay()
 }
 
 public protocol LiveStreamDiscoveryLiveNowCellViewModelOutputs {
   var creatorImageUrl: Signal<URL?, NoError> { get }
   var creatorLabelText: Signal<String, NoError> { get }
   var playVideoUrl: Signal<URL?, NoError> { get }
+  var stopVideo: Signal<(), NoError> { get }
   var streamImageUrl: Signal<URL?, NoError> { get }
   var streamTitleLabel: Signal<String, NoError> { get }
 }
@@ -32,6 +37,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.playVideoUrl = liveStreamEvent
       .switchMap { event in
         AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil)
+          .delay(0, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .prefix(value: event)
           .map { $0.hlsUrl.map(URL.init(string:)) }
@@ -47,6 +53,8 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
 
     self.streamImageUrl = liveStreamEvent
       .map { URL.init(string: $0.backgroundImage.medium) }
+
+    self.stopVideo = self.didEndDisplayProperty.signal
   }
 
   private let configData = MutableProperty<LiveStreamEvent?>(nil)
@@ -54,9 +62,15 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.configData.value = liveStreamEvent
   }
 
+  private let didEndDisplayProperty = MutableProperty()
+  public func didEndDisplay() {
+    self.didEndDisplayProperty.value = ()
+  }
+
   public let creatorImageUrl: Signal<URL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let playVideoUrl: Signal<URL?, NoError>
+  public let stopVideo: Signal<(), NoError>
   public let streamImageUrl: Signal<URL?, NoError>
   public let streamTitleLabel: Signal<String, NoError>
 

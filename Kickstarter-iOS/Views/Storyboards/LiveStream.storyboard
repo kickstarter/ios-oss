@@ -36,27 +36,10 @@
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qUl-1b-DXS">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
                                                     </imageView>
-                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MWV-Sj-pbC">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5g-Bn-POX">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
-                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Dmo-rJ-40i">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                            <subviews>
-                                                                <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jBk-yl-rqd">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
-                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="xg2-jI-t7X">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    </view>
-                                                                    <vibrancyEffect>
-                                                                        <blurEffect style="light"/>
-                                                                    </vibrancyEffect>
-                                                                </visualEffectView>
-                                                            </subviews>
-                                                        </view>
-                                                        <blurEffect style="dark"/>
-                                                    </visualEffectView>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wME-a6-25D">
                                                         <rect key="frame" x="0.0" y="56" width="375" height="169"/>
                                                         <subviews>
@@ -174,18 +157,18 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="Y5g-Bn-POX" firstAttribute="bottom" secondItem="qUl-1b-DXS" secondAttribute="bottom" id="2P1-9z-90e"/>
                                                     <constraint firstItem="wME-a6-25D" firstAttribute="trailing" secondItem="fyz-aa-gbk" secondAttribute="trailing" id="4XI-MP-FH6"/>
+                                                    <constraint firstItem="Y5g-Bn-POX" firstAttribute="leading" secondItem="qUl-1b-DXS" secondAttribute="leading" id="71v-qy-AhC"/>
                                                     <constraint firstAttribute="width" secondItem="fyz-aa-gbk" secondAttribute="height" multiplier="4:3" id="ClD-a2-cDz"/>
                                                     <constraint firstAttribute="bottom" secondItem="qUl-1b-DXS" secondAttribute="bottom" id="FcG-27-1ld"/>
                                                     <constraint firstItem="qUl-1b-DXS" firstAttribute="leading" secondItem="fyz-aa-gbk" secondAttribute="leading" id="KSa-Yi-kcC"/>
-                                                    <constraint firstItem="MWV-Sj-pbC" firstAttribute="leading" secondItem="qUl-1b-DXS" secondAttribute="leading" id="Khh-Pn-bX3"/>
+                                                    <constraint firstItem="Y5g-Bn-POX" firstAttribute="trailing" secondItem="qUl-1b-DXS" secondAttribute="trailing" id="S98-fc-mBg"/>
                                                     <constraint firstItem="qUl-1b-DXS" firstAttribute="top" secondItem="fyz-aa-gbk" secondAttribute="top" id="Tmw-DL-IQt"/>
                                                     <constraint firstItem="wME-a6-25D" firstAttribute="centerY" secondItem="fyz-aa-gbk" secondAttribute="centerY" id="V2B-XV-p9T"/>
-                                                    <constraint firstItem="MWV-Sj-pbC" firstAttribute="bottom" secondItem="qUl-1b-DXS" secondAttribute="bottom" id="XDB-D5-hHb"/>
-                                                    <constraint firstItem="MWV-Sj-pbC" firstAttribute="trailing" secondItem="qUl-1b-DXS" secondAttribute="trailing" id="c7S-mw-6ia"/>
                                                     <constraint firstAttribute="trailing" secondItem="qUl-1b-DXS" secondAttribute="trailing" id="cwk-qw-tTK"/>
+                                                    <constraint firstItem="Y5g-Bn-POX" firstAttribute="top" secondItem="qUl-1b-DXS" secondAttribute="top" id="fZ4-rW-nZu"/>
                                                     <constraint firstItem="wME-a6-25D" firstAttribute="leading" secondItem="fyz-aa-gbk" secondAttribute="leading" id="jAo-Qr-44Q"/>
-                                                    <constraint firstItem="MWV-Sj-pbC" firstAttribute="top" secondItem="qUl-1b-DXS" secondAttribute="top" id="xOZ-zf-SOl"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4I-CT-M0j" customClass="GradientView" customModule="Library">
@@ -272,7 +255,7 @@ Mikke Snow</string>
                                                                         </state>
                                                                     </button>
                                                                 </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstItem="99c-eb-tYC" firstAttribute="leading" secondItem="Q0E-22-nB0" secondAttribute="leading" id="4rL-9W-cNI"/>
                                                                     <constraint firstItem="9Qf-nK-5dh" firstAttribute="leading" secondItem="Q0E-22-nB0" secondAttribute="leading" id="KSe-Sd-EWU"/>
@@ -342,6 +325,7 @@ Mikke Snow</string>
                         <outlet property="gradientView" destination="P4I-CT-M0j" id="JYu-js-kPE"/>
                         <outlet property="hoursSubtitleLabel" destination="K4P-Iw-K4e" id="ChX-HK-QQ1"/>
                         <outlet property="hoursTitleLabel" destination="dEU-pp-pJE" id="1cv-ep-txa"/>
+                        <outlet property="imageOverlayView" destination="Y5g-Bn-POX" id="6VZ-5A-2bb"/>
                         <outlet property="introLabel" destination="E7V-Lm-PY3" id="rj8-3l-GkI"/>
                         <outlet property="liveStreamParagraphLabel" destination="oYV-lD-gct" id="UcP-4K-9uJ"/>
                         <outlet property="liveStreamTitleLabel" destination="s1j-ZI-ksv" id="4ic-3n-OgU"/>

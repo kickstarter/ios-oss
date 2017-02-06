@@ -147,12 +147,80 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
           liveStreamRow,
-        ]
+          ]
       ],
       "The top filter rows load immediately with the first one selected."
     )
 
     self.loadTopRowsInitialId.assertValues([nil])
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_streams": true]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+            liveStreamRow,
+            ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagDisabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_streams": false]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+          ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagAbsent() {
+    let config = .template
+      |> Config.lens.features .~ [:]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+            liveStreamRow,
+          ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
   }
 
   func testTopFilters_Logged_In() {

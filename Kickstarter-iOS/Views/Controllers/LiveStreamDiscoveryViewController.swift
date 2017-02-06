@@ -54,14 +54,10 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   }
 
   internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-  }
-
-  internal override func tableView(_ tableView: UITableView,
                                    didEndDisplaying cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
 
+    (cell as? LiveStreamDiscoveryLiveNowCell)?.didEndDisplay()
   }
 
   private func goToLiveStreamContainer(project: Project,

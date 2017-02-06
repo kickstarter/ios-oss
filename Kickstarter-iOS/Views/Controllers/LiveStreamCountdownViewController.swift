@@ -24,6 +24,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
+  @IBOutlet private weak var imageOverlayView: UIView!
   @IBOutlet private weak var introLabel: SimpleHTMLLabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
@@ -124,12 +125,12 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.dateContainerView
       |> UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(3))
-      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
+      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
       |> roundedStyle(cornerRadius: 2)
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
@@ -156,7 +157,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.detailsStackViewBackgroundView
-      |> roundedStyle(cornerRadius: 2)
+      |> roundedStyle()
+      |> dropShadowStyle()
 
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -186,14 +188,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.liveStreamTitleLabel
       |> UILabel.lens.font %~~ { _, v in
-        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3(size: 18)
       }
       |> UILabel.lens.textColor .~ .ksr_navy_700
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
       |> UILabel.lens.font %~~ { _, v in
-        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_subhead()
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_body(size: 14)
       }
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
@@ -233,6 +235,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
           ? .ksr_headline()
           : .ksr_headline(size: 13)
       }
+
+    _ = self.imageOverlayView
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.8)
 
     _ = self.separatorViews
       ||> separatorStyle
