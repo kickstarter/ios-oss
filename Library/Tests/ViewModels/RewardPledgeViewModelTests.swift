@@ -2057,4 +2057,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
     XCTAssertEqual(["change_reward", "change_reward", "change_reward", "change_reward"],
                    self.trackingClient.properties(forKey: "pledge_context", as: String.self))
   }
+
+  func testShippingRulesErrored() {
+
+  }
 }

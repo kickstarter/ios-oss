@@ -482,6 +482,12 @@ internal final class RewardPledgeViewController: UIViewController {
         self?.goToShippingPicker(project: $0, shippingRules: $1, selectedShippingRule: $2)
     }
 
+    self.viewModel.outputs.loadingOverlayIsHidden
+      .observeForUI()
+      .observeValues { isHidden in
+        print("is hidden = \(isHidden)")
+    }
+
     self.viewModel.outputs.items
       .observeForUI()
       .observeValues { [weak self] in self?.load(items: $0) }
@@ -524,9 +530,12 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.present(
-          UIAlertController.alertController(forError: .genericError(message: $0)),
+      .observeValues { [weak self] message in
+        guard let _self = self else { return }
+        _self.present(
+          UIAlertController.alert(message: message,
+                                  handler: { _ in _self.viewModel.inputs.errorAlertTappedClose() }
+          ),
           animated: true,
           completion: nil
         )

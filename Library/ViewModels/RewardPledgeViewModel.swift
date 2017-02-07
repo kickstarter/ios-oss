@@ -33,6 +33,9 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the disclaimer button is tapped.
   func disclaimerButtonTapped()
 
+  /// Call when an error alert "ok" button has been tapped.
+  func errorAlertTappedClose()
+
   /// Call when anything is tapped that should expand the reward's description.
   func expandDescriptionTapped()
 
@@ -221,19 +224,26 @@ RewardPledgeViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let shippingRules = projectAndReward
-      .switchMap { (project, reward) -> SignalProducer<[ShippingRule], NoError> in
+    let isLoading = MutableProperty(false)
+    self.pledgeIsLoading = isLoading.signal
+
+    let shippingRulesEvent = projectAndReward
+      .switchMap { (project, reward) -> SignalProducer<Event<[ShippingRule], ErrorEnvelope>, NoError> in
         guard reward != Reward.noReward else {
-          return SignalProducer<[ShippingRule], NoError>(value: [])
+          return SignalProducer(value: .value([]))
         }
 
         return AppEnvironment.current.apiService.fetchRewardShippingRules(
           projectId: project.id, rewardId: reward.id
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .demoteErrors()
+          .retry(upTo: 3)
+          .materialize()
     }
+
+    let shippingRules = shippingRulesEvent.values()
 
     self.navigationTitle = projectAndReward
       .map(navigationTitle(forProject:reward:))
@@ -435,9 +445,6 @@ RewardPledgeViewModelOutputs {
       .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
       .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
-    let isLoading = MutableProperty(false)
-    self.pledgeIsLoading = isLoading.signal
-
     self.loadingOverlayIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       self.pledgeIsLoading.map(negate)
@@ -548,9 +555,15 @@ RewardPledgeViewModelOutputs {
       changePaymentMethodEvent.errors()
     )
 
-    self.showAlert = pledgeErrors
-      .map { $0.errorEnvelope.errorMessages.first }
-      .skipNil()
+    self.showAlert = Signal.merge(
+      pledgeErrors
+        .map { $0.errorEnvelope.errorMessages.first }
+        .skipNil(),
+      shippingRulesEvent.errors().map { _ in
+        localizedString(key: "todo", defaultValue: "Sorry, shipping information was unable to load.\n" +
+          "Please try again later.")
+      }
+    )
 
     self.titleLabelText = reward
       .map {
@@ -559,7 +572,10 @@ RewardPledgeViewModelOutputs {
           : ($0.title ?? "")
     }
 
-    self.dismissViewController = self.closeButtonTappedProperty.signal
+    self.dismissViewController = Signal.merge(
+      self.closeButtonTappedProperty.signal,
+      self.errorAlertTappedCloseProperty.signal
+    )
 
     let projectAndRewardAndPledgeContext = projectAndReward
       .map { project, reward -> (Project, Reward, Koala.PledgeContext) in
@@ -753,6 +769,11 @@ RewardPledgeViewModelOutputs {
   fileprivate let disclaimerButtonTappedProperty = MutableProperty()
   public func disclaimerButtonTapped() {
     self.disclaimerButtonTappedProperty.value = ()
+  }
+
+  private let errorAlertTappedCloseProperty = MutableProperty()
+  public func errorAlertTappedClose() {
+    self.errorAlertTappedCloseProperty.value = ()
   }
 
   fileprivate let expandDescriptionTappedProperty = MutableProperty()
