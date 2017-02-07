@@ -136,7 +136,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       "in  July. You will be the first  to receive a copy of the book at the special price of £30. The book" +
       "will be sold for £35 in shops when released in July.You will be the first to receive a copy of the"
     let project = self.cosmicSurgery
-    let reward = self.cosmicReward |> Reward.lens.description .~ description
+    let reward = self.cosmicReward
+      |> Reward.lens.description .~ description
+      |> Reward.lens.rewardsItems .~ []
 
     let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
