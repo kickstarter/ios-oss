@@ -433,7 +433,6 @@
 		A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
 		A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
-		A7808B6B1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */; };
 		A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */; };
 		A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */; };
 		A7808BF31D625D10001CF96A /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */; };
@@ -1728,7 +1727,6 @@
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
 		A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
-		A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
 		A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModel.swift; sourceTree = "<group>"; };
 		A7808BF21D625D10001CF96A /* ProjectCreatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModelTests.swift; sourceTree = "<group>"; };
@@ -3221,7 +3219,6 @@
 				A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */,
 				A7F4419F1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift */,
 				A7F441A01D005A9400FE6FC5 /* MessageThreadsViewModel.swift */,
-				A7808B6A1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift */,
 				A7F441A11D005A9400FE6FC5 /* ProfileHeaderViewModel.swift */,
 				A7F441A21D005A9400FE6FC5 /* ProfileProjectCellViewModel.swift */,
 				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
@@ -4248,7 +4245,6 @@
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				9D1A2A4F1D5D200E009E1B3F /* CheckoutViewModel.swift in Sources */,
-				A7808B6B1D61E9DF001CF96A /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
