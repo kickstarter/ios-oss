@@ -37,19 +37,38 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
       withEnvironment(language: lang) {
         let vc = LiveStreamCountdownViewController.configuredWith(project: .template,
                                                                   liveStreamEvent: liveStreamEvent,
-                                                                  refTag: .projectPage)
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance()
-        parent.view.setNeedsLayout()
-        vc.view.setNeedsLayout()
-        parent.view.setNeedsUpdateConstraints()
-        vc.view.setNeedsUpdateConstraints()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
         )
       }
     }
+  }
+
+  func testView_WhenPresentedFromProject() {
+    let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 19
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: true)
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream."
+      |> LiveStreamEvent.lens.description .~ "Short description of the live stream."
+    let liveStreamService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
+
+    AppEnvironment.replaceCurrentEnvironment(liveStreamService: liveStreamService)
+
+    let vc = LiveStreamCountdownViewController.configuredWith(project: .template,
+                                                              liveStreamEvent: liveStreamEvent,
+                                                              refTag: .projectPage,
+                                                              presentedFromProject: true)
+
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+    self.scheduler.advance()
+
+    FBSnapshotVerifyView(parent.view)
   }
 }

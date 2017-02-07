@@ -14,6 +14,31 @@ extension UIFont {
       .map { UIFont(descriptor: $0, size: 0.0) } ?? self
   }
 
+  /// Returns a fancy monospaced font for the countdown.
+  public var countdownMonospaced: UIFont {
+    let monospacedDescriptor = self.fontDescriptor
+      .addingAttributes(
+        [
+          UIFontDescriptorFeatureSettingsAttribute: [
+            [
+              UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+              UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+            ],
+            [
+              UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
+              UIFontFeatureSelectorIdentifierKey: kStylisticAltTwoOnSelector
+            ],
+            [
+              UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
+              UIFontFeatureSelectorIdentifierKey: kStylisticAltOneOnSelector
+            ]
+          ]
+        ]
+    )
+
+    return UIFont(descriptor: monospacedDescriptor, size: 0.0)
+  }
+
   /// regular, 17pt font, 22pt leading, -24pt tracking
   public static func ksr_body(size: CGFloat? = nil) -> UIFont {
     return .preferredFont(style: .body, size: size)

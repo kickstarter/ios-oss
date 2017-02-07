@@ -16,6 +16,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let anonymousUserId: String?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
+  private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
   private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
   private let subscribeToResult: Result<Bool, LiveApiError>?
 
@@ -26,11 +27,13 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   internal init(anonymousUserId: String? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
+                fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<Bool, LiveApiError>? = nil) {
     self.anonymousUserId = anonymousUserId
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
+    self.fetchEventsResult = fetchEventsResult
     self.initializeDatabaseResult = initializeDatabaseResult
     self.subscribeToResult = subscribeToResult
   }
@@ -65,6 +68,17 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     return SignalProducer(value:
       self.fetchEventsForProjectResult?.value
         ?? envelope
+    )
+  }
+
+  internal func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError> {
+
+    if let error = self.fetchEventsResult?.error {
+      return SignalProducer(error: error)
+    }
+
+    return SignalProducer(
+      value: self.fetchEventsResult?.value ?? [.template]
     )
   }
 
