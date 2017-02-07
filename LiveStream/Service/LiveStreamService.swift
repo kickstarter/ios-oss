@@ -16,12 +16,12 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
 
     return SignalProducer { (observer, disposable) in
-      let uidString = uid
-        .flatMap { "?uid=\($0)" }
-        .coalesceWith("")
+      let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
+        .appendingPathComponent("\(eventId)")
+      var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+      components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
 
-      let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)\(uidString)"
-      guard let url = URL(string: urlString) else {
+      guard let url = components?.url else {
         observer.send(error: .invalidEventId)
         return
       }
@@ -54,6 +54,51 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       })
     }
   }
+
+  public func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
+    SignalProducer<LiveStreamEventsEnvelope, LiveApiError> {
+
+    return SignalProducer { (observer, disposable) in
+      let apiUrl = URL(string: Secrets.LiveStreams.Api.base)?
+        .appendingPathComponent("projects")
+        .appendingPathComponent("\(projectId)")
+      var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+      components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
+
+      guard let url = components?.url else {
+        observer.send(error: .invalidProjectId)
+        return
+      }
+
+      let urlSession = URLSession(configuration: .default)
+
+      let task = urlSession.dataTask(with: url) { data, _, error in
+        guard error == nil else {
+          observer.send(error: .genericFailure)
+          return
+        }
+
+        let envelope = data
+          .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+          .map(JSON.init)
+          .map(LiveStreamEventsEnvelope.decode)
+          .flatMap { $0.value }
+          .map(Event<LiveStreamEventsEnvelope, LiveApiError>.value)
+          .coalesceWith(.failed(.genericFailure))
+
+        observer.action(envelope)
+        observer.sendCompleted()
+      }
+
+      task.resume()
+
+      disposable.add({
+        task.cancel()
+        observer.sendInterrupted()
+      })
+    }
+  }
+
   public func initializeDatabase(userId: Int?,
                                  failed: (Void) -> Void,
                                  succeeded: (FIRDatabaseReference) -> Void) {
@@ -79,18 +124,26 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
+        let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
+          .appendingPathComponent("\(eventId)")
+          .appendingPathComponent("subscribe")
+        let components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
 
-        let urlString = "\(Secrets.LiveStreams.endpoint)/\(eventId)/subscribe"
-        guard let url = URL(string: urlString) else {
+        guard let url = components?.url else {
           observer.send(error: .invalidEventId)
           return
         }
 
         let urlSession = URLSession(configuration: .default)
 
+        let params = [
+          "uid": String(uid),
+          "subscribe": String(!isSubscribed)
+        ]
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = "uid=\(uid)&subscribe=\(String(!isSubscribed))".data(using: .utf8)
+        request.httpBody = formData(withDictionary: params).data(using: .utf8)
 
         let task = urlSession.dataTask(with: request) { data, _, _ in
           let result = data
@@ -143,4 +196,14 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   private static func getAppInstance() -> FIRApp? {
     return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
   }
+}
+
+fileprivate func formData(withDictionary dictionary: [String:String]) -> String {
+  let params = dictionary.flatMap { key, value -> String? in
+    guard let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+
+    return "\(key)=\(value)"
+  }
+
+  return params.joined(separator: "&")
 }

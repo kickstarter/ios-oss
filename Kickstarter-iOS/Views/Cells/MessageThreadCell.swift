@@ -13,8 +13,8 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var dividerView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var replyIndicator: UIView?
-  @IBOutlet private weak var unreadIndicatorView: UIView?
+  @IBOutlet private weak var replyIndicator: UIView!
+  @IBOutlet private weak var unreadIndicatorView: UIView!
 
   func configureWith(value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)

@@ -179,7 +179,7 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.resetPasswordButtonPressed()
   }
 
-  @objc @IBAction fileprivate func onePasswordButtonTapped() {
+  @objc fileprivate func onePasswordButtonTapped() {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 

@@ -39,21 +39,4 @@
       self.mainFrame = mainFrame
     }
   }
-
-  // Deprecated stuff
-
-  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
-  public protocol WKNavigationActionProtocol {
-    var navigationType: WKNavigationType { get }
-    var request: URLRequest { get }
-  }
-
-  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
-  extension WKNavigationAction: WKNavigationActionProtocol {}
-
-  @available(*, deprecated, message: "Use WKNavigationActionData to handle navigation actions")
-  internal struct MockNavigationAction: WKNavigationActionProtocol {
-    internal let navigationType: WKNavigationType
-    internal let request: URLRequest
-  }
 #endif

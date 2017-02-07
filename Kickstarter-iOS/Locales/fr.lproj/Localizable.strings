@@ -63,7 +63,7 @@
 "Earth" = "Terre";
 "Email_notifications" = "Notifications par e-mail";
 "Ending_soon" = "Campagnes bientôt terminées";
-"Estimated_to_fulfill" = "Livraison prévue :";
+"Estimated_delivery" = "Livraison prévue :";
 "Expands_subcategories" = "Développe les sous-catégories.";
 "Explore_projects" = "Découvrir des projets";
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";

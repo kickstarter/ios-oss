@@ -15,13 +15,17 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var backerSequenceLabel: UILabel!
   @IBOutlet fileprivate weak var backerShippingAmountLabel: UILabel!
   @IBOutlet fileprivate weak var backerShippingDescriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliverySeparatorView: UIView!
+  @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgedLabel: UILabel!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
   @IBOutlet fileprivate weak var rewardSeperatorView: UIView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingSeperatorView: UIView!
+  @IBOutlet fileprivate weak var shippingSeparatorView: UIView!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
@@ -90,12 +94,18 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text %~ { _ in Strings.backer_modal_shipping_title() }
 
-    _ = self.shippingSeperatorView |> separatorStyle
+    _ = self.shippingSeparatorView |> separatorStyle
 
     _ = self.viewMessagesButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> neutralButtonStyle
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
+
+    _ = self.estimatedDeliverySeparatorView |> separatorStyle
+
+    _ = self.estimatedDeliveryLabel
+      |> UILabel.lens.font .~ .ksr_headline()
+      |> UILabel.lens.text %~ { _ in Strings.rewards_info_estimated_delivery() }
   }
 
   internal override func bindViewModel() {
@@ -114,14 +124,15 @@ internal final class BackingViewController: UIViewController {
     self.backerRewardDescriptionLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerRewardDescriptionAccessibilityLabel
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
-    self.backerSequenceLabel.rac.accessibilityLabel =
-      self.viewModel.outputs.backerSequenceAccessibilityLabel
+    self.backerSequenceLabel.rac.accessibilityLabel = self.viewModel.outputs.backerSequenceAccessibilityLabel
     self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
     self.backerShippingAmountLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerShippingAmountAccessibilityLabel
     self.backerShippingDescriptionLabel.rac.text = self.viewModel.outputs.backerShippingDescription
     self.backerShippingDescriptionLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerShippingDescriptionAccessibilityLabel
+    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
 
     self.viewModel.outputs.backerAvatarURL
@@ -129,7 +140,7 @@ internal final class BackingViewController: UIViewController {
       .on(event: { [weak backerAvatarImageView] _ in
         backerAvatarImageView?.af_cancelImageRequest()
         backerAvatarImageView?.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak backerAvatarImageView] url in
         backerAvatarImageView?.af_setImage(withURL: url)

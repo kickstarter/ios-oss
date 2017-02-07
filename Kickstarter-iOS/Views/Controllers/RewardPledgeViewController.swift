@@ -266,7 +266,7 @@ internal final class RewardPledgeViewController: UIViewController {
     }
 
     _ = self.estimatedToFulfillLabel
-      |> UILabel.lens.text %~ { _ in Strings.Estimated_to_fulfill() }
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
