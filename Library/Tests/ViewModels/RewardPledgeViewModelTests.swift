@@ -1758,7 +1758,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.readMoreContainerViewHidden.assertValues([true])
   }
 
-
   func testReadMoreContainerViewHidden_NoReward() {
     self.vm.inputs.configureWith(project: .template, reward: Reward.noReward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()

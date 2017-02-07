@@ -131,7 +131,8 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
   func testDescriptionLabelTruncated() {
     let project = self.cosmicSurgery
-    let reward = self.cosmicReward |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July."
+    let reward = self.cosmicReward |> Reward.lens.description .~
+    "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.ou will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July."
 
     let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)

@@ -16,5 +16,3 @@ public extension UILabel {
     return size.height > self.bounds.size.height
   }
 }
-
-
