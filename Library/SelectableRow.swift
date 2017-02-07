@@ -42,6 +42,9 @@ public extension LensType where Whole == SelectableRow, Part == DiscoveryParams 
   public var recommended: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.recommended
   }
+  public var backed: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params • DiscoveryParams.lens.backed
+  }
 }
 
 extension SelectableRow: Equatable {}
