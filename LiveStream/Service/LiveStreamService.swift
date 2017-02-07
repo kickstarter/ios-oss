@@ -121,7 +121,8 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<Bool, LiveApiError> {
+  public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<
+    LiveStreamSubscribeEnvelope, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
         let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
@@ -146,12 +147,15 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         request.httpBody = formData(withDictionary: params).data(using: .utf8)
 
         let task = urlSession.dataTask(with: request) { data, _, _ in
-          let result = data
+          let envelope = data
             .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-            .map { _ in !isSubscribed }
-            .coalesceWith(isSubscribed)
+            .map(JSON.init)
+            .map(LiveStreamSubscribeEnvelope.decode)
+            .flatMap { $0.value }
+            .map(Event<LiveStreamSubscribeEnvelope, LiveApiError>.value)
+            .coalesceWith(.failed(.genericFailure))
 
-          observer.send(value: result)
+          observer.action(envelope)
           observer.sendCompleted()
         }
 
