@@ -351,7 +351,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
 
-
     shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
 
     return shareBarButtonItem

@@ -107,7 +107,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { $0.second }
       .skipRepeats()
 
-
     self.countdownAccessibilityLabel = liveStream.map { liveStream in
       Strings.The_live_stream_will_start_time(
         time: Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)

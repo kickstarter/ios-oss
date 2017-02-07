@@ -163,7 +163,6 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.numberOfPeopleWatchingProperty.signal.skipNil().map { Format.wholeNumber($0) }
       )
 
-
     self.subscribeButtonAccessibilityHint = subscribed
       .map { isSubscribed in
         isSubscribed
