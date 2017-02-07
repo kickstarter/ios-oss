@@ -2181,7 +2181,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             self.dismissViewController.assertValueCount(1)
 
             self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-            
+
             self.dismissViewController.assertValueCount(2)
         }
     }
@@ -2249,7 +2249,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             self.dismissViewController.assertValueCount(1)
 
             self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-            
+
             self.dismissViewController.assertValueCount(2)
         }
     }
@@ -2317,7 +2317,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             self.dismissViewController.assertValueCount(1)
 
             self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-            
+
             self.dismissViewController.assertValueCount(2)
         }
     }
@@ -2405,7 +2405,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             self.dismissViewController.assertValueCount(1)
 
             self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-            
+
             self.dismissViewController.assertValueCount(2)
         }
     }
