@@ -51,12 +51,7 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
       .filter { _, event in !event.liveNow && !event.hasReplay }
 
     self.showAlert = projectAndTappedLiveStreamEvent.errors()
-      .mapConst(
-        localizedString(
-          key: "Couldnt_open_live_stream_Try_again_later",
-          defaultValue: "Couldn‘t open live stream. Try again later."
-        )
-    )
+      .mapConst(Strings.Couldnt_open_live_stream_Try_again_later())
 
     let freshLiveStreamEvents = self.isActiveProperty.signal.filter(isTrue)
       .flatMap { _ in

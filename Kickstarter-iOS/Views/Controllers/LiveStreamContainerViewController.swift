@@ -256,9 +256,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
-        localizedString(key: "Go_to_project_page", defaultValue: "Go to project page")
-      }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Go_to_project_page() }
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
       |> UIButton.lens.titleColor(forState: .normal) .~ .white
       |> UIButton.lens.titleLabel.font %~~ { _, button in
@@ -463,10 +461,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
-    closeBarButtonItem.accessibilityLabel = localizedString(
-      key: "Close_live_stream",
-      defaultValue: "Close live stream"
-    )
+    closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
     closeBarButtonItem.accessibilityHint = localizedString(
       key: "Closes_the_live_stream",

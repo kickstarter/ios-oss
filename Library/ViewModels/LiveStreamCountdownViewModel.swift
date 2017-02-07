@@ -107,13 +107,11 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { $0.second }
       .skipRepeats()
 
+
     self.countdownAccessibilityLabel = liveStream.map { liveStream in
-      localizedString(
-        key: "The_live_stream_will_start_time",
-        defaultValue: "The live stream will start %{time}.",
-        substitutions: [
-          "time": Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)
-        ])
+      Strings.The_live_stream_will_start_time(
+        time: Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)
+      )
     }
 
     let countdownEnded = dateComponents

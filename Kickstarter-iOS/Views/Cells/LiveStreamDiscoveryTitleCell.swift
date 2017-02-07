@@ -26,14 +26,11 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
   internal func configureWith(value: LiveStreamDiscoveryTitleType) {
     switch value {
     case .liveNow:
-      self.titleTypeLabel.text = localizedString(key: "Live_now",
-                                                 defaultValue: "Live now")
+      self.titleTypeLabel.text = Strings.Live_now()
     case .recentlyLive:
-      self.titleTypeLabel.text = localizedString(key: "Replay_past_live_streams",
-                                                 defaultValue: "Replay past live streams")
+      self.titleTypeLabel.text = Strings.Replay_past_live_streams()
     case .upcoming:
-      self.titleTypeLabel.text = localizedString(key: "Upcoming_live_streams",
-                                                 defaultValue: "Upcoming live streams")
+      self.titleTypeLabel.text = Strings.Upcoming_live_stream()
     }
 
     self.liveIndicatorView.isHidden = value != .liveNow

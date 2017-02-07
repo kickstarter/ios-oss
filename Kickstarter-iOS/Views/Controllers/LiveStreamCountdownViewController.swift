@@ -134,16 +134,16 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
+      |> UILabel.lens.text %~ { _ in Strings.days() }
 
     _ = self.hoursSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "hours") }
+      |> UILabel.lens.text %~ { _ in Strings.hours() }
 
     _ = self.minutesSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "minutes", defaultValue: "minutes") }
+      |> UILabel.lens.text %~ { _ in Strings.minutes() }
 
     _ = self.secondsSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "seconds", defaultValue: "seconds") }
+      |> UILabel.lens.text %~ { _ in Strings.seconds() }
 
     _ = self.countdownColons
       ||> UILabel.lens.text .~ ":"
@@ -218,9 +218,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
-        localizedString(key: "Go_to_project_page", defaultValue: "Go to project page")
-      }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Go_to_project_page() }
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
       |> UIButton.lens.titleLabel.font %~~ { _, button in
@@ -337,10 +335,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
-    closeBarButtonItem.accessibilityLabel = localizedString(
-      key: "Close_live_stream",
-      defaultValue: "Close live stream"
-    )
+    closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
     closeBarButtonItem.accessibilityHint = localizedString(
       key: "Closes_the_live_stream",
@@ -356,10 +351,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
 
-    shareBarButtonItem.accessibilityLabel = localizedString(
-      key: "Share_this_live_stream",
-      defaultValue: "Share this live stream."
-    )
+
+    shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
 
     return shareBarButtonItem
   }()

@@ -163,19 +163,18 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       self.numberOfPeopleWatchingProperty.signal.skipNil().map { Format.wholeNumber($0) }
       )
 
+
     self.subscribeButtonAccessibilityHint = subscribed
       .map { isSubscribed in
         isSubscribed
-          ? localizedString(key: "Unsubscribes_from_upcoming_lives_streams.",
-                            defaultValue: "Unsubscribes from upcoming live streams.")
-          : localizedString(key: "Subscribes_to_upcoming_lives_streams",
-                            defaultValue: "Subscribes to upcoming live streams.")
+          ? Strings.Unsubscribes_from_upcoming_lives_streams()
+          : Strings.Subscribes_to_upcoming_lives_streams()
     }
 
     self.subscribeButtonAccessibilityLabel = subscribed
       .map { isSubscribed in
         isSubscribed
-          ? localizedString(key: "Unsubscribe", defaultValue: "Unsubscribe")
+          ? Strings.Unsubscribe()
           : Strings.Subscribe()
     }
 

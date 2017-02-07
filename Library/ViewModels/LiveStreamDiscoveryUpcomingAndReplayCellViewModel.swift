@@ -50,12 +50,12 @@ LiveStreamDiscoveryUpcomingAndReplayCellViewModelOutputs {
           : UIColor.ksr_navy_900.withAlphaComponent(0.8)
     }
 
+
+
     self.creatorLabelText = liveStreamEvent
       .map {
         $0.hasReplay == .some(true)
-          ? localizedString(key: "Replay_live_stream_with_creator_name",
-                            defaultValue: "Replay live stream with<br><b>%{creator_name}</b>",
-                            substitutions: ["creator_name": $0.creator.name])
+          ? Strings.Replay_live_stream_with_creator_name(creator_name: $0.creator.name)
           : Strings.Upcoming_with_creator_name(creator_name: $0.creator.name)
     }
 
