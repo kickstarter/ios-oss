@@ -55,9 +55,7 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.dateContainerView
-      |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.9)
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(3))
+      |> liveStreamDateContainerStyle
 
     _ = self.dateLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_900

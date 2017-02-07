@@ -24,3 +24,17 @@ public let lightSubscribeButtonStyle = darkSubscribeButtonStyle
   <> UIButton.lens.tintColor .~ .white
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
   <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
+
+public let liveStreamGoToProjectStyle =
+  UIButton.lens.title(forState: .normal) %~ { _ in Strings.Go_to_project_page() }
+    <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
+    <> UIButton.lens.titleLabel.font %~~ { _, button in
+      button.traitCollection.isRegularRegular
+        ? .ksr_headline()
+        : .ksr_headline(size: 13)
+}
+
+public let liveStreamDateContainerStyle =
+  roundedStyle()
+    <> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
+    <> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(3))

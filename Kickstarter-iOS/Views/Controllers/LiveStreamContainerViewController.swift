@@ -256,14 +256,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Go_to_project_page() }
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
       |> UIButton.lens.titleColor(forState: .normal) .~ .white
-      |> UIButton.lens.titleLabel.font %~~ { _, button in
-        button.traitCollection.isRegularRegular
-          ? .ksr_headline()
-          : .ksr_headline(size: 13)
-      }
+      |> liveStreamGoToProjectStyle
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false

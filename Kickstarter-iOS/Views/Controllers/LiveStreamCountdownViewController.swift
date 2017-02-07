@@ -124,9 +124,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.dateContainerView
-      |> UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(3))
-      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
-      |> roundedStyle(cornerRadius: 2)
+      |> liveStreamDateContainerStyle
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_subhead()
@@ -218,14 +216,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Go_to_project_page() }
+      |> liveStreamGoToProjectStyle
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.grid(4))
-      |> UIButton.lens.titleLabel.font %~~ { _, button in
-        button.traitCollection.isRegularRegular
-          ? .ksr_headline()
-          : .ksr_headline(size: 13)
-      }
 
     _ = self.imageOverlayView
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.8)
