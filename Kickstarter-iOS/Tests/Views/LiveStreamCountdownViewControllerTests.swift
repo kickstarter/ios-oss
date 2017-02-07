@@ -42,10 +42,6 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance()
-        parent.view.setNeedsLayout()
-        vc.view.setNeedsLayout()
-        parent.view.setNeedsUpdateConstraints()
-        vc.view.setNeedsUpdateConstraints()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -72,10 +68,6 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     self.scheduler.advance()
-    parent.view.setNeedsLayout()
-    vc.view.setNeedsLayout()
-    parent.view.setNeedsUpdateConstraints()
-    vc.view.setNeedsUpdateConstraints()
 
     FBSnapshotVerifyView(parent.view)
   }

@@ -1,12 +1,12 @@
-import XCTest
+import Prelude
 import ReactiveSwift
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
-@testable import Result
+import XCTest
 @testable import KsApi
 @testable import Library
 @testable import LiveStream
-import Prelude
+@testable import ReactiveExtensions
+@testable import ReactiveExtensions_TestHelpers
+@testable import Result
 
 final class LiveStreamDiscoveryViewModelTests: TestCase {
   let vm: LiveStreamDiscoveryViewModelType = LiveStreamDiscoveryViewModel()

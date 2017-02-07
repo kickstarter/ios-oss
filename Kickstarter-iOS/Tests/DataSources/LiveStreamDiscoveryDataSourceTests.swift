@@ -1,9 +1,9 @@
-import XCTest
 import Prelude
+import XCTest
 @testable import Kickstarter_Framework
+@testable import KsApi
 @testable import Library
 @testable import LiveStream
-@testable import KsApi
 
 final class LiveStreamDiscoveryDataSourceTests: TestCase {
   let dataSource = LiveStreamDiscoveryDataSource()
