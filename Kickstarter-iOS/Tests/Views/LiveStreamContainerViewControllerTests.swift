@@ -180,4 +180,31 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       FBSnapshotVerifyView(parent.view)
     }
   }
+
+  func testSubscribed() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: true)
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.com"
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream"
+      |> LiveStreamEvent.lens.description .~ "Short description of live stream"
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                liveStreamEvent: liveStreamEvent,
+                                                                refTag: .projectPage,
+                                                                presentedFromProject: true)
+
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      self.scheduler.advance()
+
+      vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+
+      FBSnapshotVerifyView(parent.view)
+    }
+  }
 }

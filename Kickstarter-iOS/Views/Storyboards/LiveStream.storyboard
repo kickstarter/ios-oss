@@ -409,17 +409,9 @@ Mikke Snow</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2a0-nA-tSN">
                                                 <rect key="frame" x="0.0" y="283" width="375" height="717"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
+                                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="aj9-Dn-I4f">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="717"/>
                                                     </imageView>
-                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WLh-x1-5QQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="717"/>
-                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="81l-R3-aEj">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="717"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        </view>
-                                                        <blurEffect style="dark"/>
-                                                    </visualEffectView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfP-ry-BqJ" customClass="GradientView" customModule="Library">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="6"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -582,20 +574,16 @@ Mikke Snow</string>
                                                         <rect key="frame" x="0.0" y="135" width="10" height="11"/>
                                                     </imageView>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" red="0.20784313725490194" green="0.20784313725490194" blue="0.20784313725490194" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="pfP-ry-BqJ" firstAttribute="top" secondItem="2a0-nA-tSN" secondAttribute="top" id="3F6-kw-esf"/>
                                                     <constraint firstItem="nnj-Xu-ndh" firstAttribute="top" secondItem="OFk-Eh-IO7" secondAttribute="top" id="5JC-n9-5yC"/>
-                                                    <constraint firstItem="WLh-x1-5QQ" firstAttribute="bottom" secondItem="aj9-Dn-I4f" secondAttribute="bottom" id="9rr-gD-bFV"/>
                                                     <constraint firstItem="aj9-Dn-I4f" firstAttribute="top" secondItem="2a0-nA-tSN" secondAttribute="top" id="DB9-OK-TNL"/>
-                                                    <constraint firstItem="WLh-x1-5QQ" firstAttribute="trailing" secondItem="aj9-Dn-I4f" secondAttribute="trailing" id="EK4-C3-PhI"/>
                                                     <constraint firstItem="pfP-ry-BqJ" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="KJu-9L-LeV"/>
                                                     <constraint firstAttribute="trailing" secondItem="6hH-f4-3sR" secondAttribute="trailing" id="Qv7-aD-4Jo"/>
                                                     <constraint firstItem="nnj-Xu-ndh" firstAttribute="leading" secondItem="OFk-Eh-IO7" secondAttribute="leading" id="Vh3-wp-I3f"/>
                                                     <constraint firstItem="6hH-f4-3sR" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="WyB-bh-h0t"/>
-                                                    <constraint firstItem="WLh-x1-5QQ" firstAttribute="leading" secondItem="aj9-Dn-I4f" secondAttribute="leading" id="XVM-C7-umT"/>
                                                     <constraint firstItem="aj9-Dn-I4f" firstAttribute="leading" secondItem="2a0-nA-tSN" secondAttribute="leading" id="bAa-38-1G3"/>
-                                                    <constraint firstItem="WLh-x1-5QQ" firstAttribute="top" secondItem="aj9-Dn-I4f" secondAttribute="top" id="cl3-vh-JUk"/>
                                                     <constraint firstAttribute="height" constant="300" id="i22-fj-2se"/>
                                                     <constraint firstAttribute="bottom" secondItem="aj9-Dn-I4f" secondAttribute="bottom" id="ifr-uf-Lg3"/>
                                                     <constraint firstAttribute="trailing" secondItem="aj9-Dn-I4f" secondAttribute="trailing" id="jFS-V3-NjB"/>
@@ -655,7 +643,6 @@ Mikke Snow</string>
                         <outlet property="loaderLabel" destination="Qg2-W1-xwo" id="Ctg-bG-Frt"/>
                         <outlet property="loaderStackView" destination="A6q-eY-g0e" id="opA-A0-ELy"/>
                         <outlet property="loaderView" destination="EXE-hf-dQ1" id="Qir-je-xMo"/>
-                        <outlet property="projectImageView" destination="aj9-Dn-I4f" id="cMZ-lO-Ybq"/>
                         <outlet property="subscribeActivityIndicatorView" destination="e9I-4y-hab" id="6v6-V2-cho"/>
                         <outlet property="subscribeButton" destination="lO6-yV-TRv" id="sip-cB-NwT"/>
                         <outlet property="subscribeLabel" destination="lpn-uC-rKH" id="wzI-4r-Im9"/>
@@ -694,7 +681,7 @@ Mikke Snow</string>
         </scene>
     </scenes>
     <resources>
-        <image name="cosmic-surgery" width="800" height="600"/>
+        <image name="Arrow.png" width="26" height="15"/>
         <image name="eye" width="13" height="10"/>
         <image name="live-waves" width="10" height="11"/>
     </resources>

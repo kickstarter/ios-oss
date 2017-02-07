@@ -26,7 +26,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
@@ -113,10 +112,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
       |> LiveStreamContainerViewController.lens.view.backgroundColor .~ .black
-
-    _  = self.projectImageView
-      |> UIImageView.lens.contentMode .~ .scaleAspectFill
-      |> UIImageView.lens.clipsToBounds .~ true
 
     _  = self.loaderStackView
       |> UIStackView.lens.axis .~ .vertical
@@ -317,7 +312,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.liveStreamViewController?.view.isHidden = $0
     }
 
-    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
     self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
@@ -366,9 +360,9 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] in
-        let imageName = $0.flatMap { $0 }.coalesceWith("")
-        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
+      .observeValues { [weak self] imageName in
+        self?.subscribeButton.setImage(imageName.flatMap { image(named: $0) },
+                                       for: .normal)
     }
 
     self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
