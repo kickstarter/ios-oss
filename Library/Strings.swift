@@ -991,17 +991,17 @@ backers"
     )
   }
   /**
-   "Estimated to fulfill:"
+   "Estimated delivery:"
 
-   - **es**: "Fecha de envío:"
-   - **de**: "Versanddatum:"
-   - **fr**: "Livraison prévue :"
-   - **en**: "Estimated to fulfill:"
+   - **es**: "Entrega estimada:"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **fr**: "Livraison prévue :"
+   - **en**: "Estimated delivery:"
   */
-  public static func Estimated_to_fulfill() -> String {
+  public static func Estimated_delivery() -> String {
     return localizedString(
-      key: "Estimated_to_fulfill",
-      defaultValue: "Estimated to fulfill:",
+      key: "Estimated_delivery",
+      defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
     )

@@ -104,9 +104,24 @@ secrets:
 		|| true; \
 	fi
 
+OPENTOK_VERSION = 2.10.0
+VERSION_FILE = Frameworks/OpenTok/version
+CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
+ifeq ($(CURRENT_OPENTOK_VERSION),)
+	CURRENT_OPENTOK_VERSION = first
+endif
 opentok:
-	mkdir -p Frameworks/OpenTok
-	curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-2.10.0 \
-		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-2.10.0/OpenTok.framework
+	@if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
+	then \
+		echo "Downloading OpenTok v$(OPENTOK_VERSION)"; \
+		mkdir -p Frameworks/OpenTok; \
+		curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-$(OPENTOK_VERSION) \
+		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-$(OPENTOK_VERSION)/OpenTok.framework \
+		|| true; \
+	fi
+	@if [ -e Frameworks/OpenTok/OpenTok.framework ]; \
+	then \
+		echo "$(OPENTOK_VERSION)" > $(VERSION_FILE); \
+	fi
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok
