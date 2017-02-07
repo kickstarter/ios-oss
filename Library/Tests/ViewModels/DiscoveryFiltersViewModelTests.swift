@@ -17,7 +17,10 @@ private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.
 private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
-private let recommendedRow = selectableRowTemplate |> SelectableRow.lens.params.recommended .~ true
+private let recommendedRow = selectableRowTemplate 
+  |> SelectableRow.lens.params.recommended .~ true
+  |> SelectableRow.lens.params.backed .~ false
+
 private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .art
 private let documentarySelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .documentary
