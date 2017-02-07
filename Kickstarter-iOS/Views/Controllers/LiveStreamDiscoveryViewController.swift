@@ -15,6 +15,7 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  /// Call from discovery when this controller becomes active.
   internal func isActive(_ active: Bool) {
     self.viewModel.inputs.isActive(active)
   }
