@@ -14,10 +14,11 @@ private let expandableRowTemplate = ExpandableRow(isExpanded: false,
                                                   selectableRows: [])
 
 private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
+private let liveStreamRow = selectableRowTemplate |> SelectableRow.lens.params.hasLiveStreams .~ true
 private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
 private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
-private let recommendedRow = selectableRowTemplate 
+private let recommendedRow = selectableRowTemplate
   |> SelectableRow.lens.params.recommended .~ true
   |> SelectableRow.lens.params.backed .~ false
 
@@ -143,11 +144,86 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
     self.loadTopRows.assertValues(
-      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow]],
+      [
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
+          liveStreamRow,
+          ]
+      ],
       "The top filter rows load immediately with the first one selected."
     )
 
     self.loadTopRowsInitialId.assertValues([nil])
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_discovery": true]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+            liveStreamRow,
+            ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagDisabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_discovery": false]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+          ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
+  }
+
+  func testTopFilters_LiveStreamFeatureFlagAbsent() {
+    let config = .template
+      |> Config.lens.features .~ [:]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.loadTopRows.assertValues(
+        [
+          [
+            allProjectsRow
+              |> SelectableRow.lens.isSelected .~ true,
+            staffPicksRow,
+            liveStreamRow,
+          ]
+        ],
+        "The top filter rows load immediately with the first one selected."
+      )
+    }
   }
 
   func testTopFilters_Logged_In() {
@@ -159,8 +235,17 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
     self.loadTopRows.assertValues(
-      [[allProjectsRow |> SelectableRow.lens.isSelected .~ true, staffPicksRow, starredRow, recommendedRow,
-        socialRow]],
+      [
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
+          liveStreamRow,
+          starredRow,
+          recommendedRow,
+          socialRow
+        ]
+      ],
       "The top filter rows load immediately with the first one selected."
     )
     self.loadTopRowsInitialId.assertValues([nil])
@@ -178,8 +263,11 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.loadTopRows.assertValues(
       [
-        [ allProjectsRow |> SelectableRow.lens.isSelected .~ true,
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
+          liveStreamRow,
           starredRow,
           recommendedRow,
           socialRow,
@@ -196,7 +284,15 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.loadTopRows.assertValues([[allProjectsRow, staffPicksRow]])
+    self.loadTopRows.assertValues(
+      [
+        [
+          allProjectsRow,
+          staffPicksRow,
+          liveStreamRow
+        ]
+      ]
+    )
     self.loadTopRowsInitialId.assertValues([1])
   }
 

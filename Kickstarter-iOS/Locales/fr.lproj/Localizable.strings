@@ -25,7 +25,7 @@
 "Back" = "Retour";
 "Back_this_project_below" = "Je soutiens ce projet";
 "Backed_by_Friends" = "Soutenu par mes amis";
-"Backed_by_people_you_follow" = "Soutenus par les personnes que vous suivez";
+"Backed_by_people_you_follow" = "Soutenus par ceux que vous suivez";
 "Backed_projects_projects_count" = "Projets soutenus : %{project_count}";
 "Backers_count_separator_backers.few" = "%{backers_count}\ncontributeurs";
 "Backers_count_separator_backers.many" = "%{backers_count}\ncontributeurs";
@@ -49,6 +49,7 @@
 "Continue_to_payment" = "Continuer vers le paiement";
 "Continue_to_update_pledge" = "Continuer la modification de mon engagement";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
+"Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
 "Created_projects_projects_count" = "Projets créés : %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> est en direct en ce moment";
@@ -80,6 +81,7 @@
 "Filter_name_project_count_live_projects.one" = "%{filter_name} : %{project_count} projet en cours";
 "Filter_name_project_count_live_projects.two" = "%{filter_name} : %{project_count} projets en cours";
 "Filter_name_project_count_live_projects.zero" = "%{filter_name} : %{project_count} projets en cours";
+"Filters_by_projects_with_upcoming_and_past_live_streams" = "Filters by projects with upcoming and past live streams.";
 "Find_Facebook_Friends" = "Retrouver mes amis Facebook";
 "Find_and_follow_friends" = "Retrouver et suivre mes amis";
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
@@ -108,6 +110,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
+"Go_to_project_page" = "Go to project page";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -126,6 +129,7 @@
 "Left_count_left.zero" = "%{left_count} restantes";
 "Live" = "En direct";
 "Live_Stream" = "Diffusion en direct";
+"Live_now" = "Live now";
 "Live_stream_countdown" = "Compte à rebours de la diffusion en direct";
 "Live_stream_date" = "Diffusion en direct – %{date}";
 "Live_streaming_now" = "Diffusion en direct en cours";
@@ -177,6 +181,8 @@
 "Recorded_Live" = "Enregistré en direct";
 "Recorded_live_with_creator_name" = "Enregistré en direct avec <b>%{creator_name}</b>";
 "Replay" = "Rediffuser";
+"Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
+"Replay_past_live_streams" = "Replay past live streams";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -678,7 +684,7 @@
 "discovery.baseball_card.status_banner.canceled" = "Financement annulé";
 "discovery.baseball_card.status_banner.canceled_date" = "Campagne annulée le %{date}";
 "discovery.baseball_card.status_banner.funding_unsuccessful_date" = "Non financé %{date}";
-"discovery.baseball_card.status_banner.successful" = "Intégralement financé !";
+"discovery.baseball_card.status_banner.successful" = "Financé !";
 "discovery.baseball_card.status_banner.successful_date" = "Intégralement financé le %{date}";
 "discovery.baseball_card.status_banner.suspended" = "Financement suspendu %{date}";
 "discovery.baseball_card.status_banner.suspended_date" = "Campagne suspendue le %{date}";
@@ -1115,7 +1121,7 @@
 "social_following.header.button.find_your_friends" = "Rechercher vos amis";
 "social_following.header.connect_with_facebook_to_follow" = "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet.";
 "social_following.header.connect_with_your_friends_to_find_projects" = "Suivez vos amis Facebook pour recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet.";
-"social_following.header.friends_recommend_the_best_projects" = "Découvrez plus de projets.";
+"social_following.header.friends_recommend_the_best_projects" = "Découvrir plus de projets";
 "social_following.navigation.title.follow_your_friends" = "Suivez vos amis";
 "social_following.nice_youre_about_to_follow_all_friends" = "Super ! Vous êtes sur le point de suivre tous vos amis.";
 "social_following.stats.backed_projects" = "projets soutenus";

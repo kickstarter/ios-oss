@@ -14,8 +14,14 @@ public protocol LiveStreamCountdownViewModelInputs {
   /// Called when the close button is tapped
   func closeButtonTapped()
 
-  /// Call with the Project and the specific LiveStream that is being viewed
-  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag)
+  /// Call with the data that is given to the view.
+  func configureWith(project: Project,
+                     liveStreamEvent: LiveStreamEvent,
+                     refTag: RefTag,
+                     presentedFromProject: Bool)
+
+  /// Call when the project page button is pressed.
+  func goToProjectButtonPressed()
 
   /// Called when the viewDidLoad
   func viewDidLoad()
@@ -36,6 +42,12 @@ public protocol LiveStreamCountdownViewModelOutputs {
 
   /// Emits when the view controller should be dismissed
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits a project and ref tag when we should navigate to the project page.
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
+
+  /// Emits a boolean that determines if the project button container is hidden.
+  var goToProjectButtonContainerHidden: Signal<Bool, NoError> { get }
 
   /// Emits the number of hours string for the countdown
   var hoursString: Signal<String, NoError> { get }
@@ -69,59 +81,41 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       self.viewDidLoadProperty.signal)
       .map(first)
 
-    let project = configData.map(first)
-    let liveStream = configData.map(second)
-
-    let everySecondTimer = self.viewDidLoadProperty.signal
-      .flatMap {
-        timer(interval: .seconds(1), on: AppEnvironment.current.scheduler)
-          .prefix(value: AppEnvironment.current.scheduler.currentDate)
-    }
+    let project = configData.map { project, _, _, _ in project }
+    let liveStream = configData.map { _, liveStream, _, _ in liveStream }
 
     let dateComponents = liveStream
-      .map { $0.startDate }
-      .takePairWhen(everySecondTimer)
-      .map { startDate, currentDate in
-        AppEnvironment.current.calendar.dateComponents([.day, .hour, .minute, .second],
-                                                       from: currentDate,
-                                                       to: startDate)
-      }
-      .map { (day: $0.day ?? 0, hour: $0.hour ?? 0, minute: $0.minute ?? 0, second: $0.second ?? 0) }
+      .take(first: 1)
+      .switchMap { countdownProducer(to: $0.startDate) }
 
     self.countdownDateLabelText = liveStream
       .map { $0.startDate }.map(formattedDateString)
 
     self.daysString = dateComponents
-      .map { max(0, $0.day) }
+      .map { $0.day }
       .skipRepeats()
-      .map { String(format: "%02d", $0) }
 
     self.hoursString = dateComponents
-      .map { max(0, $0.hour) }
+      .map { $0.hour }
       .skipRepeats()
-      .map { String(format: "%02d", $0) }
 
     self.minutesString = dateComponents
-      .map { max(0, $0.minute) }
+      .map { $0.minute }
       .skipRepeats()
-      .map { String(format: "%02d", $0) }
 
     self.secondsString = dateComponents
-      .map { max(0, $0.second) }
+      .map { $0.second }
       .skipRepeats()
-      .map { String(format: "%02d", $0) }
 
     self.countdownAccessibilityLabel = liveStream.map { liveStream in
-      localizedString(
-        key: "The_live_stream_will_start_time",
-        defaultValue: "The live stream will start %{time}.",
-        substitutions: [
-          "time": Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)
-        ])
+      Strings.The_live_stream_will_start_time(
+        time: Format.relative(secondsInUTC: liveStream.startDate.timeIntervalSince1970)
+      )
     }
 
     let countdownEnded = dateComponents
-      .filter { $0.day <= 0 && $0.hour <= 0 && $0.minute <= 0 && $0.second < 0 }
+      .materialize()
+      .filter { $0.isTerminating }
 
     self.projectImageUrl = project.flatMap { project in
       SignalProducer(value: URL(string: project.photo.full))
@@ -134,18 +128,26 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       Strings.Live_stream_countdown()
     )
 
-    self.pushLiveStreamViewController = configData.map { project, liveStream, _ in
-      (project, flipLiveStreamEventToLive(liveStreamEvent: liveStream))
+    self.pushLiveStreamViewController = configData
+      .takeWhen(countdownEnded)
+      .map { project, liveStream, _, _ in
+        (project, flipLiveStreamEventToLive(liveStreamEvent: liveStream))
       }
       .map { project, liveStream in (project, liveStream, .liveStreamCountdown) }
-      .takeWhen(countdownEnded)
       .take(first: 1)
 
     self.upcomingIntroText = project
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
+    self.goToProject = configData
+      .takeWhen(self.goToProjectButtonPressedProperty.signal)
+      .map { project, _, _, _ in (project, RefTag.liveStreamCountdown) }
+
+    self.goToProjectButtonContainerHidden = configData
+      .map { _, _, _, presentedFromProject in presentedFromProject }
+
     configData
-      .observeValues { project, liveStreamEvent, refTag in
+      .observeValues { project, liveStreamEvent, refTag, _ in
         AppEnvironment.current.koala.trackViewedLiveStreamCountdown(project: project,
                                                                     liveStreamEvent: liveStreamEvent,
                                                                     refTag: refTag)
@@ -160,7 +162,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { (configData, startEndTimes) in
-        let (project, liveStreamEvent, refTag) = configData
+        let (project, liveStreamEvent, refTag, _) = configData
         let (startTime, endTime) = startEndTimes
 
         AppEnvironment.current.koala.trackClosedLiveStream(project: project,
@@ -176,11 +178,17 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent, RefTag)?>(nil)
+  private let configData = MutableProperty<(Project, LiveStreamEvent, RefTag, Bool)?>(nil)
   public func configureWith(project: Project,
                             liveStreamEvent: LiveStreamEvent,
-                            refTag: RefTag) {
-    self.configData.value = (project, liveStreamEvent, refTag)
+                            refTag: RefTag,
+                            presentedFromProject: Bool) {
+    self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
+  }
+
+  private let goToProjectButtonPressedProperty = MutableProperty()
+  public func goToProjectButtonPressed() {
+    self.goToProjectButtonPressedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -193,6 +201,8 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
   public let countdownDateLabelText: Signal<String, NoError>
   public let daysString: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
+  public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let hoursString: Signal<String, NoError>
   public let minutesString: Signal<String, NoError>
   public let projectImageUrl: Signal<URL?, NoError>

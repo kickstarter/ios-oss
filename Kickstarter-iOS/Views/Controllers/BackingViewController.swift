@@ -108,6 +108,7 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_estimated_delivery() }
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
     self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView

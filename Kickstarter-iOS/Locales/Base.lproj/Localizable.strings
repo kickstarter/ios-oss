@@ -49,6 +49,7 @@
 "Continue_to_payment" = "Continue to payment";
 "Continue_to_update_pledge" = "Continue to update pledge";
 "Couldnt_add_attachment" = "Couldn't add attachment";
+"Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
 "Created_projects_projects_count" = "Created projects %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> is live now";
@@ -80,6 +81,7 @@
 "Filter_name_project_count_live_projects.one" = "%{filter_name}: %{project_count} live project";
 "Filter_name_project_count_live_projects.two" = "%{filter_name}: %{project_count} live projects";
 "Filter_name_project_count_live_projects.zero" = "%{filter_name}: %{project_count} live projects";
+"Filters_by_projects_with_upcoming_and_past_live_streams" = "Filters by projects with upcoming and past live streams.";
 "Find_Facebook_Friends" = "Find Facebook friends";
 "Find_and_follow_friends" = "Find and follow friends";
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
@@ -108,6 +110,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> backed a <i>Theater</i> project.";
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
+"Go_to_project_page" = "Go to project page";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
@@ -126,6 +129,7 @@
 "Left_count_left.zero" = "%{left_count} left";
 "Live" = "Live";
 "Live_Stream" = "Live Stream";
+"Live_now" = "Live now";
 "Live_stream_countdown" = "Live stream countdown";
 "Live_stream_date" = "Live stream – %{date}";
 "Live_streaming_now" = "Live streaming now";
@@ -177,6 +181,8 @@
 "Recorded_Live" = "Recorded Live";
 "Recorded_live_with_creator_name" = "Recorded live with <b>%{creator_name}</b>";
 "Replay" = "Replay";
+"Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
+"Replay_past_live_streams" = "Replay past live streams";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
