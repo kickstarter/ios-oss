@@ -17,8 +17,11 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var checkmarkImageView: UIImageView!
   @IBOutlet fileprivate weak var conversionLabel: UILabel!
   @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
+  @IBOutlet fileprivate weak var estimatedDeliveryDateStackView: UIStackView!
   @IBOutlet fileprivate weak var footerLabel: UILabel!
-  @IBOutlet fileprivate weak var footerView: UIView!
+  @IBOutlet fileprivate weak var footerStackView: UIStackView!
   @IBOutlet fileprivate weak var includesTitleLabel: UILabel!
   @IBOutlet fileprivate weak var itemsContainerStackView: UIStackView!
   @IBOutlet fileprivate weak var itemsHeaderStackView: UIStackView!
@@ -81,10 +84,17 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = self.titleDescriptionStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
+    _ = self.footerStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
+    _ = self.estimatedDeliveryDateStackView
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+
     _ = [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    _ = [self.minimumStackView, self.titleDescriptionStackView, self.itemsContainerStackView ]
+    _ = [self.minimumStackView, self.titleDescriptionStackView,
+         self.itemsContainerStackView, self.footerStackView]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
@@ -116,6 +126,15 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.numberOfLines .~ 0
 
+    _ = self.estimatedDeliveryLabel
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
+      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+    _ = self.estimatedDeliveryDateLabel
+      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+
     _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -144,12 +163,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.footerLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
-
-    _ = self.footerView
-      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
-      |> UIView.lens.backgroundColor .~ .clear
+      |> UILabel.lens.font .~ .ksr_caption1(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -187,8 +202,9 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
     self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
+    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewHidden
     self.footerLabel.rac.text = self.viewModel.outputs.footerLabelText
-    self.footerView.rac.hidden = self.viewModel.outputs.footerViewHidden
     self.itemsContainerStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
     self.manageRewardButton.rac.hidden = self.viewModel.outputs.manageButtonHidden
     self.minimumLabel.rac.text = self.viewModel.outputs.minimumLabelText
