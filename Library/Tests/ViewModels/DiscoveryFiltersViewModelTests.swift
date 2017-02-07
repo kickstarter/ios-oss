@@ -160,7 +160,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testTopFilters_LiveStreamFeatureFlagEnabled() {
     let config = .template
-      |> Config.lens.features .~ ["ios_live_streams": true]
+      |> Config.lens.features .~ ["ios_live_stream_discovery": true]
 
     withEnvironment(config: config) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
@@ -183,7 +183,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testTopFilters_LiveStreamFeatureFlagDisabled() {
     let config = .template
-      |> Config.lens.features .~ ["ios_live_streams": false]
+      |> Config.lens.features .~ ["ios_live_stream_discovery": false]
 
     withEnvironment(config: config) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
