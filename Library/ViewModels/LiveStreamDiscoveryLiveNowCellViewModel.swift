@@ -37,7 +37,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.playVideoUrl = liveStreamEvent
       .switchMap { event in
         AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil)
-          .delay(0, on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .prefix(value: event)
           .map { $0.hlsUrl.map(URL.init(string:)) }

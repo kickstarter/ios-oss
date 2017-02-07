@@ -171,11 +171,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
 
     self.subscribeButtonAccessibilityLabel = subscribed
-      .map { isSubscribed in
-        isSubscribed
-          ? Strings.Unsubscribe()
-          : Strings.Subscribe()
-    }
+      .map { $0 ? Strings.Unsubscribe() : Strings.Subscribe() }
 
     configData
       .takePairWhen(isSubscribedEvent.values())

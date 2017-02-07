@@ -117,6 +117,7 @@ final class LiveStreamEventTests: XCTestCase {
       "start_date": "2017-01-18T04:30:00.000-08:00",
       "live_now": false,
       "event_over": false,
+      "hls_url": "http://www.kickstarter.com",
       "has_replay": false,
       "background_image": [
         "medium": "http://www.background.com/medium.jpg",
@@ -163,7 +164,7 @@ final class LiveStreamEventTests: XCTestCase {
                    liveStreamEvent?.backgroundImage.smallCropped)
     XCTAssertEqual("Blobby McBlob comin' to you live!", liveStreamEvent?.description)
     XCTAssertEqual(false, liveStreamEvent?.hasReplay)
-    XCTAssertNil(liveStreamEvent?.hlsUrl)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent?.hlsUrl)
     XCTAssertNil(liveStreamEvent?.isRtmp)
     XCTAssertNil(liveStreamEvent?.isScale)
     XCTAssertEqual(false, liveStreamEvent?.liveNow)
