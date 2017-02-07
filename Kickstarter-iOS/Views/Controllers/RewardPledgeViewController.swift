@@ -615,15 +615,7 @@ internal final class RewardPledgeViewController: UIViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.descriptionLabel.frame.height
-
-   let this = self.descriptionLabel.systemLayoutSizeFitting(
-      CGSize.init(width: self.descriptionLabel.frame.width, height: 9999),
-      withHorizontalFittingPriority: UILayoutPriorityRequired,
-      verticalFittingPriority: UILayoutPriorityRequired
-    )
-
-    print("THIS HERE \(this)")
+    self.viewModel.inputs.descriptionLabelIsTruncated(self.descriptionLabel.isTruncated())
   }
 
   @objc fileprivate func shippingButtonTapped() {
@@ -645,7 +637,6 @@ internal final class RewardPledgeViewController: UIViewController {
   @objc fileprivate func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
-
   @objc fileprivate func expandRewardDescriptionTapped() {
     self.viewModel.inputs.expandDescriptionTapped()
   }
