@@ -25,7 +25,7 @@
 "Back" = "Retour";
 "Back_this_project_below" = "Je soutiens ce projet";
 "Backed_by_Friends" = "Soutenu par mes amis";
-"Backed_by_people_you_follow" = "Soutenus par les personnes que vous suivez";
+"Backed_by_people_you_follow" = "Soutenus par ceux que vous suivez";
 "Backed_projects_projects_count" = "Projets soutenus : %{project_count}";
 "Backers_count_separator_backers.few" = "%{backers_count}\ncontributeurs";
 "Backers_count_separator_backers.many" = "%{backers_count}\ncontributeurs";
@@ -63,7 +63,7 @@
 "Earth" = "Terre";
 "Email_notifications" = "Notifications par e-mail";
 "Ending_soon" = "Campagnes bientôt terminées";
-"Estimated_to_fulfill" = "Livraison prévue :";
+"Estimated_delivery" = "Livraison prévue :";
 "Expands_subcategories" = "Développe les sous-catégories.";
 "Explore_projects" = "Découvrir des projets";
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";
@@ -678,7 +678,7 @@
 "discovery.baseball_card.status_banner.canceled" = "Financement annulé";
 "discovery.baseball_card.status_banner.canceled_date" = "Campagne annulée le %{date}";
 "discovery.baseball_card.status_banner.funding_unsuccessful_date" = "Non financé %{date}";
-"discovery.baseball_card.status_banner.successful" = "Intégralement financé !";
+"discovery.baseball_card.status_banner.successful" = "Financé !";
 "discovery.baseball_card.status_banner.successful_date" = "Intégralement financé le %{date}";
 "discovery.baseball_card.status_banner.suspended" = "Financement suspendu %{date}";
 "discovery.baseball_card.status_banner.suspended_date" = "Campagne suspendue le %{date}";
@@ -1115,7 +1115,7 @@
 "social_following.header.button.find_your_friends" = "Rechercher vos amis";
 "social_following.header.connect_with_facebook_to_follow" = "Connectez-vous avec votre compte Facebook pour suivre vos amis et recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet.";
 "social_following.header.connect_with_your_friends_to_find_projects" = "Suivez vos amis Facebook pour recevoir une notification chaque fois qu'ils soutiennent ou lancent un nouveau projet.";
-"social_following.header.friends_recommend_the_best_projects" = "Découvrez plus de projets.";
+"social_following.header.friends_recommend_the_best_projects" = "Découvrir plus de projets";
 "social_following.navigation.title.follow_your_friends" = "Suivez vos amis";
 "social_following.nice_youre_about_to_follow_all_friends" = "Super ! Vous êtes sur le point de suivre tous vos amis.";
 "social_following.stats.backed_projects" = "projets soutenus";

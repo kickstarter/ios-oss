@@ -67,7 +67,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
 
     _ = self.streamTitleLabel
-      |> UILabel.lens.font .~ .ksr_title3(size: 15)
+      |> UILabel.lens.font .~ .ksr_title3(size: 16)
       |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.numberOfLines .~ 0
 
@@ -75,7 +75,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.4)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.4)
 
     _ = self.creatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)

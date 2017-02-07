@@ -61,7 +61,7 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_title3()
-          : UIFont.ksr_title1(size: 16)
+          : UIFont.ksr_title1(size: 18)
       }
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
   }

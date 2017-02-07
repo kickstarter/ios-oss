@@ -445,8 +445,8 @@ public enum Strings {
    "Backed by people you follow"
 
    - **es**: "Patrocinados por gente que sigues"
-   - **de**: "Unterstützt von Leuten, denen du folgst"
-   - **fr**: "Soutenus par les personnes que vous suivez"
+   - **de**: "Unterstützt von deinen Freunden"
+   - **fr**: "Soutenus par ceux que vous suivez"
    - **en**: "Backed by people you follow"
   */
   public static func Backed_by_people_you_follow() -> String {
@@ -991,17 +991,17 @@ backers"
     )
   }
   /**
-   "Estimated to fulfill:"
+   "Estimated delivery:"
 
-   - **es**: "Fecha de envío:"
-   - **de**: "Versanddatum:"
-   - **fr**: "Livraison prévue :"
-   - **en**: "Estimated to fulfill:"
+   - **es**: "Entrega estimada:"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **fr**: "Livraison prévue :"
+   - **en**: "Estimated delivery:"
   */
-  public static func Estimated_to_fulfill() -> String {
+  public static func Estimated_delivery() -> String {
     return localizedString(
-      key: "Estimated_to_fulfill",
-      defaultValue: "Estimated to fulfill:",
+      key: "Estimated_delivery",
+      defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
     )
@@ -8474,9 +8474,9 @@ catch your eye?"
   /**
    "Successfully funded!"
 
-   - **es**: "¡Financiado con éxito!"
-   - **de**: "Erfolgreich finanziert!"
-   - **fr**: "Intégralement financé !"
+   - **es**: "¡Financiado!"
+   - **de**: "Finanziert"
+   - **fr**: "Financé !"
    - **en**: "Successfully funded!"
   */
   public static func discovery_baseball_card_status_banner_successful() -> String {
@@ -14812,7 +14812,7 @@ Thank you for your support!"
 
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
-   - **fr**: "Découvrez plus de projets."
+   - **fr**: "Découvrir plus de projets"
    - **en**: "Discover more projects."
   */
   public static func social_following_header_friends_recommend_the_best_projects() -> String {

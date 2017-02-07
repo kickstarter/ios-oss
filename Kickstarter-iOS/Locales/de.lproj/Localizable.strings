@@ -25,7 +25,7 @@
 "Back" = "Zurück";
 "Back_this_project_below" = "Folgendes Projekt unterstützen";
 "Backed_by_Friends" = "Von Freunden unterstützt";
-"Backed_by_people_you_follow" = "Unterstützt von Leuten, denen du folgst";
+"Backed_by_people_you_follow" = "Unterstützt von deinen Freunden";
 "Backed_projects_projects_count" = "Unterstützte Projekte: %{project_count}";
 "Backers_count_separator_backers.few" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.many" = "%{backers_count}\nUnterstützer";
@@ -63,7 +63,7 @@
 "Earth" = "Erde";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Ending_soon" = "Endet bald";
-"Estimated_to_fulfill" = "Versanddatum:";
+"Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
 "Explore_projects" = "Projekte erkunden";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
@@ -678,7 +678,7 @@
 "discovery.baseball_card.status_banner.canceled" = "Finanzierung abgebrochen";
 "discovery.baseball_card.status_banner.canceled_date" = "Finanzierung abgebrochen am %{date}";
 "discovery.baseball_card.status_banner.funding_unsuccessful_date" = "Finanzierung fehlgeschlagen %{date}";
-"discovery.baseball_card.status_banner.successful" = "Erfolgreich finanziert!";
+"discovery.baseball_card.status_banner.successful" = "Finanziert";
 "discovery.baseball_card.status_banner.successful_date" = "Erfolgreich finanziert am %{date}";
 "discovery.baseball_card.status_banner.suspended" = "Finanzierung ausgesetzt %{date}";
 "discovery.baseball_card.status_banner.suspended_date" = "Finanzierung ausgesetzt am %{date}";

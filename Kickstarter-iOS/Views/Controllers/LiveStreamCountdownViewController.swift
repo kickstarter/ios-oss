@@ -159,6 +159,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle()
       |> dropShadowStyle()
+      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
+      |> UIView.lens.layer.shadowOpacity .~ 0.2
 
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -200,16 +202,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
     _ = self.subscribeButton
-      |> greenBorderButtonStyle
-      |> UIButton.lens.contentEdgeInsets %~~ { insets, button in
-        button.traitCollection.isRegularRegular
-          ? insets
-          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
-      }
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
-      |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-
-    self.subscribeButton.semanticContentAttribute = .forceRightToLeft
+      |> darkSubscribeButtonStyle
 
     _ = self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray

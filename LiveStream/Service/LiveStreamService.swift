@@ -175,6 +175,11 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
         let urlSession = URLSession(configuration: .default)
 
+        let params = [
+          "uid": String(uid),
+          "subscribe": String(!isSubscribed)
+        ]
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = formData(withDictionary: params).data(using: .utf8)

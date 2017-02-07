@@ -217,12 +217,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
     _  = self.subscribeButton
-      |> whiteBorderButtonStyle
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
-      |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(2))
-
-    _  = self.subscribeButton.semanticContentAttribute = .forceRightToLeft
+      |> lightSubscribeButtonStyle
 
     _  = self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2

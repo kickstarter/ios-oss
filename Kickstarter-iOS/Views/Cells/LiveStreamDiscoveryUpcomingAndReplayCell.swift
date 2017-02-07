@@ -67,7 +67,7 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
 
     _ = self.streamTitleLabel
-      |> UILabel.lens.font .~ .ksr_title3(size: 15)
+      |> UILabel.lens.font .~ .ksr_title3(size: 16)
       |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.numberOfLines .~ 0
 
