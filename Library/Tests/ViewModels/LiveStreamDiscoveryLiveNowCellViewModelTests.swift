@@ -1,3 +1,4 @@
+// swiftlint:disable type_name
 import XCTest
 import ReactiveSwift
 @testable import ReactiveExtensions
