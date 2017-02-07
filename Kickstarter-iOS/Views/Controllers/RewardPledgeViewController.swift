@@ -530,12 +530,13 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeValues { [weak self] message in
+      .observeValues { [weak self] message, shouldDismiss in
         guard let _self = self else { return }
         _self.present(
           UIAlertController.alert(message: message,
-                                  handler: { _ in _self.viewModel.inputs.errorAlertTappedClose() }
-          ),
+                                  handler: { _ in
+                                    _self.viewModel.inputs.errorAlertTappedOK(shouldDismiss: shouldDismiss)
+          }),
           animated: true,
           completion: nil
         )

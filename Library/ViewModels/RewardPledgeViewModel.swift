@@ -33,8 +33,8 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the disclaimer button is tapped.
   func disclaimerButtonTapped()
 
-  /// Call when an error alert "ok" button has been tapped.
-  func errorAlertTappedClose()
+  /// Call when the error alert "ok" button has been tapped and whether the view controller should dismiss.
+  func errorAlertTappedOK(shouldDismiss: Bool)
 
   /// Call when anything is tapped that should expand the reward's description.
   func expandDescriptionTapped()
@@ -174,8 +174,8 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a string that should be put into the shipping locations label.
   var shippingLocationsLabelText: Signal<String, NoError> { get }
 
-  /// Emits a string to be shown in an alert controller.
-  var showAlert: Signal<String, NoError> { get }
+  /// Emits a string to be shown in an alert controller and whether closing it dismisses the view controller.
+  var showAlert: Signal<(message: String, shouldDismiss: Bool), NoError> { get }
 
   /// Emits a boolean that determines if the title label should be hidden.
   var titleLabelHidden: Signal<Bool, NoError> { get }
@@ -237,11 +237,12 @@ RewardPledgeViewModelOutputs {
           projectId: project.id, rewardId: reward.id
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
+          //.on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
     }
+    // todo: if using separate loader, create output to enable shipping dropdown
 
     let shippingRules = shippingRulesEvent.values()
 
@@ -553,16 +554,22 @@ RewardPledgeViewModelOutputs {
       updatePledgeEvent.errors(),
       createApplePayPledgeEvent.errors(),
       changePaymentMethodEvent.errors()
-    )
+      )
 
     self.showAlert = Signal.merge(
       pledgeErrors
-        .map { $0.errorEnvelope.errorMessages.first }
-        .skipNil(),
-      shippingRulesEvent.errors().map { _ in
-        localizedString(key: "todo", defaultValue: "Sorry, shipping information was unable to load.\n" +
-          "Please try again later.")
-      }
+        .map { error in
+          let shouldDismiss = (error.errorEnvelope.errorMessages.first == nil
+            || error.errorEnvelope.ksrCode == .UnknownCode)
+          return (message: error.errorEnvelope.errorMessages.first ?? Strings.general_error_something_wrong(),
+                          shouldDismiss: shouldDismiss)
+      },
+      shippingRulesEvent.errors()
+        .map { _ in
+          (message: localizedString(key: "We_were_unable_to_load_the_shipping_destinations",
+                                    defaultValue: "We were unable to load the shipping destinations.\n" +
+                                                  "Please try again later."),
+           shouldDismiss: true) }
     )
 
     self.titleLabelText = reward
@@ -574,7 +581,7 @@ RewardPledgeViewModelOutputs {
 
     self.dismissViewController = Signal.merge(
       self.closeButtonTappedProperty.signal,
-      self.errorAlertTappedCloseProperty.signal
+      self.errorAlertTappedShouldDismissProperty.signal.filter(isTrue).ignoreValues()
     )
 
     let projectAndRewardAndPledgeContext = projectAndReward
@@ -771,9 +778,9 @@ RewardPledgeViewModelOutputs {
     self.disclaimerButtonTappedProperty.value = ()
   }
 
-  private let errorAlertTappedCloseProperty = MutableProperty()
-  public func errorAlertTappedClose() {
-    self.errorAlertTappedCloseProperty.value = ()
+  private let errorAlertTappedShouldDismissProperty = MutableProperty(false)
+  public func errorAlertTappedOK(shouldDismiss: Bool) {
+    self.errorAlertTappedShouldDismissProperty.value = shouldDismiss
   }
 
   fileprivate let expandDescriptionTappedProperty = MutableProperty()
@@ -877,7 +884,7 @@ RewardPledgeViewModelOutputs {
   public let shippingAmountLabelText: Signal<String, NoError>
   public let shippingInputStackViewHidden: Signal<Bool, NoError>
   public let shippingLocationsLabelText: Signal<String, NoError>
-  public let showAlert: Signal<String, NoError>
+  public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
   public var titleLabelHidden: Signal<Bool, NoError> {
     return self.rewardViewModel.outputs.titleLabelHidden
   }
