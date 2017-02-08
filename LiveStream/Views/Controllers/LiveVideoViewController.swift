@@ -78,6 +78,47 @@ public final class LiveVideoViewController: UIViewController {
         guard let _self = self else { return }
         self?.delegate?.liveVideoViewControllerPlaybackStateChanged(controller: _self, state: $0)
     }
+
+    self.viewModel.outputs.unsubscribeAllSubscribersFromSession
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.subscribers.forEach { subscriber in
+          _self.session?.unsubscribe(subscriber, error: nil)
+        }
+    }
+
+    self.viewModel.outputs.resubscribeAllSubscribersToSession
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.subscribers.forEach { subscriber in
+          _self.session?.subscribe(subscriber, error: nil)
+        }
+    }
+
+    self.viewModel.outputs.toggleHlsPause
+      .observeForUI()
+      .observeValues { [weak self] pause in
+        guard let _self = self else { return }
+        if pause {
+          _self.playerController?.player?.pause()
+        } else {
+          _self.playerController?.player?.play()
+        }
+    }
+  }
+
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    self.viewModel.inputs.viewDidDisappear()
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   private func configureHLSPlayer(streamUrl: String) {
