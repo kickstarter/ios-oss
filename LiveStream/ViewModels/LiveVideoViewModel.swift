@@ -53,7 +53,7 @@ internal protocol LiveVideoViewModelOutputs {
   var resubscribeAllSubscribersToSession: Signal<(), NoError> { get }
 
   /// Emits to toggle play/pause when the view disappears/reappears.
-  var toggleHlsPause: Signal<Bool, NoError> { get }
+  var setHlsToPlaybackState: Signal<Bool, NoError> { get }
 
   /// Emits when all subscribers should be unsubscribed when the view disappears.
   var unsubscribeAllSubscribersFromSession: Signal<(), NoError> { get }
@@ -101,15 +101,12 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
         .mapConst(.error(error: .sessionInterrupted))
     )
 
-    let viewReappeared = Signal.zip(
-      self.viewDidDisappearProperty.signal,
-      self.viewWillAppearProperty.signal.skip(first: 1)
-    )
+    let viewReappeared = self.viewWillAppearProperty.signal.skip(first: 1)
 
-    self.toggleHlsPause = Signal.combineLatest(
+    self.setHlsToPlaybackState = Signal.combineLatest(
       Signal.merge(
-        self.viewDidDisappearProperty.signal.mapConst(true),
-        viewReappeared.mapConst(false)
+        self.viewDidDisappearProperty.signal.mapConst(false),
+        viewReappeared.mapConst(true)
       ),
       self.addAndConfigureHLSPlayerWithStreamUrl.signal
     ).map(first)
@@ -176,7 +173,7 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   internal let notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError>
   internal let removeSubscriber: Signal<OTStreamType, NoError>
   internal let resubscribeAllSubscribersToSession: Signal<(), NoError>
-  internal let toggleHlsPause: Signal<Bool, NoError>
+  internal let setHlsToPlaybackState: Signal<Bool, NoError>
   internal let unsubscribeAllSubscribersFromSession: Signal<(), NoError>
 
   internal var inputs: LiveVideoViewModelInputs { return self }

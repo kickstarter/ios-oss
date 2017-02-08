@@ -83,29 +83,26 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.outputs.unsubscribeAllSubscribersFromSession
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        _self.subscribers.forEach { subscriber in
-          _self.session?.unsubscribe(subscriber, error: nil)
+        self?.subscribers.forEach { subscriber in
+          self?.session?.unsubscribe(subscriber, error: nil)
         }
     }
 
     self.viewModel.outputs.resubscribeAllSubscribersToSession
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        _self.subscribers.forEach { subscriber in
-          _self.session?.subscribe(subscriber, error: nil)
+        self?.subscribers.forEach { subscriber in
+          self?.session?.subscribe(subscriber, error: nil)
         }
     }
 
-    self.viewModel.outputs.toggleHlsPause
+    self.viewModel.outputs.setHlsToPlaybackState
       .observeForUI()
       .observeValues { [weak self] pause in
-        guard let _self = self else { return }
         if pause {
-          _self.playerController?.player?.pause()
+          self?.playerController?.player?.pause()
         } else {
-          _self.playerController?.player?.play()
+          self?.playerController?.player?.play()
         }
     }
   }
