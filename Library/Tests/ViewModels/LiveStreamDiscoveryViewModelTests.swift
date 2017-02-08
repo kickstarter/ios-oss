@@ -156,7 +156,6 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
       self.loadDataSource.assertValueCount(1)
       XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
 
-      self.vm.inputs.viewDidDisappear()
       self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
@@ -171,7 +170,6 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
       self.loadDataSource.assertValueCount(3)
       XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(true))
 
-      self.vm.inputs.viewDidDisappear()
       self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()

@@ -67,13 +67,7 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
 
     self.viewModel.inputs.viewWillAppear()
   }
-
-  internal override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-
-    self.viewModel.inputs.viewDidDisappear()
-  }
-
+  
   internal override func tableView(_ tableView: UITableView,
                                    didEndDisplaying cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
