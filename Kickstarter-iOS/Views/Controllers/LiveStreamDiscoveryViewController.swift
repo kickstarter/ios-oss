@@ -65,7 +65,7 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
 
     self.viewModel.inputs.viewWillAppear()
   }
-  
+
   internal override func tableView(_ tableView: UITableView,
                                    didEndDisplaying cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
