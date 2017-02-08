@@ -267,7 +267,7 @@ internal final class RewardPledgeViewController: UIViewController {
     }
 
     _ = self.estimatedToFulfillLabel
-      |> UILabel.lens.text %~ { _ in Strings.Estimated_to_fulfill() } //merge master
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
@@ -623,6 +623,12 @@ internal final class RewardPledgeViewController: UIViewController {
     }
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.viewModel.inputs.descriptionLabelIsTruncated(self.descriptionLabel.isTruncated())
+  }
+
   @objc fileprivate func shippingButtonTapped() {
     self.viewModel.inputs.shippingButtonTapped()
   }
@@ -642,7 +648,6 @@ internal final class RewardPledgeViewController: UIViewController {
   @objc fileprivate func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
-
   @objc fileprivate func expandRewardDescriptionTapped() {
     self.viewModel.inputs.expandDescriptionTapped()
   }

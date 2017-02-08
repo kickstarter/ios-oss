@@ -46,6 +46,24 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    self.viewModel.inputs.viewDidDisappear()
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.videoGridView.frame = self.view.bounds
+  }
+
+  //swiftlint:disable:next function_body_length
   public func bindVM() {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
@@ -77,6 +95,32 @@ public final class LiveVideoViewController: UIViewController {
       .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.liveVideoViewControllerPlaybackStateChanged(controller: _self, state: $0)
+    }
+
+    self.viewModel.outputs.unsubscribeAllSubscribersFromSession
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.subscribers.forEach { subscriber in
+          self?.session?.unsubscribe(subscriber, error: nil)
+        }
+    }
+
+    self.viewModel.outputs.resubscribeAllSubscribersToSession
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.subscribers.forEach { subscriber in
+          self?.session?.subscribe(subscriber, error: nil)
+        }
+    }
+
+    self.viewModel.outputs.shouldPauseHlsPlayer
+      .observeForUI()
+      .observeValues { [weak self] pause in
+        if pause {
+          self?.playerController?.player?.pause()
+        } else {
+          self?.playerController?.player?.play()
+        }
     }
   }
 
@@ -152,13 +196,6 @@ public final class LiveVideoViewController: UIViewController {
     self.removeVideoView(view: subscriber.view)
     self.session?.unsubscribe(subscriber, error: nil)
     self.subscribers.index(of: subscriber).doIfSome { self.subscribers.remove(at: $0) }
-  }
-
-  // MARK: Actions
-
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.videoGridView.frame = self.view.bounds
   }
 
   private lazy var videoGridView: VideoGridView = {

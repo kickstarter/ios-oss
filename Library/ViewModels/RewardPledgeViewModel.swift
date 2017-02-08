@@ -27,6 +27,9 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the "continue to payments" button is tapped.
   func continueToPaymentsButtonTapped()
 
+  /// Call when view did layout subviews.
+  func descriptionLabelIsTruncated(_ value: Bool)
+
   /// Call when the "different payment method" button is tapped.
   func differentPaymentMethodButtonTapped()
 
@@ -331,7 +334,15 @@ RewardPledgeViewModelOutputs {
     )
 
     self.readMoreContainerViewHidden = Signal.merge(
-      reward.map { $0 == Reward.noReward },
+      Signal.merge(
+        self.descriptionLabelIsTruncatedProperty.signal
+          .map(negate)
+          .skip(first: 1)
+          .take(first: 1),
+        reward.filter { $0.isNoReward }.mapConst(true)
+        )
+        .take(first: 1),
+
       self.expandDescriptionTappedProperty.signal.mapConst(true)
     )
 
@@ -743,14 +754,14 @@ RewardPledgeViewModelOutputs {
     self.applePayButtonTappedProperty.value = ()
   }
 
-  fileprivate let changePaymentMethodButtonTappedProperty = MutableProperty()
-  public func changePaymentMethodButtonTapped() {
-    self.changePaymentMethodButtonTappedProperty.value = ()
-  }
-
   fileprivate let cancelPledgeButtonTappedProperty = MutableProperty()
   public func cancelPledgeButtonTapped() {
     self.cancelPledgeButtonTappedProperty.value = ()
+  }
+
+  fileprivate let changePaymentMethodButtonTappedProperty = MutableProperty()
+  public func changePaymentMethodButtonTapped() {
+    self.changePaymentMethodButtonTappedProperty.value = ()
   }
 
   fileprivate let changedShippingRuleProperty = MutableProperty<ShippingRule?>(nil)
@@ -763,14 +774,19 @@ RewardPledgeViewModelOutputs {
     self.closeButtonTappedProperty.value = ()
   }
 
-  fileprivate let projectAndRewardAndApplePayCapableProperty = MutableProperty<(Project, Reward, Bool)?>(nil)
-  public func configureWith(project: Project, reward: Reward, applePayCapable: Bool) {
-    self.projectAndRewardAndApplePayCapableProperty.value = (project, reward, applePayCapable)
-  }
-
   fileprivate let continueToPaymentsButtonTappedProperty = MutableProperty()
   public func continueToPaymentsButtonTapped() {
     self.continueToPaymentsButtonTappedProperty.value = ()
+  }
+
+  fileprivate let descriptionLabelIsTruncatedProperty = MutableProperty<Bool>(false)
+  public func descriptionLabelIsTruncated(_ value: Bool) {
+    self.descriptionLabelIsTruncatedProperty.value = value
+  }
+
+  fileprivate let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
+  public func paymentAuthorization(didAuthorizePayment payment: PaymentData) {
+    self.didAuthorizePaymentProperty.value = payment
   }
 
   fileprivate let differentPaymentMethodButtonTappedProperty = MutableProperty()
@@ -798,11 +814,6 @@ RewardPledgeViewModelOutputs {
     self.paymentAuthorizationFinishedProperty.value = ()
   }
 
-  fileprivate let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
-  public func paymentAuthorization(didAuthorizePayment payment: PaymentData) {
-    self.didAuthorizePaymentProperty.value = payment
-  }
-
   fileprivate let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
   public func paymentAuthorizationWillAuthorizePayment() {
     self.paymentAuthorizationWillAuthorizeProperty.value = ()
@@ -816,6 +827,11 @@ RewardPledgeViewModelOutputs {
   fileprivate let pledgeTextFieldDidEndEditingProperty = MutableProperty()
   public func pledgeTextFieldDidEndEditing() {
     self.pledgeTextFieldDidEndEditingProperty.value = ()
+  }
+
+  fileprivate let projectAndRewardAndApplePayCapableProperty = MutableProperty<(Project, Reward, Bool)?>(nil)
+  public func configureWith(project: Project, reward: Reward, applePayCapable: Bool) {
+    self.projectAndRewardAndApplePayCapableProperty.value = (project, reward, applePayCapable)
   }
 
   fileprivate let shippingButtonTappedProperty = MutableProperty()

@@ -1,6 +1,7 @@
 // swiftlint:disable function_body_length
-import XCTest
 import Argo
+import Prelude
+import XCTest
 @testable import LiveStream
 
 public extension Decodable {
@@ -116,6 +117,7 @@ final class LiveStreamEventTests: XCTestCase {
       "start_date": "2017-01-18T04:30:00.000-08:00",
       "live_now": false,
       "event_over": false,
+      "hls_url": "http://www.kickstarter.com",
       "has_replay": false,
       "background_image": [
         "medium": "http://www.background.com/medium.jpg",
@@ -162,7 +164,7 @@ final class LiveStreamEventTests: XCTestCase {
                    liveStreamEvent?.backgroundImage.smallCropped)
     XCTAssertEqual("Blobby McBlob comin' to you live!", liveStreamEvent?.description)
     XCTAssertEqual(false, liveStreamEvent?.hasReplay)
-    XCTAssertNil(liveStreamEvent?.hlsUrl)
+    XCTAssertEqual("http://www.kickstarter.com", liveStreamEvent?.hlsUrl)
     XCTAssertNil(liveStreamEvent?.isRtmp)
     XCTAssertNil(liveStreamEvent?.isScale)
     XCTAssertEqual(false, liveStreamEvent?.liveNow)
@@ -176,5 +178,55 @@ final class LiveStreamEventTests: XCTestCase {
 
     // User
     XCTAssertNil(liveStreamEvent?.user)
+  }
+
+  func testCanoncialComparator() {
+    let now = Date()
+
+    let currentlyLiveStream = .template
+      |> LiveStreamEvent.lens.id .~ 1
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ now
+
+    let futureLiveStreamSoon = .template
+      |> LiveStreamEvent.lens.id .~ 2
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ now.addingTimeInterval(60 * 60)
+
+    let futureLiveStreamWayFuture = .template
+      |> LiveStreamEvent.lens.id .~ 3
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ now.addingTimeInterval(48 * 60 * 60)
+
+    let pastLiveStreamRecent = .template
+      |> LiveStreamEvent.lens.id .~ 4
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ now.addingTimeInterval(-60 * 60)
+
+    let pastLiveStreamWayPast = .template
+      |> LiveStreamEvent.lens.id .~ 5
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ now.addingTimeInterval(-24 * 60 * 60)
+
+    let liveStreamEvents = [
+      futureLiveStreamWayFuture,
+      pastLiveStreamWayPast,
+      currentlyLiveStream,
+      pastLiveStreamRecent,
+      futureLiveStreamSoon,
+      ]
+
+    let sortedLiveStreamEvents = [
+      currentlyLiveStream,
+      futureLiveStreamSoon,
+      futureLiveStreamWayFuture,
+      pastLiveStreamRecent,
+      pastLiveStreamWayPast,
+    ]
+
+    XCTAssertEqual(
+      sortedLiveStreamEvents,
+      liveStreamEvents.sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(now: now))
+    )
   }
 }

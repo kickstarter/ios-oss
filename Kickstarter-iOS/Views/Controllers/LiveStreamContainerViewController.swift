@@ -17,6 +17,8 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var detailsStackView: UIStackView!
+  @IBOutlet private weak var goToProjectButton: UIButton!
+  @IBOutlet private weak var goToProjectButtonContainerView: UIView!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
@@ -24,7 +26,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
@@ -44,12 +45,14 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   public static func configuredWith(project: Project,
                                     liveStreamEvent: LiveStreamEvent,
-                                    refTag: RefTag) -> LiveStreamContainerViewController {
+                                    refTag: RefTag,
+                                    presentedFromProject: Bool) -> LiveStreamContainerViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
                                       liveStreamEvent: liveStreamEvent,
-                                      refTag: refTag)
+                                      refTag: refTag,
+                                      presentedFromProject: presentedFromProject)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
@@ -60,6 +63,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     super.viewDidLoad()
 
     self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -108,10 +112,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
       |> LiveStreamContainerViewController.lens.view.backgroundColor .~ .black
-
-    _  = self.projectImageView
-      |> UIImageView.lens.contentMode .~ .scaleAspectFill
-      |> UIImageView.lens.clipsToBounds .~ true
 
     _  = self.loaderStackView
       |> UIStackView.lens.axis .~ .vertical
@@ -212,12 +212,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
     _  = self.subscribeButton
-      |> whiteBorderButtonStyle
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
-      |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 10.0, leftRight: Styles.grid(2))
-
-    _  = self.subscribeButton.semanticContentAttribute = .forceRightToLeft
+      |> lightSubscribeButtonStyle
 
     _  = self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2
@@ -259,6 +254,10 @@ public final class LiveStreamContainerViewController: UIViewController {
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
           : .init(all: Styles.grid(4))
     }
+
+    _ = self.goToProjectButton
+      |> UIButton.lens.titleColor(forState: .normal) .~ .white
+      |> liveStreamGoToProjectStyle
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -305,7 +304,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.liveStreamViewController?.view.isHidden = $0
     }
 
-    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
+    self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
     self.loaderStackView.rac.hidden = self.viewModel.outputs.loaderStackViewHidden
@@ -353,9 +352,9 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.eventDetailsViewModel.outputs.subscribeButtonImage
       .observeForUI()
-      .observeValues { [weak self] in
-        let imageName = $0.flatMap { $0 }.coalesceWith("")
-        self?.subscribeButton.setImage(UIImage(named: imageName), for: .normal)
+      .observeValues { [weak self] imageName in
+        self?.subscribeButton.setImage(imageName.flatMap { image(named: $0) },
+                                       for: .normal)
     }
 
     self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
@@ -378,6 +377,10 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
   }
 
   private func openLoginTout() {
@@ -434,6 +437,11 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
   }
 
+  private func goTo(project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.present(vc, animated: true, completion: nil)
+  }
+
   // MARK: Subviews
 
   lazy var navBarTitleStackViewBackgroundView = { UIView() }()
@@ -447,10 +455,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
-    closeBarButtonItem.accessibilityLabel = localizedString(
-      key: "Close_live_stream",
-      defaultValue: "Close live stream"
-    )
+    closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
     closeBarButtonItem.accessibilityHint = localizedString(
       key: "Closes_the_live_stream",
@@ -475,6 +480,10 @@ public final class LiveStreamContainerViewController: UIViewController {
   }()
 
   // MARK: Actions
+
+  @objc private func goToProjectButtonPressed() {
+    self.viewModel.inputs.goToProjectButtonPressed()
+  }
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()

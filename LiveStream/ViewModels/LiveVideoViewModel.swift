@@ -23,8 +23,14 @@ internal protocol LiveVideoViewModelInputs {
   /// Call when the OpenTok session is destroy.
   func sessionStreamDestroyed(stream: OTStreamType)
 
+  /// Call when the view disappears.
+  func viewDidDisappear()
+
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when the view will appear.
+  func viewWillAppear()
 }
 
 internal protocol LiveVideoViewModelOutputs {
@@ -42,6 +48,15 @@ internal protocol LiveVideoViewModelOutputs {
 
   /// Emits a stream when the subscriber of that stream should be removed.
   var removeSubscriber: Signal<OTStreamType, NoError> { get }
+
+  /// Emits when all subscribers should be re-subscribed when the view reappears.
+  var resubscribeAllSubscribersToSession: Signal<(), NoError> { get }
+
+  /// Emits to toggle play/pause when the view disappears/reappears.
+  var shouldPauseHlsPlayer: Signal<Bool, NoError> { get }
+
+  /// Emits when all subscribers should be unsubscribed when the view disappears.
+  var unsubscribeAllSubscribersFromSession: Signal<(), NoError> { get }
 }
 
 internal protocol LiveVideoViewModelType {
@@ -85,6 +100,26 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
       self.sessionDidFailWithErrorProperty.signal.skipNil()
         .mapConst(.error(error: .sessionInterrupted))
     )
+
+    let viewReappeared = self.viewWillAppearProperty.signal.skip(first: 1)
+
+    self.shouldPauseHlsPlayer = Signal.combineLatest(
+      Signal.merge(
+        self.viewDidDisappearProperty.signal.mapConst(true),
+        viewReappeared.mapConst(false)
+      ),
+      self.addAndConfigureHLSPlayerWithStreamUrl.signal
+    ).map(first)
+
+    self.unsubscribeAllSubscribersFromSession = Signal.combineLatest(
+      self.viewDidDisappearProperty.signal,
+      createAndConfigureSessionWithConfig
+    ).ignoreValues()
+
+    self.resubscribeAllSubscribersToSession = Signal.combineLatest(
+      viewReappeared,
+      createAndConfigureSessionWithConfig
+    ).ignoreValues()
   }
 
   private let liveStreamTypeProperty = MutableProperty<LiveStreamType?>(nil)
@@ -117,9 +152,19 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
     self.sessionStreamDestroyedProperty.value = stream
   }
 
+  private let viewDidDisappearProperty = MutableProperty()
+  internal func viewDidDisappear() {
+    self.viewDidDisappearProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewWillAppearProperty = MutableProperty()
+  internal func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   internal let addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError>
@@ -127,6 +172,9 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   internal let createAndConfigureSessionWithConfig: Signal<OpenTokSessionConfig, NoError>
   internal let notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError>
   internal let removeSubscriber: Signal<OTStreamType, NoError>
+  internal let resubscribeAllSubscribersToSession: Signal<(), NoError>
+  internal let shouldPauseHlsPlayer: Signal<Bool, NoError>
+  internal let unsubscribeAllSubscribersFromSession: Signal<(), NoError>
 
   internal var inputs: LiveVideoViewModelInputs { return self }
   internal var outputs: LiveVideoViewModelOutputs { return self }

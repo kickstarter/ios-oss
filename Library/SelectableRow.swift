@@ -33,11 +33,17 @@ public extension LensType where Whole == SelectableRow, Part == DiscoveryParams 
   public var category: Lens<SelectableRow, KsApi.Category?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.category
   }
+  public var hasLiveStreams: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params • DiscoveryParams.lens.hasLiveStreams
+  }
   public var includePOTD: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.includePOTD
   }
   public var recommended: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.recommended
+  }
+  public var backed: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params • DiscoveryParams.lens.backed
   }
 }
 
