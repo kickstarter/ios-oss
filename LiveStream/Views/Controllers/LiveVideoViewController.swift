@@ -46,6 +46,23 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    self.viewModel.inputs.viewDidDisappear()
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.videoGridView.frame = self.view.bounds
+  }
+
   //swiftlint:disable:next function_body_length
   public func bindVM() {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
@@ -107,17 +124,6 @@ public final class LiveVideoViewController: UIViewController {
     }
   }
 
-  public override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-
-    self.viewModel.inputs.viewDidDisappear()
-  }
-
-  public override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    self.viewModel.inputs.viewWillAppear()
-  }
 
   private func configureHLSPlayer(streamUrl: String) {
     guard let url = URL(string: streamUrl) else { return }
@@ -191,13 +197,6 @@ public final class LiveVideoViewController: UIViewController {
     self.removeVideoView(view: subscriber.view)
     self.session?.unsubscribe(subscriber, error: nil)
     self.subscribers.index(of: subscriber).doIfSome { self.subscribers.remove(at: $0) }
-  }
-
-  // MARK: Actions
-
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.videoGridView.frame = self.view.bounds
   }
 
   private lazy var videoGridView: VideoGridView = {
