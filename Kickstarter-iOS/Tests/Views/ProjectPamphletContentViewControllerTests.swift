@@ -241,7 +241,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
       [Device.phone4_7inch, Device.pad].forEach { device in
-        let minimal = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let minimal = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
         let (minimalParent, _) = traitControllers(
           device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
         )
