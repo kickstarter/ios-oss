@@ -171,6 +171,9 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the shipping container view should be hidden.
   var shippingInputStackViewHidden: Signal<Bool, NoError> { get }
 
+  /// Emits a boolean to determine if shipping loader should animate or not.
+  var shippingIsLoading: Signal<Bool, NoError> { get }
+
   /// Emits a string that should be put into the shipping locations label.
   var shippingLocationsLabelText: Signal<String, NoError> { get }
 
@@ -224,8 +227,8 @@ RewardPledgeViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let isLoading = MutableProperty(false)
-    self.pledgeIsLoading = isLoading.signal
+    let shippingIsLoadingProperty = MutableProperty(false)
+    self.shippingIsLoading = shippingIsLoadingProperty.signal
 
     let shippingRulesEvent = projectAndReward
       .switchMap { (project, reward) -> SignalProducer<Event<[ShippingRule], ErrorEnvelope>, NoError> in
@@ -237,12 +240,13 @@ RewardPledgeViewModelOutputs {
           projectId: project.id, rewardId: reward.id
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          //.on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
+          .on(starting: { shippingIsLoadingProperty.value = true },
+              terminated: { shippingIsLoadingProperty.value = false }
+          )
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
     }
-    // todo: if using separate loader, create output to enable shipping dropdown
 
     let shippingRules = shippingRulesEvent.values()
 
@@ -446,6 +450,9 @@ RewardPledgeViewModelOutputs {
       .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
       .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
+    let isLoading = MutableProperty(false)
+    self.pledgeIsLoading = isLoading.signal
+
     self.loadingOverlayIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       self.pledgeIsLoading.map(negate)
@@ -554,7 +561,7 @@ RewardPledgeViewModelOutputs {
       updatePledgeEvent.errors(),
       createApplePayPledgeEvent.errors(),
       changePaymentMethodEvent.errors()
-      )
+    )
 
     self.showAlert = Signal.merge(
       pledgeErrors
@@ -562,13 +569,11 @@ RewardPledgeViewModelOutputs {
           let shouldDismiss = (error.errorEnvelope.errorMessages.first == nil
             || error.errorEnvelope.ksrCode == .UnknownCode)
           return (message: error.errorEnvelope.errorMessages.first ?? Strings.general_error_something_wrong(),
-                          shouldDismiss: shouldDismiss)
+                  shouldDismiss: shouldDismiss)
       },
       shippingRulesEvent.errors()
         .map { _ in
-          (message: localizedString(key: "We_were_unable_to_load_the_shipping_destinations",
-                                    defaultValue: "We were unable to load the shipping destinations.\n" +
-                                                  "Please try again later."),
+          (message: Strings.We_were_unable_to_load_the_shipping_destinations(),
            shouldDismiss: true) }
     )
 
@@ -883,6 +888,7 @@ RewardPledgeViewModelOutputs {
   public let setStripePublishableKey: Signal<String, NoError>
   public let shippingAmountLabelText: Signal<String, NoError>
   public let shippingInputStackViewHidden: Signal<Bool, NoError>
+  public let shippingIsLoading: Signal<Bool, NoError>
   public let shippingLocationsLabelText: Signal<String, NoError>
   public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
   public var titleLabelHidden: Signal<Bool, NoError> {

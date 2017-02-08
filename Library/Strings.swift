@@ -445,8 +445,8 @@ public enum Strings {
    "Backed by people you follow"
 
    - **es**: "Patrocinados por gente que sigues"
-   - **de**: "Unterstützt von Leuten, denen du folgst"
-   - **fr**: "Soutenus par les personnes que vous suivez"
+   - **de**: "Unterstützt von deinen Freunden"
+   - **fr**: "Soutenus par ceux que vous suivez"
    - **en**: "Backed by people you follow"
   */
   public static func Backed_by_people_you_follow() -> String {
@@ -767,6 +767,22 @@ backers"
     )
   }
   /**
+   "Couldn‘t open live stream. Try again later."
+
+   - **es**: "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde."
+   - **de**: "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal."
+   - **fr**: "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard."
+   - **en**: "Couldn‘t open live stream. Try again later."
+  */
+  public static func Couldnt_open_live_stream_Try_again_later() -> String {
+    return localizedString(
+      key: "Couldnt_open_live_stream_Try_again_later",
+      defaultValue: "Couldn‘t open live stream. Try again later.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Couldn't remove attachment"
 
    - **es**: "No se pudo remover el anexo"
@@ -991,17 +1007,17 @@ backers"
     )
   }
   /**
-   "Estimated to fulfill:"
+   "Estimated delivery:"
 
-   - **es**: "Fecha de envío:"
-   - **de**: "Versanddatum:"
-   - **fr**: "Livraison prévue :"
-   - **en**: "Estimated to fulfill:"
+   - **es**: "Entrega estimada:"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **fr**: "Livraison prévue :"
+   - **en**: "Estimated delivery:"
   */
-  public static func Estimated_to_fulfill() -> String {
+  public static func Estimated_delivery() -> String {
     return localizedString(
-      key: "Estimated_to_fulfill",
-      defaultValue: "Estimated to fulfill:",
+      key: "Estimated_delivery",
+      defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
     )
@@ -1196,6 +1212,22 @@ backers"
       defaultValue: "%{filter_name}: %{project_count} live projects",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
+    )
+  }
+  /**
+   "Filters by projects with upcoming and past live streams."
+
+   - **es**: "Ordenar por proyectos con live streams futuros/pasados."
+   - **de**: "Filtert nach zukünftigen und vergangenen Live-Streams."
+   - **fr**: "Filtrage des projets ayant des diffusions en direct à venir et passées."
+   - **en**: "Filters by projects with upcoming and past live streams."
+  */
+  public static func Filters_by_projects_with_upcoming_and_past_live_streams() -> String {
+    return localizedString(
+      key: "Filters_by_projects_with_upcoming_and_past_live_streams",
+      defaultValue: "Filters by projects with upcoming and past live streams.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -1647,6 +1679,22 @@ backers"
     )
   }
   /**
+   "Go to project page"
+
+   - **es**: "Ir a la página de proyecto"
+   - **de**: "Zu Projektseite"
+   - **fr**: "Accéder à la page de projet"
+   - **en**: "Go to project page"
+  */
+  public static func Go_to_project_page() -> String {
+    return localizedString(
+      key: "Go_to_project_page",
+      defaultValue: "Go to project page",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -1868,6 +1916,22 @@ with friends."
     return localizedString(
       key: "Live_Stream",
       defaultValue: "Live Stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Live now"
+
+   - **es**: "En vivo"
+   - **de**: "Jetzt live"
+   - **fr**: "En direct en ce moment"
+   - **en**: "Live now"
+  */
+  public static func Live_now() -> String {
+    return localizedString(
+      key: "Live_now",
+      defaultValue: "Live now",
       count: nil,
       substitutions: [:]
     )
@@ -2694,6 +2758,38 @@ daring ideas."
     )
   }
   /**
+   "Replay live stream with<br><b>%{creator_name}</b>"
+
+   - **es**: "Repetir live stream de<br><b>%{creator_name}</b>"
+   - **de**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **fr**: "Revoir la diffusion en direct de <br><b>%{creator_name}</b>"
+   - **en**: "Replay live stream with<br><b>%{creator_name}</b>"
+  */
+  public static func Replay_live_stream_with_creator_name(creator_name: String) -> String {
+    return localizedString(
+      key: "Replay_live_stream_with_creator_name",
+      defaultValue: "Replay live stream with<br><b>%{creator_name}</b>",
+      count: nil,
+      substitutions: ["creator_name": creator_name]
+    )
+  }
+  /**
+   "Replay past live streams"
+
+   - **es**: "Repetir live streams pasados"
+   - **de**: "Replay past live streams"
+   - **fr**: "Revoir des diffusions en direct passées"
+   - **en**: "Replay past live streams"
+  */
+  public static func Replay_past_live_streams() -> String {
+    return localizedString(
+      key: "Replay_past_live_streams",
+      defaultValue: "Replay past live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **es**: "%{reward_survey_count} cuestionarios"
@@ -3461,6 +3557,27 @@ catch your eye?"
       defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
+    )
+  }
+  /**
+   "We were unable to load the shipping destinations.
+Please try again later."
+
+   - **es**: "No se pudieron cargar los destinos de envío.
+Por favor inténtalo de nuevo más tarde."
+   - **de**: "We were unable to load the shipping destinations.
+Please try again later."
+   - **fr**: "Nous n'avons pas été en mesure de charger les destinations d'expédition.
+Veuillez réessayer ultérieurement."
+   - **en**: "We were unable to load the shipping destinations.
+Please try again later."
+  */
+  public static func We_were_unable_to_load_the_shipping_destinations() -> String {
+    return localizedString(
+      key: "We_were_unable_to_load_the_shipping_destinations",
+      defaultValue: "We were unable to load the shipping destinations.\nPlease try again later.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -8474,9 +8591,9 @@ catch your eye?"
   /**
    "Successfully funded!"
 
-   - **es**: "¡Financiado con éxito!"
-   - **de**: "Erfolgreich finanziert!"
-   - **fr**: "Intégralement financé !"
+   - **es**: "¡Financiado!"
+   - **de**: "Finanziert"
+   - **fr**: "Financé !"
    - **en**: "Successfully funded!"
   */
   public static func discovery_baseball_card_status_banner_successful() -> String {
@@ -14812,7 +14929,7 @@ Thank you for your support!"
 
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
-   - **fr**: "Découvrez plus de projets."
+   - **fr**: "Découvrir plus de projets"
    - **en**: "Discover more projects."
   */
   public static func social_following_header_friends_recommend_the_best_projects() -> String {

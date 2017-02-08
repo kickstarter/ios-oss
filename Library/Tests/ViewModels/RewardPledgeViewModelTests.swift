@@ -2108,8 +2108,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.showAlertMessage.assertValues(["We were unable to load the shipping destinations.\n" +
-          "Please try again later."])
+        self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
         self.showAlertShouldDismiss.assertValues([true])
         self.dismissViewController.assertValueCount(0)
 
