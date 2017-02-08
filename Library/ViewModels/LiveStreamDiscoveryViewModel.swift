@@ -59,17 +59,12 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.showAlert = projectAndTappedLiveStreamEvent.errors()
       .mapConst(Strings.Couldnt_open_live_stream_Try_again_later())
 
-    let periodicRefresh = self.viewDidLoadProperty.signal.switchMap {
-      timer(interval: .seconds(60*5), on: AppEnvironment.current.scheduler)
-    }
-
     let didNavigateBack = self.viewWillAppearProperty.signal.skip(first: 1)
 
     let refreshes = Signal.merge(
       didNavigateBack.ignoreValues(),
       appWillEnterForegroundProperty.signal,
-      self.viewDidLoadProperty.signal,
-      periodicRefresh.ignoreValues()
+      self.viewDidLoadProperty.signal
     )
 
     let freshLiveStreamEvents = Signal.combineLatest(

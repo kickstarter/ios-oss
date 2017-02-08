@@ -190,16 +190,6 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
 
       self.loadDataSource.assertValueCount(5)
       XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
-
-      self.scheduler.advance(by: .seconds(10))
-
-      self.loadDataSource.assertValueCount(5)
-      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
-
-      self.scheduler.advance(by: .seconds(60*5))
-
-      self.loadDataSource.assertValueCount(6)
-      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
     }
   }
 }
