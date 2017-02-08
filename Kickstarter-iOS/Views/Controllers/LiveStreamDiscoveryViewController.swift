@@ -30,12 +30,10 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default.addObserver(
-      forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil,
-      queue: nil) { [weak self ]_ in
+    NotificationCenter.default
+      .addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self ]_ in
         guard let _self = self else { return }
         _self.viewModel.inputs.appWillEnterForeground()
-
     }
 
     self.viewModel.outputs.loadDataSource
