@@ -15,6 +15,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   private let countdownDateLabelText = TestObserver<String, NoError>()
   private let days = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
+  private let goToProjectButtonContainerHidden = TestObserver<Bool, NoError>()
   private let hours = TestObserver<String, NoError>()
   private let minutes = TestObserver<String, NoError>()
   private let projectImageUrl = TestObserver<String?, NoError>()
@@ -33,6 +34,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.vm.outputs.countdownDateLabelText.observe(self.countdownDateLabelText.observer)
     self.vm.outputs.daysString.observe(self.days.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
+    self.vm.outputs.goToProjectButtonContainerHidden.observe(self.goToProjectButtonContainerHidden.observer)
     self.vm.outputs.hoursString.observe(self.hours.observer)
     self.vm.outputs.minutesString.observe(self.minutes.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }
@@ -52,7 +54,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.creator.name .~ "Creator Name"
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.upcomingIntroText.assertValues(["Upcoming with<br/><b>Creator Name</b>"])
@@ -62,7 +67,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
@@ -76,7 +84,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.countdownDateLabelText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.countdownDateLabelText.assertValues(["Oct 4, 9:40 AM GMT"])
@@ -92,7 +103,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     self.minutes.assertValueCount(0)
     self.seconds.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.days.assertValues(["02"])
@@ -115,7 +129,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
 
     self.countdownAccessibilityLabel.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.countdownAccessibilityLabel.assertValues(["The live stream will start in 2 days."])
@@ -129,7 +146,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
     let event = LiveStreamEvent.template
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.pushLiveStreamViewControllerProject.assertValueCount(0)
@@ -155,7 +175,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
   }
 
   func testClose() {
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.closeButtonTapped()
 
@@ -171,7 +194,10 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Viewed Live Stream Countdown"], self.trackingClient.events)
@@ -193,26 +219,54 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.category.id .~ 123
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.categoryId.assertValue(123)
   }
 
   func testProjectImageUrl() {
-    let project = Project.template
+    let event = .template
+      |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
 
-    self.vm.inputs.configureWith(project: project, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: event,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrl.assertValues([nil, "http://www.kickstarter.com/full.jpg"])
   }
 
   func testViewControllerTitle() {
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.viewControllerTitle.assertValue("Live stream countdown")
+  }
+
+  func testGoToProjectButtonContainerHidden_WhenPresentedFromProject() {
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+    self.goToProjectButtonContainerHidden.assertValues([true])
+  }
+
+  func testGoToProjectButtonContainerHidden_WhenNotPresentedFromProject() {
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: false)
+    self.vm.inputs.viewDidLoad()
+    self.goToProjectButtonContainerHidden.assertValues([false])
   }
 }
 

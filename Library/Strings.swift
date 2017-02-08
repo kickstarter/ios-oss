@@ -445,8 +445,8 @@ public enum Strings {
    "Backed by people you follow"
 
    - **es**: "Patrocinados por gente que sigues"
-   - **de**: "Unterstützt von Leuten, denen du folgst"
-   - **fr**: "Soutenus par les personnes que vous suivez"
+   - **de**: "Unterstützt von deinen Freunden"
+   - **fr**: "Soutenus par ceux que vous suivez"
    - **en**: "Backed by people you follow"
   */
   public static func Backed_by_people_you_follow() -> String {
@@ -762,6 +762,22 @@ backers"
     return localizedString(
       key: "Couldnt_add_attachment",
       defaultValue: "Couldn't add attachment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Couldn‘t open live stream. Try again later."
+
+   - **es**: "Couldn‘t open live stream. Try again later."
+   - **de**: "Couldn‘t open live stream. Try again later."
+   - **fr**: "Couldn‘t open live stream. Try again later."
+   - **en**: "Couldn‘t open live stream. Try again later."
+  */
+  public static func Couldnt_open_live_stream_Try_again_later() -> String {
+    return localizedString(
+      key: "Couldnt_open_live_stream_Try_again_later",
+      defaultValue: "Couldn‘t open live stream. Try again later.",
       count: nil,
       substitutions: [:]
     )
@@ -1196,6 +1212,22 @@ backers"
       defaultValue: "%{filter_name}: %{project_count} live projects",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
+    )
+  }
+  /**
+   "Filters by projects with upcoming and past live streams."
+
+   - **es**: "Filters by projects with upcoming and past live streams."
+   - **de**: "Filters by projects with upcoming and past live streams."
+   - **fr**: "Filters by projects with upcoming and past live streams."
+   - **en**: "Filters by projects with upcoming and past live streams."
+  */
+  public static func Filters_by_projects_with_upcoming_and_past_live_streams() -> String {
+    return localizedString(
+      key: "Filters_by_projects_with_upcoming_and_past_live_streams",
+      defaultValue: "Filters by projects with upcoming and past live streams.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -1647,6 +1679,22 @@ backers"
     )
   }
   /**
+   "Go to project page"
+
+   - **es**: "Go to project page"
+   - **de**: "Go to project page"
+   - **fr**: "Go to project page"
+   - **en**: "Go to project page"
+  */
+  public static func Go_to_project_page() -> String {
+    return localizedString(
+      key: "Go_to_project_page",
+      defaultValue: "Go to project page",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -1868,6 +1916,22 @@ with friends."
     return localizedString(
       key: "Live_Stream",
       defaultValue: "Live Stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Live now"
+
+   - **es**: "Live now"
+   - **de**: "Live now"
+   - **fr**: "Live now"
+   - **en**: "Live now"
+  */
+  public static func Live_now() -> String {
+    return localizedString(
+      key: "Live_now",
+      defaultValue: "Live now",
       count: nil,
       substitutions: [:]
     )
@@ -2689,6 +2753,38 @@ daring ideas."
     return localizedString(
       key: "Replay",
       defaultValue: "Replay",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Replay live stream with<br><b>%{creator_name}</b>"
+
+   - **es**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **de**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **fr**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **en**: "Replay live stream with<br><b>%{creator_name}</b>"
+  */
+  public static func Replay_live_stream_with_creator_name(creator_name: String) -> String {
+    return localizedString(
+      key: "Replay_live_stream_with_creator_name",
+      defaultValue: "Replay live stream with<br><b>%{creator_name}</b>",
+      count: nil,
+      substitutions: ["creator_name": creator_name]
+    )
+  }
+  /**
+   "Replay past live streams"
+
+   - **es**: "Replay past live streams"
+   - **de**: "Replay past live streams"
+   - **fr**: "Replay past live streams"
+   - **en**: "Replay past live streams"
+  */
+  public static func Replay_past_live_streams() -> String {
+    return localizedString(
+      key: "Replay_past_live_streams",
+      defaultValue: "Replay past live streams",
       count: nil,
       substitutions: [:]
     )
@@ -8474,9 +8570,9 @@ catch your eye?"
   /**
    "Successfully funded!"
 
-   - **es**: "¡Financiado con éxito!"
-   - **de**: "Erfolgreich finanziert!"
-   - **fr**: "Intégralement financé !"
+   - **es**: "¡Financiado!"
+   - **de**: "Finanziert"
+   - **fr**: "Financé !"
    - **en**: "Successfully funded!"
   */
   public static func discovery_baseball_card_status_banner_successful() -> String {
@@ -14812,7 +14908,7 @@ Thank you for your support!"
 
    - **es**: "Descubre más proyectos."
    - **de**: "Noch mehr Projekte erkunden."
-   - **fr**: "Découvrez plus de projets."
+   - **fr**: "Découvrir plus de projets"
    - **en**: "Discover more projects."
   */
   public static func social_following_header_friends_recommend_the_best_projects() -> String {

@@ -279,9 +279,17 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   filters.append(.defaults |> DiscoveryParams.lens.includePOTD .~ true)
   filters.append(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
 
+  if AppEnvironment.current.config?.features["ios_live_stream_discovery"] != .some(false) {
+    filters.append(.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
+  }
+
   if user != nil {
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
-    filters.append(.defaults |> DiscoveryParams.lens.recommended .~ true)
+    filters.append(
+      .defaults
+        |> DiscoveryParams.lens.recommended .~ true
+        |> DiscoveryParams.lens.backed .~ false
+    )
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
   }
 

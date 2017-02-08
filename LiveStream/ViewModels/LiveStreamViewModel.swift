@@ -107,7 +107,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       observedScaleNumberOfPeopleWatchingChanged
     )
 
-    let maxOpenTokViewers = liveStreamEvent.map { $0.maxOpenTokViewers }.skipNil()
+    let maxOpenTokViewers = liveStreamEvent
+      .map { $0.maxOpenTokViewers }
+      .skipNil()
 
     let didLiveStreamEndedNormally = liveStreamEvent
       .map(didEndNormally(event:))
@@ -229,21 +231,30 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       createObservers
       ).map { dbRef, event, _ in (dbRef, event) }
 
+    let numberOfPeopleWatchingRef = liveStreamEvent
+      .filter { $0.isScale == .some(false) }
+      .map { $0.firebase?.numberPeopleWatchingPath }
+      .skipNil()
+      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
+
     self.createNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      firebase.map { FirebaseRefConfig(ref: $0.numberPeopleWatchingPath, orderBy: "") },
-      createObservers,
-      liveStreamEvent.map { $0.isScale }.skipNil().filter(isFalse)
-      )
-      .map { dbRef, event, _, _ in (dbRef, event) }
+      numberOfPeopleWatchingRef,
+      createObservers
+      ).map { dbRef, event, _ in (dbRef, event) }
+
+    let scaleNumberOfPeopleWatchingRef = liveStreamEvent
+      .filter { $0.isScale == .some(true) }
+      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
+      .skipNil()
+      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
 
     self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
       databaseRef,
-      firebase.map { FirebaseRefConfig(ref: $0.scaleNumberPeopleWatchingPath, orderBy: "") },
-      createObservers,
-      liveStreamEvent.map { $0.isScale }.skipNil().filter(isTrue)
+      scaleNumberOfPeopleWatchingRef,
+      createObservers
       )
-      .map { dbRef, event, _, _ in (dbRef, event) }
+      .map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
       .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())

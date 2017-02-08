@@ -1,4 +1,8 @@
 import KsApi
+import LiveStream
+import Prelude
+import ReactiveSwift
+import Result
 
 /**
  Determines if the personalization data in the project implies that the current user is backing the
@@ -101,4 +105,47 @@ public func currencySymbol(forCountry country: Project.Country) -> String {
     // Everything else uses the country code prefix.
     return "\(String.nbsp)\(country.countryCode)\(country.currencySymbol)\(String.nbsp)"
   }
+}
+
+/// Returns a signal producer that emits, every second, the number of days/hours/minutes/seconds until 
+/// a date is reached, at which point it completes.
+///
+/// - parameter untilDate: The date to countdown to.
+///
+/// - returns: A signal producer.
+public func countdownProducer(to date: Date)
+  -> SignalProducer<(day: String, hour: String, minute: String, second: String), NoError> {
+
+    func formattedComponents(dateComponents: DateComponents)
+      -> (day: String, hour: String, minute: String, second: String) {
+
+        return (
+          day: String(format: "%02d", max(0, dateComponents.day ?? 0)),
+          hour: String(format: "%02d", max(0, dateComponents.hour ?? 0)),
+          minute: String(format: "%02d", max(0, dateComponents.minute ?? 0)),
+          second: String(format: "%02d", max(0, dateComponents.second ?? 0))
+        )
+    }
+
+    let now = AppEnvironment.current.scheduler.currentDate
+    let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
+
+    // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
+    let everySecond = SignalProducer<(), NoError>(value: ())
+      .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1000)), on: AppEnvironment.current.scheduler)
+      .flatMap { timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
+
+    return SignalProducer.merge(
+      SignalProducer<Date, NoError>(value: now),
+      everySecond
+      )
+      .map { currentDate in
+        AppEnvironment.current.calendar.dateComponents(
+          [.day, .hour, .minute, .second],
+          from: currentDate,
+          to: Date(timeIntervalSince1970: ceil(date.timeIntervalSince1970))
+        )
+      }
+      .take(while: { ($0.second ?? 0) >= 0 })
+      .map(formattedComponents(dateComponents:))
 }

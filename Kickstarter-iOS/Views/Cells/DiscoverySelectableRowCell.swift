@@ -4,6 +4,7 @@ import UIKit
 
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var filterTitleLabel: UILabel!
+  @IBOutlet private weak var liveIndicatorImageView: UIImageView!
 
   private var rowIsSelected: Bool = false
 
@@ -11,6 +12,11 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     if value.row.params.staffPicks == true {
       self.filterTitleLabel.text = Strings.Projects_We_Love()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_projects_we_love()
+    } else if value.row.params.hasLiveStreams == .some(true) {
+      self.filterTitleLabel.text = "Kickstarter Live"
+      self.filterTitleLabel.accessibilityLabel =
+        Strings.Filters_by_projects_with_upcoming_and_past_live_streams()
+
     } else if value.row.params.starred == true {
       self.filterTitleLabel.text = Strings.Saved()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_saved_projects()
@@ -32,6 +38,10 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     self.rowIsSelected = value.row.isSelected
+    self.liveIndicatorImageView.isHidden = value.row.params.hasLiveStreams != .some(true)
+    if !self.liveIndicatorImageView.isHidden {
+      self.liveIndicatorImageView.attachLiveNowAnimation()
+    }
   }
 
   override func bindStyles() {

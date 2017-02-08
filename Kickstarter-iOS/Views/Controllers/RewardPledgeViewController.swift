@@ -612,6 +612,12 @@ internal final class RewardPledgeViewController: UIViewController {
     }
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.viewModel.inputs.descriptionLabelIsTruncated(self.descriptionLabel.isTruncated())
+  }
+
   @objc fileprivate func shippingButtonTapped() {
     self.viewModel.inputs.shippingButtonTapped()
   }
@@ -631,7 +637,6 @@ internal final class RewardPledgeViewController: UIViewController {
   @objc fileprivate func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
-
   @objc fileprivate func expandRewardDescriptionTapped() {
     self.viewModel.inputs.expandDescriptionTapped()
   }
