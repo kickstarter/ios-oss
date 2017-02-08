@@ -124,7 +124,6 @@ public final class LiveVideoViewController: UIViewController {
     }
   }
 
-
   private func configureHLSPlayer(streamUrl: String) {
     guard let url = URL(string: streamUrl) else { return }
 
