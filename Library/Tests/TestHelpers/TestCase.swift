@@ -41,6 +41,7 @@ internal class TestCase: FBSnapshotTestCase {
       currentUser: nil,
       dateType: dateType,
       debounceInterval: .seconds(0),
+      device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),

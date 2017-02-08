@@ -494,6 +494,12 @@ AppDelegateViewModelOutputs {
     self.crashManagerDidFinishSendingCrashReportProperty.signal
       .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
 
+    self.applicationLaunchOptionsProperty.signal
+      .take(first: 1)
+      .observeValues { _ in
+        visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
+    }
+
     Signal.combineLatest(
       performShortcutItem.enumerated(),
       self.setApplicationShortcutItems
@@ -870,4 +876,35 @@ private func liveStreamData(fromNavigation nav: Navigation)
         return (project, liveStreamEvent, refTag)
       }
       .skipNil()
+}
+
+private func visitorCookies() -> [HTTPCookie] {
+
+  let uuidString = (AppEnvironment.current.device.identifierForVendor ?? UUID()).uuidString
+
+  return [HTTPCookie?].init(arrayLiteral:
+    HTTPCookie(
+      properties: [
+        .name: "vis",
+        .value: uuidString,
+        .domain: AppEnvironment.current.apiService.serverConfig.webBaseUrl.host as Any,
+        .path: "/",
+        .version: 0,
+        .expires: Date.distantFuture,
+        .secure: true,
+        ]
+    ),
+    HTTPCookie(
+      properties: [
+        .name: "vis",
+        .value: uuidString,
+        .domain: AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host as Any,
+        .path: "/",
+        .version: 0,
+        .expires: Date.distantFuture,
+        .secure: true,
+        ]
+    )
+  )
+  .compact()
 }
