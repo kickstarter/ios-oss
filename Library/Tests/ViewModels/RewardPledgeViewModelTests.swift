@@ -1337,7 +1337,16 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
+    self.itemsContainerHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
     self.itemsContainerHidden.assertValues([true])
+    self.readMoreContainerViewHidden.assertValues([false])
 
     self.vm.inputs.expandDescriptionTapped()
 
@@ -1723,15 +1732,30 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.pledgeTextFieldText.assertValues(["5"])
   }
 
+  func testReadMoreContainerViewHidden_descriptionTruncated() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertValues([false])
+  }
+
   func testReadMoreContainerViewHidden() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.readMoreContainerViewHidden.assertValues([false])
+    self.vm.inputs.descriptionLabelIsTruncated(false)
 
-    self.vm.inputs.expandDescriptionTapped()
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
 
-    self.readMoreContainerViewHidden.assertValues([false, true])
+    self.vm.inputs.descriptionLabelIsTruncated(false)
+
+    self.readMoreContainerViewHidden.assertValues([true])
   }
 
   func testReadMoreContainerViewHidden_NoReward() {
