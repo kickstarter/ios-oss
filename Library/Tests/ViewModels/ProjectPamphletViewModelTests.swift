@@ -53,6 +53,15 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project, project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
     self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [.template]])
+
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [.template],
+                                                                         [.template]])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -72,6 +81,14 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project, project])
     self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
     self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template]])
+
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [.template]])
   }
 
   func testStatusBar() {
