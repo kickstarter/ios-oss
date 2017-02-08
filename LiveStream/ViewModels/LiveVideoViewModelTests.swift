@@ -19,7 +19,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
   private let notifyDelegateOfPlaybackStateChange = TestObserver<LiveVideoPlaybackState, NoError>()
   private let removeSubscriberStreamId = TestObserver<String, NoError>()
   private let resubscribeAllSubscribersToSession = TestObserver<(), NoError>()
-  private let setHlsToPlaybackState = TestObserver<Bool, NoError>()
+  private let shouldPauseHlsPlayer = TestObserver<Bool, NoError>()
   private let unsubscribeAllSubscribersFromSession = TestObserver<(), NoError>()
 
   override func setUp() {
@@ -35,7 +35,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.vm.outputs.removeSubscriber.map { $0.streamId }.observe(self.removeSubscriberStreamId.observer)
     self.vm.outputs.resubscribeAllSubscribersToSession.observe(
       self.resubscribeAllSubscribersToSession.observer)
-    self.vm.outputs.setHlsToPlaybackState.observe(self.setHlsToPlaybackState.observer)
+    self.vm.outputs.shouldPauseHlsPlayer.observe(self.shouldPauseHlsPlayer.observer)
     self.vm.outputs.unsubscribeAllSubscribersFromSession.observe(
       self.unsubscribeAllSubscribersFromSession.observer)
   }
@@ -112,7 +112,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     self.createAndConfigureSessionWithConfig.assertValueCount(0)
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
 
     self.vm.inputs.configureWith(liveStreamType: .openTok(sessionConfig: sessionConfig))
@@ -121,19 +121,19 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     self.createAndConfigureSessionWithConfig.assertValue(sessionConfig)
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
 
     self.vm.inputs.viewDidDisappear()
 
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(1)
 
     self.vm.inputs.viewWillAppear()
 
     self.resubscribeAllSubscribersToSession.assertValueCount(1)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(1)
   }
 
@@ -142,7 +142,7 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValueCount(0)
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
 
     self.vm.inputs.configureWith(liveStreamType: .hlsStream(hlsStreamUrl: streamUrl))
@@ -151,19 +151,19 @@ internal final class LiveVideoViewModelTests: XCTestCase {
 
     self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
 
     self.vm.inputs.viewDidDisappear()
 
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValues([false])
+    self.shouldPauseHlsPlayer.assertValues([true])
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
 
     self.vm.inputs.viewWillAppear()
 
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
-    self.setHlsToPlaybackState.assertValues([false, true])
+    self.shouldPauseHlsPlayer.assertValues([true, false])
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
   }
 }

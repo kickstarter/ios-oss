@@ -113,7 +113,7 @@ public final class LiveVideoViewController: UIViewController {
         }
     }
 
-    self.viewModel.outputs.setHlsToPlaybackState
+    self.viewModel.outputs.shouldPauseHlsPlayer
       .observeForUI()
       .observeValues { [weak self] pause in
         if pause {
