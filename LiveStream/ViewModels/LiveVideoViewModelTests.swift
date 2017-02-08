@@ -33,9 +33,11 @@ internal final class LiveVideoViewModelTests: XCTestCase {
     self.vm.outputs.notifyDelegateOfPlaybackStateChange
       .observe(self.notifyDelegateOfPlaybackStateChange.observer)
     self.vm.outputs.removeSubscriber.map { $0.streamId }.observe(self.removeSubscriberStreamId.observer)
-    self.vm.outputs.resubscribeAllSubscribersToSession.observe(self.resubscribeAllSubscribersToSession.observer)
+    self.vm.outputs.resubscribeAllSubscribersToSession.observe(
+      self.resubscribeAllSubscribersToSession.observer)
     self.vm.outputs.toggleHlsPause.observe(self.toggleHlsPause.observer)
-    self.vm.outputs.unsubscribeAllSubscribersFromSession.observe(self.unsubscribeAllSubscribersFromSession.observer)
+    self.vm.outputs.unsubscribeAllSubscribersFromSession.observe(
+      self.unsubscribeAllSubscribersFromSession.observer)
   }
 
   override func tearDown() {

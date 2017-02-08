@@ -46,6 +46,7 @@ public final class LiveVideoViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  //swiftlint:disable:next function_body_length
   public func bindVM() {
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
