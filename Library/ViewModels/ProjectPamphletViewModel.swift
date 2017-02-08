@@ -70,14 +70,11 @@ ProjectPamphletViewModelOutputs {
     let refTag = self.refTagProperty.signal
       .map { $0.map(cleanUp(refTag:)) }
 
-    let projectWhenViewAppears = project.takeWhen(
-      self.viewWillAppearAnimated.signal
-    )
-
-    let liveStreamEventsFetch = Signal.merge(
+    let liveStreamEventsFetch = Signal.combineLatest(
       project.take(first: 1),
-      projectWhenViewAppears
+      self.viewWillAppearAnimated.signal
       )
+      .map(first)
       .switchMap { project -> SignalProducer<LiveStreamEventsEnvelope, NoError> in
         AppEnvironment.current.liveStreamService
           .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
