@@ -230,9 +230,6 @@ RewardPledgeViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let shippingIsLoadingProperty = MutableProperty(false)
-    self.shippingIsLoading = shippingIsLoadingProperty.signal
-
     let shippingRulesEvent = projectAndReward
       .switchMap { (project, reward) -> SignalProducer<Event<[ShippingRule], ErrorEnvelope>, NoError> in
         guard reward != Reward.noReward else {
@@ -243,13 +240,15 @@ RewardPledgeViewModelOutputs {
           projectId: project.id, rewardId: reward.id
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { shippingIsLoadingProperty.value = true },
-              terminated: { shippingIsLoadingProperty.value = false }
-          )
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
     }
+
+    self.shippingIsLoading = Signal.merge(
+      projectAndReward.map { _, reward in reward != Reward.noReward },
+      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
+    )
 
     let shippingRules = shippingRulesEvent.values()
 

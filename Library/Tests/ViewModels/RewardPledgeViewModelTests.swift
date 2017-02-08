@@ -64,6 +64,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
   fileprivate let shippingAmountLabelText = TestObserver<String, NoError>()
   fileprivate let shippingInputStackViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let shippingIsLoading = TestObserver<Bool, NoError>()
   fileprivate let shippingLocationsLabelText = TestObserver<String, NoError>()
   fileprivate let showAlertMessage = TestObserver<String, NoError>()
   fileprivate let showAlertShouldDismiss = TestObserver<Bool, NoError>()
@@ -117,6 +118,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.shippingAmountLabelText.observe(self.shippingAmountLabelText.observer)
     self.vm.outputs.shippingInputStackViewHidden.observe(self.shippingInputStackViewHidden.observer)
+    self.vm.outputs.shippingIsLoading.observe(self.shippingIsLoading.observer)
     self.vm.outputs.shippingLocationsLabelText.observe(self.shippingLocationsLabelText.observer)
     self.vm.outputs.showAlert.map(first).observe(self.showAlertMessage.observer)
     self.vm.outputs.showAlert.map(second).observe(self.showAlertShouldDismiss.observer)
@@ -1379,7 +1381,13 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
+    self.shippingIsLoading.assertValues([false], "Shipping loader emits false on no reward.")
+
     self.minimumLabelText.assertValues(["Pledge $1 or more"])
+
+    self.scheduler.advance()
+
+    self.shippingIsLoading.assertValues([false], "Shipping loader does not emit.")
   }
 
   func testNavigationTitle_NonBacker_NoReward() {
@@ -2128,10 +2136,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
         self.vm.inputs.viewDidLoad()
 
+        self.shippingIsLoading.assertValues([true])
         self.showAlertMessage.assertValueCount(0)
 
         self.scheduler.advance()
 
+        self.shippingIsLoading.assertValues([true, false])
         self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
         self.showAlertShouldDismiss.assertValues([true])
         self.dismissViewController.assertValueCount(0)
