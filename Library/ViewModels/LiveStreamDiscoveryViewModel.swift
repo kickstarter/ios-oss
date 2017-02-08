@@ -5,14 +5,23 @@ import ReactiveSwift
 import Result
 
 public protocol LiveStreamDiscoveryViewModelInputs {
+  /// Call when the app will enter the foreground after being backgrounded
+  func appWillEnterForeground()
+
   /// Call from parent controller when this view is shown to the user.
   func isActive(_ active: Bool)
 
   /// Call when a live stream cell is tapped.
   func tapped(liveStreamEvent: LiveStreamEvent)
 
+  /// Call when the viewDidDisappear
+  func viewDidDisappear()
+
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when the viewWillAppear
+  func viewWillAppear()
 }
 
 public protocol LiveStreamDiscoveryViewModelOutputs {
@@ -53,8 +62,29 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.showAlert = projectAndTappedLiveStreamEvent.errors()
       .mapConst(Strings.Couldnt_open_live_stream_Try_again_later())
 
-    let freshLiveStreamEvents = self.isActiveProperty.signal.filter(isTrue)
-      .flatMap { _ in
+    let periodicRefresh = self.viewDidLoadProperty.signal.switchMap {
+      timer(interval: .seconds(60*5), on: AppEnvironment.current.scheduler)
+    }
+
+    let didNavigateBack = Signal.zip(
+      self.viewDidDisappearProperty.signal,
+      self.viewWillAppearProperty.signal.skip(first: 1)
+    )
+
+    let refreshes = Signal.merge(
+      didNavigateBack.ignoreValues(),
+      appWillEnterForegroundProperty.signal,
+      self.viewDidLoadProperty.signal,
+      periodicRefresh.ignoreValues()
+    )
+
+    let freshLiveStreamEvents = Signal.combineLatest(
+      self.isActiveProperty.signal,
+      refreshes
+      )
+      .map(first)
+      .filter(isTrue)
+      .switchMap { _ in
         AppEnvironment.current.liveStreamService.fetchEvents()
           .demoteErrors()
     }
@@ -63,6 +93,11 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
       self.isActiveProperty.signal.filter(isFalse).mapConst([]),
       freshLiveStreamEvents
     )
+  }
+
+  private let appWillEnterForegroundProperty = MutableProperty()
+  public func appWillEnterForeground() {
+    self.appWillEnterForegroundProperty.value = ()
   }
 
   private let isActiveProperty = MutableProperty(false)
@@ -75,9 +110,19 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.tappedLiveStreamEventProperty.value = liveStreamEvent
   }
 
+  private let viewDidDisappearProperty = MutableProperty()
+  public func viewDidDisappear() {
+    self.viewDidDisappearProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewWillAppearProperty = MutableProperty()
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   public let goToLiveStreamContainer: Signal<(Project, LiveStreamEvent), NoError>
