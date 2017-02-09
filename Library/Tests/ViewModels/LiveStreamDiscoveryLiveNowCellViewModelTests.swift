@@ -15,6 +15,7 @@ final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
   private let creatorImageUrl = TestObserver<URL?, NoError>()
   private let creatorLabelText = TestObserver<String, NoError>()
   private let playVideoUrl = TestObserver<URL?, NoError>()
+  private let numberPeopleWatching = TestObserver<String, NoError>()
   private let stopVideo = TestObserver<(), NoError>()
   private let streamImageUrl = TestObserver<URL?, NoError>()
   private let streamTitleLabel = TestObserver<String, NoError>()
@@ -25,6 +26,7 @@ final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
     self.vm.outputs.creatorImageUrl.observe(self.creatorImageUrl.observer)
     self.vm.outputs.creatorLabelText.observe(self.creatorLabelText.observer)
     self.vm.outputs.playVideoUrl.observe(self.playVideoUrl.observer)
+    self.vm.outputs.numberPeopleWatchingText.observe(self.numberPeopleWatching.observer)
     self.vm.outputs.stopVideo.observe(self.stopVideo.observer)
     self.vm.outputs.streamImageUrl.observe(self.streamImageUrl.observer)
     self.vm.outputs.streamTitleLabel.observe(self.streamTitleLabel.observer)
@@ -46,6 +48,24 @@ final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
 
     self.creatorLabelText.assertValues(["<b>Blob McBlob</b> is live now"])
+  }
+
+  func testNumberPeopleWatchingText() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.numberPeopleWatching .~ 1500
+
+    self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+
+    self.numberPeopleWatching.assertValues(["1,500"])
+  }
+
+  func testNumberPeopleWatchingText_Unavailable() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.numberPeopleWatching .~ nil
+
+    self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+
+    self.numberPeopleWatching.assertValues(["0"])
   }
 
   func testPlayVideoUrl_ConfiguredEventDoesNotHaveHls() {

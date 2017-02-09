@@ -265,6 +265,10 @@ extension LiveStreamEvent {
       view: { $0.name },
       set: { var new = $1; new.name = $0; return new }
     )
+    public static let numberPeopleWatching = Lens<LiveStreamEvent, Int?>(
+      view: { $0.numberPeopleWatching },
+      set: { var new = $1; new.numberPeopleWatching = $0; return new }
+    )
     public static let replayUrl = Lens<LiveStreamEvent, String?>(
       view: { $0.replayUrl },
       set: { var new = $1; new.replayUrl = $0; return new }

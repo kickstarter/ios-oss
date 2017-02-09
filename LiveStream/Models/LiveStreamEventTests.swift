@@ -125,7 +125,7 @@ final class LiveStreamEventTests: XCTestCase {
       ],
       "feature_score": 0,
       "number_subscribed": 114,
-      "number_people_watching" : 145,
+      "number_people_watching": 145,
       "web_url": "http://www.com",
       "project": [
         "uid": 2047782949,

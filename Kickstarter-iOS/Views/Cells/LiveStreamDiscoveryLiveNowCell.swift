@@ -14,8 +14,12 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
   @IBOutlet private weak var creatorLabel: SimpleHTMLLabel!
   @IBOutlet private weak var creatorStackView: UIStackView!
   @IBOutlet private weak var imageOverlayView: UIView!
+  @IBOutlet private weak var liveStackView: UIStackView!
   @IBOutlet private weak var liveContainerView: UIView!
   @IBOutlet private weak var liveLabel: UILabel!
+  @IBOutlet private weak var numberWatchingContainerView: UIView!
+  @IBOutlet private weak var numberWatchingImageView: UIImageView!
+  @IBOutlet private weak var numberWatchingLabel: UILabel!
   @IBOutlet private weak var streamImageView: UIImageView!
   @IBOutlet private weak var streamPlayerView: AVPlayerView!
   @IBOutlet private weak var streamTitleContainerView: UIView!
@@ -52,6 +56,9 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> SimpleHTMLLabel.lens.baseColor .~ .white
       |> SimpleHTMLLabel.lens.numberOfLines .~ 0
 
+    _ = self.liveStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
     _ = self.liveContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ .ksr_green_500
@@ -73,6 +80,17 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     _ = self.streamImageView
       |> UIImageView.lens.clipsToBounds .~ true
+
+    _ = self.numberWatchingContainerView
+      |> roundedStyle()
+      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
+
+    _ = self.numberWatchingLabel
+      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.font .~ .ksr_headline(size: 12)
+
+    _ = self.numberWatchingImageView
+      |> UIImageView.lens.tintColor .~ .white
 
     _ = self.imageOverlayView
       |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.4)
@@ -102,6 +120,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     self.streamImageView.rac.imageUrl = self.viewModel.outputs.streamImageUrl
     self.streamTitleLabel.rac.text = self.viewModel.outputs.streamTitleLabel
+    self.numberWatchingLabel.rac.text = self.viewModel.outputs.numberPeopleWatchingText
 
     self.viewModel.outputs.stopVideo
       .observeForUI()
