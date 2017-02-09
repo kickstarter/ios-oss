@@ -49,7 +49,7 @@
 "Continue_to_payment" = "Continuer vers le paiement";
 "Continue_to_update_pledge" = "Continuer la modification de mon engagement";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
-"Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
+"Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
 "Created_projects_projects_count" = "Projets créés : %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> est en direct en ce moment";
@@ -81,7 +81,7 @@
 "Filter_name_project_count_live_projects.one" = "%{filter_name} : %{project_count} projet en cours";
 "Filter_name_project_count_live_projects.two" = "%{filter_name} : %{project_count} projets en cours";
 "Filter_name_project_count_live_projects.zero" = "%{filter_name} : %{project_count} projets en cours";
-"Filters_by_projects_with_upcoming_and_past_live_streams" = "Filters by projects with upcoming and past live streams.";
+"Filters_by_projects_with_upcoming_and_past_live_streams" = "Filtrage des projets ayant des diffusions en direct à venir et passées.";
 "Find_Facebook_Friends" = "Retrouver mes amis Facebook";
 "Find_and_follow_friends" = "Retrouver et suivre mes amis";
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
@@ -110,7 +110,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
-"Go_to_project_page" = "Go to project page";
+"Go_to_project_page" = "Accéder à la page de projet";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -129,7 +129,7 @@
 "Left_count_left.zero" = "%{left_count} restantes";
 "Live" = "En direct";
 "Live_Stream" = "Diffusion en direct";
-"Live_now" = "Live now";
+"Live_now" = "En direct en ce moment";
 "Live_stream_countdown" = "Compte à rebours de la diffusion en direct";
 "Live_stream_date" = "Diffusion en direct – %{date}";
 "Live_streaming_now" = "Diffusion en direct en cours";
@@ -181,8 +181,8 @@
 "Recorded_Live" = "Enregistré en direct";
 "Recorded_live_with_creator_name" = "Enregistré en direct avec <b>%{creator_name}</b>";
 "Replay" = "Rediffuser";
-"Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
-"Replay_past_live_streams" = "Replay past live streams";
+"Replay_live_stream_with_creator_name" = "Revoir la diffusion en direct de <br><b>%{creator_name}</b>";
+"Replay_past_live_streams" = "Revoir des diffusions en direct passées";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -243,6 +243,7 @@
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
+"We_were_unable_to_load_the_shipping_destinations" = "Nous n'avons pas été en mesure de charger les destinations d'expédition.\nVeuillez réessayer ultérieurement.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
 "You_Launched" = "Projet lancé !";
 "You_backed_this_project" = "Vous avez soutenu ce projet.";

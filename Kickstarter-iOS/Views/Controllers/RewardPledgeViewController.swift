@@ -53,6 +53,7 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate weak var shippingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate weak var shippingAmountLabel: UILabel!
   @IBOutlet fileprivate weak var shippingContainerView: UIView!
   @IBOutlet fileprivate weak var shippingDestinationButton: UIButton!
@@ -374,6 +375,11 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.separatorViews
       ||> separatorStyle
 
+    _ = self.shippingActivityIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+
     _ = self.shipsToLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
@@ -457,6 +463,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.pledgeCurrencyLabel.rac.text = self.viewModel.outputs.pledgeCurrencyLabelText
     self.pledgeTextField.rac.text = self.viewModel.outputs.pledgeTextFieldText
     self.readMoreContainerView.rac.hidden = self.viewModel.outputs.readMoreContainerViewHidden
+    self.shippingActivityIndicatorView.rac.animating = self.viewModel.outputs.shippingIsLoading
     self.shippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmountLabelText
     self.shippingInputStackView.rac.hidden = self.viewModel.outputs.shippingInputStackViewHidden
     self.shippingLocationsLabel.rac.text = self.viewModel.outputs.shippingLocationsLabelText
@@ -524,9 +531,13 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.present(
-          UIAlertController.alertController(forError: .genericError(message: $0)),
+      .observeValues { [weak self] message, shouldDismiss in
+        guard let _self = self else { return }
+        _self.present(
+          UIAlertController.alert(message: message,
+                                  handler: { _ in
+                                    _self.viewModel.inputs.errorAlertTappedOK(shouldDismiss: shouldDismiss)
+          }),
           animated: true,
           completion: nil
         )

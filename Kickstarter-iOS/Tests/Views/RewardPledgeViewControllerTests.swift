@@ -21,12 +21,12 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResponse: [
+        fetchShippingRulesResult: Result([
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,
           .template |> ShippingRule.lens.location .~ .australia,
-        ]
+        ])
       ),
       mainBundle: Bundle.framework
     )
