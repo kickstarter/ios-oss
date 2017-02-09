@@ -769,9 +769,9 @@ backers"
   /**
    "Couldn‘t open live stream. Try again later."
 
-   - **es**: "Couldn‘t open live stream. Try again later."
-   - **de**: "Couldn‘t open live stream. Try again later."
-   - **fr**: "Couldn‘t open live stream. Try again later."
+   - **es**: "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde."
+   - **de**: "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal."
+   - **fr**: "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard."
    - **en**: "Couldn‘t open live stream. Try again later."
   */
   public static func Couldnt_open_live_stream_Try_again_later() -> String {
@@ -1217,9 +1217,9 @@ backers"
   /**
    "Filters by projects with upcoming and past live streams."
 
-   - **es**: "Filters by projects with upcoming and past live streams."
-   - **de**: "Filters by projects with upcoming and past live streams."
-   - **fr**: "Filters by projects with upcoming and past live streams."
+   - **es**: "Ordenar por proyectos con live streams futuros/pasados."
+   - **de**: "Filtert nach zukünftigen und vergangenen Live-Streams."
+   - **fr**: "Filtrage des projets ayant des diffusions en direct à venir et passées."
    - **en**: "Filters by projects with upcoming and past live streams."
   */
   public static func Filters_by_projects_with_upcoming_and_past_live_streams() -> String {
@@ -1681,9 +1681,9 @@ backers"
   /**
    "Go to project page"
 
-   - **es**: "Go to project page"
-   - **de**: "Go to project page"
-   - **fr**: "Go to project page"
+   - **es**: "Ir a la página de proyecto"
+   - **de**: "Zu Projektseite"
+   - **fr**: "Accéder à la page de projet"
    - **en**: "Go to project page"
   */
   public static func Go_to_project_page() -> String {
@@ -1923,9 +1923,9 @@ with friends."
   /**
    "Live now"
 
-   - **es**: "Live now"
-   - **de**: "Live now"
-   - **fr**: "Live now"
+   - **es**: "En vivo"
+   - **de**: "Jetzt live"
+   - **fr**: "En direct en ce moment"
    - **en**: "Live now"
   */
   public static func Live_now() -> String {
@@ -2760,9 +2760,9 @@ daring ideas."
   /**
    "Replay live stream with<br><b>%{creator_name}</b>"
 
-   - **es**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **es**: "Repetir live stream de<br><b>%{creator_name}</b>"
    - **de**: "Replay live stream with<br><b>%{creator_name}</b>"
-   - **fr**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **fr**: "Revoir la diffusion en direct de <br><b>%{creator_name}</b>"
    - **en**: "Replay live stream with<br><b>%{creator_name}</b>"
   */
   public static func Replay_live_stream_with_creator_name(creator_name: String) -> String {
@@ -2776,9 +2776,9 @@ daring ideas."
   /**
    "Replay past live streams"
 
-   - **es**: "Replay past live streams"
+   - **es**: "Repetir live streams pasados"
    - **de**: "Replay past live streams"
-   - **fr**: "Replay past live streams"
+   - **fr**: "Revoir des diffusions en direct passées"
    - **en**: "Replay past live streams"
   */
   public static func Replay_past_live_streams() -> String {
@@ -3557,6 +3557,27 @@ catch your eye?"
       defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
+    )
+  }
+  /**
+   "We were unable to load the shipping destinations.
+Please try again later."
+
+   - **es**: "No se pudieron cargar los destinos de envío.
+Por favor inténtalo de nuevo más tarde."
+   - **de**: "We were unable to load the shipping destinations.
+Please try again later."
+   - **fr**: "Nous n'avons pas été en mesure de charger les destinations d'expédition.
+Veuillez réessayer ultérieurement."
+   - **en**: "We were unable to load the shipping destinations.
+Please try again later."
+  */
+  public static func We_were_unable_to_load_the_shipping_destinations() -> String {
+    return localizedString(
+      key: "We_were_unable_to_load_the_shipping_destinations",
+      defaultValue: "We were unable to load the shipping destinations.\nPlease try again later.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
