@@ -160,7 +160,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil])
-      
+
       self.vm.inputs.subscribeButtonTapped()
 
       self.scheduler.advance()
@@ -177,7 +177,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true,
+                                                                 false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
