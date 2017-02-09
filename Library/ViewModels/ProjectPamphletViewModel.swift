@@ -42,17 +42,17 @@ ProjectPamphletViewModelOutputs {
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let configData = Signal.combineLatest(
+    let configDataAndShouldPrefix = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
-      Signal.merge(self.viewDidLoadProperty.signal,
-                   self.viewDidAppearAnimated.signal.filter(isTrue).ignoreValues()
+      Signal.merge(self.viewDidLoadProperty.signal.mapConst(true),
+                   self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
         )
       )
-      .map(first)
 
-    let freshProjectAndLiveStreamsAndRefTag = configData
-      .switchMap { projectOrParam, refTag in
-        fetchProjectAndLiveStreams(projectOrParam: projectOrParam)
+    let freshProjectAndLiveStreamsAndRefTag = configDataAndShouldPrefix
+      .map(unpack)
+      .switchMap { projectOrParam, refTag, shouldPrefix in
+        fetchProjectAndLiveStreams(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .map { project, liveStreams in
             (project, liveStreams, refTag.map(cleanUp(refTag:)))
         }
@@ -76,11 +76,14 @@ ProjectPamphletViewModelOutputs {
       }
       .take(first: 1)
 
-    Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag, cookieRefTag)
-      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1) }
-      .filter { _, liveStreamEvents, _, _ in liveStreamEvents != nil }
+    Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag,
+                         cookieRefTag,
+                         self.viewDidAppearAnimated.signal.ignoreValues()
+      )
+      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1, _: $2) }
+      .filter { _, liveStreamEvents, _, _, _ in liveStreamEvents != nil }
       .take(first: 1)
-      .observeValues { project, liveStreamEvents, refTag, cookieRefTag in
+      .observeValues { project, liveStreamEvents, refTag, cookieRefTag, _ in
         AppEnvironment.current.koala.trackProjectShow(project,
                                                       liveStreamEvents: liveStreamEvents,
                                                       refTag: refTag,
@@ -190,7 +193,7 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>)
+private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
 
     let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
@@ -210,7 +213,7 @@ private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>)
           .take(first: 1)
     }
 
-    if let project = projectOrParam.left {
+    if let project = projectOrParam.left, shouldPrefix {
       return projectAndLiveStreams.prefix(value: (project, nil))
     }
     return projectAndLiveStreams

@@ -59,9 +59,9 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
-    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [], [.template]])
+    self.configureChildViewControllersWithProject.assertValues([project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [.template]])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -499,5 +499,18 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual([nil, nil],
                      self.trackingClient.properties(forKey: "live_stream_type", as: String.self))
     }
+  }
+
+  func testTrackingDoesNotOccurOnLoad() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    XCTAssertEqual([], self.trackingClient.events)
   }
 }
