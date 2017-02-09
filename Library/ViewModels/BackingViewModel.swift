@@ -132,7 +132,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerSequence = //Signal.merge(
       //self.viewDidLoadProperty.signal.mapConst(""),
-      backing.map { backing in Strings.backer_modal_backer_number(backer_number: Format.wholeNumber(backing.sequence)) } //)
+      backing.map { backing in Strings.backer_modal_backer_number(
+        backer_number: Format.wholeNumber(backing.sequence)) } //)
     self.backerSequenceAccessibilityLabel = self.backerSequence
 
     let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
