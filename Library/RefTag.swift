@@ -14,8 +14,10 @@ public enum RefTag {
   case discovery
   case discoveryPotd
   case discoveryWithSort(DiscoveryParams.Sort)
+  case liveStream
   case liveStreamCountdown
   case liveStreamDiscovery
+  case liveStreamReplay
   case messageThread
   case profileBacked
   case projectPage
@@ -62,8 +64,10 @@ public enum RefTag {
     case "discovery_newest":          self = .discoveryWithSort(.newest)
     case "discovery_popular":         self = .discoveryWithSort(.popular)
     case "discovery_potd":            self = .discoveryPotd
+    case "live_stream":               self = .liveStream
     case "live_stream_countdown":     self = .liveStreamCountdown
     case "live_stream_discovery":     self = .liveStreamDiscovery
+    case "live_stream_replay":        self = .liveStreamReplay
     case "message_thread":            self = .messageThread
     case "profile_backed":            self = .profileBacked
     case "project_page":              self = .projectPage
@@ -124,10 +128,14 @@ public enum RefTag {
       return "discovery_potd"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
+    case .liveStream:
+      return "live_stream"
     case .liveStreamCountdown:
       return "live_stream_countdown"
     case .liveStreamDiscovery:
       return "live_stream_discovery"
+    case .liveStreamReplay:
+      return "live_stream_replay"
     case .messageThread:
       return "message_thread"
     case .profileBacked:
@@ -168,8 +176,9 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
     (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
-    (.messageThread, .messageThread), (.profileBacked, .profileBacked), (.projectPage, .projectPage),
-    (.push, .push), (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
+    (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread),
+    (.profileBacked, .profileBacked), (.projectPage, .projectPage), (.push, .push),
+    (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
     (.update, .update):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):

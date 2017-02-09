@@ -18,8 +18,9 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let conversionLabelText = TestObserver<String, NoError>()
   fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let descriptionLabelText = TestObserver<String, NoError>()
+  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
   fileprivate let footerLabelText = TestObserver<String, NoError>()
-  fileprivate let footerViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let footerStackViewHidden = TestObserver<Bool, NoError>()
   fileprivate let items = TestObserver<[String], NoError>()
   fileprivate let itemsContainerHidden = TestObserver<Bool, NoError>()
   fileprivate let manageButtonHidden = TestObserver<Bool, NoError>() // todo
@@ -46,8 +47,9 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelHidden.observe(self.descriptionLabelHidden.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
+    self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.footerLabelText.observe(self.footerLabelText.observer)
-    self.vm.outputs.footerViewHidden.observe(self.footerViewHidden.observer)
+    self.vm.outputs.footerStackViewHidden.observe(self.footerStackViewHidden.observer)
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.itemsContainerHidden.observe(self.itemsContainerHidden.observer)
     self.vm.outputs.manageButtonHidden.observe(self.manageButtonHidden.observer)
@@ -364,6 +366,14 @@ final class RewardCellViewModelTests: TestCase {
     self.descriptionLabelText.assertValues([reward.description])
   }
 
+  func testEstimatedDeliveryDateLabelText() {
+    let reward = .template
+      |> Reward.lens.estimatedDeliveryOn .~ 1468527587.32843
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.estimatedDeliveryDateLabelText.assertValues(["July 2016"])
+  }
+
   func testFooterLabelText_NotLimited_NotScheduled_Live() {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
@@ -434,12 +444,12 @@ final class RewardCellViewModelTests: TestCase {
   func testFooterViewHidden() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
-    self.footerViewHidden.assertValues([false])
+    self.footerStackViewHidden.assertValues([false])
 
     self.vm.inputs.configureWith(project: .template,
                                  rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
 
-    self.footerViewHidden.assertValues([false, true])
+    self.footerStackViewHidden.assertValues([false, true])
 
     let reward = .template |> Reward.lens.remaining .~ 0
     self.vm.inputs.configureWith(
@@ -448,7 +458,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.footerViewHidden.assertValues([false, true, false])
+    self.footerStackViewHidden.assertValues([false, true, false])
   }
 
   func testItems() {

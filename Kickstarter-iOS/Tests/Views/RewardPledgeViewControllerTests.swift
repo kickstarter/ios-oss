@@ -21,12 +21,12 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResponse: [
+        fetchShippingRulesResult: Result([
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,
           .template |> ShippingRule.lens.location .~ .australia,
-        ]
+        ])
       ),
       mainBundle: Bundle.framework
     )
@@ -123,6 +123,26 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height -= 64
+
+    self.scheduler.run()
+
+    FBSnapshotVerifyView(vc.view)
+  }
+
+  func testDescriptionLabelTruncated() {
+    let description: String = "You will be the first to receive a copy of the book at the special price of " +
+      "£30. The book will be sold for £35 in shops when released in July.You will be the first to receive a" +
+      "copy of the book at the special price of £30. The book will be sold for £35 in shops when released" +
+      "in  July. You will be the first  to receive a copy of the book at the special price of £30. The book" +
+      "will be sold for £35 in shops when released in July.You will be the first to receive a copy of the"
+    let project = self.cosmicSurgery
+    let reward = self.cosmicReward
+      |> Reward.lens.description .~ description
+      |> Reward.lens.rewardsItems .~ []
+
+    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+    parent.view.frame.size.height = 870
 
     self.scheduler.run()
 

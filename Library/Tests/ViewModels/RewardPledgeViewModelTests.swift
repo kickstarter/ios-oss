@@ -64,8 +64,10 @@ internal final class RewardPledgeViewModelTests: TestCase {
   fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
   fileprivate let shippingAmountLabelText = TestObserver<String, NoError>()
   fileprivate let shippingInputStackViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let shippingIsLoading = TestObserver<Bool, NoError>()
   fileprivate let shippingLocationsLabelText = TestObserver<String, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>() // todo
+  fileprivate let showAlertMessage = TestObserver<String, NoError>()
+  fileprivate let showAlertShouldDismiss = TestObserver<Bool, NoError>()
   fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let titleLabelText = TestObserver<String, NoError>()
   fileprivate let updatePledgeButtonHidden = TestObserver<Bool, NoError>()
@@ -116,8 +118,10 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.shippingAmountLabelText.observe(self.shippingAmountLabelText.observer)
     self.vm.outputs.shippingInputStackViewHidden.observe(self.shippingInputStackViewHidden.observer)
+    self.vm.outputs.shippingIsLoading.observe(self.shippingIsLoading.observer)
     self.vm.outputs.shippingLocationsLabelText.observe(self.shippingLocationsLabelText.observer)
-    self.vm.outputs.showAlert.observe(self.showAlert.observer)
+    self.vm.outputs.showAlert.map(first).observe(self.showAlertMessage.observer)
+    self.vm.outputs.showAlert.map(second).observe(self.showAlertShouldDismiss.observer)
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
     self.vm.outputs.updatePledgeButtonHidden.observe(self.updatePledgeButtonHidden.observer)
@@ -205,7 +209,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testCountryAndShippingAmountLabelText_WithRecognizedCountry() {
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "AU") {
 
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -223,7 +227,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testCountryAndShippingAmountLabelText_WithUnrecognizedCountry() {
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "XYZ") {
 
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -246,7 +250,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let otherShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -388,7 +392,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResponse: [])) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result([]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -429,7 +433,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template |> Reward.lens.title .~ "The thing!"
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResponse: [])) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result([]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -472,7 +476,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = .template |> ShippingRule.lens.cost .~ 0
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResponse: [shippingRule])) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result([shippingRule]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -517,7 +521,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -569,7 +573,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -623,7 +627,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let changedShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -1058,7 +1062,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
     )
 
-    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1103,7 +1107,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
     )
 
-    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1156,12 +1160,18 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
         self.trackingClient.events
       )
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
+
+      self.dismissViewController.assertValueCount(0)
+
       self.pledgeIsLoading.assertValues([true, false])
       self.loadingOverlayIsHidden.assertValues([true, false, true])
 
@@ -1172,7 +1182,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click",
@@ -1215,7 +1226,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
 
-    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1258,7 +1269,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
 
-    withEnvironment(apiService: MockService(updatePledgeResponse: updatePledgeResponse)) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1280,7 +1291,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let otherShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResponse: shippingRules),
+      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -1337,7 +1348,16 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
+    self.itemsContainerHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
     self.itemsContainerHidden.assertValues([true])
+    self.readMoreContainerViewHidden.assertValues([false])
 
     self.vm.inputs.expandDescriptionTapped()
 
@@ -1361,7 +1381,13 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
+    self.shippingIsLoading.assertValues([false], "Shipping loader emits false on no reward.")
+
     self.minimumLabelText.assertValues(["Pledge $1 or more"])
+
+    self.scheduler.advance()
+
+    self.shippingIsLoading.assertValues([false], "Shipping loader does not emit.")
   }
 
   func testNavigationTitle_NonBacker_NoReward() {
@@ -1723,15 +1749,30 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.pledgeTextFieldText.assertValues(["5"])
   }
 
+  func testReadMoreContainerViewHidden_descriptionTruncated() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertValues([false])
+  }
+
   func testReadMoreContainerViewHidden() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.readMoreContainerViewHidden.assertValues([false])
+    self.vm.inputs.descriptionLabelIsTruncated(false)
 
-    self.vm.inputs.expandDescriptionTapped()
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
 
-    self.readMoreContainerViewHidden.assertValues([false, true])
+    self.vm.inputs.descriptionLabelIsTruncated(false)
+
+    self.readMoreContainerViewHidden.assertValues([true])
   }
 
   func testReadMoreContainerViewHidden_NoReward() {
@@ -1776,7 +1817,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_USUser_CAProject() {
-    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let apiService = MockService(fetchShippingRulesResult: Result(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "US"
     let project = .template |> Project.lens.country .~ .CA
 
@@ -1793,7 +1834,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_CAUser_CAProject() {
-    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let apiService = MockService(fetchShippingRulesResult: Result(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "CA"
     let project = .template |> Project.lens.country .~ .CA
 
@@ -1810,7 +1851,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_USUser_DKProject() {
-    let apiService = MockService(fetchShippingRulesResponse: shippingRules)
+    let apiService = MockService(fetchShippingRulesResult: Result(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "US"
     let project = .template |> Project.lens.country .~ .DK
 
@@ -1827,7 +1868,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingInputStackViewHidden_WithNoShipping() {
-    withEnvironment(apiService: MockService(fetchShippingRulesResponse: [])) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result([]))) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -1842,7 +1883,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   func testShippingInputStackViewHidden_WithShipping() {
     let reward = .template |> Reward.lens.shipping.enabled .~ true
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResponse: shippingRules)) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(shippingRules))) {
       self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -1896,12 +1937,17 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
+      self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
         "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
         self.trackingClient.events
       )
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
+
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
 
@@ -1923,10 +1969,15 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues([
+      self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 20 or more.",
         "Please enter an amount of DKK 50,000 or less."
         ])
+      self.showAlertShouldDismiss.assertValues([false, false])
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
+
+      self.dismissViewController.assertValueCount(0)
 
       XCTAssertEqual(
         ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
@@ -1960,17 +2011,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues(["Please enter an amount of DKK 5 or more."])
+      self.showAlertMessage.assertValues(["Please enter an amount of DKK 5 or more."])
+      self.showAlertShouldDismiss.assertValues([false])
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
+
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       self.scheduler.advance()
 
-      self.showAlert.assertValues([
+      self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 5 or more.",
         "Please enter an amount of DKK 50,000 or less."
         ])
+      self.showAlertShouldDismiss.assertValues([false, false])
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
+
+      self.dismissViewController.assertValueCount(0)
     }
   }
 
@@ -2056,5 +2117,330 @@ internal final class RewardPledgeViewModelTests: TestCase {
                    self.trackingClient.events)
     XCTAssertEqual(["change_reward", "change_reward", "change_reward", "change_reward"],
                    self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+  }
+
+  func testShippingRulesErrored() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let defaultShippingRule = shippingRules.last!
+
+    withEnvironment(
+      apiService: MockService(fetchShippingRulesResult: Result(error: error)),
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+        self.vm.inputs.viewDidLoad()
+
+        self.shippingIsLoading.assertValues([true])
+        self.showAlertMessage.assertValueCount(0)
+
+        self.scheduler.advance()
+
+        self.shippingIsLoading.assertValues([true, false])
+        self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
+        self.showAlertShouldDismiss.assertValues([true])
+        self.dismissViewController.assertValueCount(0)
+
+        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+        self.dismissViewController.assertValueCount(1)
+    }
+  }
+
+  func testCreatePledgeErrors() {
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let errorEmptyMessage = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: nil,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let defaultShippingRule = shippingRules.last!
+
+    withEnvironment(
+      apiService: MockService(createPledgeResult: Result(error: errorUnknown)),
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+        self.vm.inputs.viewDidLoad()
+
+        self.scheduler.advance()
+
+        self.vm.inputs.continueToPaymentsButtonTapped()
+
+        self.showAlertMessage.assertValueCount(0)
+
+        self.scheduler.advance()
+
+        self.showAlertMessage.assertValues(["Something went wrong yo."])
+        self.showAlertShouldDismiss.assertValues([true])
+        self.dismissViewController.assertValueCount(0)
+
+        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+        self.dismissViewController.assertValueCount(1)
+
+        withEnvironment(
+          apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
+          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+            self.vm.inputs.viewDidLoad()
+
+            self.scheduler.advance()
+
+            self.vm.inputs.continueToPaymentsButtonTapped()
+
+            self.showAlertMessage.assertValueCount(1)
+
+            self.scheduler.advance()
+
+            self.showAlertMessage.assertValues(
+              ["Something went wrong yo.", Strings.general_error_something_wrong()]
+            )
+            self.showAlertShouldDismiss.assertValues([true, true])
+            self.dismissViewController.assertValueCount(1)
+
+            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+            self.dismissViewController.assertValueCount(2)
+        }
+    }
+  }
+
+  func testChangePaymentMethodErrors() {
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let errorEmptyMessage = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: nil,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let defaultShippingRule = shippingRules.last!
+
+    withEnvironment(
+      apiService: MockService(changePaymentMethodResult: Result(error: errorUnknown)),
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+        self.vm.inputs.viewDidLoad()
+
+        self.scheduler.advance()
+
+        self.vm.inputs.changePaymentMethodButtonTapped()
+
+        self.showAlertMessage.assertValueCount(0)
+
+        self.scheduler.advance()
+
+        self.showAlertMessage.assertValues(["Something went wrong yo."])
+        self.showAlertShouldDismiss.assertValues([true])
+        self.dismissViewController.assertValueCount(0)
+
+        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+        self.dismissViewController.assertValueCount(1)
+
+        withEnvironment(
+          apiService: MockService(changePaymentMethodResult: Result(error: errorEmptyMessage)),
+          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+            self.vm.inputs.viewDidLoad()
+
+            self.scheduler.advance()
+
+            self.vm.inputs.changePaymentMethodButtonTapped()
+
+            self.showAlertMessage.assertValueCount(1)
+
+            self.scheduler.advance()
+
+            self.showAlertMessage.assertValues(
+              ["Something went wrong yo.", Strings.general_error_something_wrong()]
+            )
+            self.showAlertShouldDismiss.assertValues([true, true])
+            self.dismissViewController.assertValueCount(1)
+
+            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+            self.dismissViewController.assertValueCount(2)
+        }
+    }
+  }
+
+  func testUpdatePledgeErrors() {
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let errorEmptyMessage = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: nil,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let defaultShippingRule = shippingRules.last!
+
+    withEnvironment(
+      apiService: MockService(updatePledgeResult: Result(error: errorUnknown)),
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+        self.vm.inputs.viewDidLoad()
+
+        self.scheduler.advance()
+
+        self.vm.inputs.updatePledgeButtonTapped()
+
+        self.showAlertMessage.assertValueCount(0)
+
+        self.scheduler.advance()
+
+        self.showAlertMessage.assertValues(["Something went wrong yo."])
+        self.showAlertShouldDismiss.assertValues([true])
+        self.dismissViewController.assertValueCount(0)
+
+        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+        self.dismissViewController.assertValueCount(1)
+
+        withEnvironment(
+          apiService: MockService(updatePledgeResult: Result(error: errorEmptyMessage)),
+          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+            self.vm.inputs.viewDidLoad()
+
+            self.scheduler.advance()
+
+            self.vm.inputs.updatePledgeButtonTapped()
+
+            self.showAlertMessage.assertValueCount(1)
+
+            self.scheduler.advance()
+
+            self.showAlertMessage.assertValues(
+              ["Something went wrong yo.", Strings.general_error_something_wrong()]
+            )
+            self.showAlertShouldDismiss.assertValues([true, true])
+            self.dismissViewController.assertValueCount(1)
+
+            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+            self.dismissViewController.assertValueCount(2)
+        }
+    }
+  }
+
+  func testApplePayPledgeErrors() {
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let errorEmptyMessage = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: nil,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let defaultShippingRule = shippingRules.last!
+
+    withEnvironment(
+      apiService: MockService(createPledgeResult: Result(error: errorUnknown)),
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
+        self.vm.inputs.viewDidLoad()
+
+        self.scheduler.advance()
+
+        self.vm.inputs.applePayButtonTapped()
+        self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+        self.vm.inputs.paymentAuthorization(
+          didAuthorizePayment: .init(
+            tokenData: .init(
+              paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
+              transactionIdentifier: "apple_pay_deadbeef"
+            )
+          )
+        )
+        let _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+        self.showAlertMessage.assertValueCount(0)
+
+        self.scheduler.advance()
+
+        self.showAlertMessage.assertValues(["Something went wrong yo."])
+        self.showAlertShouldDismiss.assertValues([true])
+        self.dismissViewController.assertValueCount(0)
+
+        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+        self.dismissViewController.assertValueCount(1)
+
+        withEnvironment(
+          apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
+          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+
+            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+            self.vm.inputs.viewDidLoad()
+
+            self.scheduler.advance()
+
+            self.vm.inputs.applePayButtonTapped()
+            self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+            self.vm.inputs.paymentAuthorization(
+              didAuthorizePayment: .init(
+                tokenData: .init(
+                  paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
+                  transactionIdentifier: "apple_pay_deadbeef"
+                )
+              )
+            )
+            let _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+            self.showAlertMessage.assertValueCount(1)
+
+            self.scheduler.advance()
+
+            self.showAlertMessage.assertValues(
+              ["Something went wrong yo.", Strings.general_error_something_wrong()]
+            )
+            self.showAlertShouldDismiss.assertValues([true, true])
+            self.dismissViewController.assertValueCount(1)
+
+            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+            self.dismissViewController.assertValueCount(2)
+        }
+    }
   }
 }

@@ -25,7 +25,7 @@
 "Back" = "Zurück";
 "Back_this_project_below" = "Folgendes Projekt unterstützen";
 "Backed_by_Friends" = "Von Freunden unterstützt";
-"Backed_by_people_you_follow" = "Unterstützt von Leuten, denen du folgst";
+"Backed_by_people_you_follow" = "Unterstützt von deinen Freunden";
 "Backed_projects_projects_count" = "Unterstützte Projekte: %{project_count}";
 "Backers_count_separator_backers.few" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.many" = "%{backers_count}\nUnterstützer";
@@ -49,6 +49,7 @@
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
+"Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
 "Created_projects_projects_count" = "Erstellte Projekte: %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> ist jetzt live";
@@ -63,7 +64,7 @@
 "Earth" = "Erde";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Ending_soon" = "Endet bald";
-"Estimated_to_fulfill" = "Versanddatum:";
+"Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
 "Explore_projects" = "Projekte erkunden";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
@@ -80,6 +81,7 @@
 "Filter_name_project_count_live_projects.one" = "%{filter_name}: %{project_count} Live-Projekt";
 "Filter_name_project_count_live_projects.two" = "%{filter_name}: %{project_count} Live-Projekte";
 "Filter_name_project_count_live_projects.zero" = "%{filter_name}: %{project_count} Live-Projekte";
+"Filters_by_projects_with_upcoming_and_past_live_streams" = "Filtert nach zukünftigen und vergangenen Live-Streams.";
 "Find_Facebook_Friends" = "Finde Freunde auf Facebook";
 "Find_and_follow_friends" = "Freunde finden und folgen";
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
@@ -108,6 +110,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt.";
 "Friend_name_launched_a_project" = "%{friend_name} hat ein Projekt veröffentlicht!";
 "Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
+"Go_to_project_page" = "Zu Projektseite";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
@@ -126,6 +129,7 @@
 "Left_count_left.zero" = "%{left_count} übrig";
 "Live" = "Live";
 "Live_Stream" = "Live-Stream";
+"Live_now" = "Jetzt live";
 "Live_stream_countdown" = "Live-Stream Countdown";
 "Live_stream_date" = "Live-Stream – %{date}";
 "Live_streaming_now" = "Wird gerade live gestreamt";
@@ -177,6 +181,8 @@
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
 "Replay" = "Replay";
+"Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
+"Replay_past_live_streams" = "Replay past live streams";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -237,6 +243,7 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
+"We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
@@ -678,7 +685,7 @@
 "discovery.baseball_card.status_banner.canceled" = "Finanzierung abgebrochen";
 "discovery.baseball_card.status_banner.canceled_date" = "Finanzierung abgebrochen am %{date}";
 "discovery.baseball_card.status_banner.funding_unsuccessful_date" = "Finanzierung fehlgeschlagen %{date}";
-"discovery.baseball_card.status_banner.successful" = "Erfolgreich finanziert!";
+"discovery.baseball_card.status_banner.successful" = "Finanziert";
 "discovery.baseball_card.status_banner.successful_date" = "Erfolgreich finanziert am %{date}";
 "discovery.baseball_card.status_banner.suspended" = "Finanzierung ausgesetzt %{date}";
 "discovery.baseball_card.status_banner.suspended_date" = "Finanzierung ausgesetzt am %{date}";

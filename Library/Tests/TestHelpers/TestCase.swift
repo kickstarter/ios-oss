@@ -25,6 +25,7 @@ internal class TestCase: FBSnapshotTestCase {
 
   override func setUp() {
     super.setUp()
+
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
@@ -40,6 +41,7 @@ internal class TestCase: FBSnapshotTestCase {
       currentUser: nil,
       dateType: dateType,
       debounceInterval: .seconds(0),
+      device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),

@@ -44,7 +44,9 @@ ProjectPamphletViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
+      Signal.merge(self.viewDidLoadProperty.signal,
+                   self.viewDidAppearAnimated.signal.filter(isTrue).ignoreValues()
+        )
       )
       .map(first)
 

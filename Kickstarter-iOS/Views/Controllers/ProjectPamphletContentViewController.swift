@@ -158,7 +158,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   private func goToLiveStream(project: Project, liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamContainerViewController.configuredWith(project: project,
                                                               liveStreamEvent: liveStreamEvent,
-                                                              refTag: .projectPage)
+                                                              refTag: .projectPage,
+                                                              presentedFromProject: true)
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 
@@ -170,7 +171,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   private func goToLiveStreamCountdown(project: Project, liveStreamEvent: LiveStreamEvent) {
     let vc = LiveStreamCountdownViewController.configuredWith(project: project,
                                                               liveStreamEvent: liveStreamEvent,
-                                                              refTag: .projectPage)
+                                                              refTag: .projectPage,
+                                                              presentedFromProject: true)
     let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
     nav.viewControllers = [vc]
 

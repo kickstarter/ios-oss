@@ -166,18 +166,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.subscribeButtonAccessibilityHint = subscribed
       .map { isSubscribed in
         isSubscribed
-          ? localizedString(key: "Unsubscribes_from_upcoming_lives_streams.",
-                            defaultValue: "Unsubscribes from upcoming live streams.")
-          : localizedString(key: "Subscribes_to_upcoming_lives_streams",
-                            defaultValue: "Subscribes to upcoming live streams.")
+          ? Strings.Unsubscribes_from_upcoming_lives_streams()
+          : Strings.Subscribes_to_upcoming_lives_streams()
     }
 
     self.subscribeButtonAccessibilityLabel = subscribed
-      .map { isSubscribed in
-        isSubscribed
-          ? localizedString(key: "Unsubscribe", defaultValue: "Unsubscribe")
-          : Strings.Subscribe()
-    }
+      .map { $0 ? Strings.Unsubscribe() : Strings.Subscribe() }
 
     configData
       .takePairWhen(isSubscribedEvent.values())

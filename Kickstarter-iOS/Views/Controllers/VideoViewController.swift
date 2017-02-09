@@ -203,5 +203,6 @@ public final class VideoViewController: UIViewController {
     }
     self.playerController.player?.removeObserver(self, forKeyPath: durationKeyPath)
     self.playerController.player?.removeObserver(self, forKeyPath: rateKeyPath)
+    self.playerController?.player?.replaceCurrentItem(with: nil)
   }
 }

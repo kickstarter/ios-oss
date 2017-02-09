@@ -41,8 +41,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     let refTag = RefTag.category
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag])
@@ -53,6 +53,15 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
     self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template]])
+
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[], [.template], [], [.template]])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -60,8 +69,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.configureChildViewControllersWithProject.assertValues([])
     self.configureChildViewControllersWithRefTag.assertValues([])
@@ -72,6 +81,15 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([nil])
     self.configureChildViewControllersWithLiveStreamEvents.assertValues([[.template]])
+
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
+    self.configureChildViewControllersWithLiveStreamEvents.assertValues([[.template], [.template]])
   }
 
   func testStatusBar() {
@@ -95,8 +113,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.setNavigationBarHidden.assertValues([true])
     self.setNavigationBarAnimated.assertValues([false])
 
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.setNavigationBarHidden.assertValues([true])
     self.setNavigationBarAnimated.assertValues([false])
@@ -120,8 +138,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.scheduler.advance()
 
@@ -175,8 +193,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
     )
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.scheduler.advance()
 
@@ -229,8 +247,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiDelayInterval: .seconds(10)) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events, "Nothing tracked because API is taking a long time.")
 
@@ -268,8 +286,8 @@ final class ProjectPamphletViewModelTests: TestCase {
         projectOrParam: .left(project), refTag: .discovery
       )
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -302,8 +320,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -338,8 +356,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -372,8 +390,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .right(.id(1)), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -411,8 +429,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -443,8 +461,8 @@ final class ProjectPamphletViewModelTests: TestCase {
         projectOrParam: .left(project), refTag: .discovery
       )
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 
@@ -468,8 +486,8 @@ final class ProjectPamphletViewModelTests: TestCase {
         projectOrParam: .right(.id(project.id)), refTag: .discovery
       )
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
       XCTAssertEqual([], self.trackingClient.events)
 

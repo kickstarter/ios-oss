@@ -19,9 +19,12 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var dateLabel: UILabel!
   @IBOutlet private weak var detailsStackViewBackgroundView: UIView!
   @IBOutlet private weak var detailsStackView: UIStackView!
+  @IBOutlet private weak var goToProjectButton: UIButton!
+  @IBOutlet private weak var goToProjectButtonContainer: UIView!
   @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
+  @IBOutlet private weak var imageOverlayView: UIView!
   @IBOutlet private weak var introLabel: SimpleHTMLLabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
@@ -30,6 +33,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var projectImageView: UIImageView!
   @IBOutlet private weak var secondsSubtitleLabel: UILabel!
   @IBOutlet private weak var secondsTitleLabel: UILabel!
+  @IBOutlet private var separatorViews: [UIView]!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
 
@@ -39,10 +43,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   public static func configuredWith(project: Project,
                                     liveStreamEvent: LiveStreamEvent,
-                                    refTag: RefTag) -> LiveStreamCountdownViewController {
+                                    refTag: RefTag,
+                                    presentedFromProject: Bool) -> LiveStreamCountdownViewController {
 
     let vc = Storyboard.LiveStream.instantiate(LiveStreamCountdownViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+    vc.viewModel.inputs.configureWith(project: project,
+                                      liveStreamEvent: liveStreamEvent,
+                                      refTag: refTag,
+                                      presentedFromProject: presentedFromProject)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
@@ -56,6 +64,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
+
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.eventDetailsViewModel.inputs.userSessionStarted()
+    }
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
@@ -87,7 +102,9 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = [self.daysTitleLabel, self.hoursTitleLabel, self.minutesTitleLabel, self.secondsTitleLabel]
       ||> UILabel.lens.textColor .~ .white
-      ||> UILabel.lens.font %~~ { _, l in countdownFont(label: l) }
+      ||> UILabel.lens.font %~~ { _, l in
+        (l.traitCollection.isRegularRegular ? UIFont.ksr_title1() : .ksr_title1(size: 24)).countdownMonospaced
+      }
       ||> UILabel.lens.textAlignment .~ .center
 
     _ = [self.daysSubtitleLabel, self.hoursSubtitleLabel, self.minutesSubtitleLabel,
@@ -107,26 +124,24 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.dateContainerView
-      |> UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(3))
-      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
-      |> roundedStyle(cornerRadius: 2)
+      |> liveStreamDateContainerStyle
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_text_navy_900
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "days") }
+      |> UILabel.lens.text %~ { _ in Strings.days() }
 
     _ = self.hoursSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "days", defaultValue: "hours") }
+      |> UILabel.lens.text %~ { _ in Strings.hours() }
 
     _ = self.minutesSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "minutes", defaultValue: "minutes") }
+      |> UILabel.lens.text %~ { _ in Strings.minutes() }
 
     _ = self.secondsSubtitleLabel
-      |> UILabel.lens.text %~ { _ in localizedString(key: "seconds", defaultValue: "seconds") }
+      |> UILabel.lens.text %~ { _ in Strings.seconds() }
 
     _ = self.countdownColons
       ||> UILabel.lens.text .~ ":"
@@ -140,7 +155,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.detailsStackViewBackgroundView
-      |> roundedStyle(cornerRadius: 2)
+      |> roundedStyle()
+      |> dropShadowStyle()
+      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
+      |> UIView.lens.layer.shadowOpacity .~ 0.2
 
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -170,28 +188,19 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.liveStreamTitleLabel
       |> UILabel.lens.font %~~ { _, v in
-        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3()
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3(size: 18)
       }
       |> UILabel.lens.textColor .~ .ksr_navy_700
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
       |> UILabel.lens.font %~~ { _, v in
-        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_subhead()
+        v.traitCollection.isRegularRegular ?  UIFont.ksr_body() : UIFont.ksr_body(size: 14)
       }
       |> UILabel.lens.textColor .~ .ksr_navy_600
 
     _ = self.subscribeButton
-      |> greenBorderButtonStyle
-      |> UIButton.lens.contentEdgeInsets %~~ { insets, button in
-        button.traitCollection.isRegularRegular
-          ? insets
-          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
-      }
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(right: -Styles.grid(1))
-      |> UIButton.lens.tintColor .~ self.subscribeButton.currentTitleColor
-
-    self.subscribeButton.semanticContentAttribute = .forceRightToLeft
+      |> darkSubscribeButtonStyle
 
     _ = self.subscribeActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
@@ -205,6 +214,16 @@ public final class LiveStreamCountdownViewController: UIViewController {
           ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
           : .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(4), right: Styles.grid(4))
     }
+
+    _ = self.goToProjectButton
+      |> liveStreamGoToProjectStyle
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
+
+    _ = self.imageOverlayView
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.8)
+
+    _ = self.separatorViews
+      ||> separatorStyle
   }
 
   override public var prefersStatusBarHidden: Bool {
@@ -220,27 +239,18 @@ public final class LiveStreamCountdownViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
-
     self.countdownStackView.rac.accessibilityLabel = self.viewModel.outputs.countdownAccessibilityLabel
-
     self.daysTitleLabel.rac.text = self.viewModel.outputs.daysString
     self.hoursTitleLabel.rac.text = self.viewModel.outputs.hoursString
     self.minutesTitleLabel.rac.text = self.viewModel.outputs.minutesString
     self.secondsTitleLabel.rac.text = self.viewModel.outputs.secondsString
-
     self.introLabel.rac.html = self.viewModel.outputs.upcomingIntroText
     self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-
     self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
-
     self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
-
     self.dateLabel.rac.text = self.viewModel.outputs.countdownDateLabelText
+    self.goToProjectButtonContainer.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     self.eventDetailsViewModel.outputs.openLoginToutViewController
       .observeValues { [weak self] _ in
@@ -283,7 +293,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, liveStreamEvent, refTag in
         let liveStreamContainerViewController = LiveStreamContainerViewController
-          .configuredWith(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag)
+          .configuredWith(project: project,
+                          liveStreamEvent: liveStreamEvent,
+                          refTag: refTag,
+                          presentedFromProject: false)
 
         self?.navigationController?.pushViewController(liveStreamContainerViewController, animated: true)
     }
@@ -297,6 +310,15 @@ public final class LiveStreamCountdownViewController: UIViewController {
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
+
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+  }
+
+  private func goTo(project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.present(vc, animated: true, completion: nil)
   }
 
   lazy private var closeBarButtonItem: UIBarButtonItem = {
@@ -305,10 +327,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
-    closeBarButtonItem.accessibilityLabel = localizedString(
-      key: "Close_live_stream",
-      defaultValue: "Close live stream"
-    )
+    closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
     closeBarButtonItem.accessibilityHint = localizedString(
       key: "Closes_the_live_stream",
@@ -324,10 +343,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
 
-    shareBarButtonItem.accessibilityLabel = localizedString(
-      key: "Share_this_live_stream",
-      defaultValue: "Share this live stream."
-    )
+    shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
 
     return shareBarButtonItem
   }()
@@ -374,33 +390,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @objc private func subscribe() {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
-}
 
-// Returns a fancy monospaced font for the countdown.
-private func countdownFont(label: UILabel) -> UIFont {
-
-  let baseFont: UIFont = label.traitCollection.isRegularRegular
-    ? .ksr_title1() : .ksr_title1(size: 24)
-
-  let monospacedDescriptor = baseFont.fontDescriptor
-    .addingAttributes(
-      [
-        UIFontDescriptorFeatureSettingsAttribute: [
-          [
-            UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-            UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
-          ],
-          [
-            UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
-            UIFontFeatureSelectorIdentifierKey: kStylisticAltTwoOnSelector
-          ],
-          [
-            UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
-            UIFontFeatureSelectorIdentifierKey: kStylisticAltOneOnSelector
-          ]
-        ]
-      ]
-  )
-
-  return UIFont(descriptor: monospacedDescriptor, size: 0.0)
+  @objc private func goToProjectButtonPressed() {
+    self.viewModel.inputs.goToProjectButtonPressed()
+  }
 }
