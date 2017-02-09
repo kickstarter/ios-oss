@@ -154,7 +154,6 @@
 		59F368C71D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F368C61D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift */; };
 		8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */; };
 		8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
-		8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */; };
 		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */; };
 		8072F44F1D46BAA400999EF1 /* UpdatePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */; };
@@ -432,6 +431,8 @@
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
 		A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
 		A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77DA9231E4D13F000DB3A66 /* RewardCell.xib */; };
+		A77DA9641E4D1F4D00DB3A66 /* Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77DA9621E4D1F4D00DB3A66 /* Nib.swift */; };
+		A77DA9651E4D1F4D00DB3A66 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */; };
 		A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
 		A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */; };
@@ -1479,7 +1480,6 @@
 		59F368C61D245BE8005404DC /* DashboardReferrerRowStackViewViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModelTests.swift; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
 		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
-		8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewController.swift; sourceTree = "<group>"; };
 		8053D3101D3848A3007B85DB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -1731,6 +1731,8 @@
 		A77D7B061CBAAF5D0077586B /* Paginate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginate.swift; sourceTree = "<group>"; };
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
 		A77DA9231E4D13F000DB3A66 /* RewardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RewardCell.xib; sourceTree = "<group>"; };
+		A77DA9621E4D1F4D00DB3A66 /* Nib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Nib.swift; path = Library/Nib.swift; sourceTree = "<group>"; };
+		A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Storyboard.swift; path = Library/Storyboard.swift; sourceTree = "<group>"; };
 		A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
 		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
@@ -2091,7 +2093,9 @@
 			children = (
 				9D1A29851D5A9508009E1B3F /* DeprecatedWebViewController.swift */,
 				015B78841D47FF51003216AC /* MFMailComposeViewController.swift */,
+				A77DA9621E4D1F4D00DB3A66 /* Nib.swift */,
 				A724BA651D2C03930041863C /* NSBundle-Framework.swift */,
+				A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */,
 				A74BEF181DE3474C008D5E63 /* UIImageView+URL.swift */,
 				A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */,
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
@@ -3004,7 +3008,6 @@
 				A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */,
 				A718885C1DE0DDCE0094856D /* ShortcutItem.swift */,
 				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
-				8024FE4A1D6376BF0067A1F6 /* Storyboard.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
@@ -4530,6 +4533,7 @@
 			files = (
 				5993DEBF1CE296F000925494 /* ProfileHeaderView.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
+				A77DA9651E4D1F4D00DB3A66 /* Storyboard.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				018422C51D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift in Sources */,
@@ -4589,6 +4593,7 @@
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				A745D04B1CA8986E00C12802 /* ProfileViewController.swift in Sources */,
+				A77DA9641E4D1F4D00DB3A66 /* Nib.swift in Sources */,
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A731BF5A1D1ED60800A734AC /* WebViewController.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,
@@ -4637,7 +4642,6 @@
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
-				8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */,
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
 				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
