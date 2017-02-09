@@ -93,4 +93,24 @@ final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
 
     self.stopVideo.assertValueCount(1)
   }
+
+  func testReachability() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+
+    self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+
+    self.playVideoUrl.assertValueCount(1)
+    self.stopVideo.assertValueCount(0)
+
+    self.reachability.value = .wwan
+
+    self.playVideoUrl.assertValueCount(1)
+    self.stopVideo.assertValueCount(1)
+
+    self.reachability.value = .wifi
+
+    self.playVideoUrl.assertValueCount(2)
+    self.stopVideo.assertValueCount(1)
+  }
 }

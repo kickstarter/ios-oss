@@ -31,11 +31,17 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
   public init() {
     let liveStreamEvent = self.configData.signal.skipNil()
 
+    let reachability = liveStreamEvent
+      .take(first: 1)
+      .flatMap { _ in AppEnvironment.current.reachability }
+      .skipRepeats()
+
     self.creatorImageUrl = liveStreamEvent
       .map { URL(string: $0.creator.avatar) }
 
-    self.playVideoUrl = liveStreamEvent
-      .switchMap { event in
+    self.playVideoUrl = Signal.combineLatest(liveStreamEvent, reachability)
+      .filter { _, reach in reach == .wifi }
+      .switchMap { event, _ in
         AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
@@ -54,7 +60,10 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.streamImageUrl = liveStreamEvent
       .map { URL.init(string: $0.backgroundImage.medium) }
 
-    self.stopVideo = self.didEndDisplayProperty.signal
+    self.stopVideo = Signal.merge(
+      self.didEndDisplayProperty.signal,
+      reachability.filter { $0 != .wifi }.ignoreValues()
+    )
   }
 
   private let configData = MutableProperty<LiveStreamEvent?>(nil)
