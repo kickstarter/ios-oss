@@ -69,7 +69,8 @@ internal final class ProfileViewController: UICollectionViewController {
       .observeForUI()
       .observeValues { [weak self] itemIndex in
         guard let _self = self else { return }
-        _self.collectionView?.scrollToItem(at: _self.dataSource.indexPath(for: itemIndex), at: .top,
+        _self.collectionView?.scrollToItem(at: _self.dataSource.indexPath(for: itemIndex),
+                                           at: .top,
                                            animated: false)
     }
   }

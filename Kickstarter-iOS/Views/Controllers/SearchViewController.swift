@@ -139,7 +139,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   private func scrollToProjectRow(_ row: Int) {
-    self.tableView.scrollToRow(at: self.dataSource.indexPath(for: row), at: .top, animated: false)
+    self.tableView.scrollToRow(at: self.dataSource.indexPath(forProjectRow: row), at: .top, animated: false)
   }
 
   fileprivate func goTo(project: Project, projects: [Project], refTag: RefTag) {

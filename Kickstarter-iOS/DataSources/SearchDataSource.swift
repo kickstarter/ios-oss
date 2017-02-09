@@ -37,8 +37,8 @@ internal final class SearchDataSource: ValueCellDataSource {
     }
   }
 
-  internal func indexPath(for projectRow: Int) -> IndexPath {
-    return IndexPath(row: projectRow, section: Section.projects.rawValue)
+  internal func indexPath(forProjectRow row: Int) -> IndexPath {
+    return IndexPath(item: row, section: Section.projects.rawValue)
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

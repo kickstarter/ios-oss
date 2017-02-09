@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 internal protocol ProjectNavigatorDelegate: class {
-  /// Call when a page view controller has completed transitioning.
+  /// Called when a page view controller has completed transitioning.
   func transitionedToProject(at index: Int)
 }
 
@@ -127,6 +127,10 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     return self.viewControllers?.first
   }
 
+  /**
+   View Controllers that present this View Controller should call this method whenever it loads an 
+   updated playlist of projects.
+  */
   internal func updatePlaylist(_ playlist: [Project]) {
     self.pageDataSource.updatePlaylist(playlist)
   }

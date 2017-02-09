@@ -32,7 +32,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   override func tearDown() {
     AppEnvironment.popEnvironment()
-    UIView.setAnimationsEnabled(false)
+    UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
 

@@ -145,7 +145,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] row in
         guard let _self = self else { return }
-        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row), at: .top, animated: false)
+        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(forProjectRow: row), at: .top, animated: false)
     }
 
     self.viewModel.outputs.showEmptyState

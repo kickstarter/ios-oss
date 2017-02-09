@@ -4,7 +4,7 @@ import ReactiveSwift
 import Result
 
 public protocol ProjectNavigatorViewModelInputs {
-  /// Call with the config data to give to the view.
+  /// Call with the config data given to the view.
   func configureWith(project: Project, refTag: RefTag)
 
   /// Call when the UIPageViewController finishes transitioning with previous index value.
@@ -65,8 +65,11 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       )
       .map(first)
 
+    let pageTransitionCompletedFromIndex = self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
+      .filter { completed, _ in completed }
+
     let swipedToProject = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
-      .takeWhen(self.pageTransitionCompletedFromIndexProperty.signal.skipNil().map(first).filter(isTrue))
+      .takeWhen(pageTransitionCompletedFromIndex)
       .map(first)
 
     let currentProject = Signal.merge(
@@ -127,11 +130,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .skipRepeats()
 
     let swipedToProjectAtIndexFromIndex = self.willTransitionToProjectAtIndexProperty.signal.skipNil()
-      .takePairWhen(
-        self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
-          .filter { completed, _ in completed }
-          .map(second)
-      )
+      .takePairWhen(pageTransitionCompletedFromIndex.map(second))
       .map { (project: $0.0, currentIndex: $0.1, previousIndex: $1) }
 
     self.notifyDelegateTransitionedToProjectIndex = swipedToProjectAtIndexFromIndex

@@ -240,12 +240,17 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] alpha in
         guard let _self = self else { return }
-        UIView.animate(withDuration: (alpha == 0.0 ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut,
-                       animations: {
-                        _self.creatorStackView.alpha = alpha
-                        _self.statsStackView.alpha = alpha
-                        _self.blurbAndReadMoreStackView.alpha = alpha
-        }, completion: nil)
+        UIView.animate(
+          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
+          delay: 0.0,
+          options: .curveEaseOut,
+          animations: {
+            _self.creatorStackView.alpha = alpha
+            _self.statsStackView.alpha = alpha
+            _self.blurbAndReadMoreStackView.alpha = alpha
+          },
+          completion: nil
+        )
     }
 
     self.viewModel.outputs.progressPercentage
