@@ -125,6 +125,7 @@ final class LiveStreamEventTests: XCTestCase {
       ],
       "feature_score": 0,
       "number_subscribed": 114,
+      "number_people_watching" : 145,
       "web_url": "http://www.com",
       "project": [
         "uid": 2047782949,
@@ -175,6 +176,7 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertNil(liveStreamEvent?.replayUrl)
     XCTAssertEqual(Date(timeIntervalSince1970: 1484742600), liveStreamEvent?.startDate)
     XCTAssertEqual("http://www.com", liveStreamEvent?.webUrl)
+    XCTAssertEqual(145, liveStreamEvent?.numberPeopleWatching)
 
     // User
     XCTAssertNil(liveStreamEvent?.user)

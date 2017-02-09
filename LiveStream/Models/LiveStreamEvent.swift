@@ -23,6 +23,7 @@ public struct LiveStreamEvent: Equatable {
   public fileprivate(set) var startDate: Date
   public fileprivate(set) var user: User?
   public fileprivate(set) var webUrl: String
+  public fileprivate(set) var numberPeopleWatching: Int?
 
   public struct BackgroundImage {
     public fileprivate(set) var medium: String
@@ -136,6 +137,7 @@ extension LiveStreamEvent: Decodable {
     return tmp4
       <*> json <|? "user"
       <*> (json <| ["stream", "web_url"] <|> json <| "web_url")
+      <*> json <|? "number_people_watching"
   }
 }
 

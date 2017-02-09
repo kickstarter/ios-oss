@@ -38,6 +38,7 @@ extension LiveStreamEvent {
     replayUrl: nil,
     startDate: Date(timeIntervalSince1970: 1234567890),
     user: nil,
-    webUrl: ""
+    webUrl: "",
+    numberPeopleWatching: 0
   )
 }
