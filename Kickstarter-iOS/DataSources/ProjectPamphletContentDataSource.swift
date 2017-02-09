@@ -15,6 +15,19 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   internal func loadMinimal(project: Project) {
     self.set(values: [project], cellClass: ProjectPamphletMinimalCell.self, inSection: Section.main.rawValue)
+
+    let values = [
+      ProjectPamphletSubpage.comments(project.stats.commentsCount as Int?, .first),
+      ProjectPamphletSubpage.updates(project.stats.updatesCount as Int?, .last)
+    ]
+
+    self.set(
+      values: values,
+      cellClass: ProjectPamphletSubpageCell.self,
+      inSection: Section.subpages.rawValue
+    )
+
+    self.setRewardTitleArea(project: project)
   }
 
   internal func load(project: Project, liveStreamEvents: [LiveStreamEvent]) {
@@ -25,8 +38,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     let liveStreamSubpages = self.liveStreamSubpages(forLiveStreamEvents: liveStreamEvents)
 
     let values = liveStreamSubpages + [
-      .comments(project.stats.commentsCount ?? 0, liveStreamSubpages.isEmpty ? .first : .middle),
-      .updates(project.stats.updatesCount ?? 0, .last)
+      .comments(project.stats.commentsCount as Int?, liveStreamSubpages.isEmpty ? .first : .middle),
+      .updates(project.stats.updatesCount as Int?, .last)
       ]
 
     self.set(
@@ -35,16 +48,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if project.personalization.isBacking != true && project.state == .live {
-      self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
-    } else if let backing = project.personalization.backing {
-
-      self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(values: [(project, .right(backing))],
-               cellClass: RewardCell.self,
-               inSection: Section.calloutReward.rawValue)
-    }
+    self.setRewardTitleArea(project: project)
 
     let rewardData = project.rewards
       .filter { isMainReward(reward: $0, project: project) }
@@ -54,6 +58,19 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     if !rewardData.isEmpty {
       self.set(values: [project], cellClass: RewardsTitleCell.self, inSection: Section.rewardsTitle.rawValue)
       self.set(values: rewardData, cellClass: RewardCell.self, inSection: Section.rewards.rawValue)
+    }
+  }
+
+  private func setRewardTitleArea(project: Project) {
+    if project.personalization.isBacking != true && project.state == .live {
+      self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
+      self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
+    } else if let backing = project.personalization.backing {
+
+      self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
+      self.set(values: [(project, .right(backing))],
+               cellClass: RewardCell.self,
+               inSection: Section.calloutReward.rawValue)
     }
   }
 

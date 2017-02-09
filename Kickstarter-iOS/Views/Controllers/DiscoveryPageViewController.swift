@@ -125,6 +125,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
+        self?.updateProjectPlaylist(projects)
     }
 
     self.viewModel.outputs.showOnboarding
@@ -138,6 +139,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] in
         _ = self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
+    }
+
+    self.viewModel.outputs.scrollToProjectRow
+      .observeForUI()
+      .observeValues { [weak self] row in
+        guard let _self = self else { return }
+        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(forProjectRow: row),
+                                    at: .top,
+                                    animated: false)
     }
 
     self.viewModel.outputs.showEmptyState
@@ -219,6 +229,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       discovery.setSortsEnabled(false)
     }
   }
+
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
+  }
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
@@ -255,4 +270,7 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
 }

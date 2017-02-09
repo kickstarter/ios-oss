@@ -148,6 +148,19 @@ public final class Koala {
     }
   }
 
+  /// Determines which swipe was used.
+  public enum SwipeType: String {
+    case next
+    case previous
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .next:     return "next"
+      case .previous: return "previous"
+      }
+    }
+  }
+
   /**
    Determines the place from which the newsletter toggle was presented.
 
@@ -1127,10 +1140,11 @@ public final class Koala {
     self.track(event: "Viewed Project Page", properties: props)
   }
 
-  public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
+  public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
 
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
+    props["type"] = type.trackingString
 
     self.track(event: "Swiped Project", properties: props)
     self.track(event: "Project Navigate", properties: props)

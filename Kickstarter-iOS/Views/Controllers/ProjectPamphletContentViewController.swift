@@ -228,7 +228,9 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(_ cell: ProjectPamphletMainCell,
                                         addChildController child: UIViewController) {
     self.addChildViewController(child)
+    child.beginAppearanceTransition(true, animated: false)
     child.didMove(toParentViewController: self)
+    child.endAppearanceTransition()
   }
 
   internal func projectPamphletMainCell(_ cell: ProjectPamphletMainCell,

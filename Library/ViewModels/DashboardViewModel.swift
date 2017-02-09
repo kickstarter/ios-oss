@@ -57,7 +57,7 @@ public protocol DashboardViewModelOutputs {
                            project: Project), NoError> { get }
 
   /// Emits when to go to the project page.
-  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits when should present projects drawer with data to populate it.
   var presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError> { get }
@@ -183,9 +183,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.dismissProjectsDrawer = self.projectsDrawerDidAnimateOutProperty.signal
 
-    self.goToProject = Signal.combineLatest(self.project, projects)
+    self.goToProject = self.project
       .takeWhen(self.projectContextCellTappedProperty.signal)
-      .map { project, projects in (project, projects, RefTag.dashboard) }
+      .map { ($0, RefTag.dashboard) }
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
@@ -257,7 +257,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public let focusScreenReaderOnTitleView: Signal<(), NoError>
   public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
     project: Project), NoError>
-  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
   public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,

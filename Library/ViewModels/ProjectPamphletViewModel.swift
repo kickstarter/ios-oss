@@ -40,55 +40,23 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
 ProjectPamphletViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
-    let projectOrParam = Signal.combineLatest(
-      self.projectOrParamProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-      )
-      .map(first)
 
-    let projectOrParamAndIndex = Signal.combineLatest(
-      projectOrParam,
-      self.viewDidAppearAnimated.signal.scan(0, { accum, _ in accum + 1 })
-      )
-
-    let freshProject = projectOrParamAndIndex
-      .map { projectOrParam, _ in projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id) }
-      .switchMap { param -> SignalProducer<Project, NoError> in
-
-        AppEnvironment.current.apiService.fetchProject(param: param)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
+    let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
+      .takePairWhen(Signal.merge(
+        self.viewDidLoadProperty.signal.mapConst(true),
+        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+      ))
+      .map(unpack)
+      .switchMap { projectOrParam, refTag, shouldPrefix in
+        fetchProjectAndLiveStreams(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+          .map { project, liveStreams in
+            (project, liveStreams, refTag.map(cleanUp(refTag:)))
+        }
     }
 
-    let project = Signal.merge(
-      projectOrParam.map { $0.left }.skipNil(),
-      freshProject
-      )
-
-    let refTag = self.refTagProperty.signal
-      .map { $0.map(cleanUp(refTag:)) }
-
-    let liveStreamEventsFetch = Signal.combineLatest(
-      project.take(first: 1),
-      self.viewWillAppearAnimated.signal
-      )
-      .map(first)
-      .switchMap { project -> SignalProducer<LiveStreamEventsEnvelope, NoError> in
-        AppEnvironment.current.liveStreamService
-          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
-      }
-
-    let liveStreamEvents = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst([]),
-      liveStreamEventsFetch.map { $0.liveStreamEvents }
-    )
-
-    self.configureChildViewControllersWithProjectAndLiveStreams =
-      Signal.combineLatest(project, liveStreamEvents, refTag)
+    self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
+      .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -99,42 +67,36 @@ ProjectPamphletViewModelOutputs {
       self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
-    let cookieRefTag = Signal.combineLatest(
-      project.map(cookieRefTagFor(project:)),
-      refTag
+    let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
+      .map { project, _, refTag in
+        cookieRefTagFor(project: project) ?? refTag
+      }
+      .take(first: 1)
+
+    Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag,
+                         cookieRefTag,
+                         self.viewDidAppearAnimated.signal.ignoreValues()
       )
+      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1, _: $2) }
+      .filter { _, liveStreamEvents, _, _, _ in liveStreamEvents != nil }
       .take(first: 1)
-      .map { $0 ?? $1 }
-
-    // Try getting array of live streams from project, but if we can't after 5 seconds let's just emit `nil`
-    let trackLiveStreamEvents = liveStreamEvents
-      .skip(first: 1) // Skip first as we are prefixing with an empty array
-      .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
-      .materialize()
-      .map { $0.value }
-      .take(first: 1)
-
-    Signal.combineLatest(project, trackLiveStreamEvents, refTag, cookieRefTag)
-      .take(first: 1)
-      .observeValues { project, liveStreamEvents, refTag, cookieRefTag in
+      .observeValues { project, liveStreamEvents, refTag, cookieRefTag, _ in
         AppEnvironment.current.koala.trackProjectShow(project,
                                                       liveStreamEvents: liveStreamEvents,
                                                       refTag: refTag,
                                                       cookieRefTag: cookieRefTag)
     }
 
-    Signal.combineLatest(cookieRefTag.skipNil(), project)
+    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndLiveStreamsAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  fileprivate let projectOrParamProperty = MutableProperty<Either<Project, Param>?>(nil)
-  fileprivate let refTagProperty = MutableProperty<RefTag?>(nil)
+  private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
-    self.projectOrParamProperty.value = projectOrParam
-    self.refTagProperty.value = refTag
+    self.configDataProperty.value = (projectOrParam, refTag)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty()
@@ -226,4 +188,30 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   properties[.expires] = Date(timeIntervalSince1970: project.dates.deadline)
 
   return HTTPCookie(properties: properties)
+}
+
+private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
+  -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
+
+    let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+
+    let projectAndLiveStreams = AppEnvironment.current.apiService.fetchProject(param: param)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      .demoteErrors()
+      .flatMap { project -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> in
+
+        AppEnvironment.current.liveStreamService
+          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .flatMapError { _ in SignalProducer(error: SomeError()) }
+          .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
+          .materialize()
+          .map { (project, .some($0.value?.liveStreamEvents ?? [])) }
+          .take(first: 1)
+    }
+
+    if let project = projectOrParam.left, shouldPrefix {
+      return projectAndLiveStreams.prefix(value: (project, nil))
+    }
+    return projectAndLiveStreams
 }

@@ -23,6 +23,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
   fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
   fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
+  private let scrollToProjectRow = TestObserver<Int, NoError>()
   fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
   fileprivate let showOnboarding = TestObserver<Bool, NoError>()
 
@@ -38,6 +39,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
+    self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
@@ -619,6 +621,54 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                            "Emits .socialNoPledges for true social.")
           self.hideEmptyState.assertValueCount(2)
         }
+      }
+    }
+  }
+
+  func testScrollAndUpdateProjects_ViaProjectNavigator() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects are loaded.")
+
+      self.vm.inputs.tapped(project: playlist[4])
+      self.vm.inputs.viewDidDisappear(animated: true)
+      self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5])
+
+      self.vm.inputs.transitionedToProject(at: 6, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5, 6])
+
+      self.vm.inputs.transitionedToProject(at: 7, outOf: playlist.count)
+
+      self.scrollToProjectRow.assertValues([5, 6, 7])
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+        self.vm.inputs.transitionedToProject(at: 8, outOf: playlist.count)
+
+        self.scheduler.advance()
+
+        self.scrollToProjectRow.assertValues([5, 6, 7, 8])
+        self.hasAddedProjects.assertValues([true, true], "More projects are loaded.")
+
+        self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
+
+        self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
       }
     }
   }

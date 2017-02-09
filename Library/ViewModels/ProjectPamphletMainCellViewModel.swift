@@ -4,6 +4,9 @@ import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletMainCellViewModelInputs {
+  /// Call when cell awakeFromNib is called.
+  func awakeFromNib()
+
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
@@ -59,6 +62,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, NoError> { get }
+
+  /// Emits an alpha value for views to create transition after full project loads.
+  var opacityForViews: Signal<CGFloat, NoError> { get }
 
   /// Emits the text for the pledged subtitle label.
   var pledgedSubtitleLabelText: Signal<String, NoError> { get }
@@ -223,8 +229,18 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
       .take(first: 1)
+
+    self.opacityForViews = Signal.merge(
+      self.projectProperty.signal.skipNil().mapConst(1.0),
+      self.awakeFromNibProperty.signal.mapConst(0.0)
+    )
   }
   // swiftlint:enable function_body_length
+
+  private let awakeFromNibProperty = MutableProperty()
+  public func awakeFromNib() {
+    self.awakeFromNibProperty.value = ()
+  }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
@@ -268,6 +284,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError>
   public let notifyDelegateToGoToCampaign: Signal<Project, NoError>
   public let notifyDelegateToGoToCreator: Signal<Project, NoError>
+  public let opacityForViews: Signal<CGFloat, NoError>
   public let pledgedSubtitleLabelText: Signal<String, NoError>
   public let pledgedTitleLabelText: Signal<String, NoError>
   public let pledgedTitleLabelTextColor: Signal<UIColor, NoError>

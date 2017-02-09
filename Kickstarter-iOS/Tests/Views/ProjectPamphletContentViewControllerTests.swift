@@ -54,7 +54,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       parent.view.frame.size.height = device == .pad ? 1_400 : 1_000
 
       FBSnapshotVerifyView(
-        vc.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
+        parent.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
       )
     }
   }
@@ -239,28 +239,34 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!
 
-    [Device.phone4_7inch, Device.pad].forEach { device in
-      let minimal = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (minimalParent, _) = traitControllers(
-        device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
-      )
-      let full = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (fullParent, _) = traitControllers(
-        device: device, orientation: .portrait, child: full, handleAppearanceTransition: false
-      )
+    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
+      [Device.phone4_7inch, Device.pad].forEach { device in
+        let minimal = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+        let (minimalParent, _) = traitControllers(
+          device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
+        )
+        let full = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (fullParent, _) = traitControllers(
+          device: device, orientation: .portrait, child: full, handleAppearanceTransition: false
+        )
 
-      minimalParent.beginAppearanceTransition(true, animated: true)
+        minimalParent.beginAppearanceTransition(true, animated: true)
 
-      fullParent.beginAppearanceTransition(true, animated: true)
-      fullParent.endAppearanceTransition()
+        fullParent.beginAppearanceTransition(true, animated: true)
+        fullParent.endAppearanceTransition()
 
-      let snapshotView = UIView(frame: fullParent.view.frame)
-      fullParent.view.alpha = 0.5
-      minimalParent.view.alpha = 0.5
-      snapshotView.addSubview(fullParent.view)
-      snapshotView.addSubview(minimalParent.view)
+        let snapshotView = UIView(frame: fullParent.view.frame)
+        fullParent.view.alpha = 0.5
+        minimalParent.view.alpha = 0.5
+        snapshotView.addSubview(fullParent.view)
+        snapshotView.addSubview(minimalParent.view)
 
-      FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+        self.scheduler.advance()
+
+        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+      }
     }
   }
 
@@ -293,13 +299,12 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let apiService = MockService(fetchProjectResponse: project)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3), language: language,
-                      liveStreamService: liveService) {
+      withEnvironment(apiService: apiService, language: language, liveStreamService: liveService) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_044 : 800
-        self.scheduler.advance(by: .seconds(3))
+        self.scheduler.advance()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }

@@ -42,4 +42,8 @@ internal final class ProfileDataSource: ValueCellDataSource {
 
     return view
   }
+
+  internal func indexPath(for itemPosition: Int) -> IndexPath {
+    return IndexPath(item: itemPosition, section: Section.projects.rawValue)
+  }
 }

@@ -72,7 +72,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       .map { $0.position == .last }
 
     self.countLabelText = Signal.merge(
-      Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count) },
+      Signal.merge(commentsSubpage, updatesSubpage).map { Format.wholeNumber($0.count ?? 0) },
       liveStreamDetail.map(labelTexts(forLiveStreamEvent:)).map(second)
     )
 
@@ -148,11 +148,11 @@ public func == (lhs: ProjectPamphletSubpageCellPosition, rhs: ProjectPamphletSub
 }
 
 public enum ProjectPamphletSubpage {
-  case comments(Int, ProjectPamphletSubpageCellPosition)
-  case updates(Int, ProjectPamphletSubpageCellPosition)
+  case comments(Int?, ProjectPamphletSubpageCellPosition)
+  case updates(Int?, ProjectPamphletSubpageCellPosition)
   case liveStream(liveStreamEvent: LiveStreamEvent, ProjectPamphletSubpageCellPosition)
 
-  public var count: Int {
+  public var count: Int? {
     switch self {
     case let .comments(count, _): return count
     case let .updates(count, _): return count

@@ -94,6 +94,6 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
-    self.countContainerView.layer.cornerRadius = self.countContainerView.bounds.height / 2
+    self.countContainerView.layer.cornerRadius = min(14.0, round(self.countContainerView.bounds.height / 2.0))
   }
 }

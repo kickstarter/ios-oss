@@ -66,7 +66,6 @@ public final class VideoViewController: UIViewController {
 
     _ = self.videoOverlayView
       |> UIView.lens.backgroundColor .~ .black
-      |> UIView.lens.alpha .~ 0.1
   }
 
   // swiftlint:disable function_body_length
@@ -77,14 +76,25 @@ public final class VideoViewController: UIViewController {
     self.videoContainerView.rac.hidden = self.viewModel.outputs.videoViewHidden
     self.videoOverlayView.rac.hidden = self.viewModel.outputs.playButtonHidden
 
+    self.viewModel.outputs.opacityForViews
+      .observeForUI()
+      .observeValues { [weak self] alpha in
+        guard let _self = self else { return }
+        UIView.animate(withDuration: (alpha == 0.0 ? 0.0 : 0.3), delay: 0.0, options: .curveEaseOut,
+                       animations: {
+                        _self.videoOverlayView.alpha = (alpha == 0.0 ? 0.0 : 0.1)
+                        _self.playButton.alpha = alpha
+        }, completion: nil)
+    }
+
     self.viewModel.outputs.addCompletionObserver
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] time in
         self?.addCompletionObserver(atTime: time)
     }
 
     self.viewModel.outputs.configurePlayerWithURL
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] url in
         self?.configurePlayer(withURL: url)
     }
@@ -104,19 +114,19 @@ public final class VideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.pauseVideo
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         self?.playerController.player?.pause()
     }
 
     self.viewModel.outputs.playVideo
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         self?.playerController.player?.play()
     }
 
     self.viewModel.outputs.projectImageHidden
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] hidden in
         UIView.animate(withDuration: 0.5) {
           self?.projectImageView.alpha = hidden ? 0 : 1
@@ -124,7 +134,7 @@ public final class VideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.projectImageURL
-      .observeForControllerAction()
+      .observeForUI()
       .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
@@ -135,7 +145,7 @@ public final class VideoViewController: UIViewController {
     }
 
     self.viewModel.outputs.seekToBeginning
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         self?.playerController.player?.seek(to: kCMTimeZero)
     }

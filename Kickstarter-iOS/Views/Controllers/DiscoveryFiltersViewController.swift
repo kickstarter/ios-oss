@@ -202,7 +202,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   private func deleteCategoriesLoaderRow() {
     self.filtersTableView.beginUpdates()
 
-    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .top)
+    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .fade)
 
     self.filtersTableView.endUpdates()
   }
