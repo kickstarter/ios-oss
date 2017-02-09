@@ -277,7 +277,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(oauthToken: OauthToken(token: "deadbeef"))) {
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
-                                              launchOptions: [:])
+                                                   launchOptions: [:])
 
       self.scheduler.advance(by: .seconds(5))
 
@@ -1199,6 +1199,15 @@ final class AppDelegateViewModelTests: TestCase {
                    self.trackingClient.properties(forKey: "type", as: String.self))
     XCTAssertEqual([nil, nil, "project_of_the_day,projects_we_love,search"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
+  }
+
+  func testVisitorCookies() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    XCTAssertEqual(["vis", "vis"], AppEnvironment.current.cookieStorage.cookies!.map { $0.name })
+    XCTAssertEqual(["DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"],
+                   AppEnvironment.current.cookieStorage.cookies!.map { $0.value })
   }
 }
 

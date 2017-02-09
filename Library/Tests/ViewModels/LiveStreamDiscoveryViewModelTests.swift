@@ -135,4 +135,61 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
       self.showAlert.assertValues(["Couldn‘t open live stream. Try again later."])
     }
   }
+
+  func testLoadDataSource_Refreshes() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+    let liveStreamsEnvelope = .template
+      |> LiveStreamEventsEnvelope.lens.liveStreamEvents .~ (
+        (0...4).map { .template |> LiveStreamEvent.lens.id .~ $0 }
+    )
+
+    let apiService = MockService(fetchProjectResponse: project)
+    let liveStreamService = MockLiveStreamService(fetchEventsForProjectResult: .success(liveStreamsEnvelope))
+    withEnvironment(apiService: apiService, liveStreamService: liveStreamService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.isActive(true)
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(1)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
+
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(2)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
+
+      self.vm.inputs.isActive(false)
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(3)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(true))
+
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(3)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(true))
+
+      self.vm.inputs.isActive(true)
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(4)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
+
+      self.vm.inputs.appWillEnterForeground()
+
+      self.scheduler.advance()
+
+      self.loadDataSource.assertValueCount(5)
+      XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
+    }
+  }
 }

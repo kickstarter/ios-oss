@@ -36,6 +36,9 @@ public protocol RewardPledgeViewModelInputs {
   /// Call when the disclaimer button is tapped.
   func disclaimerButtonTapped()
 
+  /// Call when the error alert "ok" button has been tapped and whether the view controller should dismiss.
+  func errorAlertTappedOK(shouldDismiss: Bool)
+
   /// Call when anything is tapped that should expand the reward's description.
   func expandDescriptionTapped()
 
@@ -171,11 +174,14 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the shipping container view should be hidden.
   var shippingInputStackViewHidden: Signal<Bool, NoError> { get }
 
+  /// Emits a boolean to determine if shipping loader should animate or not.
+  var shippingIsLoading: Signal<Bool, NoError> { get }
+
   /// Emits a string that should be put into the shipping locations label.
   var shippingLocationsLabelText: Signal<String, NoError> { get }
 
-  /// Emits a string to be shown in an alert controller.
-  var showAlert: Signal<String, NoError> { get }
+  /// Emits a string to be shown in an alert controller and whether closing it dismisses the view controller.
+  var showAlert: Signal<(message: String, shouldDismiss: Bool), NoError> { get }
 
   /// Emits a boolean that determines if the title label should be hidden.
   var titleLabelHidden: Signal<Bool, NoError> { get }
@@ -224,10 +230,10 @@ RewardPledgeViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let shippingRules = projectAndReward
-      .switchMap { (project, reward) -> SignalProducer<[ShippingRule], NoError> in
+    let shippingRulesEvent = projectAndReward
+      .switchMap { (project, reward) -> SignalProducer<Event<[ShippingRule], ErrorEnvelope>, NoError> in
         guard reward != Reward.noReward else {
-          return SignalProducer<[ShippingRule], NoError>(value: [])
+          return SignalProducer(value: .value([]))
         }
 
         return AppEnvironment.current.apiService.fetchRewardShippingRules(
@@ -235,8 +241,16 @@ RewardPledgeViewModelOutputs {
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .demoteErrors()
+          .retry(upTo: 3)
+          .materialize()
     }
+
+    self.shippingIsLoading = Signal.merge(
+      projectAndReward.map { _, reward in reward != Reward.noReward },
+      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    let shippingRules = shippingRulesEvent.values()
 
     self.navigationTitle = projectAndReward
       .map(navigationTitle(forProject:reward:))
@@ -559,9 +573,19 @@ RewardPledgeViewModelOutputs {
       changePaymentMethodEvent.errors()
     )
 
-    self.showAlert = pledgeErrors
-      .map { $0.errorEnvelope.errorMessages.first }
-      .skipNil()
+    self.showAlert = Signal.merge(
+      pledgeErrors
+        .map { error in
+          let shouldDismiss = (error.errorEnvelope.errorMessages.first == nil
+            || error.errorEnvelope.ksrCode == .UnknownCode)
+          return (message: error.errorEnvelope.errorMessages.first ?? Strings.general_error_something_wrong(),
+                  shouldDismiss: shouldDismiss)
+      },
+      shippingRulesEvent.errors()
+        .map { _ in
+          (message: Strings.We_were_unable_to_load_the_shipping_destinations(),
+           shouldDismiss: true) }
+    )
 
     self.titleLabelText = reward
       .map {
@@ -570,7 +594,10 @@ RewardPledgeViewModelOutputs {
           : ($0.title ?? "")
     }
 
-    self.dismissViewController = self.closeButtonTappedProperty.signal
+    self.dismissViewController = Signal.merge(
+      self.closeButtonTappedProperty.signal,
+      self.errorAlertTappedShouldDismissProperty.signal.filter(isTrue).ignoreValues()
+    )
 
     let projectAndRewardAndPledgeContext = projectAndReward
       .map { project, reward -> (Project, Reward, Koala.PledgeContext) in
@@ -771,6 +798,11 @@ RewardPledgeViewModelOutputs {
     self.disclaimerButtonTappedProperty.value = ()
   }
 
+  private let errorAlertTappedShouldDismissProperty = MutableProperty(false)
+  public func errorAlertTappedOK(shouldDismiss: Bool) {
+    self.errorAlertTappedShouldDismissProperty.value = shouldDismiss
+  }
+
   fileprivate let expandDescriptionTappedProperty = MutableProperty()
   public func expandDescriptionTapped() {
     self.expandDescriptionTappedProperty.value = ()
@@ -871,8 +903,9 @@ RewardPledgeViewModelOutputs {
   public let setStripePublishableKey: Signal<String, NoError>
   public let shippingAmountLabelText: Signal<String, NoError>
   public let shippingInputStackViewHidden: Signal<Bool, NoError>
+  public let shippingIsLoading: Signal<Bool, NoError>
   public let shippingLocationsLabelText: Signal<String, NoError>
-  public let showAlert: Signal<String, NoError>
+  public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
   public var titleLabelHidden: Signal<Bool, NoError> {
     return self.rewardViewModel.outputs.titleLabelHidden
   }

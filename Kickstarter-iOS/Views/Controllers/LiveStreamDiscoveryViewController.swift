@@ -30,6 +30,12 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    NotificationCenter.default
+      .addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self ]_ in
+        guard let _self = self else { return }
+        _self.viewModel.inputs.appWillEnterForeground()
+    }
+
     self.viewModel.outputs.loadDataSource
       .observeForUI()
       .observeValues { [weak self] in
@@ -52,6 +58,12 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     self.viewModel.outputs.showAlert
       .observeForUI()
       .observeValues { [weak self] in self?.showAlert(message: $0) }
+  }
+
+  internal override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   internal override func tableView(_ tableView: UITableView,
