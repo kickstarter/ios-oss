@@ -431,6 +431,7 @@
 		A77A95411E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */; };
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
 		A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B341CBAC5F90077586B /* PaginateTests.swift */; };
+		A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77DA9231E4D13F000DB3A66 /* RewardCell.xib */; };
 		A77FD5B51D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
 		A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */; };
@@ -1729,6 +1730,7 @@
 		A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryLiveNowCellViewModel.swift; sourceTree = "<group>"; };
 		A77D7B061CBAAF5D0077586B /* Paginate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginate.swift; sourceTree = "<group>"; };
 		A77D7B341CBAC5F90077586B /* PaginateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
+		A77DA9231E4D13F000DB3A66 /* RewardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RewardCell.xib; sourceTree = "<group>"; };
 		A77FD5B41D91FD2C00FFC636 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
 		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
@@ -2317,6 +2319,7 @@
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
+				A77DA9231E4D13F000DB3A66 /* RewardCell.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -4114,6 +4117,7 @@
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
 				A73923C91D272242004524C3 /* Search.storyboard in Resources */,
+				A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */,
 				A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */,
 				A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */,
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,
