@@ -28,6 +28,8 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.name .~ "Comin‘ to you live!"
       |> LiveStreamEvent.lens.creator.name .~ "A creator with a really long name to wrap onto two lines"
+      |> LiveStreamEvent.lens.numberPeopleWatching .~ 1428
+
     let futureEvent = .template
       |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(future).date
       |> LiveStreamEvent.lens.liveNow .~ false
