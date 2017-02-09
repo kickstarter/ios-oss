@@ -53,9 +53,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.numberPeopleWatchingHidden = liveStreamEvent.map { $0.numberPeopleWatching == nil }
 
     self.numberPeopleWatchingText = liveStreamEvent.map {
-      guard let numberWatching = $0.numberPeopleWatching else { return "0" }
-
-      return Format.wholeNumber(numberWatching)
+      Format.wholeNumber($0.numberPeopleWatching.coalesceWith(0))
     }
 
     self.streamTitleLabel = liveStreamEvent
