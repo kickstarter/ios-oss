@@ -160,8 +160,8 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<
-    LiveStreamSubscribeEnvelope, LiveApiError> {
+  public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
+    SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError> {
 
       return SignalProducer { (observer, disposable) in
         let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?

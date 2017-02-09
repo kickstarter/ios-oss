@@ -31,6 +31,6 @@ public protocol LiveStreamServiceProtocol {
   func signInAnonymously(completion: @escaping (String) -> Void)
 
   /// Subscribes/unsubscribes a user to an event.
-  func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<LiveStreamSubscribeEnvelope,
-    LiveApiError>
+  func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
+    SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError>
 }

@@ -94,8 +94,8 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) -> SignalProducer<
-    LiveStreamSubscribeEnvelope, LiveApiError> {
+  internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
+    SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError> {
 
       if let error = self.subscribeToResult?.error {
         return SignalProducer(error: error)
