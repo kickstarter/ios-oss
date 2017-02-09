@@ -89,13 +89,11 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
         AppEnvironment.current.liveStreamService
           .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .prefix(value: event)
           .materialize()
-    }.take(first: 1)
+    }
 
-    let event = Signal.merge(
-      initialEvent,
-      updatedEventFetch.values()
-    )
+    let event = updatedEventFetch.values()
 
     let subscribedProperty = MutableProperty(false)
 

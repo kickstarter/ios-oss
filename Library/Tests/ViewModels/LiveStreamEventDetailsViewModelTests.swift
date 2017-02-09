@@ -147,7 +147,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       XCTAssertEqual([], self.trackingClient.events)
       XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
@@ -155,7 +155,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
@@ -165,7 +165,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true, false, true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
@@ -177,7 +177,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true, false, true, false, true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
@@ -196,7 +196,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.animateSubscribeButtonActivityIndicator.assertValues([
-        true, false, true, false, true, false, true, false
+        false, true, false, true, false, true, false, true, false
       ])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false, true, false])
@@ -225,7 +225,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
@@ -234,7 +234,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
@@ -250,7 +250,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.animateSubscribeButtonActivityIndicator.assertValues([true, false, true, false])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
