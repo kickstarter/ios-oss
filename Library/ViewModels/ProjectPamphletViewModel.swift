@@ -40,16 +40,13 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
 ProjectPamphletViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
-    let configDataAndShouldPrefix = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil(),
-      Signal.merge(self.viewDidLoadProperty.signal.mapConst(true),
-                   self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
-        )
-      )
 
-    let freshProjectAndLiveStreamsAndRefTag = configDataAndShouldPrefix
+    let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
+      .takePairWhen(Signal.merge(
+        self.viewDidLoadProperty.signal.mapConst(true),
+        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+      ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProjectAndLiveStreams(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
