@@ -15,6 +15,7 @@ public protocol LiveStreamDiscoveryLiveNowCellViewModelOutputs {
   var creatorImageUrl: Signal<URL?, NoError> { get }
   var creatorLabelText: Signal<String, NoError> { get }
   var playVideoUrl: Signal<URL?, NoError> { get }
+  var numberPeopleWatchingHidden: Signal<Bool, NoError> { get }
   var numberPeopleWatchingText: Signal<String, NoError> { get }
   var stopVideo: Signal<(), NoError> { get }
   var streamImageUrl: Signal<URL?, NoError> { get }
@@ -49,6 +50,8 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.creatorLabelText = liveStreamEvent
       .map { Strings.Creator_name_is_live_now(creator_name: $0.creator.name) }
 
+    self.numberPeopleWatchingHidden = liveStreamEvent.map { $0.numberPeopleWatching == nil }
+
     self.numberPeopleWatchingText = liveStreamEvent.map {
       guard let numberWatching = $0.numberPeopleWatching else { return "0" }
 
@@ -77,6 +80,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
   public let creatorImageUrl: Signal<URL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let playVideoUrl: Signal<URL?, NoError>
+  public let numberPeopleWatchingHidden: Signal<Bool, NoError>
   public let numberPeopleWatchingText: Signal<String, NoError>
   public let stopVideo: Signal<(), NoError>
   public let streamImageUrl: Signal<URL?, NoError>

@@ -122,6 +122,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.streamImageView.rac.imageUrl = self.viewModel.outputs.streamImageUrl
     self.streamTitleLabel.rac.text = self.viewModel.outputs.streamTitleLabel
     self.numberWatchingLabel.rac.text = self.viewModel.outputs.numberPeopleWatchingText
+    self.numberWatchingContainerView.rac.hidden = self.viewModel.outputs.numberPeopleWatchingHidden
 
     self.viewModel.outputs.stopVideo
       .observeForUI()
