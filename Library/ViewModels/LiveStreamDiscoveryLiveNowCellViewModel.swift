@@ -50,7 +50,9 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.creatorLabelText = liveStreamEvent
       .map { Strings.Creator_name_is_live_now(creator_name: $0.creator.name) }
 
-    self.numberPeopleWatchingHidden = liveStreamEvent.map { $0.numberPeopleWatching == nil }
+    self.numberPeopleWatchingHidden = liveStreamEvent.map {
+      $0.numberPeopleWatching == nil || $0.numberPeopleWatching == .some(0)
+    }
 
     self.numberPeopleWatchingText = liveStreamEvent.map {
       Format.wholeNumber($0.numberPeopleWatching.coalesceWith(0))
