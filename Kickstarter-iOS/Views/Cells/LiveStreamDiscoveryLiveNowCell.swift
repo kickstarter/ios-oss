@@ -84,6 +84,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     _ = self.numberWatchingContainerView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.gridHalf(3))
 
     _ = self.numberWatchingLabel
       |> UILabel.lens.textColor .~ .white
