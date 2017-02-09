@@ -239,30 +239,34 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!
 
-    [Device.phone4_7inch, Device.pad].forEach { device in
-      let minimal = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (minimalParent, _) = traitControllers(
-        device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
-      )
-      let full = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (fullParent, _) = traitControllers(
-        device: device, orientation: .portrait, child: full, handleAppearanceTransition: false
-      )
+    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
+      [Device.phone4_7inch, Device.pad].forEach { device in
+        let minimal = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+        let (minimalParent, _) = traitControllers(
+          device: device, orientation: .portrait, child: minimal, handleAppearanceTransition: false
+        )
+        let full = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (fullParent, _) = traitControllers(
+          device: device, orientation: .portrait, child: full, handleAppearanceTransition: false
+        )
 
-      minimalParent.beginAppearanceTransition(true, animated: true)
+        minimalParent.beginAppearanceTransition(true, animated: true)
 
-      fullParent.beginAppearanceTransition(true, animated: true)
-      fullParent.endAppearanceTransition()
+        fullParent.beginAppearanceTransition(true, animated: true)
+        fullParent.endAppearanceTransition()
 
-      let snapshotView = UIView(frame: fullParent.view.frame)
-      fullParent.view.alpha = 0.5
-      minimalParent.view.alpha = 0.5
-      snapshotView.addSubview(fullParent.view)
-      snapshotView.addSubview(minimalParent.view)
+        let snapshotView = UIView(frame: fullParent.view.frame)
+        fullParent.view.alpha = 0.5
+        minimalParent.view.alpha = 0.5
+        snapshotView.addSubview(fullParent.view)
+        snapshotView.addSubview(minimalParent.view)
 
-      self.scheduler.advance()
+        self.scheduler.advance()
 
-      FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+      }
     }
   }
 

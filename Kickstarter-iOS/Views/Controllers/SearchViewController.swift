@@ -126,12 +126,20 @@ internal final class SearchViewController: UITableViewController {
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
 
-    self.viewModel.outputs.scrollToProjectRow
-      .observeForControllerAction() // NB: this also is required to prevent NSException.
-      .observeValues { [weak self] row in
-        guard let _self = self else { return }
-        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row), at: .top, animated: false)
+    // NB: Currently running a feature on a subset of users to test out if `observeForUI` is still crashing.
+    if AppEnvironment.current.config?.features["ios_scroll_output_observe_for_ui"] == .some(true) {
+      self.viewModel.outputs.scrollToProjectRow
+        .observeForUI()
+        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
+    } else {
+      self.viewModel.outputs.scrollToProjectRow
+        .observeForControllerAction()
+        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
     }
+  }
+
+  private func scrollToProjectRow(_ row: Int) {
+    self.tableView.scrollToRow(at: self.dataSource.indexPath(for: row), at: .top, animated: false)
   }
 
   fileprivate func goTo(project: Project, projects: [Project], refTag: RefTag) {
