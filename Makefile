@@ -88,7 +88,7 @@ deploy:
 	@echo "Deploy has been kicked off to CircleCI!"
 
 lint:
-	swiftlint lint --reporter json
+	swiftlint lint --reporter json --strict
 
 strings:
 	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
