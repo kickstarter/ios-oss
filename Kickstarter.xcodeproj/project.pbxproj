@@ -623,6 +623,9 @@
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
 		D0A9CC321E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */; };
+		D0C5957F1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */; };
+		D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */; };
+		D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */; };
 		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
 		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
 		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
@@ -1938,6 +1941,9 @@
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
 		D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModelTests.swift; sourceTree = "<group>"; };
+		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
+		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
+		D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D0FD4CA31E26422C00488660 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D0FD4CA61E26427A00488660 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0FD4CA81E26428000488660 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2842,6 +2848,8 @@
 				D01673A21E3A2CC800651DBA /* LiveStreamEventsEnvelope.swift */,
 				D01673E21E3A35E700651DBA /* LiveStreamEventsEnvelopeTests.swift */,
 				A7BC37351E237F8600C4D031 /* LiveStreamEventTests.swift */,
+				D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */,
+				D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */,
 				A7BA54F81E1E9CDD00E54377 /* templates */,
 			);
 			path = Models;
@@ -2863,6 +2871,7 @@
 			children = (
 				D01673DE1E3A354B00651DBA /* LiveStreamEventsEnvelopeTemplates.swift */,
 				A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */,
+				D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -4391,6 +4400,7 @@
 				A75511A51C86460B005355CF /* MockBundle.swift in Sources */,
 				A7D1CE821D5556C100E621C2 /* RewardCellViewModelTests.swift in Sources */,
 				A7830D081D005C3F00B5B6AE /* LoginToutViewModelTests.swift in Sources */,
+				D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */,
 				A7830D1A1D005C3F00B5B6AE /* ProfileProjectCellViewModelTests.swift in Sources */,
 				9D2F4BDD1D1AE01500B7C554 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A75784311D84486F007B61AA /* PKPaymentRequestTests.swift in Sources */,
@@ -4473,10 +4483,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7B76C041E23E4B500C8E312 /* MockLiveStreamService.swift in Sources */,
+				D0C5957F1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift in Sources */,
 				A7BA55021E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */,
 				A7BA54A91E1E4A9E00E54377 /* LiveVideoViewController.swift in Sources */,
 				A7BA55071E1E9DEE00E54377 /* LiveStreamEventTemplates.swift in Sources */,
 				A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */,
+				D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */,
 				A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */,
 				A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
 				A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */,

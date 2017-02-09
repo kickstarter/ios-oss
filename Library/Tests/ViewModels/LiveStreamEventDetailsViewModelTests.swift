@@ -59,6 +59,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.subscribeButtonAccessibilityHint.assertValues([
       "Subscribes to upcoming live streams.",
+      "Subscribes to upcoming live streams.",
       "Unsubscribes from upcoming live streams."
       ])
   }
@@ -77,7 +78,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.subscribeButtonTapped()
     self.scheduler.advance()
 
-    self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe", "Unsubscribe"])
+    self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe", "Subscribe", "Unsubscribe"])
   }
 
   func testCreatorAvatarUrl() {
@@ -138,60 +139,73 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.subscribeButtonImage.assertValueCount(0)
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
-    self.vm.inputs.viewDidLoad()
-
-    self.animateSubscribeButtonActivityIndicator.assertValues([])
-
-    XCTAssertEqual([], self.trackingClient.events)
-    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
-
-    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-    self.subscribeLabelHidden.assertValues([false])
-    self.subscribeButtonText.assertValues(["Subscribe"])
-    self.subscribeButtonImage.assertValues([nil])
-
-    self.vm.inputs.subscribeButtonTapped()
-
-    self.scheduler.advance()
-
-    self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
-
-    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-    self.subscribeLabelHidden.assertValues([false, true])
-    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
-    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
-    XCTAssertEqual(["Confirmed KSR Live Subscribe Button"], self.trackingClient.events)
-    XCTAssertEqual(["live_stream_live"], self.trackingClient.properties(forKey: "context", as: String.self))
-
-    self.vm.inputs.subscribeButtonTapped()
-
-    self.scheduler.advance()
-
-    self.animateSubscribeButtonActivityIndicator.assertValues([true, false, true, false])
-
-    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-    self.subscribeLabelHidden.assertValues([false, true, false])
-    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
-    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
-    XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"],
-                   self.trackingClient.events)
-    XCTAssertEqual(["live_stream_live", "live_stream_live"],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
-
-    let apiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
+    let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
     withEnvironment(liveStreamService: apiService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
+
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true])
+      self.subscribeButtonText.assertValues(["Subscribe"])
+      self.subscribeButtonImage.assertValues([nil])
+
+      self.scheduler.advance()
+
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true, false])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
+      self.subscribeButtonImage.assertValues([nil, nil])
+      
       self.vm.inputs.subscribeButtonTapped()
 
       self.scheduler.advance()
-      self.animateSubscribeButtonActivityIndicator.assertValues(
-        [true, false, true, false, true, false]
-      )
 
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true, false, true])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
+      self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])
+      XCTAssertEqual(["Confirmed KSR Live Subscribe Button"], self.trackingClient.events)
+      XCTAssertEqual(["live_stream_live"], self.trackingClient.properties(forKey: "context", as: String.self))
+
+      self.vm.inputs.subscribeButtonTapped()
+
+      self.scheduler.advance()
+
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false])
-      self.subscribeButtonText.assertValues(["Subscribe", "Subscribed", "Subscribe"])
-      self.subscribeButtonImage.assertValues([nil, "postcard-checkmark", nil])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
+      self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
+      XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"],
+                     self.trackingClient.events)
+      XCTAssertEqual(["live_stream_live", "live_stream_live"], self.trackingClient.properties(
+        forKey: "context", as: String.self))
+
+    }
+
+    let subscribeFailedApiService = MockLiveStreamService(subscribeToResult: Result(error: .genericFailure))
+    withEnvironment(liveStreamService: subscribeFailedApiService) {
+      self.vm.inputs.subscribeButtonTapped()
+
+      self.scheduler.advance()
+
+      self.animateSubscribeButtonActivityIndicator.assertValues([
+        false, true, false, true, false, true, false, true, false
+      ])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true, false, true, false, true, false])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
+      self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
+      XCTAssertEqual(["Confirmed KSR Live Subscribe Button", "Confirmed KSR Live Unsubscribe Button"],
+                     self.trackingClient.events)
+      XCTAssertEqual(["live_stream_live", "live_stream_live"], self.trackingClient.properties(
+        forKey: "context", as: String.self))
     }
   }
 
@@ -199,39 +213,50 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
+    self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
     self.subscribeLabelText.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.subscribeButtonImage.assertValueCount(0)
-    self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
     self.openLoginToutViewController.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
-    self.vm.inputs.viewDidLoad()
+    let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    withEnvironment(liveStreamService: apiService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+      self.vm.inputs.viewDidLoad()
 
-    self.animateSubscribeButtonActivityIndicator.assertValues([])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true])
+      self.subscribeButtonText.assertValues(["Subscribe"])
+      self.subscribeButtonImage.assertValues([nil])
+      self.openLoginToutViewController.assertValueCount(0)
 
-    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-    self.subscribeLabelHidden.assertValues([false])
-    self.subscribeButtonText.assertValues(["Subscribe"])
-    self.subscribeButtonImage.assertValues([nil])
-    self.openLoginToutViewController.assertValueCount(0)
+      self.scheduler.advance()
 
-    self.vm.inputs.subscribeButtonTapped()
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true, false])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
+      self.subscribeButtonImage.assertValues([nil, nil])
+      self.openLoginToutViewController.assertValueCount(0)
 
-    self.openLoginToutViewController.assertValueCount(1)
+      self.vm.inputs.subscribeButtonTapped()
 
-    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
-    self.vm.inputs.userSessionStarted()
+      self.openLoginToutViewController.assertValueCount(1)
 
-    self.scheduler.advance()
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
+      self.vm.inputs.userSessionStarted()
 
-    self.animateSubscribeButtonActivityIndicator.assertValues([true, false])
+      self.scheduler.advance()
 
-    self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-    self.subscribeLabelHidden.assertValues([false, true])
-    self.subscribeButtonText.assertValues(["Subscribe", "Subscribed"])
-    self.subscribeButtonImage.assertValues([nil, "postcard-checkmark"])
+      self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
+      self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelHidden.assertValues([false, true, false, true])
+      self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
+      self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])
+      self.openLoginToutViewController.assertValueCount(1)
+    }
   }
 }
 

@@ -18,7 +18,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
   private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
-  private let subscribeToResult: Result<Bool, LiveApiError>?
+  private let subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>?
 
   internal init() {
     self.init(fetchEventResult: nil)
@@ -29,7 +29,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
-                subscribeToResult: Result<Bool, LiveApiError>? = nil) {
+                subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>? = nil) {
     self.anonymousUserId = anonymousUserId
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
@@ -94,13 +94,15 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool)
-    -> SignalProducer<Bool, LiveApiError> {
+  internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
+    SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError> {
 
       if let error = self.subscribeToResult?.error {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: self.subscribeToResult?.value ?? !isSubscribed)
+      let envelope = LiveStreamSubscribeEnvelope(success: true, reason: nil)
+
+      return SignalProducer(value: self.subscribeToResult?.value ?? envelope)
   }
 }
