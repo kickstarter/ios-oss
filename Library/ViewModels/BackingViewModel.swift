@@ -167,7 +167,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerRewardDescriptionAccessibilityLabel = self.backerRewardDescription
 
-    self.backerShippingDescription = reward.map { $0.shipping.summary  ?? "N/" }
+    self.backerShippingDescription = reward.map { $0.shipping.summary  ?? "N/A" }
     self.backerShippingDescriptionAccessibilityLabel = self.backerShippingDescription
 
     self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
