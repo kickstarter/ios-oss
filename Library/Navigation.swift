@@ -7,6 +7,7 @@ import KsApi
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
+  case emailClick(qs: String)
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
@@ -75,6 +76,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case let (.emailClick(lhs), .emailClick(rhs)):
+    return lhs == rhs
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
   case (.signup, .signup):
@@ -217,6 +220,7 @@ extension Navigation {
 }
 
 private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
+  "/": emailClick,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -278,6 +282,11 @@ extension Navigation.Project {
 
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
 public typealias RouteParams = JSON
+
+private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.emailClick)
+   <^> params <| "qs"
+}
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
   return .success(.tab(.activity))
