@@ -185,15 +185,15 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <view alpha="0.45000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adm-VN-ukk">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adm-VN-ukk">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="616"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1ps-U4-t1x">
-                                                <rect key="frame" x="177" y="298.5" width="20" height="20"/>
+                                                <rect key="frame" x="177.5" y="298" width="20" height="20"/>
                                                 <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </activityIndicatorView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="1ps-U4-t1x" firstAttribute="centerY" secondItem="adm-VN-ukk" secondAttribute="centerY" id="5LY-gE-2kn"/>
                                             <constraint firstItem="1ps-U4-t1x" firstAttribute="centerX" secondItem="adm-VN-ukk" secondAttribute="centerX" id="Nk4-QF-bIf"/>

@@ -126,8 +126,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
     let reward = backing.map { $0.reward }.skipNil()
 
-    self.backerSequence = backing.map { backing in Strings.backer_modal_backer_number(
-        backer_number: Format.wholeNumber(backing.sequence)) }
+    self.backerSequence = backing.map {
+      Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence))
+    }
     self.backerSequenceAccessibilityLabel = self.backerSequence
 
     let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
@@ -144,7 +145,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
 
     self.backerPledgeStatus = backing
-        .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
+      .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
     self.backerPledgeStatusAccessibilityLabel = self.backerPledgeStatus
 
     self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
@@ -163,7 +164,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { project, reward in
         Strings.backer_modal_reward_amount_reward_description(
           reward_amount: Format.currency(reward.minimum, country: project.country),
-          reward_description: reward.description) }
+          reward_description: reward.description
+        )
+    }
 
     self.backerRewardDescriptionAccessibilityLabel = self.backerRewardDescription
 
@@ -174,9 +177,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
     self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
-    self.estimatedDeliveryDateLabelText = reward.map { reward in
-      reward.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") } }
-        .skipNil()
+    self.estimatedDeliveryDateLabelText = reward.map {
+      $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
+      }
+      .skipNil()
 
     self.estimatedDeliveryStackViewHidden = reward
       .map { $0.estimatedDeliveryOn == nil }
@@ -200,11 +204,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           : Strings.Message_creator()
     }
 
-    self.hideActionsStackView =
-      projectAndBackerAndBackerIsCurrentUser
-        .map { project, _, backerIsCurrentUser in
-          !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
-      }
+    self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
+      .map { project, _, backerIsCurrentUser in
+        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+    }
 
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }

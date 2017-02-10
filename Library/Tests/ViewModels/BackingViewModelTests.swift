@@ -126,12 +126,10 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.loadingOverlayIsHidden.assertValues([false])
       self.backerSequence.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
-      self.loadingOverlayIsHidden.assertValues([false, true])
       self.backerSequence.assertValues([Strings.backer_modal_backer_number(backer_number: "5")],
                                        "Backer label emits backer sequence")
     }
@@ -145,12 +143,10 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.loadingOverlayIsHidden.assertValues([false])
       self.backerSequence.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
-      self.loadingOverlayIsHidden.assertValues([false, true])
       self.backerSequenceAccessibilityLabel.assertValues([Strings.backer_modal_backer_number(backer_number:
         "5")],
                                        "Backer label emits backer sequence")
@@ -166,12 +162,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerPledgeAmountAndDate.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerPledgeAmountAndDate.assertValues(["$35 on July 14, 2016"],
                                                                     "Backer label emits pledge amount")
     }
@@ -187,12 +181,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerPledgeAmountAndDateAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerPledgeAmountAndDateAccessibilityLabel.assertValues(["Pledged $35 on July 14, 2016"],
                                                     "Backer label emits pledge amount")
     }
@@ -205,12 +197,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerPledgeStatus.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerPledgeStatus.assertValues(["Status: Pledged"], "Backer label emits pledge status")
     }
   }
@@ -224,12 +214,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerPledgeStatusAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerPledgeStatusAccessibilityLabel.assertValues(["Status: Pledged"],
                                                                "Backer label emits pledge status")
     }
@@ -247,12 +235,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerRewardDescription.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerRewardDescription.assertValues(["$10 - Cool Item"],
                                                 "Backer label emits reward description")
     }
@@ -270,12 +256,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerRewardDescriptionAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerRewardDescriptionAccessibilityLabel.assertValues(["$10 - Cool Item"],
                                                                     "Backer label emits reward description")
     }
@@ -290,12 +274,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerShippingAmount.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerShippingAmount.assertValues(["$37"], "Backer label emits shipping amount")
     }
   }
@@ -309,12 +291,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerShippingAmountAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerShippingAmountAccessibilityLabel.assertValues(["$37"],
                                                                "Backer label emits shipping amount")
     }
@@ -335,12 +315,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerShippingDescription.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerShippingDescription.assertValues([ "Ships only to Litville, Legitas"],
                                                     "Backer label emits reward description")
     }
@@ -361,12 +339,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerShippingDescriptionAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.backerShippingDescriptionAccessibilityLabel.assertValues([ "Ships only to Litville, Legitas"],
                                                     "Backer label emits reward description")
     }
@@ -383,12 +359,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.vm.inputs.viewDidLoad()
 
-        self.loadingOverlayIsHidden.assertValues([false])
         self.backerPledgeAmountAndDateAccessibilityLabel.assertDidNotEmitValue()
 
         self.scheduler.advance()
 
-        self.loadingOverlayIsHidden.assertValues([false, true])
         self.estimatedDeliveryDateLabelText.assertValues(["July 2016"],
                                                          "Emits estimated delivery date")
     }
@@ -512,6 +486,19 @@ internal final class BackingViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.vertical])
+    }
+  }
+
+  func testLoadingOverlay() {
+    withEnvironment(apiService: MockService(fetchBackingResponse: .template)) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+      self.vm.inputs.viewDidLoad()
+
+      self.loadingOverlayIsHidden.assertValues([false])
+
+      self.scheduler.advance()
+
+      self.loadingOverlayIsHidden.assertValues([false, true])
     }
   }
 }

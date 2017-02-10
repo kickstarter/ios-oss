@@ -79,9 +79,6 @@ internal final class BackingViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
-    _ = self.loadingOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
-
     _ = self.messageCreatorButton
       |> greenButtonStyle
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
