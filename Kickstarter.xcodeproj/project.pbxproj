@@ -616,6 +616,9 @@
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
+		D080566B1E4DB25B008F67A7 /* LiveStreamChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D080566A1E4DB25B008F67A7 /* LiveStreamChatMessage.swift */; };
+		D08056A71E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08056A61E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift */; };
+		D08056AA1E4DB808008F67A7 /* LiveStreamChatMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08056A81E4DB4E8008F67A7 /* LiveStreamChatMessageTests.swift */; };
 		D08A81771DFAACD3000128DB /* ClearNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */; };
 		D08A81781DFAACF1000128DB /* LiveStreamContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */; };
 		D08A81791DFAACF5000128DB /* LiveStreamCountdownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */; };
@@ -1937,6 +1940,9 @@
 		D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModelTests.swift; sourceTree = "<group>"; };
 		D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
+		D080566A1E4DB25B008F67A7 /* LiveStreamChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessage.swift; sourceTree = "<group>"; };
+		D08056A61E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageTemplates.swift; sourceTree = "<group>"; };
+		D08056A81E4DB4E8008F67A7 /* LiveStreamChatMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageTests.swift; sourceTree = "<group>"; };
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
@@ -2844,6 +2850,8 @@
 			isa = PBXGroup;
 			children = (
 				A7BA54F91E1E9D2200E54377 /* lenses */,
+				D080566A1E4DB25B008F67A7 /* LiveStreamChatMessage.swift */,
+				D08056A81E4DB4E8008F67A7 /* LiveStreamChatMessageTests.swift */,
 				A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */,
 				D01673A21E3A2CC800651DBA /* LiveStreamEventsEnvelope.swift */,
 				D01673E21E3A35E700651DBA /* LiveStreamEventsEnvelopeTests.swift */,
@@ -2869,6 +2877,7 @@
 		A7BA54F81E1E9CDD00E54377 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				D08056A61E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift */,
 				D01673DE1E3A354B00651DBA /* LiveStreamEventsEnvelopeTemplates.swift */,
 				A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */,
 				D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */,
@@ -4491,7 +4500,9 @@
 				D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */,
 				A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */,
 				A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
+				D08056A71E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift in Sources */,
 				A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */,
+				D080566B1E4DB25B008F67A7 /* LiveStreamChatMessage.swift in Sources */,
 				D01673DF1E3A354B00651DBA /* LiveStreamEventsEnvelopeTemplates.swift in Sources */,
 				D01673A31E3A2CC800651DBA /* LiveStreamEventsEnvelope.swift in Sources */,
 				A7B76C021E23E48300C8E312 /* LiveStreamServiceProtocol.swift in Sources */,
@@ -4513,6 +4524,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D08056AA1E4DB808008F67A7 /* LiveStreamChatMessageTests.swift in Sources */,
 				D01673E41E3A35ED00651DBA /* LiveStreamEventsEnvelopeTests.swift in Sources */,
 				A7BC37341E237F7500C4D031 /* LiveVideoViewModelTests.swift in Sources */,
 				A7BC37331E237F7500C4D031 /* LiveStreamViewModelTests.swift in Sources */,
