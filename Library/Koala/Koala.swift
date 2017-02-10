@@ -1640,6 +1640,10 @@ public final class Koala {
     )
   }
 
+  public func trackLiveStreamDiscovery() {
+    self.track(event: "Viewed Live Stream Discovery")
+  }
+
   public func trackViewedLiveStreamCountdown(project: Project,
                                              liveStreamEvent: LiveStreamEvent,
                                              refTag: RefTag) {
