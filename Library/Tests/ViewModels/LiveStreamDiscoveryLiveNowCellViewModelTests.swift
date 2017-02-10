@@ -49,7 +49,7 @@ final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
 
-    self.creatorLabelText.assertValues(["<b>Blob McBlob</b> is live now"])
+    self.creatorLabelText.assertValues(["Live with <b>Blob McBlob</b>"])
   }
 
   func testNumberPeopleWatchingText() {

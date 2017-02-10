@@ -172,7 +172,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
-        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
+        return Strings.Replay_available_for_time_more_units(time: time, units: units)
       }.skipNil()
 
     self.loaderText = Signal.merge(
@@ -249,7 +249,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .observeForUI()
       .map { event in
         event.liveNow
-          ? Strings.Creator_name_is_live_now(creator_name: event.creator.name)
+          ? Strings.Live_with_creator_name(creator_name: event.creator.name)
           : Strings.Creator_name_was_live_time_ago(
             creator_name: event.creator.name,
             time_ago: Format.relative(secondsInUTC: event.startDate.timeIntervalSince1970,

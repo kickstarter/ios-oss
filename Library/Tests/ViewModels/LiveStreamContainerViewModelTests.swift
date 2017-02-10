@@ -74,7 +74,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  refTag: .projectPage,
                                  presentedFromProject: true)
 
-    self.availableForText.assertValue("Available to watch for 2 more days")
+    self.availableForText.assertValues(["Replay available for 2 more days"])
   }
 
   func testCreatorIntroText_Live() {
@@ -92,7 +92,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorIntroText.assertValues(["<b>Creator Name</b> is live now"])
+    self.creatorIntroText.assertValues(["Live with <b>Creator Name</b>"])
   }
 
   func testCreatorIntroText_Replay() {

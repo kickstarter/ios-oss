@@ -98,7 +98,7 @@ private func availabilityText(forLiveStreamEvent event: LiveStreamEvent) -> Stri
 
   let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
-  return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
+  return Strings.Replay_available_for_time_more_units(time: time, units: units)
 }
 
 private func formattedDateString(date: Date) -> String {

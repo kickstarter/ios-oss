@@ -54,6 +54,7 @@
 "Created_projects_projects_count" = "Erstellte Projekte: %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> ist jetzt live";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} streamt gerade live auf Kickstarter";
+"Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> war vor %{time_ago} im Live-Stream";
 "Creator_name_needs_some_information_to_deliver_your_reward_for_project_name" = "<b>%{creator_name}</b> benötigt einige Angaben, um dir deine Belohnung für <b>%{project_name}</b> zustellen zu können.";
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> war vor %{time_ago} live";
 "Creator_name_was_streaming_live_on_Kickstarter" = "Der Stream von %{creator_name} war gerade live auf Kickstarter";
@@ -130,9 +131,11 @@
 "Live" = "Live";
 "Live_Stream" = "Live-Stream";
 "Live_now" = "Jetzt live";
+"Live_now_live_stream_event_name_by_creator_name" = "Jetzt live: %{live_stream_event_name} von %{creator_name}";
 "Live_stream_countdown" = "Live-Stream Countdown";
 "Live_stream_date" = "Live-Stream – %{date}";
 "Live_streaming_now" = "Wird gerade live gestreamt";
+"Live_with_creator_name" = "Live mit <b>%{creator_name}</b>";
 "Loading" = "Ladevorgang läuft";
 "Log_in_or_sign_up_to_subscribe" = "Bitte einloggen oder registrieren";
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
@@ -147,7 +150,7 @@
 "No_comments_yet" = "Bisher noch keine Kommentare.";
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
-"No_replay_is_available_for_this_live_stream" = "Kein Replay verügbar für diesen Live-Stream.";
+"No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
 "Opens_comments" = "Öffnet Kommentare.";
@@ -163,6 +166,7 @@
 "Opens_update" = "Öffnet Update.";
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
+"Past_live_stream" = "Früherer Live-Stream";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
@@ -180,9 +184,11 @@
 "Recommended" = "Empfehlungen";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
-"Replay" = "Replay";
-"Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
-"Replay_past_live_streams" = "Replay past live streams";
+"Replay" = "Wiedergabe";
+"Replay_available_for_time_more_units" = "Wiedergabe verfügbar für weitere %{time} %{units}";
+"Replay_live_stream_with_creator_name" = "Wiedergabe des Live-Streams von<br><b>%{creator_name}</b>";
+"Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
+"Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -227,7 +233,7 @@
 "The_live_stream_was_interrupted" = "Live-Stream wurde unterbrochen";
 "The_live_stream_will_start_soon" = "Live-Stream started in Kürze";
 "The_live_stream_will_start_time" = "Dieser Live-Stream started in %{time}.";
-"The_replay_will_start_soon" = "Replay started in Kürze";
+"The_replay_will_start_soon" = "Wiedergabe started in Kürze";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "Time_left_left" = "%{time_left} übrig";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
@@ -236,6 +242,7 @@
 "Unsubscribes_from_upcoming_lives_streams" = "Abo für zukünftige Live-Streams abbestellen.";
 "Unsuccessfully_Funded" = "Finanzierung fehlgeschlagen.";
 "Upcoming_live_stream" = "Nächster Live-Stream";
+"Upcoming_live_streams" = "Zukünftige Live-Streams";
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
 "View" = "Anzeigen";
@@ -243,7 +250,7 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
-"We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
+"We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
