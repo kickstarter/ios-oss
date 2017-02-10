@@ -1,3 +1,4 @@
+//swiftlint:disable file_length
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
