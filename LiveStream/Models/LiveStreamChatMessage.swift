@@ -11,6 +11,17 @@ public struct LiveStreamChatMessage {
   public fileprivate(set) var profilePictureUrl: String
   public fileprivate(set) var date: TimeInterval
   public fileprivate(set) var userId: Int
+
+  static internal func decode(_ snapshot: FirebaseDataSnapshotType) ->
+    Decoded<LiveStreamChatMessage> {
+    guard let value = snapshot.value as? [String:Any] else {
+      return .failure(DecodeError.custom("Unable to parse message"))
+    }
+
+    let message: [String:Any] = ["id": snapshot.key]
+
+    return self.decode(JSON(message.withAllValuesFrom(value)))
+  }
 }
 
 extension LiveStreamChatMessage: Decodable {

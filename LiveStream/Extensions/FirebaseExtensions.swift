@@ -21,3 +21,9 @@ extension FIRApp: FirebaseAppType {}
 
 internal protocol FirebaseDatabaseReferenceType {}
 extension FIRDatabaseReference: FirebaseDatabaseReferenceType {}
+
+internal protocol FirebaseDataSnapshotType {
+  var key: String { get }
+  var value: Any? { get }
+}
+extension FIRDataSnapshot: FirebaseDataSnapshotType {}

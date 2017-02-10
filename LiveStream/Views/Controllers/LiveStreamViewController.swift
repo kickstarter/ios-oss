@@ -56,6 +56,11 @@ public final class LiveStreamViewController: UIViewController {
                                                                              numberOfPeople: $0)
     }
 
+    self.viewModel.outputs.createChatObservers
+      .map(prepare(databaseReference:config:))
+      .skipNil()
+      .observeValues { [weak self] in self?.createChatObservers(ref: $0, refConfig: $1) }
+
     self.viewModel.outputs.createPresenceReference
       .map(prepare(databaseReference:config:))
       .skipNil()
@@ -147,6 +152,14 @@ public final class LiveStreamViewController: UIViewController {
         self.liveStreamService?.signInAnonymously { id in
           self.viewModel.inputs.setFirebaseUserId(userId: id)
         }
+    })
+  }
+
+  private func createChatObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
+    let query = ref.child(refConfig.ref).queryOrderedByKey()
+
+    query.observe(.childAdded, with: { [weak self] snapshot in
+      self?.viewModel.inputs.receivedChatMessageSnapshot(chatMessage: snapshot)
     })
   }
 

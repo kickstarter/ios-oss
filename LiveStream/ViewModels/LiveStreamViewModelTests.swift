@@ -10,11 +10,18 @@ import Prelude
 
 private struct TestFirebaseAppType: FirebaseAppType {}
 private struct TestFirebaseDatabaseReferenceType: FirebaseDatabaseReferenceType {}
+private struct TestFirebaseDataSnapshotType: FirebaseDataSnapshotType {
+  let key: String
+  let value: Any?
+}
 
 internal final class LiveStreamViewModelTests: XCTestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
 
+  private let chatMessages = TestObserver<[LiveStreamChatMessage], NoError>()
+  private let createChatObservers
+    = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createPresenceReference = TestObserver<FirebaseRefConfig, NoError>()
   private let createGreenRoomObservers
     = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
@@ -37,8 +44,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm = LiveStreamViewModel(scheduler: scheduler)
 
-    self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
-    self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
+    self.vm.outputs.chatMessages.observe(self.chatMessages.observer)
+    self.vm.outputs.createChatObservers.observe(self.createChatObservers.observer)
     self.vm.outputs.createPresenceReference.map(second).observe(self.createPresenceReference.observer)
     self.vm.outputs.createGreenRoomObservers.observe(self.createGreenRoomObservers.observer)
     self.vm.outputs.createHLSObservers.observe(self.createHLSObservers.observer)
@@ -46,6 +53,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       .observe(self.createNumberOfPeopleWatchingObservers.observer)
     self.vm.outputs.createScaleNumberOfPeopleWatchingObservers
       .observe(self.createScaleNumberOfPeopleWatchingObservers.observer)
+    self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
     self.vm.outputs.disableIdleTimer.observe(self.disableIdleTimer.observer)
 
     self.vm.outputs.initializeFirebase.map(first).observe(self.initializeFirebaseEvent.observer)
@@ -55,6 +63,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       .observe(self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observer)
     self.vm.outputs.notifyDelegateLiveStreamViewControllerStateChanged
       .observe(self.notifyDelegateLiveStreamViewControllerStateChanged.observer)
+    self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
   }
 
   func testInitalizeFirebase_LiveEvent() {
@@ -560,6 +569,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
 
     // All observer creation signals should only emit once
+    self.createChatObservers.assertValueCount(1)
     self.createGreenRoomObservers.assertValueCount(1)
     self.createHLSObservers.assertValueCount(1)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
@@ -599,6 +609,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createVideoViewController.assertValues([hlsStreamType])
 
+    self.createChatObservers.assertValueCount(0)
     self.createGreenRoomObservers.assertValueCount(0)
     self.createHLSObservers.assertValueCount(0)
     self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
@@ -739,5 +750,28 @@ internal final class LiveStreamViewModelTests: XCTestCase {
         .error(error: .sessionInterrupted),
       ]
     )
+  }
+
+  func testReceivedFirebaseChatMessageDataSnapshot() {
+    self.chatMessages.assertValueCount(0)
+
+    self.vm.inputs.configureWith(event: .template, userId: nil)
+    self.vm.inputs.viewDidLoad()
+
+    let testSnapshot = TestFirebaseDataSnapshotType(
+      key: "KDeCy9vvd7ZCRwHc8Ca", value: [
+        "id": "KDeCy9vvd7ZCRwHc8Ca",
+        "message": "Test chat message",
+        "name": "Test Name",
+        "profilePic": "http://www.kickstarter.com/picture.jpg",
+        "timestamp": 1234234123,
+        "userId": "id_1312341234321"
+      ])
+
+    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot)
+
+    self.chatMessages.assertValueCount(1)
+    XCTAssertTrue(self.chatMessages.lastValue?.isEmpty == .some(false))
+    XCTAssertEqual(self.chatMessages.lastValue?.first?.id, "KDeCy9vvd7ZCRwHc8Ca")
   }
 }

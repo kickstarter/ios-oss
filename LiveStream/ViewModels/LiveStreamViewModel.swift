@@ -30,6 +30,9 @@ internal protocol LiveStreamViewModelInputs {
   /// Called when the number of people watching changes in a scaled event, expects an Int
   func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
 
+  /// Called when a new chat message snapshot is received
+  func receivedChatMessageSnapshot(chatMessage: FirebaseDataSnapshotType)
+
   /// Called to set the Firebase user ID
   func setFirebaseUserId(userId: String)
 
@@ -44,6 +47,12 @@ internal protocol LiveStreamViewModelInputs {
 }
 
 internal protocol LiveStreamViewModelOutputs {
+  /// Emits new chat messages
+  var chatMessages: Signal<[LiveStreamChatMessage], NoError> { get }
+
+  /// Create chat observers
+  var createChatObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
+
   /// Create the presence reference to update Firebase on connect/disconnect
   var createPresenceReference: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
 
@@ -208,6 +217,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
 
+    self.createChatObservers = Signal.zip(
+      databaseRef,
+      firebase.map { FirebaseRefConfig(ref: $0.chatPath, orderBy: "") },
+      createObservers
+      ).map { dbRef, event, _ in (dbRef, event) }
+
     self.createPresenceReference = Signal.zip(
       databaseRef,
       Signal.combineLatest(
@@ -301,6 +316,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       replayState
     )
 
+    self.chatMessages = self.receivedChatMessageSnapshotProperty.signal.skipNil()
+      .map(LiveStreamChatMessage.decode)
+      .map { $0.value }
+      .skipNil()
+      .scan([LiveStreamChatMessage]()) { (accum, value) in accum + [value] }
+
     self.initializeFirebase = configData
       .filter { event, _ in event.liveNow }
   }
@@ -345,6 +366,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.firebaseUserIdProperty.value = userId
   }
 
+  private let receivedChatMessageSnapshotProperty = MutableProperty<FirebaseDataSnapshotType?>(nil)
+  internal func receivedChatMessageSnapshot(chatMessage: FirebaseDataSnapshotType) {
+    self.receivedChatMessageSnapshotProperty.value = chatMessage
+  }
+
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
   internal func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
     self.videoPlaybackStateChangedProperty.value = state
@@ -360,6 +386,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.viewDidDisappearProperty.value = ()
   }
 
+  internal let chatMessages: Signal<[LiveStreamChatMessage], NoError>
+  internal let createChatObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
   internal let createPresenceReference: Signal<(FirebaseDatabaseReferenceType,
     FirebaseRefConfig), NoError>
   internal let createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
