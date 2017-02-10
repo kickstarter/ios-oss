@@ -134,7 +134,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.loadingOverlayIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      projectAndBackingAndBackerIsCurrentUserEvent.filter{ $0.isTerminating }.mapConst(true)
+      projectAndBackingAndBackerIsCurrentUserEvent.filter { $0.isTerminating }.mapConst(true)
     )
 
     self.backerName = backer.map { backer in backer.name }
