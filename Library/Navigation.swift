@@ -502,13 +502,18 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
 
-  let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
+  let recognizedHosts = [
+    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
+    "click.e.kickstarter.com"
+  ].compact()
 
-  guard isApiURL || isWebURL else { return nil }
+  let isRecognizedHost = recognizedHosts.reduce(false) { accum, host in
+    accum || url.host.map { $0.hasPrefix(host) } == .some(true)
+  }
+
+  guard isRecognizedHost else { return nil }
 
   let templateComponents = template
     .components(separatedBy: "/")

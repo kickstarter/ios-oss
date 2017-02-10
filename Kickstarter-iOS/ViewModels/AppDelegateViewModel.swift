@@ -80,6 +80,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
+  var findRedirectUrl: Signal<URL, NoError> { get }
+
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), NoError> { get }
 
@@ -262,7 +264,7 @@ AppDelegateViewModelOutputs {
 
     // Deep links
 
-    let continueUserActivity = applicationContinueUserActivityProperty.signal.skipNil()
+    let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
@@ -296,6 +298,9 @@ AppDelegateViewModelOutputs {
         deepLinkFromShortcut
       )
       .skipNil()
+
+    self.findRedirectUrl = deepLinkFromUrl
+      .filter { $0 == .clickEmail }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
@@ -627,6 +632,7 @@ AppDelegateViewModelOutputs {
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
+  public let findRedirectUrl: Signal<URL, NoError>
   public let forceLogout: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>

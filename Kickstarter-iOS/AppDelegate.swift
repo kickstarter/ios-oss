@@ -16,7 +16,7 @@ import Result
 import UIKit
 
 @UIApplicationMain
-final class AppDelegate: UIResponder, UIApplicationDelegate {
+internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 
@@ -157,8 +157,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.window?.tintColor = .ksr_navy_700
 
-    self.viewModel.inputs
-      .applicationDidFinishLaunching(application: application, launchOptions: launchOptions)
+    self.viewModel.inputs.applicationDidFinishLaunching(application: application,
+                                                        launchOptions: launchOptions)
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
@@ -172,7 +172,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
-  func application(_ application: UIApplication, continue userActivity: NSUserActivity,
+  func application(_ application: UIApplication,
+                   continue userActivity: NSUserActivity,
                    restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
 
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
@@ -274,5 +275,16 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate : BITHockeyManagerDelegate {
   func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
+  }
+}
+
+extension AppDelegate: URLSessionTaskDelegate {
+
+  public func urlSession(_ session: URLSession,
+                         task: URLSessionTask,
+                         willPerformHTTPRedirection response: HTTPURLResponse,
+                         newRequest request: URLRequest,
+                         completionHandler: @escaping (URLRequest?) -> Void) {
+    completionHandler(nil)
   }
 }

@@ -123,6 +123,11 @@ public final class NavigationTests: XCTestCase {
                    "/users/self/surveys/3")
   }
 
+  func testRecognizesEmailUrls() {
+    XCTAssertEqual(.emailClick(qs: "deadbeef"),
+                   Navigation.match(URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!))
+  }
+
   func testRecognizesKsrUrlScheme() {
     let projectRoute = Navigation
       .match(URL(string: "ksr://www.kickstarter.com/projects/creator/project")!)
