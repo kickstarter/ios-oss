@@ -16,10 +16,6 @@ public protocol BackingViewModelInputs {
 
   /// Call when the "View messages" button is pressed.
   func viewMessagesTapped()
-
-  /// Call when the viewWIllAppear
-  func viewWillAppear()
-
 }
 
 public protocol BackingViewModelOutputs {
@@ -89,9 +85,6 @@ public protocol BackingViewModelOutputs {
   /// Emits the button title for messaging a backer or creator.
   var messageButtonTitleText: Signal<String, NoError> { get }
 
-  /// Emits a bool whether a pledge is loading for the indicator view.
-  var pledgeIsLoading: Signal<Bool, NoError> { get }
-
   /// Emits the axis of the stackview.
   var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
 }
@@ -119,98 +112,71 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         return (project, backer, currentUser == backer)
     }
 
-    let projectAndBackingAndBackerIsCurrentUser = projectAndBackerAndBackerIsCurrentUser
+    let projectAndBackingAndBackerIsCurrentUserEvent = projectAndBackerAndBackerIsCurrentUser
       .switchMap { project, backer, backerIsCurrentUser in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
-          .demoteErrors()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (project, $0, backerIsCurrentUser) }
+          .materialize()
     }
+
+    let projectAndBackingAndBackerIsCurrentUser = projectAndBackingAndBackerIsCurrentUserEvent.values()
 
     let project = projectAndBackingAndBackerIsCurrentUser.map(first)
     let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
     let reward = backing.map { $0.reward }.skipNil()
 
-    self.backerSequence = //Signal.merge(
-      //self.viewDidLoadProperty.signal.mapConst(""),
-      backing.map { backing in Strings.backer_modal_backer_number(
-        backer_number: Format.wholeNumber(backing.sequence)) } //)
+    self.backerSequence = backing.map { backing in Strings.backer_modal_backer_number(
+        backer_number: Format.wholeNumber(backing.sequence)) }
     self.backerSequenceAccessibilityLabel = self.backerSequence
 
     let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
 
-//    let isLoading = MutableProperty(false)
-
-    self.pledgeIsLoading = self.viewDidLoadProperty.signal.mapConst(true)
-
     self.loadingOverlayIsHidden = Signal.merge(
-      self.viewWillAppearProperty.signal.mapConst(true),
-      self.pledgeIsLoading.signal.mapConst(false)
+      self.viewDidLoadProperty.signal.mapConst(false),
+      projectAndBackingAndBackerIsCurrentUserEvent.filter{ $0.isTerminating }.mapConst(true)
     )
 
-    self.backerName =
-      backer.map { backer in backer.name }
+    self.backerName = backer.map { backer in backer.name }
 
     self.backerNameAccessibilityLabel = self.backerName
 
     self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
 
-    self.backerPledgeStatus = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      backing
+    self.backerPledgeStatus = backing
         .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
-    )
     self.backerPledgeStatusAccessibilityLabel = self.backerPledgeStatus
 
-    self.backerPledgeAmountAndDate = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      projectAndBackingAndBackerIsCurrentUser
-        .map { project, backing, _ in
-          Strings.backer_modal_pledge_amount_on_pledge_date(
-            pledge_amount: Format.currency(backing.amount, country: project.country),
-            pledge_date: Format.date(
-              secondsInUTC: backing.pledgedAt,
-              dateStyle: .long,
-              timeStyle: .none
-            )
-          )
-      }
+    self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+      Strings.backer_modal_pledge_amount_on_pledge_date(
+        pledge_amount: Format.currency(backing.amount, country: project.country),
+        pledge_date: Format.date(
+          secondsInUTC: backing.pledgedAt,
+          dateStyle: .long,
+          timeStyle: .none
+      )
     )
+  }
     self.backerPledgeAmountAndDateAccessibilityLabel = self.backerPledgeAmountAndDate.map { "Pledged " + $0 }
 
-    self.backerRewardDescription = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      Signal.combineLatest(project, reward)
-        .map { project, reward in
-          Strings.backer_modal_reward_amount_reward_description(
-            reward_amount: Format.currency(reward.minimum, country: project.country),
-            reward_description: reward.description
-          )
-      }
-    )
+    self.backerRewardDescription = Signal.combineLatest(project, reward)
+      .map { project, reward in
+        Strings.backer_modal_reward_amount_reward_description(
+          reward_amount: Format.currency(reward.minimum, country: project.country),
+          reward_description: reward.description) }
+
     self.backerRewardDescriptionAccessibilityLabel = self.backerRewardDescription
 
-    self.backerShippingDescription = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      reward.map { $0.shipping.summary }.skipNil()
-    )
+    self.backerShippingDescription = reward.map { $0.shipping.summary  ?? "N/A" }
     self.backerShippingDescriptionAccessibilityLabel = self.backerShippingDescription
 
-    self.backerShippingAmount = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      projectAndBackingAndBackerIsCurrentUser
-        .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country)}
-    )
+    self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
     self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
-    self.estimatedDeliveryDateLabelText = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(""),
-      reward
-        .map { reward in
-          reward.estimatedDeliveryOn.map {
-            Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy")
-          }
-        })
-      .skipNil()
+    self.estimatedDeliveryDateLabelText = reward.map { reward in
+      reward.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") } }
+        .skipNil()
 
     self.estimatedDeliveryStackViewHidden = reward
       .map { $0.estimatedDeliveryOn == nil }
@@ -267,11 +233,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.viewMessagesTappedProperty.value = ()
   }
 
-  fileprivate let viewWillAppearProperty = MutableProperty()
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
-  }
-
   public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
   public let backerNameAccessibilityLabel: Signal<String, NoError>
@@ -294,7 +255,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let hideActionsStackView: Signal<Bool, NoError>
   public let loadingOverlayIsHidden: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
-  public let pledgeIsLoading: Signal<Bool, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
 
   public var inputs: BackingViewModelInputs { return self }

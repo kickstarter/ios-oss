@@ -57,8 +57,6 @@ internal final class BackingViewController: UIViewController {
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
-
-    self.viewModel.inputs.viewWillAppear()
   }
 
   internal override func bindStyles() {
@@ -77,7 +75,7 @@ internal final class BackingViewController: UIViewController {
     _ = self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
 
     _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.animating .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
@@ -147,8 +145,6 @@ internal final class BackingViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
     self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
 
     self.viewModel.outputs.backerAvatarURL
