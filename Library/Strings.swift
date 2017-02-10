@@ -847,6 +847,22 @@ backers"
     )
   }
   /**
+   "<b>%{creator_name}</b> live streamed %{time_ago}"
+
+   - **es**: "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}"
+   - **de**: "<b>%{creator_name}</b> war vor %{time_ago} im Live-Stream"
+   - **fr**: "<b>%{creator_name}</b> a fait une diffusion en direct %{time_ago}"
+   - **en**: "<b>%{creator_name}</b> live streamed %{time_ago}"
+  */
+  public static func Creator_name_live_streamed_time_ago(creator_name: String, time_ago: String) -> String {
+    return localizedString(
+      key: "Creator_name_live_streamed_time_ago",
+      defaultValue: "<b>%{creator_name}</b> live streamed %{time_ago}",
+      count: nil,
+      substitutions: ["creator_name": creator_name, "time_ago": time_ago]
+    )
+  }
+  /**
    "<b>%{creator_name}</b> needs some information to deliver your reward for <b>%{project_name}</b>."
 
    - **es**: "<b>%{creator_name}</b> necesita un par de datos para entregarte tu recompensa de <b>%{project_name}</b>."
@@ -1937,6 +1953,22 @@ with friends."
     )
   }
   /**
+   "Live now: %{live_stream_event_name} by %{creator_name}"
+
+   - **es**: "Ahora en vivo: %{live_stream_event_name} de %{creator_name}"
+   - **de**: "Jetzt live: %{live_stream_event_name} von %{creator_name}"
+   - **fr**: "En direct : %{live_stream_event_name} par %{creator_name}"
+   - **en**: "Live now: %{live_stream_event_name} by %{creator_name}"
+  */
+  public static func Live_now_live_stream_event_name_by_creator_name(live_stream_event_name: String, creator_name: String) -> String {
+    return localizedString(
+      key: "Live_now_live_stream_event_name_by_creator_name",
+      defaultValue: "Live now: %{live_stream_event_name} by %{creator_name}",
+      count: nil,
+      substitutions: ["live_stream_event_name": live_stream_event_name, "creator_name": creator_name]
+    )
+  }
+  /**
    "Live stream countdown"
 
    - **es**: "Live Stream - Cuenta atrás"
@@ -1982,6 +2014,22 @@ with friends."
       defaultValue: "Live streaming now",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Live with <b>%{creator_name}</b>"
+
+   - **es**: "En vivo con <b>%{creator_name}</b>"
+   - **de**: "Live mit <b>%{creator_name}</b>"
+   - **fr**: "En direct avec <b>%{creator_name}</b>"
+   - **en**: "Live with <b>%{creator_name}</b>"
+  */
+  public static func Live_with_creator_name(creator_name: String) -> String {
+    return localizedString(
+      key: "Live_with_creator_name",
+      defaultValue: "Live with <b>%{creator_name}</b>",
+      count: nil,
+      substitutions: ["creator_name": creator_name]
     )
   }
   /**
@@ -2215,7 +2263,7 @@ from friends yet."
    "No replay is available for this live stream."
 
    - **es**: "Este Live Stream no cuenta con repetición."
-   - **de**: "Kein Replay verügbar für diesen Live-Stream."
+   - **de**: "Keine Wiedergabe verügbar für diesen Live-Stream."
    - **fr**: "Pas de rediffusion possible pour cette diffusion en direct."
    - **en**: "No replay is available for this live stream."
   */
@@ -2463,6 +2511,22 @@ from friends yet."
     return localizedString(
       key: "Other_payment_methods",
       defaultValue: "Other payment methods",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Past live stream"
+
+   - **es**: "Live Stream pasado"
+   - **de**: "Früherer Live-Stream"
+   - **fr**: "Diffusion en direct passée"
+   - **en**: "Past live stream"
+  */
+  public static func Past_live_stream() -> String {
+    return localizedString(
+      key: "Past_live_stream",
+      defaultValue: "Past live stream",
       count: nil,
       substitutions: [:]
     )
@@ -2745,7 +2809,7 @@ daring ideas."
    "Replay"
 
    - **es**: "Repetición"
-   - **de**: "Replay"
+   - **de**: "Wiedergabe"
    - **fr**: "Rediffuser"
    - **en**: "Replay"
   */
@@ -2758,10 +2822,26 @@ daring ideas."
     )
   }
   /**
+   "Replay available for %{time} more %{units}"
+
+   - **es**: "Repetición disponible por %{time} %{units} más"
+   - **de**: "Wiedergabe verfügbar für weitere %{time} %{units}"
+   - **fr**: "Rediffusion encore disponible pendant %{time} %{units}"
+   - **en**: "Replay available for %{time} more %{units}"
+  */
+  public static func Replay_available_for_time_more_units(time: String, units: String) -> String {
+    return localizedString(
+      key: "Replay_available_for_time_more_units",
+      defaultValue: "Replay available for %{time} more %{units}",
+      count: nil,
+      substitutions: ["time": time, "units": units]
+    )
+  }
+  /**
    "Replay live stream with<br><b>%{creator_name}</b>"
 
    - **es**: "Repetir live stream de<br><b>%{creator_name}</b>"
-   - **de**: "Replay live stream with<br><b>%{creator_name}</b>"
+   - **de**: "Wiedergabe des Live-Streams von<br><b>%{creator_name}</b>"
    - **fr**: "Revoir la diffusion en direct de <br><b>%{creator_name}</b>"
    - **en**: "Replay live stream with<br><b>%{creator_name}</b>"
   */
@@ -2774,10 +2854,26 @@ daring ideas."
     )
   }
   /**
+   "Replay past live stream"
+
+   - **es**: "Repetir live stream pasado"
+   - **de**: "Wiedergabe des vorigen Live-Streams"
+   - **fr**: "Rediffusion"
+   - **en**: "Replay past live stream"
+  */
+  public static func Replay_past_live_stream() -> String {
+    return localizedString(
+      key: "Replay_past_live_stream",
+      defaultValue: "Replay past live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Replay past live streams"
 
    - **es**: "Repetir live streams pasados"
-   - **de**: "Replay past live streams"
+   - **de**: "Wiedergabe vergangener Live-Streams"
    - **fr**: "Revoir des diffusions en direct passées"
    - **en**: "Replay past live streams"
   */
@@ -3307,7 +3403,7 @@ catch your eye?"
    "The replay will start soon"
 
    - **es**: "Repetición comienza en breve"
-   - **de**: "Replay started in Kürze"
+   - **de**: "Wiedergabe started in Kürze"
    - **fr**: "La rediffusion sera bientôt disponible"
    - **en**: "The replay will start soon"
   */
@@ -3448,6 +3544,22 @@ catch your eye?"
     )
   }
   /**
+   "Upcoming live streams"
+
+   - **es**: "Live streams futuros"
+   - **de**: "Zukünftige Live-Streams"
+   - **fr**: "Diffusions en direct à venir"
+   - **en**: "Upcoming live streams"
+  */
+  public static func Upcoming_live_streams() -> String {
+    return localizedString(
+      key: "Upcoming_live_streams",
+      defaultValue: "Upcoming live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Upcoming with<br/><b>%{creator_name}</b>"
 
    - **es**: "Próximamente: Video de <br/><b>%{creator_name}</b>"
@@ -3565,8 +3677,8 @@ Please try again later."
 
    - **es**: "No se pudieron cargar los destinos de envío.
 Por favor inténtalo de nuevo más tarde."
-   - **de**: "We were unable to load the shipping destinations.
-Please try again later."
+   - **de**: "Das Laden der Versandadressen war leider nicht möglich.
+Bitte versuche es später noch einmal."
    - **fr**: "Nous n'avons pas été en mesure de charger les destinations d'expédition.
 Veuillez réessayer ultérieurement."
    - **en**: "We were unable to load the shipping destinations.
