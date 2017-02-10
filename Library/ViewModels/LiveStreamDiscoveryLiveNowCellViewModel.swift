@@ -15,6 +15,8 @@ public protocol LiveStreamDiscoveryLiveNowCellViewModelOutputs {
   var creatorImageUrl: Signal<URL?, NoError> { get }
   var creatorLabelText: Signal<String, NoError> { get }
   var playVideoUrl: Signal<URL?, NoError> { get }
+  var numberPeopleWatchingHidden: Signal<Bool, NoError> { get }
+  var numberPeopleWatchingText: Signal<String, NoError> { get }
   var stopVideo: Signal<(), NoError> { get }
   var streamImageUrl: Signal<URL?, NoError> { get }
   var streamTitleLabel: Signal<String, NoError> { get }
@@ -31,11 +33,17 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
   public init() {
     let liveStreamEvent = self.configData.signal.skipNil()
 
+    let reachability = liveStreamEvent
+      .take(first: 1)
+      .flatMap { _ in AppEnvironment.current.reachability }
+      .skipRepeats()
+
     self.creatorImageUrl = liveStreamEvent
       .map { URL(string: $0.creator.avatar) }
 
-    self.playVideoUrl = liveStreamEvent
-      .switchMap { event in
+    self.playVideoUrl = Signal.combineLatest(liveStreamEvent, reachability)
+      .filter { _, reach in reach == .wifi }
+      .switchMap { event, _ in
         AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
@@ -48,13 +56,24 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.creatorLabelText = liveStreamEvent
       .map { Strings.Creator_name_is_live_now(creator_name: $0.creator.name) }
 
+    self.numberPeopleWatchingHidden = liveStreamEvent.map {
+      $0.numberPeopleWatching == nil || $0.numberPeopleWatching == .some(0)
+    }
+
+    self.numberPeopleWatchingText = liveStreamEvent.map {
+      Format.wholeNumber($0.numberPeopleWatching.coalesceWith(0))
+    }
+
     self.streamTitleLabel = liveStreamEvent
       .map { $0.name }
 
     self.streamImageUrl = liveStreamEvent
       .map { URL.init(string: $0.backgroundImage.medium) }
 
-    self.stopVideo = self.didEndDisplayProperty.signal
+    self.stopVideo = Signal.merge(
+      self.didEndDisplayProperty.signal,
+      reachability.filter { $0 != .wifi }.ignoreValues()
+    )
   }
 
   private let configData = MutableProperty<LiveStreamEvent?>(nil)
@@ -70,6 +89,8 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
   public let creatorImageUrl: Signal<URL?, NoError>
   public let creatorLabelText: Signal<String, NoError>
   public let playVideoUrl: Signal<URL?, NoError>
+  public let numberPeopleWatchingHidden: Signal<Bool, NoError>
+  public let numberPeopleWatchingText: Signal<String, NoError>
   public let stopVideo: Signal<(), NoError>
   public let streamImageUrl: Signal<URL?, NoError>
   public let streamTitleLabel: Signal<String, NoError>

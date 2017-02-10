@@ -377,12 +377,14 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     // Begin presentation. When presenting the project `animated` will be false since it is embedded in the
     // navigator controller.
     self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
       .assertValues([project], "Load the full project into the data source.")
     self.loadMinimalProjectIntoDataSource.assertValues([], "Do not load the minimal version of the project.")
 
     // End presentation.
+    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.viewDidAppear(animated: false)
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
@@ -393,12 +395,12 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
-      [project, project, project], "The new project is loaded into data source"
+      [project, project], "The new project is loaded into data source"
     )
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
   }
 
-  func testLoadProjectIntoDataSource_Swipping() {
+  func testLoadProjectIntoDataSource_Swiping() {
     let project = Project.template
 
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
@@ -409,28 +411,34 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     // When swiping the project `animated` will be true.
     self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.scheduler.advance()
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
-      .assertValues([], "The full project does not load into the data source.")
+      .assertValues([project], "The skeleton of the full project loads into the data source.")
+
     self.loadMinimalProjectIntoDataSource.assertValues(
       [project], "The minimal version of the project loads into the data source."
     )
 
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
-      .assertValues([project], "Nothing new emits when the view is done.")
+      .assertValues([project, project], "Full project emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
-
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project], "Nothing new emits.")
-    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
-
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
+    self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+
+    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.viewDidAppear(animated: true)
+
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }

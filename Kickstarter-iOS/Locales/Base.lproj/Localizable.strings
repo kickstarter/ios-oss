@@ -243,6 +243,7 @@
 "View_your_reward" = "View your reward";
 "Watch_live" = "Watch live";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
+"We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";

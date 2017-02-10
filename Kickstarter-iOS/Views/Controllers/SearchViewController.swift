@@ -94,6 +94,7 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
+        self?.updateProjectPlaylist(projects)
     }
 
     self.viewModel.outputs.isPopularTitleVisible
@@ -124,6 +125,21 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
+
+    // NB: Currently running a feature on a subset of users to test out if `observeForUI` is still crashing.
+    if AppEnvironment.current.config?.features["ios_scroll_output_observe_for_ui"] == .some(true) {
+      self.viewModel.outputs.scrollToProjectRow
+        .observeForUI()
+        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
+    } else {
+      self.viewModel.outputs.scrollToProjectRow
+        .observeForControllerAction()
+        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
+    }
+  }
+
+  private func scrollToProjectRow(_ row: Int) {
+    self.tableView.scrollToRow(at: self.dataSource.indexPath(forProjectRow: row), at: .top, animated: false)
   }
 
   fileprivate func goTo(project: Project, projects: [Project], refTag: RefTag) {
@@ -169,6 +185,11 @@ internal final class SearchViewController: UITableViewController {
                                          outOf: self.dataSource.numberOfItems())
   }
 
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
+  }
+
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -198,4 +219,7 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
 }

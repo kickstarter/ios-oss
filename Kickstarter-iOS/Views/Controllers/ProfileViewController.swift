@@ -41,6 +41,7 @@ internal final class ProfileViewController: UICollectionViewController {
       .observeValues { [weak self] ps in
         self?.dataSource.load(projects: ps)
         self?.collectionView?.reloadData()
+        self?.updateProjectPlaylist(ps)
       }
 
     self.viewModel.outputs.user
@@ -62,6 +63,15 @@ internal final class ProfileViewController: UICollectionViewController {
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.goToSettings()
+    }
+
+    self.viewModel.outputs.scrollToProjectItem
+      .observeForUI()
+      .observeValues { [weak self] itemIndex in
+        guard let _self = self else { return }
+        _self.collectionView?.scrollToItem(at: _self.dataSource.indexPath(for: itemIndex),
+                                           at: .top,
+                                           animated: false)
     }
   }
 
@@ -134,10 +144,18 @@ internal final class ProfileViewController: UICollectionViewController {
                                                                  for: indexPath)
   }
 
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
+  }
+
   @objc fileprivate func refresh() {
     self.viewModel.inputs.refresh()
   }
 }
 
 extension ProfileViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
 }

@@ -13,6 +13,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   fileprivate let cancelInteractiveTransition = TestObserver<(), NoError>()
   fileprivate let dismissViewController = TestObserver<(), NoError>()
   fileprivate let finishInteractiveTransition = TestObserver<(), NoError>()
+  private let notifyDelegateTransitionedToProjectIndex = TestObserver<Int, NoError>()
   fileprivate let setInitialPagerViewController = TestObserver<(), NoError>()
   fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
   fileprivate let setTransitionAnimatorIsInFlight = TestObserver<Bool, NoError>()
@@ -24,6 +25,8 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.outputs.cancelInteractiveTransition.observe(self.cancelInteractiveTransition.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.finishInteractiveTransition.observe(self.finishInteractiveTransition.observer)
+    self.vm.outputs.notifyDelegateTransitionedToProjectIndex
+      .observe(self.notifyDelegateTransitionedToProjectIndex.observer)
     self.vm.outputs.setInitialPagerViewController.observe(self.setInitialPagerViewController.observer)
     self.vm.outputs.setNeedsStatusBarAppearanceUpdate.observe(self.setNeedsStatusBarAppearanceUpdate.observer)
     self.vm.outputs.setTransitionAnimatorIsInFlight.observe(self.setTransitionAnimatorIsInFlight.observer)
@@ -138,6 +141,11 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.finishInteractiveTransition.assertValueCount(1)
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([false, true, false])
+
+    XCTAssertEqual(["Closed Project Page"], self.trackingClient.events)
+    XCTAssertEqual(["swipe"],
+                   self.trackingClient.properties(forKey: "gesture_type", as: String.self),
+                   "Track swiped to close.")
   }
 
   func testTransitionLifecycle_Overscroll_Cancel() {
@@ -308,11 +316,11 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
-    self.vm.inputs.willTransition(toProject: playlist[1])
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
 
-    self.vm.inputs.pageTransition(completed: true)
+    self.vm.inputs.pageTransition(completed: true, from: 0)
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
   }
@@ -325,5 +333,50 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.setInitialPagerViewController.assertValueCount(1)
+  }
+
+  func testNotifyDelegateAfterSwipe() {
+    let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let project = playlist.first!
+
+    self.vm.inputs.configureWith(project: project, refTag: .category)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
+    self.vm.inputs.pageTransition(completed: false, from: 0)
+
+    self.notifyDelegateTransitionedToProjectIndex.assertValueCount(
+      0, "Does not emit without completion of swipe."
+    )
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
+    self.vm.inputs.pageTransition(completed: true, from: 0)
+
+    self.notifyDelegateTransitionedToProjectIndex.assertValues([1])
+    XCTAssertEqual(["Swiped Project", "Project Navigate"], self.trackingClient.events)
+    XCTAssertEqual(["next", "next"],
+                   self.trackingClient.properties(forKey: "type", as: String.self),
+                   "Track next swipe.")
+
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 2)
+    self.vm.inputs.pageTransition(completed: true, from: 1)
+
+    self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
+    XCTAssertEqual(["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate"],
+                   self.trackingClient.events)
+    XCTAssertEqual(["next", "next", "next", "next"],
+                   self.trackingClient.properties(forKey: "type", as: String.self),
+                   "Track next swipe.")
+
+    self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
+    self.vm.inputs.pageTransition(completed: true, from: 2)
+
+    self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
+    XCTAssertEqual(["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate",
+                    "Swiped Project", "Project Navigate"], self.trackingClient.events)
+    XCTAssertEqual(["next", "next", "next", "next", "previous", "previous"],
+                   self.trackingClient.properties(forKey: "type", as: String.self),
+                   "Track previous swipe.")
   }
 }

@@ -18,6 +18,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let liveStreamService = MockLiveStreamService(fetchEventResult: nil)
   internal let mainBundle = MockBundle()
+  internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let trackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
@@ -41,6 +42,7 @@ internal class TestCase: FBSnapshotTestCase {
       currentUser: nil,
       dateType: dateType,
       debounceInterval: .seconds(0),
+      device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
@@ -49,7 +51,7 @@ internal class TestCase: FBSnapshotTestCase {
       liveStreamService: self.liveStreamService,
       locale: .init(identifier: "en_US"),
       mainBundle: mainBundle,
-      reachability: .init(value: .wifi),
+      reachability: self.reachability.producer,
       scheduler: self.scheduler,
       ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults

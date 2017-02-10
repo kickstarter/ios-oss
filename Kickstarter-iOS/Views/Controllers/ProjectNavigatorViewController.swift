@@ -4,6 +4,8 @@ import Prelude
 import UIKit
 
 internal protocol ProjectNavigatorDelegate: class {
+  /// Called when a page view controller has completed transitioning.
+  func transitionedToProject(at index: Int)
 }
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
@@ -38,20 +40,21 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     return vc
   }
 
-  fileprivate init(initialProject: Project,
-                   initialPlaylist: [Project]?,
-                   refTag: RefTag,
-                   navigatorDelegate: ProjectNavigatorDelegate?) {
+  private init(initialProject: Project,
+               initialPlaylist: [Project]?,
+               refTag: RefTag,
+               navigatorDelegate: ProjectNavigatorDelegate?) {
 
     self.pageDataSource = ProjectNavigatorPagesDataSource(refTag: refTag,
                                                           initialPlaylist: initialPlaylist,
                                                           initialProject: initialProject)
     self.navigatorDelegate = navigatorDelegate
+
     self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
-               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(5)])
+               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(1)])
   }
 
   internal required init?(coder: NSCoder) {
@@ -92,6 +95,12 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
         self?.transitionAnimator.finish()
     }
 
+    self.viewModel.outputs.notifyDelegateTransitionedToProjectIndex
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navigatorDelegate?.transitionedToProject(at: $0)
+    }
+
     self.viewModel.outputs.setTransitionAnimatorIsInFlight
       .observeForUI()
       .observeValues { [weak self] in
@@ -116,6 +125,14 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
   internal override var childViewControllerForStatusBarHidden: UIViewController? {
     return self.viewControllers?.first
+  }
+
+  /**
+   View Controllers that present this View Controller should call this method whenever it loads an 
+   updated playlist of projects.
+  */
+  internal func updatePlaylist(_ playlist: [Project]) {
+    self.pageDataSource.updatePlaylist(playlist)
   }
 
   fileprivate func setInitialPagerViewController() {
@@ -154,7 +171,10 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
                                    previousViewControllers: [UIViewController],
                                    transitionCompleted completed: Bool) {
 
-    self.viewModel.inputs.pageTransition(completed: completed)
+    guard let prevController = previousViewControllers.first else { return }
+
+    let previousIndex = self.pageDataSource.indexFor(controller: prevController)
+    self.viewModel.inputs.pageTransition(completed: completed, from: previousIndex)
   }
 
   internal func pageViewController(
@@ -169,7 +189,8 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
 
     vc.delegate = self
 
-    self.viewModel.inputs.willTransition(toProject: project)
+    let newIndex = self.pageDataSource.indexFor(controller: nav)
+    self.viewModel.inputs.willTransition(toProject: project, at: newIndex)
   }
 }
 

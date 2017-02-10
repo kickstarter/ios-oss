@@ -23,6 +23,7 @@ public struct LiveStreamEvent: Equatable {
   public fileprivate(set) var startDate: Date
   public fileprivate(set) var user: User?
   public fileprivate(set) var webUrl: String
+  public fileprivate(set) var numberPeopleWatching: Int?
 
   public struct BackgroundImage {
     public fileprivate(set) var medium: String
@@ -136,6 +137,7 @@ extension LiveStreamEvent: Decodable {
     return tmp4
       <*> json <|? "user"
       <*> (json <| ["stream", "web_url"] <|> json <| "web_url")
+      <*> json <|? "number_people_watching"
   }
 }
 
@@ -262,6 +264,10 @@ extension LiveStreamEvent {
     public static let name = Lens<LiveStreamEvent, String>(
       view: { $0.name },
       set: { var new = $1; new.name = $0; return new }
+    )
+    public static let numberPeopleWatching = Lens<LiveStreamEvent, Int?>(
+      view: { $0.numberPeopleWatching },
+      set: { var new = $1; new.numberPeopleWatching = $0; return new }
     )
     public static let replayUrl = Lens<LiveStreamEvent, String?>(
       view: { $0.replayUrl },

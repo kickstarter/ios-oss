@@ -82,7 +82,18 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       )
       .map(first)
 
-    let event = configData.map(second)
+    let initialEvent = configData.map(second)
+
+    let updatedEventFetch = initialEvent
+      .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+        AppEnvironment.current.liveStreamService
+          .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .prefix(value: event)
+          .materialize()
+    }
+
+    let event = updatedEventFetch.values()
 
     let subscribedProperty = MutableProperty(false)
 
@@ -99,7 +110,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let isSubscribedEvent = event
       .takeWhen(subscribeIntent)
-      .switchMap { event -> SignalProducer<Event<Bool, LiveApiError>, NoError> in
+      .switchMap { event -> SignalProducer<Event<LiveStreamSubscribeEnvelope, LiveApiError>, NoError> in
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
@@ -109,9 +120,15 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           .materialize()
     }
 
+    let isSubscribedEventValues = isSubscribedEvent.values().map {
+      return $0.success == .some(true)
+        ? !subscribedProperty.value
+        : subscribedProperty.value
+    }
+
     subscribedProperty <~ Signal.merge(
       // Bind the API response values for subscribed
-      isSubscribedEvent.values(),
+      isSubscribedEventValues,
 
       // Bind the initial subscribed value
       event.map { $0.user?.isSubscribed ?? false }
@@ -146,6 +163,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .mapConst(Strings.Failed_to_update_subscription())
 
     self.animateSubscribeButtonActivityIndicator = Signal.merge(
+      initialEvent.mapConst(true),
+      updatedEventFetch.values().mapConst(false),
+      updatedEventFetch.filter { $0.isTerminating }.mapConst(false),
       subscribeIntent.filter { AppEnvironment.current.currentUser != nil }.mapConst(true),
       self.subscribeButtonTappedProperty.signal
         .filter { AppEnvironment.current.currentUser != nil }
@@ -174,7 +194,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       .map { $0 ? Strings.Unsubscribe() : Strings.Subscribe() }
 
     configData
-      .takePairWhen(isSubscribedEvent.values())
+      .takePairWhen(isSubscribedEventValues)
       .observeValues { configData, isSubscribed in
         AppEnvironment.current.koala.trackLiveStreamToggleSubscription(project: configData.0,
                                                                        liveStreamEvent: configData.1,

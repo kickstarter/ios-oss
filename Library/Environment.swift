@@ -43,6 +43,9 @@ public struct Environment {
   /// The amount of time to debounce signals by. Default value is `0.3`.
   public let debounceInterval: DispatchTimeInterval
 
+  /// The current device running the app.
+  public let device: UIDeviceType
+
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 
@@ -93,6 +96,7 @@ public struct Environment {
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
+    device: UIDeviceType = UIDevice.current,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isVoiceOverRunning: @escaping () -> Bool = UIAccessibilityIsVoiceOverRunning,
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
@@ -117,6 +121,7 @@ public struct Environment {
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval
+    self.device = device
     self.facebookAppDelegate = facebookAppDelegate
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
