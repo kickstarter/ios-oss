@@ -207,7 +207,7 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
 
     XCTAssertEqual(["Viewed Live Stream Discovery"], self.trackingClient.events)
 
-    self.vm.inputs.isActive(false)
+    self.vm.inputs.isActive(true)
 
     XCTAssertEqual(["Viewed Live Stream Discovery", "Viewed Live Stream Discovery"],
                    self.trackingClient.events)
