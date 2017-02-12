@@ -1226,7 +1226,7 @@ final class AppDelegateViewModelTests: TestCase {
                                                    sourceApplication: nil,
                                                    annotation: 1)
     XCTAssertFalse(result)
-    
+
     self.findRedirectUrl.assertValues([emailUrl])
     self.presentViewController.assertValueCount(0)
 
