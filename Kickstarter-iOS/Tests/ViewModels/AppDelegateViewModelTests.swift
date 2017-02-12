@@ -1215,25 +1215,28 @@ final class AppDelegateViewModelTests: TestCase {
   func testEmailDeepLinking() {
     let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
 
+    // The application launches.
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
     self.findRedirectUrl.assertValues([])
     self.presentViewController.assertValueCount(0)
 
+    // We deep-link to an email url.
     let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                                    url: emailUrl,
                                                    sourceApplication: nil,
                                                    annotation: 1)
     XCTAssertFalse(result)
 
-    self.findRedirectUrl.assertValues([emailUrl])
-    self.presentViewController.assertValueCount(0)
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValueCount(0, "No view controller is presented yet.")
 
+    // We find the redirect to be a project url.
     self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
 
-    self.findRedirectUrl.assertValues([emailUrl])
-    self.presentViewController.assertValueCount(1)
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValueCount(1, "Present the project view controller.")
   }
 }
 

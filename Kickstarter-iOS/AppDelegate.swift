@@ -289,7 +289,6 @@ extension AppDelegate : BITHockeyManagerDelegate {
 }
 
 extension AppDelegate: URLSessionTaskDelegate {
-
   public func urlSession(_ session: URLSession,
                          task: URLSessionTask,
                          willPerformHTTPRedirection response: HTTPURLResponse,
