@@ -39,7 +39,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidReceiveMemoryWarning()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
+  func applicationOpenUrl(application: UIApplication?,
+                          url: URL,
+                          sourceApplication: String?,
                           annotation: Any) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
@@ -53,6 +55,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
+
+  /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
+  func foundRedirectUrl(_ url: URL)
 
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
@@ -80,6 +85,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
+  /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, NoError> { get }
 
   /// Emits when opening the app with an invalid access token.
@@ -276,6 +282,7 @@ AppDelegateViewModelOutputs {
     let deepLinkFromUrl = Signal
       .merge(
         openUrl.map { Navigation.match($0.url) },
+        self.foundRedirectUrlProperty.signal.skipNil().map(Navigation.match),
         continueUserActivityWithNavigation.map(second)
       )
 
@@ -299,8 +306,12 @@ AppDelegateViewModelOutputs {
       )
       .skipNil()
 
-    self.findRedirectUrl = deepLinkFromUrl
-      .filter { $0 == .clickEmail }
+    self.findRedirectUrl = openUrl
+      .filter { url in
+        guard case .some(.emailClick(_)) = Navigation.match(url.url) else { return false }
+        return true
+      }
+      .map { $0.url }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
@@ -588,6 +599,11 @@ AppDelegateViewModelOutputs {
   fileprivate let deviceTokenDataProperty = MutableProperty(Data())
   public func didRegisterForRemoteNotifications(withDeviceTokenData data: Data) {
     self.deviceTokenDataProperty.value = data
+  }
+
+  private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
+  public func foundRedirectUrl(_ url: URL) {
+    self.foundRedirectUrlProperty.value = url
   }
 
   fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()

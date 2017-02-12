@@ -13,6 +13,7 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
+  private let findRedirectUrl = TestObserver<URL, NoError>()
   fileprivate let forceLogout = TestObserver<(), NoError>()
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
@@ -37,6 +38,7 @@ final class AppDelegateViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
+    self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
@@ -1208,6 +1210,30 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["vis", "vis"], AppEnvironment.current.cookieStorage.cookies!.map { $0.name })
     XCTAssertEqual(["DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"],
                    AppEnvironment.current.cookieStorage.cookies!.map { $0.value })
+  }
+
+  func testEmailDeepLinking() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValueCount(0)
+
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: emailUrl,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+    
+    self.findRedirectUrl.assertValues([emailUrl])
+    self.presentViewController.assertValueCount(0)
+
+    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+    self.findRedirectUrl.assertValues([emailUrl])
+    self.presentViewController.assertValueCount(1)
   }
 }
 

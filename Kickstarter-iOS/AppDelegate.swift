@@ -145,6 +145,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
     }
 
+    self.viewModel.outputs.findRedirectUrl
+      .observeForUI()
+      .observeValues { [weak self] in self?.findRedirectUrl($0) }
+
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -270,6 +274,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   fileprivate func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
+
+  private func findRedirectUrl(_ url: URL) {
+    let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+    let task = session.dataTask(with: url)
+    task.resume()
+  }
 }
 
 extension AppDelegate : BITHockeyManagerDelegate {
@@ -285,6 +295,7 @@ extension AppDelegate: URLSessionTaskDelegate {
                          willPerformHTTPRedirection response: HTTPURLResponse,
                          newRequest request: URLRequest,
                          completionHandler: @escaping (URLRequest?) -> Void) {
+    request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
     completionHandler(nil)
   }
 }

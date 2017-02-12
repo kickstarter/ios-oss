@@ -362,7 +362,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.root)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
@@ -376,21 +376,21 @@ private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> checkout
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.comments)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.creatorBio)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
@@ -404,70 +404,70 @@ private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.friends)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func messageCreator(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.messageCreator)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeBigPrint(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.bigPrint))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeChangeMethod(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.changeMethod))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeDestroy(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.destroy))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeEdit(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.edit))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.new))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func posts(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
@@ -479,7 +479,7 @@ private func update(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (createUpdate
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
@@ -488,7 +488,7 @@ private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.comments))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
