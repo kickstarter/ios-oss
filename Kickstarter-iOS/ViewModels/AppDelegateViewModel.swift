@@ -307,7 +307,7 @@ AppDelegateViewModelOutputs {
       .skipNil()
 
     self.findRedirectUrl = openUrl
-      .filter { 
+      .filter {
         guard case .some(.emailClick(_)) = Navigation.match($0.url) else { return false }
         return true
       }
