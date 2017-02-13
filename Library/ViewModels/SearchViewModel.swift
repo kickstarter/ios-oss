@@ -50,6 +50,12 @@ public protocol SearchViewModelOutputs {
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
+  /// Emits when loading indicator should be hidden.
+  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when loading indicator should be animated.
+  var loadingIndicatorIsAnimated: Signal<Bool, NoError> { get }
+
   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
 
@@ -85,14 +91,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-    let popular = viewWillAppearNotAnimated
+    let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
+          .map { $0.projects }
+          .materialize()
       }
-      .map { $0.projects }
+
+    let popular = popularEvent.values()
 
     let clears = query.mapConst([Project]())
 
@@ -133,6 +141,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
+
+    self.loadingIndicatorIsHidden = Signal.merge(
+      self.viewWillAppearAnimatedProperty.signal.mapConst(true),
+      popularEvent.filter { $0.isTerminating }.mapConst(true),
+      isLoading.map(isTrue)
+    )
+
+    self.loadingIndicatorIsAnimated = self.loadingIndicatorIsHidden
 
     self.projects = Signal.combineLatest(
       self.isPopularTitleVisible,
@@ -249,6 +265,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
+  public let loadingIndicatorIsHidden: Signal<Bool, NoError>
+  public let loadingIndicatorIsAnimated: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>

@@ -16,6 +16,8 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
+  fileprivate let loaderIndicator = UIActivityIndicatorView()
+
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
   }
@@ -46,6 +48,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.delegate = self
 
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: self.loaderIndicator)
+
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
@@ -55,6 +59,10 @@ internal final class SearchViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
+
+    _ = self.loaderIndicator
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
@@ -119,6 +127,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
+    self.loaderIndicator.rac.hidden = self.viewModel.outputs.loadingIndicatorIsHidden
+    self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsAnimated
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
