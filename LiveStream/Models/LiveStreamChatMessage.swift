@@ -14,13 +14,9 @@ public struct LiveStreamChatMessage {
 
   static internal func decode(_ snapshot: FirebaseDataSnapshotType) ->
     Decoded<LiveStreamChatMessage> {
-    guard let value = snapshot.value as? [String:Any] else {
-      return .failure(DecodeError.custom("Unable to parse message"))
-    }
-
-    let message: [String:Any] = ["id": snapshot.key]
-
-    return self.decode(JSON(message.withAllValuesFrom(value)))
+      return (snapshot.value as? [String:Any])
+        .map { self.decode(JSON($0.withAllValuesFrom(["id": snapshot.key]))) }
+        .coalesceWith(.failure(.custom("Unable to parse Firebase snapshot.")))
   }
 }
 
