@@ -36,22 +36,30 @@ extension LiveStreamChatMessage: Decodable {
     let tmp2 = tmp1
       <*> json <| "profilePic"
       <*> json <| "timestamp"
-      <*> ((json <| "userId") >>- toInt)
+      <*> ((json <| "userId") >>- convertId)
 
     return tmp2
   }
 }
 
-private func toInt(string: String) -> Decoded<Int> {
-  // Currently chat user ID's are prefixed with "id_" and are strings, doing this until that changes
-  // They should just be Int's
-  let dropPrefix = string.replacingOccurrences(of: "id_", with: "")
+// Currently chat user ID's are prefixed with "id_" and are strings, doing this until that changes
+private func convertId(fromJson json: JSON) -> Decoded<Int> {
+  switch json {
+  case .string(let string):
+    if string.hasPrefix("id_") {
+      return Int(string.replacingOccurrences(of: "id_", with: ""))
+        .map(Decoded.success)
+        .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into Int.")))
+    }
 
-  guard let userId = Int(dropPrefix) else {
-    return .failure(DecodeError.custom("Unable to parse user ID"))
+    return Int(string)
+      .map(Decoded.success)
+      .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into Int.")))
+  case .number(let number):
+    return .success(number.intValue)
+  default:
+    return .failure(.custom("Couldn't decoded Int."))
   }
-
-  return .success(userId)
 }
 
 extension LiveStreamChatMessage {

@@ -51,4 +51,26 @@ final class LiveStreamChatMessageTests: XCTestCase {
     XCTAssertEqual(1234234123, chatMessage.value?.date)
     XCTAssertEqual(1312341234321, chatMessage.value?.userId)
   }
+
+  func testParseFirebaseDataSnapshot_UserIdInt() {
+    let snapshot = TestFirebaseDataSnapshotType(
+      key: "KDeCy9vvd7ZCRwHc8Ca", value: [
+        "id": "KDeCy9vvd7ZCRwHc8Ca",
+        "message": "Test chat message",
+        "name": "Test Name",
+        "profilePic": "http://www.kickstarter.com/picture.jpg",
+        "timestamp": 1234234123,
+        "userId": 1312341234321
+      ])
+
+    let chatMessage = LiveStreamChatMessage.decode(snapshot)
+
+    XCTAssertNil(chatMessage.error)
+    XCTAssertEqual("KDeCy9vvd7ZCRwHc8Ca", chatMessage.value?.id)
+    XCTAssertEqual("Test chat message", chatMessage.value?.message)
+    XCTAssertEqual("Test Name", chatMessage.value?.name)
+    XCTAssertEqual("http://www.kickstarter.com/picture.jpg", chatMessage.value?.profilePictureUrl)
+    XCTAssertEqual(1234234123, chatMessage.value?.date)
+    XCTAssertEqual(1312341234321, chatMessage.value?.userId)
+  }
 }
