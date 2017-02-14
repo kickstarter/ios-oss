@@ -40,6 +40,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
   private weak var liveStreamViewController: LiveStreamViewController?
+  private weak var liveStreamChatViewController: LiveStreamChatViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -87,6 +88,10 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.liveStreamViewController = self.childViewControllers
       .flatMap { $0 as? LiveStreamViewController }
+      .first
+
+    self.liveStreamChatViewController = self.childViewControllers
+      .flatMap { $0 as? LiveStreamChatViewController }
       .first
 
     NotificationCenter.default
