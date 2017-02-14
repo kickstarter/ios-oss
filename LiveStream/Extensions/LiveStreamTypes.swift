@@ -1,4 +1,19 @@
 import Foundation
+import ReactiveSwift
+
+public struct LiveStreamAppEnvironment {
+  let backgroundQueueScheduler: DateSchedulerProtocol
+  let scheduler: DateSchedulerProtocol
+
+  public init(
+    backgroundQueueScheduler: DateSchedulerProtocol = QueueScheduler(qos: .background,
+                                                                     name: "com.kickstarter.liveStreamBQ",
+                                                                     targeting: nil),
+    scheduler: DateSchedulerProtocol = QueueScheduler.main) {
+    self.backgroundQueueScheduler = backgroundQueueScheduler
+    self.scheduler = scheduler
+  }
+}
 
 public enum LiveVideoPlaybackError {
   case failedToConnect

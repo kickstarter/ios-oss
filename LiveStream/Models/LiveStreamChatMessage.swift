@@ -4,6 +4,14 @@ import Curry
 import Prelude
 import Runes
 
+internal extension Collection where Iterator.Element == LiveStreamChatMessage {
+  static func decode(_ snapshots: [FirebaseDataSnapshotType]) -> [LiveStreamChatMessage] {
+    return snapshots.flatMap { snapshot in
+      LiveStreamChatMessage.decode(snapshot).value
+    }
+  }
+}
+
 public struct LiveStreamChatMessage {
   public fileprivate(set) var id: String
   public fileprivate(set) var message: String

@@ -95,7 +95,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(scheduler: DateSchedulerProtocol = QueueScheduler.main) {
+  init(environment: LiveStreamAppEnvironment = LiveStreamAppEnvironment()) {
 
     let configData = Signal.combineLatest(self.configData.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
@@ -148,7 +148,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         .filter(isTrue)
       )
       .take(first: 1)
-      .timeout(after: 10, raising: SomeError(), on: scheduler)
+      .timeout(after: 10, raising: SomeError(), on: environment.scheduler)
       .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
 
     let liveHlsUrl = Signal.merge(
@@ -317,11 +317,20 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       replayState
     )
 
-    self.chatMessages = self.receivedChatMessageSnapshotProperty.signal.skipNil()
+    //FIXME: Replace the below with something like a throttleScan
+    //This will return arrays containing one item each, we need to buffer them
+    //It should be a throttle that acts like a scan
+    self.chatMessages = self.viewDidLoadProperty.signal
+      .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
+        snapshot
+          .start(on: environment.backgroundQueueScheduler)
+          .skipNil()
+      }
       .map(LiveStreamChatMessage.decode)
       .map { $0.value }
       .skipNil()
-      .scan([LiveStreamChatMessage]()) { (accum, value) in accum + [value] }
+      .map { [$0] }
+      .throttle(2, on: environment.backgroundQueueScheduler)
 
     self.initializeFirebase = configData
       .filter { event, _ in event.liveNow }
