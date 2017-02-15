@@ -810,9 +810,11 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot2)
     self.backgroundQueueScheduler.advance()
 
+    self.backgroundQueueScheduler.advance(by: .seconds(1))
+
     self.chatMessages.assertValueCount(1)
 
-    self.backgroundQueueScheduler.advance(by: .seconds(2))
+    self.backgroundQueueScheduler.advance(by: .seconds(1))
 
     self.chatMessages.assertValueCount(2)
 

@@ -321,15 +321,13 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       timer(interval: .seconds(2), on: environment.backgroundQueueScheduler)
     }
 
-    let incomingMessages = self.viewDidLoadProperty.signal
+    self.chatMessages = self.viewDidLoadProperty.signal
       .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
         snapshot
           .start(on: environment.backgroundQueueScheduler)
           .skipNil()
       }
       .scan(CollectSnapshots()) { (snapshots, value) in snapshots.add(snapshot: value) }
-
-    self.chatMessages = incomingMessages
       .takeWhen(bufferInterval)
       .map { $0.outputBuffer() }
       .map([LiveStreamChatMessage].decode)
