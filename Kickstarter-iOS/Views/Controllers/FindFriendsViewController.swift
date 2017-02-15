@@ -10,6 +10,7 @@ internal final class FindFriendsViewController: UITableViewController {
 
   fileprivate let viewModel: FindFriendsViewModelType = FindFriendsViewModel()
   fileprivate let dataSource = FindFriendsDataSource()
+  fileprivate let loadingIndicatorView = UIActivityIndicatorView()
 
   internal static func configuredWith(source: FriendsSource) -> FindFriendsViewController {
     let vc = Storyboard.Friends.instantiate(FindFriendsViewController.self)
@@ -20,6 +21,7 @@ internal final class FindFriendsViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.addSubview(self.loadingIndicatorView)
     self.tableView.estimatedRowHeight = 100.0
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
@@ -33,8 +35,32 @@ internal final class FindFriendsViewController: UITableViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.loadingIndicatorView.center = self.tableView.center
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self
+      |> baseTableControllerStyle()
+      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
+
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
+
+    _ = self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.isLoading
 
     self.viewModel.outputs.friends
       .observeForUI()
@@ -72,17 +98,6 @@ internal final class FindFriendsViewController: UITableViewController {
         completion: nil
       )
     }
-  }
-
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
