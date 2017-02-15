@@ -145,7 +145,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-
     self.isLoading = isLoading.signal
 
     self.loadingIndicatorIsHidden = Signal.merge(
