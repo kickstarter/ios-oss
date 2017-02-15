@@ -317,20 +317,22 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       replayState
     )
 
-    //FIXME: Replace the below with something like a throttleScan
-    //This will return arrays containing one item each, we need to buffer them
-    //It should be a throttle that acts like a scan
-    self.chatMessages = self.viewDidLoadProperty.signal
+    let bufferInterval = self.viewDidLoadProperty.signal.flatMap {
+      timer(interval: .seconds(2), on: environment.backgroundQueueScheduler)
+    }
+
+    let incomingMessages = self.viewDidLoadProperty.signal
       .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
         snapshot
           .start(on: environment.backgroundQueueScheduler)
           .skipNil()
       }
-      .map(LiveStreamChatMessage.decode)
-      .map { $0.value }
-      .skipNil()
-      .map { [$0] }
-      .throttle(2, on: environment.backgroundQueueScheduler)
+      .scan(CollectSnapshots()) { (snapshots, value) in snapshots.add(snapshot: value)  }
+
+    self.chatMessages = incomingMessages
+      .takeWhen(bufferInterval)
+      .map { $0.outputBuffer() }
+      .map([LiveStreamChatMessage].decode)
 
     self.initializeFirebase = configData
       .filter { event, _ in event.liveNow }
@@ -433,4 +435,22 @@ private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool 
 
 private func didEndNormally(event: LiveStreamEvent) -> Bool {
   return !event.liveNow && event.definitelyHasReplay
+}
+
+//FIXME: would prefer that this isn't a class, need to rethink a bit
+fileprivate class CollectSnapshots {
+  private var snapshots: [FirebaseDataSnapshotType] = []
+
+  internal func add(snapshot: FirebaseDataSnapshotType) -> CollectSnapshots {
+    self.snapshots.append(snapshot)
+
+    return self
+  }
+
+  internal func outputBuffer() -> [FirebaseDataSnapshotType] {
+    let allSnapshots = self.snapshots
+    self.snapshots.removeAll()
+
+    return allSnapshots
+  }
 }
