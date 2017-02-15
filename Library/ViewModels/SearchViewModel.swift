@@ -47,16 +47,19 @@ public protocol SearchViewModelOutputs {
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
+  /// Emits a bool whether projects are loading for indicator view.
+  var isLoading: Signal<Bool, NoError> { get }
+
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
-  /// Emits when loading indicator should be hidden.
-  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get }
-
   /// Emits when loading indicator should be animated.
-  var loadingIndicatorIsAnimated: Signal<Bool, NoError> { get }
+  var loadingIndicatorIsAnimated: Signal<Bool, NoError> { get } // test this
 
-  /// Emits an array of projects when they should be shown on the screen.
+  /// Emits when loading indicator should be hidden.
+  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get } // test this
+
+   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
 
   /// Emits when the search field should resign focus.
@@ -142,10 +145,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
+
+    self.isLoading = isLoading.signal
+
     self.loadingIndicatorIsHidden = Signal.merge(
       self.viewWillAppearAnimatedProperty.signal.mapConst(true),
       popularEvent.filter { $0.isTerminating }.mapConst(true),
-      isLoading.map(isTrue)
+      self.isLoading.map(isTrue)
     )
 
     self.loadingIndicatorIsAnimated = self.loadingIndicatorIsHidden
@@ -265,6 +271,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
+  public let isLoading: Signal<Bool, NoError>
   public let loadingIndicatorIsHidden: Signal<Bool, NoError>
   public let loadingIndicatorIsAnimated: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
