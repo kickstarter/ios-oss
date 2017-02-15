@@ -327,7 +327,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
           .start(on: environment.backgroundQueueScheduler)
           .skipNil()
       }
-      .scan(CollectSnapshots()) { (snapshots, value) in snapshots.add(snapshot: value)  }
+      .scan(CollectSnapshots()) { (snapshots, value) in snapshots.add(snapshot: value) }
 
     self.chatMessages = incomingMessages
       .takeWhen(bufferInterval)
