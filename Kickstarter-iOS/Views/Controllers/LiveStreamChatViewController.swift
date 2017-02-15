@@ -7,5 +7,5 @@ import Result
 import UIKit
 
 internal final class LiveStreamChatViewController: UITableViewController {
-  
+
 }

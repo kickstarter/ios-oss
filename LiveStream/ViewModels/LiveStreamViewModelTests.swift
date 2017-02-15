@@ -757,6 +757,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     )
   }
 
+  //swiftlint:disable:next function_body_length
   func testReceivedFirebaseChatMessageDataSnapshot() {
     self.chatMessages.assertValueCount(0)
 
