@@ -132,7 +132,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
-
     self.loaderIsAnimating = Signal.merge(
       shouldShowFacebookConnect.map(negate),
       self.isLoading.map { $0 }

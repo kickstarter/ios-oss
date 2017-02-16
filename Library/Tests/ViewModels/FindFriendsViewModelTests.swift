@@ -280,7 +280,6 @@ final class FindFriendsViewModelTests: TestCase {
     }
   }
 
-
   func testFacebookErrorAlerts() {
     vm.inputs.configureWith(source: FriendsSource.discovery)
 
