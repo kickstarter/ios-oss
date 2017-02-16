@@ -145,12 +145,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.isLoading = isLoading.signal
-
+    self.isLoading = .empty
     self.loadingIndicatorIsHidden = Signal.merge(
-      self.viewWillAppearAnimatedProperty.signal.mapConst(true),
-      popularEvent.filter { $0.isTerminating }.mapConst(true),
-      self.isLoading.map(isTrue)
+      self.viewWillAppearAnimatedProperty.signal.mapConst(false),
+     // popularEvent.filter { $0.isTerminating }.mapConst(true), // delete, other loder
+      isLoading.map { $0 }
     )
 
     self.loadingIndicatorIsAnimated = self.loadingIndicatorIsHidden

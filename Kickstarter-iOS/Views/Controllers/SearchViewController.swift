@@ -127,7 +127,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
-    self.loaderIndicator.rac.hidden = self.viewModel.outputs.loadingIndicatorIsHidden
+    
     self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsAnimated
 
     self.viewModel.outputs.changeSearchFieldFocus
