@@ -6,28 +6,33 @@ import ReactiveSwift
 import UIKit
 
 internal final class BackingViewController: UIViewController {
+
   @IBOutlet fileprivate weak var actionsStackView: UIStackView!
   @IBOutlet fileprivate weak var backerAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var backerNameLabel: UILabel!
   @IBOutlet fileprivate weak var backerPledgeAmountAndDateLabel: UILabel!
-  @IBOutlet fileprivate weak var backerPledgeStatusLabel: UILabel!
   @IBOutlet fileprivate weak var backerRewardDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var backerSequenceLabel: UILabel!
   @IBOutlet fileprivate weak var backerShippingAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var backerShippingDescriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var contentView: UIView!
+  @IBOutlet fileprivate weak var dividerView: UIView!
   @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliverySeparatorView: UIView!
   @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
-  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var loadingOverlayView: UIView!
+  //@IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
+  //@IBOutlet fileprivate weak var loadingOverlayView: UIView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
+  @IBOutlet fileprivate weak var pledgeCardView: UIView!
+  @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgedLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardCardView: UIView!
+  @IBOutlet fileprivate weak var rewardContainerView: UIView!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardSeperatorView: UIView!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingSeparatorView: UIView!
+  @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var statusTitleLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
@@ -66,53 +71,86 @@ internal final class BackingViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
-    _ = self.backerPledgeAmountAndDateLabel |> UILabel.lens.font .~ .ksr_body()
-    _ = self.backerPledgeStatusLabel |> UILabel.lens.font .~ .ksr_body()
-    _ = self.backerRewardDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
-    _ = self.backerSequenceLabel |> UILabel.lens.font .~ .ksr_subhead()
-    _ = self.backerShippingAmountLabel |> UILabel.lens.font .~ .ksr_body()
-    _ = self.backerShippingDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
-    _ = self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
+    _ = self.backerNameLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 18)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
-    _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.animating .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+    _ = self.backerSequenceLabel
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.messageCreatorButton
-      |> greenButtonStyle
+      |> navyButtonStyle
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
-    _ = self.pledgedLabel
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.text %~ { _ in Strings.backer_modal_pledged_title() }
-
-    _ = self.rewardLabel
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.text %~ { _ in Strings.backer_modal_reward_title() }
-
-    _ = self.rewardSeperatorView |> separatorStyle
-
-    _ = self.rootStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-
-    _ = self.shippingLabel
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.text %~ { _ in Strings.backer_modal_shipping_title() }
-
-    _ = self.shippingSeparatorView |> separatorStyle
-
     _ = self.viewMessagesButton
+      |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
-      |> neutralButtonStyle
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
 
-    _ = self.estimatedDeliverySeparatorView |> separatorStyle
+    _ = self.pledgedLabel
+      |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
+      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Total pledged") }
+
+    _ = self.backerPledgeAmountAndDateLabel
+      |> UILabel.lens.font .~ .ksr_title3(size: 15)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+    _ = self.statusTitleLabel
+      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+    _ = self.backerRewardDescriptionLabel
+      |> UILabel.lens.font .~ .ksr_title3(size: 15)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+    _ = self.backerShippingAmountLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+    _ = self.backerAvatarImageView
+      |> UIImageView.lens.accessibilityElementsHidden .~ true
+
+//    _ = self.loadingIndicatorView
+//      |> UIActivityIndicatorView.lens.animating .~ true
+//      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+//      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+
+    _ = self.rewardLabel
+      |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
+      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Reward selected") }
+
+    _ = self.dividerView |> separatorStyle
+
+    _ = self.contentView
+      |> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(2),
+                                                   bottom: Styles.grid(4), right: Styles.grid(2))
+
+    _ = self.shippingLabel
+      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Shipping amount:") }
 
     _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.text %~ { _ in Strings.rewards_info_estimated_delivery() }
+      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
+
+    _ = self.estimatedDeliveryDateLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+
+    _ = self.statusDescriptionLabel
+      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+
+    _ = [self.pledgeCardView, self.rewardCardView]
+      ||> dropShadowStyle()
+
+    _ = [self.pledgeContainerView, self.rewardContainerView]
+      ||> UIView.lens.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
   }
 
   // swiftlint:disable:next function_body_length
@@ -121,28 +159,19 @@ internal final class BackingViewController: UIViewController {
     self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
     self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
-    self.backerNameLabel.rac.accessibilityLabel = self.viewModel.outputs.backerNameAccessibilityLabel
     self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate
     self.backerPledgeAmountAndDateLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerPledgeAmountAndDateAccessibilityLabel
-    self.backerPledgeStatusLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
-    self.backerPledgeStatusLabel.rac.accessibilityLabel =
-      self.viewModel.outputs.backerPledgeStatusAccessibilityLabel
+    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
     self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.backerRewardDescription
-    self.backerRewardDescriptionLabel.rac.accessibilityLabel =
-      self.viewModel.outputs.backerRewardDescriptionAccessibilityLabel
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
-    self.backerSequenceLabel.rac.accessibilityLabel = self.viewModel.outputs.backerSequenceAccessibilityLabel
     self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
     self.backerShippingAmountLabel.rac.accessibilityLabel =
       self.viewModel.outputs.backerShippingAmountAccessibilityLabel
-    self.backerShippingDescriptionLabel.rac.text = self.viewModel.outputs.backerShippingDescription
-    self.backerShippingDescriptionLabel.rac.accessibilityLabel =
-      self.viewModel.outputs.backerShippingDescriptionAccessibilityLabel
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-    self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
+    //self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()

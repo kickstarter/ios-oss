@@ -25,9 +25,6 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer name to be displayed.
   var backerName: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for the backer name.
-  var backerNameAccessibilityLabel: Signal<String, NoError> { get }
-
   /// Emits the backer's pledge amount and date.
   var backerPledgeAmountAndDate: Signal<String, NoError> { get }
 
@@ -37,32 +34,17 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer's pledge status.
   var backerPledgeStatus: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's pledge status.
-  var backerPledgeStatusAccessibilityLabel: Signal<String, NoError> { get }
-
   /// Emits the backer reward description to display.
   var backerRewardDescription: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer reward description.
-  var backerRewardDescriptionAccessibilityLabel: Signal<String, NoError> { get }
-
   /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
-
-  /// Emits the accessibility label for backer sequence.
-  var backerSequenceAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits the backer's shipping amount.
   var backerShippingAmount: Signal<String, NoError> { get }
 
   /// Emits the accessibility label for backer's shipping amount.
   var backerShippingAmountAccessibilityLabel: Signal<String, NoError> { get }
-
-  /// Emits the backer's description of shipping.
-  var backerShippingDescription: Signal<String, NoError> { get }
-
-  /// Emits the accessibility label for backer's description of shipping.
-  var backerShippingDescriptionAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits the estimated delivery date.
   var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
@@ -129,7 +111,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerSequence = backing.map {
       Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence))
     }
-    self.backerSequenceAccessibilityLabel = self.backerSequence
 
     let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
 
@@ -140,13 +121,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerName = backer.map { backer in backer.name }
 
-    self.backerNameAccessibilityLabel = self.backerName
-
     self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
 
     self.backerPledgeStatus = backing
       .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
-    self.backerPledgeStatusAccessibilityLabel = self.backerPledgeStatus
 
     self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
       Strings.backer_modal_pledge_amount_on_pledge_date(
@@ -167,11 +145,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           reward_description: reward.description
         )
     }
-
-    self.backerRewardDescriptionAccessibilityLabel = self.backerRewardDescription
-
-    self.backerShippingDescription = reward.map { $0.shipping.summary  ?? "N/A" }
-    self.backerShippingDescriptionAccessibilityLabel = self.backerShippingDescription
 
     self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
@@ -200,8 +173,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, _ in
         project.creator == AppEnvironment.current.currentUser
-          ? Strings.Message_backer()
-          : Strings.Message_creator()
+          ? localizedString(key: "todo", defaultValue: "Contact backer")
+          : localizedString(key: "todo", defaultValue: "Contact creator")
     }
 
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
@@ -238,19 +211,13 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
   public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
-  public let backerNameAccessibilityLabel: Signal<String, NoError>
   public let backerPledgeAmountAndDate: Signal<String, NoError>
   public let backerPledgeAmountAndDateAccessibilityLabel: Signal<String, NoError>
   public let backerPledgeStatus: Signal<String, NoError>
-  public let backerPledgeStatusAccessibilityLabel: Signal<String, NoError>
   public let backerRewardDescription: Signal<String, NoError>
-  public let backerRewardDescriptionAccessibilityLabel: Signal<String, NoError>
   public let backerSequence: Signal<String, NoError>
-  public let backerSequenceAccessibilityLabel: Signal<String, NoError>
   public let backerShippingAmount: Signal<String, NoError>
   public let backerShippingAmountAccessibilityLabel: Signal<String, NoError>
-  public let backerShippingDescription: Signal<String, NoError>
-  public let backerShippingDescriptionAccessibilityLabel: Signal<String, NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
   public let estimatedDeliveryStackViewHidden: Signal<Bool, NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
@@ -269,7 +236,7 @@ private func statusString(_ forStatus: Backing.Status) -> String {
     case .canceled:
       return Strings.project_view_pledge_status_canceled()
     case .collected:
-      return Strings.project_view_pledge_status_collected()
+      return Strings.profile_projects_status_successful()
     case .dropped:
       return Strings.project_view_pledge_status_dropped()
     case .errored:
