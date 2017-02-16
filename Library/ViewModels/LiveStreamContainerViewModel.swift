@@ -115,7 +115,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
               .materialize()
           }
           .filter { event in
-            if initialEvent.liveNow {
+            if initialEvent.liveNow && event.error == nil {
               return event.value?.liveNow == .some(true)
             }
 
