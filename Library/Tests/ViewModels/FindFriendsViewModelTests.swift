@@ -15,6 +15,7 @@ final class FindFriendsViewModelTests: TestCase {
   let showFacebookConnect = TestObserver<Bool, NoError>()
   let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
   let isLoading = TestObserver<Bool, NoError>()
+  let loaderIsAnimating = TestObserver<Bool, NoError>()
   let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
   let statsSource = TestObserver<FriendsSource, NoError>()
   let stats = TestObserver<FriendStatsEnvelope, NoError>()
@@ -27,6 +28,7 @@ final class FindFriendsViewModelTests: TestCase {
     vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
     vm.outputs.goToDiscovery.observe(goToDiscovery.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
+    vm.outputs.loaderIsAnimating.observe(loaderIsAnimating.observer)
     vm.outputs.showFollowAllFriendsAlert.observe(showFollowAllFriendsAlert.observer)
     vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
     vm.outputs.stats.map { _, source in source }.observe(statsSource.observer)
@@ -236,6 +238,48 @@ final class FindFriendsViewModelTests: TestCase {
       self.friends.assertValues([friendsResponse.users, [], friendsResponse.users], "Updated friends emit.")
     }
   }
+
+  func testLoaderIsAnimating_WithFacebookConnectedUser() {
+    withEnvironment(currentUser: User.template |> User.lens.facebookConnected .~ true) {
+      vm.inputs.configureWith(source: FriendsSource.activity)
+
+      loaderIsAnimating.assertValueCount(0, "Loader is hidden")
+
+      vm.inputs.viewDidLoad()
+
+      loaderIsAnimating.assertValues([true, true])
+
+      self.scheduler.advance()
+
+      loaderIsAnimating.assertValues([true, true, false])
+
+      vm.inputs.willDisplayRow(30, outOf: 10)
+
+      loaderIsAnimating.assertValues([true, true, false, true])
+
+      self.scheduler.advance()
+
+      loaderIsAnimating.assertValues([true, true, false, true, false])
+    }
+  }
+
+  func testLoaderIsAnimating_WithNonFacebookConnectedUser() {
+    withEnvironment(currentUser: User.template) {
+      vm.inputs.configureWith(source: FriendsSource.activity)
+
+      loaderIsAnimating.assertValueCount(0, "Loader is hidden")
+
+      vm.inputs.viewDidLoad()
+
+      loaderIsAnimating.assertValues([false])
+
+      self.scheduler.advance()
+
+      loaderIsAnimating.assertValues([false])
+
+    }
+  }
+
 
   func testFacebookErrorAlerts() {
     vm.inputs.configureWith(source: FriendsSource.discovery)

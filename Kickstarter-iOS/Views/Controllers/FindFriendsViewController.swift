@@ -38,7 +38,7 @@ internal final class FindFriendsViewController: UITableViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.loadingIndicatorView.center = CGPoint(x: self.tableView.center.x, y: self.tableView.center.y - 100)
+    self.loadingIndicatorView.center = CGPoint(x: self.tableView.center.x, y: self.tableView.center.y - 50)
   }
 
   override func bindStyles() {
