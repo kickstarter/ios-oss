@@ -38,7 +38,7 @@ internal final class FindFriendsViewController: UITableViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.loadingIndicatorView.center = self.tableView.center
+    self.loadingIndicatorView.center = CGPoint(x: self.tableView.center.x, y: self.tableView.center.y - 100)
   }
 
   override func bindStyles() {
@@ -52,7 +52,6 @@ internal final class FindFriendsViewController: UITableViewController {
       ?|> baseNavigationBarStyle
 
     _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
@@ -60,7 +59,7 @@ internal final class FindFriendsViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.isLoading
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
 
     self.viewModel.outputs.friends
       .observeForUI()
