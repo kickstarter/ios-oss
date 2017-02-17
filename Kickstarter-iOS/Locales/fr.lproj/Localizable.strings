@@ -173,6 +173,7 @@
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";
+"Pledge" = "Engagement :";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
 "Pledge_was_dropped" = "Engagement abandonné.";
 "Pledge_without_a_reward" = "Engagement sans récompense";
@@ -223,12 +224,13 @@
 "Share_this_project_on_Twitter" = "Partagez ce projet sur Twitter.";
 "Share_update" = "Partager";
 "Shipping" = "Expédition";
-"Shipping_amount" = "Frais de port :";
+"Shipping_colon" = "Livraison :";
 "Ships_to" = "Livraison :";
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Starting_soon" = "Bientôt en direct";
+"Status" = "État :";
 "Subscribe" = "S'abonner";
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
@@ -241,7 +243,7 @@
 "The_live_stream_will_start_soon" = "La diffusion en direct va bientôt commencer";
 "The_live_stream_will_start_time" = "La diffusion en direct commence dans %{time}.";
 "The_replay_will_start_soon" = "La rediffusion sera bientôt disponible";
-"There_was_a_problem_with_your_payment" = "Un problème s'est produit lors de votre règlement.";
+"There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "Time_left_left" = "Plus que %{time_left}";
 "Total_pledged" = "Total engagé";

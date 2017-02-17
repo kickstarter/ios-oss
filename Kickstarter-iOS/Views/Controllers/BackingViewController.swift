@@ -19,8 +19,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
-  //@IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
-  //@IBOutlet fileprivate weak var loadingOverlayView: UIView!
+  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgeCardView: UIView!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
@@ -31,6 +30,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var statusTitleLabel: UILabel!
@@ -69,6 +69,67 @@ internal final class BackingViewController: UIViewController {
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
+  // swiftlint:disable:next function_body_length
+  internal override func bindViewModel() {
+    super.bindViewModel()
+    self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
+    self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
+    self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
+    self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate
+    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
+    self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.backerRewardDescription
+    self.rewardTitleLabel.rac.text = self.viewModel.outputs.backerRewardTitle
+    self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.backerRewardTitleIsHidden
+    self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
+    self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
+    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
+    self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
+    self.rewardAmountLabel.rac.text = self.viewModel.outputs.backerRewardAmount
+    self.shippingStackView.rac.hidden = self.viewModel.outputs.shippingStackViewIsHidden
+    self.statusDescriptionLabel.rac.text = self.viewModel.outputs.statusDescription
+    self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
+
+    self.viewModel.outputs.backerAvatarURL
+      .observeForControllerAction()
+      .on(event: { [weak backerAvatarImageView] _ in
+        backerAvatarImageView?.af_cancelImageRequest()
+        backerAvatarImageView?.image = nil
+      })
+      .skipNil()
+      .observeValues { [weak backerAvatarImageView] url in
+        backerAvatarImageView?.af_setImage(withURL: url)
+    }
+
+    self.viewModel.outputs.goToMessages
+      .observeForControllerAction()
+      .observeValues { [weak self] project, backing in
+        self?.goToMessages(project: project, backing: backing)
+    }
+
+    self.viewModel.outputs.goToMessageCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] messageSubject, context in
+        self?.goToMessageCreator(messageSubject: messageSubject, context: context)
+    }
+
+    self.viewModel.outputs.opacityForContainers
+      .observeForUI()
+      .observeValues { [weak self] alpha in
+        guard let _self = self else { return }
+        UIView.animate(
+          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
+          delay: 0.0,
+          options: .curveEaseOut,
+          animations: {
+            _self.pledgeContainerView.alpha = alpha
+            _self.rewardContainerView.alpha = alpha
+          },
+          completion: nil)
+    }
   }
 
   internal override func bindStyles() {
@@ -151,10 +212,10 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
-//    _ = self.loadingIndicatorView
-//      |> UIActivityIndicatorView.lens.animating .~ true
-//      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-//      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+    _ = self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.rewardLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 17)
@@ -185,50 +246,6 @@ internal final class BackingViewController: UIViewController {
     _ = self.statusDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
-  }
-
-  // swiftlint:disable:next function_body_length
-  internal override func bindViewModel() {
-    super.bindViewModel()
-    self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
-    self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
-    self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
-    self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate
-    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
-    self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.backerRewardDescription
-    self.rewardTitleLabel.rac.text = self.viewModel.outputs.backerRewardTitle
-    self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
-    self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
-    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
-    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
-    self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-    self.rewardAmountLabel.rac.text = self.viewModel.outputs.backerRewardAmount
-    self.statusDescriptionLabel.rac.text = self.viewModel.outputs.statusDescription
-    self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
-    //self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
-
-    self.viewModel.outputs.backerAvatarURL
-      .observeForControllerAction()
-      .on(event: { [weak backerAvatarImageView] _ in
-        backerAvatarImageView?.af_cancelImageRequest()
-        backerAvatarImageView?.image = nil
-      })
-      .skipNil()
-      .observeValues { [weak backerAvatarImageView] url in
-        backerAvatarImageView?.af_setImage(withURL: url)
-    }
-
-    self.viewModel.outputs.goToMessages
-      .observeForControllerAction()
-      .observeValues { [weak self] project, backing in
-        self?.goToMessages(project: project, backing: backing)
-    }
-
-    self.viewModel.outputs.goToMessageCreator
-      .observeForControllerAction()
-      .observeValues { [weak self] messageSubject, context in
-        self?.goToMessageCreator(messageSubject: messageSubject, context: context)
-    }
   }
 
   @objc fileprivate func messageCreatorTapped(_ button: UIButton) {

@@ -476,8 +476,8 @@ public enum Strings {
   /**
    "Backer has pledged to this project."
 
-   - **es**: "Backer has pledged to this project."
-   - **de**: "Backer has pledged to this project."
+   - **es**: "Patrocinó este proyecto."
+   - **de**: "Hat dieses Projekt unterstützt."
    - **fr**: "Ce contributeur s'est engagé à soutenir ce projet."
    - **en**: "Backer has pledged to this project."
   */
@@ -738,7 +738,7 @@ backers"
    "Contact creator"
 
    - **es**: "Comunicarse con el creador"
-   - **de**: "Contact creator"
+   - **de**: "Projektgründer kontaktieren"
    - **fr**: "Contacter le créateur"
    - **en**: "Contact creator"
   */
@@ -1026,7 +1026,7 @@ backers"
    "Either the pledge or the project was canceled before the deadline."
 
    - **es**: "Se canceló la contribución o el proyecto antes de que el plazo terminara."
-   - **de**: "Either the pledge or the project was canceled before the deadline."
+   - **de**: "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war."
    - **fr**: "Soit l'engagement soit le projet a été annulé avant la date limite."
    - **en**: "Either the pledge or the project was canceled before the deadline."
   */
@@ -2583,7 +2583,7 @@ from friends yet."
    "Payment method was successfully charged."
 
    - **es**: "Cargo efectuado a método de pago indicado."
-   - **de**: "Payment method was successfully charged."
+   - **de**: "Zahlungsmethode wurde erfolgreich belastet."
    - **fr**: "Le moyen de paiement a bien été débité."
    - **en**: "Payment method was successfully charged."
   */
@@ -2628,6 +2628,22 @@ from friends yet."
     )
   }
   /**
+   "Pledge:"
+
+   - **es**: "Contribución:"
+   - **de**: "Pledge:"
+   - **fr**: "Engagement :"
+   - **en**: "Pledge:"
+  */
+  public static func Pledge() -> String {
+    return localizedString(
+      key: "Pledge",
+      defaultValue: "Pledge:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Pledge any amount to help bring this project to life."
 
    - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
@@ -2647,7 +2663,7 @@ from friends yet."
    "Pledge was dropped."
 
    - **es**: "Contribución fue descartada."
-   - **de**: "Pledge was dropped."
+   - **de**: "Finanzierungsbeitrag wurde nicht übernommen."
    - **fr**: "Engagement abandonné."
    - **en**: "Pledge was dropped."
   */
@@ -2985,7 +3001,7 @@ daring ideas."
    "Reward selected"
 
    - **es**: "Recompensa seleccionada"
-   - **de**: "Reward selected"
+   - **de**: "Ausgewählte Belohnung"
    - **fr**: "Récompense sélectionnée"
    - **en**: "Reward selected"
   */
@@ -3238,17 +3254,17 @@ daring ideas."
     )
   }
   /**
-   "Shipping amount:"
+   "Shipping:"
 
-   - **es**: "Monto de envío:"
-   - **de**: "Shipping amount:"
-   - **fr**: "Frais de port :"
-   - **en**: "Shipping amount:"
+   - **es**: "Envío:"
+   - **de**: "Versand:"
+   - **fr**: "Livraison :"
+   - **en**: "Shipping:"
   */
-  public static func Shipping_amount() -> String {
+  public static func Shipping_colon() -> String {
     return localizedString(
-      key: "Shipping_amount",
-      defaultValue: "Shipping amount:",
+      key: "Shipping_colon",
+      defaultValue: "Shipping:",
       count: nil,
       substitutions: [:]
     )
@@ -3331,6 +3347,22 @@ catch your eye?"
     return localizedString(
       key: "Starting_soon",
       defaultValue: "Starting soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Status:"
+
+   - **es**: "Estado:"
+   - **de**: "Status:"
+   - **fr**: "État :"
+   - **en**: "Status:"
+  */
+  public static func Status() -> String {
+    return localizedString(
+      key: "Status",
+      defaultValue: "Status:",
       count: nil,
       substitutions: [:]
     )
@@ -3528,17 +3560,17 @@ catch your eye?"
     )
   }
   /**
-   "There was a problem with your payment."
+   "There was a problem with this payment."
 
    - **es**: "Ocurrió un error con el pago."
-   - **de**: "There was a problem with your payment."
-   - **fr**: "Un problème s'est produit lors de votre règlement."
-   - **en**: "There was a problem with your payment."
+   - **de**: "Es ist ein Problem bei der Zahlung aufgetreten."
+   - **fr**: "Un problème s'est produit lors de ce règlement."
+   - **en**: "There was a problem with this payment."
   */
-  public static func There_was_a_problem_with_your_payment() -> String {
+  public static func There_was_a_problem_with_this_payment() -> String {
     return localizedString(
-      key: "There_was_a_problem_with_your_payment",
-      defaultValue: "There was a problem with your payment.",
+      key: "There_was_a_problem_with_this_payment",
+      defaultValue: "There was a problem with this payment.",
       count: nil,
       substitutions: [:]
     )
@@ -3579,7 +3611,7 @@ catch your eye?"
    "Total pledged"
 
    - **es**: "Contribuciones en total"
-   - **de**: "Total pledged"
+   - **de**: "Anzahl der Beiträge insgesamt"
    - **fr**: "Total engagé"
    - **en**: "Total pledged"
   */
@@ -3920,7 +3952,7 @@ Please try again later."
    "Your payment method was successfully charged."
 
    - **es**: "Se efectuó el cargo a tu método de pago."
-   - **de**: "Your payment method was successfully charged."
+   - **de**: "Deine Zahlungsmethode wurde erfolgreich belastet."
    - **fr**: "Votre moyen de paiement a bien été débité."
    - **en**: "Your payment method was successfully charged."
   */
@@ -3968,7 +4000,7 @@ Please try again later."
    "Your pledge was canceled or the creator canceled the project before its deadline."
 
    - **es**: "El patrocinador canceló la contribución o el creador canceló el proyecto antes de que éste llegara al plazo estipulado."
-   - **de**: "Your pledge was canceled or the creator canceled the project before its deadline."
+   - **de**: "Entweder dein Finanzierungsbeitrag wurde zurückgezogen oder das Projekt abgebrochen, bevor die Frist erreicht wurde."
    - **fr**: "Votre engagement a été annulé ou le créateur a annulé son projet avant la date limite."
    - **en**: "Your pledge was canceled or the creator canceled the project before its deadline."
   */
@@ -3984,7 +4016,7 @@ Please try again later."
    "Your pledge was dropped."
 
    - **es**: "Tu Contribución fue descartada."
-   - **de**: "Your pledge was dropped."
+   - **de**: "Dein Finanzierungsbeitrag wurde nicht übernommen."
    - **fr**: "Votre engagement a été abandonné."
    - **en**: "Your pledge was dropped."
   */
@@ -4064,7 +4096,7 @@ Please try again later."
    "You’ve pledged to support this project and it’s currently still funding."
 
    - **es**: "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado."
-   - **de**: "You’ve pledged to support this project and it’s currently still funding."
+   - **de**: "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen."
    - **fr**: "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée."
    - **en**: "You’ve pledged to support this project and it’s currently still funding."
   */

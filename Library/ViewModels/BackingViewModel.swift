@@ -40,6 +40,9 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer reward title to display.
   var backerRewardTitle: Signal<String, NoError> { get }
 
+  /// Emits a bool whether to hide the reward title if it's empty.
+  var backerRewardTitleIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
 
@@ -61,14 +64,20 @@ public protocol BackingViewModelOutputs {
   /// Emits a boolean that determines if the actions stackview should be hidden.
   var hideActionsStackView: Signal<Bool, NoError> { get }
 
-  /// Emits whether loading overlay view should be hidden.
-  var loadingOverlayIsHidden: Signal<Bool, NoError> { get }
+  /// Emits a bool to animate the loader.
+  var loaderIsAnimating: Signal<Bool, NoError> { get }
 
   /// Emits the button title for messaging a backer or creator.
   var messageButtonTitleText: Signal<String, NoError> { get }
 
+  /// Emits an alpha value for the reward and pledge containers to animate in.
+  var opacityForContainers: Signal<CGFloat, NoError> { get }
+
   /// Emits the axis of the stackview.
   var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
+
+  /// Emits a bool whether shipping stack view should be hidden.
+  var shippingStackViewIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits text for status description label.
   var statusDescription: Signal<String, NoError> { get }
@@ -104,6 +113,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .switchMap { project, backer, backerIsCurrentUser in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .retry(upTo: 3)
           .map { (project, $0, backerIsCurrentUser) }
           .materialize()
     }
@@ -113,65 +123,101 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let project = projectAndBackingAndBackerIsCurrentUser.map(first)
     let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
     let reward = backing.map { $0.reward }.skipNil()
+    let basicBacker = projectAndBackerAndBackerIsCurrentUser.map(second)
+    let emptyStringOnLoad = self.viewDidLoadProperty.signal.mapConst("")
 
-    self.backerSequence = backing.map {
-      Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence))
-    }
-
-    let backer = projectAndBackerAndBackerIsCurrentUser.map(second)
-
-    self.loadingOverlayIsHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      projectAndBackingAndBackerIsCurrentUserEvent.filter { $0.isTerminating }.mapConst(true)
+    self.backerSequence = Signal.merge(
+      self.viewDidLoadProperty.signal
+        .mapConst(Strings.backer_modal_backer_number(backer_number: Format.wholeNumber(0))),
+      backing.map {
+        Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence))
+      }
     )
 
-    self.backerName = backer.map { backer in backer.name }
+    self.loaderIsAnimating = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      projectAndBackingAndBackerIsCurrentUserEvent.filter { $0.isTerminating }.mapConst(false)
+    )
 
-    self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
+    self.backerName = basicBacker.map { $0.name }
 
-    self.backerPledgeStatus = backing.map { statusString($0.status) }
+    self.backerAvatarURL = basicBacker.map { URL(string: $0.avatar.small) }
 
-    self.statusDescription = projectAndBackingAndBackerIsCurrentUser
+    self.backerPledgeStatus = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+        statusString(for: backing.status, project: project)
+      }
+    )
+
+    self.statusDescription = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, backerIsCurrentUser in
         let isCreator = !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
-        return description(forStatus: backing.status, isCreator: isCreator)
-    }
-
-    self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-      Strings.backer_modal_pledge_amount_on_pledge_date(
-        pledge_amount: Format.currency(backing.amount - (backing.shippingAmount ?? 0), country: project.country),
-        pledge_date: Format.date(
-          secondsInUTC: backing.pledgedAt,
-          dateStyle: .long,
-          timeStyle: .none
-        )
-      )
-    }
-
-    self.totalPledgeAmount = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-      Format.currency(backing.amount, country: project.country)
-    }
-
-    self.backerRewardAmount = projectAndBackingAndBackerIsCurrentUser
-      .map { project, backing, _ in
-        Format.currency(backing.reward?.minimum ?? 0, country: project.country)
-    }
-
-    self.backerRewardDescription = reward.map { $0.description }
-
-    self.backerRewardTitle = reward.map { $0.title ?? "" }
-
-    self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
-      .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
-
-    self.estimatedDeliveryDateLabelText = reward.map {
-      $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
+        return description(for: backing.status, project: project, isCreator: isCreator)
       }
-      .skipNil()
+    )
+
+    self.backerPledgeAmountAndDate = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+        let basicPledge = backing.amount - (backing.shippingAmount ?? 0)
+        return Strings.backer_modal_pledge_amount_on_pledge_date(
+          pledge_amount: Format.currency(basicPledge, country: project.country),
+          pledge_date: Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
+        )
+      }
+    )
+
+    self.totalPledgeAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+        Format.currency(backing.amount, country: project.country)
+      }
+    )
+
+    self.backerRewardAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser
+        .map { project, backing, _ in
+        Format.currency(backing.reward?.minimum ?? 0, country: project.country)
+      }
+    )
+
+    self.backerRewardDescription = Signal.merge(
+      emptyStringOnLoad,
+      reward.map { $0.description }
+    )
+
+    self.backerRewardTitle = Signal.merge(
+      emptyStringOnLoad,
+      reward.map { $0.title ?? "" }
+    )
+
+    self.backerRewardTitleIsHidden = self.backerRewardTitle.map { $0.isEmpty }
+
+    self.backerShippingAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser
+        .map { project, backing, _ in
+          Format.currency(backing.shippingAmount ?? 0, country: project.country)
+      }
+    )
+
+    self.shippingStackViewIsHidden = backing.map { $0.shippingAmount == .some(0) }
+
+    self.estimatedDeliveryDateLabelText = Signal.merge(
+      emptyStringOnLoad,
+      reward.map {
+        $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
+      }.skipNil()
+    )
 
     self.estimatedDeliveryStackViewHidden = reward
       .map { $0.estimatedDeliveryOn == nil }
 
+    // todo: disable both buttons until the load comes in
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
       .takeWhen(self.viewMessagesTappedProperty.signal)
@@ -195,6 +241,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { project, _, backerIsCurrentUser in
         !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
     }
+
+    self.opacityForContainers = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(0.0),
+      projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
+    )
 
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
@@ -230,6 +281,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerRewardAmount: Signal<String, NoError>
   public let backerRewardDescription: Signal<String, NoError>
   public let backerRewardTitle: Signal<String, NoError>
+  public let backerRewardTitleIsHidden: Signal<Bool, NoError>
   public let backerSequence: Signal<String, NoError>
   public let backerShippingAmount: Signal<String, NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
@@ -237,9 +289,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
-  public let loadingOverlayIsHidden: Signal<Bool, NoError>
+  public let loaderIsAnimating: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
+  public let opacityForContainers: Signal<CGFloat, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
+  public let shippingStackViewIsHidden: Signal<Bool, NoError>
   public let statusDescription: Signal<String, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
 
@@ -247,8 +301,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public var outputs: BackingViewModelOutputs { return self }
 }
 
-private func statusString(_ forStatus: Backing.Status) -> String {
-    switch forStatus {
+private func statusString(for status: Backing.Status, project: Project) -> String {
+    switch status {
     case .canceled:
       return Strings.project_view_pledge_status_canceled()
     case .collected:
@@ -258,14 +312,16 @@ private func statusString(_ forStatus: Backing.Status) -> String {
     case .errored:
       return Strings.project_view_pledge_status_errored()
     case .pledged:
-      return Strings.project_view_pledge_status_pledged()
+      return (project.state == .canceled || project.state == .failed)
+        ? Strings.project_view_pledge_status_canceled()
+        : Strings.project_view_pledge_status_pledged()
     case .preauth:
       fatalError()
   }
 }
 
-private func description(forStatus: Backing.Status, isCreator: Bool) -> String {
-  switch forStatus {
+private func description(for status: Backing.Status, project: Project, isCreator: Bool) -> String {
+  switch status {
   case .canceled:
     return isCreator
       ? Strings.Either_the_pledge_or_the_project_was_canceled()
@@ -281,9 +337,16 @@ private func description(forStatus: Backing.Status, isCreator: Bool) -> String {
   case .errored:
     return localizedString(key: "todo", defaultValue: "There was a problem with this payment.")
   case .pledged:
+    let isCanceledOrFailed = (project.state == .canceled || project.state == .failed)
     return isCreator
-      ? Strings.Backer_has_pledged_to_this_project()
-      : Strings.Youve_pledged_to_support_this_project()
+      ? (isCanceledOrFailed
+          ? Strings.Either_the_pledge_or_the_project_was_canceled()
+          : Strings.Backer_has_pledged_to_this_project()
+        )
+      : (isCanceledOrFailed
+          ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
+          : Strings.Youve_pledged_to_support_this_project()
+        )
   case .preauth:
     fatalError()
   }

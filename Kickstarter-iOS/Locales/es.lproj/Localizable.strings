@@ -27,7 +27,7 @@
 "Backed_by_Friends" = "Patrocinados por amigos";
 "Backed_by_people_you_follow" = "Patrocinados por gente que sigues";
 "Backed_projects_projects_count" = "Proyectos patrocinados: %{project_count}";
-"Backer_has_pledged_to_this_project" = "Backer has pledged to this project.";
+"Backer_has_pledged_to_this_project" = "Patrocinó este proyecto.";
 "Backers_count_separator_backers.few" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.many" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.one" = "%{backers_count}\npatrocinador";
@@ -173,6 +173,7 @@
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";
+"Pledge" = "Contribución:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
 "Pledge_was_dropped" = "Contribución fue descartada.";
 "Pledge_without_a_reward" = "Contribuir sin recompensa";
@@ -223,12 +224,13 @@
 "Share_this_project_on_Twitter" = "Compartir este proyecto en Twitter.";
 "Share_update" = "Compartir";
 "Shipping" = "Envío";
-"Shipping_amount" = "Monto de envío:";
+"Shipping_colon" = "Envío:";
 "Ships_to" = "Envío a:";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Starting_soon" = "Comienza en breve";
+"Status" = "Estado:";
 "Subscribe" = "Suscribir";
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
@@ -241,7 +243,7 @@
 "The_live_stream_will_start_soon" = "Transmisión en vivo comienza en breve";
 "The_live_stream_will_start_time" = "Live-Stream comienza en %{time}.";
 "The_replay_will_start_soon" = "Repetición comienza en breve";
-"There_was_a_problem_with_your_payment" = "Ocurrió un error con el pago.";
+"There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "Time_left_left" = "%{time_left} restantes";
 "Total_pledged" = "Contribuciones en total";

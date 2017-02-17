@@ -173,6 +173,7 @@
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
+"Pledge" = "Pledge:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
 "Pledge_was_dropped" = "Pledge was dropped.";
 "Pledge_without_a_reward" = "Pledge without a reward";
@@ -223,12 +224,13 @@
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
 "Share_update" = "Share update";
 "Shipping" = "Shipping";
-"Shipping_amount" = "Shipping amount:";
+"Shipping_colon" = "Shipping:";
 "Ships_to" = "Ships to:";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something \ncatch your eye?";
 "Starting_soon" = "Starting soon";
+"Status" = "Status:";
 "Subscribe" = "Subscribe";
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
@@ -241,7 +243,7 @@
 "The_live_stream_will_start_soon" = "The live stream will start soon";
 "The_live_stream_will_start_time" = "The live stream will start %{time}.";
 "The_replay_will_start_soon" = "The replay will start soon";
-"There_was_a_problem_with_your_payment" = "There was a problem with your payment.";
+"There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "Time_left_left" = "%{time_left} left";
 "Total_pledged" = "Total pledged";
