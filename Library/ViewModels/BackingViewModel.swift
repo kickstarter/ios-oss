@@ -217,7 +217,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.estimatedDeliveryStackViewHidden = reward
       .map { $0.estimatedDeliveryOn == nil }
 
-    // todo: disable both buttons until the load comes in
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
       .takeWhen(self.viewMessagesTappedProperty.signal)

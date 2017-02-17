@@ -24,8 +24,11 @@ public protocol MessagesViewModelInputs {
 }
 
 public protocol MessagesViewModelOutputs {
-  /// Emits a backing and project that can be used to popular the backing info header.
-  var backingAndProject: Signal<(Backing, Project), NoError> { get }
+  /** 
+   Emits a Backing and Project that can be used to populate the backing info header.
+   The boolean tells if navigation to this screen occurred from the backing info screen.
+  */
+  var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError> { get }
 
   /// Emits when we should go to the backing screen.
   var goToBacking: Signal<(Project, User), NoError> { get }
@@ -41,6 +44,9 @@ public protocol MessagesViewModelOutputs {
 
   /// Emits the project we are viewing the messages for.
   var project: Signal<Project, NoError> { get }
+
+  /// Emits a bool whether the reply button is enabled.
+  var replyButtonIsEnabled: Signal<Bool, NoError> { get }
 
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), NoError> { get }
@@ -101,12 +107,12 @@ MessagesViewModelOutputs {
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
-    self.backingAndProject = Signal.combineLatest(configBacking, self.project, participant, currentUser)
-      .switchMap { value -> SignalProducer<(Backing, Project), NoError> in
+    self.backingAndProjectAndIsFromBacking = Signal.combineLatest(configBacking, self.project, participant, currentUser)
+      .switchMap { value -> SignalProducer<(Backing, Project, Bool), NoError> in
         let (backing, project, participant, currentUser) = value
 
         if let backing = backing {
-          return SignalProducer(value: (backing, project))
+          return SignalProducer(value: (backing, project, true))
         }
 
         let request = project.personalization.isBacking == .some(true)
@@ -114,13 +120,18 @@ MessagesViewModelOutputs {
           : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
 
         return request
-          .map { ($0, project) }
+          .map { ($0, project, false) }
           .demoteErrors()
     }
 
     self.messages = messageThreadEnvelope
       .map { $0.messages }
       .sort { $0.id > $1.id }
+
+    self.replyButtonIsEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.messages.map { !$0.isEmpty }
+    )
 
     self.presentMessageDialog = messageThreadEnvelope
       .map { ($0.messageThread, .messages) }
@@ -178,12 +189,13 @@ MessagesViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let backingAndProject: Signal<(Backing, Project), NoError>
+  public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError>
   public let goToBacking: Signal<(Project, User), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let messages: Signal<[Message], NoError>
   public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError>
   public let project: Signal<Project, NoError>
+  public let replyButtonIsEnabled: Signal<Bool, NoError>
   public let successfullyMarkedAsRead: Signal<(), NoError>
 
   public var inputs: MessagesViewModelInputs { return self }

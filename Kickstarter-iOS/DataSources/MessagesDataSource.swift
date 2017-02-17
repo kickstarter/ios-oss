@@ -14,8 +14,8 @@ internal final class MessagesDataSource: ValueCellDataSource {
              inSection: Section.projectBanner.rawValue)
   }
 
-  internal func load(backing: Backing, project: Project) {
-    self.set(values: [(backing, project)],
+  internal func load(backing: Backing, project: Project, isFromBacking: Bool) {
+    self.set(values: [(backing, project, isFromBacking)],
              cellClass: BackingCell.self,
              inSection: Section.backing.rawValue)
   }
@@ -39,7 +39,7 @@ internal final class MessagesDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectBannerCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as BackingCell, value as (Backing, Project)):
+    case let (cell as BackingCell, value as (Backing, Project, Bool)):
       cell.configureWith(value: value)
     case let (cell as MessageCell, value as Message):
       cell.configureWith(value: value)

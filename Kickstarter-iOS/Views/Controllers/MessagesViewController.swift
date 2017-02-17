@@ -44,6 +44,8 @@ internal final class MessagesViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.replyBarButtonItem.rac.enabled = self.viewModel.outputs.replyButtonIsEnabled
+
     self.viewModel.outputs.project
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -51,10 +53,10 @@ internal final class MessagesViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.backingAndProject
+    self.viewModel.outputs.backingAndProjectAndIsFromBacking
       .observeForControllerAction()
-      .observeValues { [weak self] backing, project in
-        self?.dataSource.load(backing: backing, project: project)
+      .observeValues { [weak self] backing, project, isFromBacking in
+        self?.dataSource.load(backing: backing, project: project, isFromBacking: isFromBacking)
         self?.tableView.reloadData()
     }
 
