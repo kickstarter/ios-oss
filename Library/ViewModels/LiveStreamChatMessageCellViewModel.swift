@@ -11,6 +11,9 @@ public protocol LiveStreamChatMessageCellViewModelType {
 public protocol LiveStreamChatMessageCellViewModelInputs {
   /// Call to configure with the chat message.
   func configureWith(chatMessage: LiveStreamChatMessage)
+
+  /// Call with the respective creator's user ID
+  func setCreatorUserId(creatorUserId: Int)
 }
 
 public protocol LiveStreamChatMessageCellViewModelOutputs {
@@ -35,20 +38,30 @@ LiveStreamChatMessageCellViewModelInputs, LiveStreamChatMessageCellViewModelOutp
       URL(string: $0.profilePictureUrl)
     }
 
-    self.creatorViewsHidden = self.chatMessageProperty.signal.skipNil().mapConst(false)
+    self.creatorViewsHidden = Signal.merge(
+      self.chatMessageProperty.signal.skipNil().mapConst(true),
+      Signal.combineLatest(
+        self.chatMessageProperty.signal.skipNil(),
+        self.creatorUserIdProperty.signal.skipNil()
+        )
+        .map {
+          $0.userId != $1
+      }
+    )
 
-    self.message = self.chatMessageProperty.signal.skipNil().map {
-      $0.message
-    }
+    self.message = self.chatMessageProperty.signal.skipNil().map { $0.message }
 
-    self.name = self.chatMessageProperty.signal.skipNil().map {
-      $0.name
-    }
+    self.name = self.chatMessageProperty.signal.skipNil().map { $0.name }
   }
 
   private let chatMessageProperty = MutableProperty<LiveStreamChatMessage?>(nil)
   public func configureWith(chatMessage: LiveStreamChatMessage) {
     self.chatMessageProperty.value = chatMessage
+  }
+
+  private let creatorUserIdProperty = MutableProperty<Int?>(nil)
+  public func setCreatorUserId(creatorUserId: Int) {
+    self.creatorUserIdProperty.value = creatorUserId
   }
 
   public let avatarImageUrl: Signal<URL?, NoError>

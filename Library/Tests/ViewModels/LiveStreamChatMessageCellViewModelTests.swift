@@ -1,27 +1,77 @@
+import Prelude
+import ReactiveSwift
+import Result
 import XCTest
+@testable import KsApi
+@testable import LiveStream
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamChatMessageCellViewModelTests: TestCase {
+  let vm: LiveStreamChatMessageCellViewModelType = LiveStreamChatMessageCellViewModel()
+
+  let avatarImageUrl = TestObserver<String, NoError>()
+  let creatorViewsHidden = TestObserver<Bool, NoError>()
+  let message = TestObserver<String, NoError>()
+  let senderName = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.vm.outputs.avatarImageUrl.map { $0?.absoluteString }.skipNil().observe(self.avatarImageUrl.observer)
+    self.vm.outputs.creatorViewsHidden.observe(self.creatorViewsHidden.observer)
+    self.vm.outputs.message.observe(self.message.observer)
+    self.vm.outputs.name.observe(self.senderName.observer)
   }
 
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    super.tearDown()
+  func testAvatarImageUrl() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.profilePictureUrl .~ "http://www.kickstarter.com/avatar.jpg"
+
+    self.avatarImageUrl.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.avatarImageUrl.assertValues(["http://www.kickstarter.com/avatar.jpg"])
   }
 
-  func testExample() {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+  func testCreatorViewsHidden() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.userId .~ 123
+
+    self.creatorViewsHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.creatorViewsHidden.assertValues([true])
+
+    self.vm.inputs.setCreatorUserId(creatorUserId: 321)
+
+    self.creatorViewsHidden.assertValues([true, true])
   }
 
-  func testPerformanceExample() {
-    // This is an example of a performance test case.
-    self.measure {
-      // Put the code you want to measure the time of here.
-    }
+  func testCreatorViewsShown() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.userId .~ 123
+
+    self.creatorViewsHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.creatorViewsHidden.assertValues([true])
+
+    self.vm.inputs.setCreatorUserId(creatorUserId: 123)
+
+    self.creatorViewsHidden.assertValues([true, false])
   }
 
+  func testSenderName() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.name .~ "Test Sender Name"
+
+    self.senderName.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.senderName.assertValues(["Test Sender Name"])
+  }
 }
