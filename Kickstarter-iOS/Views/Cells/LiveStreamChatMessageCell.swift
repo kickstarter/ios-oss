@@ -32,6 +32,10 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: Styles.grid(1), left: Styles.grid(1), bottom: 0, right: Styles.grid(1)
+      )
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     _ = self.creatorTextLabel
       |> UILabel.lens.text .~ localizedString(key: "Creator", defaultValue: "Creator")

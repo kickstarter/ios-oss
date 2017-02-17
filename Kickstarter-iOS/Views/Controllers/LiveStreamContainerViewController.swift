@@ -10,27 +10,17 @@ import UIKit
 //swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewController: UIViewController {
 
-  @IBOutlet private weak var availableForLabel: UILabel!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarLabel: SimpleHTMLLabel!
   @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var detailsStackView: UIStackView!
-  @IBOutlet private weak var goToProjectButton: UIButton!
-  @IBOutlet private weak var goToProjectButtonContainerView: UIView!
   @IBOutlet private weak var gradientView: GradientView!
-  @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
-  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
   @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
-  @IBOutlet private weak var subscribeButton: UIButton!
-  @IBOutlet private weak var subscribeLabel: UILabel!
-  @IBOutlet private weak var subscribeStackView: UIStackView!
   @IBOutlet private weak var titleStackView: UIStackView!
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
@@ -62,9 +52,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
-    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
@@ -147,28 +134,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
 
-    _  = self.availableForLabel
-      |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.detailsStackView
-      |> UIStackView.lens.axis .~ .vertical
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
-
-    _  = self.subscribeStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
-      |> UIStackView.lens.layoutMargins .~ .init(top: 0,
-                                                 left: Styles.grid(4),
-                                                 bottom: Styles.grid(4),
-                                                 right: Styles.grid(4))
-
     let creatorLabelFont = self.traitCollection.isRegularRegular
       ? UIFont.ksr_title3(size: 18)
       : UIFont.ksr_title3(size: 14)
@@ -192,32 +157,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
       ? Styles.grid(10) : Styles.grid(5)
-
-    _  = self.liveStreamTitleLabel
-      |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_title2() : .ksr_title2(size: 18)
-      }
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.liveStreamParagraphLabel
-      |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_body(size: 14)
-      }
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.subscribeLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
-      |> UILabel.lens.numberOfLines .~ 3
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.subscribeActivityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-
-    _  = self.subscribeButton
-      |> lightSubscribeButtonStyle
 
     _  = self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2
@@ -252,17 +191,13 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
-    _ = [self.titleStackView, self.detailsStackView, self.subscribeStackView]
-      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      ||> UIStackView.lens.layoutMargins %~~ { _, s in
+    _ = self.titleStackView
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
           : .init(all: Styles.grid(4))
     }
-
-    _ = self.goToProjectButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .white
-      |> liveStreamGoToProjectStyle
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -309,8 +244,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.liveStreamViewController?.view.isHidden = $0
     }
 
-    self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
-
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
     self.loaderStackView.rac.hidden = self.viewModel.outputs.loaderStackViewHidden
 
@@ -327,7 +260,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
     self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden
     self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingBadgeViewHidden
-    self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
     self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
 
@@ -339,36 +271,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
-    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
-    self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-    self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
-    self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
-    self.subscribeButton.rac.accessibilityHint
-      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityHint
-    self.subscribeButton.rac.accessibilityLabel
-      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
     self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
-
-    self.eventDetailsViewModel.outputs.subscribeLabelHidden
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.subscribeLabel.alpha = $0 ? 0 : 1
-    }
-
-    self.eventDetailsViewModel.outputs.subscribeButtonImage
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.subscribeButton.setImage(imageName.flatMap { image(named: $0) },
-                                       for: .normal)
-    }
-
-    self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
-
-    self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
-
-    self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
 
     Signal.merge(
       self.viewModel.outputs.showErrorAlert,
@@ -407,7 +310,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
     self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
 
     self.layoutNavBarTitle()
