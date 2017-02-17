@@ -386,6 +386,10 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+
+    _ = self.liveStreamViewController?.chatMessages.observeValues { [weak self] in
+      self?.liveStreamChatViewController?.received(chatMessages: $0)
+    }
   }
 
   private func openLoginTout() {

@@ -632,6 +632,7 @@
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
 		D0A9CC321E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */; };
+		D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */; };
 		D0C5957F1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */; };
 		D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */; };
 		D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */; };
@@ -1959,6 +1960,7 @@
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
 		D0A9CC311E0842B8000F099C /* ProjectPamphletSubpageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModelTests.swift; sourceTree = "<group>"; };
+		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
 		D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -3181,6 +3183,8 @@
 				A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */,
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
+				D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */,
+				A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
 				59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */,
@@ -3191,7 +3195,6 @@
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
-				A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4673,6 +4676,7 @@
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
 				D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */,
+				D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */,
 				A757EA6B1D19F93400A5C978 /* OnePasswordExtension.m in Sources */,

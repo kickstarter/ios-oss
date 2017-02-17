@@ -1,35 +1,29 @@
-//
-//  LiveStreamChatViewModelTests.swift
-//  Kickstarter
-//
-//  Created by Justin Swart on 2017/02/14.
-//  Copyright © 2017 Kickstarter. All rights reserved.
-//
-
+import Prelude
+import ReactiveSwift
+import Result
 import XCTest
+@testable import KsApi
+@testable import LiveStream
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamChatViewModelTests: TestCase {
+  let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
+
+  let appendChatMessagesToDataSource = TestObserver<[LiveStreamChatMessage], NoError>()
 
   override func setUp() {
     super.setUp()
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    self.vm.outputs.appendChatMessagesToDataSource.observe(self.appendChatMessagesToDataSource.observer)
   }
 
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    super.tearDown()
-  }
+  func testAppendMessagesToDataSource() {
+    self.appendChatMessagesToDataSource.assertValueCount(0)
 
-  func testExample() {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-  }
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.received(chatMessages: [.template, .template, .template])
 
-  func testPerformanceExample() {
-    // This is an example of a performance test case.
-    self.measure {
-      // Put the code you want to measure the time of here.
-    }
+    self.appendChatMessagesToDataSource.assertValueCount(1)
   }
-
 }

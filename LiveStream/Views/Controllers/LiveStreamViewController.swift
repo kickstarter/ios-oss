@@ -137,6 +137,10 @@ public final class LiveStreamViewController: UIViewController {
     self.liveStreamService?.deleteDatabase()
   }
 
+  public var chatMessages: Signal<[LiveStreamChatMessage], NoError> {
+    return self.viewModel.outputs.chatMessages
+  }
+
   // MARK: Firebase
 
   private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {

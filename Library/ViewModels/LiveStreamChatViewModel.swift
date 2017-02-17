@@ -9,18 +9,31 @@ public protocol LiveStreamChatViewModelType {
 }
 
 public protocol LiveStreamChatViewModelInputs {
+  /// Call when the viewDidLoad.
+  func viewDidLoad()
+
+  /// Call with new chat messages.
   func received(chatMessages: [LiveStreamChatMessage])
 }
 
 public protocol LiveStreamChatViewModelOutputs {
+  /// Emits chat messages for appending to the data source.
   var appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
 }
 
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
 LiveStreamChatViewModelOutputs {
 
-  init() {
-    self.appendChatMessagesToDataSource = self.receivedChatMessagesProperty.signal.skipNil()
+  public init() {
+    self.appendChatMessagesToDataSource = Signal.combineLatest(
+      self.receivedChatMessagesProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    ).map(first)
+  }
+
+  private let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
   private let receivedChatMessagesProperty = MutableProperty<[LiveStreamChatMessage]?>(nil)
