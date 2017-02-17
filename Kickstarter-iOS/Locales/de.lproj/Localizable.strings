@@ -27,6 +27,7 @@
 "Backed_by_Friends" = "Von Freunden unterstützt";
 "Backed_by_people_you_follow" = "Unterstützt von deinen Freunden";
 "Backed_projects_projects_count" = "Unterstützte Projekte: %{project_count}";
+"Backer_has_pledged_to_this_project" = "Backer has pledged to this project.";
 "Backers_count_separator_backers.few" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.many" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.one" = "%{backers_count}\nUnterstützer";
@@ -46,6 +47,7 @@
 "Collections" = "Sammlungen";
 "Complete_payment" = "Zahlung abschließen";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
+"Contact_creator" = "Contact creator";
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
@@ -63,6 +65,7 @@
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
 "Earth" = "Erde";
+"Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
@@ -167,9 +170,11 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Past_live_stream" = "Früherer Live-Stream";
+"Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
+"Pledge_was_dropped" = "Pledge was dropped.";
 "Pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Popular" = "Beliebt";
 "Popular_Projects" = "Beliebte Projekte";
@@ -194,6 +199,7 @@
 "Reward_Surveys.one" = "Befragung";
 "Reward_Surveys.two" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.zero" = "%{reward_survey_count} Befragungen";
+"Reward_selected" = "Reward selected";
 "Rewards_count_rewards.few" = "%{rewards_count} Belohnungen";
 "Rewards_count_rewards.many" = "%{rewards_count} Belohnungen";
 "Rewards_count_rewards.one" = "%{rewards_count} Belohnung";
@@ -217,6 +223,7 @@
 "Share_this_project_on_Twitter" = "Teile dieses Projekt auf Twitter.";
 "Share_update" = "Teilen";
 "Shipping" = "Versand";
+"Shipping_amount" = "Shipping amount:";
 "Ships_to" = "Versand an:";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
@@ -234,8 +241,10 @@
 "The_live_stream_will_start_soon" = "Live-Stream started in Kürze";
 "The_live_stream_will_start_time" = "Dieser Live-Stream started in %{time}.";
 "The_replay_will_start_soon" = "Wiedergabe started in Kürze";
+"There_was_a_problem_with_your_payment" = "There was a problem with your payment.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "Time_left_left" = "%{time_left} übrig";
+"Total_pledged" = "Total pledged";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
 "Unsaves_project" = "Macht Speichern dieses Projektes rückgängig.";
 "Unsubscribe" = "Abo abbestellen";
@@ -256,12 +265,16 @@
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
 "You_saved_this_project" = "Du hast dieses Projekt gespeichert.";
 "Your_friends_havent_backed_any_projects_yet" = "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt.";
+"Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";
+"Your_pledge_was_canceled_or_the_creator_canceled" = "Your pledge was canceled or the creator canceled the project before its deadline.";
+"Your_pledge_was_dropped" = "Your pledge was dropped.";
 "Your_reward" = "Deine Belohnung";
 "Your_shipping_destination" = "Dein Versandziel";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
+"Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";

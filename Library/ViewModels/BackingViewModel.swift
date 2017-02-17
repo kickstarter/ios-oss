@@ -28,23 +28,23 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer's pledge amount and date.
   var backerPledgeAmountAndDate: Signal<String, NoError> { get }
 
-  /// Emits the accessibility label for backer's pledge amount and date.
-  var backerPledgeAmountAndDateAccessibilityLabel: Signal<String, NoError> { get }
-
   /// Emits the backer's pledge status.
   var backerPledgeStatus: Signal<String, NoError> { get }
 
+  /// Emits the backer reward amount to display.
+  var backerRewardAmount: Signal<String, NoError> { get }
+
   /// Emits the backer reward description to display.
   var backerRewardDescription: Signal<String, NoError> { get }
+
+  /// Emits the backer reward title to display.
+  var backerRewardTitle: Signal<String, NoError> { get }
 
   /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
 
   /// Emits the backer's shipping amount.
   var backerShippingAmount: Signal<String, NoError> { get }
-
-  /// Emits the accessibility label for backer's shipping amount.
-  var backerShippingAmountAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits the estimated delivery date.
   var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
@@ -69,6 +69,12 @@ public protocol BackingViewModelOutputs {
 
   /// Emits the axis of the stackview.
   var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
+
+  /// Emits text for status description label.
+  var statusDescription: Signal<String, NoError> { get }
+
+  /// Emits text for total pledge amount label.
+  var totalPledgeAmount: Signal<String, NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -123,32 +129,40 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerAvatarURL = backer.map { URL(string: $0.avatar.small) }
 
-    self.backerPledgeStatus = backing
-      .map { Strings.backer_modal_status_backing_status( backing_status: statusString($0.status)) }
+    self.backerPledgeStatus = backing.map { statusString($0.status) }
+
+    self.statusDescription = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, backerIsCurrentUser in
+        let isCreator = !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+        return description(forStatus: backing.status, isCreator: isCreator)
+    }
 
     self.backerPledgeAmountAndDate = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
       Strings.backer_modal_pledge_amount_on_pledge_date(
-        pledge_amount: Format.currency(backing.amount, country: project.country),
+        pledge_amount: Format.currency(backing.amount - (backing.shippingAmount ?? 0), country: project.country),
         pledge_date: Format.date(
           secondsInUTC: backing.pledgedAt,
           dateStyle: .long,
           timeStyle: .none
-      )
-    )
-  }
-    self.backerPledgeAmountAndDateAccessibilityLabel = self.backerPledgeAmountAndDate.map { "Pledged " + $0 }
-
-    self.backerRewardDescription = Signal.combineLatest(project, reward)
-      .map { project, reward in
-        Strings.backer_modal_reward_amount_reward_description(
-          reward_amount: Format.currency(reward.minimum, country: project.country),
-          reward_description: reward.description
         )
+      )
     }
+
+    self.totalPledgeAmount = projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+      Format.currency(backing.amount, country: project.country)
+    }
+
+    self.backerRewardAmount = projectAndBackingAndBackerIsCurrentUser
+      .map { project, backing, _ in
+        Format.currency(backing.reward?.minimum ?? 0, country: project.country)
+    }
+
+    self.backerRewardDescription = reward.map { $0.description }
+
+    self.backerRewardTitle = reward.map { $0.title ?? "" }
 
     self.backerShippingAmount = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in Format.currency(backing.shippingAmount ?? 0, country: project.country) }
-    self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
     self.estimatedDeliveryDateLabelText = reward.map {
       $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
@@ -212,12 +226,12 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
   public let backerPledgeAmountAndDate: Signal<String, NoError>
-  public let backerPledgeAmountAndDateAccessibilityLabel: Signal<String, NoError>
   public let backerPledgeStatus: Signal<String, NoError>
+  public let backerRewardAmount: Signal<String, NoError>
   public let backerRewardDescription: Signal<String, NoError>
+  public let backerRewardTitle: Signal<String, NoError>
   public let backerSequence: Signal<String, NoError>
   public let backerShippingAmount: Signal<String, NoError>
-  public let backerShippingAmountAccessibilityLabel: Signal<String, NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
   public let estimatedDeliveryStackViewHidden: Signal<Bool, NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
@@ -226,6 +240,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let loadingOverlayIsHidden: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
+  public let statusDescription: Signal<String, NoError>
+  public let totalPledgeAmount: Signal<String, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }
@@ -245,5 +261,30 @@ private func statusString(_ forStatus: Backing.Status) -> String {
       return Strings.project_view_pledge_status_pledged()
     case .preauth:
       fatalError()
+  }
+}
+
+private func description(forStatus: Backing.Status, isCreator: Bool) -> String {
+  switch forStatus {
+  case .canceled:
+    return isCreator
+      ? Strings.Either_the_pledge_or_the_project_was_canceled()
+      : Strings.Your_pledge_was_canceled_or_the_creator_canceled()
+  case .collected:
+    return isCreator
+      ? Strings.Payment_method_was_successfully_charged()
+      : Strings.Your_payment_method_was_successfully_charged()
+  case .dropped:
+    return isCreator
+      ? Strings.Pledge_was_dropped()
+      : Strings.Your_pledge_was_dropped()
+  case .errored:
+    return localizedString(key: "todo", defaultValue: "There was a problem with this payment.")
+  case .pledged:
+    return isCreator
+      ? Strings.Backer_has_pledged_to_this_project()
+      : Strings.Youve_pledged_to_support_this_project()
+  case .preauth:
+    fatalError()
   }
 }

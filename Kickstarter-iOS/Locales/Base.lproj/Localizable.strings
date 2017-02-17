@@ -27,6 +27,7 @@
 "Backed_by_Friends" = "Backed by Friends";
 "Backed_by_people_you_follow" = "Backed by people you follow";
 "Backed_projects_projects_count" = "Backed projects %{project_count}";
+"Backer_has_pledged_to_this_project" = "Backer has pledged to this project.";
 "Backers_count_separator_backers.few" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.many" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.one" = "%{backers_count}\nbacker";
@@ -46,6 +47,7 @@
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
+"Contact_creator" = "Contact creator";
 "Continue_to_payment" = "Continue to payment";
 "Continue_to_update_pledge" = "Continue to update pledge";
 "Couldnt_add_attachment" = "Couldn't add attachment";
@@ -63,6 +65,7 @@
 "Dismiss" = "Dismiss";
 "Done" = "Done";
 "Earth" = "Earth";
+"Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
 "Email_notifications" = "Email notifications";
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
@@ -167,9 +170,11 @@
 "Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
 "Other_payment_methods" = "Other payment methods";
 "Past_live_stream" = "Past live stream";
+"Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
+"Pledge_was_dropped" = "Pledge was dropped.";
 "Pledge_without_a_reward" = "Pledge without a reward";
 "Popular" = "Popular";
 "Popular_Projects" = "Popular Projects";
@@ -194,6 +199,7 @@
 "Reward_Surveys.one" = "Reward Survey";
 "Reward_Surveys.two" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.zero" = "%{reward_survey_count} Reward Surveys";
+"Reward_selected" = "Reward selected";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";
 "Rewards_count_rewards.many" = "%{rewards_count} rewards";
 "Rewards_count_rewards.one" = "%{rewards_count} reward";
@@ -217,6 +223,7 @@
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
 "Share_update" = "Share update";
 "Shipping" = "Shipping";
+"Shipping_amount" = "Shipping amount:";
 "Ships_to" = "Ships to:";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
@@ -234,8 +241,10 @@
 "The_live_stream_will_start_soon" = "The live stream will start soon";
 "The_live_stream_will_start_time" = "The live stream will start %{time}.";
 "The_replay_will_start_soon" = "The replay will start soon";
+"There_was_a_problem_with_your_payment" = "There was a problem with your payment.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "Time_left_left" = "%{time_left} left";
+"Total_pledged" = "Total pledged";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
 "Unsubscribe" = "Unsubscribe";
@@ -256,12 +265,16 @@
 "You_backed_this_project" = "You backed this project.";
 "You_saved_this_project" = "You saved this project.";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
+"Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Your pledge";
 "Your_pledge_amount" = "Your pledge amount:";
+"Your_pledge_was_canceled_or_the_creator_canceled" = "Your pledge was canceled or the creator canceled the project before its deadline.";
+"Your_pledge_was_dropped" = "Your pledge was dropped.";
 "Your_reward" = "Your reward";
 "Your_shipping_destination" = "Your shipping destination";
 "Youre_a_backer" = "You’re a backer!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
+"Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
 "accessibility.dashboard.buttons.activity" = "Activity";
 "accessibility.dashboard.buttons.activity_hint" = "Opens activity.";
 "accessibility.dashboard.buttons.messages" = "Messages";

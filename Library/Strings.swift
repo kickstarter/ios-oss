@@ -474,6 +474,22 @@ public enum Strings {
     )
   }
   /**
+   "Backer has pledged to this project."
+
+   - **es**: "Backer has pledged to this project."
+   - **de**: "Backer has pledged to this project."
+   - **fr**: "Ce contributeur s'est engagé à soutenir ce projet."
+   - **en**: "Backer has pledged to this project."
+  */
+  public static func Backer_has_pledged_to_this_project() -> String {
+    return localizedString(
+      key: "Backer_has_pledged_to_this_project",
+      defaultValue: "Backer has pledged to this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{backers_count}
 backers"
 
@@ -714,6 +730,22 @@ backers"
     return localizedString(
       key: "Connect_with_Facebook_to_follow_friends_and_get_notified",
       defaultValue: "Connect with Facebook to follow friends and get notified when they back or launch projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Contact creator"
+
+   - **es**: "Comunicarse con el creador"
+   - **de**: "Contact creator"
+   - **fr**: "Contacter le créateur"
+   - **en**: "Contact creator"
+  */
+  public static func Contact_creator() -> String {
+    return localizedString(
+      key: "Contact_creator",
+      defaultValue: "Contact creator",
       count: nil,
       substitutions: [:]
     )
@@ -986,6 +1018,22 @@ backers"
     return localizedString(
       key: "Earth",
       defaultValue: "Earth",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Either the pledge or the project was canceled before the deadline."
+
+   - **es**: "Se canceló la contribución o el proyecto antes de que el plazo terminara."
+   - **de**: "Either the pledge or the project was canceled before the deadline."
+   - **fr**: "Soit l'engagement soit le projet a été annulé avant la date limite."
+   - **en**: "Either the pledge or the project was canceled before the deadline."
+  */
+  public static func Either_the_pledge_or_the_project_was_canceled() -> String {
+    return localizedString(
+      key: "Either_the_pledge_or_the_project_was_canceled",
+      defaultValue: "Either the pledge or the project was canceled before the deadline.",
       count: nil,
       substitutions: [:]
     )
@@ -2532,6 +2580,22 @@ from friends yet."
     )
   }
   /**
+   "Payment method was successfully charged."
+
+   - **es**: "Cargo efectuado a método de pago indicado."
+   - **de**: "Payment method was successfully charged."
+   - **fr**: "Le moyen de paiement a bien été débité."
+   - **en**: "Payment method was successfully charged."
+  */
+  public static func Payment_method_was_successfully_charged() -> String {
+    return localizedString(
+      key: "Payment_method_was_successfully_charged",
+      defaultValue: "Payment method was successfully charged.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Please enter an amount of %{amount} or less."
 
    - **es**: "Ingresa un monto de contribución de %{amount} o menor."
@@ -2575,6 +2639,22 @@ from friends yet."
     return localizedString(
       key: "Pledge_any_amount_to_help_bring_this_project_to_life",
       defaultValue: "Pledge any amount to help bring this project to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge was dropped."
+
+   - **es**: "Contribución fue descartada."
+   - **de**: "Pledge was dropped."
+   - **fr**: "Engagement abandonné."
+   - **en**: "Pledge was dropped."
+  */
+  public static func Pledge_was_dropped() -> String {
+    return localizedString(
+      key: "Pledge_was_dropped",
+      defaultValue: "Pledge was dropped.",
       count: nil,
       substitutions: [:]
     )
@@ -2902,6 +2982,22 @@ daring ideas."
     )
   }
   /**
+   "Reward selected"
+
+   - **es**: "Recompensa seleccionada"
+   - **de**: "Reward selected"
+   - **fr**: "Récompense sélectionnée"
+   - **en**: "Reward selected"
+  */
+  public static func Reward_selected() -> String {
+    return localizedString(
+      key: "Reward_selected",
+      defaultValue: "Reward selected",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{rewards_count} rewards"
 
    - **es**: "%{rewards_count} recompensas"
@@ -3137,6 +3233,22 @@ daring ideas."
     return localizedString(
       key: "Shipping",
       defaultValue: "Shipping",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Shipping amount:"
+
+   - **es**: "Monto de envío:"
+   - **de**: "Shipping amount:"
+   - **fr**: "Frais de port :"
+   - **en**: "Shipping amount:"
+  */
+  public static func Shipping_amount() -> String {
+    return localizedString(
+      key: "Shipping_amount",
+      defaultValue: "Shipping amount:",
       count: nil,
       substitutions: [:]
     )
@@ -3416,6 +3528,22 @@ catch your eye?"
     )
   }
   /**
+   "There was a problem with your payment."
+
+   - **es**: "Ocurrió un error con el pago."
+   - **de**: "There was a problem with your payment."
+   - **fr**: "Un problème s'est produit lors de votre règlement."
+   - **en**: "There was a problem with your payment."
+  */
+  public static func There_was_a_problem_with_your_payment() -> String {
+    return localizedString(
+      key: "There_was_a_problem_with_your_payment",
+      defaultValue: "There was a problem with your payment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "This Facebook account is already linked to another Kickstarter user."
 
    - **es**: "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter."
@@ -3445,6 +3573,22 @@ catch your eye?"
       defaultValue: "%{time_left} left",
       count: nil,
       substitutions: ["time_left": time_left]
+    )
+  }
+  /**
+   "Total pledged"
+
+   - **es**: "Contribuciones en total"
+   - **de**: "Total pledged"
+   - **fr**: "Total engagé"
+   - **en**: "Total pledged"
+  */
+  public static func Total_pledged() -> String {
+    return localizedString(
+      key: "Total_pledged",
+      defaultValue: "Total pledged",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -3773,6 +3917,22 @@ Please try again later."
     )
   }
   /**
+   "Your payment method was successfully charged."
+
+   - **es**: "Se efectuó el cargo a tu método de pago."
+   - **de**: "Your payment method was successfully charged."
+   - **fr**: "Votre moyen de paiement a bien été débité."
+   - **en**: "Your payment method was successfully charged."
+  */
+  public static func Your_payment_method_was_successfully_charged() -> String {
+    return localizedString(
+      key: "Your_payment_method_was_successfully_charged",
+      defaultValue: "Your payment method was successfully charged.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Your pledge"
 
    - **es**: "Tu contribución"
@@ -3800,6 +3960,38 @@ Please try again later."
     return localizedString(
       key: "Your_pledge_amount",
       defaultValue: "Your pledge amount:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge was canceled or the creator canceled the project before its deadline."
+
+   - **es**: "El patrocinador canceló la contribución o el creador canceló el proyecto antes de que éste llegara al plazo estipulado."
+   - **de**: "Your pledge was canceled or the creator canceled the project before its deadline."
+   - **fr**: "Votre engagement a été annulé ou le créateur a annulé son projet avant la date limite."
+   - **en**: "Your pledge was canceled or the creator canceled the project before its deadline."
+  */
+  public static func Your_pledge_was_canceled_or_the_creator_canceled() -> String {
+    return localizedString(
+      key: "Your_pledge_was_canceled_or_the_creator_canceled",
+      defaultValue: "Your pledge was canceled or the creator canceled the project before its deadline.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge was dropped."
+
+   - **es**: "Tu Contribución fue descartada."
+   - **de**: "Your pledge was dropped."
+   - **fr**: "Votre engagement a été abandonné."
+   - **en**: "Your pledge was dropped."
+  */
+  public static func Your_pledge_was_dropped() -> String {
+    return localizedString(
+      key: "Your_pledge_was_dropped",
+      defaultValue: "Your pledge was dropped.",
       count: nil,
       substitutions: [:]
     )
@@ -3864,6 +4056,22 @@ Please try again later."
     return localizedString(
       key: "Youre_about_to_create_a_new_Kickstarter_account",
       defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You’ve pledged to support this project and it’s currently still funding."
+
+   - **es**: "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado."
+   - **de**: "You’ve pledged to support this project and it’s currently still funding."
+   - **fr**: "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée."
+   - **en**: "You’ve pledged to support this project and it’s currently still funding."
+  */
+  public static func Youve_pledged_to_support_this_project() -> String {
+    return localizedString(
+      key: "Youve_pledged_to_support_this_project",
+      defaultValue: "You’ve pledged to support this project and it’s currently still funding.",
       count: nil,
       substitutions: [:]
     )
