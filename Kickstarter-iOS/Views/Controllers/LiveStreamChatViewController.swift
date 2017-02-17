@@ -40,7 +40,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
                                                 cellClass: LiveStreamChatMessageCell.self,
                                                 toSection: Section.messages.rawValue)
         }
-        
+
         self?.tableView.reloadData()
     }
   }
