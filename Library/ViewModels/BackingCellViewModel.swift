@@ -35,7 +35,7 @@ BackingCellViewModelOutputs {
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-            delivery_date: Format.date(secondsInUTC: $0, dateStyle: .short, timeStyle: .none))
+          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .short, timeStyle: .none, timeZone: UTCTimeZone))
       }
     }
     .map { $0 ?? "" }
@@ -43,7 +43,7 @@ BackingCellViewModelOutputs {
     self.deliveryAccessibilityLabel = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .long, timeStyle: .none))
+          delivery_date: Format.date(secondsInUTC: $0, dateStyle: .long, timeStyle: .none, timeZone: UTCTimeZone))
       }
     }
       .map { $0 ?? "" }

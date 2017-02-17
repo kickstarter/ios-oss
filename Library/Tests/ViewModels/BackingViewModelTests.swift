@@ -349,7 +349,9 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDateLabelText() {
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ 1468527587.32843
+    let estimatedDelivery = 1468527587.32843
+
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
     withEnvironment(apiService: MockService(fetchBackingResponse: .template
       |> Backing.lens.reward .~ reward)) {
@@ -363,8 +365,10 @@ internal final class BackingViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.estimatedDeliveryDateLabelText.assertValues(["July 2016"],
-                                                         "Emits estimated delivery date")
+        self.estimatedDeliveryDateLabelText.assertValues([Format.date(
+          secondsInUTC: estimatedDelivery,
+          dateFormat: "MMMM yyyy",
+          timeZone: UTCTimeZone)], "Emits the estimated delivery date")
     }
   }
 
