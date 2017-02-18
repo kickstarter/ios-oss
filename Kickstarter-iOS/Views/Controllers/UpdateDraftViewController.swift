@@ -178,6 +178,11 @@ internal final class UpdateDraftViewController: UIViewController {
     self.titleTextField.addTarget(self, action: #selector(titleTextFieldDoneEditing),
                                   for: .editingDidEndOnExit)
 
+    if let navBar = self.navigationController?.navigationBar {
+      let navBorder = baseNavigationBorder(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 

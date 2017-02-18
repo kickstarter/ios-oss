@@ -46,6 +46,11 @@ internal final class ActivitiesViewController: UITableViewController {
     self.view.addSubview(emptyVC.view)
     emptyVC.didMove(toParentViewController: self)
 
+    if let navBar = self.navigationController?.navigationBar {
+      let navBorder = baseNavigationBorder(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 

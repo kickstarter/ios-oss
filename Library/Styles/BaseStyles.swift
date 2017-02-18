@@ -38,6 +38,19 @@ public let baseNavigationBarStyle =
   ]
   <> UINavigationBar.lens.translucent .~ false
   <> UINavigationBar.lens.barTintColor .~ .white
+  <> UINavigationBar.lens.shadowImage .~ UIImage()
+  <> UINavigationBar.lens.backgroundImage(forBarMetrics: .default) .~ UIImage()
+
+public func baseNavigationBorder(navBar: UINavigationBar) -> UIView {
+  let border = UIView(frame: CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: 1.0)
+  )
+  return border
+    |> discoveryBorderLineStyle
+    |> UIView.lens.backgroundColor .~ .ksr_navy_700
+}
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 

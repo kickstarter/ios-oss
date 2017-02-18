@@ -23,6 +23,11 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = self.dataSource
+
+    if let navBar = self.navigationController?.navigationBar {
+      let navBorder = baseNavigationBorder(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

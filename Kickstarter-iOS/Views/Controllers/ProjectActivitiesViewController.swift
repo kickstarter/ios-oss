@@ -18,9 +18,6 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
-
     self.tableView.dataSource = dataSource
   }
 
@@ -66,9 +63,6 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-
-    _ = self.navigationController
-      ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
 
     self.title = Strings.activity_navigation_title_activity()
   }

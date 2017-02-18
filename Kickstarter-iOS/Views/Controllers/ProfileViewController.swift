@@ -26,6 +26,11 @@ internal final class ProfileViewController: UICollectionViewController {
 
     self.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     self.collectionView?.addSubview(refreshControl)
+
+    if let navBar = self.navigationController?.navigationBar {
+      let navBorder = baseNavigationBorder(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

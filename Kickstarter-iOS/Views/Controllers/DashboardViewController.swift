@@ -32,6 +32,11 @@ internal final class DashboardViewController: UITableViewController {
     self.navigationItem.rightBarButtonItem = shareButton
 
     self.titleView.delegate = self
+
+    if let navBar = self.navigationController?.navigationBar {
+      let navBorder = baseNavigationBorder(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -38,6 +38,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
+  private var navBarBorder = UIView()
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
   internal static func configuredWith(project: Project, backer: User?) -> BackingViewController {
