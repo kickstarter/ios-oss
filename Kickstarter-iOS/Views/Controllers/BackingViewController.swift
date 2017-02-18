@@ -133,6 +133,7 @@ internal final class BackingViewController: UIViewController {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

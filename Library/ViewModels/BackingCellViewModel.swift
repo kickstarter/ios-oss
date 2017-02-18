@@ -28,7 +28,8 @@ BackingCellViewModelOutputs {
     let backingAndProjectAndIsFromBacking = self.backingAndProjectAndIsFromBackingProperty.signal.skipNil()
     let backing = backingAndProjectAndIsFromBacking.map { $0.0 }
 
-    self.backingInfoButtonIsHidden = backingAndProjectAndIsFromBacking.map { _, _, isFromBacking in isFromBacking }
+    self.backingInfoButtonIsHidden = backingAndProjectAndIsFromBacking
+      .map { _, _, isFromBacking in isFromBacking }
 
     self.pledged = backingAndProjectAndIsFromBacking.map { backing, project, _ in
         Strings.backing_info_pledged_backing_amount(

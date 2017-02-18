@@ -107,7 +107,9 @@ MessagesViewModelOutputs {
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
-    self.backingAndProjectAndIsFromBacking = Signal.combineLatest(configBacking, self.project, participant, currentUser)
+    self.backingAndProjectAndIsFromBacking = Signal.combineLatest(
+      configBacking, self.project, participant, currentUser
+      )
       .switchMap { value -> SignalProducer<(Backing, Project, Bool), NoError> in
         let (backing, project, participant, currentUser) = value
 
