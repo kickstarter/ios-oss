@@ -46,6 +46,13 @@ internal final class MessagesViewController: UITableViewController {
 
     self.replyBarButtonItem.rac.enabled = self.viewModel.outputs.replyButtonIsEnabled
 
+    self.viewModel.outputs.emptyStateIsVisibleAndMessageToUser
+      .observeForControllerAction()
+      .observeValues { [weak self] isVisible, message in
+        self?.dataSource.emptyState(isVisible: isVisible, messageToUser: message)
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.project
       .observeForControllerAction()
       .observeValues { [weak self] in

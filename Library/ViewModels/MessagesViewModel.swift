@@ -30,6 +30,9 @@ public protocol MessagesViewModelOutputs {
   */
   var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError> { get }
 
+  /// Emits a boolean that determines if the empty state is visible and a message to display.
+  var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError> { get }
+
   /// Emits when we should go to the backing screen.
   var goToBacking: Signal<(Project, User), NoError> { get }
 
@@ -89,21 +92,22 @@ MessagesViewModelOutputs {
       configThread.map(Either.right)
     )
 
-    let messageThreadEnvelope = Signal.merge(
+    let messageThreadEnvelopeEvent = Signal.merge(
       backingOrThread,
       backingOrThread.takeWhen(self.messageSentProperty.signal)
       )
-      .switchMap { backingOrThread -> SignalProducer<MessageThreadEnvelope, NoError> in
-
+      .switchMap { backingOrThread -> SignalProducer<Event<MessageThreadEnvelope, ErrorEnvelope>, NoError> in
         switch backingOrThread {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
-            .demoteErrors()
+            .materialize()
         case let .right(thread):
           return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
-            .demoteErrors()
+            .materialize()
         }
     }
+
+    let messageThreadEnvelope = messageThreadEnvelopeEvent.values()
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
@@ -129,6 +133,23 @@ MessagesViewModelOutputs {
     self.messages = messageThreadEnvelope
       .map { $0.messages }
       .sort { $0.id > $1.id }
+
+    self.emptyStateIsVisibleAndMessageToUser = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((false, "")),
+      Signal.combineLatest(
+        messageThreadEnvelopeEvent.errors(), // todo: fix Argo decoding error
+        configBacking.skipNil(),
+        self.project
+        )
+        .map { _, backing, project in
+          let isCreator = project.creator == AppEnvironment.current.currentUser
+            && backing.backer != AppEnvironment.current.currentUser
+          let message = isCreator
+            ? Strings.messages_empty_state_message_creator()
+            : Strings.messages_empty_state_message_backer()
+          return (true, message)
+      }
+    )
 
     self.replyButtonIsEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
@@ -192,6 +213,7 @@ MessagesViewModelOutputs {
   }
 
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError>
+  public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError>
   public let goToBacking: Signal<(Project, User), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let messages: Signal<[Message], NoError>

@@ -6,6 +6,13 @@ internal final class MessagesDataSource: ValueCellDataSource {
     case projectBanner
     case backing
     case messages
+    case emptyState
+  }
+
+  internal func emptyState(isVisible: Bool, messageToUser: String) {
+    self.set(values: isVisible ? [messageToUser] : [],
+             cellClass: MessagesEmptyStateCell.self,
+             inSection: Section.emptyState.rawValue)
   }
 
   internal func load(project: Project) {
@@ -42,6 +49,8 @@ internal final class MessagesDataSource: ValueCellDataSource {
     case let (cell as BackingCell, value as (Backing, Project, Bool)):
       cell.configureWith(value: value)
     case let (cell as MessageCell, value as Message):
+      cell.configureWith(value: value)
+    case let (cell as MessagesEmptyStateCell, value as String):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
