@@ -498,13 +498,9 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   }
 
   func testProjectImageUrl() {
-    let project = Project.template
-    let event = .template
-      |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
-
     self.projectImageUrlString.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project,
+    self.vm.inputs.configureWith(project: .template,
                                  liveStreamEvent: .template,
                                  refTag: .projectPage,
                                  presentedFromProject: true)
