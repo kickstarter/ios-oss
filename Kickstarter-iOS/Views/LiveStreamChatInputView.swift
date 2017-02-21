@@ -93,7 +93,7 @@ internal final class LiveStreamChatInputView: UIView {
       .on(value: { [weak self] _ in
         self?.textField.text = nil
         self?.textField.resignFirstResponder()
-      } )
+      })
       .observeValues { [weak self] text in
         self.flatMap { $0.delegate?.liveStreamChatInputViewDidSend(chatInputView: $0, message: text) }
     }

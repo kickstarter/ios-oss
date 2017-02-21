@@ -444,6 +444,6 @@ extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
   }
 
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
-    
+
   }
 }
