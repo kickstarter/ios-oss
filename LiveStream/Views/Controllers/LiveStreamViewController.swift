@@ -108,6 +108,12 @@ public final class LiveStreamViewController: UIViewController {
       .observeValues {
         UIApplication.shared.isIdleTimerDisabled = $0
     }
+
+    self.viewModel.outputs.writeChatMessageToFirebase
+    .observeValues { [weak self] (ref, refConfig, messageData) in
+      guard let ref = ref as? FIRDatabaseReference else { return }
+      self?.writeChatMessage(ref: ref, refConfig: refConfig, message: messageData)
+    }
   }
 
   public override func viewDidDisappear(_ animated: Bool) {

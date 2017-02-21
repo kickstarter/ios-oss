@@ -30,7 +30,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
   private weak var liveStreamChatViewController: LiveStreamChatViewController?
-  private weak var liveStreamViewController: LiveStreamViewController?
+  fileprivate weak var liveStreamViewController: LiveStreamViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -444,7 +444,7 @@ extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
   }
 
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
-
+    self.liveStreamViewController?.sendChatMessage(message: message)
   }
 
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {

@@ -36,12 +36,28 @@ internal final class LiveStreamChatViewController: UITableViewController {
     self.viewModel.outputs.appendChatMessagesToDataSource
       .observeForUI()
       .observeValues { [weak self] in
-        $0.forEach { self?.dataSource.appendRow(value: $0,
-                                                cellClass: LiveStreamChatMessageCell.self,
-                                                toSection: Section.messages.rawValue)
+        guard let _self = self else { return }
+        let indexPaths = $0.map {
+          _self.dataSource.appendRow(value: $0, cellClass:
+            LiveStreamChatMessageCell.self, toSection: Section.messages.rawValue)
         }
 
-        self?.tableView.reloadData()
+        if !indexPaths.isEmpty {
+          if indexPaths.count > 5 {
+            self?.tableView.reloadData()
+
+            indexPaths.last.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: false) }
+          } else {
+            _self.tableView.beginUpdates()
+            if _self.tableView.numberOfSections == 0 {
+              _self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
+            }
+            _self.tableView.insertRows(at: indexPaths, with: .bottom)
+            _self.tableView.endUpdates()
+
+            indexPaths.last.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: true) }
+          }
+        }
     }
   }
 

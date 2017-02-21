@@ -350,7 +350,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         [
           "userId": userInfo.userId,
           "name": userInfo.name,
-          "profilePictureUrl": userInfo.profilePictureUrl,
+          "profilePic": userInfo.profilePictureUrl,
           "timestamp": serverValue.timestamp()
         ]
     }
