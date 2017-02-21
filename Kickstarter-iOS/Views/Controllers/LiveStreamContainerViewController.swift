@@ -29,8 +29,8 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
-  private weak var liveStreamViewController: LiveStreamViewController?
   private weak var liveStreamChatViewController: LiveStreamChatViewController?
+  private weak var liveStreamViewController: LiveStreamViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -99,6 +99,15 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
+  }
+
+  public override var inputAccessoryView: UIView? {
+    guard let inputView = self.liveStreamChatInputView else { return nil }
+    return inputView
+  }
+
+  public override var canBecomeFirstResponder: Bool {
+    return true
   }
 
   //swiftlint:disable:next function_body_length
@@ -355,12 +364,12 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   // MARK: Subviews
 
-  lazy var navBarTitleStackViewBackgroundView = { UIView() }()
-  lazy var navBarTitleStackView = { UIStackView() }()
-  lazy var navBarLiveDotImageView = { UIImageView() }()
-  lazy var navBarTitleLabel = { UILabel() }()
+  private lazy var navBarTitleStackViewBackgroundView = { UIView() }()
+  private lazy var navBarTitleStackView = { UIStackView() }()
+  private lazy var navBarLiveDotImageView = { UIImageView() }()
+  private lazy var navBarTitleLabel = { UILabel() }()
 
-  lazy private var closeBarButtonItem: UIBarButtonItem = {
+  private lazy var closeBarButtonItem: UIBarButtonItem = {
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
@@ -376,7 +385,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     return closeBarButtonItem
   }()
 
-  lazy private var shareBarButtonItem: UIBarButtonItem = {
+  private lazy var shareBarButtonItem: UIBarButtonItem = {
     let shareBarButtonItem = UIBarButtonItem()
       |> shareBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
@@ -388,6 +397,13 @@ public final class LiveStreamContainerViewController: UIViewController {
     )
 
     return shareBarButtonItem
+  }()
+
+  private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
+    let chatInputView = LiveStreamChatInputView.fromNib()
+    chatInputView?.configureWith(delegate: self)
+    chatInputView?.frame = .init(x: 0, y: 0, width: 0, height: Styles.grid(8))
+    return chatInputView
   }()
 
   // MARK: Actions
@@ -419,5 +435,15 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
                                                    state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
     self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
+  }
+}
+
+extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
+  func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView) {
+
+  }
+
+  func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
+    
   }
 }

@@ -636,6 +636,10 @@
 		D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */; };
 		D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */; };
 		D0CC9D271E5733B500C2BC4A /* LiveStreamChatMessageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */; };
+		D0CC9D2B1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC9D2A1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift */; };
+		D0CC9D2D1E5B304200C2BC4A /* LiveStreamChatInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0CC9D2C1E5B304200C2BC4A /* LiveStreamChatInputView.xib */; };
+		D0CC9D331E5B36CB00C2BC4A /* LiveStreamChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC9D2E1E5B339000C2BC4A /* LiveStreamChatInputView.swift */; };
+		D0CC9D351E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */; };
 		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
 		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
 		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
@@ -1964,6 +1968,10 @@
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
 		D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D0CC9D2A1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatInputViewModel.swift; sourceTree = "<group>"; };
+		D0CC9D2C1E5B304200C2BC4A /* LiveStreamChatInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveStreamChatInputView.xib; sourceTree = "<group>"; };
+		D0CC9D2E1E5B339000C2BC4A /* LiveStreamChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatInputView.swift; sourceTree = "<group>"; };
+		D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatInputViewModelTests.swift; sourceTree = "<group>"; };
 		D0FD4CA31E26422C00488660 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D0FD4CA61E26427A00488660 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0FD4CA81E26428000488660 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2322,6 +2330,7 @@
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
 				A787E6951E28A84B0017B186 /* LiveStream.storyboard */,
+				D0CC9D2C1E5B304200C2BC4A /* LiveStreamChatInputView.xib */,
 				A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */,
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
@@ -2410,6 +2419,7 @@
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
+				D0CC9D2E1E5B339000C2BC4A /* LiveStreamChatInputView.swift */,
 				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
@@ -2648,6 +2658,7 @@
 				A7CC14281D00E70900035C52 /* FindFriendsStatsCellViewModelTests.swift */,
 				A7CC14291D00E70900035C52 /* FindFriendsViewModelTests.swift */,
 				01940B7F1D46DCC30074FCE3 /* HelpViewModelTests.swift */,
+				D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */,
 				D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */,
 				D077CCCE1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift */,
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
@@ -3040,9 +3051,9 @@
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
 				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
+				D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */,
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
-				D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
@@ -3245,6 +3256,7 @@
 				A7CC13D11D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift */,
 				A7CC13D21D00E6CF00035C52 /* FindFriendsViewModel.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
+				D0CC9D2A1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift */,
 				D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */,
 				D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */,
 				D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */,
@@ -4135,6 +4147,7 @@
 				59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */,
 				A73923BC1D272242004524C3 /* Activity.storyboard in Resources */,
 				A73923C51D272242004524C3 /* Messages.storyboard in Resources */,
+				D0CC9D2D1E5B304200C2BC4A /* LiveStreamChatInputView.xib in Resources */,
 				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */,
@@ -4330,6 +4343,7 @@
 				A710573B1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */,
 				A7DC83961C9DBBE700BB2B44 /* RefTag.swift in Sources */,
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
+				D0CC9D2B1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift in Sources */,
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
@@ -4412,6 +4426,7 @@
 				5981BF4E1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift in Sources */,
 				A7830D0A1D005C3F00B5B6AE /* LoginViewModelTests.swift in Sources */,
 				A7CC142A1D00E70900035C52 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
+				D0CC9D351E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift in Sources */,
 				A7AD54481D465B370016B4C2 /* ProjectPamphletMainCellViewModelTests.swift in Sources */,
 				A7830D101D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
 				5955E6841D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift in Sources */,
@@ -4610,6 +4625,7 @@
 				A74BEF191DE3474C008D5E63 /* UIImageView+URL.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A75A292E1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
+				D0CC9D331E5B36CB00C2BC4A /* LiveStreamChatInputView.swift in Sources */,
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
