@@ -13,6 +13,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   let moreButtonHidden = TestObserver<Bool, NoError>()
   let notifyDelegateMessageSent = TestObserver<String, NoError>()
   let notifyDelegateMoreButtonTapped = TestObserver<(), NoError>()
+  let notifyDelegateRequestLogin = TestObserver<(), NoError>()
   let sendButtonHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
@@ -21,6 +22,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.vm.outputs.moreButtonHidden.observe(self.moreButtonHidden.observer)
     self.vm.outputs.notifyDelegateMessageSent.observe(self.notifyDelegateMessageSent.observer)
     self.vm.outputs.notifyDelegateMoreButtonTapped.observe(self.notifyDelegateMoreButtonTapped.observer)
+    self.vm.outputs.notifyDelegateRequestLogin.observe(self.notifyDelegateRequestLogin.observer)
     self.vm.outputs.sendButtonHidden.observe(self.sendButtonHidden.observer)
   }
 
@@ -78,4 +80,18 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.notifyDelegateMoreButtonTapped.assertValueCount(1)
   }
 
+  func testRequestLogin() {
+    self.notifyDelegateRequestLogin.assertValueCount(0)
+
+    self.vm.inputs.layoutSubviews()
+    self.vm.inputs.textFieldShouldBeginEditing()
+
+    self.notifyDelegateRequestLogin.assertValueCount(1)
+
+    AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+
+    self.vm.inputs.textFieldShouldBeginEditing()
+
+    self.notifyDelegateRequestLogin.assertValueCount(1)
+  }
 }

@@ -13,6 +13,7 @@ public enum Nib: String {
 internal protocol LiveStreamChatInputViewDelegate: class {
   func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView)
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String)
+  func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView)
 }
 
 internal final class LiveStreamChatInputView: UIView {
@@ -97,6 +98,12 @@ internal final class LiveStreamChatInputView: UIView {
       .observeValues { [weak self] text in
         self.flatMap { $0.delegate?.liveStreamChatInputViewDidSend(chatInputView: $0, message: text) }
     }
+
+    self.viewModel.outputs.notifyDelegateRequestLogin
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self.flatMap { $0.delegate?.liveStreamChatInputViewRequestedLogin(chatInputView: $0) }
+    }
   }
 
   internal override func layoutSubviews() {
@@ -117,6 +124,11 @@ internal final class LiveStreamChatInputView: UIView {
 }
 
 extension LiveStreamChatInputView: UITextFieldDelegate {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.viewModel.inputs.textFieldDidBeginEditing()
+    return AppEnvironment.current.currentUser != nil
+  }
+
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                  replacementString string: String) -> Bool {
     let text = textField.text.coalesceWith("") as NSString

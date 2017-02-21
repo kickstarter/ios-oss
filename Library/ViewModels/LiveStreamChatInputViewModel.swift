@@ -19,6 +19,9 @@ public protocol LiveStreamChatInputViewModelInputs {
   /// Call when send button was tapped
   func sendButtonTapped()
 
+  /// Call when the text field should begin editing
+  func textFieldShouldBeginEditing()
+
   /// Call with new value from the input field
   func textDidChange(toText text: String)
 }
@@ -32,6 +35,9 @@ public protocol LiveStreamChatInputViewModelOutputs {
 
   /// Emits when the message should be sent and the text field cleared
   var notifyDelegateMoreButtonTapped: Signal<(), NoError> { get }
+
+  /// Emits when the user taps into the text field when not logged in
+  var notifyDelegateRequestLogin: Signal<(), NoError> { get }
 
   /// Emits when the send button should be hidden
   var sendButtonHidden: Signal<Bool, NoError> { get }
@@ -56,6 +62,9 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
 
     self.notifyDelegateMessageSent = self.textProperty.signal.skipNil()
       .takeWhen(self.sendButtonTappedProperty.signal)
+
+    self.notifyDelegateRequestLogin = self.textFieldShouldBeginEditingProperty.signal
+      .filter { AppEnvironment.current.currentUser == nil }
   }
 
   private let layoutSubviewsProperty = MutableProperty()
@@ -73,6 +82,11 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
     self.sendButtonTappedProperty.value = ()
   }
 
+  private let textFieldShouldBeginEditingProperty = MutableProperty()
+  public func textFieldShouldBeginEditing() {
+    self.textFieldShouldBeginEditingProperty.value = ()
+  }
+
   private let textProperty = MutableProperty<String?>(nil)
   public func textDidChange(toText text: String) {
     self.textProperty.value = text
@@ -81,6 +95,7 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
   public let moreButtonHidden: Signal<Bool, NoError>
   public var notifyDelegateMessageSent: Signal<String, NoError>
   public var notifyDelegateMoreButtonTapped: Signal<(), NoError>
+  public var notifyDelegateRequestLogin: Signal<(), NoError>
   public let sendButtonHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamChatInputViewModelInputs { return self }

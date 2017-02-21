@@ -304,7 +304,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
   }
 
-  private func openLoginTout() {
+  fileprivate func openLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
@@ -445,5 +445,9 @@ extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
 
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
 
+  }
+
+  func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
+    self.openLoginTout()
   }
 }
