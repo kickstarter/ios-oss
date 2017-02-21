@@ -7,6 +7,8 @@ import ReactiveSwift
 import Result
 import UIKit
 
+public typealias LiveStreamChatUserInfo = (userId: Int, name: String, profilePictureUrl: String)
+
 public protocol LiveStreamViewControllerDelegate: class {
   func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                             state: LiveStreamViewControllerState)
@@ -151,7 +153,7 @@ public final class LiveStreamViewController: UIViewController {
       },
       succeeded: { ref in
         self.firebaseRef = ref
-        self.viewModel.inputs.createdDatabaseRef(ref: ref)
+        self.viewModel.inputs.createdDatabaseRef(ref: ref, serverValue: FIRServerValue.self)
 
         self.liveStreamService?.signInAnonymously { id in
           self.viewModel.inputs.setFirebaseUserId(userId: id)
@@ -207,6 +209,11 @@ public final class LiveStreamViewController: UIViewController {
     })
   }
 
+  private func writeChatMessage(ref: FIRDatabaseReference,
+                                refConfig: FirebaseRefConfig, message: [String:Any]) {
+    ref.child(refConfig.ref).childByAutoId().setValue(message)
+  }
+
   // MARK: Video
 
   private func addChildVideoViewController(controller: UIViewController) {
@@ -226,6 +233,12 @@ public final class LiveStreamViewController: UIViewController {
     self.videoViewController = videoViewController
     self.addChildVideoViewController(controller: videoViewController)
   }
+
+  // MARK: Chat
+
+  public func sendChatMessage(message: String) {
+    self.viewModel.inputs.sendChatMessage(message: message)
+  }
 }
 
 extension LiveStreamViewController: LiveVideoViewControllerDelegate {
@@ -237,7 +250,6 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
 
 private func prepare(databaseReference ref: FirebaseDatabaseReferenceType,
                      config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
-
   guard let ref = ref as? FIRDatabaseReference else { return nil }
   return (ref, config)
 }

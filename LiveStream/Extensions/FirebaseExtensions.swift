@@ -22,6 +22,11 @@ extension FIRApp: FirebaseAppType {}
 internal protocol FirebaseDatabaseReferenceType {}
 extension FIRDatabaseReference: FirebaseDatabaseReferenceType {}
 
+internal protocol FirebaseServerValueType {
+  static func timestamp() -> [AnyHashable: Any]
+}
+extension FIRServerValue: FirebaseServerValueType {}
+
 internal protocol FirebaseDataSnapshotType {
   var key: String { get }
   var value: Any? { get }

@@ -14,6 +14,11 @@ private struct TestFirebaseDataSnapshotType: FirebaseDataSnapshotType {
   let key: String
   let value: Any?
 }
+private struct TestFirebaseServerValueType: FirebaseServerValueType {
+  static func timestamp() -> [AnyHashable : Any] {
+    return ["timestamp": 12345678]
+  }
+}
 
 internal final class LiveStreamViewModelTests: XCTestCase {
   private let backgroundQueueScheduler = TestScheduler()
@@ -39,6 +44,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   private let notifyDelegateLiveStreamViewControllerStateChanged
     = TestObserver<LiveStreamViewControllerState, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
+  private let writeChatMessageToFirebaseDbRef = TestObserver<FirebaseDatabaseReferenceType, NoError>()
+  private let writeChatMessageToFirebaseRefConfig = TestObserver<FirebaseRefConfig, NoError>()
+  private let writeChatMessageToFirebaseMessageData = TestObserver<[AnyHashable:Any], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -69,6 +77,9 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.outputs.notifyDelegateLiveStreamViewControllerStateChanged
       .observe(self.notifyDelegateLiveStreamViewControllerStateChanged.observer)
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.0 }.observe(self.writeChatMessageToFirebaseDbRef.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.1 }.observe(self.writeChatMessageToFirebaseRefConfig.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.2 }.observe(self.writeChatMessageToFirebaseMessageData.observer)
   }
 
   func testInitalizeFirebase_LiveEvent() {
@@ -538,7 +549,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createPresenceReference.assertValueCount(0)
 
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
     self.vm.inputs.setFirebaseUserId(userId: "123")
 
     let ref = FirebaseRefConfig(ref: "/watching/123", orderBy: "")
@@ -556,7 +568,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.createPresenceReference.assertValueCount(0)
 
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
     self.vm.inputs.setFirebaseUserId(userId: "123")
 
     let ref = FirebaseRefConfig(ref: "/watching/123", orderBy: "")
@@ -571,7 +584,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(event: event, userId: nil)
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
 
     // All observer creation signals should only emit once
     self.createChatObservers.assertValueCount(1)
@@ -629,7 +643,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
 
     self.createNumberOfPeopleWatchingObservers.assertValueCount(1)
     self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(0)
@@ -643,7 +658,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
 
     self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
     self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(1)
@@ -655,7 +671,8 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.vm.inputs.configureWith(event: event, userId: nil)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType())
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
 
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.loading])
 
@@ -821,5 +838,41 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     XCTAssertTrue(self.chatMessages.lastValue?.count == .some(2))
     XCTAssertEqual(self.chatMessages.lastValue?.last?.id, "2")
+  }
+
+  func testWriteChatMessageToFirebase() {
+    let event = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+
+    self.writeChatMessageToFirebaseDbRef.assertValueCount(0)
+    self.writeChatMessageToFirebaseRefConfig.assertValueCount(0)
+    self.writeChatMessageToFirebaseMessageData.assertValueCount(0)
+
+    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
+    self.vm.inputs.configureChatUserInfo(info: (userId: 123, name: "Chat Name",
+                                                profilePictureUrl: "http://www.kickstarter.com/avatar.jpg"))
+    self.vm.inputs.sendChatMessage(message: "New chat message")
+
+    self.writeChatMessageToFirebaseDbRef.assertValueCount(1)
+    self.writeChatMessageToFirebaseRefConfig.assertValueCount(1)
+    self.writeChatMessageToFirebaseMessageData.assertValueCount(1)
+
+    XCTAssertEqual(123, self.writeChatMessageToFirebaseMessageData.lastValue?["userId"] as? Int)
+    XCTAssertEqual("Chat Name", self.writeChatMessageToFirebaseMessageData.lastValue?["name"] as? String)
+    XCTAssertEqual("http://www.kickstarter.com/avatar.jpg", self.writeChatMessageToFirebaseMessageData
+      .lastValue?["profilePictureUrl"] as? String)
+    XCTAssertEqual("New chat message", self.writeChatMessageToFirebaseMessageData
+      .lastValue?["message"] as? String)
+
+    guard let timestamp = self.writeChatMessageToFirebaseMessageData
+      .lastValue?["timestamp"] as? [AnyHashable:Any] else {
+      XCTFail()
+      return
+    }
+
+    XCTAssertEqual(12345678, timestamp["timestamp"] as? Int)
   }
 }

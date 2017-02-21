@@ -13,8 +13,11 @@ internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent
   func configureWith(event: LiveStreamEvent, userId: Int?)
 
+  /// Call to configure the user info for chat
+  func configureChatUserInfo(info: LiveStreamChatUserInfo)
+
   /// Call when the firebase database is created.
-  func createdDatabaseRef(ref: FirebaseDatabaseReferenceType)
+  func createdDatabaseRef(ref: FirebaseDatabaseReferenceType, serverValue: FirebaseServerValueType.Type)
 
   /// Called when the Firebase app fails to initialise
   func firebaseAppFailedToInitialize()
@@ -33,6 +36,9 @@ internal protocol LiveStreamViewModelInputs {
 
   /// Called when a new chat message snapshot is received
   func receivedChatMessageSnapshot(chatMessage: FirebaseDataSnapshotType)
+
+  /// Call with info to send a new chat message
+  func sendChatMessage(message: String)
 
   /// Called to set the Firebase user ID
   func setFirebaseUserId(userId: String)
@@ -89,6 +95,10 @@ internal protocol LiveStreamViewModelOutputs {
 
   /// Remove the nested video view controller
   var removeVideoViewController: Signal<(), NoError> { get }
+
+  /// Emits when a chat message should be written to Firebase
+  var writeChatMessageToFirebase: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig, [String:Any]),
+    NoError> { get }
 }
 
 internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamViewModelInputs,
@@ -214,7 +224,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       self.firebaseUserIdProperty.signal.skipNil()
       ).take(first: 1)
 
-    let databaseRef = self.databaseRefProperty.signal.skipNil()
+    let databaseRef = self.databaseRefProperty.signal.skipNil().map(first)
 
     let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
 
@@ -332,6 +342,34 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0.outputBuffer() }
       .map([LiveStreamChatMessage].decode)
 
+    let chatMessageMetaData = Signal.combineLatest(
+      self.chatUserInfoProperty.signal.skipNil(),
+      self.databaseRefProperty.signal.skipNil().map(second)
+      )
+      .map { userInfo, serverValue in
+        [
+          "userId": userInfo.userId,
+          "name": userInfo.name,
+          "profilePictureUrl": userInfo.profilePictureUrl,
+          "timestamp": serverValue.timestamp()
+        ]
+    }
+
+    self.writeChatMessageToFirebase = Signal.combineLatest(
+      self.createChatObservers,
+      chatMessageMetaData
+      )
+      .map(unpack)
+      .takePairWhen(self.sendChatMessageProperty.signal.skipNil())
+      .map { tuple in
+        let ref = tuple.0.0
+        let refConfig = tuple.0.1
+        let messageMetaData = tuple.0.2
+        let messageData = messageMetaData.withAllValuesFrom(["message": tuple.1])
+
+        return (ref, refConfig, messageData)
+    }
+
     self.initializeFirebase = configData
       .filter { event, _ in event.liveNow }
   }
@@ -341,9 +379,16 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.configData.value = (event, userId)
   }
 
-  private let databaseRefProperty = MutableProperty<FirebaseDatabaseReferenceType?>(nil)
-  internal func createdDatabaseRef(ref: FirebaseDatabaseReferenceType) {
-    self.databaseRefProperty.value = ref
+  private let chatUserInfoProperty = MutableProperty<LiveStreamChatUserInfo?>(nil)
+  internal func configureChatUserInfo(info: LiveStreamChatUserInfo) {
+    self.chatUserInfoProperty.value = info
+  }
+
+  private let databaseRefProperty = MutableProperty<(FirebaseDatabaseReferenceType,
+    FirebaseServerValueType.Type)?>(nil)
+  internal func createdDatabaseRef(ref: FirebaseDatabaseReferenceType,
+                                   serverValue: FirebaseServerValueType.Type) {
+    self.databaseRefProperty.value = (ref, serverValue)
   }
 
   private let firebaseAppFailedToInitializeProperty = MutableProperty()
@@ -381,6 +426,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.receivedChatMessageSnapshotProperty.value = chatMessage
   }
 
+  private let sendChatMessageProperty = MutableProperty<String?>(nil)
+  internal func sendChatMessage(message: String) {
+    self.sendChatMessageProperty.value = message
+  }
+
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
   internal func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
     self.videoPlaybackStateChangedProperty.value = state
@@ -413,6 +463,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   internal let notifyDelegateLiveStreamViewControllerStateChanged: Signal<LiveStreamViewControllerState,
     NoError>
   internal let removeVideoViewController: Signal<(), NoError>
+  internal let writeChatMessageToFirebase: Signal<(FirebaseDatabaseReferenceType,
+    FirebaseRefConfig, [String : Any]), NoError>
 
   internal var inputs: LiveStreamViewModelInputs { return self }
   internal var outputs: LiveStreamViewModelOutputs { return self }
