@@ -450,9 +450,12 @@ internal final class RewardPledgeViewController: UIViewController {
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.countryLabel.rac.text = self.viewModel.outputs.countryLabelText
+    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelIsHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.differentPaymentMethodButton.rac.hidden = self.viewModel.outputs.differentPaymentMethodButtonHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.estimatedFulfillmentStackView.rac.hidden
+      = self.viewModel.outputs.estimatedFulfillmentStackViewHidden
     self.fulfillmentAndShippingFooterStackView.rac.hidden
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
@@ -467,6 +470,8 @@ internal final class RewardPledgeViewController: UIViewController {
     self.shippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmountLabelText
     self.shippingInputStackView.rac.hidden = self.viewModel.outputs.shippingInputStackViewHidden
     self.shippingLocationsLabel.rac.text = self.viewModel.outputs.shippingLocationsLabelText
+    self.shippingStackView.rac.hidden
+      = self.viewModel.outputs.shippingStackViewHidden
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden

@@ -95,6 +95,9 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a string to be put into the shipping country label.
   var countryLabelText: Signal<String, NoError> { get }
 
+  /// Emits a boolean that determines if the description label should be hidden.
+  var descriptionLabelIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits a string to be put into the description label.
   var descriptionLabelText: Signal<String, NoError> { get }
 
@@ -107,10 +110,13 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a string to be put into the estimated delivery date label.
   var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
 
+  /// Emits a boolean that determines if the estimated fulfillment stack view should be hidden.
+  var estimatedFulfillmentStackViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits when the reward description should be expanded.
   var expandRewardDescription: Signal<(), NoError> { get }
 
-  /// Emits a boolean that determines if the fulfillment footer stack view should be hidden.
+  /// Emits when the entire fulfillment and shipping stack view should be hidden.
   var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the checkout screen should be shown to the user.
@@ -179,6 +185,9 @@ public protocol RewardPledgeViewModelOutputs {
 
   /// Emits a string that should be put into the shipping locations label.
   var shippingLocationsLabelText: Signal<String, NoError> { get }
+
+  /// Emits a boolean that determines if the top shipping stack view should be hidden.
+  var shippingStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a string to be shown in an alert controller and whether closing it dismisses the view controller.
   var showAlert: Signal<(message: String, shouldDismiss: Bool), NoError> { get }
@@ -345,13 +354,18 @@ RewardPledgeViewModelOutputs {
       self.expandDescriptionTappedProperty.signal.mapConst(true)
     )
 
-    self.itemsContainerHidden = self.readMoreContainerViewHidden.map(negate)
+    self.itemsContainerHidden = Signal.merge(
+      self.readMoreContainerViewHidden.map(negate),
+      reward.map { $0.rewardsItems.isEmpty }
+    )
 
     self.expandRewardDescription = self.expandDescriptionTappedProperty.signal
 
     self.shippingLocationsLabelText = reward
       .map { $0.shipping.summary }
       .skipNil()
+
+    self.descriptionLabelIsHidden = reward.map { $0.isNoReward }
 
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in
@@ -361,8 +375,14 @@ RewardPledgeViewModelOutputs {
       }
       .skipNil()
 
-    self.fulfillmentAndShippingFooterStackViewHidden = reward
+    self.estimatedFulfillmentStackViewHidden = reward
+      .map { $0.estimatedDeliveryOn == nil }
+
+    self.shippingStackViewHidden = reward
       .map { !$0.shipping.enabled }
+
+    self.fulfillmentAndShippingFooterStackViewHidden = reward
+      .map { $0.estimatedDeliveryOn == nil && !$0.shipping.enabled }
 
     self.pledgeCurrencyLabelText = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
@@ -874,9 +894,11 @@ RewardPledgeViewModelOutputs {
   public var descriptionLabelText: Signal<String, NoError> {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
+  public let descriptionLabelIsHidden: Signal<Bool, NoError>
   public let differentPaymentMethodButtonHidden: Signal<Bool, NoError>
   public let dismissViewController: Signal<(), NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
+  public let estimatedFulfillmentStackViewHidden: Signal<Bool, NoError>
   public let expandRewardDescription: Signal<(), NoError>
   public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError>
   public let goToCheckout: Signal<(URLRequest, Project, Reward), NoError>
@@ -905,6 +927,7 @@ RewardPledgeViewModelOutputs {
   public let shippingInputStackViewHidden: Signal<Bool, NoError>
   public let shippingIsLoading: Signal<Bool, NoError>
   public let shippingLocationsLabelText: Signal<String, NoError>
+  public let shippingStackViewHidden: Signal<Bool, NoError>
   public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
   public var titleLabelHidden: Signal<Bool, NoError> {
     return self.rewardViewModel.outputs.titleLabelHidden
