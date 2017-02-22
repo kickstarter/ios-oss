@@ -354,10 +354,11 @@ RewardPledgeViewModelOutputs {
       self.expandDescriptionTappedProperty.signal.mapConst(true)
     )
 
-    self.itemsContainerHidden = Signal.merge(
-      self.readMoreContainerViewHidden.map(negate),
-      reward.map { $0.rewardsItems.isEmpty }
-    )
+    self.itemsContainerHidden = Signal.combineLatest(
+      reward, self.readMoreContainerViewHidden
+      ).map { reward, readMoreIsHidden in
+        reward.rewardsItems.isEmpty || (!reward.rewardsItems.isEmpty && !readMoreIsHidden)
+      }.skipRepeats()
 
     self.expandRewardDescription = self.expandDescriptionTappedProperty.signal
 

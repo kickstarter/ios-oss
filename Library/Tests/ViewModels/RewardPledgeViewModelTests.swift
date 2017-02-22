@@ -359,7 +359,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([true])
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false], "Show the shipping label.")
+  }
+
+  func testFulfillmentAndShippingFooterStackViewHidden_NoDelivery() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false], "Show the delivery label.")
+  }
+
+  func testFulfillmentAndShippingFooterStackViewHidden_NoDeliveryOrShipping() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([true], "Hide the entire stack.")
   }
 
   func testCancelPledge() {
@@ -1344,11 +1364,14 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.items.assertValues([["The thing", "(1,000) The other thing"]])
   }
 
-  func testItemsContainerHidden() {
+  func testItemsContainerHidden_NoItems() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+
+    self.itemsContainerHidden.assertValueCount(0)
+
     self.vm.inputs.viewDidLoad()
 
-    self.itemsContainerHidden.assertDidNotEmitValue()
+    self.itemsContainerHidden.assertValues([true], "Hide container with zero items.")
 
     self.vm.inputs.descriptionLabelIsTruncated(true)
 
@@ -1356,7 +1379,45 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.descriptionLabelIsTruncated(true)
 
-    self.itemsContainerHidden.assertValues([true])
+    self.itemsContainerHidden.assertValues([true], "Does not emit again.")
+    self.readMoreContainerViewHidden.assertValues([false])
+
+    self.vm.inputs.expandDescriptionTapped()
+
+    self.itemsContainerHidden.assertValues([true, false])
+  }
+
+  func testItemsContainerHidden_Items() {
+    let reward = .template
+      |> Reward.lens.rewardsItems .~ [
+        .template
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The thing"
+        ),
+        .template
+          |> RewardsItem.lens.quantity .~ 1_000
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The other thing"
+        ),
+      ]
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+
+    self.itemsContainerHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.itemsContainerHidden.assertValues([false], "Show container with rewards.")
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.readMoreContainerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.itemsContainerHidden.assertValues([true], "Does not emit again.")
     self.readMoreContainerViewHidden.assertValues([false])
 
     self.vm.inputs.expandDescriptionTapped()
