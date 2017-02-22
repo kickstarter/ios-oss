@@ -368,7 +368,8 @@ internal final class BackingViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.estimatedDeliveryDateLabelText.assertValues(["February 2017"], "Emits the estimated delivery date")
+        self.estimatedDeliveryDateLabelText.assertValues(["February 2017"],
+                                                         "Emits the estimated delivery date")
     }
   }
 
