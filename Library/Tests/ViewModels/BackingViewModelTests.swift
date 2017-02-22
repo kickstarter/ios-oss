@@ -349,12 +349,15 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDateLabelText() {
-    let estimatedDelivery = 1468527587.32843
+    let date = 1485907200.0// Feb 01 2017 in UTC
+    let EST = TimeZone(abbreviation: "EST")!
+    var calEST = Calendar.current
+    calEST.timeZone = EST
 
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
+    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ date
 
     withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.reward .~ reward)) {
+      |> Backing.lens.reward .~ reward), calendar: calEST ) {
         self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
 
         self.backerPledgeAmountAndDateAccessibilityLabel.assertValues([])
@@ -365,10 +368,7 @@ internal final class BackingViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.estimatedDeliveryDateLabelText.assertValues([Format.date(
-          secondsInUTC: estimatedDelivery,
-          dateFormat: "MMMM yyyy",
-          timeZone: UTCTimeZone)], "Emits the estimated delivery date")
+        self.estimatedDeliveryDateLabelText.assertValues(["February 2017"], "Emits the estimated delivery date")
     }
   }
 

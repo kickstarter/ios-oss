@@ -3,6 +3,7 @@ import Foundation
 import KsApi
 import Prelude
 
+// swiftlint:disable:next force_unwrapping
 public let UTCTimeZone = TimeZone(secondsFromGMT: 0)!
 
 public enum Format {
@@ -118,14 +119,14 @@ public enum Format {
    */
   public static func date(secondsInUTC seconds: TimeInterval,
                           dateFormat: String,
-                          timeZone: TimeZone = AppEnvironment.current.calendar.timeZone) -> String {
+                          timeZone: TimeZone? = nil) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(dateFormat: dateFormat,
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
         timeStyle: nil,
-        timeZone: timeZone
+        timeZone: timeZone ?? AppEnvironment.current.calendar.timeZone
       )
     )
 
