@@ -112,8 +112,14 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
             AppEnvironment.current.liveStreamService
               .fetchEvent(eventId: initialEvent.id, uid: AppEnvironment.current.currentUser?.id)
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-              .filter { !initialEvent.liveNow || $0.liveNow }
               .materialize()
+          }
+          .filter { event in
+            if initialEvent.liveNow && event.error == nil {
+              return event.value?.liveNow == .some(true)
+            }
+
+            return true
           }
           .take(first: 1)
     }
