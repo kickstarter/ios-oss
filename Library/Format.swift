@@ -3,6 +3,9 @@ import Foundation
 import KsApi
 import Prelude
 
+// swiftlint:disable:next force_unwrapping
+public let UTCTimeZone = TimeZone(secondsFromGMT: 0)!
+
 public enum Format {
   /**
    Formats an int into a string.
@@ -90,6 +93,7 @@ public enum Format {
   public static func date(secondsInUTC seconds: TimeInterval,
                           dateStyle: DateFormatter.Style = .medium,
                           timeStyle: DateFormatter.Style = .medium,
+                          timeZone: TimeZone? = nil,
                           env: Environment = AppEnvironment.current) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
@@ -98,7 +102,7 @@ public enum Format {
         dateStyle: dateStyle,
         locale: env.locale,
         timeStyle: timeStyle,
-        timeZone: env.calendar.timeZone
+        timeZone: timeZone ?? env.calendar.timeZone
       )
     )
 
@@ -114,14 +118,15 @@ public enum Format {
    - returns: A formatted string.
    */
   public static func date(secondsInUTC seconds: TimeInterval,
-                          dateFormat: String) -> String {
+                          dateFormat: String,
+                          timeZone: TimeZone? = nil) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(dateFormat: dateFormat,
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
         timeStyle: nil,
-        timeZone: AppEnvironment.current.calendar.timeZone
+        timeZone: timeZone ?? AppEnvironment.current.calendar.timeZone
       )
     )
 
@@ -205,6 +210,7 @@ public enum Format {
   public static func relative(secondsInUTC seconds: TimeInterval,
                               abbreviate: Bool = false,
                               threshold thresholdInDays: Int = defaultThresholdInDays,
+                              timeZone: TimeZone? = nil,
                               env: Environment = AppEnvironment.current) -> String {
 
     let components = env.calendar.dateComponents([.day, .hour, .minute, .second],
@@ -217,7 +223,8 @@ public enum Format {
                                        components.second ?? 0)
 
     if abs(day) > thresholdInDays {
-      return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none)
+      return Format.date(secondsInUTC: seconds, dateStyle: .medium, timeStyle: .none, timeZone: timeZone ??
+        env.calendar.timeZone, env: env)
     } else if day > 1 {
       return abbreviate
         ? Strings.dates_time_days_ago_abbreviated(time_count: day)

@@ -178,7 +178,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerShippingAmountAccessibilityLabel = self.backerShippingAmount
 
     self.estimatedDeliveryDateLabelText = reward.map {
-      $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
+      $0.estimatedDeliveryOn.map {
+        Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone) }
       }
       .skipNil()
 
