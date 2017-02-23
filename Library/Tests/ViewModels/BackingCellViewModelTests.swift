@@ -20,7 +20,6 @@ internal final class BackingCellViewModelTests: TestCase {
     self.vm.outputs.pledged.observe(self.pledged.observer)
     self.vm.outputs.reward.observe(self.reward.observer)
     self.vm.outputs.delivery.observe(self.delivery.observer)
-    self.vm.outputs.deliveryAccessibilityLabel.observe(self.deliveryAccessibilityLabel.observer)
     self.vm.outputs.rootStackViewAlignment.observe(self.rootStackViewAlignment.observer)
   }
 
