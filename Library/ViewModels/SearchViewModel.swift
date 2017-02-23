@@ -147,8 +147,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.isLoading = .empty
     self.loadingIndicatorIsHidden = Signal.merge(
-      self.viewWillAppearAnimatedProperty.signal.mapConst(false),
-      popularEvent.filter { $0.isTerminating }.mapConst(false), // delete, other loder
+      self.viewWillAppearAnimatedProperty.signal.mapConst(true),
+      popularEvent.filter { $0.isTerminating }.mapConst(false), // delete, other loader
       isLoading.map { $0 }
     )
 
