@@ -34,12 +34,16 @@ internal final class BackingCellViewModelTests: TestCase {
     self.reward.assertValues([(backing.reward?.description)!])
     self.delivery.assertValues([
       Strings.backing_info_estimated_delivery_date(delivery_date:
-        Format.date( secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
+        Format.date(
+          secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone
+        )
       )], "Emits the estimated delivery date")
 
     self.deliveryAccessibilityLabel.assertValues([
       Strings.backing_info_estimated_delivery_date(delivery_date:
-        Format.date(secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
+        Format.date(
+          secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone
+        )
       )], "Emits the estimated delivery date for screen reading")
     self.rootStackViewAlignment.assertValues([UIStackViewAlignment.leading])
   }
