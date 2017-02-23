@@ -27,23 +27,20 @@ internal final class BackingCellViewModelTests: TestCase {
   func testOutputs() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
-    let estimatedDeliveryOn = Date().timeIntervalSince1970
 
     self.vm.inputs.configureWith(backing: backing, project: Project.template)
 
     self.pledged.assertValueCount(1)
     self.reward.assertValues([(backing.reward?.description)!])
     self.delivery.assertValues([
-      Strings.backing_info_estimated_delivery_date(delivery_date: Format.date(
-        secondsInUTC: estimatedDeliveryOn,
-        dateStyle: .short,
-        timeStyle: .none, timeZone: UTCTimeZone))], "Emits the estimated delivery date")
+      Strings.backing_info_estimated_delivery_date(delivery_date:
+        Format.date( secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
+      )], "Emits the estimated delivery date")
 
     self.deliveryAccessibilityLabel.assertValues([
-      Strings.backing_info_estimated_delivery_date(delivery_date: Format.date(
-        secondsInUTC: estimatedDeliveryOn,
-        dateStyle: .long,
-        timeStyle: .none))], "Emits the estimated delivery date for screen reading")
+      Strings.backing_info_estimated_delivery_date(delivery_date:
+        Format.date(secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
+      )], "Emits the estimated delivery date for screen reading")
     self.rootStackViewAlignment.assertValues([UIStackViewAlignment.leading])
   }
 
