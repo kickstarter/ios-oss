@@ -210,7 +210,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.estimatedDeliveryDateLabelText = Signal.merge(
       emptyStringOnLoad,
       reward.map {
-        $0.estimatedDeliveryOn.map { Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy") }
+        $0.estimatedDeliveryOn.map {
+          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
+        }
       }.skipNil()
     )
 

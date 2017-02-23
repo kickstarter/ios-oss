@@ -33,7 +33,12 @@ internal final class BackingCellViewModelTests: TestCase {
 
     self.pledged.assertValueCount(1)
     self.reward.assertValues([(backing.reward?.description)!])
-    self.delivery.assertValueCount(1)
+    self.delivery.assertValues([
+      Strings.backing_info_estimated_delivery_date(delivery_date: Format.date(
+        secondsInUTC: estimatedDeliveryOn,
+        dateStyle: .short,
+        timeStyle: .none, timeZone: UTCTimeZone))], "Emits the estimated delivery date")
+
     self.deliveryAccessibilityLabel.assertValues([
       Strings.backing_info_estimated_delivery_date(delivery_date: Format.date(
         secondsInUTC: estimatedDeliveryOn,
