@@ -39,15 +39,6 @@ internal final class BackingCellViewModelTests: TestCase {
         )
       )], "Emits the estimated delivery date")
 
-    self.deliveryAccessibilityLabel.assertValues([
-      Strings.backing_info_estimated_delivery_date(delivery_date:
-        Format.date(
-          secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone
-        )
-      )], "Emits the estimated delivery date for screen reading")
-    self.rootStackViewAlignment.assertValues([UIStackViewAlignment.leading])
-  }
-
   func testRootStackViewAlignment() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
