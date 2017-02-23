@@ -29,6 +29,9 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 
+  /// Called when the more menu button of the chat input view is tapped
+  func moreMenuButtonTapped()
+
   /// Called when the viewDidLoad
   func viewDidLoad()
 }
@@ -75,6 +78,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the number of people watching badge view should be hidden
   var numberWatchingBadgeViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when the more menu should be presented with the LiveStreamEvent to configure with
+  var presentMoreMenu: Signal<LiveStreamEvent, NoError> { get }
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
@@ -303,6 +309,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
+    self.presentMoreMenu = event.takeWhen(self.moreMenuButtonTappedProperty.signal)
+
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
@@ -382,6 +390,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.liveStreamViewControllerStateChangedProperty.value = state
   }
 
+  private let moreMenuButtonTappedProperty = MutableProperty()
+  public func moreMenuButtonTapped() {
+    self.moreMenuButtonTappedProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -404,6 +417,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let navBarTitleViewHidden: Signal<Bool, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
+  public let presentMoreMenu: Signal<LiveStreamEvent, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>

@@ -302,6 +302,17 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+
+    self.viewModel.outputs.presentMoreMenu
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        let vc = LiveStreamContainerMoreMenuViewController.configuredWith(
+          liveStreamEvent: $0,
+          chatHidden: false
+          )
+        vc.modalPresentationStyle = .overCurrentContext
+        self?.present(vc, animated: true, completion: nil)
+    }
   }
 
   fileprivate func openLoginTout() {
@@ -312,7 +323,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  override public var prefersStatusBarHidden: Bool {
+  public override var prefersStatusBarHidden: Bool {
     return true
   }
 
@@ -360,6 +371,10 @@ public final class LiveStreamContainerViewController: UIViewController {
   private func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)
+  }
+
+  private func presentMoreMenu(liveStreamEvent: LiveStreamEvent) {
+    
   }
 
   // MARK: Subviews
@@ -440,7 +455,7 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
 
 extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
   func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView) {
-
+    self.viewModel.inputs.moreMenuButtonTapped()
   }
 
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
