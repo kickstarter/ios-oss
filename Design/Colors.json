@@ -1,5 +1,7 @@
 {
   "beige_400": "ECEDE1",
+  "blue_500": "2575E6",
+  "blue_600": "1561CB",
   "dropShadow": "D6D6D6",
   "forest_500": "0A717D",
   "forest_600": "07565F",
@@ -7,6 +9,7 @@
   "green_400": "2BDE73",
   "green_500": "25CB68",
   "green_700": "05AF3C",
+  "green_800": "098530",
   "grey_100": "FBFBFA",
   "grey_200": "F7F7F6",
   "grey_300": "F2F2F2",
@@ -20,8 +23,8 @@
   "navy_300": "EFEFF3",
   "navy_400": "DBDEE7",
   "navy_500": "95959E",
-  "navy_600": "6B7180",
-  "navy_700": "062340",
+  "navy_600": "626369",
+  "navy_700": "353535",
   "navy_900": "020621",
   "orange_300": "E8E1CE",
   "orange_400": "F7AA1A",
@@ -40,9 +43,12 @@
   "facebookBlue": "3B5998",
   "twitterBlue": "00ACED",
   "onePasswordBlue": "1A8CFF",
+  "text_blue_600": "1561CB",
+  "text_green_700": "05AF3C",
+  "text_green_800": "098530",
   "text_navy_500": "95959E",
-  "text_navy_600": "6B7180",
-  "text_navy_700": "062340",
+  "text_navy_600": "626369",
+  "text_navy_700": "353535",
   "text_navy_900": "020621",
-  "text_green_700": "05AF3C"
+  "text_red_500": "EF0707"
 }
