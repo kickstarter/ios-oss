@@ -9,7 +9,6 @@ public protocol BackingCellViewModelOutputs {
   var pledged: Signal<String, NoError> { get }
   var reward: Signal<String, NoError> { get }
   var delivery: Signal<String, NoError> { get }
-  var deliveryAccessibilityLabel: Signal<String, NoError> { get }
   var rootStackViewAlignment: Signal<UIStackViewAlignment, NoError> { get }
 }
 
@@ -35,30 +34,10 @@ BackingCellViewModelOutputs {
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(
-            secondsInUTC: $0,
-            dateStyle: .short,
-            timeStyle: .none,
-            timeZone: UTCTimeZone
-          )
-        )
+          delivery_date:  Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone))
       }
     }
     .map { $0 ?? "" }
-
-    self.deliveryAccessibilityLabel = backing.map { backing in
-      backing.reward?.estimatedDeliveryOn.map {
-        Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(
-            secondsInUTC: $0,
-            dateStyle: .long,
-            timeStyle: .none,
-            timeZone: UTCTimeZone
-          )
-        )
-      }
-    }
-      .map { $0 ?? "" }
 
     self.rootStackViewAlignment = backingAndProject
       .map { _, _ in AppEnvironment.current.isVoiceOverRunning() ? .fill : .leading }
@@ -72,7 +51,6 @@ BackingCellViewModelOutputs {
   public let pledged: Signal<String, NoError>
   public let reward: Signal<String, NoError>
   public let delivery: Signal<String, NoError>
-  public let deliveryAccessibilityLabel: Signal<String, NoError>
   public let rootStackViewAlignment: Signal<UIStackViewAlignment, NoError>
 
   public var inputs: BackingCellViewModelInputs { return self }
