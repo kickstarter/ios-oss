@@ -39,6 +39,9 @@ internal final class BackingCellViewModelTests: TestCase {
         )
       )], "Emits the estimated delivery date")
 
+    self.rootStackViewAlignment.assertValues([UIStackViewAlignment.leading])
+  }
+
   func testRootStackViewAlignment() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
