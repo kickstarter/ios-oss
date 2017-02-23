@@ -17,6 +17,7 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
   fileprivate let loaderIndicator = UIActivityIndicatorView()
+  fileprivate var this = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -24,6 +25,7 @@ internal final class SearchViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+    self.tableView.tableHeaderView = self.this
     self.tableView.dataSource = self.dataSource
   }
 
@@ -48,7 +50,9 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.delegate = self
 
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: self.loaderIndicator)
+    self.loaderIndicator.center = self.this.center
+    self.this.addSubview(loaderIndicator)
+    self.tableView.tableHeaderView = self.this
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
@@ -109,6 +113,13 @@ internal final class SearchViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] visible in
         self?.dataSource.popularTitle(isVisible: visible)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.loadingIndicatorIsHidden
+      .observeForUI()
+      .observeValues { [weak self] visible in
+        self?.tableView.tableHeaderView = visible ? self?.this :  nil
         self?.tableView.reloadData()
     }
 
