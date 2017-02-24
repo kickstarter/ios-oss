@@ -21,7 +21,6 @@ internal final class FindFriendsViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.addSubview(self.loadingIndicatorView)
     self.tableView.estimatedRowHeight = 100.0
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
@@ -33,12 +32,6 @@ internal final class FindFriendsViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
-  }
-
-  internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.loadingIndicatorView.center = CGPoint(x: self.tableView.center.x, y: self.tableView.center.y - 50)
   }
 
   override func bindStyles() {
@@ -60,6 +53,12 @@ internal final class FindFriendsViewController: UITableViewController {
     super.bindViewModel()
 
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
+
+    self.viewModel.outputs.loaderIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        self?.tableView.tableFooterView = isAnimating ? self?.loadingIndicatorView : nil
+    }
 
     self.viewModel.outputs.friends
       .observeForUI()
