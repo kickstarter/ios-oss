@@ -17,6 +17,11 @@ extension UIColor {
         400: .ksr_beige_400
       ],
 
+      "Blue": [
+        500: .ksr_blue_500,
+        600: .ksr_blue_600
+      ],
+
       "Forest": [
         500: .ksr_forest_500,
         600: .ksr_forest_600,
@@ -26,7 +31,8 @@ extension UIColor {
       "Green": [
         400: .ksr_green_400,
         500: .ksr_green_500,
-        700: .ksr_green_700
+        700: .ksr_green_700,
+        800: .ksr_green_800
       ],
 
       "Grey": [
@@ -64,8 +70,13 @@ extension UIColor {
         500: .ksr_red_500
       ],
 
+      "Text Blue": [
+        600: .ksr_text_blue_600
+      ],
+
       "Text Green": [
-        700: .ksr_text_green_700
+        700: .ksr_text_green_700,
+        800: .ksr_text_green_800
       ],
 
       "Text Navy": [
@@ -73,6 +84,10 @@ extension UIColor {
         600: .ksr_text_navy_600,
         700: .ksr_text_navy_700,
         900: .ksr_text_navy_900
+      ],
+
+      "Text Red": [
+        500: .ksr_text_red_500
       ],
 
       "Violet": [
@@ -87,6 +102,16 @@ extension UIColor {
   /// 0xECEDE1
   public static var ksr_beige_400: UIColor {
     return .hex(0xECEDE1)
+  }
+
+  /// 0x2575E6
+  public static var ksr_blue_500: UIColor {
+    return .hex(0x2575E6)
+  }
+
+  /// 0x1561CB
+  public static var ksr_blue_600: UIColor {
+    return .hex(0x1561CB)
   }
 
   /// 0xD6D6D6
@@ -127,6 +152,11 @@ extension UIColor {
   /// 0x05AF3C
   public static var ksr_green_700: UIColor {
     return .hex(0x05AF3C)
+  }
+
+  /// 0x098530
+  public static var ksr_green_800: UIColor {
+    return .hex(0x098530)
   }
 
   /// 0xFBFBFA
@@ -194,14 +224,14 @@ extension UIColor {
     return .hex(0x95959E)
   }
 
-  /// 0x6B7180
+  /// 0x626369
   public static var ksr_navy_600: UIColor {
-    return .hex(0x6B7180)
+    return .hex(0x626369)
   }
 
-  /// 0x062340
+  /// 0x353535
   public static var ksr_navy_700: UIColor {
-    return .hex(0x062340)
+    return .hex(0x353535)
   }
 
   /// 0x020621
@@ -264,9 +294,19 @@ extension UIColor {
     return .hex(0xEBE5D6)
   }
 
+  /// 0x1561CB
+  public static var ksr_text_blue_600: UIColor {
+    return .hex(0x1561CB)
+  }
+
   /// 0x05AF3C
   public static var ksr_text_green_700: UIColor {
     return .hex(0x05AF3C)
+  }
+
+  /// 0x098530
+  public static var ksr_text_green_800: UIColor {
+    return .hex(0x098530)
   }
 
   /// 0x95959E
@@ -274,19 +314,24 @@ extension UIColor {
     return .hex(0x95959E)
   }
 
-  /// 0x6B7180
+  /// 0x626369
   public static var ksr_text_navy_600: UIColor {
-    return .hex(0x6B7180)
+    return .hex(0x626369)
   }
 
-  /// 0x062340
+  /// 0x353535
   public static var ksr_text_navy_700: UIColor {
-    return .hex(0x062340)
+    return .hex(0x353535)
   }
 
   /// 0x020621
   public static var ksr_text_navy_900: UIColor {
     return .hex(0x020621)
+  }
+
+  /// 0xEF0707
+  public static var ksr_text_red_500: UIColor {
+    return .hex(0xEF0707)
   }
 
   /// 0x00ACED
