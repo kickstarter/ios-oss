@@ -28,14 +28,14 @@ internal func traitControllers(device: Device = .phone4_7inch,
     let traits: UITraitCollection
     switch (device, orientation) {
     case (.phone4inch, .portrait):
-      parent.view.frame = .init(x: 0, y: 0, width: 320, height: 575)
+      parent.view.frame = .init(x: 0, y: 0, width: 320, height: 568)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .regular),
         .init(userInterfaceIdiom: .phone)
         ])
     case (.phone4inch, .landscape):
-      parent.view.frame = .init(x: 0, y: 0, width: 575, height: 320)
+      parent.view.frame = .init(x: 0, y: 0, width: 568, height: 320)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .compact),
@@ -56,14 +56,14 @@ internal func traitControllers(device: Device = .phone4_7inch,
         .init(userInterfaceIdiom: .phone)
         ])
     case (.phone5_5inch, .portrait):
-      parent.view.frame = .init(x: 0, y: 0, width: 540, height: 960)
+      parent.view.frame = .init(x: 0, y: 0, width: 414, height: 736)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .regular),
         .init(userInterfaceIdiom: .phone)
         ])
     case (.phone5_5inch, .landscape):
-      parent.view.frame = .init(x: 0, y: 0, width: 960, height: 540)
+      parent.view.frame = .init(x: 0, y: 0, width: 736, height: 414)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .regular),
         .init(verticalSizeClass: .compact),
