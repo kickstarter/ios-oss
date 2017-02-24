@@ -40,6 +40,7 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var minimumAndConversionStackView: UIStackView!
   @IBOutlet fileprivate weak var minimumPledgeLabel: UILabel!
   @IBOutlet fileprivate weak var orLabel: UILabel!
+  @IBOutlet fileprivate weak var paddingViewHeightLayoutConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var pledgeButtonsStackView: UIStackView!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeCurrencyLabel: UILabel!
@@ -450,7 +451,6 @@ internal final class RewardPledgeViewController: UIViewController {
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.countryLabel.rac.text = self.viewModel.outputs.countryLabelText
-    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelIsHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.differentPaymentMethodButton.rac.hidden = self.viewModel.outputs.differentPaymentMethodButtonHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
@@ -533,6 +533,12 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in self?.goToThanks(project: project) }
+
+    self.viewModel.outputs.paddingViewHeightConstant
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.paddingViewHeightLayoutConstraint.constant = $0
+    }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()

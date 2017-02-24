@@ -95,9 +95,6 @@ public protocol RewardPledgeViewModelOutputs {
   /// Emits a string to be put into the shipping country label.
   var countryLabelText: Signal<String, NoError> { get }
 
-  /// Emits a boolean that determines if the description label should be hidden.
-  var descriptionLabelIsHidden: Signal<Bool, NoError> { get }
-
   /// Emits a string to be put into the description label.
   var descriptionLabelText: Signal<String, NoError> { get }
 
@@ -155,6 +152,9 @@ public protocol RewardPledgeViewModelOutputs {
 
   /// Emits a boolean that determines if the -or- separator label should be hidden.
   var orLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a height constant for the padding view constraint.
+  var paddingViewHeightConstant: Signal<CGFloat, NoError> { get }
 
   /// Emits a string to be put into the currency label.
   var pledgeCurrencyLabelText: Signal<String, NoError> { get }
@@ -360,13 +360,13 @@ RewardPledgeViewModelOutputs {
         reward.rewardsItems.isEmpty || (!reward.rewardsItems.isEmpty && !readMoreIsHidden)
       }.skipRepeats()
 
+    self.paddingViewHeightConstant = self.itemsContainerHidden.map { $0 ? 18.0 : 0.0 }
+
     self.expandRewardDescription = self.expandDescriptionTappedProperty.signal
 
     self.shippingLocationsLabelText = reward
       .map { $0.shipping.summary }
       .skipNil()
-
-    self.descriptionLabelIsHidden = reward.map { $0.isNoReward }
 
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in
@@ -895,7 +895,6 @@ RewardPledgeViewModelOutputs {
   public var descriptionLabelText: Signal<String, NoError> {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
-  public let descriptionLabelIsHidden: Signal<Bool, NoError>
   public let differentPaymentMethodButtonHidden: Signal<Bool, NoError>
   public let dismissViewController: Signal<(), NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
@@ -918,6 +917,7 @@ RewardPledgeViewModelOutputs {
   }
   public let navigationTitle: Signal<String, NoError>
   public let orLabelHidden: Signal<Bool, NoError>
+  public let paddingViewHeightConstant: Signal<CGFloat, NoError>
   public let pledgeCurrencyLabelText: Signal<String, NoError>
   public let pledgeIsLoading: Signal<Bool, NoError>
   public let pledgeTextFieldText: Signal<String, NoError>
