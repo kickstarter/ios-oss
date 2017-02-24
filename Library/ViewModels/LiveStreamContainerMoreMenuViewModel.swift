@@ -25,13 +25,19 @@ public final class LiveStreamContainerMoreMenuViewModel: LiveStreamContainerMore
 LiveStreamContainerMoreMenuViewModelInputs, LiveStreamContainerMoreMenuViewModelOutputs {
 
   public init() {
-    self.loadDataSource = self.configData.signal.skipNil()
+    let configData = Signal.combineLatest(
+      self.configData.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    self.loadDataSource = configData
       .map { liveStreamEvent, chatHidden -> [LiveStreamContainerMoreMenuItem] in
         return [
           .hideChat(hidden: chatHidden),
           .share(liveStreamEvent: liveStreamEvent),
           .goToProject(liveStreamEvent: liveStreamEvent),
-          .subscribe(subscribed: liveStreamEvent.user?.isSubscribed ?? false),
+          .subscribe(liveStreamEvent: liveStreamEvent),
           .cancel
         ]
     }

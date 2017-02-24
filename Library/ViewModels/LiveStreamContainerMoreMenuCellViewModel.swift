@@ -15,7 +15,10 @@ public protocol LiveStreamContainerMoreMenuCellViewModelInputs {
 
 public protocol LiveStreamContainerMoreMenuCellViewModelOutputs {
   var activityIndicatorViewHidden: Signal<Bool, NoError> { get }
-  var iconImageName: Signal<String, NoError> { get }
+  var creatorAvatarHidden: Signal<Bool, NoError> { get }
+  var creatorAvatarUrl: Signal<URL?, NoError> { get }
+  var iconImage: Signal<UIImage?, NoError> { get }
+  var iconImageHidden: Signal<Bool, NoError> { get }
   var rightActionButtonHidden: Signal<Bool, NoError> { get }
   var rightActionButtonImage: Signal<UIImage?, NoError> { get }
   var rightActionButtonTitle: Signal<String, NoError> { get }
@@ -29,16 +32,37 @@ LiveStreamContainerMoreMenuCellViewModelInputs, LiveStreamContainerMoreMenuCellV
 
   public init() {
     self.activityIndicatorViewHidden = .empty
+    self.rightActionButtonImage = .empty
+    self.rightActionButtonTitle = .empty
     
-    self.iconImageName = .empty
+    self.iconImage = self.moreMenuItemProperty.signal.skipNil().map { menuItem in
+      switch menuItem {
+      case .hideChat:
+        return UIImage(named: "speech-icon")
+      case .share:
+        return UIImage(named: "share-icon")
+      case .goToProject:
+        return UIImage(named: "info-icon")
+      default:
+        return nil
+      }
+    }
+
+    self.iconImageHidden = self.iconImage.map { $0 == nil }
+
+    self.creatorAvatarUrl = self.moreMenuItemProperty.signal.skipNil().map { menuItem in
+      if case let .subscribe(liveStreamEvent) = menuItem {
+        return URL(string: liveStreamEvent.creator.avatar)
+      }
+      return nil
+    }
+
+    self.creatorAvatarHidden = self.creatorAvatarUrl.map { $0 == nil }
 
     self.rightActionButtonHidden = self.moreMenuItemProperty.signal.skipNil().map { menuItem in
       if case .subscribe = menuItem { return false }
       return true
     }
-
-    self.rightActionButtonImage = .empty
-    self.rightActionButtonTitle = .empty
 
     self.subtitleLabelText = self.moreMenuItemProperty.signal.skipNil().map { menuItem in
       switch menuItem {
@@ -61,7 +85,10 @@ LiveStreamContainerMoreMenuCellViewModelInputs, LiveStreamContainerMoreMenuCellV
       return ""
     }
 
-    self.titleLabelTextHidden = .empty
+    self.titleLabelTextHidden = self.moreMenuItemProperty.signal.skipNil().map { menuItem in
+      if case .goToProject = menuItem { return false }
+      return true
+    }
   }
 
   private let moreMenuItemProperty = MutableProperty<LiveStreamContainerMoreMenuItem?>(nil)
@@ -70,7 +97,10 @@ LiveStreamContainerMoreMenuCellViewModelInputs, LiveStreamContainerMoreMenuCellV
   }
 
   public let activityIndicatorViewHidden: Signal<Bool, NoError>
-  public let iconImageName: Signal<String, NoError>
+  public let creatorAvatarHidden: Signal<Bool, NoError>
+  public let creatorAvatarUrl: Signal<URL?, NoError>
+  public let iconImage: Signal<UIImage?, NoError>
+  public let iconImageHidden: Signal<Bool, NoError>
   public let rightActionButtonHidden: Signal<Bool, NoError>
   public let rightActionButtonImage: Signal<UIImage?, NoError>
   public let rightActionButtonTitle: Signal<String, NoError>
@@ -86,6 +116,6 @@ public enum LiveStreamContainerMoreMenuItem {
   case hideChat(hidden: Bool)
   case share(liveStreamEvent: LiveStreamEvent)
   case goToProject(liveStreamEvent: LiveStreamEvent)
-  case subscribe(subscribed: Bool)
+  case subscribe(liveStreamEvent: LiveStreamEvent)
   case cancel
 }

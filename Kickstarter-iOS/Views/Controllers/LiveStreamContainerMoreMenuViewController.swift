@@ -32,18 +32,20 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> UIViewController.lens.view.backgroundColor .~ .clear
+      |> UITableViewController.lens.tableView.separatorStyle .~ .singleLine
+
+    self.tableView.separatorColor = UIColor.white.withAlphaComponent(0.8)
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.loadDataSource
+      .observeForUI()
       .observeValues { [weak self] in
         self?.dataSource.load(items: $0)
 
         self?.tableView.reloadData()
-        self?.offsetHeaderView()
     }
   }
 
