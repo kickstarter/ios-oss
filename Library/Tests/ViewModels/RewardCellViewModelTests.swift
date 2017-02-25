@@ -367,11 +367,16 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDateLabelText() {
+    let estimatedDelivery = 1468527587.32843
+
     let reward = .template
-      |> Reward.lens.estimatedDeliveryOn .~ 1468527587.32843
+      |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
-    self.estimatedDeliveryDateLabelText.assertValues(["July 2016"])
+    self.estimatedDeliveryDateLabelText.assertValues([Format.date(
+      secondsInUTC: estimatedDelivery,
+      dateFormat: "MMMM yyyy",
+      timeZone: UTCTimeZone)], "Emits the estimated delivery date")
   }
 
   func testFooterLabelText_NotLimited_NotScheduled_Live() {
