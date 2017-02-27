@@ -5,9 +5,15 @@ import Prelude
 import ReactiveSwift
 import Result
 
+public struct UpdateData {
+  public let project: Project
+  public let update: Update
+  public let context: Koala.UpdateContext
+}
+
 internal protocol UpdateViewModelInputs {
   /// Call with the project and update given to the controller.
-  func configureWith(project: Project, update: Update)
+  func configureWith(project: Project, update: Update, context: Koala.UpdateContext)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData)
@@ -43,7 +49,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   // swiftlint:disable function_body_length
   internal init() {
-    let initialUpdate = self.updateProperty.signal.skipNil()
+    let configurationData = self.configurationDataProperty.signal.skipNil()
+
+    let initialUpdate = configurationData.map { $0.update }
+
+    let project = configurationData.map { $0.project }
 
     let initialUpdateLoadRequest = initialUpdate
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -105,7 +115,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
           : nil
     }
 
-    self.goToProject = self.projectProperty.signal.skipNil()
+    self.goToProject = project
       .takePairWhen(possiblyGoToProject)
       .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), NoError> in
 
@@ -130,19 +140,22 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map { action, _, _ in action.request.url }
       .skipNil()
 
-    self.projectProperty.signal.skipNil()
+    project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
     }
+
+    configurationData
+      .observeValues {
+        AppEnvironment.current.koala.trackViewedUpdate(forProject: $0.project, context: $0.context )
+    }
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let updateProperty = MutableProperty<Update?>(nil)
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  internal func configureWith(project: Project, update: Update) {
-    self.updateProperty.value = update
-    self.projectProperty.value = project
+  fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)
+  internal func configureWith(project: Project, update: Update, context: Koala.UpdateContext) {
+    self.configurationDataProperty.value = UpdateData(project: project, update: update, context: context)
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)

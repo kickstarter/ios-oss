@@ -140,7 +140,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToUpdate(project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .creatorActivity)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

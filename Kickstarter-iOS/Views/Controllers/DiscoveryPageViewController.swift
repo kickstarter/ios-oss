@@ -211,7 +211,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   fileprivate func goTo(project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .activitySample)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
