@@ -101,6 +101,14 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
+
+    self.layoutNavBarTitle()
+  }
+
   public override var inputAccessoryView: UIView? {
     guard let inputView = self.liveStreamChatInputView else { return nil }
     return inputView
@@ -108,6 +116,23 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   public override var canBecomeFirstResponder: Bool {
     return true
+  }
+
+  public override var prefersStatusBarHidden: Bool {
+    return true
+  }
+
+  //FIXME: make this an input/output and test
+  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+
+    if self.presentedViewController != nil {
+      if self.presentedViewController is LiveStreamContainerMoreMenuViewController {
+        self.viewModel.inputs.willDismissMoreMenuViewController()
+      }
+
+      self.dismiss(animated: true)
+    }
   }
 
   //swiftlint:disable:next function_body_length
@@ -303,15 +328,23 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
 
+    //FIXME: get chat hidden state from vm
     self.viewModel.outputs.presentMoreMenu
       .observeForControllerAction()
       .observeValues { [weak self] in
-        let vc = LiveStreamContainerMoreMenuViewController.configuredWith(
-          liveStreamEvent: $0,
-          chatHidden: false
-          )
-        vc.modalPresentationStyle = .overCurrentContext
-        self?.present(vc, animated: true, completion: nil)
+        self?.presentMoreMenu(liveStreamEvent: $0, chatHidden: false)
+    }
+
+    self.viewModel.outputs.displayModalOverlayView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.displayModalOverlay()
+    }
+
+    self.viewModel.outputs.removeModalOverlayView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.removeModelOverLay()
     }
   }
 
@@ -321,18 +354,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     nav.modalPresentationStyle = .formSheet
 
     self.present(nav, animated: true, completion: nil)
-  }
-
-  public override var prefersStatusBarHidden: Bool {
-    return true
-  }
-
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
-
-    self.layoutNavBarTitle()
   }
 
   private func layoutNavBarTitle() {
@@ -373,8 +394,40 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.present(vc, animated: true, completion: nil)
   }
 
-  private func presentMoreMenu(liveStreamEvent: LiveStreamEvent) {
-    
+  private func presentMoreMenu(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
+    let vc = LiveStreamContainerMoreMenuViewController.configuredWith(
+      liveStreamEvent: liveStreamEvent,
+      delegate: self,
+      chatHidden: chatHidden
+    )
+
+    vc.modalPresentationStyle = .overCurrentContext
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  private func displayModalOverlay() {
+    self.view.addSubview(self.modalOverlayView)
+
+    self.modalOverlayView.alpha = 0
+
+    NSLayoutConstraint.activate([
+      self.modalOverlayView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.modalOverlayView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.modalOverlayView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.modalOverlayView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      ])
+
+    UIView.animate(withDuration: 0.3) {
+      self.modalOverlayView.alpha = 1
+    }
+  }
+
+  private func removeModelOverLay() {
+    UIView.animate(withDuration: 0.3, animations: {
+      self.modalOverlayView.alpha = 0
+    }) { _ in
+      self.modalOverlayView.removeFromSuperview()
+    }
   }
 
   // MARK: Subviews
@@ -421,10 +474,17 @@ public final class LiveStreamContainerViewController: UIViewController {
     return chatInputView
   }()
 
+  private lazy var modalOverlayView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor.hex(0x1B1B1C).withAlphaComponent(0.7)
+    return view
+  }()
+
   // MARK: Actions
 
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
+  @objc private func goToProjectButtonTapped() {
+    self.viewModel.inputs.goToProjectButtonTapped()
   }
 
   @objc private func close() {
@@ -464,5 +524,12 @@ extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
 
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
     self.openLoginTout()
+  }
+}
+
+extension LiveStreamContainerViewController: LiveStreamContainerMoreMenuViewControllerDelegate {
+  func moreMenuViewControllerWillDismiss(controller: LiveStreamContainerMoreMenuViewController) {
+    self.viewModel.inputs.willDismissMoreMenuViewController()
+    self.dismiss(animated: true)
   }
 }

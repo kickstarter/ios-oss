@@ -2,20 +2,17 @@ import Library
 import LiveStream
 import Prelude
 
-internal final class LiveStreamContainerMoreMenuCell: UITableViewCell, ValueCell {
+internal final class LiveStreamContainerMoreMenuActionCell: UITableViewCell, ValueCell {
 
-
-  @IBOutlet private weak var contentStackView: UIStackView!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
-  @IBOutlet private weak var iconImageView: UIImageView!
   @IBOutlet private weak var rightActionActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var rightActionButton: UIButton!
   @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var subtitleLabel: UILabel!
   @IBOutlet private weak var titleLabel: UILabel!
 
 
-  let viewModel: LiveStreamContainerMoreMenuCellViewModelType = LiveStreamContainerMoreMenuCellViewModel()
+  let viewModel: LiveStreamContainerMoreMenuActionCellViewModelType =
+    LiveStreamContainerMoreMenuActionCellViewModel()
 
   internal func configureWith(value moreMenuItem: LiveStreamContainerMoreMenuItem) {
     self.viewModel.inputs.configureWith(moreMenuItem: moreMenuItem)
@@ -27,7 +24,7 @@ internal final class LiveStreamContainerMoreMenuCell: UITableViewCell, ValueCell
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ .hex(0x1B1B1C)
 
-    self.separatorInset = UIEdgeInsets(leftRight: Styles.grid(3))
+    self.separatorInset = UIEdgeInsets(leftRight: 0)
 
     _ = self.rootStackView
       |> UIStackView.lens.alignment .~ .center
@@ -35,22 +32,11 @@ internal final class LiveStreamContainerMoreMenuCell: UITableViewCell, ValueCell
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: Styles.grid(3))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    _ = self.contentStackView
-      |> UIStackView.lens.spacing .~ (Styles.grid(1) / 2)
-
-    _ = self.iconImageView
-      |> UIImageView.lens.tintColor .~ .white
-      |> UIImageView.lens.contentMode .~ .scaleAspectFit
-
     _ = self.creatorAvatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-
-    _ = self.subtitleLabel
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_body(size: 13)
 
@@ -64,19 +50,11 @@ internal final class LiveStreamContainerMoreMenuCell: UITableViewCell, ValueCell
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.creatorAvatarImageView.rac.hidden = self.viewModel.outputs.creatorAvatarHidden
+    self.rightActionActivityIndicatorView.rac.hidden =
+      self.viewModel.outputs.rightActionActivityIndicatorViewHidden
     self.creatorAvatarImageView.rac.imageUrl = self.viewModel.outputs.creatorAvatarUrl
 
-    self.viewModel.outputs.iconImage
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.iconImageView.image = $0
-    }
-
-    self.iconImageView.rac.hidden = self.viewModel.outputs.iconImageHidden
-    self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelTextHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
-    self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleLabelText
     self.rightActionButton.rac.hidden = self.viewModel.outputs.rightActionButtonHidden
   }
 
@@ -84,5 +62,6 @@ internal final class LiveStreamContainerMoreMenuCell: UITableViewCell, ValueCell
     super.layoutSubviews()
 
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width / 2
+    self.rightActionButton.layer.cornerRadius = self.rightActionButton.frame.size.height / 2
   }
 }

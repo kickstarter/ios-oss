@@ -18,22 +18,26 @@ public protocol LiveStreamContainerViewModelInputs {
                      refTag: RefTag,
                      presentedFromProject: Bool)
 
-  /// Called when the close button is tapped
+  /// Call when the close button is tapped
   func closeButtonTapped()
 
-  /// Called when the device's orientation changed
+  /// Call when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
-  func goToProjectButtonPressed()
+  /// Call when the goToProject button is tapped
+  func goToProjectButtonTapped()
 
-  /// Called when the LiveStreamViewController's state changed
+  /// Call when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 
-  /// Called when the more menu button of the chat input view is tapped
+  /// Call when the more menu button of the chat input view is tapped
   func moreMenuButtonTapped()
 
-  /// Called when the viewDidLoad
+  /// Call when the viewDidLoad
   func viewDidLoad()
+
+  /// Call when the presented view controller will be dismissed
+  func willDismissMoreMenuViewController()
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
@@ -54,6 +58,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits when the modal overlay view should be displayed
+  var displayModalOverlayView: Signal<(), NoError> { get }
 
   /// Emits a project and ref tag when we should navigate to the project
   var goToProject: Signal<(Project, RefTag), NoError> { get }
@@ -84,6 +91,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
+
+  /// Emits when the modal overlay view should be removed
+  var removeModalOverlayView: Signal<(), NoError> { get }
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -290,7 +300,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.availableForLabelHidden = Signal.combineLatest(nonStarter, hideWhenLive).map { $0 || $1 }
 
     self.goToProject = configData
-      .takeWhen(self.goToProjectButtonPressedProperty.signal)
+      .takeWhen(self.goToProjectButtonTappedProperty.signal)
       .map { project, liveStreamEvent, _, _ in
         (project, liveStreamEvent.liveNow ? .liveStream : .liveStreamReplay)
     }
@@ -310,6 +320,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .mapConst(1)
 
     self.presentMoreMenu = event.takeWhen(self.moreMenuButtonTappedProperty.signal)
+    self.displayModalOverlayView = self.presentMoreMenu.ignoreValues()
+    self.removeModalOverlayView = Signal.zip(
+      self.displayModalOverlayView,
+      self.willDismissMoreMenuViewControllerProperty.signal
+    ).ignoreValues()
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
@@ -379,9 +394,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let goToProjectButtonPressedProperty = MutableProperty()
-  public func goToProjectButtonPressed() {
-    self.goToProjectButtonPressedProperty.value = ()
+  private let goToProjectButtonTappedProperty = MutableProperty()
+  public func goToProjectButtonTapped() {
+    self.goToProjectButtonTappedProperty.value = ()
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -400,6 +415,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let willDismissMoreMenuViewControllerProperty = MutableProperty()
+  public func willDismissMoreMenuViewController() {
+    self.willDismissMoreMenuViewControllerProperty.value = ()
+  }
+
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
@@ -409,6 +429,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
+  public let displayModalOverlayView: Signal<(), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
@@ -419,6 +440,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
   public let presentMoreMenu: Signal<LiveStreamEvent, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
+  public let removeModalOverlayView: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>

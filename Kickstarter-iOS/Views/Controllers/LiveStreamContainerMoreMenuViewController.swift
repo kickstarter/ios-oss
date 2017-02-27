@@ -6,16 +6,24 @@ import ReactiveSwift
 import Result
 import UIKit
 
+internal protocol LiveStreamContainerMoreMenuViewControllerDelegate: class {
+  func moreMenuViewControllerWillDismiss(controller: LiveStreamContainerMoreMenuViewController)
+}
+
 internal final class LiveStreamContainerMoreMenuViewController: UITableViewController {
   private let dataSource = LiveStreamContainerMoreMenuDataSource()
   private let viewModel: LiveStreamContainerMoreMenuViewModelType = LiveStreamContainerMoreMenuViewModel()
 
-  internal static func configuredWith(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) ->
-    LiveStreamContainerMoreMenuViewController {
-      let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerMoreMenuViewController.self)
-      vc.viewModel.inputs.configureWith(liveStreamEvent: liveStreamEvent, chatHidden: chatHidden)
+  private weak var delegate: LiveStreamContainerMoreMenuViewControllerDelegate?
 
-      return vc
+  internal static func configuredWith(liveStreamEvent: LiveStreamEvent,
+                                      delegate: LiveStreamContainerMoreMenuViewControllerDelegate,
+                                      chatHidden: Bool) -> LiveStreamContainerMoreMenuViewController {
+    let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerMoreMenuViewController.self)
+    vc.viewModel.inputs.configureWith(liveStreamEvent: liveStreamEvent, chatHidden: chatHidden)
+    vc.delegate = delegate
+
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -23,8 +31,16 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
 
     self.tableView.dataSource = self.dataSource
     self.tableView.isScrollEnabled = false
+    self.automaticallyAdjustsScrollViewInsets = false
+
+    let emptyFooterView = UIView(frame: CGRect())
+    self.tableView.tableFooterView = emptyFooterView
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override var prefersStatusBarHidden: Bool {
+    return true
   }
 
   internal override func bindStyles() {
@@ -33,6 +49,7 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
       |> UITableViewController.lens.tableView.separatorStyle .~ .singleLine
+      |> UITableViewController.lens.view.backgroundColor .~ .clear
 
     self.tableView.separatorColor = UIColor.white.withAlphaComponent(0.8)
   }
@@ -44,27 +61,31 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
       .observeForUI()
       .observeValues { [weak self] in
         self?.dataSource.load(items: $0)
-
         self?.tableView.reloadData()
+
+        self?.pinToBottom()
     }
   }
 
-  private func offsetHeaderView() {
-    let offset = self.tableView.contentSize.height -
-      (self.tableView.frame.size.height + self.tableView.contentInset.bottom)
-    self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: false)
-  }
-}
+  private func pinToBottom() {
+    let contentHeight = self.tableView.visibleCells.reduce(0, { (accum, cell) -> CGFloat in
+      accum + cell.systemLayoutSizeFitting(
+        CGSize(width: self.tableView.frame.size.width, height: 9999)).height
+    })
 
-extension LiveStreamContainerMoreMenuViewController {
-  internal override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = UIView(frame: CGRect())
-    view.backgroundColor = .clear
-    return view
+    self.tableView.contentInset = UIEdgeInsets(
+      top: self.tableView.frame.size.height - contentHeight
+    )
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   heightForHeaderInSection section: Int) -> CGFloat {
-    return tableView.frame.size.height
+  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let menuItem = self.dataSource[indexPath] as? LiveStreamContainerMoreMenuItem {
+      switch menuItem {
+      case .cancel:
+        self.delegate?.moreMenuViewControllerWillDismiss(controller: self)
+      default:
+        return
+      }
+    }
   }
 }
