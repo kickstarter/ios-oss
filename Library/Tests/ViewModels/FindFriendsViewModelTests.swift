@@ -14,7 +14,6 @@ final class FindFriendsViewModelTests: TestCase {
   let friends = TestObserver<[User], NoError>()
   let showFacebookConnect = TestObserver<Bool, NoError>()
   let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let isLoading = TestObserver<Bool, NoError>()
   let loaderIsAnimating = TestObserver<Bool, NoError>()
   let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
   let statsSource = TestObserver<FriendsSource, NoError>()
@@ -27,7 +26,6 @@ final class FindFriendsViewModelTests: TestCase {
     vm.outputs.friends.map { $0.0 }.observe(friends.observer)
     vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
     vm.outputs.goToDiscovery.observe(goToDiscovery.observer)
-    vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.loaderIsAnimating.observe(loaderIsAnimating.observer)
     vm.outputs.showFollowAllFriendsAlert.observe(showFollowAllFriendsAlert.observer)
     vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
@@ -89,7 +87,6 @@ final class FindFriendsViewModelTests: TestCase {
 
       friends.assertValueCount(0, "Friends does not emit")
       showFacebookConnect.assertValueCount(0, "Facebook connect does not emit")
-      isLoading.assertValueCount(0, "Loading does not start")
 
       vm.inputs.viewDidLoad()
 
@@ -123,7 +120,6 @@ final class FindFriendsViewModelTests: TestCase {
       vm.inputs.configureWith(source: FriendsSource.discovery)
 
       showFacebookConnect.assertValueCount(0, "Show Facebook Connect does not emit")
-      isLoading.assertValueCount(0, "Loading does not start")
 
       vm.inputs.viewDidLoad()
 
