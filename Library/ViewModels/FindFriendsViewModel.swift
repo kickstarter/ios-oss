@@ -46,9 +46,6 @@ public protocol FindFriendsViewModelOutputs {
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
 
-  /// Emits a boolean that determines if friends are currently loading.
-  var isLoading: Signal<Bool, NoError> { get }
-
   /// Emits a boolean that determines if loader is hidden.
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
@@ -124,18 +121,13 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
           |> DiscoveryParams.lens.sort .~ .magic
     }
 
-    self.isLoading = isLoading
-
     self.showFollowAllFriendsAlert = self.showFollowAllFriendsAlertProperty.signal
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.skipNil()
 
     self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
-    self.loaderIsAnimating = Signal.merge(
-      shouldShowFacebookConnect.map(negate),
-      self.isLoading.map { $0 }
-    )
+    self.loaderIsAnimating = isLoading.map { $0 }
 
     let statsEvent = shouldShowFacebookConnect
       .filter(isFalse)
@@ -207,7 +199,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public let friends: Signal<([User], FriendsSource), NoError>
   public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let isLoading: Signal<Bool, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
   public let showFollowAllFriendsAlert: Signal<Int, NoError>
   public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>

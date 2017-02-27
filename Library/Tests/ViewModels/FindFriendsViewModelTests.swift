@@ -93,23 +93,23 @@ final class FindFriendsViewModelTests: TestCase {
 
       vm.inputs.viewDidLoad()
 
-      isLoading.assertValues([true])
+      loaderIsAnimating.assertValues([true])
 
       self.scheduler.advance()
 
-      isLoading.assertValues([true, false])
+      loaderIsAnimating.assertValues([true, false])
       friends.assertValueCount(1, "Friends emit")
       showFacebookConnect.assertValues([false])
 
       vm.inputs.willDisplayRow(30, outOf: 10)
 
-      isLoading.assertValues([true, false, true])
+      loaderIsAnimating.assertValues([true, false, true])
       friends.assertValueCount(1, "Friends value has not changed")
       showFacebookConnect.assertValues([false], "Show Facebook Connect value has not changed")
 
       self.scheduler.advance()
 
-      isLoading.assertValues([true, false, true, false])
+      loaderIsAnimating.assertValues([true, false, true, false])
       friends.assertValueCount(2, "Friends emits again")
       showFacebookConnect.assertValues([false], "Show Facebook Connect value has not changed")
     }
@@ -135,23 +135,23 @@ final class FindFriendsViewModelTests: TestCase {
       AppEnvironment.updateCurrentUser(User.template |> User.lens.facebookConnected .~ true)
       vm.inputs.findFriendsFacebookConnectCellDidFacebookConnectUser()
 
-      isLoading.assertValues([true])
+      loaderIsAnimating.assertValues([true])
 
       self.scheduler.advance()
 
-      isLoading.assertValues([true, false])
+      loaderIsAnimating.assertValues([true, false])
       friends.assertValueCount(1, "Friends emit after Facebook Connected")
       showFacebookConnect.assertValues([true, false], "Hide Facebook Connect")
 
       vm.inputs.willDisplayRow(20, outOf: 10)
 
-      isLoading.assertValues([true, false, true])
+      loaderIsAnimating.assertValues([true, false, true])
       friends.assertValueCount(1, "Friends value has not changed")
       showFacebookConnect.assertValues([true, false], "Show Facebook Connect value has not changed")
 
       self.scheduler.advance()
 
-      isLoading.assertValues([true, false, true, false])
+      loaderIsAnimating.assertValues([true, false, true, false])
       friends.assertValueCount(2, "Friends emits again")
       showFacebookConnect.assertValues([true, false], "Show Facebook Connect value has not changed")
     }
@@ -247,19 +247,19 @@ final class FindFriendsViewModelTests: TestCase {
 
       vm.inputs.viewDidLoad()
 
-      loaderIsAnimating.assertValues([true, true])
+      loaderIsAnimating.assertValues([true])
 
       self.scheduler.advance()
 
-      loaderIsAnimating.assertValues([true, true, false])
+      loaderIsAnimating.assertValues([true, false])
 
       vm.inputs.willDisplayRow(30, outOf: 10)
 
-      loaderIsAnimating.assertValues([true, true, false, true])
+      loaderIsAnimating.assertValues([true, false, true])
 
       self.scheduler.advance()
 
-      loaderIsAnimating.assertValues([true, true, false, true, false])
+      loaderIsAnimating.assertValues([true, false, true, false])
     }
   }
 
@@ -271,11 +271,11 @@ final class FindFriendsViewModelTests: TestCase {
 
       vm.inputs.viewDidLoad()
 
-      loaderIsAnimating.assertValues([false])
+      loaderIsAnimating.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
-      loaderIsAnimating.assertValues([false])
+      loaderIsAnimating.assertDidNotEmitValue()
 
     }
   }
