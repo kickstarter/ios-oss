@@ -16,8 +16,7 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
-  fileprivate let loaderIndicator = UIActivityIndicatorView()
-  fileprivate var this = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
+  fileprivate var loaderIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -25,7 +24,7 @@ internal final class SearchViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    self.tableView.tableHeaderView = self.this
+
     self.tableView.dataSource = self.dataSource
   }
 
@@ -49,10 +48,10 @@ internal final class SearchViewController: UITableViewController {
     )
 
     self.searchTextField.delegate = self
-
-    self.loaderIndicator.center = self.this.center
-    self.this.addSubview(loaderIndicator)
-    self.tableView.tableHeaderView = self.this
+//
+//    self.loaderIndicator.center = self.this.center
+//    self.this.addSubview(loaderIndicator)
+//    self.tableView.tableHeaderView = self.this
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
@@ -118,8 +117,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.outputs.loadingIndicatorIsHidden
       .observeForUI()
-      .observeValues { [weak self] visible in
-        self?.tableView.tableHeaderView = visible ? self?.this :  nil
+      .observeValues { [weak self] isAnimating in
+        self?.tableView.tableHeaderView = isAnimating ? self?.loaderIndicator :  nil
         self?.tableView.reloadData()
     }
 
@@ -139,7 +138,7 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
     
-    self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsAnimated
+    self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsHidden
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
