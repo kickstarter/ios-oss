@@ -29,9 +29,9 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
-  private weak var liveStreamChatViewController: LiveStreamChatViewController?
+  fileprivate weak var liveStreamChatViewController: LiveStreamChatViewController?
   fileprivate weak var liveStreamViewController: LiveStreamViewController?
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
@@ -54,7 +54,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     super.viewDidLoad()
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
-    self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
     self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
@@ -453,20 +452,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     return closeBarButtonItem
   }()
 
-  private lazy var shareBarButtonItem: UIBarButtonItem = {
-    let shareBarButtonItem = UIBarButtonItem()
-      |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .white
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
-
-    shareBarButtonItem.accessibilityLabel = localizedString(
-      key: "Share_this_live_stream",
-      defaultValue: "Share this live stream."
-    )
-
-    return shareBarButtonItem
-  }()
-
   private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
     let chatInputView = LiveStreamChatInputView.fromNib()
     chatInputView?.configureWith(delegate: self)
@@ -489,10 +474,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
-  }
-
-  @objc private func share() {
-    self.shareViewModel.inputs.shareButtonTapped()
   }
 
   @objc private func subscribe() {
@@ -531,5 +512,20 @@ extension LiveStreamContainerViewController: LiveStreamContainerMoreMenuViewCont
   func moreMenuViewControllerWillDismiss(controller: LiveStreamContainerMoreMenuViewController) {
     self.viewModel.inputs.willDismissMoreMenuViewController()
     self.dismiss(animated: true)
+  }
+
+  func moreMenuViewControllerDidSetChatHidden(controller: LiveStreamContainerMoreMenuViewController, hidden: Bool) {
+
+  }
+
+  func moreMenuViewControllerDidShare(controller: LiveStreamContainerMoreMenuViewController, liveStreamEvent: LiveStreamEvent) {
+    self.viewModel.inputs.willDismissMoreMenuViewController()
+    self.dismiss(animated: true) {
+      self.shareViewModel.inputs.shareButtonTapped()
+    }
+  }
+
+  func moreMenuViewControllerDidTapGoToProject(controller: LiveStreamContainerMoreMenuViewController, liveStreamEvent: LiveStreamEvent) {
+
   }
 }

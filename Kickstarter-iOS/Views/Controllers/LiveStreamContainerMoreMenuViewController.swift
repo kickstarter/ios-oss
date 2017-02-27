@@ -8,6 +8,12 @@ import UIKit
 
 internal protocol LiveStreamContainerMoreMenuViewControllerDelegate: class {
   func moreMenuViewControllerWillDismiss(controller: LiveStreamContainerMoreMenuViewController)
+  func moreMenuViewControllerDidShare(controller: LiveStreamContainerMoreMenuViewController,
+                                      liveStreamEvent: LiveStreamEvent)
+  func moreMenuViewControllerDidTapGoToProject(controller: LiveStreamContainerMoreMenuViewController,
+                                               liveStreamEvent: LiveStreamEvent)
+  func moreMenuViewControllerDidSetChatHidden(controller: LiveStreamContainerMoreMenuViewController,
+                                              hidden: Bool)
 }
 
 internal final class LiveStreamContainerMoreMenuViewController: UITableViewController {
@@ -83,9 +89,18 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
       switch menuItem {
       case .cancel:
         self.delegate?.moreMenuViewControllerWillDismiss(controller: self)
+      case .share(let liveStreamEvent):
+        self.delegate?.moreMenuViewControllerDidShare(controller: self, liveStreamEvent: liveStreamEvent)
+      case .goToProject(let liveStreamEvent):
+        self.delegate?.moreMenuViewControllerDidTapGoToProject(controller: self,
+                                                               liveStreamEvent: liveStreamEvent)
+      case .hideChat(let hidden):
+        self.delegate?.moreMenuViewControllerDidSetChatHidden(controller: self, hidden: !hidden)
       default:
         return
       }
     }
+
+    tableView.indexPathForSelectedRow.flatMap { tableView.deselectRow(at: $0, animated: true) }
   }
 }
