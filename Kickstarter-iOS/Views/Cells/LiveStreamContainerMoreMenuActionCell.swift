@@ -16,6 +16,8 @@ internal final class LiveStreamContainerMoreMenuActionCell: UITableViewCell, Val
 
   internal func configureWith(value moreMenuItem: LiveStreamContainerMoreMenuItem) {
     self.viewModel.inputs.configureWith(moreMenuItem: moreMenuItem)
+
+    self.selectedBackgroundView = self.selectionView
   }
 
   internal override func bindStyles() {
@@ -64,4 +66,10 @@ internal final class LiveStreamContainerMoreMenuActionCell: UITableViewCell, Val
     self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width / 2
     self.rightActionButton.layer.cornerRadius = self.rightActionButton.frame.size.height / 2
   }
+
+  private lazy var selectionView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .hex(0x353535)
+    return view
+  }()
 }

@@ -31,6 +31,8 @@ internal final class LiveStreamContainerMoreMenuIconTextCell: UITableViewCell, V
     default:
       break
     }
+
+    self.selectedBackgroundView = self.selectionView
   }
 
   internal override func bindStyles() {
@@ -64,4 +66,10 @@ internal final class LiveStreamContainerMoreMenuIconTextCell: UITableViewCell, V
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
+
+  private lazy var selectionView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .hex(0x353535)
+    return view
+  }()
 }

@@ -8,6 +8,8 @@ internal final class LiveStreamContainerMoreMenuCancelCell: UITableViewCell, Val
 
   internal func configureWith(value moreMenuItem: LiveStreamContainerMoreMenuItem) {
     self.titleLabel.text = localizedString(key: "Cancel", defaultValue: "Cancel")
+
+    self.selectedBackgroundView = self.selectionView
   }
 
   internal override func bindStyles() {
@@ -23,4 +25,10 @@ internal final class LiveStreamContainerMoreMenuCancelCell: UITableViewCell, Val
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
+
+  private lazy var selectionView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .hex(0x353535)
+    return view
+  }()
 }
