@@ -84,6 +84,8 @@ public final class LiveStreamContainerViewController: UIViewController {
       self?.liveStreamChatViewController?.received(chatMessages: $0)
     }
 
+    self.liveStreamChatViewController?.view.rac.hidden = self.viewModel.outputs.shouldHideChatViewController
+
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
@@ -122,14 +124,13 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   //FIXME: make this an input/output and test
-  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  public override func viewWillTransition(to size: CGSize,
+                                          with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
 
-    if self.presentedViewController != nil {
-      if self.presentedViewController is LiveStreamContainerMoreMenuViewController {
-        self.viewModel.inputs.willDismissMoreMenuViewController()
-      }
-
+    if self.presentedViewController != nil && self.presentedViewController is
+      LiveStreamContainerMoreMenuViewController {
+      self.viewModel.inputs.willDismissMoreMenuViewController()
       self.dismiss(animated: true)
     }
   }
@@ -331,7 +332,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.presentMoreMenu
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.presentMoreMenu(liveStreamEvent: $0, chatHidden: false)
+        self?.presentMoreMenu(liveStreamEvent: $0, chatHidden: $1)
     }
 
     self.viewModel.outputs.displayModalOverlayView
@@ -344,6 +345,18 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.removeModelOverLay()
+    }
+
+    self.viewModel.outputs.shouldHideChatViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.liveStreamChatInputView?.didSetChatHidden(hidden: $0)
+    }
+
+    self.viewModel.outputs.configureChatInputView
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        self?.liveStreamChatInputView?.configureWith(delegate: _self, chatHidden: $0)
     }
   }
 
@@ -454,7 +467,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
     let chatInputView = LiveStreamChatInputView.fromNib()
-    chatInputView?.configureWith(delegate: self)
     chatInputView?.frame = .init(x: 0, y: 0, width: 0, height: Styles.grid(8))
     return chatInputView
   }()
@@ -467,10 +479,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   }()
 
   // MARK: Actions
-
-  @objc private func goToProjectButtonTapped() {
-    self.viewModel.inputs.goToProjectButtonTapped()
-  }
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
@@ -514,18 +522,27 @@ extension LiveStreamContainerViewController: LiveStreamContainerMoreMenuViewCont
     self.dismiss(animated: true)
   }
 
-  func moreMenuViewControllerDidSetChatHidden(controller: LiveStreamContainerMoreMenuViewController, hidden: Bool) {
-
+  func moreMenuViewControllerDidSetChatHidden(controller: LiveStreamContainerMoreMenuViewController,
+                                              hidden: Bool) {
+    self.viewModel.inputs.willDismissMoreMenuViewController()
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.didSetChatHidden(hidden: hidden)
+    }
   }
 
-  func moreMenuViewControllerDidShare(controller: LiveStreamContainerMoreMenuViewController, liveStreamEvent: LiveStreamEvent) {
+  func moreMenuViewControllerDidShare(controller: LiveStreamContainerMoreMenuViewController,
+                                      liveStreamEvent: LiveStreamEvent) {
     self.viewModel.inputs.willDismissMoreMenuViewController()
     self.dismiss(animated: true) {
       self.shareViewModel.inputs.shareButtonTapped()
     }
   }
 
-  func moreMenuViewControllerDidTapGoToProject(controller: LiveStreamContainerMoreMenuViewController, liveStreamEvent: LiveStreamEvent) {
-
+  func moreMenuViewControllerDidTapGoToProject(controller: LiveStreamContainerMoreMenuViewController,
+                                               liveStreamEvent: LiveStreamEvent) {
+    self.viewModel.inputs.willDismissMoreMenuViewController()
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.goToProjectButtonTapped()
+    }
   }
 }

@@ -34,8 +34,9 @@ internal final class LiveStreamChatInputView: UIView {
       .first as? LiveStreamChatInputView
   }
 
-  internal func configureWith(delegate: LiveStreamChatInputViewDelegate) {
+  internal func configureWith(delegate: LiveStreamChatInputViewDelegate, chatHidden: Bool) {
     self.delegate = delegate
+    self.viewModel.inputs.configureWith(chatHidden: chatHidden)
   }
 
   internal override func bindStyles() {
@@ -59,14 +60,6 @@ internal final class LiveStreamChatInputView: UIView {
       |> UITextField.lens.font .~ .ksr_body(size: 14)
       |> UITextField.lens.borderStyle .~ .none
       |> UITextField.lens.returnKeyType .~ .done
-
-    self.textField.attributedPlaceholder = NSAttributedString(
-      string: localizedString(key: "Say_something_kind", defaultValue: "Say something kind..."),
-      attributes: [
-        NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.8),
-        NSFontAttributeName: UIFont.ksr_body(size: 14)
-      ]
-    )
 
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
@@ -104,12 +97,16 @@ internal final class LiveStreamChatInputView: UIView {
       .observeValues { [weak self] in
         self.flatMap { $0.delegate?.liveStreamChatInputViewRequestedLogin(chatInputView: $0) }
     }
+
+    self.viewModel.outputs.placeholderText
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.textField.attributedPlaceholder = $0
+    }
   }
 
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.viewModel.inputs.layoutSubviews()
+  internal func didSetChatHidden(hidden: Bool) {
+    self.viewModel.inputs.didSetChatHidden(hidden: hidden)
   }
 
   // MARK: Actions

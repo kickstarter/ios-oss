@@ -16,8 +16,8 @@ internal final class LiveStreamContainerMoreMenuIconTextCell: UITableViewCell, V
       self.iconImageView.image = UIImage(named: "speech-icon")
       self.titleLabel.isHidden = true
       self.subtitleLabel.text = hidden
-        ? localizedString(key: "Hide_chat", defaultValue: "Hide chat")
-        : localizedString(key: "Show_chat", defaultValue: "Show chat")
+        ? localizedString(key: "Show_chat", defaultValue: "Show chat")
+        : localizedString(key: "Hide_chat", defaultValue: "Hide chat")
     case .share:
       self.iconImageView.image = UIImage(named: "share-icon")
       self.titleLabel.isHidden = true

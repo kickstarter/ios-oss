@@ -33,6 +33,9 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Call when the more menu button of the chat input view is tapped
   func moreMenuButtonTapped()
 
+  /// Call with the desired visibility for the chat view controller
+  func didSetChatHidden(hidden: Bool)
+
   /// Call when the viewDidLoad
   func viewDidLoad()
 
@@ -49,6 +52,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the LiveStreamViewController should be configured
   var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
+
+  /// Emits with the chat view controller's visibility for configuration
+  var configureChatInputView: Signal<Bool, NoError> { get }
 
   /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
@@ -87,13 +93,16 @@ public protocol LiveStreamContainerViewModelOutputs {
   var numberWatchingBadgeViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the more menu should be presented with the LiveStreamEvent to configure with
-  var presentMoreMenu: Signal<LiveStreamEvent, NoError> { get }
+  var presentMoreMenu: Signal<(LiveStreamEvent, Bool), NoError> { get }
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
 
   /// Emits when the modal overlay view should be removed
   var removeModalOverlayView: Signal<(), NoError> { get }
+
+  /// Emits the desired visibility of the chat view controller
+  var shouldHideChatViewController: Signal<Bool, NoError> { get }
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -319,12 +328,23 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
-    self.presentMoreMenu = event.takeWhen(self.moreMenuButtonTappedProperty.signal)
+    self.presentMoreMenu = Signal.combineLatest(
+      event,
+      Signal.merge(
+        self.viewDidLoadProperty.signal.mapConst(false),
+        self.didSetChatHiddenProperty.signal
+        )
+      ).takeWhen(self.moreMenuButtonTappedProperty.signal)
+
     self.displayModalOverlayView = self.presentMoreMenu.ignoreValues()
     self.removeModalOverlayView = Signal.zip(
       self.displayModalOverlayView,
       self.willDismissMoreMenuViewControllerProperty.signal
     ).ignoreValues()
+
+    self.shouldHideChatViewController = self.didSetChatHiddenProperty.signal
+
+    self.configureChatInputView = configData.mapConst(false)
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
@@ -410,6 +430,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.moreMenuButtonTappedProperty.value = ()
   }
 
+  private let didSetChatHiddenProperty = MutableProperty(false)
+  public func didSetChatHidden(hidden: Bool) {
+    self.didSetChatHiddenProperty.value = hidden
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -426,6 +451,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
   public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
+  public let configureChatInputView: Signal<Bool, NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
@@ -438,9 +464,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let navBarTitleViewHidden: Signal<Bool, NoError>
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
-  public let presentMoreMenu: Signal<LiveStreamEvent, NoError>
+  public let presentMoreMenu: Signal<(LiveStreamEvent, Bool), NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let removeModalOverlayView: Signal<(), NoError>
+  public let shouldHideChatViewController: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>
