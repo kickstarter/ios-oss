@@ -20,6 +20,12 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(chatMessage: chatMessage)
   }
 
+  internal required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    self.selectionStyle = .none
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
