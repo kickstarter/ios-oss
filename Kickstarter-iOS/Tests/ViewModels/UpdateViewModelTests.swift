@@ -33,7 +33,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testUpdateUrlLoads() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues(
@@ -42,7 +42,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testTitle() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .activity)
     self.vm.inputs.viewDidLoad()
 
     self.title.assertValues(
@@ -59,7 +59,7 @@ final class UpdateViewModelTests: TestCase {
       .flatMap { $0.deletingLastPathComponent() }
       .map { $0.appendingPathComponent(String(prevUpdate.id)) }!
 
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
@@ -75,6 +75,8 @@ final class UpdateViewModelTests: TestCase {
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
 
       XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+      self.goToSafariBrowser.assertDidNotEmitValue("New update request should not load in Safari browser.")
 
       self.webViewLoadRequest.assertValues(
         [
@@ -98,7 +100,7 @@ final class UpdateViewModelTests: TestCase {
       .flatMap { $0.deletingLastPathComponent() }
       .map { $0.appendingPathComponent(String(anotherProject.id)) }!
 
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .deepLink)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
@@ -125,7 +127,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testGoToComments() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
     self.vm.inputs.viewDidLoad()
 
     let commentsRequest = URL(string: self.update.urls.web.update)
@@ -145,7 +147,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testGoToSafariBrowser() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update)
+    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
     self.vm.inputs.viewDidLoad()
 
     let updateRequest = URLRequest(url: URL(string: self.update.urls.web.update)!)
@@ -177,7 +179,7 @@ final class UpdateViewModelTests: TestCase {
     self.webViewLoadRequest.assertValueCount(1)
     self.goToSafariBrowser.assertValues([outsideUrl])
 
-    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-    XCTAssertEqual(["project_update"], self.trackingClient.properties(forKey: "context"))
+    XCTAssertEqual(["Viewed Update", "Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual("project_update", self.trackingClient.properties.last!["context"] as? String)
   }
 }

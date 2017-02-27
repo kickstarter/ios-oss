@@ -135,7 +135,10 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     self.goToSafariBrowser = Signal.zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
       .filter { action, goToProject, goToComments in
-        action.navigationType == .linkActivated && goToProject == nil && goToComments == nil
+        Navigation.Project.updateWithRequest(action.request) == nil
+          && action.navigationType == .linkActivated
+          && goToProject == nil
+          && goToComments == nil
       }
       .map { action, _, _ in action.request.url }
       .skipNil()
