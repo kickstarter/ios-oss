@@ -29,6 +29,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let numberWatchingBadgeViewHidden = TestObserver<Bool, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
+  private let reloadInputViews = TestObserver<(), NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
   private let titleViewText = TestObserver<String, NoError>()
@@ -56,6 +57,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
     self.vm.outputs.numberWatchingBadgeViewHidden.observe(self.numberWatchingBadgeViewHidden.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
+    self.vm.outputs.reloadInputViews.observe(self.reloadInputViews.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
@@ -826,5 +828,19 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectButtonContainerHidden.assertValues([false])
+  }
+
+  func testReloadInputViews() {
+    self.reloadInputViews.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: false)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
+
+    self.reloadInputViews.assertValueCount(1)
+
   }
 }
