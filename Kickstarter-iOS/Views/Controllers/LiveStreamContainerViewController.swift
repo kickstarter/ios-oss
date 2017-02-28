@@ -10,22 +10,15 @@ import UIKit
 //swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewController: UIViewController {
 
-  @IBOutlet private weak var creatorAvatarImageView: UIImageView!
-  @IBOutlet private weak var creatorAvatarLabel: SimpleHTMLLabel!
-  @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
-  @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var detailsContainerStackView: UIStackView!
   @IBOutlet private weak var gradientView: GradientView!
+  @IBOutlet private weak var liveStreamChatViewControllerContainer: UIView!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
-  @IBOutlet private weak var watchingBadgeView: UIView!
-  @IBOutlet private weak var watchingLabel: UILabel!
 
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
@@ -102,12 +95,20 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   public override var inputAccessoryView: UIView? {
-    guard let inputView = self.liveStreamChatInputView else { return nil }
+    guard
+      let inputView = self.liveStreamChatInputView,
+      self.shouldShowInputView else {
+        return nil
+    }
     return inputView
   }
 
   public override var canBecomeFirstResponder: Bool {
     return true
+  }
+
+  private var shouldShowInputView: Bool {
+    return !self.traitCollection.isVerticallyCompact
   }
 
   //swiftlint:disable:next function_body_length
@@ -125,7 +126,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.distribution .~ .fillEqually
 
     _  = self.loaderView
-      |> UIView.lens.backgroundColor .~ .hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .black
 
     _  = self.loaderActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
@@ -135,41 +136,9 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .white
 
-    _ = self.separatorViews
-      ||> UIView.lens.backgroundColor .~ .white
-      ||> UIView.lens.alpha .~ 0.2
-
-    _  = self.titleStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
-
-    let creatorLabelFont = self.traitCollection.isRegularRegular
-      ? UIFont.ksr_title3(size: 18)
-      : UIFont.ksr_title3(size: 14)
-
-    let creatorLabelBaseAttributes = [
-      NSFontAttributeName: creatorLabelFont,
-      NSForegroundColorAttributeName: UIColor.white
-    ]
-    let creatorLabelBoldAttributes = [
-      NSFontAttributeName: creatorLabelFont.bolded
-    ]
-
-    _  = self.creatorAvatarLabel
-      |> SimpleHTMLLabel.lens.numberOfLines .~ 0
-      |> SimpleHTMLLabel.lens.textColor .~ .white
-      |> SimpleHTMLLabel.lens.baseAttributes .~ creatorLabelBaseAttributes
-      |> SimpleHTMLLabel.lens.boldAttributes .~ creatorLabelBoldAttributes
-
-    _  = self.creatorAvatarImageView
-      |> UIImageView.lens.layer.masksToBounds .~ true
-
-    self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
-      ? Styles.grid(10) : Styles.grid(5)
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.alpha .~ 0.2
 
     _  = self.navBarTitleStackViewBackgroundView
       |> UIView.lens.layer.cornerRadius .~ 2
@@ -194,23 +163,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.textAlignment .~ .center
-
-    _ = self.watchingBadgeView
-      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.1)
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-      |> roundedStyle()
-
-    _ = self.watchingLabel
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-
-    _ = self.titleStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins %~~ { _, s in
-        s.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
-          : .init(all: Styles.grid(4))
-    }
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -266,13 +218,7 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.creatorAvatarLabel.rac.html = self.viewModel.outputs.creatorIntroText
-
-    self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
-
     self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
-    self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden
-    self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingBadgeViewHidden
 
     self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
 
@@ -284,7 +230,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
-    self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
 
     Signal.merge(
       self.viewModel.outputs.showErrorAlert,
@@ -302,6 +247,24 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+
+    self.viewModel.outputs.reloadInputViews
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.reloadInputViews()
+    }
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        if change.notificationName == .UIKeyboardWillShow && self?.isFirstResponder == .some(false) {
+          guard let offset = self?.liveStreamChatViewController?.tableView.contentOffset else { return }
+          UIView.animate(withDuration: change.duration) {
+            self?.liveStreamChatViewController?.tableView.contentOffset =
+              CGPoint(x: 0, y: offset.y + change.frame.size.height)
+          }
+        }
+    }
   }
 
   fileprivate func openLoginTout() {
@@ -318,8 +281,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-
-    self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
 
     self.layoutNavBarTitle()
   }

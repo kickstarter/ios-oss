@@ -5,7 +5,8 @@ import Result
 
 #if os(iOS)
 public final class Keyboard {
-  public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIViewAnimationOptions)
+  public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIViewAnimationOptions,
+    notificationName: Notification.Name)
 
   public static let shared = Keyboard()
   private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
@@ -35,7 +36,8 @@ public final class Keyboard {
     self.changeObserver.send(value: (
       frame.cgRectValue,
       duration.doubleValue,
-      UIViewAnimationOptions(rawValue: UInt(curve.rawValue))
+      UIViewAnimationOptions(rawValue: UInt(curve.rawValue)),
+      notificationName: notification.name
     ))
   }
 }

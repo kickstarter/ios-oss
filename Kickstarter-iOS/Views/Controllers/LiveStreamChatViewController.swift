@@ -18,6 +18,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.keyboardDismissMode = .interactive
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -48,6 +49,8 @@ internal final class LiveStreamChatViewController: UITableViewController {
 
             indexPaths.last.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: false) }
           } else {
+            let pinToBottom = self?.tableViewAtBottom()
+
             _self.tableView.beginUpdates()
             if _self.tableView.numberOfSections == 0 {
               _self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
@@ -55,10 +58,29 @@ internal final class LiveStreamChatViewController: UITableViewController {
             _self.tableView.insertRows(at: indexPaths, with: .bottom)
             _self.tableView.endUpdates()
 
-            indexPaths.last.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: true) }
+            if pinToBottom == .some(true) {
+              indexPaths.last.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: true) }
+            }
           }
         }
     }
+
+    //handle rotation, keep visible rows
+  }
+
+  private func tableViewAtBottom() -> Bool {
+    let lastIndex = self.tableView.numberOfRows(inSection: Section.messages.rawValue) - 1
+
+    return self.tableView.indexPathsForVisibleRows.map { indexPaths -> Bool in
+      for indexPath in indexPaths {
+        if indexPath.row == lastIndex {
+          return true
+        }
+      }
+
+      return false
+      }
+      .coalesceWith(false)
   }
 
   internal func received(chatMessages: [LiveStreamChatMessage]) {
