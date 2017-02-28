@@ -258,10 +258,16 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] change in
         if change.notificationName == .UIKeyboardWillShow && self?.isFirstResponder == .some(false) {
-          guard let offset = self?.liveStreamChatViewController?.tableView.contentOffset else { return }
+          guard
+            let offset = self?.liveStreamChatViewController?.tableView.contentOffset,
+            let contentInsetBottom = self?.liveStreamChatViewController?.tableView.contentInset.bottom
+          else {
+            return
+          }
+
           UIView.animate(withDuration: change.duration) {
             self?.liveStreamChatViewController?.tableView.contentOffset =
-              CGPoint(x: 0, y: offset.y + change.frame.size.height)
+              CGPoint(x: 0, y: offset.y + (change.frame.size.height - contentInsetBottom))
           }
         }
     }
