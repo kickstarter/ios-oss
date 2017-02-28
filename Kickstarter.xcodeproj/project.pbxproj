@@ -616,6 +616,7 @@
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
+		D07226AD1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */; };
 		D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */; };
 		D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */; };
 		D077CCCB1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */; };
@@ -1951,6 +1952,7 @@
 		D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModelTests.swift; sourceTree = "<group>"; };
 		D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
+		D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSourceTests.swift; sourceTree = "<group>"; };
 		D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatViewController.swift; sourceTree = "<group>"; };
 		D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCell.swift; sourceTree = "<group>"; };
 		D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCellViewModel.swift; sourceTree = "<group>"; };
@@ -2215,6 +2217,7 @@
 				A758F43A1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift */,
 				A757ED1F1D1C181D00A5C978 /* DiscoveryProjectsDataSourceTest.swift */,
 				0156B3841D107273000C4252 /* FindFriendsDataSourceTests.swift */,
+				D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */,
 				A7792C3C1E311614002BAD63 /* LiveStreamDiscoveryDataSourceTests.swift */,
 				599603FF1CE6286900E1B1EC /* ProfileDataSourceTests.swift */,
 				9D525F111D417FD7003CAE04 /* ProjectActivitiesDataSourceTests.swift */,
@@ -4792,6 +4795,7 @@
 				A7208CC41CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7CA8C471D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift in Sources */,
 				A7DC83921C9DB9BC00BB2B44 /* (null) in Sources */,
+				D07226AD1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift in Sources */,
 				59885A981DB6E2A900F65825 /* TwoFactorViewControllerTests.swift in Sources */,
 				A71C7FB01E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift in Sources */,
 				A799E9801E297D6E00B5C09D /* ProjectPamphletContentDataSourceTests.swift in Sources */,
