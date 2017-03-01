@@ -79,9 +79,6 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
 
-  /// Emits when the view controller should reload its input views
-  var reloadInputViews: Signal<(), NoError> { get }
-
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
 
@@ -281,8 +278,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }
     ).skipRepeats()
 
-    self.reloadInputViews = self.deviceOrientationDidChangeProperty.signal.skipNil().ignoreValues()
-
     self.navBarLiveDotImageViewHidden = hideWhenReplay
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
@@ -410,7 +405,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  public let reloadInputViews: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>

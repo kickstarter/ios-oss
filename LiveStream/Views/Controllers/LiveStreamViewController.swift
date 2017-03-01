@@ -9,6 +9,12 @@ import UIKit
 
 public typealias LiveStreamChatUserInfo = (userId: Int, name: String, profilePictureUrl: String)
 
+public protocol LiveStreamChatHandler: class {
+  var chatMessages: Signal<[LiveStreamChatMessage], NoError> { get }
+
+  func sendChatMessage(message: String)
+}
+
 public protocol LiveStreamViewControllerDelegate: class {
   func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                             state: LiveStreamViewControllerState)
@@ -31,10 +37,6 @@ public final class LiveStreamViewController: UIViewController {
     self.delegate = delegate
     self.liveStreamService = liveStreamService
     self.viewModel.inputs.configureWith(event: event, userId: userId)
-  }
-
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
   }
 
   //swiftlint:disable:next function_body_length
@@ -145,10 +147,6 @@ public final class LiveStreamViewController: UIViewController {
     self.liveStreamService?.deleteDatabase()
   }
 
-  public var chatMessages: Signal<[LiveStreamChatMessage], NoError> {
-    return self.viewModel.outputs.chatMessages
-  }
-
   // MARK: Firebase
 
   private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {
@@ -239,18 +237,22 @@ public final class LiveStreamViewController: UIViewController {
     self.videoViewController = videoViewController
     self.addChildVideoViewController(controller: videoViewController)
   }
-
-  // MARK: Chat
-
-  public func sendChatMessage(message: String) {
-    self.viewModel.inputs.sendChatMessage(message: message)
-  }
 }
 
 extension LiveStreamViewController: LiveVideoViewControllerDelegate {
   public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
                                                           state: LiveVideoPlaybackState) {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
+  }
+}
+
+extension LiveStreamViewController: LiveStreamChatHandler {
+  public var chatMessages: Signal<[LiveStreamChatMessage], NoError> {
+    return self.viewModel.outputs.chatMessages
+  }
+
+  public func sendChatMessage(message: String) {
+    self.viewModel.inputs.sendChatMessage(message: message)
   }
 }
 

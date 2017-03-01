@@ -14,6 +14,16 @@ internal final class LiveStreamChatViewController: UITableViewController {
   private let dataSource = LiveStreamChatDataSource()
   private let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
+  fileprivate weak var liveStreamChatHandler: LiveStreamChatHandler?
+
+  internal func configureWith(liveStreamChatHandler: LiveStreamChatHandler) {
+    self.liveStreamChatHandler = liveStreamChatHandler
+
+    _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
+      self?.viewModel.inputs.received(chatMessages: $0)
+    }
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -21,6 +31,12 @@ internal final class LiveStreamChatViewController: UITableViewController {
     self.tableView.keyboardDismissMode = .interactive
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.becomeFirstResponder()
   }
 
   internal override func bindStyles() {
@@ -43,6 +59,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
             LiveStreamChatMessageCell.self, toSection: Section.messages.rawValue)
         }
 
+        //FIXME: try move scrolling to bottom to vm
         if !indexPaths.isEmpty {
           if indexPaths.count > 5 {
             self?.tableView.reloadData()
@@ -65,15 +82,83 @@ internal final class LiveStreamChatViewController: UITableViewController {
         }
     }
 
-    //handle rotation, keep visible rows
+    NotificationCenter.default
+      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+        guard let _self = self else { return }
+        _self.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation,
+          currentIndexPaths: _self.tableView.indexPathsForVisibleRows.coalesceWith([])
+        )
+    }
+
+    self.viewModel.outputs.scrollToIndexPaths
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        let lastIndexPath = self?.lastIndexPath()
+        lastIndexPath.flatMap { self?.tableView.scrollToRow(at: $0, at: .top, animated: false) }
+    }
+
+    self.viewModel.outputs.reloadInputViews
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.reloadInputViews()
+    }
+
+    //FIXME: move to VM
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        if change.notificationName == .UIKeyboardWillShow && self?.isFirstResponder == .some(false) {
+          guard
+            let offset = self?.tableView.contentOffset,
+            let contentInsetBottom = self?.tableView.contentInset.bottom
+            else {
+              return
+          }
+
+          UIView.animate(withDuration: change.duration) {
+            self?.tableView.contentOffset =
+              CGPoint(x: 0, y: offset.y + (change.frame.size.height - contentInsetBottom))
+          }
+        }
+    }
   }
 
+  internal override var inputAccessoryView: UIView? {
+    guard
+      let inputView = self.liveStreamChatInputView,
+      self.shouldShowInputView else {
+        return nil
+    }
+    return inputView
+  }
+
+  internal override var canBecomeFirstResponder: Bool {
+    return true
+  }
+
+  internal var shouldShowInputView: Bool {
+    return !self.traitCollection.isVerticallyCompact
+  }
+
+  private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
+    let chatInputView = LiveStreamChatInputView.fromNib()
+    chatInputView?.configureWith(delegate: self)
+    chatInputView?.frame = .init(x: 0, y: 0, width: 60, height: Styles.grid(8))
+    return chatInputView
+  }()
+
+  //FIXME: consider moving to VM
   private func tableViewAtBottom() -> Bool {
-    let lastIndex = self.tableView.numberOfRows(inSection: Section.messages.rawValue) - 1
+    if self.tableView.numberOfRows(inSection: Section.messages.rawValue) == 0 {
+      return true
+    }
+
+    let lastIndexPath = self.lastIndexPath()
 
     return self.tableView.indexPathsForVisibleRows.map { indexPaths -> Bool in
       for indexPath in indexPaths {
-        if indexPath.row == lastIndex {
+        if indexPath.row == lastIndexPath.row {
           return true
         }
       }
@@ -83,7 +168,22 @@ internal final class LiveStreamChatViewController: UITableViewController {
       .coalesceWith(false)
   }
 
-  internal func received(chatMessages: [LiveStreamChatMessage]) {
-    self.viewModel.inputs.received(chatMessages: chatMessages)
+  private func lastIndexPath() -> IndexPath {
+    let lastIndex = self.tableView.numberOfRows(inSection: Section.messages.rawValue) - 1
+    return IndexPath(row: lastIndex, section: Section.messages.rawValue)
+  }
+}
+
+extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
+  func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView) {
+
+  }
+
+  func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
+    self.liveStreamChatHandler?.sendChatMessage(message: message)
+  }
+
+  func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
+    //self.openLoginTout()
   }
 }

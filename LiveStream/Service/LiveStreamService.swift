@@ -61,7 +61,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       guard let url = URL(string: Secrets.LiveStreams.Api.base)?
         .appendingPathComponent("ksr-streams") else {
-          observer.send(error: .invalidEventId)
+          observer.send(error: .genericFailure)
           return
       }
 

@@ -74,8 +74,8 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamChatViewController }
       .first
 
-    _ = self.liveStreamViewController?.chatMessages.observeValues { [weak self] in
-      self?.liveStreamChatViewController?.received(chatMessages: $0)
+    self.liveStreamViewController.flatMap {
+      self.liveStreamChatViewController?.configureWith(liveStreamChatHandler: $0)
     }
 
     NotificationCenter.default
@@ -92,23 +92,6 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
-  }
-
-  public override var inputAccessoryView: UIView? {
-    guard
-      let inputView = self.liveStreamChatInputView,
-      self.shouldShowInputView else {
-        return nil
-    }
-    return inputView
-  }
-
-  public override var canBecomeFirstResponder: Bool {
-    return true
-  }
-
-  private var shouldShowInputView: Bool {
-    return !self.traitCollection.isVerticallyCompact
   }
 
   //swiftlint:disable:next function_body_length
@@ -247,30 +230,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
-
-    self.viewModel.outputs.reloadInputViews
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.reloadInputViews()
-    }
-
-    Keyboard.change
-      .observeForUI()
-      .observeValues { [weak self] change in
-        if change.notificationName == .UIKeyboardWillShow && self?.isFirstResponder == .some(false) {
-          guard
-            let offset = self?.liveStreamChatViewController?.tableView.contentOffset,
-            let contentInsetBottom = self?.liveStreamChatViewController?.tableView.contentInset.bottom
-          else {
-            return
-          }
-
-          UIView.animate(withDuration: change.duration) {
-            self?.liveStreamChatViewController?.tableView.contentOffset =
-              CGPoint(x: 0, y: offset.y + (change.frame.size.height - contentInsetBottom))
-          }
-        }
-    }
   }
 
   fileprivate func openLoginTout() {
@@ -366,13 +325,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     return shareBarButtonItem
   }()
 
-  private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
-    let chatInputView = LiveStreamChatInputView.fromNib()
-    chatInputView?.configureWith(delegate: self)
-    chatInputView?.frame = .init(x: 0, y: 0, width: 0, height: Styles.grid(8))
-    return chatInputView
-  }()
-
   // MARK: Actions
 
   @objc private func goToProjectButtonPressed() {
@@ -405,16 +357,3 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   }
 }
 
-extension LiveStreamContainerViewController: LiveStreamChatInputViewDelegate {
-  func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView) {
-
-  }
-
-  func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
-    self.liveStreamViewController?.sendChatMessage(message: message)
-  }
-
-  func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
-    self.openLoginTout()
-  }
-}

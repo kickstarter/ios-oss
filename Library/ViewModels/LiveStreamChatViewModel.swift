@@ -9,6 +9,9 @@ public protocol LiveStreamChatViewModelType {
 }
 
 public protocol LiveStreamChatViewModelInputs {
+  /// Call when the device's orientation will change.
+  func deviceOrientationDidChange(orientation: UIInterfaceOrientation, currentIndexPaths: [IndexPath])
+
   /// Call when the viewDidLoad.
   func viewDidLoad()
 
@@ -19,6 +22,12 @@ public protocol LiveStreamChatViewModelInputs {
 public protocol LiveStreamChatViewModelOutputs {
   /// Emits chat messages for appending to the data source.
   var appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
+
+  /// Emits when the view controller should reload its input views
+  var reloadInputViews: Signal<(), NoError> { get }
+
+  /// Emits the previous index paths that should remain visible on rotate.
+  var scrollToIndexPaths: Signal<[IndexPath], NoError> { get }
 }
 
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
@@ -29,6 +38,20 @@ LiveStreamChatViewModelOutputs {
       self.receivedChatMessagesProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     ).map(first)
+
+    self.scrollToIndexPaths = Signal.combineLatest(
+      self.deviceOrientationDidChangeProperty.signal.skipNil().map(second),
+      self.viewDidLoadProperty.signal
+    ).map(first)
+
+    self.reloadInputViews = self.deviceOrientationDidChangeProperty.signal.skipNil().ignoreValues()
+  }
+
+  private let deviceOrientationDidChangeProperty =
+    MutableProperty<(UIInterfaceOrientation, [IndexPath])?>(nil)
+  public func deviceOrientationDidChange(orientation: UIInterfaceOrientation,
+                                         currentIndexPaths: [IndexPath]) {
+    self.deviceOrientationDidChangeProperty.value = (orientation, currentIndexPaths)
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -42,6 +65,8 @@ LiveStreamChatViewModelOutputs {
   }
 
   public let appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError>
+  public let reloadInputViews: Signal<(), NoError>
+  public let scrollToIndexPaths: Signal<[IndexPath], NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
   public var outputs: LiveStreamChatViewModelOutputs { return self }
