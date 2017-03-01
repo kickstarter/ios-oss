@@ -25,7 +25,6 @@ internal final class BackerDashboardViewController: UIViewController {
 
   private let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
 
-  private var currentScrollOffset: CGFloat = 0 // temp
   private var isCollapsed: Bool = false
 
   internal static func instantiate() -> BackerDashboardViewController {
@@ -65,24 +64,67 @@ internal final class BackerDashboardViewController: UIViewController {
     super.bindStyles()
   }
 
+  fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
+    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
+      + Styles.grid(2)
+    let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
+
+    if shouldCollapse {
+      UIView.animate(
+        withDuration: 0.3,
+        delay: 0.0,
+        options: .curveEaseOut,
+        animations: {
+          self.headerViewTopConstraint.constant = -minHeaderHeight
+          self.view.layoutIfNeeded()
+        },
+        completion: { _ in
+          self.isCollapsed = true
+        }
+      )
+    } else {
+      UIView.animate(
+        withDuration: 0.3,
+        delay: 0.0,
+        options: .curveEaseOut,
+        animations: {
+          self.headerViewTopConstraint.constant = 0
+          self.view.layoutIfNeeded()
+      },
+        completion: { _ in
+          self.isCollapsed = false
+        }
+      )
+    }
+  }
+
   fileprivate func moveHeader(with scrollView: UIScrollView) {
     let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
       + Styles.grid(2)
 
     if scrollView.contentOffset.y > 0 {
-      self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
+      if !self.isCollapsed {
+        self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
+      }
+    } else if scrollView.contentOffset.y < 0 {
+      if isCollapsed {
+        let newConstant = self.headerViewTopConstraint.constant - scrollView.contentOffset.y
+        if newConstant <= 0 { // need a constraint here, but maybe this isn't the best place
+          self.headerViewTopConstraint.constant = newConstant
+        }
+      }
     }
 
     if self.headerViewTopConstraint.constant <= -minHeaderHeight {
       self.headerViewTopConstraint.constant = -minHeaderHeight
-      isCollapsed = true
-    } else {
-      isCollapsed = false
     }
 
-    self.currentScrollOffset = abs(self.headerViewTopConstraint.constant)
+    // todo: the scrollview itself shouldn't be able to tuck under when header is not yet collapsed
+    // todo: still some jankiness on scroll, probably b/c isCollapsed is not correct until releasing
 
-    print("offset = \(scrollView.contentOffset.y)")
+//    print("offset = \(scrollView.contentOffset.y)")
+//    print("constant = \(self.headerViewTopConstraint.constant), -minHeight = \(-minHeaderHeight)")
+//    print("isCollapsed = \(self.isCollapsed)")
   }
 
   @objc private func backedButtonTapped() {
@@ -112,10 +154,12 @@ extension BackerDashboardViewController: ProfileBackedProjectsViewControllerDele
   }
 
   func profileBackedProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
+    self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
   }
 
   func profileBackedProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
+      self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
     }
   }
 }
@@ -126,10 +170,12 @@ extension BackerDashboardViewController: ProfileSavedProjectsViewControllerDeleg
   }
 
   func profileSavedProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
+    self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
   }
 
   func profileSavedProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
+      self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
     }
   }
 }
