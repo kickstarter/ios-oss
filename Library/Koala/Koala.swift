@@ -281,6 +281,36 @@ public final class Koala {
     }
   }
 
+  /**
+   Determines the place from which the update was presented.
+
+   - activity:        The activity feed.
+   - activitySample:  The activity sample in Discovery.
+   - creatorActivity: The creator's activity feed.
+   - deepLink:        A deep link, including push notification.
+   - draftPreview:    The update draft editor.
+   - updates:         The updates index.
+   */
+  public enum UpdateContext {
+    case activity
+    case activitySample
+    case creatorActivity
+    case deepLink
+    case draftPreview
+    case updates
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .activity:         return "activity"
+      case .activitySample:   return "activity_sample"
+      case .creatorActivity:  return "creator_activity"
+      case .deepLink:         return "deep_link"
+      case .draftPreview:     return "draft_preview"
+      case .updates:          return "updates"
+      }
+    }
+  }
+
   public init(bundle: NSBundleType = Bundle.main,
               client: TrackingClientType,
               config: Config? = nil,
@@ -1293,6 +1323,20 @@ public final class Koala {
 
   public func trackFriendUnfollow(source: FriendsSource) {
     self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
+  }
+
+  // MARK: Update Events
+
+  public func trackViewedUpdate(forProject project: Project, context: UpdateContext) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.trackingString])
+
+    self.track(event: "Viewed Update", properties: props)
+  }
+
+  public func trackViewedUpdates(forProject project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+    self.track(event: "Viewed Updates", properties: props)
   }
 
   // MARK: Update Draft Events
