@@ -43,6 +43,9 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the LiveStreamViewController should be configured
   var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
 
+  /// Emits when the LiveStreamContainerPageViewController should be configured
+  var configurePageViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+
   /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
 
@@ -128,6 +131,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
+
+    self.configurePageViewController = Signal.combineLatest(project, initialEvent)
+      .map { project, event in (project, event) }
 
     let liveStreamControllerState = Signal.merge(
       Signal.combineLatest(
@@ -393,6 +399,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
   public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
+  public let configurePageViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>

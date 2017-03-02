@@ -16,12 +16,13 @@ internal final class LiveStreamChatViewController: UITableViewController {
 
   fileprivate weak var liveStreamChatHandler: LiveStreamChatHandler?
 
-  internal func configureWith(liveStreamChatHandler: LiveStreamChatHandler) {
-    self.liveStreamChatHandler = liveStreamChatHandler
+  public static func configuredWith(liveStreamChatHandler: LiveStreamChatHandler) ->
+    LiveStreamChatViewController {
 
-    _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
-      self?.viewModel.inputs.received(chatMessages: $0)
-    }
+      let vc = Storyboard.LiveStream.instantiate(LiveStreamChatViewController.self)
+      vc.liveStreamChatHandler = liveStreamChatHandler
+
+      return vc
   }
 
   internal override func viewDidLoad() {
@@ -33,7 +34,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewDidAppear(_ animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     self.becomeFirstResponder()
@@ -49,6 +50,10 @@ internal final class LiveStreamChatViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
+      self?.viewModel.inputs.received(chatMessages: $0)
+    }
 
     self.viewModel.outputs.appendChatMessagesToDataSource
       .observeForUI()
@@ -144,7 +149,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
   private lazy var liveStreamChatInputView: LiveStreamChatInputView? = {
     let chatInputView = LiveStreamChatInputView.fromNib()
     chatInputView?.configureWith(delegate: self)
-    chatInputView?.frame = .init(x: 0, y: 0, width: 60, height: Styles.grid(8))
+    chatInputView?.frame = .init(x: 0, y: 0, width: 60, height: Styles.grid(10))
     return chatInputView
   }()
 

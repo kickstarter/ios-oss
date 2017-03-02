@@ -617,6 +617,10 @@
 		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
 		D07226AD1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */; };
+		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
+		D07226EB1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */; };
+		D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */; };
+		D07227021E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07227011E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift */; };
 		D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */; };
 		D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */; };
 		D077CCCB1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */; };
@@ -1953,6 +1957,10 @@
 		D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
 		D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSourceTests.swift; sourceTree = "<group>"; };
+		D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewController.swift; sourceTree = "<group>"; };
+		D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewController.swift; sourceTree = "<group>"; };
+		D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPagesDataSource.swift; sourceTree = "<group>"; };
+		D07227011E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewModel.swift; sourceTree = "<group>"; };
 		D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatViewController.swift; sourceTree = "<group>"; };
 		D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCell.swift; sourceTree = "<group>"; };
 		D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCellViewModel.swift; sourceTree = "<group>"; };
@@ -2522,9 +2530,11 @@
 				A7CC14341D00E73D00035C52 /* FindFriendsViewController.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
 				D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */,
+				D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */,
 				D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */,
 				D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */,
 				A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */,
+				D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
@@ -3198,6 +3208,7 @@
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
 				D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */,
+				D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */,
 				A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
@@ -3262,6 +3273,7 @@
 				D0CC9D2A1E5AF9F300C2BC4A /* LiveStreamChatInputViewModel.swift */,
 				D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */,
 				D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */,
+				D07227011E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift */,
 				D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */,
 				D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */,
 				A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */,
@@ -4305,6 +4317,7 @@
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				9D1A2A4F1D5D200E009E1B3F /* CheckoutViewModel.swift in Sources */,
+				D07227021E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
@@ -4595,6 +4608,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
 				A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */,
+				D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */,
 				0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */,
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
@@ -4655,11 +4669,13 @@
 				8072F44F1D46BAA400999EF1 /* UpdatePreviewViewModel.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				59322F071CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */,
+				D07226EB1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift in Sources */,
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
 				A75798911D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift in Sources */,
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
+				D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,

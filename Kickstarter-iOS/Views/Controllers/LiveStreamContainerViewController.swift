@@ -11,7 +11,6 @@ import UIKit
 public final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var gradientView: GradientView!
-  @IBOutlet private weak var liveStreamChatViewControllerContainer: UIView!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
@@ -20,11 +19,9 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
 
-  fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
-    = LiveStreamEventDetailsViewModel()
-  private weak var liveStreamChatViewController: LiveStreamChatViewController?
   fileprivate weak var liveStreamViewController: LiveStreamViewController?
-  private let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
@@ -37,7 +34,6 @@ public final class LiveStreamContainerViewController: UIViewController {
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc
@@ -70,18 +66,9 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamViewController }
       .first
 
-    self.liveStreamChatViewController = self.childViewControllers
-      .flatMap { $0 as? LiveStreamChatViewController }
+    self.liveStreamContainerPageViewController = self.childViewControllers
+      .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
-
-    self.liveStreamViewController.flatMap {
-      self.liveStreamChatViewController?.configureWith(liveStreamChatHandler: $0)
-    }
-
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
 
     NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
@@ -91,7 +78,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.viewModel.inputs.viewDidLoad()
-    self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
   //swiftlint:disable:next function_body_length
@@ -169,11 +155,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.eventDetailsViewModel.outputs.openLoginToutViewController
-      .observeValues { [weak self] _ in
-        self?.openLoginTout()
-    }
-
     self.viewModel.outputs.configureLiveStreamViewController
       .observeForUI()
       .observeValues { [weak self] _, userId, event in
@@ -183,6 +164,22 @@ public final class LiveStreamContainerViewController: UIViewController {
           userId: userId,
           delegate: _self,
           liveStreamService: AppEnvironment.current.liveStreamService
+        )
+    }
+
+    self.viewModel.outputs.configurePageViewController
+      .observeForUI()
+      .observeValues { [weak self] project, liveStreamEvent in
+        guard
+          let _self = self,
+          let liveStreamViewController = self?.liveStreamViewController
+          else {
+            return
+        }
+        _self.liveStreamContainerPageViewController?.configureWith(
+          project: project,
+          liveStreamEvent: liveStreamEvent,
+          liveStreamChatHandler: liveStreamViewController
         )
     }
 
@@ -214,13 +211,10 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
 
-    Signal.merge(
-      self.viewModel.outputs.showErrorAlert,
-      self.eventDetailsViewModel.outputs.showErrorAlert
-    )
-    .observeForUI()
-    .observeValues { [weak self] in
-      self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
+    self.viewModel.outputs.showErrorAlert
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
 
     self.shareViewModel.outputs.showShareSheet
@@ -232,13 +226,13 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
   }
 
-  fileprivate func openLoginTout() {
-    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
-
-    self.present(nav, animated: true, completion: nil)
-  }
+//  fileprivate func openLoginTout() {
+//    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
+//    let nav = UINavigationController(rootViewController: vc)
+//    nav.modalPresentationStyle = .formSheet
+//
+//    self.present(nav, animated: true, completion: nil)
+//  }
 
   override public var prefersStatusBarHidden: Bool {
     return true
@@ -338,22 +332,17 @@ public final class LiveStreamContainerViewController: UIViewController {
   @objc private func share() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
-
-  @objc private func subscribe() {
-    self.eventDetailsViewModel.inputs.subscribeButtonTapped()
-  }
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
                                                                     numberOfPeople: Int) {
-    self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
+//    self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
   }
 
   public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                                    state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
+//    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }
 }
-
