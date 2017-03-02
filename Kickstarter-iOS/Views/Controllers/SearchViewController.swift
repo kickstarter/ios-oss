@@ -63,7 +63,6 @@ internal final class SearchViewController: UITableViewController {
     self.popularLoaderIndicator.center = self.tableView.center
   }
 
-
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -112,6 +111,7 @@ internal final class SearchViewController: UITableViewController {
       ?|> baseNavigationBarStyle
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
 
     self.viewModel.outputs.projects
@@ -157,7 +157,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
-    
+
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
     self.popularLoaderIndicator.rac.animating = self.viewModel.outputs.popularLoaderIndicatorIsAnimating
 

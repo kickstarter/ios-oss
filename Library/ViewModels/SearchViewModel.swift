@@ -94,7 +94,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
@@ -145,7 +144,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
-
 
     self.projects = Signal.combineLatest(
       self.isPopularTitleVisible,
