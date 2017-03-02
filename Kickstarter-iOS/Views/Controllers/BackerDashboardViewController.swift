@@ -22,6 +22,7 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var selectedLineLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var selectedLineWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var settingsButtonItem: UIBarButtonItem!
+  @IBOutlet weak var sortBar: ProfileSortBarView!
 
   private weak var backedProjectsViewController: ProfileBackedProjectsViewController!
   private weak var savedProjectsViewController: ProfileSavedProjectsViewController!
@@ -73,6 +74,7 @@ internal final class BackerDashboardViewController: UIViewController {
     self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
+    self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
     self.viewModel.outputs.avatarURL
       .observeForUI()
@@ -83,6 +85,20 @@ internal final class BackerDashboardViewController: UIViewController {
       .skipNil()
       .observeValues { [weak self] url in
         self?.avatarImageView.ksr_setImageWithURL(url)
+    }
+
+    self.viewModel.outputs.backedButtonTitleText
+      .observeForControllerAction()
+      .observeValues { [weak self] string in
+        guard let _self = self else { return }
+        _self.setAttributedTitles(for: _self.backedSortButton, with: string)
+    }
+
+    self.viewModel.outputs.savedButtonTitleText
+      .observeForControllerAction()
+      .observeValues { [weak self] string in
+        guard let _self = self else { return }
+        _self.setAttributedTitles(for: _self.savedSortButton, with: string)
     }
 
     self.viewModel.outputs.goToMessages
@@ -111,6 +127,12 @@ internal final class BackerDashboardViewController: UIViewController {
         self?.pinSelectedIndicator(toPage: page, animated: animated)
     }
 
+    self.viewModel.outputs.setSelectedButton
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.selectButton(atIndex: $0)
+    }
+
 //    self.viewModel.outputs.scrollToProject
 //      .observeForUI()
 //      .observeValues { [weak self] itemIndex in
@@ -128,16 +150,6 @@ internal final class BackerDashboardViewController: UIViewController {
 
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
-
-    _ = self.backedSortButton
-      |> UIButton.lens.title(forState: .normal) .~ "123\nbacked"
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 13)
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
-
-    _ = self.savedSortButton
-      |> UIButton.lens.title(forState: .normal) .~ "6\nsaved"
-      |> UIButton.lens.titleLabel.font .~ .ksr_subhead(size: 13)
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
 
     _ = self.messagesButtonItem
       |> UIBarButtonItem.lens.image .~ image(named: "inbox-icon")
@@ -178,6 +190,47 @@ internal final class BackerDashboardViewController: UIViewController {
     }
   }
 
+  private func present(project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: projects,
+                                                           navigatorDelegate: self)
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
+  }
+
+  private func selectButton(atIndex index: Int) {
+    for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
+      _ = (button as? UIButton)
+        ?|> UIButton.lens.selected .~ (idx == index)
+    }
+  }
+
+  private func setAttributedTitles(for button: UIButton, with string: String) {
+    let normalTitleString = NSAttributedString(string: string, attributes: [
+      NSFontAttributeName: self.traitCollection.isRegularRegular
+        ? UIFont.ksr_subhead(size: 16.0)
+        : UIFont.ksr_subhead(size: 13.0),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
+    ])
+
+    let selectedTitleString = NSAttributedString(string: string, attributes: [
+      NSFontAttributeName: self.traitCollection.isRegularRegular
+        ? UIFont.ksr_subhead(size: 16.0).bolded
+        : UIFont.ksr_subhead(size: 13.0).bolded,
+      NSForegroundColorAttributeName: UIColor.black,
+    ])
+
+    _ = button
+      |> UIButton.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
+      |> UIButton.lens.attributedTitle(forState: .selected) %~ { _ in selectedTitleString }
+      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
+  }
+
   private func pinSelectedIndicator(toPage page: Int, animated: Bool) {
     guard let button = self.menuButtonsStackView.arrangedSubviews[page] as? UIButton else { return }
 
@@ -211,19 +264,6 @@ internal final class BackerDashboardViewController: UIViewController {
 //        self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
 //      }
 //    })
-  }
-
-  private func present(project: Project, projects: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: projects,
-                                                           navigatorDelegate: self)
-    self.present(vc, animated: true, completion: nil)
-  }
-
-  private func updateProjectPlaylist(_ playlist: [Project]) {
-    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
-    navigator.updatePlaylist(playlist)
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {

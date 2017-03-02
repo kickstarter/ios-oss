@@ -23,13 +23,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ok-n6-GYO" userLabel="Header View">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="193.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="197.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FgX-QT-hwm" userLabel="Header Top Background View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="131"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="QfV-he-2zt">
-                                                <rect key="frame" x="8" y="8" width="359" height="111"/>
+                                                <rect key="frame" x="8" y="8" width="359" height="115"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="efi-yy-oXg">
                                                         <rect key="frame" x="0.0" y="0.0" width="139.5" height="60"/>
@@ -62,16 +62,16 @@
                                                         <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="kix-V0-Rli">
-                                                        <rect key="frame" x="0.0" y="81" width="141" height="30"/>
+                                                        <rect key="frame" x="0.0" y="81" width="158" height="34"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSU-r2-25L">
-                                                                <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSU-r2-25L">
+                                                                <rect key="frame" x="0.0" y="0.0" width="60" height="34"/>
                                                                 <state key="normal" title="Backed">
                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                 </state>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDl-3X-PfP">
-                                                                <rect key="frame" x="99" y="0.0" width="42" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDl-3X-PfP">
+                                                                <rect key="frame" x="108" y="0.0" width="50" height="34"/>
                                                                 <state key="normal" title="Saved">
                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                 </state>
@@ -83,14 +83,14 @@
                                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Xm-mG-GoB" userLabel="Divider View">
-                                                <rect key="frame" x="0.0" y="127" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="131" width="375" height="1"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="EGd-zA-GWY"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JCU-Yi-sDB" userLabel="Selected Line View">
-                                                <rect key="frame" x="8" y="125" width="55" height="2"/>
+                                                <rect key="frame" x="8" y="129" width="55" height="2"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="55" id="4j0-6Y-D4g"/>
@@ -112,7 +112,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNq-3P-mw8" userLabel="Sort View">
-                                        <rect key="frame" x="8" y="145" width="359" height="36.5"/>
+                                        <rect key="frame" x="8" y="149" width="359" height="36.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="bkr-KW-3xH">
                                                 <rect key="frame" x="8" y="8" width="343" height="20.5"/>
@@ -150,13 +150,13 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AFN-Ik-z8h" userLabel="Backed Container View">
-                                <rect key="frame" x="0.0" y="193.5" width="375" height="473.5"/>
+                                <rect key="frame" x="0.0" y="197.5" width="375" height="469.5"/>
                                 <connections>
                                     <segue destination="Ri3-dy-Xod" kind="embed" id="Rkr-fp-RIo"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gsg-kT-XrW" userLabel="Saved Container View">
-                                <rect key="frame" x="0.0" y="193.5" width="375" height="473.5"/>
+                                <rect key="frame" x="0.0" y="197.5" width="375" height="469.5"/>
                                 <connections>
                                     <segue destination="vdE-5N-0aV" kind="embed" id="Vm0-Gy-4Ol"/>
                                 </connections>
@@ -200,6 +200,7 @@
                         <outlet property="selectedLineView" destination="JCU-Yi-sDB" id="p0s-6m-FiB"/>
                         <outlet property="selectedLineWidthConstraint" destination="4j0-6Y-D4g" id="1r3-vH-HJW"/>
                         <outlet property="settingsButtonItem" destination="kQJ-TG-77F" id="0Wt-F5-Vsr"/>
+                        <outlet property="sortBar" destination="tNq-3P-mw8" id="gs8-qd-UBQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5w-hE-a0o" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -211,7 +212,7 @@
             <objects>
                 <tableViewController id="Ri3-dy-Xod" customClass="ProfileBackedProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vv2-2i-WDz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="473.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="469.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -244,7 +245,7 @@
             <objects>
                 <tableViewController id="vdE-5N-0aV" customClass="ProfileSavedProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6Me-EV-Ou7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="473.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="469.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>

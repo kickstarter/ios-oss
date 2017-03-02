@@ -33,6 +33,9 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a URL for the avatar image view.
   var avatarURL: Signal<URL?, NoError> { get }
 
+  /// Emits an attributed string for the backed button title label.
+  var backedButtonTitleText: Signal<String, NoError> { get }
+
   /// Emits a string for the backer location label.
   var backerLocationText: Signal<String, NoError> { get }
 
@@ -54,11 +57,20 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits an index to pin the indicator view to a particular button view and whether to animate it.
   var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
 
+  /// Emits an attributed string for the saved button title label.
+  var savedButtonTitleText: Signal<String, NoError> { get }
+
   /// Emits a boolean whether saved projects container should be hidden or not.
   var savedProjectsAreHidden: Signal<Bool, NoError> { get }
 
+  /// Emits an index of the selected button to update all button selected states.
+  var setSelectedButton: Signal<Int, NoError> { get }
+
   /// Emits when should scroll to the project item or row position.
   var scrollToProject: Signal<Int, NoError> { get }
+
+  /// Emits a boolean whether the sort bar is hidden or not.
+  var sortBarIsHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol BackerDashboardViewModelType {
@@ -79,22 +91,28 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
 
+    self.backedButtonTitleText = user
+      .map { user in
+        localizedString(
+          key: "projects_count_backed",
+          defaultValue: "%{projects_count} backed",
+          count: user.stats.backedProjectsCount ?? 0,
+          substitutions: ["projects_count" : Format.wholeNumber(user.stats.backedProjectsCount ?? 0)])
+        .replacingOccurrences(of: " ", with: "\n")
+    }
+
     self.backerLocationText = user.map { $0.location?.displayableName ?? "" }
 
     self.backerNameText = user.map { $0.name }
 
-//    self.backedProjectsCountLabel = user
-//      .map { user in
-//        Strings.Backed_projects_projects_count(
-//          project_count: Format.wholeNumber(user.stats.backedProjectsCount ?? 0)
-//        )
-//    }
-//    self.createdProjectsCountLabel = user
-//      .map { user in
-//        Strings.Created_projects_projects_count(
-//          projects_count: Format.wholeNumber(user.stats.createdProjectsCount ?? 0)
-//        )
-//    }
+    self.savedButtonTitleText = user.map { user in
+      localizedString(
+        key: "projects_count_backed",
+        defaultValue: "%{projects_count} saved",
+        count: user.stats.starredProjectsCount ?? 0,
+        substitutions: ["projects_count" : Format.wholeNumber(user.stats.starredProjectsCount ?? 0)])
+        .replacingOccurrences(of: " ", with: "\n")
+    }
 
     self.backedProjectsAreHidden = Signal.merge(
       self.backedProjectsButtonProperty.signal.mapConst(false),
@@ -115,7 +133,15 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.pinSelectedIndicatorToPage = .empty
 
+    self.setSelectedButton = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(0),
+      self.backedProjectsButtonProperty.signal.mapConst(0),
+      self.savedProjectsButtonProperty.signal.mapConst(1)
+    )
+
     self.scrollToProject = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
+
+    self.sortBarIsHidden = self.viewDidLoadProperty.signal.mapConst(true)
   }
 
   private let backedProjectsButtonProperty = MutableProperty()
@@ -159,6 +185,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   }
 
   public let avatarURL: Signal<URL?, NoError>
+  public let backedButtonTitleText: Signal<String, NoError>
   public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
   public let backedProjectsAreHidden: Signal<Bool, NoError>
@@ -166,8 +193,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<(), NoError>
   public let pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError>
+  public let savedButtonTitleText: Signal<String, NoError>
   public let savedProjectsAreHidden: Signal<Bool, NoError>
+  public let setSelectedButton: Signal<Int, NoError>
   public let scrollToProject: Signal<Int, NoError>
+  public let sortBarIsHidden: Signal<Bool, NoError>
 
   public var inputs: BackerDashboardViewModelInputs { return self }
   public var outputs: BackerDashboardViewModelOutputs { return self }
