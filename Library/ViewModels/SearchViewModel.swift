@@ -24,7 +24,10 @@ public protocol SearchViewModelInputs {
   /// Call when the project navigator has transitioned to a new project with its index.
   func transitionedToProject(at row: Int, outOf totalRows: Int)
 
-  /// Call when the view will appear.
+  /// Call when the view loads.
+  func viewDidLoad()
+
+   /// Call when the view will appear.
   func viewWillAppear(animated: Bool)
 
   /// Call when a project is tapped.
@@ -85,6 +88,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   // swiftlint:disable function_body_length
   public init() {
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+    let viewLoad = self.viewDidLoadProperty.signal
 
     let query = Signal
       .merge(
@@ -94,12 +98,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
+    let loading = MutableProperty(false)
+
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projects }
+          .on(starting: { loading.value = true }, terminated: { loading.value = false })
           .materialize()
       }
 
@@ -145,13 +152,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
-    self.isLoading = .empty
-    self.loadingIndicatorIsHidden = Signal.merge(
-      popularEvent.filter { $0.isTerminating }.mapConst(true),  // delete, other loader
-      isLoading.map { $0 }
-    )
-
-    self.loadingIndicatorIsAnimated = self.loadingIndicatorIsHidden
 
     self.projects = Signal.combineLatest(
       self.isPopularTitleVisible,
@@ -184,6 +184,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.searchTextEditingDidEndProperty.signal,
         self.cancelButtonPressedProperty.signal
     )
+
+    self.isLoading = .empty
+    self.loadingIndicatorIsHidden = isLoading.map { $0 }
+
+    self.loadingIndicatorIsAnimated = popularEvent.filter { $0.isTerminating }.mapConst(true)
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
@@ -255,11 +260,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
 
-  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  fileprivate let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+    fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
-
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)

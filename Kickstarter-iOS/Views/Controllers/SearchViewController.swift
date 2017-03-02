@@ -16,7 +16,9 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
-  fileprivate var loaderIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
+  fileprivate let loaderIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
+  fileprivate let loadingOverlayView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
+  fileprivate let loadPopularProjectsIndicator = UIActivityIndicatorView()
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -25,7 +27,14 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+      self.loadingOverlayView.layer.borderColor = UIColor.black.cgColor
+     self.loadingOverlayView.layer.borderWidth = 20.00
+    self.loadingOverlayView.addSubview(self.loadPopularProjectsIndicator)
+    self.tableView.addSubview(self.loadingOverlayView)
+
     self.tableView.dataSource = self.dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -48,13 +57,16 @@ internal final class SearchViewController: UITableViewController {
     )
 
     self.searchTextField.delegate = self
-//
-//    self.loaderIndicator.center = self.this.center
-//    self.this.addSubview(loaderIndicator)
-//    self.tableView.tableHeaderView = self.this
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
+
+   internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.loadingOverlayView.center = self.tableView.center
+  }
+
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -63,7 +75,15 @@ internal final class SearchViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
+    _ = self.loadingOverlayView
+      |> UIView.lens.backgroundColor .~ UIColor.init(white: 0.50, alpha: 1.00)
+
     _ = self.loaderIndicator
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+
+    _ = self.loadPopularProjectsIndicator
+      |> UIActivityIndicatorView.lens.animating .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
@@ -119,7 +139,6 @@ internal final class SearchViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         self?.tableView.tableHeaderView = isAnimating ? self?.loaderIndicator :  nil
-        self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.showEmptyState
@@ -139,6 +158,7 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
     
     self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsHidden
+    self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingIndicatorIsAnimated
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
