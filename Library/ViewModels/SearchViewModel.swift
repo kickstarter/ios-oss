@@ -50,17 +50,14 @@ public protocol SearchViewModelOutputs {
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
-  /// Emits a bool whether projects are loading for indicator view.
-  var isLoading: Signal<Bool, NoError> { get }
-
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
   /// Emits when loading indicator should be animated.
-  var loadingIndicatorIsAnimated: Signal<Bool, NoError> { get } // test this
+  var popularLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get } // test this
 
   /// Emits when loading indicator should be hidden.
-  var loadingIndicatorIsHidden: Signal<Bool, NoError> { get } // test this
+  var searchLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get } // test this
 
    /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
@@ -88,7 +85,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   // swiftlint:disable function_body_length
   public init() {
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
-    let viewLoad = self.viewDidLoadProperty.signal
 
     let query = Signal
       .merge(
@@ -98,7 +94,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-    let loading = MutableProperty(false)
 
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
@@ -106,7 +101,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projects }
-          .on(starting: { loading.value = true }, terminated: { loading.value = false })
           .materialize()
       }
 
@@ -185,10 +179,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.cancelButtonPressedProperty.signal
     )
 
-    self.isLoading = .empty
-    self.loadingIndicatorIsHidden = isLoading.map { $0 }
+    self.searchLoaderIndicatorIsAnimating = isLoading
 
-    self.loadingIndicatorIsAnimated = popularEvent.filter { $0.isTerminating }.mapConst(true)
+    self.popularLoaderIndicatorIsAnimating = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      popularEvent.filter { $0.isTerminating }.mapConst(false)
+    )
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
@@ -276,9 +272,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
-  public let isLoading: Signal<Bool, NoError>
-  public let loadingIndicatorIsHidden: Signal<Bool, NoError>
-  public let loadingIndicatorIsAnimated: Signal<Bool, NoError>
+  public let searchLoaderIndicatorIsAnimating: Signal<Bool, NoError>
+  public let popularLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
   public let searchFieldText: Signal<String, NoError>

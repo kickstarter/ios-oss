@@ -16,9 +16,8 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
-  fileprivate let loaderIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
-  fileprivate let loadingOverlayView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(10)))
-  fileprivate let loadPopularProjectsIndicator = UIActivityIndicatorView()
+  private let popularLoaderIndicator = UIActivityIndicatorView()
+  private let searchLoaderIndicator = UIActivityIndicatorView()
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -27,10 +26,7 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-      self.loadingOverlayView.layer.borderColor = UIColor.black.cgColor
-     self.loadingOverlayView.layer.borderWidth = 20.00
-    self.loadingOverlayView.addSubview(self.loadPopularProjectsIndicator)
-    self.tableView.addSubview(self.loadingOverlayView)
+    self.tableView.addSubview(self.popularLoaderIndicator)
 
     self.tableView.dataSource = self.dataSource
 
@@ -64,7 +60,7 @@ internal final class SearchViewController: UITableViewController {
    internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.loadingOverlayView.center = self.tableView.center
+    self.popularLoaderIndicator.center = self.tableView.center
   }
 
 
@@ -75,15 +71,13 @@ internal final class SearchViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
-    _ = self.loadingOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.init(white: 0.50, alpha: 1.00)
-
-    _ = self.loaderIndicator
+    _ = self.searchLoaderIndicator
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
-    _ = self.loadPopularProjectsIndicator
-      |> UIActivityIndicatorView.lens.animating .~ true
+    _ = self.popularLoaderIndicator
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
@@ -135,10 +129,17 @@ internal final class SearchViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.loadingIndicatorIsHidden
+    self.viewModel.outputs.searchLoaderIndicatorIsAnimating
       .observeForUI()
       .observeValues { [weak self] isAnimating in
-        self?.tableView.tableHeaderView = isAnimating ? self?.loaderIndicator :  nil
+        guard let _self = self else { return }
+        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator :  nil
+        if let headerView = _self.tableView.tableHeaderView {
+          headerView.frame = CGRect(x: headerView.frame.origin.x,
+                                    y: headerView.frame.origin.y,
+                                    width: headerView.frame.size.width,
+                                    height: Styles.grid(15))
+        }
     }
 
     self.viewModel.outputs.showEmptyState
@@ -157,8 +158,8 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
     
-    self.loaderIndicator.rac.animating = self.viewModel.outputs.loadingIndicatorIsHidden
-    self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingIndicatorIsAnimated
+    self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
+    self.popularLoaderIndicator.rac.animating = self.viewModel.outputs.popularLoaderIndicatorIsAnimating
 
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
