@@ -5,25 +5,28 @@ import UIKit
 
 internal final class BackerDashboardViewController: UIViewController {
 
-  @IBOutlet private weak var avatarView: CircleAvatarImageView!
+  @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
   @IBOutlet private weak var backedContainerView: UIView!
   @IBOutlet private weak var backedSortButton: UIButton!
   @IBOutlet private weak var backerNameLabel: UILabel!
-  @IBOutlet private weak var backerNumberLabel: UILabel!
+  @IBOutlet private weak var backerLocationLabel: UILabel!
   @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet fileprivate weak var headerTopBackgroundView: UIView!
-  @IBOutlet fileprivate weak var headerView: UIView!
-  @IBOutlet fileprivate weak var headerViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var headerTopBackgroundView: UIView!
+  @IBOutlet private weak var headerView: UIView!
+  @IBOutlet private weak var headerViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var menuButtonsStackView: UIStackView!
+  @IBOutlet private weak var messagesButtonItem: UIBarButtonItem!
   @IBOutlet private weak var savedContainerView: UIView!
   @IBOutlet private weak var savedSortButton: UIButton!
   @IBOutlet private weak var selectedLineView: UIView!
   @IBOutlet private weak var selectedLineLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var selectedLineWidthConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var settingsButtonItem: UIBarButtonItem!
 
   private weak var backedProjectsViewController: ProfileBackedProjectsViewController!
   private weak var savedProjectsViewController: ProfileSavedProjectsViewController!
 
-  private let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
+  fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
 
   private var isCollapsed: Bool = false
 
@@ -44,29 +47,188 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.savedProjectsViewController.delegate = self
 
-    self.savedProjectsViewController.view.isHidden = true
-    self.savedContainerView.isHidden = true
-
     self.backedSortButton.addTarget(self, action: #selector(backedButtonTapped), for: .touchUpInside)
 
     self.savedSortButton.addTarget(self, action: #selector(savedButtonTapped), for: .touchUpInside)
+
+    _ = self.messagesButtonItem
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(messagesButtonTapped))
+
+    _ = self.settingsButtonItem
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(settingsButtonTapped))
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear(animated)
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.backedContainerView.rac.hidden = self.viewModel.outputs.backedProjectsAreHidden
+    self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
+    self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
+    self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
+
+    self.viewModel.outputs.avatarURL
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.avatarImageView.af_cancelImageRequest()
+        self?.avatarImageView.image = nil
+      })
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.avatarImageView.ksr_setImageWithURL(url)
+    }
+
+    self.viewModel.outputs.goToMessages
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        guard let _self = self else { return }
+        let vc = MessageThreadsViewController.configuredWith(project: nil)
+        _self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] project, projects, refTag in
+        self?.present(project: project, projects: projects, refTag: refTag)
+    }
+
+    self.viewModel.outputs.goToSettings
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        self?.goToSettings()
+    }
+
+    self.viewModel.outputs.pinSelectedIndicatorToPage
+      .observeForUI()
+      .observeValues { [weak self] page, animated in
+        self?.pinSelectedIndicator(toPage: page, animated: animated)
+    }
+
+//    self.viewModel.outputs.scrollToProject
+//      .observeForUI()
+//      .observeValues { [weak self] itemIndex in
+//        guard let _self = self else { return }
+//    }
   }
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    _ = self |> baseControllerStyle()
+
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
+
+    _ = self.navigationItem
+      |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
+
+    _ = self.backedSortButton
+      |> UIButton.lens.title(forState: .normal) .~ "123\nbacked"
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 13)
+      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
+
+    _ = self.savedSortButton
+      |> UIButton.lens.title(forState: .normal) .~ "6\nsaved"
+      |> UIButton.lens.titleLabel.font .~ .ksr_subhead(size: 13)
+      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
+
+    _ = self.messagesButtonItem
+      |> UIBarButtonItem.lens.image .~ image(named: "inbox-icon")
+      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_buttons_messages() }
+
+    _ = self.settingsButtonItem
+      |> UIBarButtonItem.lens.image .~ image(named: "settings-icon")
+      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_settings_navbar_title() }
+
+    _ = self.dividerView
+      |> UIView.lens.backgroundColor .~ .ksr_grey_500
+
+    _ = self.headerTopBackgroundView
+      |> UIView.lens.layoutMargins %~~ { _, view in
+        view.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(top: Styles.grid(5), left: Styles.grid(3), bottom: Styles.grid(1), right: Styles.grid(3))
+    }
+
+    _ = self.backerNameLabel
+      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.font .~ .ksr_headline(size: 18)
+
+    _ = self.backerLocationLabel
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+  }
+
+  private func goToSettings() {
+    let vc = SettingsViewController.instantiate()
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = .formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
+  private func pinSelectedIndicator(toPage page: Int, animated: Bool) {
+    guard let button = self.menuButtonsStackView.arrangedSubviews[page] as? UIButton else { return }
+
+    let padding = page == 0 ? Styles.grid(2) : Styles.grid(4) - 3
+
+    let leadingConstant = self.menuButtonsStackView.frame.origin.x + button.frame.origin.x + padding
+    let widthConstant = button.titleLabel?.frame.width ?? button.frame.width
+
+    self.selectedLineLeadingConstraint.constant = leadingConstant
+    self.selectedLineWidthConstraint.constant = widthConstant
+
+//    self.selectedLineLeadingConstraint.constant = 0
+//    self.selectedLineWidthConstraint.constant = self.backedSortButton.frame.size.width
+
+    // or
+
+//    self.selectedLineLeadingConstraint.constant = self.savedSortButton.frame.origin.x
+//    self.selectedLineWidthConstraint.constant = self.savedSortButton.frame.size.width
+
+
+//    let rightSort = leadingConstant + widthConstant + Styles.grid(11) - self.scrollView.contentOffset.x
+//    let leftSort = leadingConstant - Styles.grid(11) - self.scrollView.contentOffset.x
+//
+//    UIView.animate(withDuration: animated ? 0.2 : 0.0, animations: {
+//      self.scrollView.layoutIfNeeded()
+//
+//      if rightSort > self.view.bounds.width {
+//        self.scrollView.contentOffset = CGPoint(x: self.scrollView.contentSize.width - self.view.bounds.width,
+//                                                y: 0)
+//      } else if leftSort < 0.0 {
+//        self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
+//      }
+//    })
+  }
+
+  private func present(project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project,
+                                                           refTag: refTag,
+                                                           initialPlaylist: projects,
+                                                           navigatorDelegate: self)
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  private func updateProjectPlaylist(_ playlist: [Project]) {
+    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
+    navigator.updatePlaylist(playlist)
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
     let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
-      + Styles.grid(2)
+      + Styles.grid(6)
     let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
 
     if shouldCollapse {
@@ -100,7 +262,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
   fileprivate func moveHeader(with scrollView: UIScrollView) {
     let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
-      + Styles.grid(2)
+      + Styles.grid(6)
 
     if scrollView.contentOffset.y > 0 {
       if !self.isCollapsed {
@@ -127,24 +289,20 @@ internal final class BackerDashboardViewController: UIViewController {
 //    print("isCollapsed = \(self.isCollapsed)")
   }
 
-  @objc private func backedButtonTapped() {
-    self.backedProjectsViewController.view.isHidden = false
-    self.backedContainerView.isHidden = false
-    self.savedProjectsViewController.view.isHidden = true
-    self.savedContainerView.isHidden = true
+  @objc private func messagesButtonTapped() {
+    self.viewModel.inputs.messagesButtonTapped()
+  }
 
-    self.selectedLineLeadingConstraint.constant = 0
-    self.selectedLineWidthConstraint.constant = self.backedSortButton.frame.size.width
+  @objc private func settingsButtonTapped() {
+    self.viewModel.inputs.settingsButtonTapped()
+  }
+
+  @objc private func backedButtonTapped() {
+    self.viewModel.inputs.backedProjectsButtonTapped()
   }
 
   @objc private func savedButtonTapped() {
-    self.backedProjectsViewController.view.isHidden = true
-    self.backedContainerView.isHidden = true
-    self.savedProjectsViewController.view.isHidden = false
-    self.savedContainerView.isHidden = false
-
-    self.selectedLineLeadingConstraint.constant = self.savedSortButton.frame.origin.x
-    self.selectedLineWidthConstraint.constant = self.savedSortButton.frame.size.width
+    self.viewModel.inputs.savedProjectsButtonTapped()
   }
 }
 
@@ -177,6 +335,12 @@ extension BackerDashboardViewController: ProfileSavedProjectsViewControllerDeleg
     if !decelerate {
       self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
     }
+  }
+}
+
+extension BackerDashboardViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {
+    //self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }
 
