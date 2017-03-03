@@ -84,6 +84,7 @@ public protocol BackerDashboardViewModelType {
 public final class BackerDashboardViewModel: BackerDashboardViewModelType, BackerDashboardViewModelInputs,
   BackerDashboardViewModelOutputs {
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let user = Signal.merge(
       self.viewDidLoadProperty.signal,
@@ -103,7 +104,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
           key: "projects_count_backed",
           defaultValue: "%{projects_count} backed",
           count: user.stats.backedProjectsCount ?? 0,
-          substitutions: ["projects_count" : Format.wholeNumber(user.stats.backedProjectsCount ?? 0)])
+          substitutions: ["projects_count": Format.wholeNumber(user.stats.backedProjectsCount ?? 0)])
         .replacingOccurrences(of: " ", with: "\n")
     }
 
@@ -116,7 +117,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
         key: "projects_count_backed",
         defaultValue: "%{projects_count} saved",
         count: user.stats.starredProjectsCount ?? 0,
-        substitutions: ["projects_count" : Format.wholeNumber(user.stats.starredProjectsCount ?? 0)])
+        substitutions: ["projects_count": Format.wholeNumber(user.stats.starredProjectsCount ?? 0)])
         .replacingOccurrences(of: " ", with: "\n")
     }
 

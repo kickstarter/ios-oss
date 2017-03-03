@@ -48,17 +48,9 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
       ?|> baseNavigationBarStyle
   }
 
-  override internal func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+  override internal func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
-
-    //    if let statsCell = cell as? FindFriendsStatsCell, statsCell.delegate == nil {
-    //      statsCell.delegate = self
-    //    } else if let fbConnectCell = cell as? FindFriendsFacebookConnectCell, fbConnectCell.delegate == nil {
-    //      fbConnectCell.delegate = self
-    //    }
-    //
-    //    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-    //                                         outOf: self.dataSource.numberOfItems())
   }
 
   /// placeholder
@@ -72,10 +64,9 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
-    cell.textLabel!.text = "Saved project #\(indexPath.row)"
+    cell.textLabel?.text = "Saved project #\(indexPath.row)"
     return cell
   }
-  ///
 
   override internal func scrollViewDidScroll(_ scrollView: UIScrollView) {
     self.delegate?.profileSavedProjectsDidScroll(scrollView)
@@ -85,8 +76,8 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
     self.delegate?.profileSavedProjectsDidEndDecelerating(scrollView)
   }
 
-  override internal func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+  override internal func scrollViewDidEndDragging(_ scrollView: UIScrollView,
+                                                  willDecelerate decelerate: Bool) {
     self.delegate?.profileSavedProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
   }
 }
-
