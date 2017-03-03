@@ -11,7 +11,8 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var backerNameLabel: UILabel!
   @IBOutlet private weak var backerLocationLabel: UILabel!
   @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet private weak var headerTopBackgroundView: UIView!
+  @IBOutlet private weak var headerTopContainerView: UIView!
+  @IBOutlet private weak var headerStackView: UIStackView!
   @IBOutlet private weak var headerView: UIView!
   @IBOutlet private weak var headerViewTopConstraint: NSLayoutConstraint!
   @IBOutlet private weak var menuButtonsStackView: UIStackView!
@@ -162,11 +163,12 @@ internal final class BackerDashboardViewController: UIViewController {
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500
 
-    _ = self.headerTopBackgroundView
+    // bottom should change to Styles.grid(2) when sort bar is showing.
+    _ = self.headerStackView
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(top: Styles.grid(5), left: Styles.grid(3), bottom: Styles.grid(1), right: Styles.grid(3))
+          : .init(top: Styles.grid(5), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
     }
 
     _ = self.backerNameLabel
@@ -211,18 +213,19 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   private func setAttributedTitles(for button: UIButton, with string: String) {
+
     let normalTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_subhead(size: 16.0)
         : UIFont.ksr_subhead(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
     ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_subhead(size: 16.0).bolded
         : UIFont.ksr_subhead(size: 13.0).bolded,
-      NSForegroundColorAttributeName: UIColor.black,
+      NSForegroundColorAttributeName: UIColor.black
     ])
 
     _ = button
@@ -267,7 +270,8 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
-    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
+    // put this value in view model. it changes when sort bar is hidden.
+    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopContainerView.frame.size.height
       + Styles.grid(6)
     let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
 
@@ -301,7 +305,7 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   fileprivate func moveHeader(with scrollView: UIScrollView) {
-    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopBackgroundView.frame.size.height
+    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopContainerView.frame.size.height
       + Styles.grid(6)
 
     if scrollView.contentOffset.y > 0 {
