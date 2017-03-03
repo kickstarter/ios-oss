@@ -54,7 +54,7 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits when to navigate to Settings.
   var goToSettings: Signal<(), NoError> { get }
 
-  /// Emits an index to pin the indicator view to a particular button view and whether to animate it.
+  /// Emits an index to pin the indicator view to a particular button view with or without animation.
   var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
 
   /// Emits an attributed string for the saved button title label.
@@ -82,7 +82,10 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   BackerDashboardViewModelOutputs {
 
   public init() {
-    let user = self.viewWillAppearProperty.signal
+    let user = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.viewWillAppearProperty.signal.filter(isFalse).skip(first: 1).ignoreValues()
+      )
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
@@ -125,19 +128,28 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.savedProjectsButtonProperty.signal.mapConst(false)
     )
 
+    let selectedButtonIndex = Signal.merge(
+      self.backedProjectsButtonProperty.signal.mapConst(0),
+      self.savedProjectsButtonProperty.signal.mapConst(1)
+    )
+
+    self.setSelectedButton = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(0),
+      selectedButtonIndex
+      )
+
+    self.pinSelectedIndicatorToPage = Signal.merge(
+      self.backedButtonTitleText
+        .take(first: 2)
+        .mapConst((0, false)),
+      selectedButtonIndex.map { ($0, true) }.skipRepeats(==)
+    )
+
     self.goToProject = .empty
 
     self.goToMessages = self.messagesButtonTappedProperty.signal
 
     self.goToSettings = self.settingsButtonTappedProperty.signal
-
-    self.pinSelectedIndicatorToPage = .empty
-
-    self.setSelectedButton = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(0),
-      self.backedProjectsButtonProperty.signal.mapConst(0),
-      self.savedProjectsButtonProperty.signal.mapConst(1)
-    )
 
     self.scrollToProject = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 

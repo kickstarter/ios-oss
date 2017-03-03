@@ -7,7 +7,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
   @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
   @IBOutlet private weak var backedContainerView: UIView!
-  @IBOutlet private weak var backedSortButton: UIButton!
+  @IBOutlet private weak var backedMenuButton: UIButton!
   @IBOutlet private weak var backerNameLabel: UILabel!
   @IBOutlet private weak var backerLocationLabel: UILabel!
   @IBOutlet private weak var dividerView: UIView!
@@ -18,10 +18,10 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var menuButtonsStackView: UIStackView!
   @IBOutlet private weak var messagesButtonItem: UIBarButtonItem!
   @IBOutlet private weak var savedContainerView: UIView!
-  @IBOutlet private weak var savedSortButton: UIButton!
-  @IBOutlet private weak var selectedLineView: UIView!
-  @IBOutlet private weak var selectedLineLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var selectedLineWidthConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var savedMenuButton: UIButton!
+  @IBOutlet private weak var selectedButtonIndicatorView: UIView!
+  @IBOutlet private weak var selectedButtonIndicatorLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var selectedButtonIndicatorWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var settingsButtonItem: UIBarButtonItem!
   @IBOutlet weak var sortBar: ProfileSortBarView!
 
@@ -49,9 +49,9 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.savedProjectsViewController.delegate = self
 
-    self.backedSortButton.addTarget(self, action: #selector(backedButtonTapped), for: .touchUpInside)
+    self.backedMenuButton.addTarget(self, action: #selector(backedButtonTapped), for: .touchUpInside)
 
-    self.savedSortButton.addTarget(self, action: #selector(savedButtonTapped), for: .touchUpInside)
+    self.savedMenuButton.addTarget(self, action: #selector(savedButtonTapped), for: .touchUpInside)
 
     _ = self.messagesButtonItem
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(messagesButtonTapped))
@@ -92,14 +92,14 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] string in
         guard let _self = self else { return }
-        _self.setAttributedTitles(for: _self.backedSortButton, with: string)
+        _self.setAttributedTitles(for: _self.backedMenuButton, with: string)
     }
 
     self.viewModel.outputs.savedButtonTitleText
       .observeForControllerAction()
       .observeValues { [weak self] string in
         guard let _self = self else { return }
-        _self.setAttributedTitles(for: _self.savedSortButton, with: string)
+        _self.setAttributedTitles(for: _self.savedMenuButton, with: string)
     }
 
     self.viewModel.outputs.goToMessages
@@ -124,8 +124,8 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
       .observeForUI()
-      .observeValues { [weak self] page, animated in
-        self?.pinSelectedIndicator(toPage: page, animated: animated)
+      .observeValues { [weak self] index, animated in
+        self?.pinSelectedIndicator(to: index, animated: animated)
     }
 
     self.viewModel.outputs.setSelectedButton
@@ -162,8 +162,8 @@ internal final class BackerDashboardViewController: UIViewController {
 
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500
-
-    // bottom should change to Styles.grid(2) when sort bar is showing.
+    //todo: make a Styles.grid(2) top constraint from the headerview for the containers that is
+    // active when sort bar is showing and not active when they are hidden
     _ = self.headerStackView
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
@@ -205,15 +205,7 @@ internal final class BackerDashboardViewController: UIViewController {
     navigator.updatePlaylist(playlist)
   }
 
-  private func selectButton(atIndex index: Int) {
-    for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
-      _ = (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == index)
-    }
-  }
-
   private func setAttributedTitles(for button: UIButton, with string: String) {
-
     let normalTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_subhead(size: 16.0)
@@ -234,39 +226,26 @@ internal final class BackerDashboardViewController: UIViewController {
       |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
   }
 
-  private func pinSelectedIndicator(toPage page: Int, animated: Bool) {
-    guard let button = self.menuButtonsStackView.arrangedSubviews[page] as? UIButton else { return }
+  private func selectButton(atIndex index: Int) {
+    for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
+      _ = (button as? UIButton)
+        ?|> UIButton.lens.selected .~ (idx == index)
+    }
+  }
 
-    let padding = page == 0 ? Styles.grid(2) : Styles.grid(4) - 3
+  private func pinSelectedIndicator(to index: Int, animated: Bool) {
+    guard let button = self.menuButtonsStackView.arrangedSubviews[index] as? UIButton else { return }
 
-    let leadingConstant = self.menuButtonsStackView.frame.origin.x + button.frame.origin.x + padding
-    let widthConstant = button.titleLabel?.frame.width ?? button.frame.width
+    let leadingConstant = button.frame.origin.x + Styles.grid(1)
+    let widthConstant = button.titleLabel?.frame.size.width ?? button.frame.size.width
 
-    self.selectedLineLeadingConstraint.constant = leadingConstant
-    self.selectedLineWidthConstraint.constant = widthConstant
+    UIView.animate(withDuration: animated ? 0.2 : 0.0, delay: 0.0, options: .curveEaseOut, animations: {
+      self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
+      self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
 
-//    self.selectedLineLeadingConstraint.constant = 0
-//    self.selectedLineWidthConstraint.constant = self.backedSortButton.frame.size.width
-
-    // or
-
-//    self.selectedLineLeadingConstraint.constant = self.savedSortButton.frame.origin.x
-//    self.selectedLineWidthConstraint.constant = self.savedSortButton.frame.size.width
-
-
-//    let rightSort = leadingConstant + widthConstant + Styles.grid(11) - self.scrollView.contentOffset.x
-//    let leftSort = leadingConstant - Styles.grid(11) - self.scrollView.contentOffset.x
-//
-//    UIView.animate(withDuration: animated ? 0.2 : 0.0, animations: {
-//      self.scrollView.layoutIfNeeded()
-//
-//      if rightSort > self.view.bounds.width {
-//        self.scrollView.contentOffset = CGPoint(x: self.scrollView.contentSize.width - self.view.bounds.width,
-//                                                y: 0)
-//      } else if leftSort < 0.0 {
-//        self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
-//      }
-//    })
+      self.headerView.setNeedsLayout()
+      self.headerView.layoutIfNeeded()
+    }, completion: nil)
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
