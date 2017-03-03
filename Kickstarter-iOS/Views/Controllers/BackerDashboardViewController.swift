@@ -24,7 +24,8 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var selectedButtonIndicatorLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var selectedButtonIndicatorWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var settingsButtonItem: UIBarButtonItem!
-  @IBOutlet weak var sortBar: ProfileSortBarView!
+  @IBOutlet private weak var sortBar: ProfileSortBarView!
+  @IBOutlet private weak var topBackgroundView: UIView!
 
   private weak var backedProjectsViewController: ProfileBackedProjectsViewController!
   private weak var savedProjectsViewController: ProfileSavedProjectsViewController!
@@ -169,13 +170,12 @@ internal final class BackerDashboardViewController: UIViewController {
 
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ .ksr_grey_500
-    //todo: make a Styles.grid(2) top constraint from the headerview for the containers that is
-    // active when sort bar is showing and not active when they are hidden
+
     _ = self.headerStackView
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(top: Styles.grid(5), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
+          : .init(top: Styles.grid(5), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
     }
 
     _ = self.backerNameLabel
@@ -246,19 +246,24 @@ internal final class BackerDashboardViewController: UIViewController {
     let leadingConstant = button.frame.origin.x + Styles.grid(1)
     let widthConstant = button.titleLabel?.frame.size.width ?? button.frame.size.width
 
-    UIView.animate(withDuration: animated ? 0.2 : 0.0, delay: 0.0, options: .curveEaseOut, animations: {
-      self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
-      self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
+    UIView.animate(
+      withDuration: animated ? 0.2 : 0.0,
+      delay: 0.0,
+      options: .curveEaseOut,
+      animations: {
+        self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
+        self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
 
-      self.headerView.setNeedsLayout()
-      self.headerView.layoutIfNeeded()
-    }, completion: nil)
+        self.headerView.setNeedsLayout()
+        self.headerView.layoutIfNeeded()
+      },
+      completion: nil)
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
     // put this value in view model. it changes when sort bar is hidden.
-    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopContainerView.frame.size.height
-      + Styles.grid(6)
+    let minHeaderHeight = self.topBackgroundView.frame.size.height -
+      self.menuButtonsStackView.frame.size.height - Styles.grid(3)
     let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
 
     if shouldCollapse {
@@ -291,8 +296,8 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   fileprivate func moveHeader(with scrollView: UIScrollView) {
-    let minHeaderHeight = self.headerView.frame.size.height - self.headerTopContainerView.frame.size.height
-      + Styles.grid(6)
+    let minHeaderHeight = self.topBackgroundView.frame.size.height -
+      self.menuButtonsStackView.frame.size.height - Styles.grid(3)
 
     if scrollView.contentOffset.y > 0 {
       if !self.isCollapsed {

@@ -228,6 +228,7 @@
                         <outlet property="selectedButtonIndicatorWidthConstraint" destination="4j0-6Y-D4g" id="5AB-0b-FTC"/>
                         <outlet property="settingsButtonItem" destination="kQJ-TG-77F" id="0Wt-F5-Vsr"/>
                         <outlet property="sortBar" destination="tNq-3P-mw8" id="gs8-qd-UBQ"/>
+                        <outlet property="topBackgroundView" destination="lQK-DQ-oPJ" id="OoT-HS-777"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5w-hE-a0o" userLabel="First Responder" sceneMemberID="firstResponder"/>
