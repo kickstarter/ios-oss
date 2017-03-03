@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 internal final class FindFriendsLoadingStateCell: UITableViewCell, ValueCell {
-  @IBOutlet weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
 
   internal func configureWith(value: Void) {
   }

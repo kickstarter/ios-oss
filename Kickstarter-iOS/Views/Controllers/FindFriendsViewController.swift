@@ -33,18 +33,6 @@ internal final class FindFriendsViewController: UITableViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
-
-  }
-
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -91,6 +79,17 @@ internal final class FindFriendsViewController: UITableViewController {
         completion: nil
       )
     }
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self
+      |> baseTableControllerStyle()
+      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
+
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
   }
 
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
