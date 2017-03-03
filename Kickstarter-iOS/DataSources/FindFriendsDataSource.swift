@@ -8,6 +8,12 @@ internal final class FindFriendsDataSource: ValueCellDataSource {
     case facebookConnect
     case stats
     case friends
+    case loader
+  }
+
+  internal func loader(isVisible visible: Bool) {
+    self.set(cellIdentifiers: visible ? ["FindFriendsLoadingStateCell"] : [],
+             inSection: Section.loader.rawValue)
   }
 
   internal func facebookConnect(source: FriendsSource, visible: Bool) {
@@ -37,6 +43,8 @@ internal final class FindFriendsDataSource: ValueCellDataSource {
     case let (cell as FindFriendsFriendFollowCell, value as (User, FriendsSource)):
       cell.configureWith(value: value)
     case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
+      cell.configureWith(value: value)
+    case let (cell as FindFriendsLoadingStateCell, value as Void):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

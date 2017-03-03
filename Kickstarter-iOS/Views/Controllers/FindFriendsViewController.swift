@@ -10,7 +10,6 @@ internal final class FindFriendsViewController: UITableViewController {
 
   fileprivate let viewModel: FindFriendsViewModelType = FindFriendsViewModel()
   fileprivate let dataSource = FindFriendsDataSource()
-  fileprivate let loadingIndicatorView = UIActivityIndicatorView()
 
   internal static func configuredWith(source: FriendsSource) -> FindFriendsViewController {
     let vc = Storyboard.Friends.instantiate(FindFriendsViewController.self)
@@ -44,21 +43,10 @@ internal final class FindFriendsViewController: UITableViewController {
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
 
-    _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
 
   override func bindViewModel() {
     super.bindViewModel()
-
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
-
-    self.viewModel.outputs.loaderIsAnimating
-      .observeForUI()
-      .observeValues { [weak self] isAnimating in
-        self?.tableView.tableFooterView = isAnimating ? self?.loadingIndicatorView : nil
-    }
 
     self.viewModel.outputs.friends
       .observeForUI()
@@ -78,6 +66,13 @@ internal final class FindFriendsViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] (source, visible) in
         self?.dataSource.facebookConnect(source: source, visible: visible)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.showLoadingState
+      .observeForUI()
+      .observeValues { [weak self] visible in
+        self?.dataSource.loader(isVisible: visible)
         self?.tableView.reloadData()
     }
 
