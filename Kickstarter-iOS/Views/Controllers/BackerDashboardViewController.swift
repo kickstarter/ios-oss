@@ -11,6 +11,7 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var backerNameLabel: UILabel!
   @IBOutlet private weak var backerLocationLabel: UILabel!
   @IBOutlet private weak var dividerView: UIView!
+  @IBOutlet private weak var embeddedViewsTopLayoutConstraint: NSLayoutConstraint!
   @IBOutlet private weak var headerTopContainerView: UIView!
   @IBOutlet private weak var headerStackView: UIStackView!
   @IBOutlet private weak var headerView: UIView!
@@ -93,6 +94,12 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeValues { [weak self] string in
         guard let _self = self else { return }
         _self.setAttributedTitles(for: _self.backedMenuButton, with: string)
+    }
+
+    self.viewModel.outputs.embeddedViewTopConstraintConstant
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.embeddedViewsTopLayoutConstraint.constant = $0
     }
 
     self.viewModel.outputs.savedButtonTitleText

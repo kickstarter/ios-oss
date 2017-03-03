@@ -45,6 +45,9 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a boolean whether backed projects container should be hidden or not.
   var backedProjectsAreHidden: Signal<Bool, NoError> { get }
 
+  /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
+  var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
+
   /// Emits when to present Messages.
   var goToMessages: Signal<(), NoError> { get }
 
@@ -154,6 +157,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.scrollToProject = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     self.sortBarIsHidden = self.viewDidLoadProperty.signal.mapConst(true)
+
+    self.embeddedViewTopConstraintConstant = self.sortBarIsHidden
+      .map { $0 ? 0.0 : Styles.grid(2) }
   }
 
   private let backedProjectsButtonProperty = MutableProperty()
@@ -201,6 +207,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
   public let backedProjectsAreHidden: Signal<Bool, NoError>
+  public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>
   public let goToMessages: Signal<(), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<(), NoError>
