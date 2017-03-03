@@ -331,15 +331,22 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       timer(interval: .seconds(2), on: environment.backgroundQueueScheduler)
     }
 
-    self.chatMessages = self.viewDidLoadProperty.signal
+    let snapshots = self.viewDidLoadProperty.signal
       .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
         snapshot
           .start(on: environment.backgroundQueueScheduler)
           .skipNil()
+    }
+
+    self.chatMessages = Signal.merge(
+      bufferInterval.mapConst(TimeIntervalBufferEvent<FirebaseDataSnapshotType>.tick),
+      snapshots.map(TimeIntervalBufferEvent<FirebaseDataSnapshotType>.value)
+      )
+      .scan(TimeIntervalBufferState<FirebaseDataSnapshotType>.initial) { state, event in
+        state.processing(event)
       }
-      .scan(CollectSnapshots()) { (snapshots, value) in snapshots.add(snapshot: value) }
-      .takeWhen(bufferInterval)
-      .map { $0.outputBuffer() }
+      .map { $0.output }
+      .skipNil()
       .map([LiveStreamChatMessage].decode)
 
     let chatMessageMetaData = Signal.combineLatest(
@@ -487,20 +494,59 @@ private func didEndNormally(event: LiveStreamEvent) -> Bool {
   return !event.liveNow && event.definitelyHasReplay
 }
 
-//FIXME: would prefer that this isn't a class, need to rethink a bit
-fileprivate class CollectSnapshots {
-  private var snapshots: [FirebaseDataSnapshotType] = []
+private enum TimeIntervalBufferEvent<T> {
+  // Interval 'tick', emit the buffered (if any) values
+  case tick
 
-  internal func add(snapshot: FirebaseDataSnapshotType) -> CollectSnapshots {
-    self.snapshots.append(snapshot)
+  // Buffer a new value
+  case value(T)
+}
 
-    return self
+// A simple state machine for buffering values
+private enum TimeIntervalBufferState<T> {
+  case initial
+  case accumulate([T])
+  case emit([T])
+
+  // Return a new state based on `event`.
+  func processing(_ event: TimeIntervalBufferEvent<T>) -> TimeIntervalBufferState<T> {
+    switch event {
+    case .tick:
+      return self.emitted()
+    case .value(let value):
+      return self.appending(value)
+    }
   }
 
-  internal func outputBuffer() -> [FirebaseDataSnapshotType] {
-    let allSnapshots = self.snapshots
-    self.snapshots.removeAll()
+  // Return a new state by appending `value`
+  func appending(_ value: T) -> TimeIntervalBufferState<T> {
+    switch self {
+    case .accumulate(let values):
+      return .accumulate(values + [value])
+    case .emit, .initial:
+      return .accumulate([value])
+    }
+  }
 
-    return allSnapshots
+  // Return a new state describing the values to be emitted, based on the current state
+  func emitted() -> TimeIntervalBufferState<T> {
+    switch self {
+    case .initial:
+      return .initial
+    case .accumulate(let values):
+      return .emit(values)
+    case .emit:
+      return .emit([])
+    }
+  }
+
+  // The values to be emitted, or `nil`.
+  var output: [T]? {
+    switch self {
+    case .emit(let values):
+      return values
+    case .initial, .accumulate:
+      return nil
+    }
   }
 }
