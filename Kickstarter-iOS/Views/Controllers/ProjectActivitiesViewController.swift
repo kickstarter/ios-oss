@@ -7,6 +7,8 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   fileprivate let viewModel: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
   fileprivate let dataSource = ProjectActivitiesDataSource()
 
+  private let navBorder = UIView()
+
   internal static func configuredWith(project: Project) -> ProjectActivitiesViewController {
     let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController.self)
     vc.viewModel.inputs.configureWith(project)
@@ -16,12 +18,25 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.viewModel.inputs.viewDidLoad()
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
+    if let navBar = self.navigationController?.navigationBar {
+      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
 
     self.tableView.dataSource = dataSource
+
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if let navBar = self.navigationController?.navigationBar {
+      self.navBorder.frame = CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: self.navBorder.frame.size.height)
+    }
   }
 
   internal override func bindViewModel() {
@@ -67,8 +82,8 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    _ = self.navigationController
-      ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
 
     self.title = Strings.activity_navigation_title_activity()
   }

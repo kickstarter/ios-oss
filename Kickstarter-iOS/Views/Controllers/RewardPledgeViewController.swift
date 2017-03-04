@@ -67,6 +67,8 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var topStackView: UIStackView!
   @IBOutlet fileprivate weak var updatePledgeButton: UIButton!
 
+  private let navBorder = UIView()
+
   internal static func configuredWith(
     project: Project,
     reward: Reward,
@@ -144,6 +146,11 @@ internal final class RewardPledgeViewController: UIViewController {
         self?.viewModel.inputs.userSessionStarted()
     }
 
+    if let navBar = self.navigationController?.navigationBar {
+      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -153,6 +160,9 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
@@ -627,6 +637,13 @@ internal final class RewardPledgeViewController: UIViewController {
     super.viewDidLayoutSubviews()
 
     self.viewModel.inputs.descriptionLabelIsTruncated(self.descriptionLabel.isTruncated())
+
+    if let navBar = self.navigationController?.navigationBar {
+      self.navBorder.frame = CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: self.navBorder.frame.size.height)
+    }
   }
 
   @objc fileprivate func shippingButtonTapped() {

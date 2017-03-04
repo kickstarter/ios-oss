@@ -136,7 +136,7 @@ internal final class SettingsViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
+      |> SettingsViewController.lens.view.backgroundColor .~ .white
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
     _ = self.betaDebugPushNotificationsButton

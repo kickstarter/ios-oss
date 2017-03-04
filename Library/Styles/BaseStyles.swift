@@ -15,7 +15,7 @@ public enum Styles {
 }
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_grey_200
+  return VC.lens.view.backgroundColor .~ .ksr_grey_300
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
@@ -33,11 +33,20 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
 
 public let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
+    NSForegroundColorAttributeName: UIColor.black,
     NSFontAttributeName: UIFont.ksr_callout()
   ]
   <> UINavigationBar.lens.translucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .ksr_grey_100
+  <> UINavigationBar.lens.barTintColor .~ .white
+  <> UINavigationBar.lens.shadowImage .~ UIImage()
+  <> UINavigationBar.lens.backgroundImage(forBarMetrics: .default) .~ UIImage()
+
+public func baseNavigationBorderStyle <V: UIViewProtocol> (navBar: UINavigationBar) -> ((V) -> V) {
+  let frame = CGRect(x: 0.0, y: navBar.frame.size.height, width: navBar.frame.size.width, height: 1.0)
+
+  return V.lens.frame .~ frame
+    <> V.lens.backgroundColor .~ .ksr_grey_500
+}
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 

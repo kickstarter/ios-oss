@@ -8,6 +8,8 @@ internal final class DashboardViewController: UITableViewController {
   @IBOutlet fileprivate weak var titleView: DashboardTitleView!
   @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
+  private let navBorder = UIView()
+
   fileprivate let dataSource = DashboardDataSource()
   fileprivate let viewModel: DashboardViewModelType = DashboardViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -32,6 +34,11 @@ internal final class DashboardViewController: UITableViewController {
     self.navigationItem.rightBarButtonItem = shareButton
 
     self.titleView.delegate = self
+
+    if let navBar = self.navigationController?.navigationBar {
+      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -40,8 +47,21 @@ internal final class DashboardViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if let navBar = self.navigationController?.navigationBar {
+      self.navBorder.frame = CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: self.navBorder.frame.size.height)
+    }
+  }
+
   override func bindStyles() {
-    _ = self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+      |> DashboardViewController.lens.view.backgroundColor .~ .white
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle

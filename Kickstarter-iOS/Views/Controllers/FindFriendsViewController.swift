@@ -11,6 +11,8 @@ internal final class FindFriendsViewController: UITableViewController {
   fileprivate let viewModel: FindFriendsViewModelType = FindFriendsViewModel()
   fileprivate let dataSource = FindFriendsDataSource()
 
+  private let navBorder = UIView()
+
   internal static func configuredWith(source: FriendsSource) -> FindFriendsViewController {
     let vc = Storyboard.Friends.instantiate(FindFriendsViewController.self)
     vc.viewModel.inputs.configureWith(source: source)
@@ -24,6 +26,11 @@ internal final class FindFriendsViewController: UITableViewController {
     self.tableView.rowHeight = UITableViewAutomaticDimension
     self.tableView.dataSource = dataSource
 
+    if let navBar = self.navigationController?.navigationBar {
+      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -31,6 +38,17 @@ internal final class FindFriendsViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if let navBar = self.navigationController?.navigationBar {
+      self.navBorder.frame = CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: self.navBorder.frame.size.height)
+    }
   }
 
   override func bindViewModel() {
@@ -78,7 +96,7 @@ internal final class FindFriendsViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseTableControllerStyle()
+      |> FindFriendsViewController.lens.view.backgroundColor .~ .white
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
 
     _ = self.navigationController?.navigationBar

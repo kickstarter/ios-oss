@@ -26,8 +26,10 @@ internal final class UpdateDraftViewController: UIViewController {
   @IBOutlet fileprivate weak var isBackersOnlyButton: UIButton!
   @IBOutlet fileprivate weak var previewBarButtonItem: UIBarButtonItem!
   @IBOutlet fileprivate weak var titleTextField: UITextField!
-
+  
   @IBOutlet fileprivate var separatorViews: [UIView]!
+
+  private let navBorder = UIView()
 
   internal static func configuredWith(project: Project) -> UpdateDraftViewController {
     let vc = Storyboard.UpdateDraft.instantiate(UpdateDraftViewController.self)
@@ -38,7 +40,8 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
+    _ = self
+      |> UpdateDraftViewController.lens.view.backgroundColor .~ .white
 
     _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
 
@@ -178,6 +181,11 @@ internal final class UpdateDraftViewController: UIViewController {
     self.titleTextField.addTarget(self, action: #selector(titleTextFieldDoneEditing),
                                   for: .editingDidEndOnExit)
 
+    if let navBar = self.navigationController?.navigationBar {
+      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
+      navBar.addSubview(navBorder)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -185,6 +193,17 @@ internal final class UpdateDraftViewController: UIViewController {
     super.viewWillDisappear(animated)
 
     self.viewModel.inputs.viewWillDisappear()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if let navBar = self.navigationController?.navigationBar {
+      self.navBorder.frame = CGRect(x: 0.0,
+                                    y: navBar.frame.size.height,
+                                    width: navBar.frame.size.width,
+                                    height: self.navBorder.frame.size.height)
+    }
   }
 
   @IBAction fileprivate func closeButtonTapped() {
