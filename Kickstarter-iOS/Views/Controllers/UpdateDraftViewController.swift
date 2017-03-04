@@ -26,7 +26,7 @@ internal final class UpdateDraftViewController: UIViewController {
   @IBOutlet fileprivate weak var isBackersOnlyButton: UIButton!
   @IBOutlet fileprivate weak var previewBarButtonItem: UIBarButtonItem!
   @IBOutlet fileprivate weak var titleTextField: UITextField!
-  
+
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   private let navBorder = UIView()

@@ -5,7 +5,7 @@ import SafariServices
 
 internal final class ProjectUpdatesViewController: WebViewController {
   fileprivate let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
-  
+
   private let navBorder = UIView()
 
   internal static func configuredWith(project: Project) -> ProjectUpdatesViewController {
