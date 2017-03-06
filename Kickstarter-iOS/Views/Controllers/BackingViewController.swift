@@ -67,7 +67,8 @@ internal final class BackingViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
-    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
 
     _ = self.backerPledgeAmountAndDateLabel |> UILabel.lens.font .~ .ksr_body()
     _ = self.backerPledgeStatusLabel |> UILabel.lens.font .~ .ksr_body()
