@@ -481,104 +481,117 @@ Mikke Snow</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MPc-gU-qxa">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gax-Kg-Ay8">
+                                <rect key="frame" x="67" y="269" width="240" height="128"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="N5s-ci-WzI">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="592"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MPc-gU-qxa">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Eja-XR-rqJ">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="143"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="N5s-ci-WzI">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="592"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available to watch for 48 more hours" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbk-fz-q9d">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title of the live stream goes here and can be 60 chr max" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lfi-9R-VkT">
-                                                        <rect key="frame" x="0.0" y="20.5" width="375" height="41"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lws-Sr-hCK">
-                                                        <rect key="frame" x="0.0" y="61.5" width="375" height="81.5"/>
-                                                        <string key="text">175 char max. 175 char max 175 char max message with a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!</string>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <view contentMode="scaleToFill" verticalHuggingPriority="1" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="ugz-LO-7Rp" userLabel="Spacer">
-                                                <rect key="frame" x="0.0" y="143" width="375" height="415"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbI-np-MSX">
-                                                <rect key="frame" x="0.0" y="558" width="375" height="34"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Keep up with future live streams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDW-8G-z1a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="245" height="34"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" distribution="equalSpacing" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="HaW-UP-vux">
-                                                        <rect key="frame" x="245" y="0.0" width="130" height="34"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Eja-XR-rqJ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="143"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rip-aY-2xa">
-                                                                <rect key="frame" x="0.0" y="0.0" width="82" height="34"/>
-                                                                <state key="normal" title="Subscribe">
-                                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                </state>
-                                                            </button>
-                                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4Ie-qx-OIF">
-                                                                <rect key="frame" x="110" y="7" width="20" height="20"/>
-                                                            </activityIndicatorView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available to watch for 48 more hours" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbk-fz-q9d">
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title of the live stream goes here and can be 60 chr max" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lfi-9R-VkT">
+                                                                <rect key="frame" x="0.0" y="20.5" width="375" height="41"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lws-Sr-hCK">
+                                                                <rect key="frame" x="0.0" y="61.5" width="375" height="81.5"/>
+                                                                <string key="text">175 char max. 175 char max 175 char max message with a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!</string>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <view contentMode="scaleToFill" verticalHuggingPriority="1" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ugz-LO-7Rp" userLabel="Spacer">
+                                                        <rect key="frame" x="0.0" y="143" width="375" height="415"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AbI-np-MSX">
+                                                        <rect key="frame" x="0.0" y="558" width="375" height="34"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" ambiguous="YES" text="Keep up with future live streams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDW-8G-z1a">
+                                                                <rect key="frame" x="0.0" y="0.0" width="245" height="34"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" ambiguous="YES" distribution="equalSpacing" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="HaW-UP-vux">
+                                                                <rect key="frame" x="245" y="0.0" width="130" height="34"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rip-aY-2xa">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="82" height="34"/>
+                                                                        <state key="normal" title="Subscribe">
+                                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        </state>
+                                                                    </button>
+                                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4Ie-qx-OIF">
+                                                                        <rect key="frame" x="110" y="7" width="20" height="20"/>
+                                                                    </activityIndicatorView>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                        </subviews>
-                                    </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZSp-Pu-fd3">
-                                        <rect key="frame" x="0.0" y="592" width="375" height="75"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6i-ss-KcY" userLabel="Separator">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZSp-Pu-fd3">
+                                                <rect key="frame" x="0.0" y="592" width="375" height="75"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i6i-ss-KcY" userLabel="Separator">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="bMc-9n-OoX"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfq-1s-f9v">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                                        <state key="normal" title="Go to project page →">
+                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="bMc-9n-OoX"/>
+                                                    <constraint firstItem="i6i-ss-KcY" firstAttribute="leading" secondItem="ZSp-Pu-fd3" secondAttribute="leading" id="4Hx-2I-TWY"/>
+                                                    <constraint firstItem="i6i-ss-KcY" firstAttribute="top" secondItem="ZSp-Pu-fd3" secondAttribute="top" id="7Vl-jr-6Oi"/>
+                                                    <constraint firstAttribute="bottom" secondItem="rfq-1s-f9v" secondAttribute="bottom" id="Qmh-Mr-DK8"/>
+                                                    <constraint firstAttribute="trailing" secondItem="rfq-1s-f9v" secondAttribute="trailing" id="RLH-DL-ejR"/>
+                                                    <constraint firstItem="rfq-1s-f9v" firstAttribute="leading" secondItem="ZSp-Pu-fd3" secondAttribute="leading" id="UlD-j2-MFx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="i6i-ss-KcY" secondAttribute="trailing" id="VPU-b9-fGv"/>
+                                                    <constraint firstItem="rfq-1s-f9v" firstAttribute="top" secondItem="ZSp-Pu-fd3" secondAttribute="top" id="wot-eF-Pyh"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfq-1s-f9v">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
-                                                <state key="normal" title="Go to project page →">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="i6i-ss-KcY" firstAttribute="leading" secondItem="ZSp-Pu-fd3" secondAttribute="leading" id="4Hx-2I-TWY"/>
-                                            <constraint firstItem="i6i-ss-KcY" firstAttribute="top" secondItem="ZSp-Pu-fd3" secondAttribute="top" id="7Vl-jr-6Oi"/>
-                                            <constraint firstAttribute="bottom" secondItem="rfq-1s-f9v" secondAttribute="bottom" id="Qmh-Mr-DK8"/>
-                                            <constraint firstAttribute="trailing" secondItem="rfq-1s-f9v" secondAttribute="trailing" id="RLH-DL-ejR"/>
-                                            <constraint firstItem="rfq-1s-f9v" firstAttribute="leading" secondItem="ZSp-Pu-fd3" secondAttribute="leading" id="UlD-j2-MFx"/>
-                                            <constraint firstAttribute="trailing" secondItem="i6i-ss-KcY" secondAttribute="trailing" id="VPU-b9-fGv"/>
-                                            <constraint firstItem="rfq-1s-f9v" firstAttribute="top" secondItem="ZSp-Pu-fd3" secondAttribute="top" id="wot-eF-Pyh"/>
-                                        </constraints>
-                                    </view>
+                                    </stackView>
                                 </subviews>
-                            </stackView>
+                                <constraints>
+                                    <constraint firstItem="MPc-gU-qxa" firstAttribute="top" secondItem="Gax-Kg-Ay8" secondAttribute="top" id="1Nn-0c-bF3"/>
+                                    <constraint firstAttribute="trailing" secondItem="MPc-gU-qxa" secondAttribute="trailing" id="5mx-Wg-Cjb"/>
+                                    <constraint firstItem="MPc-gU-qxa" firstAttribute="height" relation="greaterThanOrEqual" secondItem="Gax-Kg-Ay8" secondAttribute="height" id="JXN-m1-nCv"/>
+                                    <constraint firstAttribute="bottom" secondItem="MPc-gU-qxa" secondAttribute="bottom" id="vpd-Pw-IEG"/>
+                                    <constraint firstItem="MPc-gU-qxa" firstAttribute="leading" secondItem="Gax-Kg-Ay8" secondAttribute="leading" id="y3g-6B-EhV"/>
+                                    <constraint firstItem="MPc-gU-qxa" firstAttribute="width" secondItem="Gax-Kg-Ay8" secondAttribute="width" id="zOy-Yz-KJd"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="MPc-gU-qxa" firstAttribute="top" secondItem="qgM-4p-vT0" secondAttribute="top" id="Nq2-Ag-8NZ"/>
-                            <constraint firstItem="MPc-gU-qxa" firstAttribute="leading" secondItem="qgM-4p-vT0" secondAttribute="leading" id="bpB-FS-U0E"/>
-                            <constraint firstItem="MPc-gU-qxa" firstAttribute="trailing" secondItem="qgM-4p-vT0" secondAttribute="trailing" id="nue-dW-Bdo"/>
-                            <constraint firstItem="MPc-gU-qxa" firstAttribute="bottom" secondItem="qgM-4p-vT0" secondAttribute="bottom" id="vDz-kj-gZB"/>
+                            <constraint firstItem="Gax-Kg-Ay8" firstAttribute="leading" secondItem="qgM-4p-vT0" secondAttribute="leading" id="MKm-K2-oYX"/>
+                            <constraint firstItem="Gax-Kg-Ay8" firstAttribute="bottom" secondItem="qgM-4p-vT0" secondAttribute="bottomMargin" id="XCZ-PY-Y3a"/>
+                            <constraint firstItem="Gax-Kg-Ay8" firstAttribute="top" secondItem="qgM-4p-vT0" secondAttribute="topMargin" id="ayz-Ml-wFX"/>
+                            <constraint firstItem="Gax-Kg-Ay8" firstAttribute="trailing" secondItem="qgM-4p-vT0" secondAttribute="trailing" id="lT5-rO-xzg"/>
                         </constraints>
                     </view>
                     <connections>

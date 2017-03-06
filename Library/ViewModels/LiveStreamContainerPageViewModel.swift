@@ -13,10 +13,13 @@ public protocol LiveStreamContainerPageViewModelType {
 public protocol LiveStreamContainerPageViewModelInputs {
   /// Call to configure with the Project, LiveStreamEvent and LiveStreamChatHandler.
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                     liveStreamChatHandler: LiveStreamChatHandler)
+                     liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool)
 
   /// Call when the chat button is tapped.
   func chatButtonTapped()
+
+  /// Call when the view controllers have been loaded into the data source.
+  func didLoadViewControllersIntoPagesDataSource()
 
   /// Call when the info button is tapped.
   func infoButtonTapped()
@@ -50,8 +53,8 @@ public protocol LiveStreamContainerPageViewModelOutputs {
   /// Emits the view controller page types to load into the data source.
   var loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError> { get }
 
-  /// Emits the index that should be paged to.
-  var pagedToPage: Signal<LiveStreamContainerPage, NoError> { get }
+  /// Emits the page that should be paged to and in which direction.
+  var pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError> { get }
 }
 
 public final class LiveStreamContainerPageViewModel: LiveStreamContainerPageViewModelType,
@@ -63,10 +66,11 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    self.loadViewControllersIntoPagesDataSource = configData.map {
+    self.loadViewControllersIntoPagesDataSource = configData.map { project, liveStreamEvent,
+      liveStreamChatHandler, presentedFromProject in
       [
-        .info(project: $0, liveStreamEvent: $1),
-        .chat(liveStreamChatHandler: $2)
+        .info(project: project, liveStreamEvent: liveStreamEvent, presentedFromProject: presentedFromProject),
+        .chat(liveStreamChatHandler: liveStreamChatHandler)
       ]
     }
 
@@ -90,15 +94,30 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       )
       .map { $0[$1] }
 
-    self.pagedToPage = Signal.merge(
-      self.loadViewControllersIntoPagesDataSource.map { $0.filter { $0.isChatPage }.first }.skipNil(),
+    let firstPage = self.loadViewControllersIntoPagesDataSource
+      .takeWhen(self.didLoadViewControllersIntoPagesDataSourceProperty.signal)
+      .map { $0.filter { $0.isChatPage }.first }
+      .skipNil()
+      .map { ($0, UIPageViewControllerNavigationDirection.forward) }
+
+    let pagedToPage = Signal.merge(
+      firstPage.map(first),
       infoButtonPage.takeWhen(self.infoButtonTappedProperty.signal),
       chatButtonPage.takeWhen(self.chatButtonTappedProperty.signal)
+      )
+      .combinePrevious()
+      .map { prev, current in
+        (current, prev.pageDirection(toPage: current))
+    }
+
+    self.pagedToPage = Signal.merge(
+      firstPage,
+      pagedToPage
     )
 
     let pageChangedToPage = Signal.merge(
       pageControllerPagedToPage,
-      self.pagedToPage
+      self.pagedToPage.map(first)
     )
 
     let isInfoPage = pageChangedToPage
@@ -123,15 +142,21 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       .map(indexFor(page:))
   }
 
-  private let configDataProperty = MutableProperty<(Project, LiveStreamEvent, LiveStreamChatHandler)?>(nil)
+  private let configDataProperty = MutableProperty<(Project, LiveStreamEvent, LiveStreamChatHandler,
+    Bool)?>(nil)
   public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                            liveStreamChatHandler: LiveStreamChatHandler){
-    self.configDataProperty.value = (project, liveStreamEvent, liveStreamChatHandler)
+                            liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool){
+    self.configDataProperty.value = (project, liveStreamEvent, liveStreamChatHandler, presentedFromProject)
   }
 
   private let chatButtonTappedProperty = MutableProperty()
   public func chatButtonTapped() {
     self.chatButtonTappedProperty.value = ()
+  }
+
+  private let didLoadViewControllersIntoPagesDataSourceProperty = MutableProperty()
+  public func didLoadViewControllersIntoPagesDataSource() {
+    self.didLoadViewControllersIntoPagesDataSourceProperty.value = ()
   }
 
   private let infoButtonTappedProperty = MutableProperty()
@@ -160,7 +185,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
   public let infoButtonTextColor: Signal<UIColor, NoError>
   public let infoButtonTitleFont: Signal<UIFont, NoError>
   public let loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError>
-  public let pagedToPage: Signal<LiveStreamContainerPage, NoError>
+  public let pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError>
 
   public var inputs: LiveStreamContainerPageViewModelInputs { return self }
   public var outputs: LiveStreamContainerPageViewModelOutputs { return self }
@@ -176,7 +201,7 @@ private func indexFor(page: LiveStreamContainerPage) -> Int {
 }
 
 public enum LiveStreamContainerPage {
-  case info(project: Project, liveStreamEvent: LiveStreamEvent)
+  case info(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool)
   case chat(liveStreamChatHandler: LiveStreamChatHandler)
 
   var isInfoPage: Bool {
@@ -196,13 +221,27 @@ public enum LiveStreamContainerPage {
       return false
     }
   }
+
+  func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewControllerNavigationDirection {
+    switch (self, toPage) {
+    case (.info, .chat):
+      return .forward
+    case (.chat, .info):
+      return .reverse
+    default:
+      return .forward
+    }
+  }
 }
 
 extension LiveStreamContainerPage: Equatable {
   static public func == (lhs: LiveStreamContainerPage, rhs: LiveStreamContainerPage) -> Bool {
     switch (lhs, rhs) {
-    case (.info(let lhsProject, let lhsLiveStreamEvent), .info(let rhsProject, let rhsLiveStreamEvent)):
-      return lhsProject == rhsProject && lhsLiveStreamEvent == rhsLiveStreamEvent
+    case (.info(let lhsProject, let lhsLiveStreamEvent, let lhsPresentedFromProject),
+          .info(let rhsProject, let rhsLiveStreamEvent, let rhsPresentedFromProject)):
+      return lhsProject == rhsProject
+        && lhsLiveStreamEvent == rhsLiveStreamEvent
+        && lhsPresentedFromProject == rhsPresentedFromProject
     case (.chat, .chat):
       return true
     default:

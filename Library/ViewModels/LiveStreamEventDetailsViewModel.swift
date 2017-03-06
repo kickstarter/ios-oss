@@ -12,7 +12,7 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   /// Call with the Project, the specific LiveStream and LiveStreamEvent
-  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent)
+  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool)
 
   /// Called when the LiveStreamViewController's state changes
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
@@ -36,6 +36,9 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
+
+  /// Emits a boolean that determines if the project button container is hidden
+  var goToProjectButtonContainerHidden: Signal<Bool, NoError> { get }
 
   /// Emits the title of the LiveStreamEvent
   var liveStreamTitle: Signal<String, NoError> { get }
@@ -193,6 +196,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.subscribeButtonAccessibilityLabel = subscribed
       .map { $0 ? Strings.Unsubscribe() : Strings.Subscribe() }
 
+    self.goToProjectButtonContainerHidden = configData.map { $2 }
+
     configData
       .takePairWhen(isSubscribedEventValues)
       .observeValues { configData, isSubscribed in
@@ -203,9 +208,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
   }
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
-  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent) {
-    self.configData.value = (project, liveStreamEvent)
+  private let configData = MutableProperty<(Project, LiveStreamEvent, Bool)?>(nil)
+  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool) {
+    self.configData.value = (project, liveStreamEvent, presentedFromProject)
   }
 
   private let liveStreamViewControllerStateChangedProperty =
@@ -237,6 +242,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
+  public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>
   public let numberOfPeopleWatchingText: Signal<String, NoError>

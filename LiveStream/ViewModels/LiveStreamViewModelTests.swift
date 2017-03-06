@@ -809,14 +809,16 @@ internal final class LiveStreamViewModelTests: XCTestCase {
         "userId": "id_1312341234321"
       ])
 
-    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot1)
-    self.backgroundQueueScheduler.advance()
-    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot2)
-    self.backgroundQueueScheduler.advance()
-    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot3)
     self.backgroundQueueScheduler.advance()
 
-    self.backgroundQueueScheduler.advance(by: .seconds(2))
+    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot1)
+    self.scheduler.advance()
+    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot2)
+    self.scheduler.advance()
+    self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot3)
+    self.scheduler.advance()
+
+    self.scheduler.advance(by: .seconds(2))
 
     self.chatMessages.assertValueCount(1)
     XCTAssertTrue(self.chatMessages.lastValue?.isEmpty == .some(false))
@@ -824,15 +826,15 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssertEqual(self.chatMessages.lastValue?.first?.id, "1")
 
     self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot1)
-    self.backgroundQueueScheduler.advance()
+    self.scheduler.advance()
     self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot2)
-    self.backgroundQueueScheduler.advance()
+    self.scheduler.advance()
 
-    self.backgroundQueueScheduler.advance(by: .seconds(1))
+    self.scheduler.advance(by: .seconds(1))
 
     self.chatMessages.assertValueCount(1)
 
-    self.backgroundQueueScheduler.advance(by: .seconds(1))
+    self.scheduler.advance(by: .seconds(1))
 
     self.chatMessages.assertValueCount(2)
 

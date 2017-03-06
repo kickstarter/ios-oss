@@ -44,7 +44,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
 
   /// Emits when the LiveStreamContainerPageViewController should be configured
-  var configurePageViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
+  var configurePageViewController: Signal<(Project, LiveStreamEvent, Bool), NoError> { get }
 
   /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
@@ -57,9 +57,6 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits a project and ref tag when we should navigate to the project
   var goToProject: Signal<(Project, RefTag), NoError> { get }
-
-  /// Emits a boolean that determines if the project button container is hidden.
-  var goToProjectButtonContainerHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the loader activity indicator should animate
   var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
@@ -124,6 +121,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     let project = configData.map { project, _, _, _ in project }
+    let presentedFromProject = configData.map { _, _, _, presentedFromProject in presentedFromProject }
     let event = Signal.merge(
       initialEvent,
       updatedEventFetch.values()
@@ -132,8 +130,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
-    self.configurePageViewController = Signal.combineLatest(project, initialEvent)
-      .map { project, event in (project, event) }
+    self.configurePageViewController = Signal.combineLatest(project, initialEvent, presentedFromProject)
+      .map { project, event, presentedFromProject in (project, event, presentedFromProject) }
 
     let liveStreamControllerState = Signal.merge(
       Signal.combineLatest(
@@ -399,7 +397,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let availableForLabelHidden: Signal<Bool, NoError>
   public let availableForText: Signal<String, NoError>
   public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
-  public let configurePageViewController: Signal<(Project, LiveStreamEvent), NoError>
+  public let configurePageViewController: Signal<(Project, LiveStreamEvent, Bool), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>

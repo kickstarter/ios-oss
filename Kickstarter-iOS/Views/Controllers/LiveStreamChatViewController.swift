@@ -34,7 +34,7 @@ internal final class LiveStreamChatViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
+  internal override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     self.becomeFirstResponder()

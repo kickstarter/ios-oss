@@ -22,10 +22,11 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   fileprivate let viewModel: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
   internal func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                              liveStreamChatHandler: LiveStreamChatHandler) {
+                              liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool) {
     self.viewModel.inputs.configureWith(project: project,
                                         liveStreamEvent: liveStreamEvent,
-                                        liveStreamChatHandler: liveStreamChatHandler)
+                                        liveStreamChatHandler: liveStreamChatHandler,
+                                        presentedFromProject: presentedFromProject)
   }
 
   internal override func viewDidLoad() {
@@ -112,16 +113,16 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
     self.viewModel.outputs.pagedToPage
       .observeForUI()
-      .observeValues {
-        switch $0 {
+      .observeValues { [weak self] page, direction in
+        switch page {
         case .chat:
-          self.liveStreamChatViewController.flatMap {
-            self.pageViewController?.setViewControllers([$0], direction: .forward, animated: false,
+          self?.liveStreamChatViewController.flatMap {
+            self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
                                                         completion: nil)
           }
         case .info:
-          self.liveStreamEventDetailsViewController.flatMap {
-            self.pageViewController?.setViewControllers([$0], direction: .forward, animated: false,
+          self?.liveStreamEventDetailsViewController.flatMap {
+            self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
                                                         completion: nil)
           }
         }
@@ -143,15 +144,19 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
         let vc = LiveStreamChatViewController.configuredWith(liveStreamChatHandler: liveStreamChatHandler)
         self.liveStreamChatViewController = vc
         return vc
-      case .info(let project, let liveStreamEvent):
-        let vc = LiveStreamEventDetailsViewController.configuredWith(project: project,
-                                                                     liveStreamEvent: liveStreamEvent)
+      case .info(let project, let liveStreamEvent, let presentedFromProject):
+        let vc = LiveStreamEventDetailsViewController.configuredWith(
+          project: project,
+          liveStreamEvent: liveStreamEvent,
+          presentedFromProject: presentedFromProject
+        )
         self.liveStreamEventDetailsViewController = vc
         return vc
       }
     }
 
     self.pagesDataSource.load(viewControllers: viewControllers)
+    self.viewModel.inputs.didLoadViewControllersIntoPagesDataSource()
   }
 
   private func animateIndicatorLineViewToPosition(position: Int) {

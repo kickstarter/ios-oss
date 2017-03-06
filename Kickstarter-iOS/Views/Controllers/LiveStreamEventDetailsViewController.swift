@@ -22,11 +22,13 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   fileprivate let viewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
 
-  public static func configuredWith(project: Project, liveStreamEvent: LiveStreamEvent) ->
+  public static func configuredWith(project: Project, liveStreamEvent: LiveStreamEvent,
+                                    presentedFromProject: Bool) ->
     LiveStreamEventDetailsViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamEventDetailsViewController.self)
-      vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
+      vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
+                                        presentedFromProject: presentedFromProject)
 
       return vc
   }
@@ -156,6 +158,8 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
 
     self.subscribeButton.rac.hidden = self.viewModel.outputs
       .animateSubscribeButtonActivityIndicator
+
+    self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     Signal.merge(
       self.viewModel.outputs.showErrorAlert,

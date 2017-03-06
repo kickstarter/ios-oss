@@ -21,7 +21,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
   private let creatorIntroText = TestObserver<String, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let goToProjectButtonContainerHidden = TestObserver<Bool, NoError>()
   private let loaderActivityIndicatorAnimating = TestObserver<Bool, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
@@ -48,7 +47,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       .observe(self.creatorAvatarLiveDotImageViewHidden.observer)
     self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.goToProjectButtonContainerHidden.observe(self.goToProjectButtonContainerHidden.observer)
     self.vm.outputs.loaderActivityIndicatorAnimating.observe(self.loaderActivityIndicatorAnimating.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
@@ -806,25 +804,5 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.configureLiveStreamViewControllerUserId.assertValues([nil])
       self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
     }
-  }
-
-  func testGoToProjectButtonContainerHidden_PresentedFromProject() {
-    self.vm.inputs.configureWith(project: .template,
-                                 liveStreamEvent: .template,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToProjectButtonContainerHidden.assertValues([true])
-  }
-
-  func testGoToProjectButtonContainerHidden_NotPresentedFromProject() {
-    self.vm.inputs.configureWith(project: .template,
-                                 liveStreamEvent: .template,
-                                 refTag: .projectPage,
-                                 presentedFromProject: false)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToProjectButtonContainerHidden.assertValues([false])
   }
 }

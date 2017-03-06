@@ -328,8 +328,8 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     let bufferInterval = self.viewDidLoadProperty.signal.flatMap {
-      timer(interval: .seconds(2), on: environment.backgroundQueueScheduler)
-    }
+      timer(interval: .seconds(2), on: environment.scheduler)
+    }.take(during: Lifetime(self.token))
 
     let snapshots = self.viewDidLoadProperty.signal
       .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
@@ -380,6 +380,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.initializeFirebase = configData
       .filter { event, _ in event.liveNow }
   }
+
+  // Required to limit the lifetime of the chat buffer interval timer
+  private let token = Lifetime.Token()
 
   private let configData = MutableProperty<(LiveStreamEvent, Int?)?>(nil)
   internal func configureWith(event: LiveStreamEvent, userId: Int?) {

@@ -169,7 +169,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.outputs.configurePageViewController
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvent in
+      .observeValues { [weak self] project, liveStreamEvent, presentedFromProject in
         guard
           let _self = self,
           let liveStreamViewController = self?.liveStreamViewController
@@ -179,7 +179,8 @@ public final class LiveStreamContainerViewController: UIViewController {
         _self.liveStreamContainerPageViewController?.configureWith(
           project: project,
           liveStreamEvent: liveStreamEvent,
-          liveStreamChatHandler: liveStreamViewController
+          liveStreamChatHandler: liveStreamViewController,
+          presentedFromProject: presentedFromProject
         )
     }
 
