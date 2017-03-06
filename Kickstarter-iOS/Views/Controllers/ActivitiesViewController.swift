@@ -9,7 +9,6 @@ internal final class ActivitiesViewController: UITableViewController {
   fileprivate let dataSource = ActivitiesDataSource()
 
   fileprivate var emptyStatesController: EmptyStatesViewController?
-  private let navBorder = UIView()
 
   internal static func instantiate() -> ActivitiesViewController {
     return Storyboard.Activity.instantiate(ActivitiesViewController.self)
@@ -33,13 +32,6 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewDidLayoutSubviews()
 
     self.emptyStatesController?.view.frame = self.view.bounds
-
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
   }
 
   internal override func viewDidLoad() {
@@ -55,11 +47,6 @@ internal final class ActivitiesViewController: UITableViewController {
     self.addChildViewController(emptyVC)
     self.view.addSubview(emptyVC.view)
     emptyVC.didMove(toParentViewController: self)
-
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -79,8 +66,7 @@ internal final class ActivitiesViewController: UITableViewController {
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
 
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
+    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length

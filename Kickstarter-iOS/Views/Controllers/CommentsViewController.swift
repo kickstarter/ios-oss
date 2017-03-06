@@ -13,7 +13,6 @@ internal final class CommentsViewController: UITableViewController {
   // This button needs to store a strong reference so as to not get wiped when setting hidden state.
   @IBOutlet fileprivate var commentBarButton: UIBarButtonItem!
   fileprivate weak var loginToutViewController: UIViewController?
-  private let navBorder = UIView()
 
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
@@ -39,28 +38,12 @@ internal final class CommentsViewController: UITableViewController {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
     }
 
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
-
     self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
   }
 
   internal override func bindStyles() {

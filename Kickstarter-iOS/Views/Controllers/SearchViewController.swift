@@ -16,8 +16,6 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
-  private let navBorder = UIView()
-
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
   }
@@ -25,11 +23,6 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = self.dataSource
-
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -54,17 +47,6 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.delegate = self
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
   }
 
   internal override func bindStyles() {

@@ -10,7 +10,6 @@ internal final class ProfileViewController: UICollectionViewController {
   fileprivate let dataSource = ProfileDataSource()
   fileprivate let viewModel: ProfileViewModelType = ProfileViewModel()
   fileprivate let refreshControl = UIRefreshControl()
-  private let navBorder = UIView()
 
   internal static func instantiate() -> ProfileViewController {
     return Storyboard.Profile.instantiate(ProfileViewController.self)
@@ -27,11 +26,6 @@ internal final class ProfileViewController: UICollectionViewController {
 
     self.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     self.collectionView?.addSubview(refreshControl)
-
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -39,15 +33,10 @@ internal final class ProfileViewController: UICollectionViewController {
     self.viewModel.inputs.viewWillAppear(animated)
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
+  internal override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator);
 
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
+    self.navigationController?.navigationBar.invalidateIntrinsicContentSize();
   }
 
   internal override func bindViewModel() {

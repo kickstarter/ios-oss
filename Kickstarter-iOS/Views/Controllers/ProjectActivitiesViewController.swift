@@ -7,8 +7,6 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   fileprivate let viewModel: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
   fileprivate let dataSource = ProjectActivitiesDataSource()
 
-  private let navBorder = UIView()
-
   internal static func configuredWith(project: Project) -> ProjectActivitiesViewController {
     let vc = Storyboard.ProjectActivity.instantiate(ProjectActivitiesViewController.self)
     vc.viewModel.inputs.configureWith(project)
@@ -18,25 +16,9 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
-
     self.tableView.dataSource = dataSource
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
   }
 
   internal override func bindViewModel() {

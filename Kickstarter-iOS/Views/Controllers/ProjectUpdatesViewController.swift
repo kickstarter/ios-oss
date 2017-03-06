@@ -6,8 +6,6 @@ import SafariServices
 internal final class ProjectUpdatesViewController: WebViewController {
   fileprivate let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
 
-  private let navBorder = UIView()
-
   internal static func configuredWith(project: Project) -> ProjectUpdatesViewController {
     let vc = ProjectUpdatesViewController()
     vc.viewModel.inputs.configureWith(project: project)
@@ -16,11 +14,6 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-
-    if let navBar = self.navigationController?.navigationBar {
-      _ = self.navBorder |> baseNavigationBorderStyle(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -36,17 +29,6 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.navigationItem.title = Strings.project_menu_buttons_updates()
 
     _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    if let navBar = self.navigationController?.navigationBar {
-      self.navBorder.frame = CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: self.navBorder.frame.size.height)
-    }
   }
 
   internal override func bindViewModel() {
