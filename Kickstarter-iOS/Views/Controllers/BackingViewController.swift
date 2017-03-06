@@ -59,6 +59,7 @@ internal final class BackingViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
