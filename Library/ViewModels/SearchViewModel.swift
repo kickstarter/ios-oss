@@ -177,7 +177,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.cancelButtonPressedProperty.signal
     )
 
-    self.searchLoaderIndicatorIsAnimating = isLoading
+    self.searchLoaderIndicatorIsAnimating = Signal.merge(
+      isLoading,
+      paginatedProjects.mapConst(false)
+    ).skipRepeats()
 
     self.popularLoaderIndicatorIsAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
