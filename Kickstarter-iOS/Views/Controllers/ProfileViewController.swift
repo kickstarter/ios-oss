@@ -33,12 +33,6 @@ internal final class ProfileViewController: UICollectionViewController {
     self.viewModel.inputs.viewWillAppear(animated)
   }
 
-  internal override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    super.viewWillTransition(to: size, with: coordinator);
-
-    self.navigationController?.navigationBar.invalidateIntrinsicContentSize();
-  }
-
   internal override func bindViewModel() {
     super.bindViewModel()
 
