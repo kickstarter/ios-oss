@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 internal final class SearchLoadingStateCell: UITableViewCell, ValueCell {
-  @IBOutlet weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet private weak var loadingIndicatorView: UIActivityIndicatorView!
 
   internal func configureWith(value: Void) {
   }
