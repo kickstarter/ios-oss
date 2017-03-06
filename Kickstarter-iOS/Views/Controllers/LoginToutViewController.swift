@@ -60,6 +60,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self |> baseControllerStyle()
 
+    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+
     _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
     _ = self.helpButton |> disclaimerButtonStyle

@@ -54,7 +54,6 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
-      |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
@@ -63,7 +62,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchBarContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> UIView.lens.backgroundColor .~ .ksr_grey_300
 
     _ = self.searchIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_500

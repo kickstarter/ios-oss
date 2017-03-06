@@ -43,7 +43,7 @@ internal final class DashboardViewController: UITableViewController {
   override func bindStyles() {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> DashboardViewController.lens.view.backgroundColor .~ .white
+      |> UITableViewController.lens.view.backgroundColor .~ .white
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle

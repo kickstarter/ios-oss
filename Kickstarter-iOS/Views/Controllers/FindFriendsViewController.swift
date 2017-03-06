@@ -78,7 +78,7 @@ internal final class FindFriendsViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> FindFriendsViewController.lens.view.backgroundColor .~ .white
+      |> baseControllerFeedStyle()
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
 
     _ = self.navigationController?.navigationBar

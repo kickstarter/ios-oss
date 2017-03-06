@@ -63,6 +63,9 @@ internal final class MessageDialogViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
+
     _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)

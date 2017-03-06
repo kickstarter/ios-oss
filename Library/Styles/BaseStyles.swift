@@ -14,13 +14,17 @@ public enum Styles {
   }
 }
 
-public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
+public func baseControllerFeedStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .ksr_grey_300
+}
+
+public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
+  return VC.lens.view.backgroundColor .~ .white
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
-  let style = baseControllerStyle()
+  let style = baseControllerFeedStyle()
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 

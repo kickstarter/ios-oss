@@ -78,6 +78,9 @@ internal final class ProfileViewController: UICollectionViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseControllerFeedStyle()
+
     _ = self.messagesButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_buttons_messages() }
 

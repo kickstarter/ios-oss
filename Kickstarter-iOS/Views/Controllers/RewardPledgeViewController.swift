@@ -152,7 +152,7 @@ internal final class RewardPledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
+      |> baseControllerFeedStyle()
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle

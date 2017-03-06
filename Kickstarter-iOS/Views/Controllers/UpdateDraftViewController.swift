@@ -39,9 +39,10 @@ internal final class UpdateDraftViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> UpdateDraftViewController.lens.view.backgroundColor .~ .white
+      |> baseControllerStyle()
 
-    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
 
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 

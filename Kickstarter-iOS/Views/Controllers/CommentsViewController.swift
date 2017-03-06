@@ -51,7 +51,6 @@ internal final class CommentsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> CommentsViewController.lens.view.backgroundColor .~ .white
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle

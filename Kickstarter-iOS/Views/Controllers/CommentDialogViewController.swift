@@ -44,6 +44,9 @@ internal final class CommentDialogViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self.navigationController?.navigationBar
+      ?|> baseNavigationBarStyle
+
     _ = self.postButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_post() }
 
