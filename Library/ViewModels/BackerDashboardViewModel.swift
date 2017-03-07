@@ -45,6 +45,12 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a boolean whether backed projects container should be hidden or not.
   var backedProjectsAreHidden: Signal<Bool, NoError> { get }
 
+  /// Emits a ProfileProjectsType to configure the Backed Projects Controller.
+  var configureBackedProjectsController: Signal<ProfileProjectsType, NoError> { get }
+
+  /// Emits a ProfileProjectsType to configure the Saved Projects Controller.
+  var configureSavedProjectsController: Signal<ProfileProjectsType, NoError> { get }
+
   /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
   var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
 
@@ -111,6 +117,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.backerLocationText = user.map { $0.location?.displayableName ?? "" }
 
     self.backerNameText = user.map { $0.name }
+
+    self.configureBackedProjectsController = self.viewDidLoadProperty.signal
+      .map { .backed }
+
+    self.configureSavedProjectsController = self.viewDidLoadProperty.signal
+      .map { .saved }
 
     self.savedButtonTitleText = user.map { user in
       localizedString(
@@ -208,6 +220,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
   public let backedProjectsAreHidden: Signal<Bool, NoError>
+  public let configureBackedProjectsController: Signal<ProfileProjectsType, NoError>
+  public let configureSavedProjectsController: Signal<ProfileProjectsType, NoError>
   public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>
   public let goToMessages: Signal<(), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>

@@ -98,6 +98,18 @@ internal final class BackerDashboardViewController: UIViewController {
         _self.setAttributedTitles(for: _self.backedMenuButton, with: string)
     }
 
+    self.viewModel.outputs.configureBackedProjectsController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.backedProjectsViewController.configureWith(projectsType: $0)
+    }
+
+    self.viewModel.outputs.configureSavedProjectsController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.savedProjectsViewController.configureWith(projectsType: $0)
+    }
+
     self.viewModel.outputs.embeddedViewTopConstraintConstant
       .observeForUI()
       .observeValues { [weak self] in
@@ -252,17 +264,18 @@ internal final class BackerDashboardViewController: UIViewController {
       delay: 0.0,
       options: .curveEaseOut,
       animations: {
+        self.headerView.setNeedsLayout()
+
         self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
         self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
 
-        self.headerView.setNeedsLayout()
         self.headerView.layoutIfNeeded()
       },
       completion: nil)
   }
 
   fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
-    // put this value in view model. it changes when sort bar is hidden.
+    // todo: put this value in view model. it changes when sort bar is hidden.
     let minHeaderHeight = self.topBackgroundView.frame.size.height -
       self.menuButtonsStackView.frame.size.height - Styles.grid(3)
     let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
@@ -307,7 +320,7 @@ internal final class BackerDashboardViewController: UIViewController {
     } else if scrollView.contentOffset.y < 0 {
       if isCollapsed {
         let newConstant = self.headerViewTopConstraint.constant - scrollView.contentOffset.y
-        if newConstant <= 0 { // need a constraint here, but maybe this isn't the best place
+        if newConstant <= 0 { // todo: need a constraint here, but maybe this isn't the best place
           self.headerViewTopConstraint.constant = newConstant
         }
       }
@@ -318,7 +331,6 @@ internal final class BackerDashboardViewController: UIViewController {
     }
 
     // todo: the scrollview itself shouldn't be able to tuck under when header is not yet collapsed
-    // todo: still some jankiness on scroll, probably b/c isCollapsed is not correct until releasing
 
 //    print("offset = \(scrollView.contentOffset.y)")
 //    print("constant = \(self.headerViewTopConstraint.constant), -minHeight = \(-minHeaderHeight)")

@@ -16,19 +16,21 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
 
   internal weak var delegate: ProfileSavedProjectsViewControllerDelegate?
 
-  override func viewDidLoad() {
+  internal func configureWith(projectsType: ProfileProjectsType) {
+    self.viewModel.inputs.configureWith(type: projectsType)
+  }
+
+  internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
-
-    self.viewModel.inputs.configureWith(type: .saved)
 
     self.tableView.register(nib: .ProfileEmptyStateCell)
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.emptyStateIsVisible
@@ -39,7 +41,7 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
     }
   }
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -50,15 +52,15 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
       ?|> baseNavigationBarStyle
   }
 
-  override internal func scrollViewDidScroll(_ scrollView: UIScrollView) {
+  internal override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     self.delegate?.profileSavedProjectsDidScroll(scrollView)
   }
 
-  override internal func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+  internal override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     self.delegate?.profileSavedProjectsDidEndDecelerating(scrollView)
   }
 
-  override internal func scrollViewDidEndDragging(_ scrollView: UIScrollView,
+  internal override func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                                   willDecelerate decelerate: Bool) {
     self.delegate?.profileSavedProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
   }
