@@ -47,7 +47,7 @@ public protocol FindFriendsViewModelOutputs {
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
 
   /// Emits a boolean that determines if loader is hidden.
-  var showLoadingState: Signal<Bool, NoError> { get }
+  var showLoadingIndicatorView: Signal<Bool, NoError> { get }
 
   /// Emits when error alert should show with AlertError
   var showErrorAlert: Signal<AlertError, NoError> { get }
@@ -127,7 +127,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
-    self.showLoadingState = Signal.merge(
+    self.showLoadingIndicatorView = Signal.merge(
       isLoading.take(first: 1),
       friends.mapConst(false)
       ).skipRepeats()
@@ -202,7 +202,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public let friends: Signal<([User], FriendsSource), NoError>
   public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let showLoadingState: Signal<Bool, NoError>
+  public let showLoadingIndicatorView: Signal<Bool, NoError>
   public let showFollowAllFriendsAlert: Signal<Int, NoError>
   public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>
   public let showErrorAlert: Signal<AlertError, NoError>

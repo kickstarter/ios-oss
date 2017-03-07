@@ -10,6 +10,8 @@ internal final class FindFriendsViewController: UITableViewController {
 
   fileprivate let viewModel: FindFriendsViewModelType = FindFriendsViewModel()
   fileprivate let dataSource = FindFriendsDataSource()
+  fileprivate let loadingIndicatorView = UIActivityIndicatorView()
+  fileprivate let backgroundView = UIView()
 
   internal static func configuredWith(source: FriendsSource) -> FindFriendsViewController {
     let vc = Storyboard.Friends.instantiate(FindFriendsViewController.self)
@@ -22,6 +24,9 @@ internal final class FindFriendsViewController: UITableViewController {
 
     self.tableView.estimatedRowHeight = 100.0
     self.tableView.rowHeight = UITableViewAutomaticDimension
+
+    self.tableView.backgroundView = self.backgroundView
+    self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: self.tableView.backgroundView!)
     self.tableView.dataSource = dataSource
 
     self.viewModel.inputs.viewDidLoad()
@@ -36,6 +41,7 @@ internal final class FindFriendsViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.showLoadingIndicatorView
     self.viewModel.outputs.friends
       .observeForUI()
       .observeValues { [weak self] (friends, source) in
@@ -57,13 +63,6 @@ internal final class FindFriendsViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.showLoadingState
-      .observeForUI()
-      .observeValues { [weak self] visible in
-        self?.dataSource.loader(isVisible: visible)
-        self?.tableView.reloadData()
-    }
-
     self.viewModel.outputs.showFollowAllFriendsAlert
       .observeForUI()
       .observeValues { [weak self] count in
@@ -81,6 +80,12 @@ internal final class FindFriendsViewController: UITableViewController {
     }
   }
 
+  internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.loadingIndicatorView.center = (self.tableView.backgroundView?.center)!
+  }
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -90,6 +95,11 @@ internal final class FindFriendsViewController: UITableViewController {
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
+
+    _ = self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
 
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
