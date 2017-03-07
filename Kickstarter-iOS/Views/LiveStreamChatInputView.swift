@@ -28,8 +28,8 @@ internal final class LiveStreamChatInputView: UIView {
 
   let viewModel: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
 
+  //swiftlint:disable:next force_cast
   internal class func fromNib() -> LiveStreamChatInputView {
-    //swiftlint:disable:next force_unwrap
     return UINib(nibName: Nib.LiveStreamChatInputView.rawValue, bundle: .framework)
       .instantiate(withOwner: nil, options: nil)
       .first as! LiveStreamChatInputView

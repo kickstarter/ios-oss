@@ -38,7 +38,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     super.viewDidLoad()
 
     self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
-    //self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+    self.goToProjectButton.addTarget(self, action: #selector(goToProject), for: [.touchUpInside])
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -54,6 +54,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
   }
 
+  //swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -186,5 +187,9 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
 
   @objc private func subscribe() {
     self.viewModel.inputs.subscribeButtonTapped()
+  }
+
+  @objc private func goToProject() {
+//    self.viewModel.inputs.subscribeButtonTapped()
   }
 }

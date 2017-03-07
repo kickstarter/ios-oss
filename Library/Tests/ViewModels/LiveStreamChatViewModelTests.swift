@@ -36,6 +36,5 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait, currentIndexPaths: [])
 
     self.reloadInputViews.assertValueCount(1)
-    
   }
 }

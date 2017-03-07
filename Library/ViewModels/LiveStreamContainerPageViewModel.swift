@@ -60,6 +60,7 @@ public protocol LiveStreamContainerPageViewModelOutputs {
 public final class LiveStreamContainerPageViewModel: LiveStreamContainerPageViewModelType,
 LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs {
 
+  //swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
@@ -145,7 +146,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
   private let configDataProperty = MutableProperty<(Project, LiveStreamEvent, LiveStreamChatHandler,
     Bool)?>(nil)
   public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                            liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool){
+                            liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool) {
     self.configDataProperty.value = (project, liveStreamEvent, liveStreamChatHandler, presentedFromProject)
   }
 

@@ -328,7 +328,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     let bufferInterval = self.viewDidLoadProperty.signal.flatMap {
-      timer(interval: .seconds(2), on: environment.scheduler)
+      timer(interval: .milliseconds(500), on: environment.scheduler)
     }.take(during: Lifetime(self.token))
 
     let snapshots = self.viewDidLoadProperty.signal
@@ -348,6 +348,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0.output }
       .skipNil()
       .map([LiveStreamChatMessage].decode)
+      .filter { !$0.isEmpty }
 
     let chatMessageMetaData = Signal.combineLatest(
       self.chatUserInfoProperty.signal.skipNil(),

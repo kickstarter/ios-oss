@@ -44,7 +44,6 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.pageViewController?.dataSource = self.pagesDataSource
     self.pageViewController?.delegate = self
 
-
     self.viewModel.inputs.viewDidLoad()
   }
 

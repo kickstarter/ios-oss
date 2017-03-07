@@ -77,9 +77,12 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.outputs.notifyDelegateLiveStreamViewControllerStateChanged
       .observe(self.notifyDelegateLiveStreamViewControllerStateChanged.observer)
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
-    self.vm.outputs.writeChatMessageToFirebase.map { $0.0 }.observe(self.writeChatMessageToFirebaseDbRef.observer)
-    self.vm.outputs.writeChatMessageToFirebase.map { $0.1 }.observe(self.writeChatMessageToFirebaseRefConfig.observer)
-    self.vm.outputs.writeChatMessageToFirebase.map { $0.2 }.observe(self.writeChatMessageToFirebaseMessageData.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.0 }
+      .observe(self.writeChatMessageToFirebaseDbRef.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.1 }
+      .observe(self.writeChatMessageToFirebaseRefConfig.observer)
+    self.vm.outputs.writeChatMessageToFirebase.map { $0.2 }
+      .observe(self.writeChatMessageToFirebaseMessageData.observer)
   }
 
   func testInitalizeFirebase_LiveEvent() {
