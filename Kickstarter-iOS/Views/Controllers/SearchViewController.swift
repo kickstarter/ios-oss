@@ -16,6 +16,7 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
+  private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
 
@@ -26,7 +27,9 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.addSubview(self.popularLoaderIndicator)
+    self.tableView.backgroundView = self.backgroundView
+
+    self.tableView.insertSubview(popularLoaderIndicator, aboveSubview: self.tableView.backgroundView!)
 
     self.tableView.dataSource = self.dataSource
 
@@ -60,7 +63,7 @@ internal final class SearchViewController: UITableViewController {
    internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.popularLoaderIndicator.center = self.tableView.center
+    self.popularLoaderIndicator.center = (self.tableView.backgroundView?.center)!
   }
 
   internal override func bindStyles() {
@@ -148,13 +151,6 @@ internal final class SearchViewController: UITableViewController {
         self?.dataSource.load(params: params, visible: visible)
         self?.tableView.reloadData()
     }
-//
-//    self.viewModel.outputs.searchLoaderIndicatorIsAnimating
-//      .observeForUI()
-//      .observeValues { [weak self] visible in
-//        self?.dataSource.loader(isVisible: visible)
-//        self?.tableView.reloadData()
-//    }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
