@@ -219,7 +219,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   fileprivate func goToUpdate(project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .activity)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
