@@ -15,17 +15,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vm7-87-J5Y" id="1WE-0A-gNb">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="87.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="ZFY-jR-IC1">
-                        <rect key="frame" x="8" y="8" width="359" height="71.5"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZFY-jR-IC1">
+                        <rect key="frame" x="8" y="8" width="359" height="72"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="star-filled-icon" translatesAutoresizingMaskIntoConstraints="NO" id="8fS-wh-pRu">
-                                <rect key="frame" x="168.5" y="0.0" width="22" height="22"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="star-small-icon" translatesAutoresizingMaskIntoConstraints="NO" id="8fS-wh-pRu">
+                                <rect key="frame" x="173" y="0.0" width="13" height="12"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't saved anything yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1W-dX-mAL">
-                                <rect key="frame" x="59" y="40" width="241" height="31.5"/>
+                                <rect key="frame" x="59" y="24" width="241" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -48,6 +48,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="star-filled-icon" width="22" height="22"/>
+        <image name="star-small-icon" width="13" height="12"/>
     </resources>
 </document>
