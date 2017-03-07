@@ -95,7 +95,7 @@ public final class RootTabBarViewController: UITabBarController {
   public func switchToMessageThread(_ messageThread: MessageThread) {
     self.switchToProfile()
 
-    let isDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true)
+    let isDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] != .some(true)
 
     guard let profileNav = self.selectedViewController as? UINavigationController,
       let profileVC = (isDash
