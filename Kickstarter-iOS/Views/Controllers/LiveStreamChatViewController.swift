@@ -12,7 +12,7 @@ fileprivate enum Section: Int {
 
 internal final class LiveStreamChatViewController: UITableViewController {
   private let dataSource = LiveStreamChatDataSource()
-  private let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
+  fileprivate let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
   fileprivate weak var liveStreamChatHandler: LiveStreamChatHandler?
 
@@ -109,6 +109,12 @@ internal final class LiveStreamChatViewController: UITableViewController {
         self?.reloadInputViews()
     }
 
+    self.viewModel.outputs.openLoginToutViewController
+      .observeForControllerAction()
+      .observeValues {
+        self.openLoginTout(loginIntent: $0)
+    }
+
     //FIXME: move to VM
     Keyboard.change
       .observeForUI()
@@ -177,6 +183,14 @@ internal final class LiveStreamChatViewController: UITableViewController {
     let lastIndex = self.tableView.numberOfRows(inSection: Section.messages.rawValue) - 1
     return IndexPath(row: lastIndex, section: Section.messages.rawValue)
   }
+
+  fileprivate func openLoginTout(loginIntent: LoginIntent) {
+    let vc = LoginToutViewController.configuredWith(loginIntent: loginIntent)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
 }
 
 extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
@@ -189,6 +203,6 @@ extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
   }
 
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
-    //self.openLoginTout()
+    self.viewModel.inputs.chatInputViewRequestedLogin()
   }
 }

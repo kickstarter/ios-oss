@@ -227,14 +227,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
   }
 
-//  fileprivate func openLoginTout() {
-//    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
-//    let nav = UINavigationController(rootViewController: vc)
-//    nav.modalPresentationStyle = .formSheet
-//
-//    self.present(nav, animated: true, completion: nil)
-//  }
-
   override public var prefersStatusBarHidden: Bool {
     return true
   }

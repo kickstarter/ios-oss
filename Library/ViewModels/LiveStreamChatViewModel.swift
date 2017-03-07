@@ -9,6 +9,10 @@ public protocol LiveStreamChatViewModelType {
 }
 
 public protocol LiveStreamChatViewModelInputs {
+
+  /// Call when the chat input view requests login auth.
+  func chatInputViewRequestedLogin()
+
   /// Call when the device's orientation will change.
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation, currentIndexPaths: [IndexPath])
 
@@ -22,6 +26,9 @@ public protocol LiveStreamChatViewModelInputs {
 public protocol LiveStreamChatViewModelOutputs {
   /// Emits chat messages for appending to the data source.
   var appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
+
+  /// Emits when the LoginToutViewController should be presented.
+  var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
 
   /// Emits when the view controller should reload its input views
   var reloadInputViews: Signal<(), NoError> { get }
@@ -45,6 +52,14 @@ LiveStreamChatViewModelOutputs {
     ).map(first)
 
     self.reloadInputViews = self.deviceOrientationDidChangeProperty.signal.skipNil().ignoreValues()
+    self.openLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
+      .liveStreamChat
+    )
+  }
+
+  private let chatInputViewRequestedLoginProperty = MutableProperty()
+  public func chatInputViewRequestedLogin() {
+    self.chatInputViewRequestedLoginProperty.value = ()
   }
 
   private let deviceOrientationDidChangeProperty =
@@ -65,6 +80,7 @@ LiveStreamChatViewModelOutputs {
   }
 
   public let appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError>
+  public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let reloadInputViews: Signal<(), NoError>
   public let scrollToIndexPaths: Signal<[IndexPath], NoError>
 
