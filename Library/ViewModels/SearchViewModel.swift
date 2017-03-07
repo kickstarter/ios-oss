@@ -145,6 +145,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
+    self.searchLoaderIndicatorIsAnimating = isLoading
+
     self.projects = Signal.combineLatest(
       self.isPopularTitleVisible,
       popular,
@@ -177,10 +179,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.cancelButtonPressedProperty.signal
     )
 
-    self.searchLoaderIndicatorIsAnimating = Signal.merge(
-      isLoading,
-      paginatedProjects.mapConst(false)
-    ).skipRepeats()
 
     self.popularLoaderIndicatorIsAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
