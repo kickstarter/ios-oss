@@ -14,6 +14,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
   @IBOutlet private weak var liveStreamTitleLabel: UILabel!
   @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var subscribeButton: UIButton!
   @IBOutlet private weak var subscribeLabel: UILabel!
@@ -71,6 +72,9 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
+
     _  = self.subscribeStackView
       |> UIStackView.lens.axis .~ .horizontal
       |> UIStackView.lens.alignment .~ .center
@@ -124,10 +128,10 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-//    self.viewModel.outputs.openLoginToutViewController
-//      .observeValues { [weak self] _ in
-//        self?.openLoginTout()
-//    }
+    self.viewModel.outputs.openLoginToutViewController
+      .observeValues { [weak self] _ in
+        self?.openLoginTout()
+    }
 
     self.liveStreamTitleLabel.rac.text = self.viewModel.outputs.liveStreamTitle
     self.liveStreamParagraphLabel.rac.text = self.viewModel.outputs.liveStreamParagraph
@@ -151,7 +155,8 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
                                        for: .normal)
     }
 
-//    self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
+    self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
+    self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
 
     self.subscribeActivityIndicatorView.rac.animating = self.viewModel.outputs
       .animateSubscribeButtonActivityIndicator
@@ -171,20 +176,15 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     }
   }
 
+  private func openLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
+
   @objc private func subscribe() {
     self.viewModel.inputs.subscribeButtonTapped()
   }
 }
-
-//extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-//  public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
-//                                                                    numberOfPeople: Int) {
-//    self.viewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
-//  }
-//
-//  public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
-//                                                   state: LiveStreamViewControllerState) {
-//    self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-//    self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-//  }
-//}

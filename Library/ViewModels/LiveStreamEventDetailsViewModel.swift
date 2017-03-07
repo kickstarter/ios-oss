@@ -14,8 +14,8 @@ public protocol LiveStreamEventDetailsViewModelInputs {
   /// Call with the Project, the specific LiveStream and LiveStreamEvent
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool)
 
-  /// Called when the LiveStreamViewController's state changes
-  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
+  /// Call when the goToProject button is tapped.
+  func goToProjectButtonTapped()
 
   /// Called when the subscribe button is tapped
   func subscribeButtonTapped()
@@ -33,6 +33,12 @@ public protocol LiveStreamEventDetailsViewModelInputs {
 public protocol LiveStreamEventDetailsViewModelOutputs {
   /// Emits when the subscribe button's activity indicator should animate
   var animateSubscribeButtonActivityIndicator: Signal<Bool, NoError> { get }
+
+  /// Emits when the replay's available for text should be hidden
+  var availableForLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the text describing the replay's availability
+  var availableForText: Signal<String, NoError> { get }
 
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
@@ -139,6 +145,19 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let subscribed = subscribedProperty.signal
 
+    self.availableForLabelHidden = event.map { $0.liveNow }
+
+    self.availableForText = event
+      .map { event -> String? in
+        guard let availableDate = AppEnvironment.current.calendar
+          .date(byAdding: .day, value: 2, to: event.startDate)?.timeIntervalSince1970
+          else { return nil }
+
+        let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
+
+        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
+      }.skipNil()
+
     self.creatorAvatarUrl = event
       .map { URL(string: $0.creator.avatar) }
 
@@ -213,10 +232,9 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.configData.value = (project, liveStreamEvent, presentedFromProject)
   }
 
-  private let liveStreamViewControllerStateChangedProperty =
-    MutableProperty<LiveStreamViewControllerState?>(nil)
-  public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
-    self.liveStreamViewControllerStateChangedProperty.value = state
+  private let goToProjectButtonTappedProperty = MutableProperty()
+  public func goToProjectButtonTapped() {
+    self.goToProjectButtonTappedProperty.value = ()
   }
 
   private let numberOfPeopleWatchingProperty = MutableProperty<Int?>(nil)
@@ -240,6 +258,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   }
 
   public let animateSubscribeButtonActivityIndicator: Signal<Bool, NoError>
+  public let availableForLabelHidden: Signal<Bool, NoError>
+  public let availableForText: Signal<String, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
   public let goToProjectButtonContainerHidden: Signal<Bool, NoError>

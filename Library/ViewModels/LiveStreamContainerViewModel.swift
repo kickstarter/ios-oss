@@ -34,12 +34,6 @@ public protocol LiveStreamContainerViewModelInputs {
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
-  /// Emits when the replay's available for text should be hidden
-  var availableForLabelHidden: Signal<Bool, NoError> { get }
-
-  /// Emits the text describing the replay's availability
-  var availableForText: Signal<String, NoError> { get }
-
   /// Emits when the LiveStreamViewController should be configured
   var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
 
@@ -168,17 +162,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       liveStreamControllerStateError
     )
 
-    self.availableForText = event
-      .map { event -> String? in
-        guard let availableDate = AppEnvironment.current.calendar
-          .date(byAdding: .day, value: 2, to: event.startDate)?.timeIntervalSince1970
-          else { return nil }
-
-        let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
-
-        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
-      }.skipNil()
-
     self.loaderText = Signal.merge(
       liveStreamControllerState.map {
         switch $0 {
@@ -266,11 +249,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       event.map { !$0.liveNow }
     ).skipRepeats()
 
-    let hideWhenLive = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      event.map { $0.liveNow }
-    ).skipRepeats()
-
     self.navBarTitleViewHidden = Signal.merge(
       project.mapConst(true),
       liveStreamControllerState.map { state in
@@ -285,7 +263,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.navBarLiveDotImageViewHidden = hideWhenReplay
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
-    self.availableForLabelHidden = Signal.combineLatest(nonStarter, hideWhenLive).map { $0 || $1 }
 
     self.goToProject = configData
       .takeWhen(self.goToProjectButtonPressedProperty.signal)
@@ -394,8 +371,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
-  public let availableForLabelHidden: Signal<Bool, NoError>
-  public let availableForText: Signal<String, NoError>
   public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, Bool), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>

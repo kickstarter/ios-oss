@@ -602,6 +602,7 @@ Mikke Snow</string>
                         <outlet property="liveStreamParagraphLabel" destination="lws-Sr-hCK" id="GS1-y8-OQ1"/>
                         <outlet property="liveStreamTitleLabel" destination="Lfi-9R-VkT" id="VuA-rB-M72"/>
                         <outlet property="rootStackView" destination="MPc-gU-qxa" id="Z38-DA-YsD"/>
+                        <outlet property="separatorView" destination="i6i-ss-KcY" id="HKy-na-C9f"/>
                         <outlet property="subscribeActivityIndicatorView" destination="4Ie-qx-OIF" id="yu7-9w-5CU"/>
                         <outlet property="subscribeButton" destination="rip-aY-2xa" id="rNr-Ts-UV2"/>
                         <outlet property="subscribeLabel" destination="EDW-8G-z1a" id="xDc-95-UcX"/>
