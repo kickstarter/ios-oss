@@ -24,8 +24,6 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Called when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
-  func goToProjectButtonPressed()
-
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 
@@ -38,7 +36,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
 
   /// Emits when the LiveStreamContainerPageViewController should be configured
-  var configurePageViewController: Signal<(Project, LiveStreamEvent, Bool), NoError> { get }
+  var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
 
   /// Emits when the live dot image above the creator avatar should be hidden
   var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
@@ -48,9 +46,6 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
-
-  /// Emits a project and ref tag when we should navigate to the project
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits when the loader activity indicator should animate
   var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
@@ -115,6 +110,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     let project = configData.map { project, _, _, _ in project }
+    let refTag = configData.map { _, _, refTag, _ in refTag }
     let presentedFromProject = configData.map { _, _, _, presentedFromProject in presentedFromProject }
     let event = Signal.merge(
       initialEvent,
@@ -124,8 +120,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
       .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
-    self.configurePageViewController = Signal.combineLatest(project, initialEvent, presentedFromProject)
-      .map { project, event, presentedFromProject in (project, event, presentedFromProject) }
+    self.configurePageViewController = Signal.combineLatest(
+      project, initialEvent, refTag, presentedFromProject
+      )
+      .map { project, event, refTag, presentedFromProject in (project, event, refTag, presentedFromProject) }
 
     let liveStreamControllerState = Signal.merge(
       Signal.combineLatest(
@@ -264,15 +262,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
 
-    self.goToProject = configData
-      .takeWhen(self.goToProjectButtonPressedProperty.signal)
-      .map { project, liveStreamEvent, _, _ in
-        (project, liveStreamEvent.liveNow ? .liveStream : .liveStreamReplay)
-    }
-
-    self.goToProjectButtonContainerHidden = configData
-      .map { _, _, _, presentedFromProject in presentedFromProject }
-
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
         switch state {
@@ -352,11 +341,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let goToProjectButtonPressedProperty = MutableProperty()
-  public func goToProjectButtonPressed() {
-    self.goToProjectButtonPressedProperty.value = ()
-  }
-
   private let liveStreamViewControllerStateChangedProperty =
     MutableProperty<LiveStreamViewControllerState?>(nil)
   public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
@@ -372,12 +356,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   private let token = Lifetime.Token()
 
   public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
-  public let configurePageViewController: Signal<(Project, LiveStreamEvent, Bool), NoError>
+  public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
-  public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>

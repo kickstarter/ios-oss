@@ -52,7 +52,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
-                                                  presentedFromProject: presentedFromProject)
+                                                  refTag: refTag, presentedFromProject: presentedFromProject)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc

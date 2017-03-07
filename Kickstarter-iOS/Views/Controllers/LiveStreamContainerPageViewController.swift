@@ -22,10 +22,12 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   fileprivate let viewModel: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
   internal func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                              liveStreamChatHandler: LiveStreamChatHandler, presentedFromProject: Bool) {
+                              liveStreamChatHandler: LiveStreamChatHandler, refTag: RefTag,
+                              presentedFromProject: Bool) {
     self.viewModel.inputs.configureWith(project: project,
                                         liveStreamEvent: liveStreamEvent,
                                         liveStreamChatHandler: liveStreamChatHandler,
+                                        refTag: refTag,
                                         presentedFromProject: presentedFromProject)
   }
 
@@ -143,10 +145,11 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
         let vc = LiveStreamChatViewController.configuredWith(liveStreamChatHandler: liveStreamChatHandler)
         self.liveStreamChatViewController = vc
         return vc
-      case .info(let project, let liveStreamEvent, let presentedFromProject):
+      case .info(let project, let liveStreamEvent, let refTag, let presentedFromProject):
         let vc = LiveStreamEventDetailsViewController.configuredWith(
           project: project,
           liveStreamEvent: liveStreamEvent,
+          refTag: refTag,
           presentedFromProject: presentedFromProject
         )
         self.liveStreamEventDetailsViewController = vc

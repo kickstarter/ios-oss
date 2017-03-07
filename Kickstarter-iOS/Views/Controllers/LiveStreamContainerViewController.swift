@@ -169,7 +169,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.outputs.configurePageViewController
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvent, presentedFromProject in
+      .observeValues { [weak self] project, liveStreamEvent, refTag, presentedFromProject in
         guard
           let _self = self,
           let liveStreamViewController = self?.liveStreamViewController
@@ -180,6 +180,7 @@ public final class LiveStreamContainerViewController: UIViewController {
           project: project,
           liveStreamEvent: liveStreamEvent,
           liveStreamChatHandler: liveStreamViewController,
+          refTag: refTag,
           presentedFromProject: presentedFromProject
         )
     }
@@ -221,10 +222,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
-
-    self.viewModel.outputs.goToProject
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
   }
 
   override public var prefersStatusBarHidden: Bool {
@@ -270,11 +267,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
   }
 
-  private func goTo(project: Project, refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-    self.present(vc, animated: true, completion: nil)
-  }
-
   // MARK: Subviews
 
   private lazy var navBarTitleStackViewBackgroundView = { UIView() }()
@@ -313,10 +305,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   }()
 
   // MARK: Actions
-
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
-  }
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()

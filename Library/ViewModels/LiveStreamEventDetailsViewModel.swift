@@ -12,7 +12,8 @@ public protocol LiveStreamEventDetailsViewModelType {
 
 public protocol LiveStreamEventDetailsViewModelInputs {
   /// Call with the Project, the specific LiveStream and LiveStreamEvent
-  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool)
+  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
+                     refTag: RefTag, presentedFromProject: Bool)
 
   /// Call when the goToProject button is tapped.
   func goToProjectButtonTapped()
@@ -42,6 +43,9 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 
   /// Emits the url for the creator's avatar image
   var creatorAvatarUrl: Signal<URL?, NoError> { get }
+
+  /// Emits a project and ref tag when we should navigate to the project
+  var goToProject: Signal<(Project, RefTag), NoError> { get }
 
   /// Emits a boolean that determines if the project button container is hidden
   var goToProjectButtonContainerHidden: Signal<Bool, NoError> { get }
@@ -91,7 +95,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       )
       .map(first)
 
-    let initialEvent = configData.map(second)
+    let initialEvent = configData.map { $0.1 }
 
     let updatedEventFetch = initialEvent
       .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
@@ -180,6 +184,12 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       $0 ? Strings.Subscribed() : Strings.Subscribe()
     }
 
+    self.goToProject = configData
+      .takeWhen(self.goToProjectButtonTappedProperty.signal)
+      .map { project, liveStreamEvent, _, _ in
+        (project, liveStreamEvent.liveNow ? .liveStream : .liveStreamReplay)
+    }
+
     self.showErrorAlert = isSubscribedEvent
       .filter { $0.error != nil }
       .mapConst(Strings.Failed_to_update_subscription())
@@ -215,7 +225,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.subscribeButtonAccessibilityLabel = subscribed
       .map { $0 ? Strings.Unsubscribe() : Strings.Subscribe() }
 
-    self.goToProjectButtonContainerHidden = configData.map { $2 }
+    self.goToProjectButtonContainerHidden = configData.map { $0.3 }
 
     configData
       .takePairWhen(isSubscribedEventValues)
@@ -227,9 +237,10 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     }
   }
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent, Bool)?>(nil)
-  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, presentedFromProject: Bool) {
-    self.configData.value = (project, liveStreamEvent, presentedFromProject)
+  private let configData = MutableProperty<(Project, LiveStreamEvent, RefTag, Bool)?>(nil)
+  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag,
+                            presentedFromProject: Bool) {
+    self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
   private let goToProjectButtonTappedProperty = MutableProperty()
@@ -262,6 +273,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let availableForText: Signal<String, NoError>
   public let creatorAvatarUrl: Signal<URL?, NoError>
   public let creatorName: Signal<String, NoError>
+  public let goToProject: Signal<(Project, RefTag), NoError>
   public let goToProjectButtonContainerHidden: Signal<Bool, NoError>
   public let liveStreamTitle: Signal<String, NoError>
   public let liveStreamParagraph: Signal<String, NoError>

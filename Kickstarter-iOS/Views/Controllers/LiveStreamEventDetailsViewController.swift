@@ -24,12 +24,12 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     = LiveStreamEventDetailsViewModel()
 
   public static func configuredWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                                    presentedFromProject: Bool) ->
+                                    refTag: RefTag, presentedFromProject: Bool) ->
     LiveStreamEventDetailsViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamEventDetailsViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
-                                        presentedFromProject: presentedFromProject)
+                                        refTag: refTag, presentedFromProject: presentedFromProject)
 
       return vc
   }
@@ -175,6 +175,15 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
+
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+  }
+
+  private func goTo(project: Project, refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    self.present(vc, animated: true, completion: nil)
   }
 
   private func openLoginTout() {
@@ -190,6 +199,6 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   }
 
   @objc private func goToProject() {
-//    self.viewModel.inputs.subscribeButtonTapped()
+    self.viewModel.inputs.goToProjectButtonTapped()
   }
 }
