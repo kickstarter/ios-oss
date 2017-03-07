@@ -24,6 +24,7 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     super.init(coder: aDecoder)
 
     self.selectionStyle = .none
+    self.transform = CGAffineTransform(scaleX: 1, y: -1)
   }
 
   internal override func bindStyles() {

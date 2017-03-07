@@ -71,6 +71,27 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   }
 
   /**
+   Inserts a single value at the beginning of the section specified.
+
+   - parameter value:     A value to prepend.
+   - parameter cellClass: The type of cell associated with the value.
+   - parameter section:   The section to append the value to.
+
+   - returns: The index path of the prepended row.
+   */
+  @discardableResult
+  public final func prependRow <
+    Cell: ValueCell,
+    Value: Any>
+    (value: Value, cellClass: Cell.Type, toSection section: Int) -> IndexPath
+    where
+    Cell.Value == Value {
+      self.padValuesForSection(section)
+      self.values[section].insert((value, Cell.defaultReusableId), at: 0)
+      return IndexPath(row: 0, section: section)
+  }
+
+  /**
    Adds a single value to the end of the section specified.
 
    - parameter value:     A value to append.

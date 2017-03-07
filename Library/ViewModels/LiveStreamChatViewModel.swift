@@ -9,7 +9,6 @@ public protocol LiveStreamChatViewModelType {
 }
 
 public protocol LiveStreamChatViewModelInputs {
-
   /// Call when the chat input view requests login auth.
   func chatInputViewRequestedLogin()
 
@@ -24,14 +23,11 @@ public protocol LiveStreamChatViewModelInputs {
 }
 
 public protocol LiveStreamChatViewModelOutputs {
-  /// Emits chat messages for appending to the data source.
-  var appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
-
   /// Emits when the LoginToutViewController should be presented.
   var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
 
-  /// Emits when the view controller should reload its input views
-  var reloadInputViews: Signal<(), NoError> { get }
+  /// Emits chat messages for appending to the data source.
+  var prependChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
 
   /// Emits the previous index paths that should remain visible on rotate.
   var scrollToIndexPaths: Signal<[IndexPath], NoError> { get }
@@ -41,7 +37,7 @@ public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStr
 LiveStreamChatViewModelOutputs {
 
   public init() {
-    self.appendChatMessagesToDataSource = Signal.combineLatest(
+    self.prependChatMessagesToDataSource = Signal.combineLatest(
       self.receivedChatMessagesProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     ).map(first)
@@ -51,7 +47,6 @@ LiveStreamChatViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    self.reloadInputViews = self.deviceOrientationDidChangeProperty.signal.skipNil().ignoreValues()
     self.openLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
       .liveStreamChat
     )
@@ -79,9 +74,8 @@ LiveStreamChatViewModelOutputs {
     self.receivedChatMessagesProperty.value = chatMessages
   }
 
-  public let appendChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
-  public let reloadInputViews: Signal<(), NoError>
+  public let prependChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError>
   public let scrollToIndexPaths: Signal<[IndexPath], NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
