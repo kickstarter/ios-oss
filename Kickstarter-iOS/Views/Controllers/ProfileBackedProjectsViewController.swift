@@ -11,30 +11,33 @@ internal protocol ProfileBackedProjectsViewControllerDelegate: class {
 
 internal final class ProfileBackedProjectsViewController: UITableViewController {
 
-//  fileprivate let viewModel: ProfileBackedProjectsViewModelType = ProfileBackedProjectsViewModel()
-//  fileprivate let dataSource = ProfileBackedProjectsDataSource()
+  private let viewModel: ProfileProjectsViewModelType = ProfileProjectsViewModel()
+  private let dataSource = ProfileBackedProjectsDataSource()
 
   internal weak var delegate: ProfileBackedProjectsViewControllerDelegate?
-
-//  internal static func configureWith(sort: BackedSort) {
-//  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    //self.tableView.estimatedRowHeight = 100.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
-    //self.tableView.dataSource = dataSource
+    self.tableView.dataSource = dataSource
 
-    //self.viewModel.inputs.viewDidLoad()
-  }
+    // do this in the main controller
+    self.viewModel.inputs.configureWith(type: .backed)
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+    self.tableView.register(nib: .ProfileEmptyStateCell)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.emptyStateIsVisible
+      .observeForUI()
+      .observeValues { [weak self] isVisible, message in
+        self?.dataSource.emptyState(visible: isVisible, message: message, showIcon: false)
+        self?.tableView.reloadData()
+    }
   }
 
   override func bindStyles() {
@@ -46,26 +49,6 @@ internal final class ProfileBackedProjectsViewController: UITableViewController 
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
-  }
-
-  override internal func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-  }
-
-  /// placeholder
-  override func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
-  }
-
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 20
-  }
-
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = UITableViewCell()
-    cell.textLabel?.text = "Backed project #\(indexPath.row)"
-    return cell
   }
 
   override internal func scrollViewDidScroll(_ scrollView: UIScrollView) {
