@@ -21,7 +21,7 @@ public protocol LiveStreamCountdownViewModelInputs {
                      presentedFromProject: Bool)
 
   /// Call when the project page button is pressed.
-  func goToProjectButtonPressed()
+  func goToProjectButtonTapped()
 
   /// Called when the viewDidLoad
   func viewDidLoad()
@@ -140,7 +140,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
     self.goToProject = configData
-      .takeWhen(self.goToProjectButtonPressedProperty.signal)
+      .takeWhen(self.goToProjectButtonTappedProperty.signal)
       .map { project, _, _, _ in (project, RefTag.liveStreamCountdown) }
 
     self.goToProjectButtonContainerHidden = configData
@@ -186,9 +186,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let goToProjectButtonPressedProperty = MutableProperty()
-  public func goToProjectButtonPressed() {
-    self.goToProjectButtonPressedProperty.value = ()
+  private let goToProjectButtonTappedProperty = MutableProperty()
+  public func goToProjectButtonTapped() {
+    self.goToProjectButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()

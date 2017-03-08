@@ -18,17 +18,23 @@ public protocol LiveStreamContainerViewModelInputs {
                      refTag: RefTag,
                      presentedFromProject: Bool)
 
-  /// Called when the close button is tapped
+  /// Call when the close button is tapped
   func closeButtonTapped()
 
-  /// Called when the device's orientation changed
+  /// Call when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 
-  /// Called when the viewDidLoad
+  /// Call when the viewDidLoad
   func viewDidLoad()
+
+  /// Call when the more menu view controller will be presented
+  func willPresentMoreMenuViewController()
+
+  /// Call when the more menu view controller will be dismissed
+  func willDismissMoreMenuViewController()
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
@@ -46,6 +52,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
+
+  /// Emits when the modal overlay view should be displayed
+  var displayModalOverlayView: Signal<(), NoError> { get }
 
   /// Emits when the loader activity indicator should animate
   var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
@@ -67,6 +76,9 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
+
+  /// Emits when the modal overlay view should be removed
+  var removeModalOverlayView: Signal<(), NoError> { get }
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -273,6 +285,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
+    self.displayModalOverlayView = self.willPresentMoreMenuViewControllerProperty.signal
+    self.removeModalOverlayView = Signal.zip(
+      self.displayModalOverlayView,
+      self.willDismissMoreMenuViewControllerProperty.signal
+    ).ignoreValues()
+
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
       .observeValues { data, orientation in
@@ -352,6 +370,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let willDismissMoreMenuViewControllerProperty = MutableProperty()
+  public func willDismissMoreMenuViewController() {
+    self.willDismissMoreMenuViewControllerProperty.value = ()
+  }
+
+  private let willPresentMoreMenuViewControllerProperty = MutableProperty()
+  public func willPresentMoreMenuViewController() {
+    self.willPresentMoreMenuViewControllerProperty.value = ()
+  }
+
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
@@ -360,6 +388,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
+  public let displayModalOverlayView: Signal<(), NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
@@ -367,6 +396,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
+  public let removeModalOverlayView: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>

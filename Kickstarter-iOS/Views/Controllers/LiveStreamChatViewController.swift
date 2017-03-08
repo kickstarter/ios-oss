@@ -10,6 +10,13 @@ fileprivate enum Section: Int {
   case messages
 }
 
+internal protocol LiveStreamChatViewControllerDelegate: class {
+  func willPresentMoreMenuViewController(controller: LiveStreamChatViewController,
+                                         moreMenuViewController: LiveStreamContainerMoreMenuViewController)
+  func willDismissMoreMenuViewController(controller: LiveStreamChatViewController,
+                                         moreMenuViewController: LiveStreamContainerMoreMenuViewController)
+}
+
 internal final class LiveStreamChatViewController: UIViewController {
 
   @IBOutlet private weak var tableView: UITableView!
@@ -18,14 +25,23 @@ internal final class LiveStreamChatViewController: UIViewController {
   @IBOutlet private weak var chatInputViewContainerHeightConstraint: NSLayoutConstraint!
 
   fileprivate let dataSource = LiveStreamChatDataSource()
+  fileprivate weak var delegate: LiveStreamChatViewControllerDelegate?
   fileprivate weak var liveStreamChatHandler: LiveStreamChatHandler?
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
-  public static func configuredWith(liveStreamChatHandler: LiveStreamChatHandler) ->
+  public static func configuredWith(
+    delegate: LiveStreamChatViewControllerDelegate,
+    project: Project,
+    liveStreamEvent: LiveStreamEvent,
+    liveStreamChatHandler: LiveStreamChatHandler) ->
     LiveStreamChatViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamChatViewController.self)
+      vc.delegate = delegate
       vc.liveStreamChatHandler = liveStreamChatHandler
+      vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, chatHidden: false)
+      vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
       return vc
   }
@@ -117,14 +133,63 @@ internal final class LiveStreamChatViewController: UIViewController {
                         self?.view.layoutIfNeeded()
         }, completion: nil)
     }
+
+    self.viewModel.outputs.presentMoreMenuViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.presentMoreMenu(liveStreamEvent: $0, chatHidden: $1)
+    }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+
+    self.viewModel.outputs.shouldHideChatTableView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.tableView.alpha = $0 ? 0 : 1
+        self?.liveStreamChatInputView.didSetChatHidden(hidden: $0)
+    }
   }
 
   private lazy var liveStreamChatInputView: LiveStreamChatInputView = {
     let chatInputView = LiveStreamChatInputView.fromNib()
     chatInputView.translatesAutoresizingMaskIntoConstraints = false
-    chatInputView.configureWith(delegate: self)
+    chatInputView.configureWith(delegate: self, chatHidden: false)
     return chatInputView
   }()
+
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+      self.present(controller, animated: true, completion: nil)
+
+    } else {
+      self.present(controller, animated: true, completion: nil)
+    }
+  }
+
+  private func presentMoreMenu(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
+    let vc = LiveStreamContainerMoreMenuViewController.configuredWith(
+      liveStreamEvent: liveStreamEvent,
+      delegate: self,
+      chatHidden: chatHidden
+    )
+    vc.modalPresentationStyle = .overCurrentContext
+
+    self.delegate?.willPresentMoreMenuViewController(controller: self, moreMenuViewController: vc)
+    self.present(vc, animated: true, completion: nil)
+  }
 
   fileprivate func openLoginTout(loginIntent: LoginIntent) {
     let vc = LoginToutViewController.configuredWith(loginIntent: loginIntent)
@@ -137,7 +202,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
 extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
   func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView) {
-
+    self.viewModel.inputs.moreMenuButtonTapped()
   }
 
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
@@ -146,5 +211,28 @@ extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
 
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
     self.viewModel.inputs.chatInputViewRequestedLogin()
+  }
+}
+
+extension LiveStreamChatViewController: LiveStreamContainerMoreMenuViewControllerDelegate {
+  func moreMenuViewControllerWillDismiss(controller: LiveStreamContainerMoreMenuViewController) {
+    self.delegate?.willDismissMoreMenuViewController(controller: self, moreMenuViewController: controller)
+    self.dismiss(animated: true)
+  }
+
+  func moreMenuViewControllerDidSetChatHidden(controller: LiveStreamContainerMoreMenuViewController,
+                                              hidden: Bool) {
+    self.delegate?.willDismissMoreMenuViewController(controller: self, moreMenuViewController: controller)
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.didSetChatHidden(hidden: hidden)
+    }
+  }
+
+  func moreMenuViewControllerDidShare(controller: LiveStreamContainerMoreMenuViewController,
+                                      liveStreamEvent: LiveStreamEvent) {
+    self.delegate?.willDismissMoreMenuViewController(controller: self, moreMenuViewController: controller)
+    self.dismiss(animated: true) {
+      self.shareViewModel.inputs.shareButtonTapped()
+    }
   }
 }

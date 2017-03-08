@@ -10,8 +10,11 @@ public protocol LiveStreamChatInputViewModelType {
 }
 
 public protocol LiveStreamChatInputViewModelInputs {
-  /// Call when the view lays out its subviews
-  func layoutSubviews()
+  /// Call with the chat view controller's visibility status
+  func configureWith(chatHidden: Bool)
+
+  /// Call when the chat view controller's visibility was changed
+  func didSetChatHidden(hidden: Bool)
 
   /// Call when more button was tapped
   func moreButtonTapped()
@@ -39,6 +42,9 @@ public protocol LiveStreamChatInputViewModelOutputs {
   /// Emits when the user taps into the text field when not logged in
   var notifyDelegateRequestLogin: Signal<(), NoError> { get }
 
+  /// Emits the placeholder text
+  var placeholderText: Signal<NSAttributedString, NoError> { get }
+
   /// Emits when the send button should be hidden
   var sendButtonHidden: Signal<Bool, NoError> { get }
 }
@@ -47,11 +53,13 @@ public final class LiveStreamChatInputViewModel: LiveStreamChatInputViewModelTyp
 LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
 
   public init() {
+    let configData = self.chatHiddenProperty.signal
+
     let textIsEmpty = Signal.merge(
       self.textProperty.signal.skipNil()
         .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         .map { $0.isEmpty },
-      self.layoutSubviewsProperty.signal.take(first: 1).mapConst(true),
+      configData.mapConst(true),
       self.sendButtonTappedProperty.signal.mapConst(true)
       )
 
@@ -65,11 +73,35 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
 
     self.notifyDelegateRequestLogin = self.textFieldShouldBeginEditingProperty.signal
       .filter { AppEnvironment.current.currentUser == nil }
+
+    self.placeholderText = Signal.merge(
+      configData,
+      self.didSetChatHiddenProperty.signal
+      )
+      .map {
+        return $0
+          ? localizedString(key: "Chat_is_hidden", defaultValue: "Chat is hidden.")
+          : localizedString(key: "Say_something_kind", defaultValue: "Say something kind...")
+      }
+      .map {
+        return NSAttributedString(
+          string: $0,
+          attributes: [
+            NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.8),
+            NSFontAttributeName: UIFont.ksr_body(size: 14)
+          ]
+        )
+    }
   }
 
-  private let layoutSubviewsProperty = MutableProperty()
-  public func layoutSubviews() {
-    self.layoutSubviewsProperty.value = ()
+  private let chatHiddenProperty = MutableProperty(false)
+  public func configureWith(chatHidden: Bool) {
+    self.chatHiddenProperty.value = chatHidden
+  }
+
+  private let didSetChatHiddenProperty = MutableProperty(false)
+  public func didSetChatHidden(hidden: Bool) {
+    self.didSetChatHiddenProperty.value = hidden
   }
 
   private let moreButtonTappedProperty = MutableProperty()
@@ -93,9 +125,10 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
   }
 
   public let moreButtonHidden: Signal<Bool, NoError>
-  public var notifyDelegateMessageSent: Signal<String, NoError>
-  public var notifyDelegateMoreButtonTapped: Signal<(), NoError>
-  public var notifyDelegateRequestLogin: Signal<(), NoError>
+  public let notifyDelegateMessageSent: Signal<String, NoError>
+  public let notifyDelegateMoreButtonTapped: Signal<(), NoError>
+  public let notifyDelegateRequestLogin: Signal<(), NoError>
+  public let placeholderText: Signal<NSAttributedString, NoError>
   public let sendButtonHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamChatInputViewModelInputs { return self }

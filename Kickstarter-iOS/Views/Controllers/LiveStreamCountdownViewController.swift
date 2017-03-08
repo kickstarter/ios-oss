@@ -66,7 +66,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -392,7 +392,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
+  @objc private func goToProjectButtonTapped() {
+    self.viewModel.inputs.goToProjectButtonTapped()
   }
 }

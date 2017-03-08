@@ -616,6 +616,9 @@
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
+		D07226551E6151A800C2E537 /* LiveStreamContainerMoreMenuActionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226541E6151A800C2E537 /* LiveStreamContainerMoreMenuActionCellViewModelTests.swift */; };
+		D07226961E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226951E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift */; };
+		D07226981E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226971E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift */; };
 		D07226AD1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */; };
 		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
 		D07226EB1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */; };
@@ -626,6 +629,10 @@
 		D077CCCB1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */; };
 		D077CCCD1E534669004E8FDF /* LiveStreamChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */; };
 		D077CCCF1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCE1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift */; };
+		D078830D1E5DD44C00994B95 /* LiveStreamContainerMoreMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078830C1E5DD44C00994B95 /* LiveStreamContainerMoreMenuViewController.swift */; };
+		D07883491E5DD46F00994B95 /* LiveStreamContainerMoreMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07883481E5DD46F00994B95 /* LiveStreamContainerMoreMenuViewModel.swift */; };
+		D078834B1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078834A1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift */; };
+		D078834D1E5DD52800994B95 /* LiveStreamContainerMoreMenuDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078834C1E5DD52800994B95 /* LiveStreamContainerMoreMenuDataSource.swift */; };
 		D080566B1E4DB25B008F67A7 /* LiveStreamChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D080566A1E4DB25B008F67A7 /* LiveStreamChatMessage.swift */; };
 		D08056A71E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08056A61E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift */; };
 		D08056AA1E4DB808008F67A7 /* LiveStreamChatMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08056A81E4DB4E8008F67A7 /* LiveStreamChatMessageTests.swift */; };
@@ -1956,6 +1963,9 @@
 		D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModelTests.swift; sourceTree = "<group>"; };
 		D05AA2351E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
+		D07226541E6151A800C2E537 /* LiveStreamContainerMoreMenuActionCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LiveStreamContainerMoreMenuActionCellViewModelTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		D07226951E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuIconTextCell.swift; sourceTree = "<group>"; };
+		D07226971E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuCancelCell.swift; sourceTree = "<group>"; };
 		D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSourceTests.swift; sourceTree = "<group>"; };
 		D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewController.swift; sourceTree = "<group>"; };
 		D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewController.swift; sourceTree = "<group>"; };
@@ -1967,6 +1977,10 @@
 		D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCellViewModelTests.swift; sourceTree = "<group>"; };
 		D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatViewModel.swift; sourceTree = "<group>"; };
 		D077CCCE1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatViewModelTests.swift; sourceTree = "<group>"; };
+		D078830C1E5DD44C00994B95 /* LiveStreamContainerMoreMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuViewController.swift; sourceTree = "<group>"; };
+		D07883481E5DD46F00994B95 /* LiveStreamContainerMoreMenuViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuViewModel.swift; sourceTree = "<group>"; };
+		D078834A1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuViewModelTests.swift; sourceTree = "<group>"; };
+		D078834C1E5DD52800994B95 /* LiveStreamContainerMoreMenuDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LiveStreamContainerMoreMenuDataSource.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		D080566A1E4DB25B008F67A7 /* LiveStreamChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessage.swift; sourceTree = "<group>"; };
 		D08056A61E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageTemplates.swift; sourceTree = "<group>"; };
 		D08056A81E4DB4E8008F67A7 /* LiveStreamChatMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageTests.swift; sourceTree = "<group>"; };
@@ -2475,6 +2489,8 @@
 				A7CC14391D00E74F00035C52 /* FindFriendsHeaderCell.swift */,
 				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
 				D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */,
+				D07226971E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift */,
+				D07226951E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift */,
 				A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */,
 				A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */,
 				A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingAndReplayCell.swift */,
@@ -2531,6 +2547,7 @@
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
 				D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */,
 				D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */,
+				D078830C1E5DD44C00994B95 /* LiveStreamContainerMoreMenuViewController.swift */,
 				D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */,
 				D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */,
 				A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */,
@@ -2674,6 +2691,8 @@
 				D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */,
 				D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */,
 				D077CCCE1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift */,
+				D07226541E6151A800C2E537 /* LiveStreamContainerMoreMenuActionCellViewModelTests.swift */,
+				D078834A1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift */,
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
 				D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */,
 				A785D14F1E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift */,
@@ -3209,6 +3228,7 @@
 				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
 				D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */,
 				D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */,
+				D078834C1E5DD52800994B95 /* LiveStreamContainerMoreMenuDataSource.swift */,
 				A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
@@ -3274,6 +3294,7 @@
 				D077CCC81E5345BE004E8FDF /* LiveStreamChatMessageCellViewModel.swift */,
 				D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */,
 				D07227011E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift */,
+				D07883481E5DD46F00994B95 /* LiveStreamContainerMoreMenuViewModel.swift */,
 				D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */,
 				D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */,
 				A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */,
@@ -4371,6 +4392,7 @@
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
+				D07883491E5DD46F00994B95 /* LiveStreamContainerMoreMenuViewModel.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
@@ -4445,6 +4467,7 @@
 				D0CC9D351E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift in Sources */,
 				A7AD54481D465B370016B4C2 /* ProjectPamphletMainCellViewModelTests.swift in Sources */,
 				A7830D101D005C3F00B5B6AE /* MessagesSearchViewModelTests.swift in Sources */,
+				D078834B1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift in Sources */,
 				5955E6841D2180E400B4153D /* DashboardReferrersCellViewModelTests.swift in Sources */,
 				A7830D0C1D005C3F00B5B6AE /* MessageCellViewModelTests.swift in Sources */,
 				A7AD548D1D4683900016B4C2 /* ProjectPamphletViewModelTests.swift in Sources */,
@@ -4508,6 +4531,7 @@
 				01FD71871D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
 				A7830D161D005C3F00B5B6AE /* MessageThreadsViewModelTests.swift in Sources */,
 				A712EB921E0C2B7300614340 /* DispatchTimeInterval-Extensions.swift in Sources */,
+				D07226551E6151A800C2E537 /* LiveStreamContainerMoreMenuActionCellViewModelTests.swift in Sources */,
 				598D96C81D42A97E003F3F66 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
 				018422C71D2C48E300CA7566 /* DashboardTitleViewViewModelTests.swift in Sources */,
 				01EFBC891C91FB770094EEC2 /* UIColorTests.swift in Sources */,
@@ -4592,6 +4616,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D078830D1E5DD44C00994B95 /* LiveStreamContainerMoreMenuViewController.swift in Sources */,
 				5993DEBF1CE296F000925494 /* ProfileHeaderView.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
@@ -4646,6 +4671,7 @@
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
+				D07226961E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift in Sources */,
 				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
 				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
@@ -4673,6 +4699,7 @@
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
 				A75798911D6A201F0063CEEC /* DebugPushNotifictionsViewController.swift in Sources */,
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
+				D078834D1E5DD52800994B95 /* LiveStreamContainerMoreMenuDataSource.swift in Sources */,
 				A7A051E61CD12D9A005AF5E2 /* CommentsDataSource.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */,
@@ -4706,6 +4733,7 @@
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
+				D07226981E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift in Sources */,
 				8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */,
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
 				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,

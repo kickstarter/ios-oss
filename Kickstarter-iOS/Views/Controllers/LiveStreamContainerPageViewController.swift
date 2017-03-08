@@ -16,14 +16,20 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
   fileprivate weak var pageViewController: UIPageViewController?
   fileprivate weak var liveStreamChatViewController: LiveStreamChatViewController?
+  fileprivate weak var liveStreamChatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   fileprivate weak var liveStreamEventDetailsViewController: LiveStreamEventDetailsViewController?
 
   fileprivate var pagesDataSource = LiveStreamContainerPagesDataSource()
   fileprivate let viewModel: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
-  internal func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                              liveStreamChatHandler: LiveStreamChatHandler, refTag: RefTag,
+  internal func configureWith(project: Project,
+                              liveStreamEvent: LiveStreamEvent,
+                              liveStreamChatHandler: LiveStreamChatHandler,
+                              liveStreamChatViewControllerDelegate: LiveStreamChatViewControllerDelegate,
+                              refTag: RefTag,
                               presentedFromProject: Bool) {
+    self.liveStreamChatViewControllerDelegate = liveStreamChatViewControllerDelegate
+
     self.viewModel.inputs.configureWith(project: project,
                                         liveStreamEvent: liveStreamEvent,
                                         liveStreamChatHandler: liveStreamChatHandler,
@@ -64,7 +70,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
     _ = self.pagerTabStripStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3))
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2))
 
     _ = self.infoPagerButton
       |> UIButton.lens.title(forState: .normal) .~ localizedString(key: "Info", defaultValue: "Info")
@@ -139,10 +145,17 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   }
 
   private func loadViewControllersIntoPagesDataSource(pages: [LiveStreamContainerPage]) {
+    guard let liveStreamChatViewControllerDelegate = self.liveStreamChatViewControllerDelegate else { return }
+
     let viewControllers = pages.map { page -> UIViewController in
       switch page {
-      case .chat(let liveStreamChatHandler):
-        let vc = LiveStreamChatViewController.configuredWith(liveStreamChatHandler: liveStreamChatHandler)
+      case .chat(let project, let liveStreamEvent, let liveStreamChatHandler):
+        let vc = LiveStreamChatViewController.configuredWith(
+          delegate: liveStreamChatViewControllerDelegate,
+          project: project,
+          liveStreamEvent: liveStreamEvent,
+          liveStreamChatHandler: liveStreamChatHandler
+        )
         self.liveStreamChatViewController = vc
         return vc
       case .info(let project, let liveStreamEvent, let refTag, let presentedFromProject):

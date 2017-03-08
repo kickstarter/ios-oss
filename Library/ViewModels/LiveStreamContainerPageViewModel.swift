@@ -72,7 +72,8 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       [
         .info(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag,
               presentedFromProject: presentedFromProject),
-        .chat(liveStreamChatHandler: liveStreamChatHandler)
+        .chat(project: project, liveStreamEvent: liveStreamEvent,
+              liveStreamChatHandler: liveStreamChatHandler)
       ]
     }
 
@@ -206,7 +207,7 @@ private func indexFor(page: LiveStreamContainerPage) -> Int {
 
 public enum LiveStreamContainerPage {
   case info(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag, presentedFromProject: Bool)
-  case chat(liveStreamChatHandler: LiveStreamChatHandler)
+  case chat(project: Project, liveStreamEvent: LiveStreamEvent, liveStreamChatHandler: LiveStreamChatHandler)
 
   var isInfoPage: Bool {
     switch self {
@@ -235,23 +236,5 @@ public enum LiveStreamContainerPage {
     default:
       return .forward
     }
-  }
-}
-
-extension LiveStreamContainerPage: Equatable {
-  static public func == (lhs: LiveStreamContainerPage, rhs: LiveStreamContainerPage) -> Bool {
-    switch (lhs, rhs) {
-    case (.info(let lhsProject, let lhsLiveStreamEvent, let lhsRefTag, let lhsPresentedFromProject),
-          .info(let rhsProject, let rhsLiveStreamEvent, let rhsRefTag, let rhsPresentedFromProject)):
-      return lhsProject == rhsProject
-        && lhsLiveStreamEvent == rhsLiveStreamEvent
-        && lhsRefTag == rhsRefTag
-        && lhsPresentedFromProject == rhsPresentedFromProject
-    case (.chat, .chat):
-      return true
-    default:
-      return false
-    }
-
   }
 }

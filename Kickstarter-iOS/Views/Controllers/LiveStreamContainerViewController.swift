@@ -21,7 +21,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   fileprivate weak var liveStreamViewController: LiveStreamViewController?
   fileprivate weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
-  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+  private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
@@ -34,8 +34,6 @@ public final class LiveStreamContainerViewController: UIViewController {
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
-    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
-
     return vc
   }
 
@@ -43,7 +41,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     super.viewDidLoad()
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
-    self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
     self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
@@ -176,10 +173,12 @@ public final class LiveStreamContainerViewController: UIViewController {
           else {
             return
         }
+
         _self.liveStreamContainerPageViewController?.configureWith(
           project: project,
           liveStreamEvent: liveStreamEvent,
           liveStreamChatHandler: liveStreamViewController,
+          liveStreamChatViewControllerDelegate: _self,
           refTag: refTag,
           presentedFromProject: presentedFromProject
         )
@@ -219,9 +218,17 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
 
-    self.shareViewModel.outputs.showShareSheet
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+    self.viewModel.outputs.displayModalOverlayView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.displayModalOverlay()
+    }
+
+    self.viewModel.outputs.removeModalOverlayView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.removeModelOverLay()
+    }
   }
 
   override public var prefersStatusBarHidden: Bool {
@@ -247,23 +254,28 @@ public final class LiveStreamContainerViewController: UIViewController {
     )
   }
 
-  private func showShareSheet(controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
-      )
+  private func displayModalOverlay() {
+    self.view.addSubview(self.modalOverlayView)
+
+    self.modalOverlayView.alpha = 0
+
+    NSLayoutConstraint.activate([
+      self.modalOverlayView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.modalOverlayView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.modalOverlayView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.modalOverlayView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      ])
+
+    UIView.animate(withDuration: 0.3) {
+      self.modalOverlayView.alpha = 1
     }
+  }
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      controller.modalPresentationStyle = .popover
-      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-      self.present(controller, animated: true, completion: nil)
-
-    } else {
-      self.present(controller, animated: true, completion: nil)
+  private func removeModelOverLay() {
+    UIView.animate(withDuration: 0.3, animations: {
+      self.modalOverlayView.alpha = 0
+    }) { _ in
+      self.modalOverlayView.removeFromSuperview()
     }
   }
 
@@ -281,37 +293,22 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
     closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
-
-    closeBarButtonItem.accessibilityHint = localizedString(
-      key: "Closes_the_live_stream",
-      defaultValue: "Closes the live stream."
-    )
+    closeBarButtonItem.accessibilityHint = Strings.Closes_live_stream()
 
     return closeBarButtonItem
   }()
 
-  private lazy var shareBarButtonItem: UIBarButtonItem = {
-    let shareBarButtonItem = UIBarButtonItem()
-      |> shareBarButtonItemStyle
-      |> UIBarButtonItem.lens.tintColor .~ .white
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
-
-    shareBarButtonItem.accessibilityLabel = localizedString(
-      key: "Share_this_live_stream",
-      defaultValue: "Share this live stream."
-    )
-
-    return shareBarButtonItem
+  private lazy var modalOverlayView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor.hex(0x1B1B1C).withAlphaComponent(0.7)
+    return view
   }()
 
   // MARK: Actions
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
-  }
-
-  @objc private func share() {
-    self.shareViewModel.inputs.shareButtonTapped()
   }
 }
 
@@ -325,5 +322,17 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
                                                    state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
 //    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
+  }
+}
+
+extension LiveStreamContainerViewController: LiveStreamChatViewControllerDelegate {
+  func willDismissMoreMenuViewController(controller: LiveStreamChatViewController,
+                                         moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
+    self.viewModel.inputs.willDismissMoreMenuViewController()
+  }
+
+  func willPresentMoreMenuViewController(controller: LiveStreamChatViewController,
+                                         moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
+    self.viewModel.inputs.willPresentMoreMenuViewController()
   }
 }
