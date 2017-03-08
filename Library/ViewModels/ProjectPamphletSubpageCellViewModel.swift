@@ -124,10 +124,10 @@ private func labelTexts(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> 
   let now = AppEnvironment.current.dateType.init()
 
   if now.timeIntervalSince1970 >= liveStreamEvent.startDate.timeIntervalSince1970 {
-    return (localizedString(key: "Past_Live_Stream", defaultValue: "Past Live Stream"), Strings.Replay())
+    return (Strings.Past_live_stream(), Strings.Replay())
   }
 
-  return (localizedString(key: "Upcoming_Live_Stream", defaultValue: "Upcoming Live Stream"),
+  return (Strings.Upcoming_live_stream(),
           Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970, abbreviate: true))
 }
 

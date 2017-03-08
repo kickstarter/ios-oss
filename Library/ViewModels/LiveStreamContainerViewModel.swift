@@ -246,7 +246,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .observeForUI()
       .map { event in
         event.liveNow
-          ? Strings.Creator_name_is_live_now(creator_name: event.creator.name)
+          ? Strings.Live_with_creator_name(creator_name: event.creator.name)
           : Strings.Creator_name_was_live_time_ago(
             creator_name: event.creator.name,
             time_ago: Format.relative(secondsInUTC: event.startDate.timeIntervalSince1970,

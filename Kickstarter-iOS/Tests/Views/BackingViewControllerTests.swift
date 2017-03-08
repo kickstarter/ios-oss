@@ -34,6 +34,8 @@ internal final class BackingViewControllerTests: TestCase {
         let controller = BackingViewController.configuredWith(project: project, backer: backer)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
+        self.scheduler.run()
+
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
     }
@@ -49,6 +51,8 @@ internal final class BackingViewControllerTests: TestCase {
       language: language) {
         let controller = BackingViewController.configuredWith(project: project, backer: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
@@ -67,6 +71,8 @@ internal final class BackingViewControllerTests: TestCase {
       language: language) {
         let controller = BackingViewController.configuredWith(project: project, backer: backer)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "Filter - lang_\(language)")
       }

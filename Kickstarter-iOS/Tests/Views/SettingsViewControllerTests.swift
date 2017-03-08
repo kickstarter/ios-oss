@@ -32,6 +32,7 @@ internal final class SettingsViewControllerTests: TestCase {
             parent.view.frame.size.height = 1_450
 
             FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        }
       }
     }
   }
@@ -53,7 +54,6 @@ internal final class SettingsViewControllerTests: TestCase {
 
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")}
       }
-    }
   }
 
   func testMember() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VFn-0N-DwZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VFn-0N-DwZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,12 +24,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RLM-IU-xTK">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="609.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="616"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="nI1-GY-e29">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pirate.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="v2E-hT-6bQ" customClass="CircleAvatarImageView" customModule="Library">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pirate.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="v2E-hT-6bQ" customClass="CircleAvatarImageView" customModule="Library">
                                                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="100" id="Y5R-X6-36R"/>
@@ -39,14 +39,14 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="U2M-qg-bus">
                                                         <rect key="frame" x="116" y="29.5" width="259" height="41"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brandon Williams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yuR-Em-qOU">
-                                                                <rect key="frame" x="0.0" y="0.0" width="132.5" height="20.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="259" placeholderIntrinsicHeight="20.5" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yuR-Em-qOU">
+                                                                <rect key="frame" x="0.0" y="0.0" width="259" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Backer #4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDN-tj-drx">
-                                                                <rect key="frame" x="0.0" y="20.5" width="78" height="20.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Backer #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDN-tj-drx">
+                                                                <rect key="frame" x="0.0" y="20.5" width="68" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -75,7 +75,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QTY-Pv-YR5">
-                                                <rect key="frame" x="0.0" y="170" width="375" height="71.5"/>
+                                                <rect key="frame" x="0.0" y="170" width="375" height="71"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BU-fE-wPG">
                                                         <rect key="frame" x="0.0" y="0.0" width="63.5" height="20.5"/>
@@ -83,14 +83,14 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$16 on Monday, April 18, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsY-zl-L0t">
-                                                        <rect key="frame" x="0.0" y="25.5" width="230" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="230" placeholderIntrinsicHeight="20" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsY-zl-L0t">
+                                                        <rect key="frame" x="0.0" y="25.5" width="230" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status: collected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wcy-zW-waG">
-                                                        <rect key="frame" x="0.0" y="51" width="128.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="128.5" placeholderIntrinsicHeight="20.5" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wcy-zW-waG">
+                                                        <rect key="frame" x="0.0" y="50.5" width="128.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -98,14 +98,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IV2-f6-IYa">
-                                                <rect key="frame" x="0.0" y="261.5" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="261" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Etl-Lk-4og"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="be0-w7-lzS">
-                                                <rect key="frame" x="0.0" y="282.5" width="375" height="142.5"/>
+                                                <rect key="frame" x="0.0" y="282" width="375" height="120.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HmT-8H-RAb">
                                                         <rect key="frame" x="0.0" y="0.0" width="57.5" height="20.5"/>
@@ -113,11 +113,8 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKo-Vg-Yw0">
-                                                        <rect key="frame" x="0.0" y="20.5" width="366.5" height="122"/>
-                                                        <string key="text">$12 - PRINT COPY-  A full color copy of the Far Away comic book, plus a sticker and a Far Away Button. 
-
-Also includes the pdf and all other digital downloads.</string>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="38" placeholderIntrinsicHeight="100" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKo-Vg-Yw0">
+                                                        <rect key="frame" x="0.0" y="20.5" width="38" height="100"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -125,14 +122,14 @@ Also includes the pdf and all other digital downloads.</string>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9U-vT-Vgd">
-                                                <rect key="frame" x="0.0" y="445" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="422.5" width="375" height="1"/>
                                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Ytn-Lw-d0V"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="R5n-8H-pPh">
-                                                <rect key="frame" x="0.0" y="466" width="375" height="61.5"/>
+                                                <rect key="frame" x="0.0" y="443.5" width="375" height="91"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shipping" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4f-14-9v4">
                                                         <rect key="frame" x="0.0" y="0.0" width="67.5" height="20.5"/>
@@ -148,14 +145,14 @@ Also includes the pdf and all other digital downloads.</string>
                                                             </mask>
                                                         </variation>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="N/A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JfE-js-EHM">
-                                                        <rect key="frame" x="0.0" y="20.5" width="28.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="50" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JfE-js-EHM">
+                                                        <rect key="frame" x="0.0" y="20.5" width="375" height="50"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edh-dk-q3p">
-                                                        <rect key="frame" x="0.0" y="41" width="21.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="20.5" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edh-dk-q3p">
+                                                        <rect key="frame" x="0.0" y="70.5" width="375" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -163,14 +160,14 @@ Also includes the pdf and all other digital downloads.</string>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r4q-Oe-XKB">
-                                                <rect key="frame" x="0.0" y="547.5" width="375" height="1"/>
+                                                <rect key="frame" x="0.0" y="554.5" width="375" height="1"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="xjR-bj-7Pl"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LiG-hP-kPr">
-                                                <rect key="frame" x="0.0" y="568.5" width="375" height="41"/>
+                                                <rect key="frame" x="0.0" y="575.5" width="375" height="40.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fy7-rv-6PL">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
@@ -178,8 +175,8 @@ Also includes the pdf and all other digital downloads.</string>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxr-eg-DK0">
-                                                        <rect key="frame" x="0.0" y="20.5" width="375" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="20" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxr-eg-DK0">
+                                                        <rect key="frame" x="0.0" y="20.5" width="375" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -188,14 +185,32 @@ Also includes the pdf and all other digital downloads.</string>
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adm-VN-ukk">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="616"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1ps-U4-t1x">
+                                                <rect key="frame" x="177.5" y="298" width="20" height="20"/>
+                                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </activityIndicatorView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="1ps-U4-t1x" firstAttribute="centerY" secondItem="adm-VN-ukk" secondAttribute="centerY" id="5LY-gE-2kn"/>
+                                            <constraint firstItem="1ps-U4-t1x" firstAttribute="centerX" secondItem="adm-VN-ukk" secondAttribute="centerX" id="Nk4-QF-bIf"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="RLM-IU-xTK" firstAttribute="top" secondItem="sHN-vc-6Tu" secondAttribute="top" constant="-5" id="37e-nc-AeQ"/>
                                     <constraint firstItem="RLM-IU-xTK" firstAttribute="top" secondItem="sHN-vc-6Tu" secondAttribute="top" id="4cI-fI-k67"/>
+                                    <constraint firstItem="adm-VN-ukk" firstAttribute="leading" secondItem="sHN-vc-6Tu" secondAttribute="leading" id="5gg-5j-Xa9"/>
                                     <constraint firstAttribute="bottom" secondItem="RLM-IU-xTK" secondAttribute="bottom" id="Iki-NE-RZq"/>
                                     <constraint firstItem="RLM-IU-xTK" firstAttribute="width" secondItem="sHN-vc-6Tu" secondAttribute="width" id="M9B-Lt-SwO"/>
+                                    <constraint firstAttribute="bottom" secondItem="adm-VN-ukk" secondAttribute="bottom" id="Y44-sL-F7d"/>
                                     <constraint firstAttribute="trailing" secondItem="RLM-IU-xTK" secondAttribute="trailing" id="ezh-Zq-gD9"/>
+                                    <constraint firstAttribute="trailing" secondItem="adm-VN-ukk" secondAttribute="trailing" id="ix1-kX-38O"/>
                                     <constraint firstItem="RLM-IU-xTK" firstAttribute="leading" secondItem="sHN-vc-6Tu" secondAttribute="leading" id="ltK-7N-b17"/>
+                                    <constraint firstItem="adm-VN-ukk" firstAttribute="top" secondItem="sHN-vc-6Tu" secondAttribute="top" id="yVW-SC-viV"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -232,6 +247,8 @@ Also includes the pdf and all other digital downloads.</string>
                         <outlet property="estimatedDeliveryLabel" destination="fy7-rv-6PL" id="XwP-6m-jTZ"/>
                         <outlet property="estimatedDeliverySeparatorView" destination="r4q-Oe-XKB" id="nQg-GV-5PH"/>
                         <outlet property="estimatedDeliveryStackView" destination="LiG-hP-kPr" id="wcA-WZ-205"/>
+                        <outlet property="loadingIndicatorView" destination="1ps-U4-t1x" id="2Tk-5u-mPI"/>
+                        <outlet property="loadingOverlayView" destination="adm-VN-ukk" id="lms-tk-yaF"/>
                         <outlet property="messageCreatorButton" destination="emc-GM-WzE" id="qdi-LP-xUY"/>
                         <outlet property="pledgedLabel" destination="3BU-fE-wPG" id="Jzo-xV-9eN"/>
                         <outlet property="rewardLabel" destination="HmT-8H-RAb" id="3hR-Gz-zno"/>

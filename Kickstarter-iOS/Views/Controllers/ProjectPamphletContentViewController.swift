@@ -28,6 +28,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self, action: #selector(scrollViewPanGestureRecognizerDidChange(_:))
     )
 
+    self.tableView.register(nib: .RewardCell)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
