@@ -5,11 +5,6 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-//FIXME: remove this once other PR is merged that includes it
-public enum Nib: String {
-  case LiveStreamChatInputView
-}
-
 internal protocol LiveStreamChatInputViewDelegate: class {
   func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView)
   func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String)
