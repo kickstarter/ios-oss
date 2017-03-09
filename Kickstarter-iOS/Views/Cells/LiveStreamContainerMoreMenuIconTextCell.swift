@@ -3,7 +3,7 @@ import LiveStream
 import Prelude
 
 internal final class LiveStreamContainerMoreMenuIconTextCell: UITableViewCell, ValueCell {
-  
+
   @IBOutlet private weak var contentStackView: UIStackView!
   @IBOutlet private weak var iconImageView: UIImageView!
   @IBOutlet private weak var rootStackView: UIStackView!

@@ -39,7 +39,7 @@ public protocol LiveStreamContainerViewModelInputs {
 
 public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the LiveStreamViewController should be configured
-  var configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError> { get }
+  var configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
 
   /// Emits when the LiveStreamContainerPageViewController should be configured
   var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
@@ -138,7 +138,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
-      .map { project, event in (project, AppEnvironment.current.currentUser?.id, event) }
 
     self.configurePageViewController = Signal.combineLatest(
       project, initialEvent, refTag, presentedFromProject
@@ -391,7 +390,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
-  public let configureLiveStreamViewController: Signal<(Project, Int?, LiveStreamEvent), NoError>
+  public let configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
   public let creatorIntroText: Signal<String, NoError>

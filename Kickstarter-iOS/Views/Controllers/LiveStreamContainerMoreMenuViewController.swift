@@ -14,6 +14,7 @@ internal protocol LiveStreamContainerMoreMenuViewControllerDelegate: class {
                                               hidden: Bool)
 }
 
+//swiftlint:disable:next type_name
 internal final class LiveStreamContainerMoreMenuViewController: UITableViewController {
   private let dataSource = LiveStreamContainerMoreMenuDataSource()
   private let viewModel: LiveStreamContainerMoreMenuViewModelType = LiveStreamContainerMoreMenuViewModel()

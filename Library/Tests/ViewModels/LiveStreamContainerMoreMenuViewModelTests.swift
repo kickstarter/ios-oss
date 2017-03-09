@@ -8,7 +8,8 @@
 
 import XCTest
 
-class LiveStreamContainerMoreMenuViewModelTests: TestCase {
+//swiftlint:disable:next type_name
+internal final class LiveStreamContainerMoreMenuViewModelTests: TestCase {
     
     override func setUp() {
         super.setUp()

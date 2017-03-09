@@ -82,6 +82,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.chatInputViewContainerHeightConstraint.constant = Styles.grid(8)
   }
 
+  //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

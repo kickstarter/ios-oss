@@ -67,6 +67,7 @@ public protocol LiveStreamChatViewModelOutputs {
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
 LiveStreamChatViewModelOutputs {
 
+  //swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
@@ -81,7 +82,7 @@ LiveStreamChatViewModelOutputs {
       },
       self.userSessionStartedProperty.signal
       )
-      .switchMap { event -> SignalProducer<Event<LiveAuthTokenEnvelope, ErrorEnvelope>, NoError> in
+      .switchMap { _ -> SignalProducer<Event<LiveAuthTokenEnvelope, ErrorEnvelope>, NoError> in
         AppEnvironment.current.apiService.liveAuthToken()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
