@@ -44,8 +44,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToSafariBrowser.assertValues([googleURL])
-    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-    XCTAssertEqual(["project_updates"], self.trackingClient.properties(forKey: "context"))
+    XCTAssertEqual(["Viewed Updates", "Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual("project_updates", self.trackingClient.properties.last!["context"] as? String)
   }
 
   func testGoToUpdate() {
@@ -94,6 +94,13 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateCommentId.assertValues([updateId])
+  }
+
+  func testViewEmits() {
+    self.vm.inputs.configureWith(project: Project.template)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Updates"], self.trackingClient.events)
   }
 
   func testWebViewLoadRequests() {
