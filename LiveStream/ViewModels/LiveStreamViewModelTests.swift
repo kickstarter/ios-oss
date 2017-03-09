@@ -38,12 +38,13 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     = TestObserver<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>()
   private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
   private let disableIdleTimer = TestObserver<Bool, NoError>()
-  private let initializeFirebaseEvent = TestObserver<LiveStreamEvent, NoError>()
-  private let initializeFirebaseUserId = TestObserver<Int?, NoError>()
+  private let initializeFirebase = TestObserver<(), NoError>()
   private let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = TestObserver<Int, NoError>()
   private let notifyDelegateLiveStreamViewControllerStateChanged
     = TestObserver<LiveStreamViewControllerState, NoError>()
   private let removeVideoViewController = TestObserver<(), NoError>()
+  private let signInAnonymously = TestObserver<(), NoError>()
+  private let signInWithCustomToken = TestObserver<String, NoError>()
   private let writeChatMessageToFirebaseDbRef = TestObserver<FirebaseDatabaseReferenceType, NoError>()
   private let writeChatMessageToFirebaseRefConfig = TestObserver<FirebaseRefConfig, NoError>()
   private let writeChatMessageToFirebaseMessageData = TestObserver<[AnyHashable:Any], NoError>()
@@ -69,14 +70,15 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
     self.vm.outputs.disableIdleTimer.observe(self.disableIdleTimer.observer)
 
-    self.vm.outputs.initializeFirebase.map(first).observe(self.initializeFirebaseEvent.observer)
-    self.vm.outputs.initializeFirebase.map(second).observe(self.initializeFirebaseUserId.observer)
+    self.vm.outputs.initializeFirebase.observe(self.initializeFirebase.observer)
 
     self.vm.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged
       .observe(self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged.observer)
     self.vm.outputs.notifyDelegateLiveStreamViewControllerStateChanged
       .observe(self.notifyDelegateLiveStreamViewControllerStateChanged.observer)
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
+    self.vm.outputs.signInAnonymously.observe(self.signInAnonymously.observer)
+    self.vm.outputs.signInWithCustomToken.observe(self.signInWithCustomToken.observer)
     self.vm.outputs.writeChatMessageToFirebase.map { $0.0 }
       .observe(self.writeChatMessageToFirebaseDbRef.observer)
     self.vm.outputs.writeChatMessageToFirebase.map { $0.1 }
@@ -85,27 +87,14 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       .observe(self.writeChatMessageToFirebaseMessageData.observer)
   }
 
-  func testInitalizeFirebase_LiveEvent() {
+  func testInitalizeFirebase() {
     let event = .template
       |> LiveStreamEvent.lens.liveNow .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
-    self.initializeFirebaseEvent.assertValues([event])
-    self.initializeFirebaseUserId.assertValues([nil])
-  }
-
-  func testInitalizeFirebase_ReplayEvent() {
-    let event = .template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ true
-
-    self.vm.inputs.configureWith(event: event, userId: nil)
-    self.vm.inputs.viewDidLoad()
-
-    self.initializeFirebaseEvent.assertValues([])
-    self.initializeFirebaseUserId.assertValues([])
+    self.initializeFirebase.assertValueCount(1)
   }
 
   func testCreateVideoViewController_UnderMaxOpenTokViews() {
@@ -117,7 +106,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -162,7 +151,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
       |> LiveStreamEvent.lens.isScale .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -210,7 +199,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -249,7 +238,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.isScale .~ true
     |> LiveStreamEvent.lens.hlsUrl .~ "http://www.mp4"
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -288,7 +277,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -334,7 +323,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -379,7 +368,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -405,7 +394,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     let dictionary15 = [Int: Int].keyValuePairs(Array(1...15).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -442,7 +431,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createVideoViewController.assertValueCount(0)
@@ -469,7 +458,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
       |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     guard let replayUrl = event.replayUrl else { XCTAssertTrue(false); return }
@@ -487,7 +476,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let dictionary5 = [Int: Int].keyValuePairs(Array(1...5).map { ($0, $0) })
     let dictionary7 = [Int: Int].keyValuePairs(Array(1...7).map { ($0, $0) })
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.observedGreenRoomOffChanged(off: false)
     self.vm.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: dictionary5)
@@ -505,7 +494,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.maxOpenTokViewers .~ 10
       |> LiveStreamEvent.lens.isScale .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.observedGreenRoomOffChanged(off: false)
     self.vm.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: 15)
@@ -524,7 +513,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.isRtmp .~ true
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
 
     guard let hlsStreamType = event.hlsUrl.flatMap(LiveStreamType.hlsStream) else {
       XCTFail("HLS url should exist")
@@ -547,7 +536,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
       |> LiveStreamEvent.lens.liveNow .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createPresenceReference.assertValueCount(0)
@@ -566,7 +555,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
       |> LiveStreamEvent.lens.liveNow .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: 123)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.createPresenceReference.assertValueCount(0)
@@ -586,7 +575,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
                                       serverValue: TestFirebaseServerValueType.self)
 
@@ -600,12 +589,32 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     )
   }
 
+  func testCreateFirebaseObservers_WhenReplay() {
+    let event = .template
+      |> LiveStreamEvent.lens.startDate .~ Date().addingTimeInterval(-60*60)
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(liveStreamEvent: event)
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
+
+    // All observer creation signals should only emit once
+    self.createChatObservers.assertValueCount(1)
+    self.createGreenRoomObservers.assertValueCount(0)
+    self.createHLSObservers.assertValueCount(0)
+    self.createNumberOfPeopleWatchingObservers.assertValueCount(0)
+    self.createScaleNumberOfPeopleWatchingObservers.assertValueCount(
+      0, "Does not emit when not a scale event."
+    )
+  }
+
   func testDisableIdleTimer() {
     let event = LiveStreamEvent.template
 
     self.disableIdleTimer.assertValueCount(0)
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.disableIdleTimer.assertValues([true])
@@ -623,7 +632,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
       |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     guard let replayUrl = event.replayUrl else { XCTAssertTrue(false); return }
@@ -644,7 +653,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.isScale .~ false
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
                                       serverValue: TestFirebaseServerValueType.self)
@@ -659,7 +668,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.isScale .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
                                       serverValue: TestFirebaseServerValueType.self)
@@ -672,7 +681,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     let event = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ true
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
                                       serverValue: TestFirebaseServerValueType.self)
@@ -711,7 +720,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
         .live(playbackState: .playing, startTime: 0), .error(error: .sessionInterrupted)
       ]
     )
-
   }
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_NotLive_NoReplay() {
@@ -721,7 +729,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.replayUrl .~ nil
       |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -16 * 60)
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.nonStarter])
@@ -734,7 +742,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.replayUrl .~ nil
       |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues([.nonStarter])
@@ -747,7 +755,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
       |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
       |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateLiveStreamViewControllerStateChanged.assertValues(
@@ -781,7 +789,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
   func testReceivedFirebaseChatMessageDataSnapshot() {
     self.chatMessages.assertValueCount(0)
 
-    self.vm.inputs.configureWith(event: .template, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: .template)
     self.vm.inputs.viewDidLoad()
 
     let testSnapshot1 = TestFirebaseDataSnapshotType(
@@ -821,7 +829,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot3)
     self.scheduler.advance()
 
-    self.scheduler.advance(by: .seconds(2))
+    self.scheduler.advance(by: .milliseconds(500))
 
     self.chatMessages.assertValueCount(1)
     XCTAssertTrue(self.chatMessages.lastValue?.isEmpty == .some(false))
@@ -833,11 +841,11 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.vm.inputs.receivedChatMessageSnapshot(chatMessage: testSnapshot2)
     self.scheduler.advance()
 
-    self.scheduler.advance(by: .seconds(1))
+    self.scheduler.advance(by: .milliseconds(250))
 
     self.chatMessages.assertValueCount(1)
 
-    self.scheduler.advance(by: .seconds(1))
+    self.scheduler.advance(by: .milliseconds(250))
 
     self.chatMessages.assertValueCount(2)
 
@@ -845,7 +853,7 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     XCTAssertEqual(self.chatMessages.lastValue?.last?.id, "2")
   }
 
-  func testWriteChatMessageToFirebase() {
+  func testWriteChatMessageToFirebase_Live() {
     let event = .template
       |> LiveStreamEvent.lens.liveNow .~ true
 
@@ -853,22 +861,27 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.writeChatMessageToFirebaseRefConfig.assertValueCount(0)
     self.writeChatMessageToFirebaseMessageData.assertValueCount(0)
 
-    self.vm.inputs.configureWith(event: event, userId: nil)
+    self.vm.inputs.configureWith(liveStreamEvent: event)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
                                       serverValue: TestFirebaseServerValueType.self)
-    self.vm.inputs.configureChatUserInfo(info: (userId: 123, name: "Chat Name",
-                                                profilePictureUrl: "http://www.kickstarter.com/avatar.jpg"))
+    self.vm.inputs.configureChatUserInfo(info: LiveStreamChatUserInfo(
+      name: "Chat Name",
+      profilePictureUrl: "http://www.kickstarter.com/avatar.jpg",
+      userId: "id_123",
+      token: "KNJSFlkjnsdlfjdslkfna234"
+      )
+    )
     self.vm.inputs.sendChatMessage(message: "New chat message")
 
     self.writeChatMessageToFirebaseDbRef.assertValueCount(1)
     self.writeChatMessageToFirebaseRefConfig.assertValueCount(1)
     self.writeChatMessageToFirebaseMessageData.assertValueCount(1)
 
-    XCTAssertEqual(123, self.writeChatMessageToFirebaseMessageData.lastValue?["userId"] as? Int)
+    XCTAssertEqual("id_123", self.writeChatMessageToFirebaseMessageData.lastValue?["userId"] as? String)
     XCTAssertEqual("Chat Name", self.writeChatMessageToFirebaseMessageData.lastValue?["name"] as? String)
     XCTAssertEqual("http://www.kickstarter.com/avatar.jpg", self.writeChatMessageToFirebaseMessageData
-      .lastValue?["profilePictureUrl"] as? String)
+      .lastValue?["profilePic"] as? String)
     XCTAssertEqual("New chat message", self.writeChatMessageToFirebaseMessageData
       .lastValue?["message"] as? String)
 
@@ -879,5 +892,67 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     }
 
     XCTAssertEqual(12345678, timestamp["timestamp"] as? Int)
+  }
+
+  func testWriteChatMessageToFirebase_Replay() {
+    let event = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.writeChatMessageToFirebaseDbRef.assertValueCount(0)
+    self.writeChatMessageToFirebaseRefConfig.assertValueCount(0)
+    self.writeChatMessageToFirebaseMessageData.assertValueCount(0)
+
+    self.vm.inputs.configureWith(liveStreamEvent: event)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.createdDatabaseRef(ref: TestFirebaseDatabaseReferenceType(),
+                                      serverValue: TestFirebaseServerValueType.self)
+    self.vm.inputs.configureChatUserInfo(info: LiveStreamChatUserInfo(
+      name: "Chat Name",
+      profilePictureUrl: "http://www.kickstarter.com/avatar.jpg",
+      userId: "id_123",
+      token: "KNJSFlkjnsdlfjdslkfna234"
+      )
+    )
+    self.vm.inputs.sendChatMessage(message: "New chat message")
+
+    self.writeChatMessageToFirebaseDbRef.assertValueCount(0)
+    self.writeChatMessageToFirebaseRefConfig.assertValueCount(0)
+    self.writeChatMessageToFirebaseMessageData.assertValueCount(0)
+  }
+
+  func testSignInAnonymously() {
+    let event = LiveStreamEvent.template
+    let firebase = event.firebase
+      ?|> LiveStreamEvent.Firebase.lens.token .~ nil
+
+    guard let liveStreamEvent = event
+      ?|> LiveStreamEvent.lens.firebase .~ firebase else {
+        return XCTFail("liveStreamEvent should exist")
+    }
+
+    self.signInAnonymously.assertValueCount(0)
+
+    self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.viewDidLoad()
+
+    self.signInAnonymously.assertValueCount(1)
+  }
+
+  func testSignInWithCustomToken() {
+    let event = LiveStreamEvent.template
+    let firebase = event.firebase
+      ?|> LiveStreamEvent.Firebase.lens.token .~ "knzxvkljnxzvJKNDASKLND3451"
+
+    guard let liveStreamEvent = event
+      ?|> LiveStreamEvent.lens.firebase .~ firebase else {
+        return XCTFail("liveStreamEvent should exist")
+    }
+
+    self.signInWithCustomToken.assertValueCount(0)
+
+    self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.viewDidLoad()
+
+    self.signInWithCustomToken.assertValues(["knzxvkljnxzvJKNDASKLND3451"])
   }
 }

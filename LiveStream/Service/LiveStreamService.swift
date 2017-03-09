@@ -22,7 +22,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
 
         components?.queryItems = []
-        
+
         uid.map { uid in
           components?.queryItems?.append(URLQueryItem(name: "uid", value: "\(uid)"))
         }
@@ -56,7 +56,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         }
 
         task.resume()
-        
+
         disposable.add({
           task.cancel()
           observer.sendInterrupted()

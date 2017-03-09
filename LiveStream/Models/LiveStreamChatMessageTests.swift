@@ -12,6 +12,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
   func testParseJson() {
     let json: [String:Any] = [
       "id": "KDeCy9vvd7ZCRwHc8Ca",
+      "creator": false,
       "message": "Test chat message",
       "name": "Test Name",
       "profilePic": "http://www.kickstarter.com/picture.jpg",
@@ -23,6 +24,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
 
     XCTAssertNil(chatMessage.error)
     XCTAssertEqual("KDeCy9vvd7ZCRwHc8Ca", chatMessage.value?.id)
+    XCTAssertEqual(false, chatMessage.value?.isCreator)
     XCTAssertEqual("Test chat message", chatMessage.value?.message)
     XCTAssertEqual("Test Name", chatMessage.value?.name)
     XCTAssertEqual("http://www.kickstarter.com/picture.jpg", chatMessage.value?.profilePictureUrl)
@@ -34,6 +36,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
     let snapshot = TestFirebaseDataSnapshotType(
       key: "KDeCy9vvd7ZCRwHc8Ca", value: [
         "id": "KDeCy9vvd7ZCRwHc8Ca",
+        "creator": false,
         "message": "Test chat message",
         "name": "Test Name",
         "profilePic": "http://www.kickstarter.com/picture.jpg",
@@ -45,6 +48,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
 
     XCTAssertNil(chatMessage.error)
     XCTAssertEqual("KDeCy9vvd7ZCRwHc8Ca", chatMessage.value?.id)
+    XCTAssertEqual(false, chatMessage.value?.isCreator)
     XCTAssertEqual("Test chat message", chatMessage.value?.message)
     XCTAssertEqual("Test Name", chatMessage.value?.name)
     XCTAssertEqual("http://www.kickstarter.com/picture.jpg", chatMessage.value?.profilePictureUrl)
@@ -56,6 +60,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
     let snapshot = TestFirebaseDataSnapshotType(
       key: "KDeCy9vvd7ZCRwHc8Ca", value: [
         "id": "KDeCy9vvd7ZCRwHc8Ca",
+        "creator": false,
         "message": "Test chat message",
         "name": "Test Name",
         "profilePic": "http://www.kickstarter.com/picture.jpg",
@@ -67,6 +72,7 @@ final class LiveStreamChatMessageTests: XCTestCase {
 
     XCTAssertNil(chatMessage.error)
     XCTAssertEqual("KDeCy9vvd7ZCRwHc8Ca", chatMessage.value?.id)
+    XCTAssertEqual(false, chatMessage.value?.isCreator)
     XCTAssertEqual("Test chat message", chatMessage.value?.message)
     XCTAssertEqual("Test Name", chatMessage.value?.name)
     XCTAssertEqual("http://www.kickstarter.com/picture.jpg", chatMessage.value?.profilePictureUrl)

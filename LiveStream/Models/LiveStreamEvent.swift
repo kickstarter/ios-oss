@@ -241,6 +241,10 @@ extension LiveStreamEvent {
       view: { $0.description },
       set: { var new = $1; new.description = $0; return new }
     )
+    public static let firebase = Lens<LiveStreamEvent, LiveStreamEvent.Firebase?>(
+      view: { $0.firebase },
+      set: { var new = $1; new.firebase = $0; return new }
+    )
     public static let hasReplay = Lens<LiveStreamEvent, Bool>(
       view: { $0.hasReplay },
       set: { var new = $1; new.hasReplay = $0; return new }

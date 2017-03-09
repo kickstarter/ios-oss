@@ -43,9 +43,6 @@ internal protocol LiveStreamViewModelInputs {
   /// Called to set the Firebase user ID.
   func setFirebaseUserId(userId: String)
 
-  /// Call with the optional custom auth token.
-  func signInWithCustomAuthToken(authToken: String?)
-
   /// Called when the video playback state changes.
   func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
 
@@ -388,8 +385,12 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.writeChatMessageToFirebase = Signal.combineLatest(
       self.createChatObservers,
-      chatMessageMetaData
+      chatMessageMetaData,
+      liveStreamEvent
+        .map { $0.liveNow }
+        .filter(isTrue)
       )
+      .map { ($0.0, $0.1) }
       .map(unpack)
       .takePairWhen(self.sendChatMessageProperty.signal.skipNil())
       .map { tuple in
@@ -468,11 +469,6 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   private let sendChatMessageProperty = MutableProperty<String?>(nil)
   internal func sendChatMessage(message: String) {
     self.sendChatMessageProperty.value = message
-  }
-
-  private let signInWithCustomAuthTokenProperty = MutableProperty<String?>(nil)
-  func signInWithCustomAuthToken(authToken: String?) {
-    self.signInWithCustomAuthTokenProperty.value = authToken
   }
 
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
