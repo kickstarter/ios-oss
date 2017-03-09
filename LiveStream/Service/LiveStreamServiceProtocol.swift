@@ -15,7 +15,8 @@ public protocol LiveStreamServiceProtocol {
   func deleteDatabase()
 
   /// Fetches an event with personalization added for the user.
-  func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError>
+  func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
+    SignalProducer<LiveStreamEvent, LiveApiError>
 
   /// Fetches an array of live streaming events.
   func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError>
@@ -25,10 +26,13 @@ public protocol LiveStreamServiceProtocol {
     LiveApiError>
 
   /// Creates a database reference.
-  func initializeDatabase(userId: Int?, failed: (Void) -> Void, succeeded: (FIRDatabaseReference) -> Void)
+  func initializeDatabase(failed: (Void) -> Void, succeeded: (FIRDatabaseReference) -> Void)
 
   /// Acquires an anonymous id to be used in the case that a user is not logged-in.
   func signInAnonymously(completion: @escaping (String) -> Void)
+
+  /// Acquires a firebase user id to be used in the case that a user is logged-in.
+  func signIn(withCustomToken customToken: String, completion: @escaping (String) -> Void)
 
   /// Subscribes/unsubscribes a user to an event.
   func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->

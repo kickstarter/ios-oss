@@ -13,46 +13,55 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     LiveStreamService.firebaseApp()?.delete({ _ in })
   }
 
-  public func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
+  public func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
+    SignalProducer<LiveStreamEvent, LiveApiError> {
 
-    return SignalProducer { (observer, disposable) in
-      let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
-        .appendingPathComponent("\(eventId)")
-      var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
-      components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
+      return SignalProducer { (observer, disposable) in
+        let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
+          .appendingPathComponent("\(eventId)")
+        var components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
 
-      guard let url = components?.url else {
-        observer.send(error: .invalidEventId)
-        return
-      }
+        components?.queryItems = []
+        
+        uid.map { uid in
+          components?.queryItems?.append(URLQueryItem(name: "uid", value: "\(uid)"))
+        }
+        liveAuthToken.map { token in
+          components?.queryItems?.append(URLQueryItem(name: "h", value: "\(token)"))
+        }
 
-      let urlSession = URLSession(configuration: .default)
-
-      let task = urlSession.dataTask(with: url) { data, _, error in
-        guard error == nil else {
-          observer.send(error: .genericFailure)
+        guard let url = components?.url else {
+          observer.send(error: .invalidEventId)
           return
         }
 
-        let event = data
-          .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-          .map(JSON.init)
-          .map(LiveStreamEvent.decode)
-          .flatMap { $0.value }
-          .map(Event<LiveStreamEvent, LiveApiError>.value)
-          .coalesceWith(.failed(.genericFailure))
+        let urlSession = URLSession(configuration: .default)
 
-        observer.action(event)
-        observer.sendCompleted()
+        let task = urlSession.dataTask(with: url) { data, _, error in
+          guard error == nil else {
+            observer.send(error: .genericFailure)
+            return
+          }
+
+          let event = data
+            .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+            .map(JSON.init)
+            .map(LiveStreamEvent.decode)
+            .flatMap { $0.value }
+            .map(Event<LiveStreamEvent, LiveApiError>.value)
+            .coalesceWith(.failed(.genericFailure))
+
+          observer.action(event)
+          observer.sendCompleted()
+        }
+
+        task.resume()
+        
+        disposable.add({
+          task.cancel()
+          observer.sendInterrupted()
+        })
       }
-
-      task.resume()
-
-      disposable.add({
-        task.cancel()
-        observer.sendInterrupted()
-      })
-    }
   }
 
   public func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError> {
@@ -138,8 +147,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func initializeDatabase(userId: Int?,
-                                 failed: (Void) -> Void,
+  public func initializeDatabase(failed: (Void) -> Void,
                                  succeeded: (FIRDatabaseReference) -> Void) {
 
     guard let app = LiveStreamService.firebaseApp() else {
@@ -158,6 +166,17 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       guard let id = user?.uid else { return }
       completion(id)
     }
+  }
+
+  public func signIn(withCustomToken customToken: String, completion: @escaping (String) -> Void) {
+    LiveStreamService.firebaseAuth()?.signIn(withCustomToken: customToken) { user, _ in
+      guard let id = user?.uid else { return }
+      completion(id)
+    }
+  }
+
+  public func signOut() {
+    try? LiveStreamService.firebaseAuth()?.signOut()
   }
 
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->

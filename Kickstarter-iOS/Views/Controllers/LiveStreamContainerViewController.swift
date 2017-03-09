@@ -154,11 +154,10 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.outputs.configureLiveStreamViewController
       .observeForUI()
-      .observeValues { [weak self] _, userId, event in
+      .observeValues { [weak self] _, userId, liveStreamEvent in
         guard let _self = self else { return }
         _self.liveStreamViewController?.configureWith(
-          event: event,
-          userId: userId,
+          liveStreamEvent: liveStreamEvent,
           delegate: _self,
           liveStreamService: AppEnvironment.current.liveStreamService
         )

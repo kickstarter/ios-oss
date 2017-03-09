@@ -525,7 +525,6 @@
 		A7BA54B91E1E4AD100E54377 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53F31E1E482E00E54377 /* FirebaseDatabase.framework */; };
 		A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54F21E1E4D5A00E54377 /* Secrets.swift */; };
 		A7BA55001E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */; };
-		A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */; };
 		A7BA55021E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */; };
 		A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */; };
 		A7BA55071E1E9DEE00E54377 /* LiveStreamEventTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */; };
@@ -1852,7 +1851,6 @@
 		A7BA549D1E1E4A9E00E54377 /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
 		A7BA54F21E1E4D5A00E54377 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = SOURCE_ROOT; };
 		A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.CreatorLenses.swift; sourceTree = "<group>"; };
-		A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.FirebaseLenses.swift; sourceTree = "<group>"; };
 		A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.OpenTokLenses.swift; sourceTree = "<group>"; };
 		A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.UserLenses.swift; sourceTree = "<group>"; };
 		A7BA55061E1E9DEE00E54377 /* LiveStreamEventTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventTemplates.swift; sourceTree = "<group>"; };
@@ -2958,7 +2956,6 @@
 			children = (
 				A7792C3E1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift */,
 				A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */,
-				A7BA54FB1E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift */,
 				A7BA54FC1E1E9D4B00E54377 /* LiveStreamEvent.OpenTokLenses.swift */,
 				A70482271E2F768D00292625 /* LiveStreamEvent.ProjectLenses.swift */,
 				A7BA54FE1E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift */,
@@ -4586,7 +4583,6 @@
 				A7BA55041E1E9D4B00E54377 /* LiveStreamEvent.UserLenses.swift in Sources */,
 				D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */,
 				A7BA54F31E1E4D5A00E54377 /* Secrets.swift in Sources */,
-				A7BA55011E1E9D4B00E54377 /* LiveStreamEvent.FirebaseLenses.swift in Sources */,
 				D08056A71E4DB427008F67A7 /* LiveStreamChatMessageTemplates.swift in Sources */,
 				A7BA54AB1E1E4A9E00E54377 /* VideoGridView.swift in Sources */,
 				D080566B1E4DB25B008F67A7 /* LiveStreamChatMessage.swift in Sources */,
@@ -4743,7 +4739,6 @@
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				D07226981E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift in Sources */,
-				8024FE7E1D637A600067A1F6 /* Storyboard.swift in Sources */,
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
 				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,

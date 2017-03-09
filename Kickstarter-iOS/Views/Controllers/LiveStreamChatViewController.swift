@@ -85,6 +85,11 @@ internal final class LiveStreamChatViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
     _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
       self?.viewModel.inputs.received(chatMessages: $0)
     }
@@ -149,6 +154,16 @@ internal final class LiveStreamChatViewController: UIViewController {
       .observeValues { [weak self] in
         self?.tableView.alpha = $0 ? 0 : 1
         self?.liveStreamChatInputView.didSetChatHidden(hidden: $0)
+    }
+
+    self.viewModel.outputs.updateLiveAuthTokenInEnvironment
+      .observeValues {
+        AppEnvironment.updateLiveAuthToken($0)
+    }
+
+    self.viewModel.outputs.configureChatHandlerWithUserInfo
+      .observeValues { [weak self] in
+        self?.liveStreamChatHandler?.configureChatUserInfo(info: $0)
     }
   }
 

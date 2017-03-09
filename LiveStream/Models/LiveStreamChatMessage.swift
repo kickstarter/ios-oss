@@ -14,6 +14,7 @@ internal extension Collection where Iterator.Element == LiveStreamChatMessage {
 
 public struct LiveStreamChatMessage {
   public fileprivate(set) var id: String
+  public fileprivate(set) var isCreator: Bool?
   public fileprivate(set) var message: String
   public fileprivate(set) var name: String
   public fileprivate(set) var profilePictureUrl: String
@@ -34,6 +35,7 @@ extension LiveStreamChatMessage: Decodable {
 
     let tmp1 = create
       <^> json <| "id"
+      <*> json <|? "creator"
       <*> json <| "message"
       <*> json <| "name"
 
@@ -71,6 +73,10 @@ extension LiveStreamChatMessage {
     public static let id = Lens<LiveStreamChatMessage, String>(
       view: { $0.id },
       set: { var new = $1; new.id = $0; return new }
+    )
+    public static let isCreator = Lens<LiveStreamChatMessage, Bool?>(
+      view: { $0.isCreator },
+      set: { var new = $1; new.isCreator = $0; return new }
     )
     public static let message = Lens<LiveStreamChatMessage, String>(
       view: { $0.message },

@@ -111,7 +111,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           .prefix(value: Date())
           .flatMap { _ in
             AppEnvironment.current.liveStreamService
-              .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
+              .fetchEvent(
+                eventId: event.id,
+                uid: AppEnvironment.current.currentUser?.id,
+                liveAuthToken: AppEnvironment.current.liveAuthToken
+              )
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .materialize()
           }

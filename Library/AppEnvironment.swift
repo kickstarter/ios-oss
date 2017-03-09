@@ -54,6 +54,12 @@ public struct AppEnvironment {
     )
   }
 
+  public static func updateLiveAuthToken(_ token: String) {
+    replaceCurrentEnvironment(
+      liveAuthToken: token
+    )
+  }
+
   // Invoke when you want to end the user's session.
   public static func logout() {
     let storage = AppEnvironment.current.cookieStorage
@@ -63,7 +69,8 @@ public struct AppEnvironment {
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
-      koala: current.koala |> Koala.lens.loggedInUser .~ nil
+      koala: current.koala |> Koala.lens.loggedInUser .~ nil,
+      liveAuthToken: nil
     )
   }
 
@@ -114,6 +121,7 @@ public struct AppEnvironment {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    liveAuthToken: String? = AppEnvironment.current.liveAuthToken,
     liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
@@ -141,6 +149,7 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveAuthToken: liveAuthToken,
         liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
@@ -172,6 +181,7 @@ public struct AppEnvironment {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    liveAuthToken: String? = AppEnvironment.current.liveAuthToken,
     liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
@@ -199,6 +209,7 @@ public struct AppEnvironment {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        liveAuthToken: liveAuthToken,
         liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
@@ -219,6 +230,7 @@ public struct AppEnvironment {
 
     var service = current.apiService
     var currentUser: User? = nil
+    var liveAuthToken: String? = nil
     let config: Config? = data["config"].flatMap(decode)
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
@@ -284,11 +296,17 @@ public struct AppEnvironment {
       currentUser = data["currentUser"].flatMap(decode)
     }
 
+    // Try restore the live auth token
+    if let token = data["liveAuthToken"] as? String {
+      liveAuthToken = token
+    }
+
     return Environment(
       apiService: service,
       config: config,
       currentUser: currentUser,
-      koala: current.koala |> Koala.lens.loggedInUser .~ currentUser
+      koala: current.koala |> Koala.lens.loggedInUser .~ currentUser,
+      liveAuthToken: liveAuthToken
     )
   }
   // swiftlint:enable function_body_length
@@ -311,6 +329,7 @@ public struct AppEnvironment {
     data["apiService.language"] = env.apiService.language
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
+    data["liveAuthToken"] = env.liveAuthToken
 
     userDefaults.set(data, forKey: environmentStorageKey)
   }

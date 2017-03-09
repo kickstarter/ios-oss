@@ -7,11 +7,24 @@ import ReactiveSwift
 import Result
 import UIKit
 
-public typealias LiveStreamChatUserInfo = (userId: Int, name: String, profilePictureUrl: String)
+public struct LiveStreamChatUserInfo {
+  public let name: String
+  public let profilePictureUrl: String
+  public let userId: String
+  public let token: String
+
+  public init(name: String, profilePictureUrl: String, userId: String, token: String) {
+    self.name = name
+    self.profilePictureUrl = profilePictureUrl
+    self.userId = userId
+    self.token = token
+  }
+}
 
 public protocol LiveStreamChatHandler: class {
   var chatMessages: Signal<[LiveStreamChatMessage], NoError> { get }
 
+  func configureChatUserInfo(info: LiveStreamChatUserInfo)
   func sendChatMessage(message: String)
 }
 
@@ -30,13 +43,12 @@ public final class LiveStreamViewController: UIViewController {
   private weak var delegate: LiveStreamViewControllerDelegate?
   private var liveStreamService: LiveStreamServiceProtocol?
 
-  public func configureWith(event: LiveStreamEvent,
-                            userId: Int?,
+  public func configureWith(liveStreamEvent: LiveStreamEvent,
                             delegate: LiveStreamViewControllerDelegate,
                             liveStreamService: LiveStreamServiceProtocol) {
     self.delegate = delegate
     self.liveStreamService = liveStreamService
-    self.viewModel.inputs.configureWith(event: event, userId: userId)
+    self.viewModel.inputs.configureWith(liveStreamEvent: liveStreamEvent)
   }
 
   //swiftlint:disable:next function_body_length
@@ -101,14 +113,28 @@ public final class LiveStreamViewController: UIViewController {
 
     self.viewModel.outputs.initializeFirebase
       .observeForUI()
-      .observeValues { [weak self] event, userId in
-        self?.initializeFirebase(withEvent: event, userId: userId)
+      .observeValues { [weak self] in
+        self?.initializeFirebase()
     }
 
     self.viewModel.outputs.disableIdleTimer
       .observeForUI()
       .observeValues {
         UIApplication.shared.isIdleTimerDisabled = $0
+    }
+
+    self.viewModel.outputs.signInAnonymously
+      .observeValues { [weak self] in
+        self?.liveStreamService?.signInAnonymously { id in
+          self?.viewModel.inputs.setFirebaseUserId(userId: id)
+        }
+    }
+
+    self.viewModel.outputs.signInWithCustomToken
+      .observeValues { [weak self] token in
+        self?.liveStreamService?.signIn(withCustomToken: token) { id in
+          self?.viewModel.inputs.setFirebaseUserId(userId: id)
+        }
     }
 
     self.viewModel.outputs.writeChatMessageToFirebase
@@ -149,19 +175,14 @@ public final class LiveStreamViewController: UIViewController {
 
   // MARK: Firebase
 
-  private func initializeFirebase(withEvent event: LiveStreamEvent, userId: Int?) {
+  private func initializeFirebase() {
     self.liveStreamService?.initializeDatabase(
-      userId: userId,
       failed: {
         self.viewModel.inputs.firebaseAppFailedToInitialize()
       },
       succeeded: { ref in
         self.firebaseRef = ref
         self.viewModel.inputs.createdDatabaseRef(ref: ref, serverValue: FIRServerValue.self)
-
-        self.liveStreamService?.signInAnonymously { id in
-          self.viewModel.inputs.setFirebaseUserId(userId: id)
-        }
     })
   }
 
@@ -249,6 +270,10 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
 extension LiveStreamViewController: LiveStreamChatHandler {
   public var chatMessages: Signal<[LiveStreamChatMessage], NoError> {
     return self.viewModel.outputs.chatMessages
+  }
+
+  public func configureChatUserInfo(info: LiveStreamChatUserInfo) {
+    self.viewModel.inputs.configureChatUserInfo(info: info)
   }
 
   public func sendChatMessage(message: String) {

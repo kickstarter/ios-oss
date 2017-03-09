@@ -37,12 +37,16 @@ public struct LiveStreamEvent: Equatable {
 
   public struct Firebase {
     public fileprivate(set) var apiKey: String
+    public fileprivate(set) var chatAvatarUrl: String?
     public fileprivate(set) var chatPath: String
+    public fileprivate(set) var chatUserId: String?
+    public fileprivate(set) var chatUserName: String?
     public fileprivate(set) var greenRoomPath: String
     public fileprivate(set) var hlsUrlPath: String
     public fileprivate(set) var numberPeopleWatchingPath: String
     public fileprivate(set) var project: String
     public fileprivate(set) var scaleNumberPeopleWatchingPath: String
+    public fileprivate(set) var token: String?
   }
 
   public struct OpenTok {
@@ -162,13 +166,17 @@ extension LiveStreamEvent.Firebase: Decodable {
     let create = curry(LiveStreamEvent.Firebase.init)
     let tmp = create
       <^> json <| "firebase_api_key"
+      <*> json <|? "avatar"
       <*> json <| "chat_path"
-      <*> json <| "green_room_path"
+      <*> json <|? "user_id"
+      <*> json <|? "user_name"
     return tmp
+      <*> json <| "green_room_path"
       <*> json <| "hls_url_path"
       <*> json <| "number_people_watching_path"
       <*> json <| "firebase_project"
       <*> json <| "scale_number_people_watching_path"
+      <*> json <|? "token"
   }
 }
 
@@ -284,6 +292,55 @@ extension LiveStreamEvent {
     public static let webUrl = Lens<LiveStreamEvent, String>(
       view: { $0.webUrl },
       set: { var new = $1; new.webUrl = $0; return new }
+    )
+  }
+}
+
+extension LiveStreamEvent.Firebase {
+  public enum lens {
+    public static let apiKey = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.apiKey },
+      set: { var new = $1; new.apiKey = $0; return new }
+    )
+    public static let chatAvatarUrl = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatAvatarUrl },
+      set: { var new = $1; new.chatAvatarUrl = $0; return new }
+    )
+    public static let chatPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.chatPath },
+      set: { var new = $1; new.chatPath = $0; return new }
+    )
+    public static let chatUserId = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatUserId },
+      set: { var new = $1; new.chatUserId = $0; return new }
+    )
+    public static let chatUserName = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatUserName },
+      set: { var new = $1; new.chatUserName = $0; return new }
+    )
+    public static let greenRoomPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.greenRoomPath },
+      set: { var new = $1; new.greenRoomPath = $0; return new }
+    )
+    public static let hlsUrlPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.hlsUrlPath },
+      set: { var new = $1; new.hlsUrlPath = $0; return new }
+    )
+    public static let numberPeopleWatchingPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.numberPeopleWatchingPath },
+      set: { var new = $1; new.numberPeopleWatchingPath = $0; return new }
+    )
+    public static let project = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.project },
+      set: { var new = $1; new.project = $0; return new }
+    )
+    public static let scaleNumberPeopleWatchingPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.scaleNumberPeopleWatchingPath },
+      set: { var new = $1; new.scaleNumberPeopleWatchingPath = $0; return new }
+    )
+    public static let token = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.token },
+      set: { var new = $1; new.token = $0; return new }
     )
   }
 }

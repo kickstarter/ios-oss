@@ -14,6 +14,7 @@ extension Result {
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let anonymousUserId: String?
+  private let firebaseUserId: String?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
@@ -25,12 +26,14 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   }
 
   internal init(anonymousUserId: String? = nil,
+                firebaseUserId: String? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>? = nil) {
     self.anonymousUserId = anonymousUserId
+    self.firebaseUserId = firebaseUserId
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
     self.fetchEventsResult = fetchEventsResult
@@ -45,15 +48,20 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     anonymousUserId.doIfSome(completion)
   }
 
-  internal func fetchEvent(eventId: Int, uid: Int?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
-    if let error = self.fetchEventResult?.error {
-      return SignalProducer(error: error)
-    }
+  internal func signIn(withCustomToken customToken: String, completion: @escaping (String) -> Void) {
+    firebaseUserId.doIfSome(completion)
+  }
 
-    return SignalProducer(value:
-      self.fetchEventResult?.value
-        ?? .template |> LiveStreamEvent.lens.id .~ eventId
-    )
+  internal func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
+    SignalProducer<LiveStreamEvent, LiveApiError> {
+      if let error = self.fetchEventResult?.error {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(value:
+        self.fetchEventResult?.value
+          ?? .template |> LiveStreamEvent.lens.id .~ eventId
+      )
   }
 
   internal func fetchEvents(forProjectId projectId: Int, uid: Int?) ->
@@ -82,8 +90,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func initializeDatabase(userId: Int?,
-                                   failed: (Void) -> Void,
+  internal func initializeDatabase(failed: (Void) -> Void,
                                    succeeded: (FIRDatabaseReference) -> Void) {
 
     switch initializeDatabaseResult {

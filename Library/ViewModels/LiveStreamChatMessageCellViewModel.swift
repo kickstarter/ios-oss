@@ -1,4 +1,5 @@
 import LiveStream
+import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Result
@@ -11,9 +12,6 @@ public protocol LiveStreamChatMessageCellViewModelType {
 public protocol LiveStreamChatMessageCellViewModelInputs {
   /// Call to configure with the chat message.
   func configureWith(chatMessage: LiveStreamChatMessage)
-
-  /// Call with the respective creator's user ID
-  func setCreatorUserId(creatorUserId: Int)
 }
 
 public protocol LiveStreamChatMessageCellViewModelOutputs {
@@ -38,16 +36,9 @@ LiveStreamChatMessageCellViewModelInputs, LiveStreamChatMessageCellViewModelOutp
       URL(string: $0.profilePictureUrl)
     }
 
-    self.creatorViewsHidden = Signal.merge(
-      self.chatMessageProperty.signal.skipNil().mapConst(true),
-      Signal.combineLatest(
-        self.chatMessageProperty.signal.skipNil(),
-        self.creatorUserIdProperty.signal.skipNil()
-        )
-        .map {
-          $0.userId != $1
-      }
-    )
+    self.creatorViewsHidden = self.chatMessageProperty.signal.skipNil()
+      .map { $0.isCreator.coalesceWith(false) }
+      .map(negate)
 
     self.message = self.chatMessageProperty.signal.skipNil().map { $0.message }
 
