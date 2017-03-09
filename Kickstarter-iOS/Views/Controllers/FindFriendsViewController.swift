@@ -26,7 +26,11 @@ internal final class FindFriendsViewController: UITableViewController {
     self.tableView.rowHeight = UITableViewAutomaticDimension
 
     self.tableView.backgroundView = self.backgroundView
-    self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: self.tableView.backgroundView!)
+
+    if let backgroundView = self.tableView.backgroundView {
+      self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: backgroundView)
+    }
+
     self.tableView.dataSource = dataSource
 
     self.viewModel.inputs.viewDidLoad()
@@ -83,7 +87,9 @@ internal final class FindFriendsViewController: UITableViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.loadingIndicatorView.center = (self.tableView.backgroundView?.center)!
+    if let backgroundView = self.tableView.backgroundView {
+      self.loadingIndicatorView.center = backgroundView.center
+    }
   }
 
   override func bindStyles() {
