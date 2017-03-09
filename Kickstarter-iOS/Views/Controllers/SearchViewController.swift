@@ -29,7 +29,9 @@ internal final class SearchViewController: UITableViewController {
 
     self.tableView.backgroundView = self.backgroundView
 
-    self.tableView.insertSubview(popularLoaderIndicator, aboveSubview: self.tableView.backgroundView!)
+    if let backgroundView = self.tableView.backgroundView {
+      self.tableView.insertSubview(popularLoaderIndicator, aboveSubview: backgroundView)
+    }
 
     self.tableView.dataSource = self.dataSource
 
@@ -63,7 +65,9 @@ internal final class SearchViewController: UITableViewController {
    internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.popularLoaderIndicator.center = (self.tableView.backgroundView?.center)!
+    if let backgroundView = self.tableView.backgroundView {
+      self.popularLoaderIndicator.center = backgroundView.center
+    }
   }
 
   internal override func bindStyles() {
