@@ -19,7 +19,7 @@ public protocol ProfileProjectsViewModelInputs {
 }
 
 public protocol ProfileProjectsViewModelOutputs {
-  /// Emits a boolean that determines if the empty state is visible or not.
+  /// Emits a boolean that determines if the empty state is visible and a ProfileProjectsType.
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError> { get }
 }
 
@@ -39,7 +39,7 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
 
   private let configureWithTypeProperty = MutableProperty<ProfileProjectsType?>(nil)
   public func configureWith(type: ProfileProjectsType) {
-    configureWithTypeProperty.value = type
+    self.configureWithTypeProperty.value = type
   }
 
   private let viewDidLoadProperty = MutableProperty()

@@ -110,7 +110,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
           key: "projects_count_backed",
           defaultValue: "%{projects_count} backed",
           count: user.stats.backedProjectsCount ?? 0,
-          substitutions: ["projects_count": Format.wholeNumber(user.stats.backedProjectsCount ?? 0)])
+          substitutions: ["projects_count": Format.wholeNumber(user.stats.backedProjectsCount ?? 0)]
+        )
         .replacingOccurrences(of: " ", with: "\n")
     }
 
@@ -129,8 +130,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
         key: "projects_count_backed",
         defaultValue: "%{projects_count} saved",
         count: user.stats.starredProjectsCount ?? 0,
-        substitutions: ["projects_count": Format.wholeNumber(user.stats.starredProjectsCount ?? 0)])
-        .replacingOccurrences(of: " ", with: "\n")
+        substitutions: ["projects_count": Format.wholeNumber(user.stats.starredProjectsCount ?? 0)]
+      )
+      .replacingOccurrences(of: " ", with: "\n")
     }
 
     self.backedProjectsAreHidden = Signal.merge(
@@ -156,9 +158,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       )
 
     self.pinSelectedIndicatorToPage = Signal.merge(
-      self.backedButtonTitleText
-        .take(first: 2)
-        .mapConst((0, false)),
+      self.backedButtonTitleText.mapConst((0, false)),
       selectedButtonIndex.map { ($0, true) }.skipRepeats(==)
     )
 

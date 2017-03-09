@@ -20,8 +20,8 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var messagesButtonItem: UIBarButtonItem!
   @IBOutlet private weak var savedContainerView: UIView!
   @IBOutlet private weak var savedMenuButton: UIButton!
-  @IBOutlet private weak var selectedButtonIndicatorView: UIView!
   @IBOutlet private weak var selectedButtonIndicatorLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var selectedButtonIndicatorView: UIView!
   @IBOutlet private weak var selectedButtonIndicatorWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var settingsButtonItem: UIBarButtonItem!
   @IBOutlet private weak var sortBar: ProfileSortBarView!
@@ -32,7 +32,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
 
-  private var isCollapsed: Bool = false
+  private var isCollapsed = false
 
   internal static func instantiate() -> BackerDashboardViewController {
     return Storyboard.BackerDashboard.instantiate(BackerDashboardViewController.self)
@@ -51,9 +51,11 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.savedProjectsViewController.delegate = self
 
-    self.backedMenuButton.addTarget(self, action: #selector(backedButtonTapped), for: .touchUpInside)
+    _ = self.backedMenuButton
+      |> UIButton.lens.targets .~ [(self, action: #selector(backedButtonTapped), .touchUpInside)]
 
-    self.savedMenuButton.addTarget(self, action: #selector(savedButtonTapped), for: .touchUpInside)
+    _ = self.savedMenuButton
+      |> UIButton.lens.targets .~ [(self, action: #selector(savedButtonTapped), .touchUpInside)]
 
     _ = self.messagesButtonItem
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(messagesButtonTapped))
@@ -74,38 +76,28 @@ internal final class BackerDashboardViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.avatarImageView.rac.imageUrl = self.viewModel.outputs.avatarURL
     self.backedContainerView.rac.hidden = self.viewModel.outputs.backedProjectsAreHidden
     self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
     self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
-    self.viewModel.outputs.avatarURL
-      .observeForUI()
-      .on(event: { [weak self] _ in
-        self?.avatarImageView.af_cancelImageRequest()
-        self?.avatarImageView.image = nil
-      })
-      .skipNil()
-      .observeValues { [weak self] url in
-        self?.avatarImageView.ksr_setImageWithURL(url)
-    }
-
     self.viewModel.outputs.backedButtonTitleText
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] string in
         guard let _self = self else { return }
         _self.setAttributedTitles(for: _self.backedMenuButton, with: string)
     }
 
     self.viewModel.outputs.configureBackedProjectsController
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         self?.backedProjectsViewController.configureWith(projectsType: $0)
     }
 
     self.viewModel.outputs.configureSavedProjectsController
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         self?.savedProjectsViewController.configureWith(projectsType: $0)
     }
@@ -117,7 +109,7 @@ internal final class BackerDashboardViewController: UIViewController {
     }
 
     self.viewModel.outputs.savedButtonTitleText
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] string in
         guard let _self = self else { return }
         _self.setAttributedTitles(for: _self.savedMenuButton, with: string)
@@ -265,10 +257,8 @@ internal final class BackerDashboardViewController: UIViewController {
       options: .curveEaseOut,
       animations: {
         self.headerView.setNeedsLayout()
-
         self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
         self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
-
         self.headerView.layoutIfNeeded()
       },
       completion: nil)
