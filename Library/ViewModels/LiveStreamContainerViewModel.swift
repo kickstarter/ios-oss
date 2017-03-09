@@ -105,14 +105,14 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let initialEvent = configData.map { _, event, _, _ in event }
 
     let updatedEventFetch = initialEvent
-      .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+      .switchMap { initialEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
 
         timer(interval: .seconds(5), on: AppEnvironment.current.scheduler)
           .prefix(value: Date())
           .flatMap { _ in
             AppEnvironment.current.liveStreamService
               .fetchEvent(
-                eventId: event.id,
+                eventId: initialEvent.id,
                 uid: AppEnvironment.current.currentUser?.id,
                 liveAuthToken: AppEnvironment.current.liveAuthToken
               )
@@ -120,7 +120,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
               .materialize()
           }
           .filter { event in
-            event.value?.liveNow == .some(true) || event.value?.hasReplay == .some(true) || event.error != nil
+            if initialEvent.liveNow && event.error == nil {
+              return event.value?.liveNow == .some(true)
+            }
+
+            return true
           }
           .take(first: 1)
     }
