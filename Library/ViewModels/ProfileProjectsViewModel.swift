@@ -19,8 +19,8 @@ public protocol ProfileProjectsViewModelInputs {
 }
 
 public protocol ProfileProjectsViewModelOutputs {
-  /// Emits a boolean that determines if the empty state is visible and a message to display.
-  var emptyStateIsVisible: Signal<(Bool, String), NoError> { get }
+  /// Emits a boolean that determines if the empty state is visible or not.
+  var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError> { get }
 }
 
 public protocol ProfileProjectsViewModelType {
@@ -34,15 +34,7 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
   public init() {
     let projectsType = self.configureWithTypeProperty.signal.skipNil()
 
-    self.emptyStateIsVisible = projectsType
-      .map {
-        switch $0 {
-        case .backed:
-          return (true, Strings.profile_projects_empty_state_message())
-        case .saved:
-          return (true, localizedString(key: "todo", defaultValue: "You haven't saved any projects yet."))
-        }
-    }
+    self.emptyStateIsVisible = projectsType.map { (true, $0) }
   }
 
   private let configureWithTypeProperty = MutableProperty<ProfileProjectsType?>(nil)
@@ -55,7 +47,7 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
     self.viewDidLoadProperty.value = ()
   }
 
-  public let emptyStateIsVisible: Signal<(Bool, String), NoError>
+  public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError>
 
   public var inputs: ProfileProjectsViewModelInputs { return self }
   public var outputs: ProfileProjectsViewModelOutputs { return self }

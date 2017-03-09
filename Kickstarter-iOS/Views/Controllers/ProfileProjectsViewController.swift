@@ -3,18 +3,23 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol ProfileSavedProjectsViewControllerDelegate: class {
-  func profileSavedProjectsDidEndDecelerating(_ scrollView: UIScrollView)
-  func profileSavedProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
-  func profileSavedProjectsDidScroll(_ scrollView: UIScrollView)
+internal protocol ProfileProjectsViewControllerDelegate: class {
+  /// Called when the table view's scrollViewDidEndDecelerating method is called.
+  func profileProjectsDidEndDecelerating(_ scrollView: UIScrollView)
+
+  /// Called when the table view's scrollViewDidEndDragging method is called.
+  func profileProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
+
+  /// Called when the table view's scrollViewDidScroll method is called.
+  func profileProjectsDidScroll(_ scrollView: UIScrollView)
 }
 
-internal final class ProfileSavedProjectsViewController: UITableViewController {
+internal final class ProfileProjectsViewController: UITableViewController {
 
   private let viewModel: ProfileProjectsViewModelType = ProfileProjectsViewModel()
-  private let dataSource = ProfileSavedProjectsDataSource()
+  private let dataSource = ProfileProjectsDataSource()
 
-  internal weak var delegate: ProfileSavedProjectsViewControllerDelegate?
+  internal weak var delegate: ProfileProjectsViewControllerDelegate?
 
   internal func configureWith(projectsType: ProfileProjectsType) {
     self.viewModel.inputs.configureWith(type: projectsType)
@@ -35,8 +40,8 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
-      .observeValues { [weak self] isVisible, message in
-        self?.dataSource.emptyState(visible: isVisible, message: message, showIcon: true)
+      .observeValues { [weak self] isVisible, type in
+        self?.dataSource.emptyState(visible: isVisible, type: type)
         self?.tableView.reloadData()
     }
   }
@@ -53,15 +58,15 @@ internal final class ProfileSavedProjectsViewController: UITableViewController {
   }
 
   internal override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    self.delegate?.profileSavedProjectsDidScroll(scrollView)
+    self.delegate?.profileProjectsDidScroll(scrollView)
   }
 
   internal override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.delegate?.profileSavedProjectsDidEndDecelerating(scrollView)
+    self.delegate?.profileProjectsDidEndDecelerating(scrollView)
   }
 
   internal override func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                                   willDecelerate decelerate: Bool) {
-    self.delegate?.profileSavedProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
+    self.delegate?.profileProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
   }
 }

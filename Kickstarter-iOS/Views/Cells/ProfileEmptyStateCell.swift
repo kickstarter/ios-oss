@@ -8,11 +8,16 @@ internal final class ProfileEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var iconImageView: UIImageView!
   @IBOutlet private weak var messageLabel: UILabel!
 
-  internal func configureWith(value: (message: String, showIcon: Bool)) {
-    self.messageLabel.text = value.message
-
-    _ = self.iconImageView
-      |> UIImageView.lens.tintColor .~ (value.showIcon ? .ksr_text_navy_600 : .clear)
+  internal func configureWith(value: ProfileProjectsType) {
+    switch value {
+    case .backed:
+      self.messageLabel.text = Strings.profile_projects_empty_state_message()
+      self.iconImageView.tintColor = .clear
+    case .saved:
+      self.messageLabel.text = localizedString(key: "todo",
+                                               defaultValue: "You haven't saved any projects yet.")
+      self.iconImageView.tintColor = .ksr_text_navy_600
+    }
   }
 
   internal override func bindStyles() {

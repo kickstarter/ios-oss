@@ -27,8 +27,8 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var sortBar: ProfileSortBarView!
   @IBOutlet private weak var topBackgroundView: UIView!
 
-  private weak var backedProjectsViewController: ProfileBackedProjectsViewController!
-  private weak var savedProjectsViewController: ProfileSavedProjectsViewController!
+  private weak var backedProjectsViewController: ProfileProjectsViewController!
+  private weak var savedProjectsViewController: ProfileProjectsViewController!
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
 
@@ -42,12 +42,12 @@ internal final class BackerDashboardViewController: UIViewController {
     super.viewDidLoad()
 
     self.backedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? ProfileBackedProjectsViewController }.first
+      .flatMap { $0 as? ProfileProjectsViewController }.first
 
     self.backedProjectsViewController.delegate = self
 
     self.savedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? ProfileSavedProjectsViewController }.first
+      .flatMap { $0 as? ProfileProjectsViewController }.last
 
     self.savedProjectsViewController.delegate = self
 
@@ -228,15 +228,15 @@ internal final class BackerDashboardViewController: UIViewController {
   private func setAttributedTitles(for button: UIButton, with string: String) {
     let normalTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
-        ? UIFont.ksr_subhead(size: 16.0)
-        : UIFont.ksr_subhead(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+        ? UIFont.ksr_headline(size: 16.0)
+        : UIFont.ksr_headline(size: 13.0),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
     ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
-        ? UIFont.ksr_subhead(size: 16.0).bolded
-        : UIFont.ksr_subhead(size: 13.0).bolded,
+        ? UIFont.ksr_headline(size: 16.0)
+        : UIFont.ksr_headline(size: 13.0),
       NSForegroundColorAttributeName: UIColor.black
     ])
 
@@ -354,32 +354,16 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 }
 
-extension BackerDashboardViewController: ProfileBackedProjectsViewControllerDelegate {
-  func profileBackedProjectsDidScroll(_ scrollView: UIScrollView) {
+extension BackerDashboardViewController: ProfileProjectsViewControllerDelegate {
+  func profileProjectsDidScroll(_ scrollView: UIScrollView) {
     self.moveHeader(with: scrollView)
   }
 
-  func profileBackedProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
+  func profileProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
     self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
   }
 
-  func profileBackedProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate {
-      self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
-    }
-  }
-}
-
-extension BackerDashboardViewController: ProfileSavedProjectsViewControllerDelegate {
-  func profileSavedProjectsDidScroll(_ scrollView: UIScrollView) {
-    self.moveHeader(with: scrollView)
-  }
-
-  func profileSavedProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
-  }
-
-  func profileSavedProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+  func profileProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if !decelerate {
       self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
     }

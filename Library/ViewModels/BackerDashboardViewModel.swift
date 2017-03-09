@@ -134,6 +134,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     }
 
     self.backedProjectsAreHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
       self.backedProjectsButtonProperty.signal.mapConst(false),
       self.savedProjectsButtonProperty.signal.mapConst(true)
     )
