@@ -50,7 +50,6 @@ internal final class LiveStreamChatViewController: UIViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-    self.tableView.keyboardDismissMode = .interactive
 
     self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
 

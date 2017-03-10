@@ -14,6 +14,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   let notifyDelegateMessageSent = TestObserver<String, NoError>()
   let notifyDelegateMoreButtonTapped = TestObserver<(), NoError>()
   let notifyDelegateRequestLogin = TestObserver<(), NoError>()
+  let placeholderText = TestObserver<String, NoError>()
   let sendButtonHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
@@ -23,6 +24,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateMessageSent.observe(self.notifyDelegateMessageSent.observer)
     self.vm.outputs.notifyDelegateMoreButtonTapped.observe(self.notifyDelegateMoreButtonTapped.observer)
     self.vm.outputs.notifyDelegateRequestLogin.observe(self.notifyDelegateRequestLogin.observer)
+    self.vm.outputs.placeholderText.map { $0.string }.observe(self.placeholderText.observer)
     self.vm.outputs.sendButtonHidden.observe(self.sendButtonHidden.observer)
   }
 
@@ -93,5 +95,21 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.vm.inputs.textFieldShouldBeginEditing()
 
     self.notifyDelegateRequestLogin.assertValueCount(1)
+  }
+
+  func testPlaceholderText() {
+    self.placeholderText.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatHidden: false)
+
+    self.placeholderText.assertValues(["Say something kind..."])
+
+    self.vm.inputs.didSetChatHidden(hidden: true)
+
+    self.placeholderText.assertValues(["Say something kind...", "Chat is hidden."])
+
+    self.vm.inputs.didSetChatHidden(hidden: false)
+
+    self.placeholderText.assertValues(["Say something kind...", "Chat is hidden.", "Say something kind..."])
   }
 }
