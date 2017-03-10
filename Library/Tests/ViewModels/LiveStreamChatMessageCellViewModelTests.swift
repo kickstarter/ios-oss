@@ -34,34 +34,48 @@ internal final class LiveStreamChatMessageCellViewModelTests: TestCase {
     self.avatarImageUrl.assertValues(["http://www.kickstarter.com/avatar.jpg"])
   }
 
-  func testCreatorViewsHidden() {
+  func testCreatorViewsHidden_Unknown() {
     let chatMessage = .template
-      |> LiveStreamChatMessage.lens.userId .~ 123
+      |> LiveStreamChatMessage.lens.isCreator .~ nil
 
     self.creatorViewsHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(chatMessage: chatMessage)
 
     self.creatorViewsHidden.assertValues([true])
+  }
 
-    self.vm.inputs.setCreatorUserId(creatorUserId: 321)
+  func testCreatorViewsHidden() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.isCreator .~ false
 
-    self.creatorViewsHidden.assertValues([true, true])
+    self.creatorViewsHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.creatorViewsHidden.assertValues([true])
   }
 
   func testCreatorViewsShown() {
     let chatMessage = .template
-      |> LiveStreamChatMessage.lens.userId .~ 123
+      |> LiveStreamChatMessage.lens.isCreator .~ true
 
     self.creatorViewsHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(chatMessage: chatMessage)
 
-    self.creatorViewsHidden.assertValues([true])
+    self.creatorViewsHidden.assertValues([false])
+  }
 
-    self.vm.inputs.setCreatorUserId(creatorUserId: 123)
+  func testMessage() {
+    let chatMessage = .template
+      |> LiveStreamChatMessage.lens.message .~ "Test Message"
 
-    self.creatorViewsHidden.assertValues([true, false])
+    self.senderName.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatMessage: chatMessage)
+
+    self.message.assertValues(["Test Message"])
   }
 
   func testSenderName() {
