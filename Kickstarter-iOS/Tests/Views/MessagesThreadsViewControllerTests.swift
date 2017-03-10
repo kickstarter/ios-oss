@@ -9,7 +9,6 @@ internal final class MessagesThreadViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     UIView.setAnimationsEnabled(false)
   }
 
