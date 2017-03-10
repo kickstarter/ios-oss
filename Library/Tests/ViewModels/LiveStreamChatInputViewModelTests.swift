@@ -30,7 +30,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.moreButtonHidden.assertValueCount(0)
     self.sendButtonHidden.assertValueCount(0)
 
-    self.vm.inputs.layoutSubviews()
+    self.vm.inputs.configureWith(chatHidden: false)
 
     self.moreButtonHidden.assertValues([false])
     self.sendButtonHidden.assertValues([true])
@@ -64,7 +64,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   func testMessageSent() {
     self.notifyDelegateMessageSent.assertValueCount(0)
 
-    self.vm.inputs.layoutSubviews()
+    self.vm.inputs.configureWith(chatHidden: false)
     self.vm.inputs.textDidChange(toText: "Typing")
     self.vm.inputs.sendButtonTapped()
 
@@ -74,7 +74,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   func testMoreButtonTapped() {
     self.notifyDelegateMoreButtonTapped.assertValueCount(0)
 
-    self.vm.inputs.layoutSubviews()
+    self.vm.inputs.configureWith(chatHidden: false)
     self.vm.inputs.moreButtonTapped()
 
     self.notifyDelegateMoreButtonTapped.assertValueCount(1)
@@ -83,7 +83,7 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   func testRequestLogin() {
     self.notifyDelegateRequestLogin.assertValueCount(0)
 
-    self.vm.inputs.layoutSubviews()
+    self.vm.inputs.configureWith(chatHidden: false)
     self.vm.inputs.textFieldShouldBeginEditing()
 
     self.notifyDelegateRequestLogin.assertValueCount(1)

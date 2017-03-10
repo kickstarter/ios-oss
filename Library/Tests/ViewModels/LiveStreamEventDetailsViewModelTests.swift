@@ -52,7 +52,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityHint.assertValues(["Subscribes to upcoming live streams."])
@@ -74,7 +74,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe"])
@@ -92,7 +92,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.creatorAvatarUrl.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.creatorAvatarUrl.assertValues(["https://www.com/creator-avatar.jpg"])
@@ -103,7 +103,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.name .~ "Test Stream"
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamTitle.assertValues(["Test Stream"])
@@ -114,7 +114,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.description .~ "Test LiveStreamEvent"
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamParagraph.assertValues(["Test LiveStreamEvent"])
@@ -122,7 +122,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testNumberOfPeopleWatchingText() {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
@@ -150,7 +150,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
     withEnvironment(liveStreamService: apiService) {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                   presentedFromProject: false)
+                                   refTag: .push, presentedFromProject: false)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual([], self.trackingClient.events)
@@ -233,7 +233,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
     withEnvironment(liveStreamService: apiService) {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
-                                   presentedFromProject: false)
+                                   refTag: .push, presentedFromProject: false)
       self.vm.inputs.viewDidLoad()
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
@@ -272,7 +272,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testGoToProjectButtonContainerHidden_PresentedFromProject() {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectContainerHidden.assertValues([true])
@@ -280,7 +280,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
   func testGoToProjectButtonContainerHidden_NotPresentedFromProject() {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 presentedFromProject: false)
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectContainerHidden.assertValues([false])

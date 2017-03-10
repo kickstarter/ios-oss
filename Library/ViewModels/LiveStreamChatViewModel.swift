@@ -16,9 +16,6 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call with the LiveStreamEvent and chat visibility.
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool)
 
-  /// Call when the device's orientation will change.
-  func deviceOrientationDidChange(orientation: UIInterfaceOrientation, currentIndexPaths: [IndexPath])
-
   /// Call with the desired visibility for the chat view controller.
   func didSetChatHidden(hidden: Bool)
 
@@ -46,13 +43,10 @@ public protocol LiveStreamChatViewModelOutputs {
   var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
 
   /// Emits chat messages for appending to the data source.
-  var prependChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError> { get }
+  var prependChatMessagesToDataSource: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
   /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
   var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
-
-  /// Emits the previous index paths that should remain visible on rotate.
-  var scrollToIndexPaths: Signal<[IndexPath], NoError> { get }
 
   /// Emits whether or not the chat table view should be hidden.
   var shouldHideChatTableView: Signal<Bool, NoError> { get }
@@ -76,13 +70,15 @@ LiveStreamChatViewModelOutputs {
 
     let liveStreamEvent = configData.map(second)
 
-    let liveAuthTokenFetch = Signal.merge(
-      self.viewDidLoadProperty.signal.filter {
-        AppEnvironment.current.currentUser != nil && AppEnvironment.current.liveAuthToken == nil
-      },
-      self.userSessionStartedProperty.signal
+    let shouldFetchAuthToken = Signal.merge(
+      configData.ignoreValues(),
+      Signal.combineLatest(configData, self.userSessionStartedProperty.signal).ignoreValues()
       )
-      .switchMap { _ -> SignalProducer<Event<LiveAuthTokenEnvelope, ErrorEnvelope>, NoError> in
+      .filter {
+        AppEnvironment.current.currentUser != nil && AppEnvironment.current.liveAuthToken == nil
+    }
+
+    let liveAuthTokenFetch = shouldFetchAuthToken.switchMap {
         AppEnvironment.current.apiService.liveAuthToken()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
@@ -90,13 +86,14 @@ LiveStreamChatViewModelOutputs {
 
     self.prependChatMessagesToDataSource = Signal.combineLatest(
       self.receivedChatMessagesProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    ).map(first)
-
-    self.scrollToIndexPaths = Signal.combineLatest(
-      self.deviceOrientationDidChangeProperty.signal.skipNil().map(second),
-      self.viewDidLoadProperty.signal
-    ).map(first)
+      self.viewDidLoadProperty.signal,
+      configData.ignoreValues()
+      )
+      .map(first)
+      .filter { !$0.isEmpty }
+      .map { chatMessages in
+        (chatMessages, chatMessages.count > 25)
+    }
 
     self.openLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
       .liveStreamChat
@@ -113,7 +110,11 @@ LiveStreamChatViewModelOutputs {
       )
       .takeWhen(self.moreMenuButtonTappedProperty.signal)
 
-    self.shouldHideChatTableView = self.didSetChatHiddenProperty.signal
+    self.shouldHideChatTableView =
+      Signal.merge(
+        configData.map { $2 },
+        self.didSetChatHiddenProperty.signal
+    )
 
     let liveStreamEventFetch = Signal.combineLatest(
       liveAuthTokenFetch
@@ -151,7 +152,7 @@ LiveStreamChatViewModelOutputs {
 
     self.didAuthorizeChat = liveAuthTokenFetch.filter { $0.isTerminating }.map { $0.error == nil }
     self.updateLiveAuthTokenInEnvironment = liveAuthTokenFetch.values().map { $0.token }
-    self.willAuthorizeChat = liveAuthTokenFetch.filter { !$0.isTerminating }.ignoreValues()
+    self.willAuthorizeChat = shouldFetchAuthToken
   }
 
   private let chatInputViewRequestedLoginProperty = MutableProperty()
@@ -162,13 +163,6 @@ LiveStreamChatViewModelOutputs {
   private let configData = MutableProperty<(Project, LiveStreamEvent, Bool)?>(nil)
   public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
     self.configData.value = (project, liveStreamEvent, chatHidden)
-  }
-
-  private let deviceOrientationDidChangeProperty =
-    MutableProperty<(UIInterfaceOrientation, [IndexPath])?>(nil)
-  public func deviceOrientationDidChange(orientation: UIInterfaceOrientation,
-                                         currentIndexPaths: [IndexPath]) {
-    self.deviceOrientationDidChangeProperty.value = (orientation, currentIndexPaths)
   }
 
   private let didSetChatHiddenProperty = MutableProperty(false)
@@ -200,8 +194,7 @@ LiveStreamChatViewModelOutputs {
   public let didAuthorizeChat: Signal<Bool, NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
-  public let prependChatMessagesToDataSource: Signal<[LiveStreamChatMessage], NoError>
-  public let scrollToIndexPaths: Signal<[IndexPath], NoError>
+  public let prependChatMessagesToDataSource: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let shouldHideChatTableView: Signal<Bool, NoError>
   public let updateLiveAuthTokenInEnvironment: Signal<String, NoError>
   public let willAuthorizeChat: Signal<(), NoError>

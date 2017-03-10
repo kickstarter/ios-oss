@@ -62,3 +62,18 @@ public enum LiveStreamContainerMoreMenuItem {
   case share(liveStreamEvent: LiveStreamEvent)
   case cancel
 }
+
+extension LiveStreamContainerMoreMenuItem: Equatable {
+  public static func == (lhs: LiveStreamContainerMoreMenuItem, rhs: LiveStreamContainerMoreMenuItem) -> Bool {
+    switch (lhs, rhs) {
+    case (.hideChat(let lhsHidden), .hideChat(let rhsHidden)):
+      return lhsHidden == rhsHidden
+    case (.share(let lhsLiveStreamEvent), .share(let rhsLiveStreamEvent)):
+      return lhsLiveStreamEvent == rhsLiveStreamEvent
+    case (.cancel, .cancel):
+      return true
+    default:
+      return false
+    }
+  }
+}

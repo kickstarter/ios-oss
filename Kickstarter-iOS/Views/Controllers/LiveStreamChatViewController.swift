@@ -97,25 +97,22 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     self.viewModel.outputs.prependChatMessagesToDataSource
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] chatMessages, reload in
         guard let _self = self else { return }
-        let indexPaths = $0.map {
+        let indexPaths = chatMessages.map {
           _self.dataSource.prependRow(value: $0, cellClass:
             LiveStreamChatMessageCell.self, toSection: Section.messages.rawValue)
         }
 
-        if !indexPaths.isEmpty {
-          if indexPaths.count > 5 {
-            self?.tableView.reloadData()
-
-          } else {
-            _self.tableView.beginUpdates()
-            if _self.tableView.numberOfSections == 0 {
-              _self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
-            }
-            _self.tableView.insertRows(at: indexPaths, with: .top)
-            _self.tableView.endUpdates()
+        if reload {
+          self?.tableView.reloadData()
+        } else {
+          _self.tableView.beginUpdates()
+          if _self.tableView.numberOfSections == 0 {
+            _self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
           }
+          _self.tableView.insertRows(at: indexPaths, with: .top)
+          _self.tableView.endUpdates()
         }
     }
 
