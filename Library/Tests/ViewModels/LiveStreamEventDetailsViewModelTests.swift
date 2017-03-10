@@ -11,6 +11,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let vm: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
 
   private let animateSubscribeButtonActivityIndicator = TestObserver<Bool, NoError>()
+  private let availableForLabelHidden = TestObserver<Bool, NoError>()
+  private let availableForText = TestObserver<String, NoError>()
   private let creatorAvatarUrl = TestObserver<String?, NoError>()
   private let goToProjectContainerHidden = TestObserver<Bool, NoError>()
   private let liveStreamTitle = TestObserver<String, NoError>()
@@ -30,6 +32,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
       self.animateSubscribeButtonActivityIndicator.observer)
+    self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
+    self.vm.outputs.availableForText.observe(self.availableForText.observer)
     self.vm.outputs.creatorAvatarUrl.map { $0?.absoluteString }.observe(self.creatorAvatarUrl.observer)
     self.vm.outputs.goToProjectButtonContainerHidden.observe(self.goToProjectContainerHidden.observer)
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
@@ -284,6 +288,56 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectContainerHidden.assertValues([false])
+  }
+
+  func testAvailableForText() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
+
+    self.availableForText.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForText.assertValues(["Available to watch for 2 more days"])
+  }
+
+  func testAvailableForLabel_Hidden() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date.addingTimeInterval(-60).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForLabelHidden.assertValues([true])
+  }
+
+  func testAvailableForLabel_Shown() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date.addingTimeInterval(-60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForLabelHidden.assertValues([false])
   }
 }
 

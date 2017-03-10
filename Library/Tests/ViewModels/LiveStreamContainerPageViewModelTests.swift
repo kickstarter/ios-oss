@@ -37,7 +37,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.vm.outputs.infoButtonTextColor.observe(self.infoButtonTextColor.observer)
     self.vm.outputs.infoButtonTitleFont.map { $0.fontName }.observe(self.infoButtonTitleFontName.observer)
     self.vm.outputs.infoButtonTitleFont.map { $0.pointSize }.observe(self.infoButtonTitleFontSize.observer)
-    self.vm.outputs.loadViewControllersIntoPagesDataSource.observe(self.loadViewControllersIntoPagesDataSource.observer)
+    self.vm.outputs.loadViewControllersIntoPagesDataSource.observe(
+      self.loadViewControllersIntoPagesDataSource.observer)
     self.vm.outputs.pagedToPage.map(first).observe(self.pagedToPage.observer)
     self.vm.outputs.pagedToPage.map(second).observe(self.pagedToPageDirection.observer)
   }

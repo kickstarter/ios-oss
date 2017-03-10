@@ -20,15 +20,16 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   private let updateLiveAuthTokenInEnvironment = TestObserver<String, NoError>()
   private let willAuthorizeChat = TestObserver<(), NoError>()
 
-
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.configureChatHandlerWithUserInfo.observe(self.configureChatHandlerWithUserInfo.observer)
     self.vm.outputs.didAuthorizeChat.observe(self.didAuthorizeChat.observer)
     self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
-    self.vm.outputs.prependChatMessagesToDataSource.map(first).observe(self.prependChatMessagesToDataSourceMessages.observer)
-    self.vm.outputs.prependChatMessagesToDataSource.map(second).observe(self.prependChatMessagesToDataSourceReload.observer)
+    self.vm.outputs.prependChatMessagesToDataSource.map(first).observe(
+      self.prependChatMessagesToDataSourceMessages.observer)
+    self.vm.outputs.prependChatMessagesToDataSource.map(second).observe(
+      self.prependChatMessagesToDataSourceReload.observer)
     self.vm.outputs.presentMoreMenuViewController.observe(self.presentMoreMenuViewController.observer)
     self.vm.outputs.shouldHideChatTableView.observe(self.shouldHideChatTableView.observer)
     self.vm.outputs.updateLiveAuthTokenInEnvironment.observe(self.updateLiveAuthTokenInEnvironment.observer)
@@ -73,7 +74,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     let apiService = MockService(liveAuthTokenResponse: LiveAuthTokenEnvelope.template)
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(LiveStreamEvent.template))
 
-    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3),
+                    liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
       self.vm.inputs.viewDidLoad()
 
@@ -116,7 +118,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     let apiService = MockService(liveAuthTokenResponse: LiveAuthTokenEnvelope.template)
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(LiveStreamEvent.template))
 
-    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3),
+                    liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
       self.vm.inputs.viewDidLoad()
 

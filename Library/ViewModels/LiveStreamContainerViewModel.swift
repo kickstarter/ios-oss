@@ -44,12 +44,6 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the LiveStreamContainerPageViewController should be configured
   var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
 
-  /// Emits when the live dot image above the creator avatar should be hidden
-  var creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits the intro text for the creator
-  var creatorIntroText: Signal<String, NoError> { get }
-
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
 
@@ -249,18 +243,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    self.creatorIntroText = event
-      .observeForUI()
-      .map { event in
-        event.liveNow
-          ? Strings.Live_with_creator_name(creator_name: event.creator.name)
-          : Strings.Creator_name_was_live_time_ago(
-            creator_name: event.creator.name,
-            time_ago: Format.relative(secondsInUTC: event.startDate.timeIntervalSince1970,
-                                      abbreviate: true)
-        )
-    }
-
     let hideWhenReplay = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       event.map { !$0.liveNow }
@@ -278,7 +260,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     ).skipRepeats()
 
     self.navBarLiveDotImageViewHidden = hideWhenReplay
-    self.creatorAvatarLiveDotImageViewHidden = hideWhenReplay
     self.numberWatchingBadgeViewHidden = hideWhenReplay
 
     let numberOfMinutesWatched = liveStreamControllerState
@@ -392,8 +373,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public let configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
-  public let creatorAvatarLiveDotImageViewHidden: Signal<Bool, NoError>
-  public let creatorIntroText: Signal<String, NoError>
   public let dismiss: Signal<(), NoError>
   public let displayModalOverlayView: Signal<(), NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
