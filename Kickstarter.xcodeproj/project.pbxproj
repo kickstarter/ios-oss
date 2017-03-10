@@ -652,6 +652,7 @@
 		D0CC9D2D1E5B304200C2BC4A /* LiveStreamChatInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0CC9D2C1E5B304200C2BC4A /* LiveStreamChatInputView.xib */; };
 		D0CC9D331E5B36CB00C2BC4A /* LiveStreamChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC9D2E1E5B339000C2BC4A /* LiveStreamChatInputView.swift */; };
 		D0CC9D351E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */; };
+		D0CDA8631E73180100AA3450 /* LiveStreamContainerPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CDA8621E73180100AA3450 /* LiveStreamContainerPageViewModelTests.swift */; };
 		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
 		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
 		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
@@ -1996,6 +1997,7 @@
 		D0CC9D2C1E5B304200C2BC4A /* LiveStreamChatInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveStreamChatInputView.xib; sourceTree = "<group>"; };
 		D0CC9D2E1E5B339000C2BC4A /* LiveStreamChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatInputView.swift; sourceTree = "<group>"; };
 		D0CC9D341E5B633F00C2BC4A /* LiveStreamChatInputViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatInputViewModelTests.swift; sourceTree = "<group>"; };
+		D0CDA8621E73180100AA3450 /* LiveStreamContainerPageViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewModelTests.swift; sourceTree = "<group>"; };
 		D0FD4CA31E26422C00488660 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D0FD4CA61E26427A00488660 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0FD4CA81E26428000488660 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2695,6 +2697,7 @@
 				D077CCCA1E5345F2004E8FDF /* LiveStreamChatMessageCellViewModelTests.swift */,
 				D077CCCE1E5346B2004E8FDF /* LiveStreamChatViewModelTests.swift */,
 				D078834A1E5DD49500994B95 /* LiveStreamContainerMoreMenuViewModelTests.swift */,
+				D0CDA8621E73180100AA3450 /* LiveStreamContainerPageViewModelTests.swift */,
 				D033D8751E0A739D001CDA18 /* LiveStreamContainerViewModelTests.swift */,
 				D049C8D61DFFFACD00349FE6 /* LiveStreamCountdownViewModelTests.swift */,
 				A785D14F1E49038B003D9D57 /* LiveStreamDiscoveryLiveNowCellViewModelTests.swift */,
@@ -4503,6 +4506,7 @@
 				A7830D121D005C3F00B5B6AE /* MessagesViewModelTests.swift in Sources */,
 				9D14FFFA1D135E4F005F4ABB /* ProjectActivityUpdateCellViewModelTests.swift in Sources */,
 				A7830D061D005C3F00B5B6AE /* FacebookConfirmationViewModelTests.swift in Sources */,
+				D0CDA8631E73180100AA3450 /* LiveStreamContainerPageViewModelTests.swift in Sources */,
 				9D8772481D19E9D4003A4E96 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */,
 				A749001B1D00E25200BC3BE7 /* SignupViewModelTests.swift in Sources */,
 				A75511941C8645A0005355CF /* AppEnvironmentTests.swift in Sources */,

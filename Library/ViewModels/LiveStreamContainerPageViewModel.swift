@@ -91,9 +91,8 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
     let pageControllerPagedToPage = Signal.combineLatest(
       self.loadViewControllersIntoPagesDataSource,
-      self.willTransitionToPageProperty.signal.takeWhen(
-        self.pageTransitionCompletedProperty.signal.filter { $0 }
-      )
+      self.willTransitionToPageProperty.signal
+        .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
       )
       .map { $0[$1] }
 
