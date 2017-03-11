@@ -233,7 +233,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
         switch state {
