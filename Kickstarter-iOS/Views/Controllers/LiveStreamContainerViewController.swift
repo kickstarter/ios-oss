@@ -42,22 +42,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
 
-    self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
-    self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
-    self.navBarTitleStackView.addArrangedSubview(self.navBarTitleLabel)
-
-    NSLayoutConstraint.activate([
-      self.navBarTitleStackView.leadingAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.leadingAnchor),
-      self.navBarTitleStackView.topAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.topAnchor),
-      self.navBarTitleStackView.trailingAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.trailingAnchor),
-      self.navBarTitleStackView.bottomAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.bottomAnchor),
-      ])
-
-    self.navigationItem.titleView = navBarTitleStackViewBackgroundView
+    self.navigationItem.titleView = self.navBarTitleView
 
     self.liveStreamViewController = self.childViewControllers
       .flatMap { $0 as? LiveStreamViewController }
@@ -105,30 +90,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.alpha .~ 0.2
-
-    _  = self.navBarTitleStackViewBackgroundView
-      |> UIView.lens.layer.cornerRadius .~ 2
-      |> UIView.lens.layer.masksToBounds .~ true
-      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
-
-    _  = self.navBarTitleStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-
-    _  = self.navBarLiveDotImageView
-      |> UIImageView.lens.image .~ UIImage(named: "live-dot")
-      |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
-
-    _  = self.navBarTitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.textAlignment .~ .center
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -198,17 +159,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
-
-    self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
-
-    self.viewModel.outputs.titleViewText
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.navBarTitleLabel.text = $0
-        self?.view.setNeedsLayout()
-    }
-
     self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
 
     self.viewModel.outputs.showErrorAlert
@@ -228,30 +178,30 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in
         self?.removeModelOverLay()
     }
+
+    self.viewModel.outputs.configureNavBarTitleView
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navBarTitleView.configureWith(liveStreamEvent: $0)
+    }
+
+    self.viewModel.outputs.navBarTitleViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navBarTitleView.isHidden = $0
+    }
   }
 
   override public var prefersStatusBarHidden: Bool {
     return true
   }
 
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.layoutNavBarTitle()
-  }
-
-  private func layoutNavBarTitle() {
-    let stackViewSize = self.navBarTitleStackView.systemLayoutSizeFitting(
-      CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height))
-
-    let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewSize.width / 2),
-                         y: self.navBarTitleStackViewBackgroundView.frame.origin.y)
-
-    self.navBarTitleStackViewBackgroundView.frame = CGRect(
-      origin: newOrigin,
-      size: CGSize(width: stackViewSize.width, height: Styles.grid(5))
-    )
-  }
+  fileprivate lazy var navBarTitleView: LiveStreamNavTitleView = {
+    let navBarTitleView = LiveStreamNavTitleView.fromNib()
+    navBarTitleView.backgroundColor = .clear
+    navBarTitleView.translatesAutoresizingMaskIntoConstraints = false
+    return navBarTitleView
+  }()
 
   private func displayModalOverlay() {
     self.view.addSubview(self.modalOverlayView)
@@ -279,11 +229,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   // MARK: Subviews
-
-  private lazy var navBarTitleStackViewBackgroundView = { UIView() }()
-  private lazy var navBarTitleStackView = { UIStackView() }()
-  private lazy var navBarLiveDotImageView = { UIImageView() }()
-  private lazy var navBarTitleLabel = { UILabel() }()
 
   private lazy var closeBarButtonItem: UIBarButtonItem = {
     let closeBarButtonItem = UIBarButtonItem()
@@ -314,13 +259,12 @@ public final class LiveStreamContainerViewController: UIViewController {
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
                                                                     numberOfPeople: Int) {
-//    self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
+    self.navBarTitleView.set(numberOfPeopleWatching: numberOfPeople)
   }
 
   public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
                                                    state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-//    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }
 }
 

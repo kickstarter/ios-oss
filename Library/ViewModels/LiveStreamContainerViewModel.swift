@@ -44,6 +44,9 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the LiveStreamContainerPageViewController should be configured
   var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
 
+  /// Emits when the nav bar title view should be configured.
+  var configureNavBarTitleView: Signal<LiveStreamEvent, NoError> { get }
+
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
 
@@ -59,14 +62,8 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits the loader's text
   var loaderText: Signal<String, NoError> { get }
 
-  /// Emits when the nav bar's title view should be hidden
+  /// Emits when the nav bar title view should be hidden.
   var navBarTitleViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits when the live dot image in the nav bar title view should be hidden (e.g. in replay)
-  var navBarLiveDotImageViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits when the number of people watching badge view should be hidden
-  var numberWatchingBadgeViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
@@ -76,9 +73,6 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
-
-  /// Emits the title view's text
-  var titleViewText: Signal<String, NoError> { get }
 
   /// Emits when the video view controller should be hidden (when loading or green room is active)
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
@@ -126,10 +120,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let project = configData.map { project, _, _, _ in project }
     let refTag = configData.map { _, _, refTag, _ in refTag }
     let presentedFromProject = configData.map { _, _, _, presentedFromProject in presentedFromProject }
-    let event = Signal.merge(
-      initialEvent,
-      updatedEventFetch.values()
-    )
 
     self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
 
@@ -243,24 +233,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    let hideWhenReplay = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      event.map { !$0.liveNow }
-    ).skipRepeats()
-
-    self.navBarTitleViewHidden = Signal.merge(
-      project.mapConst(true),
-      liveStreamControllerState.map { state in
-        switch state {
-        case .live(playbackState: .playing, _):   return false
-        case .replay(playbackState: .playing, _): return false
-        default:                                  return true
-        }
-      }
-    ).skipRepeats()
-
-    self.navBarLiveDotImageViewHidden = hideWhenReplay
-    self.numberWatchingBadgeViewHidden = hideWhenReplay
 
     let numberOfMinutesWatched = liveStreamControllerState
       .filter { state in
@@ -278,6 +250,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.displayModalOverlayView,
       self.willDismissMoreMenuViewControllerProperty.signal
     ).ignoreValues()
+
+    self.configureNavBarTitleView = updatedEventFetch.values()
+    self.navBarTitleViewHidden = Signal.merge(
+      initialEvent.mapConst(true),
+      updatedEventFetch.values().mapConst(false)
+    )
 
     configData
       .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
@@ -373,14 +351,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public let configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
+  public let configureNavBarTitleView: Signal<LiveStreamEvent, NoError>
   public let dismiss: Signal<(), NoError>
   public let displayModalOverlayView: Signal<(), NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
-  public let navBarLiveDotImageViewHidden: Signal<Bool, NoError>
-  public let numberWatchingBadgeViewHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
   public let removeModalOverlayView: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>

@@ -14,17 +14,18 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     TestObserver<Project, NoError>()
   private let configureLiveStreamViewControllerLiveStreamEvent =
     TestObserver<LiveStreamEvent, NoError>()
+  private let configureNavBarTitleView =
+    TestObserver<LiveStreamEvent, NoError>()
   private let dismiss = TestObserver<(), NoError>()
+  private let displayModalOverlay = TestObserver<(), NoError>()
   private let loaderActivityIndicatorAnimating = TestObserver<Bool, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
-  private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
-  private let numberWatchingBadgeViewHidden = TestObserver<Bool, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
+  private let removeModalOverlay = TestObserver<(), NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
-  private let titleViewText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -33,16 +34,17 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.configureLiveStreamViewControllerProject.observer)
     self.vm.outputs.configureLiveStreamViewController.map(second).observe(
       self.configureLiveStreamViewControllerLiveStreamEvent.observer)
+    self.vm.outputs.configureNavBarTitleView.observe(
+      self.configureNavBarTitleView.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
+    self.vm.outputs.displayModalOverlayView.observe(self.displayModalOverlay.observer)
     self.vm.outputs.loaderActivityIndicatorAnimating.observe(self.loaderActivityIndicatorAnimating.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
-    self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
-    self.vm.outputs.numberWatchingBadgeViewHidden.observe(self.numberWatchingBadgeViewHidden.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
+    self.vm.outputs.removeModalOverlayView.observe(self.removeModalOverlay.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
-    self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
   }
 
@@ -180,153 +182,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-  func testLabelVisibilities_Live() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([false, true])
-      self.numberWatchingBadgeViewHidden.assertValues([false, true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([false, true, false])
-      self.numberWatchingBadgeViewHidden.assertValues([false, true, false])
-    }
-  }
-
-  func testLabelVisibilities_Replay() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ true
-
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-    }
-  }
-
-  func testLabelVisibilities_NonStarter() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ true
-      |> LiveStreamEvent.lens.replayUrl .~ nil
-
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-    }
-  }
-
-  func testNavBarTitleViewHidden_LiveState() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.navBarTitleViewHidden.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .live(playbackState: .playing, startTime: 123)
-    )
-
-    self.navBarTitleViewHidden.assertValues([true, false])
-  }
-
-  func testNavBarTitleViewHidden_ReplayState() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.navBarTitleViewHidden.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123)
-    )
-
-    self.navBarTitleViewHidden.assertValues([true, false])
-  }
-
   func testLoaderStackViewHidden() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
@@ -444,31 +299,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
         false
       ])
     }
-  }
-
-  func testTitleViewText() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123))
-
-    self.titleViewText.assertValues([
-      "Loading",
-      "Starting soon",
-      "Live",
-      "Loading",
-      "Recorded Live"
-    ])
   }
 
   func testTrackViewedLiveStream() {
@@ -791,5 +621,71 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
     }
+  }
+
+  func testConfigureNavBarTitleView() {
+    let liveStreamEvent = LiveStreamEvent.template
+    let project = Project.template
+
+    self.configureNavBarTitleView.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureNavBarTitleView.assertValues([liveStreamEvent])
+    }
+  }
+
+  func testNavBarTitleViewHidden() {
+    let liveStreamEvent = LiveStreamEvent.template
+    let project = Project.template
+
+    self.navBarTitleViewHidden.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.navBarTitleViewHidden.assertValues([true])
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.navBarTitleViewHidden.assertValues([true, false])
+    }
+  }
+
+  func testDisplayRemoveModalOverlay() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+
+    self.displayModalOverlay.assertValueCount(0)
+    self.removeModalOverlay.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.willPresentMoreMenuViewController()
+
+    self.displayModalOverlay.assertValueCount(1)
+
+    self.vm.inputs.willDismissMoreMenuViewController()
+
+    self.removeModalOverlay.assertValueCount(1)
   }
 }

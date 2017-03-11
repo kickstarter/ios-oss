@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LiveStreamNavTitleView" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="396" height="337"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="qa9-Cn-rXB">
+                    <rect key="frame" x="0.0" y="0.0" width="396" height="337"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Su-vx-kId">
+                            <rect key="frame" x="0.0" y="0.0" width="58" height="337"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJy-9h-V8Q">
+                                    <rect key="frame" x="8" y="8" width="42" height="321"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="iJy-9h-V8Q" firstAttribute="leading" secondItem="2Su-vx-kId" secondAttribute="leadingMargin" id="EDf-dg-FjN"/>
+                                <constraint firstItem="iJy-9h-V8Q" firstAttribute="top" secondItem="2Su-vx-kId" secondAttribute="topMargin" id="ekQ-Br-naH"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="iJy-9h-V8Q" secondAttribute="bottom" id="eyp-1C-Yf7"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="iJy-9h-V8Q" secondAttribute="trailing" id="wIc-qq-hp1"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XhO-nx-904">
+                            <rect key="frame" x="58" y="0.0" width="338" height="337"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="has-qd-InU">
+                                    <rect key="frame" x="8" y="8" width="322" height="321"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-ZN-5dw">
+                                            <rect key="frame" x="0.0" y="154" width="13" height="13"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="nXt-ZN-5dw" secondAttribute="height" multiplier="1:1" id="tPT-b4-iV0"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ir2-yq-ZoU">
+                                            <rect key="frame" x="13" y="150.5" width="309" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="has-qd-InU" firstAttribute="top" secondItem="XhO-nx-904" secondAttribute="topMargin" id="9GI-3F-ciB"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="has-qd-InU" secondAttribute="trailing" id="CWp-pI-9kh"/>
+                                <constraint firstItem="has-qd-InU" firstAttribute="leading" secondItem="XhO-nx-904" secondAttribute="leadingMargin" id="FoN-QK-ukv"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="has-qd-InU" secondAttribute="bottom" id="Ly3-lw-UiL"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="qa9-Cn-rXB" secondAttribute="trailing" id="bNl-j7-Kdb"/>
+                <constraint firstItem="qa9-Cn-rXB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="g2g-Jj-9l8"/>
+                <constraint firstAttribute="bottom" secondItem="qa9-Cn-rXB" secondAttribute="bottom" id="gQh-q8-eUQ"/>
+                <constraint firstItem="qa9-Cn-rXB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xzy-5i-hor"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="eyeImageView" destination="nXt-ZN-5dw" id="LLV-0j-1Py"/>
+                <outlet property="numberOfPeopleWatchingLabel" destination="ir2-yq-ZoU" id="Rgu-bp-Dva"/>
+                <outlet property="numberOfPeopleWatchingLabelContainer" destination="XhO-nx-904" id="v9O-ja-uuT"/>
+                <outlet property="numberOfPeopleWatchingStackView" destination="has-qd-InU" id="Gmt-bH-JmR"/>
+                <outlet property="playbackStateLabel" destination="iJy-9h-V8Q" id="UEO-Nl-AXs"/>
+                <outlet property="playbackStateLabelContainer" destination="2Su-vx-kId" id="mVd-ox-ryf"/>
+                <outlet property="rootStackView" destination="qa9-Cn-rXB" id="M0c-gl-391"/>
+            </connections>
+            <point key="canvasLocation" x="-156" y="-36"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="eye" width="13" height="10"/>
+    </resources>
+</document>

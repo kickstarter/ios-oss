@@ -2,6 +2,7 @@ import UIKit
 
 public enum Nib: String {
   case LiveStreamChatInputView
+  case LiveStreamNavTitleView
   case RewardCell
 }
 
