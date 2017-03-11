@@ -50,11 +50,6 @@ LiveStreamChatMessageCellViewModelInputs, LiveStreamChatMessageCellViewModelOutp
     self.chatMessageProperty.value = chatMessage
   }
 
-  private let creatorUserIdProperty = MutableProperty<Int?>(nil)
-  public func setCreatorUserId(creatorUserId: Int) {
-    self.creatorUserIdProperty.value = creatorUserId
-  }
-
   public let avatarImageUrl: Signal<URL?, NoError>
   public let creatorViewsHidden: Signal<Bool, NoError>
   public let message: Signal<String, NoError>
