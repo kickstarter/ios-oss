@@ -77,6 +77,8 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 200
+
+    self.tableView.contentInset = .init(topBottom: Styles.grid(1))
   }
 
   //swiftlint:disable:next function_body_length
