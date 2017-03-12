@@ -175,10 +175,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     }
   }
 
-  public func signOut() {
-    try? LiveStreamService.firebaseAuth()?.signOut()
-  }
-
   public func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
     SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError> {
 
