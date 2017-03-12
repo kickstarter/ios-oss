@@ -230,7 +230,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.dismissKeyboard.assertValueCount(2)
 
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
-    
+
     self.dismissKeyboard.assertValueCount(3)
   }
 }
