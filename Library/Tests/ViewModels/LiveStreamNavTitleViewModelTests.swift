@@ -102,7 +102,7 @@ internal final class LiveStreamNavTitleViewModelTests: TestCase {
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2500)
 
-    self.numberOfPeopleWatchingLabelText.assertValues(["2,500"])
+    self.numberOfPeopleWatchingLabelText.assertValues(["0", "2,500"])
   }
 
 }
