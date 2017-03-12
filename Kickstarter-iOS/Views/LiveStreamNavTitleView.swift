@@ -17,10 +17,10 @@ internal final class LiveStreamNavTitleView: UIView {
 
   let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
 
-  //swiftlint:disable:next force_cast
   internal class func fromNib() -> LiveStreamNavTitleView {
     return UINib(nibName: Nib.LiveStreamNavTitleView.rawValue, bundle: .framework)
       .instantiate(withOwner: nil, options: nil)
+      //swiftlint:disable:next force_cast
       .first as! LiveStreamNavTitleView
   }
 

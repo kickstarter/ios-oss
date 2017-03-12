@@ -18,7 +18,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
-
+//swiftlint:disable line_length
 //  func testReplay() {
 //    let liveStreamEvent = .template
 //      |> LiveStreamEvent.lens.hasReplay .~ true
