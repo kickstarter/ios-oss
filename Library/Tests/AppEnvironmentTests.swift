@@ -98,7 +98,8 @@ final class AppEnvironmentTests: XCTestCase {
         "apiService.serverConfig.basicHTTPAuth.password": "mundo",
         "apiService.serverConfig.webBaseUrl": "http://ksr.com",
         "apiService.language": "en",
-        "currentUser": user.encode()
+        "currentUser": user.encode(),
+        "liveAuthToken": LiveAuthTokenEnvelope.template.token
       ],
       forKey: AppEnvironment.environmentStorageKey)
 
@@ -112,6 +113,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
     XCTAssertEqual(user, env.currentUser)
     XCTAssertEqual(user, env.koala.loggedInUser)
+    XCTAssertEqual(LiveAuthTokenEnvelope.template.token, env.liveAuthToken)
 
     let differentEnv = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(),
                                                   userDefaults: MockKeyValueStore())
@@ -140,10 +142,13 @@ final class AppEnvironmentTests: XCTestCase {
       oauthToken: OauthToken(token: "deadbeef")
     )
     let currentUser = User.template
+    let liveAuthToken = LiveAuthTokenEnvelope.template.token
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
 
-    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService, currentUser: currentUser),
+    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService,
+                                                            currentUser: currentUser,
+                                                            liveAuthToken: liveAuthToken),
                                    ubiquitousStore: ubiquitousStore,
                                    userDefaults: userDefaults)
 
@@ -155,6 +160,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("http://ksr.com", result["apiService.serverConfig.webBaseUrl"] as? String)
     XCTAssertEqual("en", result["apiService.language"] as? String)
     XCTAssertEqual(User.template.id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
+    XCTAssertEqual(LiveAuthTokenEnvelope.template.token, result["liveAuthToken"] as? String)
 
     XCTAssertEqual(nil, ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey), "No token stored.")
   }
