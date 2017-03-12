@@ -16,6 +16,9 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call with the LiveStreamEvent and chat visibility.
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool)
 
+  /// Call when the device orientation changed.
+  func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
+
   /// Call with the desired visibility for the chat view controller.
   func didSetChatHidden(hidden: Bool)
 
@@ -33,8 +36,14 @@ public protocol LiveStreamChatViewModelInputs {
 }
 
 public protocol LiveStreamChatViewModelOutputs {
+  /// Emits when the chat input view should be hidden
+  var chatInputViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits with new chat user info received after authorization
   var configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError> { get }
+
+  /// Emits when the keyboard should dismiss on rotate.
+  var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Emits when chat authorization is completed with success status.
   var didAuthorizeChat: Signal<Bool, NoError> { get }
@@ -153,6 +162,9 @@ LiveStreamChatViewModelOutputs {
     self.didAuthorizeChat = liveAuthTokenFetch.filter { $0.isTerminating }.map { $0.error == nil }
     self.updateLiveAuthTokenInEnvironment = liveAuthTokenFetch.values().map { $0.token }
     self.willAuthorizeChat = shouldFetchAuthToken
+
+    self.chatInputViewHidden = liveStreamEvent.map { $0.liveNow }.map(negate)
+    self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
   }
 
   private let chatInputViewRequestedLoginProperty = MutableProperty()
@@ -163,6 +175,11 @@ LiveStreamChatViewModelOutputs {
   private let configData = MutableProperty<(Project, LiveStreamEvent, Bool)?>(nil)
   public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
     self.configData.value = (project, liveStreamEvent, chatHidden)
+  }
+
+  private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
+  public func deviceOrientationDidChange(orientation: UIInterfaceOrientation) {
+    self.deviceOrientationDidChangeProperty.value = orientation
   }
 
   private let didSetChatHiddenProperty = MutableProperty(false)
@@ -190,7 +207,9 @@ LiveStreamChatViewModelOutputs {
     self.userSessionStartedProperty.value = ()
   }
 
+  public let chatInputViewHidden: Signal<Bool, NoError>
   public let configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError>
+  public let dismissKeyboard: Signal<(), NoError>
   public let didAuthorizeChat: Signal<Bool, NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>

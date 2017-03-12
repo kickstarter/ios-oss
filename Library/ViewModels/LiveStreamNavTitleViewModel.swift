@@ -46,12 +46,15 @@ LiveStreamNavTitleViewModelInputs, LiveStreamNavTitleViewModelOutputs {
       .map { $0.liveNow }
       .map(negate)
 
-    self.numberOfPeopleWatchingLabelText = Signal.combineLatest(
-      self.numberOfPeopleWatchingProperty.signal.skipNil()
-        .map { Format.wholeNumber($0) },
-      self.liveStreamEventProperty.signal.skipNil()
-      )
-      .map(first)
+    self.numberOfPeopleWatchingLabelText = Signal.merge(
+      Signal.combineLatest(
+        self.numberOfPeopleWatchingProperty.signal.skipNil()
+          .map { Format.wholeNumber($0) },
+        self.liveStreamEventProperty.signal.skipNil()
+        )
+        .map(first),
+      self.liveStreamEventProperty.signal.skipNil().mapConst("0")
+    )
   }
 
   private let liveStreamEventProperty = MutableProperty<LiveStreamEvent?>(nil)

@@ -10,7 +10,9 @@ import XCTest
 internal final class LiveStreamChatViewModelTests: TestCase {
   let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
+  private let chatInputViewHidden = TestObserver<Bool, NoError>()
   private let configureChatHandlerWithUserInfo = TestObserver<LiveStreamChatUserInfo, NoError>()
+  private let dismissKeyboard = TestObserver<(), NoError>()
   private let didAuthorizeChat = TestObserver<Bool, NoError>()
   private let openLoginToutViewController = TestObserver<LoginIntent, NoError>()
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
@@ -23,7 +25,9 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.chatInputViewHidden.observe(self.chatInputViewHidden.observer)
     self.vm.outputs.configureChatHandlerWithUserInfo.observe(self.configureChatHandlerWithUserInfo.observer)
+    self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didAuthorizeChat.observe(self.didAuthorizeChat.observer)
     self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
     self.vm.outputs.prependChatMessagesToDataSource.map(first).observe(
@@ -184,5 +188,49 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.moreMenuButtonTapped()
 
     self.presentMoreMenuViewController.assertValueCount(1)
+  }
+
+  func testChatInputViewHidden_Live() {
+    self.chatInputViewHidden.assertValueCount(0)
+
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.chatInputViewHidden.assertValues([false])
+  }
+
+  func testChatInputViewHidden_Replay() {
+    self.chatInputViewHidden.assertValueCount(0)
+
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.chatInputViewHidden.assertValues([true])
+  }
+
+  func testDismissKeyboard() {
+    self.dismissKeyboard.assertValueCount(0)
+
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
+    self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
+
+    self.dismissKeyboard.assertValueCount(1)
+
+    self.vm.inputs.deviceOrientationDidChange(orientation: .landscapeLeft)
+
+    self.dismissKeyboard.assertValueCount(2)
+
+    self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
+    
+    self.dismissKeyboard.assertValueCount(3)
   }
 }

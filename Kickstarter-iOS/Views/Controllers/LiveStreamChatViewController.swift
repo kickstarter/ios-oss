@@ -77,8 +77,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 200
-
-    self.chatInputViewContainerHeightConstraint.constant = Styles.grid(8)
   }
 
   //swiftlint:disable:next function_body_length
@@ -88,6 +86,13 @@ internal final class LiveStreamChatViewController: UIViewController {
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation
+        )
     }
 
     _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
@@ -162,6 +167,19 @@ internal final class LiveStreamChatViewController: UIViewController {
       .observeValues { [weak self] in
         self?.liveStreamChatHandler?.configureChatUserInfo(info: $0)
     }
+
+    self.viewModel.outputs.dismissKeyboard
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.view.endEditing(true)
+    }
+
+    self.viewModel.outputs.chatInputViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.chatInputViewContainer.isHidden = $0
+        self?.chatInputViewContainerHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
+    }
   }
 
   private lazy var liveStreamChatInputView: LiveStreamChatInputView = {
@@ -173,11 +191,10 @@ internal final class LiveStreamChatViewController: UIViewController {
 
   private func showShareSheet(controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
+      self?.shareViewModel.inputs.shareActivityCompletion(with: .init(activityType: activityType,
+                                                                      completed: completed,
+                                                                      returnedItems: returnedItems,
+                                                                      activityError: error)
       )
     }
 
@@ -185,7 +202,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       controller.modalPresentationStyle = .popover
       controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
       self.present(controller, animated: true, completion: nil)
-
     } else {
       self.present(controller, animated: true, completion: nil)
     }

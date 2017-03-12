@@ -37,7 +37,7 @@ internal final class LiveStreamNavTitleView: UIView {
 
     _ = self.playbackStateLabelContainer
       |> roundedStyle()
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(1)) / 2, leftRight: Styles.grid(1))
 
     _ = self.playbackStateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
@@ -46,7 +46,7 @@ internal final class LiveStreamNavTitleView: UIView {
     _ = self.numberOfPeopleWatchingLabelContainer
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.4)
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(1)) / 2, leftRight: Styles.grid(1))
 
     _ = self.numberOfPeopleWatchingLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
