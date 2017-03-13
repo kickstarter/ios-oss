@@ -27,10 +27,6 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.backgroundView = self.backgroundView
-
-    self.tableView.insertSubview(self.popularLoaderIndicator, aboveSubview: self.backgroundView)
-
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
@@ -58,12 +54,6 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.delegate = self
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
-  }
-
-   internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.popularLoaderIndicator.center = self.backgroundView.center
   }
 
   internal override func bindStyles() {
@@ -132,6 +122,19 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
         _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator :  nil
+        if let headerView = _self.tableView.tableHeaderView {
+          headerView.frame = CGRect(x: headerView.frame.origin.x,
+                                    y: headerView.frame.origin.y,
+                                    width: headerView.frame.size.width,
+                                    height: Styles.grid(15))
+        }
+    }
+
+    self.viewModel.outputs.popularLoaderIndicatorIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        guard let _self = self else { return }
+        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator :  nil
         if let headerView = _self.tableView.tableHeaderView {
           headerView.frame = CGRect(x: headerView.frame.origin.x,
                                     y: headerView.frame.origin.y,
