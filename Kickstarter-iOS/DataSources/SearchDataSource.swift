@@ -8,17 +8,11 @@ internal final class SearchDataSource: ValueCellDataSource {
     case popularTitle
     case projects
     case noResults
-    case loading
   }
 
   internal func popularTitle(isVisible visible: Bool) {
     self.set(cellIdentifiers: visible ? ["MostPopularCell"] : [],
              inSection: Section.popularTitle.rawValue)
-  }
-
-  internal func loader(isVisible visible: Bool) {
-    self.set(cellIdentifiers: visible ? ["SearchLoadingStateCell"] : [],
-             inSection: Section.loading.rawValue)
   }
 
   internal func load(params: DiscoveryParams, visible: Bool) {
@@ -56,8 +50,6 @@ internal final class SearchDataSource: ValueCellDataSource {
     case let (cell as MostPopularCell, value as Void):
       cell.configureWith(value: value)
     case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
-      cell.configureWith(value: value)
-    case let (cell as SearchLoadingStateCell, value as Void):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

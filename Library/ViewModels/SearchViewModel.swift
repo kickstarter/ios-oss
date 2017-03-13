@@ -54,10 +54,7 @@ public protocol SearchViewModelOutputs {
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
   /// Emits when loading indicator should be animated.
-  var popularLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get } // test this
-
-  /// Emits when loading indicator should be hidden.
-  var searchLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get } // test this
+  var popularLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
 
    /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
@@ -65,11 +62,14 @@ public protocol SearchViewModelOutputs {
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), NoError> { get }
 
+  /// Emits when should scroll to project with row number.
+  var scrollToProjectRow: Signal<Int, NoError> { get }
+
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, NoError> { get }
 
-  /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, NoError> { get }
+  /// Emits when loading indicator should be hidden.
+  var searchLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), NoError> { get }
@@ -258,10 +258,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-    fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
@@ -270,12 +272,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
-  public let searchLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let popularLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
-  public let searchFieldText: Signal<String, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
+  public let searchFieldText: Signal<String, NoError>
+  public let searchLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), NoError>
 
   public var inputs: SearchViewModelInputs { return self }

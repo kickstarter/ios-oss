@@ -29,9 +29,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.tableView.backgroundView = self.backgroundView
 
-    if let backgroundView = self.tableView.backgroundView {
-      self.tableView.insertSubview(popularLoaderIndicator, aboveSubview: backgroundView)
-    }
+    self.tableView.insertSubview(self.popularLoaderIndicator, aboveSubview: self.backgroundView)
 
     self.tableView.dataSource = self.dataSource
 
@@ -65,9 +63,7 @@ internal final class SearchViewController: UITableViewController {
    internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    if let backgroundView = self.tableView.backgroundView {
-      self.popularLoaderIndicator.center = backgroundView.center
-    }
+    self.popularLoaderIndicator.center = self.backgroundView.center
   }
 
   internal override func bindStyles() {
@@ -77,15 +73,10 @@ internal final class SearchViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 86)
       |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
-    _ = self.searchLoaderIndicator
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
-
-    _ = self.popularLoaderIndicator
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+    _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
+      ||> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      ||> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      ||> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700

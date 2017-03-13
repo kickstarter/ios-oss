@@ -325,26 +325,6 @@
                                     <outlet property="searchTermNotFoundLabel" destination="8LY-WF-1iH" id="tCo-cA-NzV"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchLoadingStateCell" id="aBs-9H-yj5" customClass="SearchLoadingStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="638" width="400" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aBs-9H-yj5" id="1J0-AZ-NJY">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-yN-4jl">
-                                            <rect key="frame" x="190" y="12" width="20" height="20"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="ArV-yN-4jl" firstAttribute="centerX" secondItem="1J0-AZ-NJY" secondAttribute="centerX" id="AVI-rC-Cre"/>
-                                        <constraint firstItem="ArV-yN-4jl" firstAttribute="centerY" secondItem="1J0-AZ-NJY" secondAttribute="centerY" id="Cmq-wd-PnN"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="loadingIndicatorView" destination="ArV-yN-4jl" id="HbR-Td-6uG"/>
-                                </connections>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="GNf-h9-HSf" id="X7j-wQ-5o5"/>
