@@ -5,6 +5,7 @@ import Result
 
 public protocol MessageThreadCellViewModelInputs {
   func configureWith(messageThread: MessageThread)
+  func setSelected(_ selected: Bool)
 }
 
 public protocol MessageThreadCellViewModelOutputs {
@@ -16,6 +17,7 @@ public protocol MessageThreadCellViewModelOutputs {
   var projectName: Signal<String, NoError> { get }
   var replyIndicatorHidden: Signal<Bool, NoError> { get }
   var unreadIndicatorHidden: Signal<Bool, NoError> { get }
+
 }
 
 public protocol MessageThreadCellViewModelType {
@@ -63,6 +65,10 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   fileprivate let messageThreadProperty = MutableProperty<MessageThread?>(nil)
   public func configureWith(messageThread: MessageThread) {
     self.messageThreadProperty.value = messageThread
+  }
+  fileprivate let setSelectedProperty = MutableProperty<Bool>(false)
+  public func setSelected(_ selected: Bool) {
+    self.setSelectedProperty.value = selected
   }
 
   public let date: Signal<String, NoError>

@@ -137,12 +137,14 @@ MessagesViewModelOutputs {
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
       .map { ($0, .messageThread) }
 
-    self.successfullyMarkedAsRead = messageThreadEnvelope
-      .switchMap {
-        AppEnvironment.current.apiService.markAsRead(messageThread: $0.messageThread)
-          .demoteErrors()
-      }
-      .ignoreValues()
+
+    self.successfullyMarkedAsRead = .empty
+//    self.successfullyMarkedAsRead = messageThreadEnvelope
+//      .switchMap {
+//        AppEnvironment.current.apiService.markAsRead(messageThread: $0.messageThread)
+//          .demoteErrors()
+//      }
+//      .ignoreValues()
 
     Signal.combineLatest(project, self.viewDidLoadProperty.signal)
       .take(first: 1)

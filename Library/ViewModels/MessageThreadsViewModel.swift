@@ -22,6 +22,9 @@ public protocol MessageThreadsViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  /// Call when the view appears.
+  func viewWillAppear(animated: Bool)
+
   /// Call when a new row is displayed.
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
@@ -151,6 +154,10 @@ MessageThreadsViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+  fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated: Bool) {
+    self.viewWillAppearProperty.value = animated
   }
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
