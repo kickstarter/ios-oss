@@ -110,7 +110,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerFeedStyle()
+      |> baseControllerStyle()
       |> LiveStreamContainerViewController.lens.view.backgroundColor .~ .black
 
     _  = self.loaderStackView

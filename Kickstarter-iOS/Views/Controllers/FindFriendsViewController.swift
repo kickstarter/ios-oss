@@ -78,11 +78,8 @@ internal final class FindFriendsViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerFeedStyle()
+      |> baseTableControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,

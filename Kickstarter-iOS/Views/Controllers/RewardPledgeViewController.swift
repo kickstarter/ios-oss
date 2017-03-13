@@ -152,10 +152,8 @@ internal final class RewardPledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerFeedStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
+      |> baseControllerStyle()
+      |> RewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)

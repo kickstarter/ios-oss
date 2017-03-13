@@ -65,9 +65,6 @@ internal final class ActivitiesViewController: UITableViewController {
 
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length
