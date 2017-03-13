@@ -1219,7 +1219,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-
     self.findRedirectUrl.assertValues([])
     self.presentViewController.assertValueCount(0)
 
