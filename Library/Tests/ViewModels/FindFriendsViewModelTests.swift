@@ -12,7 +12,7 @@ final class FindFriendsViewModelTests: TestCase {
   let vm: FindFriendsViewModelType = FindFriendsViewModel()
 
   let friends = TestObserver<[User], NoError>()
-  let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
+  let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
   let showFacebookConnect = TestObserver<Bool, NoError>()
   let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
