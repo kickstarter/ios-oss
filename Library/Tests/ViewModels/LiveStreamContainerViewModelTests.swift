@@ -173,7 +173,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(nonLiveStreamEvent))) {
       self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: nonLiveStreamEvent,
+                                   liveStreamEvent: liveStreamEvent,
                                    refTag: .projectPage,
                                    presentedFromProject: true)
       self.vm.inputs.viewDidLoad()
@@ -499,8 +499,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   func testProjectImageUrl() {
     let project = Project.template
-    let event = .template
-      |> LiveStreamEvent.lens.backgroundImage.smallCropped .~ "http://www.background.jpg"
 
     self.projectImageUrlString.assertValueCount(0)
 
@@ -830,5 +828,95 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectButtonContainerHidden.assertValues([false])
+  }
+
+  func testCreateLiveStreamViewController_Live() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ true
+    let project = Project.template
+
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    }
+  }
+
+  func testCreateLiveStreamViewController_Replay() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60).date
+    let project = Project.template
+
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    }
+  }
+
+  func testCreateLiveStreamViewController_DefinitelyNoReplay_DisplayError() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ false
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60).date
+    let project = Project.template
+
+    self.configureLiveStreamViewControllerProject.assertValueCount(0)
+    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
+    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    self.loaderText.assertValueCount(0)
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureLiveStreamViewControllerProject.assertValues([project])
+      self.configureLiveStreamViewControllerUserId.assertValues([nil])
+      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+
+      self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+
+      self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
+    }
   }
 }
