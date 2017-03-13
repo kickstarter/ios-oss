@@ -30,7 +30,7 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
     case .recentlyLive:
       self.titleTypeLabel.text = Strings.Replay_past_live_streams()
     case .upcoming:
-      self.titleTypeLabel.text = Strings.Upcoming_live_stream()
+      self.titleTypeLabel.text = Strings.Upcoming_live_streams()
     }
 
     self.liveIndicatorView.isHidden = value != .liveNow

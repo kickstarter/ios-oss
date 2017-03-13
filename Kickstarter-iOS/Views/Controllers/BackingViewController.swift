@@ -19,6 +19,8 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
   @IBOutlet fileprivate weak var estimatedDeliverySeparatorView: UIView!
   @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
+  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var loadingOverlayView: UIView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgedLabel: UILabel!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
@@ -71,6 +73,11 @@ internal final class BackingViewController: UIViewController {
     _ = self.backerShippingAmountLabel |> UILabel.lens.font .~ .ksr_body()
     _ = self.backerShippingDescriptionLabel |> UILabel.lens.font .~ .ksr_body()
     _ = self.backerAvatarImageView |> UIImageView.lens.accessibilityElementsHidden .~ true
+
+    _ = self.loadingIndicatorView
+      |> UIActivityIndicatorView.lens.animating .~ true
+      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.messageCreatorButton
       |> greenButtonStyle
@@ -135,6 +142,7 @@ internal final class BackingViewController: UIViewController {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
+    self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()

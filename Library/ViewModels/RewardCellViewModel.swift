@@ -132,7 +132,7 @@ RewardCellViewModelOutputs {
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in
         reward.estimatedDeliveryOn.map {
-          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy")
+          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
       }
     }
     .skipNil()

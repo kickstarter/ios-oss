@@ -438,7 +438,9 @@ AppDelegateViewModelOutputs {
               project,
               update,
               updateSubpage,
-              vcs + [UpdateViewController.configuredWith(project: project, update: update)]
+              vcs + [UpdateViewController.configuredWith(project: project,
+                                                         update: update,
+                                                         context: .deepLink)]
             )
         }
     }

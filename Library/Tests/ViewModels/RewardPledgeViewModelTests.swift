@@ -40,6 +40,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, NoError>()
   fileprivate let dismissViewController = TestObserver<(), NoError>()
   fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
+  private let estimatedFulfillmentStackViewHidden = TestObserver<Bool, NoError>()
   fileprivate let expandRewardDescription = TestObserver<(), NoError>()
   fileprivate let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, NoError>()
   fileprivate let goToCheckoutRequest = TestObserver<String, NoError>() // todo
@@ -56,6 +57,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   fileprivate let minimumLabelText = TestObserver<String, NoError>()
   fileprivate let navigationTitle = TestObserver<String, NoError>()
   fileprivate let orLabelHidden = TestObserver<Bool, NoError>()
+  private let paddingViewHeightConstant = TestObserver<CGFloat, NoError>()
   fileprivate let pledgeCurrencyLabelText = TestObserver<String, NoError>()
   fileprivate let pledgeIsLoading = TestObserver<Bool, NoError>()
   fileprivate let pledgeTextFieldText = TestObserver<String, NoError>()
@@ -66,6 +68,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   fileprivate let shippingInputStackViewHidden = TestObserver<Bool, NoError>()
   fileprivate let shippingIsLoading = TestObserver<Bool, NoError>()
   fileprivate let shippingLocationsLabelText = TestObserver<String, NoError>()
+  private let shippingStackViewHidden = TestObserver<Bool, NoError>()
   fileprivate let showAlertMessage = TestObserver<String, NoError>()
   fileprivate let showAlertShouldDismiss = TestObserver<Bool, NoError>()
   fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
@@ -89,6 +92,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
       .observe(self.differentPaymentMethodButtonHidden.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
+    self.vm.outputs.estimatedFulfillmentStackViewHidden
+      .observe(self.estimatedFulfillmentStackViewHidden.observer)
     self.vm.outputs.expandRewardDescription.observe(self.expandRewardDescription.observer)
     self.vm.outputs.fulfillmentAndShippingFooterStackViewHidden
       .observe(self.fulfillmentAndShippingFooterStackViewHidden.observer)
@@ -110,6 +115,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.minimumLabelText.observe(self.minimumLabelText.observer)
     self.vm.outputs.navigationTitle.observe(self.navigationTitle.observer)
     self.vm.outputs.orLabelHidden.observe(self.orLabelHidden.observer)
+    self.vm.outputs.paddingViewHeightConstant.observe(self.paddingViewHeightConstant.observer)
     self.vm.outputs.pledgeCurrencyLabelText.observe(self.pledgeCurrencyLabelText.observer)
     self.vm.outputs.pledgeIsLoading.observe(self.pledgeIsLoading.observer)
     self.vm.outputs.pledgeTextFieldText.observe(self.pledgeTextFieldText.observer)
@@ -120,6 +126,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.outputs.shippingInputStackViewHidden.observe(self.shippingInputStackViewHidden.observer)
     self.vm.outputs.shippingIsLoading.observe(self.shippingIsLoading.observer)
     self.vm.outputs.shippingLocationsLabelText.observe(self.shippingLocationsLabelText.observer)
+    self.vm.outputs.shippingStackViewHidden.observe(self.shippingStackViewHidden.observer)
     self.vm.outputs.showAlert.map(first).observe(self.showAlertMessage.observer)
     self.vm.outputs.showAlert.map(second).observe(self.showAlertShouldDismiss.observer)
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
@@ -322,8 +329,10 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.estimatedDeliveryDateLabelText.assertValues([
-      Format.date(secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMM yyyy")
+      Format.date(secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMM yyyy", timeZone: UTCTimeZone)
     ])
+
+    self.estimatedFulfillmentStackViewHidden.assertValues([false])
   }
 
   func testExpandRewardDescription() {
@@ -351,7 +360,9 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false])
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false], "Show the container stack.")
+    self.estimatedFulfillmentStackViewHidden.assertValues([false], "Show the delivery label.")
+    self.shippingStackViewHidden.assertValues([false], "Show the shipping label.")
   }
 
   func testFulfillmentAndShippingFooterStackViewHidden_ShippingDisabled() {
@@ -359,7 +370,32 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([true])
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false], "Show the container stack.")
+    self.estimatedFulfillmentStackViewHidden.assertValues([false], "Show the delivery label.")
+    self.shippingStackViewHidden.assertValues([true], "Hide the shipping label.")
+  }
+
+  func testFulfillmentAndShippingFooterStackViewHidden_NoDelivery() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([false], "Show the container stack.")
+    self.estimatedFulfillmentStackViewHidden.assertValues([true], "Hide the delivery label.")
+    self.shippingStackViewHidden.assertValues([false], "Show the shipping label.")
+  }
+
+  func testFulfillmentAndShippingFooterStackViewHidden_NoDeliveryOrShipping() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.estimatedDeliveryOn .~ nil
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.fulfillmentAndShippingFooterStackViewHidden.assertValues([true], "Hide the entire stack.")
+    self.estimatedFulfillmentStackViewHidden.assertValues([true])
   }
 
   func testCancelPledge() {
@@ -1344,24 +1380,97 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.items.assertValues([["The thing", "(1,000) The other thing"]])
   }
 
-  func testItemsContainerHidden() {
+  func testItemsContainerHidden_NoItems() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+
+    self.itemsContainerHidden.assertValueCount(0)
+    self.paddingViewHeightConstant.assertValueCount(0)
+
     self.vm.inputs.viewDidLoad()
 
-    self.itemsContainerHidden.assertDidNotEmitValue()
-
+    // NB: At runtime, viewDidLayoutSubviews is calling this method when the view loads and then again after
+    // the description stackview is resized.
+    self.vm.inputs.descriptionLabelIsTruncated(false)
     self.vm.inputs.descriptionLabelIsTruncated(true)
 
-    self.readMoreContainerViewHidden.assertDidNotEmitValue()
-
-    self.vm.inputs.descriptionLabelIsTruncated(true)
-
-    self.itemsContainerHidden.assertValues([true])
+    self.itemsContainerHidden.assertValues([true], "Hide container with zero items.")
     self.readMoreContainerViewHidden.assertValues([false])
+    self.paddingViewHeightConstant.assertValues([18.0])
 
     self.vm.inputs.expandDescriptionTapped()
 
-    self.itemsContainerHidden.assertValues([true, false])
+    self.itemsContainerHidden.assertValues([true], "Hidden container does not emit again.")
+  }
+
+  func testItemsContainerHidden_Items_NotTruncated() {
+    let reward = .template
+      |> Reward.lens.rewardsItems .~ [
+        .template
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The thing"
+        ),
+        .template
+          |> RewardsItem.lens.quantity .~ 1_000
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The other thing"
+        ),
+      ]
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+
+    self.itemsContainerHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    // NB: At runtime, viewDidLayoutSubviews is calling this method when the view loads and then again after
+    // the description stackview is resized.
+    self.vm.inputs.descriptionLabelIsTruncated(false)
+    self.vm.inputs.descriptionLabelIsTruncated(false)
+
+    self.itemsContainerHidden.assertValues([false], "Show container with rewards.")
+    self.readMoreContainerViewHidden.assertValues([true])
+    self.paddingViewHeightConstant.assertValues([0.0])
+  }
+
+  func testItemsContainerHidden_Items_Truncated() {
+    let reward = .template
+      |> Reward.lens.rewardsItems .~ [
+        .template
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The thing"
+        ),
+        .template
+          |> RewardsItem.lens.quantity .~ 1_000
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "The other thing"
+        ),
+    ]
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+
+    self.itemsContainerHidden.assertValueCount(0)
+    self.paddingViewHeightConstant.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    // NB: At runtime, viewDidLayoutSubviews is calling this method when the view loads and then again after
+    // the description stackview is resized.
+    self.vm.inputs.descriptionLabelIsTruncated(false)
+    self.vm.inputs.descriptionLabelIsTruncated(true)
+
+    self.itemsContainerHidden.assertValues([true], "Don't show container when description is truncated.")
+    self.readMoreContainerViewHidden.assertValues([false])
+    self.paddingViewHeightConstant.assertValues([18.0])
+
+    self.vm.inputs.expandDescriptionTapped()
+
+    self.itemsContainerHidden.assertValues([true, false], "Show items container on expanded view.")
+    self.readMoreContainerViewHidden.assertValues([false, true])
+    self.paddingViewHeightConstant.assertValues([18.0, 0.0])
   }
 
   func testMinimumLabelText() {
@@ -1379,6 +1488,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let reward = Reward.noReward
     let project = Project.template
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+
     self.vm.inputs.viewDidLoad()
 
     self.shippingIsLoading.assertValues([false], "Shipping loader emits false on no reward.")

@@ -192,4 +192,24 @@ final class LiveStreamDiscoveryViewModelTests: TestCase {
       XCTAssertTrue(self.loadDataSource.lastValue?.isEmpty == .some(false))
     }
   }
+
+  func testKoalaTracking() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.isActive(true)
+
+    XCTAssertEqual(["Viewed Live Stream Discovery"], self.trackingClient.events)
+
+    self.vm.inputs.isActive(false)
+
+    XCTAssertEqual(["Viewed Live Stream Discovery"], self.trackingClient.events)
+
+    self.vm.inputs.isActive(true)
+
+    XCTAssertEqual(["Viewed Live Stream Discovery", "Viewed Live Stream Discovery"],
+                   self.trackingClient.events)
+  }
 }

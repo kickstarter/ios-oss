@@ -104,18 +104,22 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let initialEvent = configData.map { _, event, _, _ in event }
 
     let updatedEventFetch = initialEvent
-      .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+      .switchMap { initialEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
 
         timer(interval: .seconds(5), on: AppEnvironment.current.scheduler)
           .prefix(value: Date())
           .flatMap { _ in
             AppEnvironment.current.liveStreamService
-              .fetchEvent(eventId: event.id, uid: AppEnvironment.current.currentUser?.id)
+              .fetchEvent(eventId: initialEvent.id, uid: AppEnvironment.current.currentUser?.id)
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .materialize()
           }
           .filter { event in
-            event.value?.liveNow == .some(true) || event.value?.hasReplay == .some(true) || event.error != nil
+            if initialEvent.liveNow && event.error == nil {
+              return event.value?.liveNow == .some(true)
+            }
+
+            return true
           }
           .take(first: 1)
     }
@@ -172,7 +176,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
         let (time, units) = Format.duration(secondsInUTC: availableDate, abbreviate: false)
 
-        return Strings.Available_to_watch_for_time_more_units(time: time, units: units)
+        return Strings.Replay_available_for_time_more_units(time: time, units: units)
       }.skipNil()
 
     self.loaderText = Signal.merge(
@@ -249,7 +253,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .observeForUI()
       .map { event in
         event.liveNow
-          ? Strings.Creator_name_is_live_now(creator_name: event.creator.name)
+          ? Strings.Live_with_creator_name(creator_name: event.creator.name)
           : Strings.Creator_name_was_live_time_ago(
             creator_name: event.creator.name,
             time_ago: Format.relative(secondsInUTC: event.startDate.timeIntervalSince1970,

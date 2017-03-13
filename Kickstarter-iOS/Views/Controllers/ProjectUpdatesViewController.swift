@@ -65,7 +65,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
   }
 
   fileprivate func goToUpdate(forProject project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .updates)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

@@ -82,6 +82,12 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
       self.isActiveProperty.signal.filter(isFalse).mapConst([]),
       freshLiveStreamEvents
     )
+
+    self.isActiveProperty.signal
+      .filter(isTrue)
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackLiveStreamDiscovery()
+    }
   }
 
   private let appWillEnterForegroundProperty = MutableProperty()

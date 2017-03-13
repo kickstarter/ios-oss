@@ -54,6 +54,7 @@
 "Created_projects_projects_count" = "Proyectos creados: %{projects_count}";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> está transmitiendo en vivo";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} está transmitiendo en vivo en Kickstarter";
+"Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}";
 "Creator_name_needs_some_information_to_deliver_your_reward_for_project_name" = "<b>%{creator_name}</b> necesita un par de datos para entregarte tu recompensa de <b>%{project_name}</b>.";
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} estuvo transmitiendo en vivo en Kickstarter";
@@ -130,9 +131,11 @@
 "Live" = "En vivo";
 "Live_Stream" = "Live Streaming";
 "Live_now" = "En vivo";
+"Live_now_live_stream_event_name_by_creator_name" = "Ahora en vivo: %{live_stream_event_name} de %{creator_name}";
 "Live_stream_countdown" = "Live Stream - Cuenta atrás";
 "Live_stream_date" = "Live-Stream – %{date}";
 "Live_streaming_now" = "En vivo ahora";
+"Live_with_creator_name" = "En vivo con <b>%{creator_name}</b>";
 "Loading" = "Cargando";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
@@ -163,6 +166,7 @@
 "Opens_update" = "Abre actualización.";
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
+"Past_live_stream" = "Live Stream pasado";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
@@ -181,7 +185,9 @@
 "Recorded_Live" = "Grabado en vivo";
 "Recorded_live_with_creator_name" = "Grabado en vivo por <b>%{creator_name}</b>";
 "Replay" = "Repetición";
+"Replay_available_for_time_more_units" = "Repetición disponible por %{time} %{units} más";
 "Replay_live_stream_with_creator_name" = "Repetir live stream de<br><b>%{creator_name}</b>";
+"Replay_past_live_stream" = "Repetir live stream pasado";
 "Replay_past_live_streams" = "Repetir live streams pasados";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
@@ -236,6 +242,7 @@
 "Unsubscribes_from_upcoming_lives_streams" = "Desactiva subscripción a futuros Live-Streams.";
 "Unsuccessfully_Funded" = "Financiación falló.";
 "Upcoming_live_stream" = "Futuro Live-Stream";
+"Upcoming_live_streams" = "Live streams futuros";
 "Upcoming_with_creator_name" = "Próximamente: Video de <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Actualizar contribución";
 "View" = "Ver";
