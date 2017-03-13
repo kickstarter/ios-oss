@@ -33,14 +33,6 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   #endif
 }
 
-private let baseNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.black,
-    NSFontAttributeName: UIFont.ksr_callout()
-    ]
-    <> UINavigationBar.lens.translucent .~ false
-    <> UINavigationBar.lens.barTintColor .~ .white
-
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 
   return
@@ -121,3 +113,11 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
   view: { $0?.navigationBar },
   set: { _, whole in whole }
 )
+
+private let baseNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.black,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ false
+    <> UINavigationBar.lens.barTintColor .~ .white
