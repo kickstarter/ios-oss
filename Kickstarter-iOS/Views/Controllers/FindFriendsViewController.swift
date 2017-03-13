@@ -27,9 +27,7 @@ internal final class FindFriendsViewController: UITableViewController {
 
     self.tableView.backgroundView = self.backgroundView
 
-    if let backgroundView = self.tableView.backgroundView {
-      self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: backgroundView)
-    }
+    self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: self.backgroundView)
 
     self.tableView.dataSource = dataSource
 
@@ -87,9 +85,7 @@ internal final class FindFriendsViewController: UITableViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    if let backgroundView = self.tableView.backgroundView {
-      self.loadingIndicatorView.center = backgroundView.center
-    }
+    self.loadingIndicatorView.center = self.backgroundView.center
   }
 
   override func bindStyles() {

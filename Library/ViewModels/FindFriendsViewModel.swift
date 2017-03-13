@@ -46,9 +46,6 @@ public protocol FindFriendsViewModelOutputs {
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
 
-  /// Emits a boolean that determines if loader is hidden.
-  var showLoadingIndicatorView: Signal<Bool, NoError> { get }
-
   /// Emits when error alert should show with AlertError
   var showErrorAlert: Signal<AlertError, NoError> { get }
 
@@ -57,6 +54,9 @@ public protocol FindFriendsViewModelOutputs {
 
   /// Emits friends count when should display "Follow all friends" alert.
   var showFollowAllFriendsAlert: Signal<Int, NoError> { get }
+
+  /// Emits a boolean that determines if loader is hidden.
+  var showLoadingIndicatorView: Signal<Bool, NoError> { get }
 
   /// Emits the current user and the source that presented the controller.
   var stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError> { get }
@@ -200,12 +200,12 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   }
 
   public let friends: Signal<([User], FriendsSource), NoError>
-  public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let showLoadingIndicatorView: Signal<Bool, NoError>
-  public let showFollowAllFriendsAlert: Signal<Int, NoError>
-  public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
+  public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
+  public let showFollowAllFriendsAlert: Signal<Int, NoError>
+  public let showLoadingIndicatorView: Signal<Bool, NoError>
+  public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>
 
   public var inputs: FindFriendsViewModelInputs { return self }
   public var outputs: FindFriendsViewModelOutputs { return self }

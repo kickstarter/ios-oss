@@ -12,25 +12,25 @@ final class FindFriendsViewModelTests: TestCase {
   let vm: FindFriendsViewModelType = FindFriendsViewModel()
 
   let friends = TestObserver<[User], NoError>()
-  let showFacebookConnect = TestObserver<Bool, NoError>()
   let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let showLoadingIndicatorView = TestObserver<Bool, NoError>()
-  let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
-  let statsSource = TestObserver<FriendsSource, NoError>()
-  let stats = TestObserver<FriendStatsEnvelope, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
+  let showFacebookConnect = TestObserver<Bool, NoError>()
+  let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
+  let showLoadingIndicatorView = TestObserver<Bool, NoError>()
+  let stats = TestObserver<FriendStatsEnvelope, NoError>()
+  let statsSource = TestObserver<FriendsSource, NoError>()
 
   override func setUp() {
     super.setUp()
 
     vm.outputs.friends.map { $0.0 }.observe(friends.observer)
-    vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
     vm.outputs.goToDiscovery.observe(goToDiscovery.observer)
-    vm.outputs.showLoadingIndicatorView.observe(showLoadingIndicatorView.observer)
+    vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
+    vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
     vm.outputs.showFollowAllFriendsAlert.observe(showFollowAllFriendsAlert.observer)
+    vm.outputs.showLoadingIndicatorView.observe(showLoadingIndicatorView.observer)
     vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
     vm.outputs.stats.map { _, source in source }.observe(statsSource.observer)
-    vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
   }
 
   func testSource() {
