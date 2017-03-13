@@ -1219,10 +1219,13 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
+
     self.findRedirectUrl.assertValues([])
     self.presentViewController.assertValueCount(0)
 
     // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
     let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                                    url: emailUrl,
                                                    sourceApplication: nil,
