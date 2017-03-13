@@ -74,7 +74,7 @@ public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 
 public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
-                             offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
+                                                 offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
       <> V.lens.layer.shadowOpacity .~ 1
@@ -119,5 +119,5 @@ public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.c
 // Just a lil helper lens for getting inside a nav controller's nav bar.
 private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
   view: { $0?.navigationBar },
-  set: { part, whole in whole }
+  set: { _, whole in whole }
 )
