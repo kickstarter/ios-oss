@@ -174,6 +174,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.embeddedViewTopConstraintConstant = self.sortBarIsHidden
       .map { $0 ? 0.0 : Styles.grid(2) }
+
+    self.viewWillAppearProperty.signal.filter(isFalse)
+      .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
   private let backedProjectsButtonProperty = MutableProperty()

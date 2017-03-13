@@ -12,14 +12,14 @@ public protocol ProfileProjectCellViewModelOutputs {
   /// Emits project name and state for screen reader.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
 
-  /// Emits whether metadata should hide or not.
-  var metadataIsHidden: Signal<Bool, NoError> { get }
+  /// Emits a boolean whether to show the metadata timer icon.
+  var metadataIconIsHidden: Signal<Bool, NoError> { get }
 
-  /// Emits text for metadata label.
+  /// Emits text for the metadata label.
   var metadataText: Signal<String, NoError> { get }
 
-  /// Emits the project name to be displayed.
-  var projectName: Signal<String, NoError> { get }
+  /// Emits attributed text for the percent funded label.
+  var percentFundedText: Signal<NSAttributedString, NoError> { get }
 
   /// Emits the project's photo URL to be displayed.
   var photoURL: Signal<URL?, NoError> { get }
@@ -27,17 +27,14 @@ public protocol ProfileProjectCellViewModelOutputs {
   /// Emits the project's funding progress amount to be displayed.
   var progress: Signal<Float, NoError> { get }
 
-  /// Emits a boolean that determines if the progress bar should be hidden.
-  var progressHidden: Signal<Bool, NoError> { get }
+  /// Emits a color for the progress bar.
+  var progressBarColor: Signal<UIColor, NoError> { get }
 
-  /// Emits the state of the project to be displayed.
-  var stateLabelText: Signal<String, NoError> { get }
+  /// Emits the project name to be displayed.
+  var projectTitleText: Signal<NSAttributedString, NoError> { get }
 
-  /// Emits the background color to be displayed for the project's state banner.
-  var stateBackgroundColor: Signal<UIColor, NoError> { get }
-
-  /// Emits a boolean that determines if the project's state banner should be hidden.
-  var stateHidden: Signal<Bool, NoError> { get }
+  /// Emits a boolean when the saved icon is hidden or not.
+  var savedIconIsHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol ProfileProjectCellViewModelType {
@@ -50,24 +47,23 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   public init() {
     let project = projectProperty.signal.skipNil()
 
-    self.projectName = project.map { $0.name }
+    self.projectTitleText = project.map(titleString(for:))
+
     self.photoURL = project.map { URL(string: $0.photo.full) }
+
     self.progress = project.map { $0.stats.fundingProgress }
-    self.progressHidden = project.map { $0.state != .live }
-    self.stateLabelText = project.map(stateString(forProject:))
-    self.stateBackgroundColor = project.map {
-      $0.state == .successful ? .ksr_green_400 : .ksr_navy_600
-    }
-    self.stateHidden = project.map { $0.state == .live }
 
     self.cellAccessibilityLabel = project.map { "\($0.name) \($0.state.rawValue)" }
 
-    self.metadataIsHidden = project.map { $0.state != .live }
+    self.metadataText = project.map(metadataString(for:))
 
-    self.metadataText = project
-      .filter { $0.state == .live }
-      .map { Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true) }
-      .map { "\($0.time) \($0.unit)" }
+    self.metadataIconIsHidden = project.map { $0.state != .live }
+
+    self.percentFundedText = project.map(percentFundedString(for:))
+
+    self.progressBarColor = project.map(progressBarColor(for:))
+
+    self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) ?? true }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -76,21 +72,71 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   }
 
   public let cellAccessibilityLabel: Signal<String, NoError>
-  public let metadataIsHidden: Signal<Bool, NoError>
+  public let metadataIconIsHidden: Signal<Bool, NoError>
   public let metadataText: Signal<String, NoError>
-  public let projectName: Signal<String, NoError>
+  public let percentFundedText: Signal<NSAttributedString, NoError>
   public let photoURL: Signal<URL?, NoError>
   public let progress: Signal<Float, NoError>
-  public let progressHidden: Signal<Bool, NoError>
-  public let stateLabelText: Signal<String, NoError>
-  public let stateBackgroundColor: Signal<UIColor, NoError>
-  public let stateHidden: Signal<Bool, NoError>
+  public let progressBarColor: Signal<UIColor, NoError>
+  public let projectTitleText: Signal<NSAttributedString, NoError>
+  public let savedIconIsHidden: Signal<Bool, NoError>
 
   public var inputs: ProfileProjectCellViewModelInputs { return self }
   public var outputs: ProfileProjectCellViewModelOutputs { return self }
 }
 
-private func stateString(forProject project: Project) -> String {
+private func metadataString(for project: Project) -> String {
+  switch project.state {
+  case .live:
+    let duration = Format.duration(secondsInUTC: project.dates.deadline, abbreviate: true, useToGo: false)
+    return "\(duration.time) \(duration.unit)"
+  default:
+    return stateString(for: project)
+  }
+}
+
+private func percentFundedString(for project: Project) -> NSAttributedString {
+  let percentage = Format.percentage(project.stats.percentFunded)
+
+  switch project.state {
+  case .live, .successful:
+    return NSAttributedString(string: percentage, attributes: [
+      NSFontAttributeName: UIFont.ksr_caption1().bolded,
+      NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+    ])
+  default:
+    return NSAttributedString(string: percentage, attributes: [
+      NSFontAttributeName: UIFont.ksr_caption1().bolded,
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+    ])
+  }
+}
+
+private func progressBarColor(for project: Project) -> UIColor {
+  switch project.state {
+  case .live, .successful:
+    return .ksr_green_500
+  default:
+    return .ksr_navy_500
+  }
+}
+
+private func titleString(for project: Project) -> NSAttributedString {
+  switch project.state {
+  case .live, .successful:
+    return NSAttributedString(string: project.name, attributes: [
+      NSFontAttributeName: UIFont.ksr_caption1(size: 13),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_900
+    ])
+  default:
+    return NSAttributedString(string: project.name, attributes: [
+      NSFontAttributeName: UIFont.ksr_caption1(size: 13),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+    ])
+  }
+}
+
+private func stateString(for project: Project) -> String {
   switch project.state {
   case .canceled:
     return Strings.profile_projects_status_canceled()

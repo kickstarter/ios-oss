@@ -12,6 +12,9 @@ internal protocol ProfileProjectsViewControllerDelegate: class {
 
   /// Called when the table view's scrollViewDidScroll method is called.
   func profileProjectsDidScroll(_ scrollView: UIScrollView)
+
+  /// Called when a project cell is tapped.
+  func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
 }
 
 internal final class ProfileProjectsViewController: UITableViewController {
@@ -31,8 +34,15 @@ internal final class ProfileProjectsViewController: UITableViewController {
     self.tableView.dataSource = dataSource
 
     self.tableView.register(nib: .ProfileEmptyStateCell)
+    self.tableView.register(nib: .ProfileProjectCell)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  internal override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear(animated)
   }
 
   internal override func bindViewModel() {
@@ -44,6 +54,13 @@ internal final class ProfileProjectsViewController: UITableViewController {
         self?.dataSource.emptyState(visible: isVisible, type: type)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.projects
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.load(projects: $0)
+        self?.tableView.reloadData()
+    }
   }
 
   internal override func bindStyles() {
@@ -51,7 +68,6 @@ internal final class ProfileProjectsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle

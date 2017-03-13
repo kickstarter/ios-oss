@@ -358,6 +358,10 @@ extension BackerDashboardViewController: ProfileProjectsViewControllerDelegate {
       self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
     }
   }
+
+  func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
+    
+  }
 }
 
 extension BackerDashboardViewController: ProjectNavigatorDelegate {
