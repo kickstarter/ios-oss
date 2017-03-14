@@ -78,9 +78,10 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.avatarImageView.rac.imageUrl = self.viewModel.outputs.avatarURL
     self.backedContainerView.rac.hidden = self.viewModel.outputs.backedProjectsAreHidden
-    self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
+    self.embeddedViewsTopLayoutConstraint.rac.constant = self.viewModel.outputs.embeddedViewTopConstraintConstant
+    self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
     self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
     self.viewModel.outputs.backedButtonTitleText
@@ -100,12 +101,6 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.savedProjectsViewController.configureWith(projectsType: $0)
-    }
-
-    self.viewModel.outputs.embeddedViewTopConstraintConstant
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.embeddedViewsTopLayoutConstraint.constant = $0
     }
 
     self.viewModel.outputs.savedButtonTitleText

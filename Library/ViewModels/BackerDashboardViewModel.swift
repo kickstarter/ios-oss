@@ -33,7 +33,7 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a URL for the avatar image view.
   var avatarURL: Signal<URL?, NoError> { get }
 
-  /// Emits an attributed string for the backed button title label.
+  /// Emits a string for the backed button title label.
   var backedButtonTitleText: Signal<String, NoError> { get }
 
   /// Emits a string for the backer location label.
@@ -66,17 +66,17 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits an index to pin the indicator view to a particular button view with or without animation.
   var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
 
-  /// Emits an attributed string for the saved button title label.
+  /// Emits a string for the saved button title label.
   var savedButtonTitleText: Signal<String, NoError> { get }
 
   /// Emits a boolean whether saved projects container should be hidden or not.
   var savedProjectsAreHidden: Signal<Bool, NoError> { get }
 
-  /// Emits an index of the selected button to update all button selected states.
-  var setSelectedButton: Signal<Int, NoError> { get }
-
   /// Emits when should scroll to the project item or row position.
   var scrollToProject: Signal<Int, NoError> { get }
+
+  /// Emits an index of the selected button to update all button selected states.
+  var setSelectedButton: Signal<Int, NoError> { get }
 
   /// Emits a boolean whether the sort bar is hidden or not.
   var sortBarIsHidden: Signal<Bool, NoError> { get }
@@ -107,12 +107,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.backedButtonTitleText = user
       .map { user in
         localizedString(
-          key: "projects_count_backed",
-          defaultValue: "%{projects_count} backed",
+          key: "projects_count_newline_backed",
+          defaultValue: "%{projects_count}\nbacked",
           count: user.stats.backedProjectsCount ?? 0,
           substitutions: ["projects_count": Format.wholeNumber(user.stats.backedProjectsCount ?? 0)]
         )
-        .replacingOccurrences(of: " ", with: "\n")
     }
 
     self.backerLocationText = user.map { $0.location?.displayableName ?? "" }
@@ -127,29 +126,28 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.savedButtonTitleText = user.map { user in
       localizedString(
-        key: "projects_count_backed",
-        defaultValue: "%{projects_count} saved",
+        key: "projects_count_newline_saved",
+        defaultValue: "%{projects_count}\nsaved",
         count: user.stats.starredProjectsCount ?? 0,
         substitutions: ["projects_count": Format.wholeNumber(user.stats.starredProjectsCount ?? 0)]
       )
-      .replacingOccurrences(of: " ", with: "\n")
     }
 
     self.backedProjectsAreHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.backedProjectsButtonProperty.signal.mapConst(false),
-      self.savedProjectsButtonProperty.signal.mapConst(true)
+      self.backedProjectsButtonTappedProperty.signal.mapConst(false),
+      self.savedProjectsButtonTappedProperty.signal.mapConst(true)
     )
 
     self.savedProjectsAreHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
-      self.backedProjectsButtonProperty.signal.mapConst(true),
-      self.savedProjectsButtonProperty.signal.mapConst(false)
+      self.backedProjectsButtonTappedProperty.signal.mapConst(true),
+      self.savedProjectsButtonTappedProperty.signal.mapConst(false)
     )
 
     let selectedButtonIndex = Signal.merge(
-      self.backedProjectsButtonProperty.signal.mapConst(0),
-      self.savedProjectsButtonProperty.signal.mapConst(1)
+      self.backedProjectsButtonTappedProperty.signal.mapConst(0),
+      self.savedProjectsButtonTappedProperty.signal.mapConst(1)
     )
 
     self.setSelectedButton = Signal.merge(
@@ -179,9 +177,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
-  private let backedProjectsButtonProperty = MutableProperty()
+  private let backedProjectsButtonTappedProperty = MutableProperty()
   public func backedProjectsButtonTapped() {
-    self.backedProjectsButtonProperty.value = ()
+    self.backedProjectsButtonTappedProperty.value = ()
   }
 
   private let messagesButtonTappedProperty = MutableProperty()
@@ -194,9 +192,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.profileProjectsGoToProjectProperty.value = (project, projects, reftag)
   }
 
-  private let savedProjectsButtonProperty = MutableProperty()
+  private let savedProjectsButtonTappedProperty = MutableProperty()
   public func savedProjectsButtonTapped() {
-    self.savedProjectsButtonProperty.value = ()
+    self.savedProjectsButtonTappedProperty.value = ()
   }
 
   private let settingsButtonTappedProperty = MutableProperty()
