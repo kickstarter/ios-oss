@@ -71,7 +71,8 @@ internal final class BackerDashboardViewController: UIViewController {
     self.avatarImageView.rac.imageUrl = self.viewModel.outputs.avatarURL
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
-    self.embeddedViewTopLayoutConstraint.rac.constant = self.viewModel.outputs.embeddedViewTopConstraintConstant
+    self.embeddedViewTopLayoutConstraint.rac.constant =
+      self.viewModel.outputs.embeddedViewTopConstraintConstant
     self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
     self.viewModel.outputs.backedButtonTitleText

@@ -55,9 +55,10 @@ public protocol BackerDashboardProjectsViewModelType {
   var outputs: BackerDashboardProjectsViewModelOutputs { get }
 }
 
-public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType, BackerDashboardProjectsViewModelInputs,
- BackerDashboardProjectsViewModelOutputs {
+public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType,
+  BackerDashboardProjectsViewModelInputs, BackerDashboardProjectsViewModelOutputs {
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let projectsType = self.configureWithTypeProperty.signal.skipNil()
 
