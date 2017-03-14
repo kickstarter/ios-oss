@@ -61,14 +61,24 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
   public init() {
     let projectsType = self.configureWithTypeProperty.signal.skipNil()
 
-    let requestFirstPageWith = Signal.merge(
-      viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
-      refreshProperty.signal
-      ).mapConst(
-        DiscoveryParams.defaults
-          |> DiscoveryParams.lens.backed .~ true
-          |> DiscoveryParams.lens.sort .~ .endingSoon
-    )
+    let requestFirstPageWith = projectsType
+      .takeWhen(Signal.merge(
+        viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
+        refreshProperty.signal
+        )
+      )
+      .map { pType -> DiscoveryParams in
+        switch pType {
+        case .backed:
+          return DiscoveryParams.defaults
+            |> DiscoveryParams.lens.backed .~ true
+            |> DiscoveryParams.lens.sort .~ .endingSoon
+        case .saved:
+          return DiscoveryParams.defaults
+            |> DiscoveryParams.lens.sort .~ .endingSoon
+            |> DiscoveryParams.lens.starred .~ true
+        }
+      }
 
     let requestNextPageWhen = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
@@ -98,7 +108,7 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
 
     self.notifyDelegateGoToProject = self.projects
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
-      .map { projects, project in (project, projects, RefTag.profileBacked) }
+      .map { projects, project in (project, projects, RefTag.profileBacked) } // todo: change ref tag
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
   }

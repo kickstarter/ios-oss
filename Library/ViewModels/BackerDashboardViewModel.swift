@@ -10,8 +10,8 @@ public protocol BackerDashboardViewModelInputs {
   /// Call when messages button is tapped.
   func messagesButtonTapped()
 
-  /// Call when a project cell is tapped.
-  func projectTapped(_ project: Project)
+  /// Call when profile projects delegate is called with project, projects, and reftag.
+  func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
 
   /// Call when saved projects button is tapped.
   func savedProjectsButtonTapped()
@@ -162,7 +162,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       selectedButtonIndex.map { ($0, true) }.skipRepeats(==)
     )
 
-    self.goToProject = .empty
+    self.goToProject = self.profileProjectsGoToProjectProperty.signal.skipNil()
 
     self.goToMessages = self.messagesButtonTappedProperty.signal
 
@@ -189,9 +189,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.messagesButtonTappedProperty.value = ()
   }
 
-  private let projectTappedProperty = MutableProperty<Project?>(nil)
-  public func projectTapped(_ project: Project) {
-    self.projectTappedProperty.value = project
+  private let profileProjectsGoToProjectProperty = MutableProperty<(Project, [Project], RefTag)?>(nil)
+  public func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
+    self.profileProjectsGoToProjectProperty.value = (project, projects, reftag)
   }
 
   private let savedProjectsButtonProperty = MutableProperty()

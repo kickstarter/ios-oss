@@ -36,6 +36,8 @@ internal final class ProfileProjectsViewController: UITableViewController {
     self.tableView.register(nib: .ProfileEmptyStateCell)
     self.tableView.register(nib: .ProfileProjectCell)
 
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(2)))
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -47,6 +49,8 @@ internal final class ProfileProjectsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
@@ -61,6 +65,12 @@ internal final class ProfileProjectsViewController: UITableViewController {
         self?.dataSource.load(projects: $0)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.notifyDelegateGoToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] project, projects, reftag in
+        self?.delegate?.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
+    }
   }
 
   internal override func bindStyles() {
@@ -71,6 +81,22 @@ internal final class ProfileProjectsViewController: UITableViewController {
 
     _ = self.navigationController?.navigationBar
       ?|> baseNavigationBarStyle
+  }
+
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+
+    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
+                                         outOf: self.dataSource.numberOfItems())
+  }
+
+  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let project = self.dataSource[indexPath] as? Project else {
+      return
+    }
+
+    self.viewModel.inputs.projectTapped(project)
   }
 
   internal override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -84,5 +110,9 @@ internal final class ProfileProjectsViewController: UITableViewController {
   internal override func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                                   willDecelerate decelerate: Bool) {
     self.delegate?.profileProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
+  }
+
+  @IBAction internal func refresh() {
+    self.viewModel.inputs.refresh()
   }
 }

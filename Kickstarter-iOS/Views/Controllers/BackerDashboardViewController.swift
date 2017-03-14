@@ -360,7 +360,7 @@ extension BackerDashboardViewController: ProfileProjectsViewControllerDelegate {
   }
 
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
-    
+    self.viewModel.inputs.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
   }
 }
 

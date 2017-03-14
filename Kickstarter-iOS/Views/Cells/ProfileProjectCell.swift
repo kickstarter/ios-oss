@@ -24,6 +24,7 @@ internal final class ProfileProjectCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
+    self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
     self.metadataIconImageView.rac.hidden = self.viewModel.outputs.metadataIconIsHidden
     self.percentFundedLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
@@ -57,7 +58,10 @@ internal final class ProfileProjectCell: UITableViewCell, ValueCell {
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIView.lens.layoutMargins .~ .init(top: Styles.gridHalf(3),
+                                            left: Styles.grid(2),
+                                            bottom: Styles.grid(2),
+                                            right: Styles.grid(2))
 
     _ = self.metadataBackgroundView
       |> dropShadowStyle()
