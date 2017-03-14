@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal final class ProfileEmptyStateCell: UITableViewCell, ValueCell {
+internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var iconImageView: UIImageView!
   @IBOutlet private weak var messageLabel: UILabel!

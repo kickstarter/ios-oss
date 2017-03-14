@@ -10,7 +10,7 @@ public enum ProfileProjectsType {
   case saved
 }
 
-public protocol ProfileProjectsViewModelInputs {
+public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the type of projects to display.
   func configureWith(type: ProfileProjectsType)
 
@@ -33,7 +33,7 @@ public protocol ProfileProjectsViewModelInputs {
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
-public protocol ProfileProjectsViewModelOutputs {
+public protocol BackerDashboardProjectsViewModelOutputs {
   /// Emits a boolean that determines if the empty state is visible and a ProfileProjectsType.
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError> { get }
 
@@ -50,13 +50,13 @@ public protocol ProfileProjectsViewModelOutputs {
   var scrollToProjectRow: Signal<Int, NoError> { get }
 }
 
-public protocol ProfileProjectsViewModelType {
-  var inputs: ProfileProjectsViewModelInputs { get }
-  var outputs: ProfileProjectsViewModelOutputs { get }
+public protocol BackerDashboardProjectsViewModelType {
+  var inputs: BackerDashboardProjectsViewModelInputs { get }
+  var outputs: BackerDashboardProjectsViewModelOutputs { get }
 }
 
-public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, ProfileProjectsViewModelInputs,
-  ProfileProjectsViewModelOutputs {
+public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType, BackerDashboardProjectsViewModelInputs,
+ BackerDashboardProjectsViewModelOutputs {
 
   public init() {
     let projectsType = self.configureWithTypeProperty.signal.skipNil()
@@ -157,6 +157,6 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
   public let projects: Signal<[Project], NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
 
-  public var inputs: ProfileProjectsViewModelInputs { return self }
-  public var outputs: ProfileProjectsViewModelOutputs { return self }
+  public var inputs: BackerDashboardProjectsViewModelInputs { return self }
+  public var outputs: BackerDashboardProjectsViewModelOutputs { return self }
 }

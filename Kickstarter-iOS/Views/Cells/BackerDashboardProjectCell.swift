@@ -4,8 +4,8 @@ import Library
 import Prelude
 import UIKit
 
-internal final class ProfileProjectCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: ProfileProjectCellViewModelType = ProfileProjectCellViewModel()
+internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel: BackerDashboardProjectCellViewModelType = BackerDashboardProjectCellViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
   @IBOutlet fileprivate weak var mainContentContainerView: UIView!

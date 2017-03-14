@@ -235,10 +235,10 @@
             </objects>
             <point key="canvasLocation" x="-545" y="-34"/>
         </scene>
-        <!--Profile Projects View Controller-->
+        <!--Backer Dashboard Projects View Controller-->
         <scene sceneID="Mck-Tf-67Q">
             <objects>
-                <tableViewController id="Ri3-dy-Xod" customClass="ProfileProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Ri3-dy-Xod" customClass="BackerDashboardProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vv2-2i-WDz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="412"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -269,10 +269,10 @@
             </objects>
             <point key="canvasLocation" x="239" y="-256"/>
         </scene>
-        <!--Profile Projects View Controller-->
+        <!--Backer Dashboard Projects View Controller-->
         <scene sceneID="X0k-tb-xfy">
             <objects>
-                <tableViewController id="vdE-5N-0aV" customClass="ProfileProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vdE-5N-0aV" customClass="BackerDashboardProjectsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6Me-EV-Ou7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="412"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

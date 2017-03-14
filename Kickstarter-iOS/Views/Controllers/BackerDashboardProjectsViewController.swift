@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol ProfileProjectsViewControllerDelegate: class {
+internal protocol BackerDashboardProjectsViewControllerDelegate: class {
   /// Called when the table view's scrollViewDidEndDecelerating method is called.
   func profileProjectsDidEndDecelerating(_ scrollView: UIScrollView)
 
@@ -17,12 +17,12 @@ internal protocol ProfileProjectsViewControllerDelegate: class {
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
 }
 
-internal final class ProfileProjectsViewController: UITableViewController {
+internal final class BackerDashboardProjectsViewController: UITableViewController {
 
-  private let viewModel: ProfileProjectsViewModelType = ProfileProjectsViewModel()
-  private let dataSource = ProfileProjectsDataSource()
+  private let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
+  private let dataSource = BackerDashboardProjectsDataSource()
 
-  internal weak var delegate: ProfileProjectsViewControllerDelegate?
+  internal weak var delegate: BackerDashboardProjectsViewControllerDelegate?
 
   internal func configureWith(projectsType: ProfileProjectsType) {
     self.viewModel.inputs.configureWith(type: projectsType)
@@ -33,8 +33,8 @@ internal final class ProfileProjectsViewController: UITableViewController {
 
     self.tableView.dataSource = dataSource
 
-    self.tableView.register(nib: .ProfileEmptyStateCell)
-    self.tableView.register(nib: .ProfileProjectCell)
+    self.tableView.register(nib: .BackerDashboardEmptyStateCell)
+    self.tableView.register(nib: .BackerDashboardProjectCell)
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(2)))
 

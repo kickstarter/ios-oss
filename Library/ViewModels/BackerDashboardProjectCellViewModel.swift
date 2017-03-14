@@ -3,12 +3,12 @@ import KsApi
 import ReactiveSwift
 import Result
 
-public protocol ProfileProjectCellViewModelInputs {
+public protocol BackerDashboardProjectCellViewModelInputs {
   /// Call with a backed project.
   func project(_ project: Project)
 }
 
-public protocol ProfileProjectCellViewModelOutputs {
+public protocol BackerDashboardProjectCellViewModelOutputs {
   /// Emits project name and state for screen reader.
   var cellAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -37,13 +37,13 @@ public protocol ProfileProjectCellViewModelOutputs {
   var savedIconIsHidden: Signal<Bool, NoError> { get }
 }
 
-public protocol ProfileProjectCellViewModelType {
-  var inputs: ProfileProjectCellViewModelInputs { get }
-  var outputs: ProfileProjectCellViewModelOutputs { get }
+public protocol BackerDashboardProjectCellViewModelType {
+  var inputs: BackerDashboardProjectCellViewModelInputs { get }
+  var outputs: BackerDashboardProjectCellViewModelOutputs { get }
 }
 
-public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
-  ProfileProjectCellViewModelInputs, ProfileProjectCellViewModelOutputs {
+public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCellViewModelType,
+  BackerDashboardProjectCellViewModelInputs, BackerDashboardProjectCellViewModelOutputs {
   public init() {
     let project = projectProperty.signal.skipNil()
 
@@ -81,8 +81,8 @@ public final class ProfileProjectCellViewModel: ProfileProjectCellViewModelType,
   public let projectTitleText: Signal<NSAttributedString, NoError>
   public let savedIconIsHidden: Signal<Bool, NoError>
 
-  public var inputs: ProfileProjectCellViewModelInputs { return self }
-  public var outputs: ProfileProjectCellViewModelOutputs { return self }
+  public var inputs: BackerDashboardProjectCellViewModelInputs { return self }
+  public var outputs: BackerDashboardProjectCellViewModelOutputs { return self }
 }
 
 private func metadataString(for project: Project) -> String {

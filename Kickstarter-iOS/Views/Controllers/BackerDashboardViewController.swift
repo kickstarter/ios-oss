@@ -27,8 +27,8 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var sortBar: ProfileSortBarView!
   @IBOutlet private weak var topBackgroundView: UIView!
 
-  private weak var backedProjectsViewController: ProfileProjectsViewController!
-  private weak var savedProjectsViewController: ProfileProjectsViewController!
+  private weak var backedProjectsViewController: BackerDashboardProjectsViewController!
+  private weak var savedProjectsViewController: BackerDashboardProjectsViewController!
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
 
@@ -42,12 +42,12 @@ internal final class BackerDashboardViewController: UIViewController {
     super.viewDidLoad()
 
     self.backedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? ProfileProjectsViewController }.first
+      .flatMap { $0 as? BackerDashboardProjectsViewController }.first
 
     self.backedProjectsViewController.delegate = self
 
     self.savedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? ProfileProjectsViewController }.last
+      .flatMap { $0 as? BackerDashboardProjectsViewController }.last
 
     self.savedProjectsViewController.delegate = self
 
@@ -339,7 +339,7 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 }
 
-extension BackerDashboardViewController: ProfileProjectsViewControllerDelegate {
+extension BackerDashboardViewController: BackerDashboardProjectsViewControllerDelegate {
   func profileProjectsDidScroll(_ scrollView: UIScrollView) {
     self.moveHeader(with: scrollView)
   }

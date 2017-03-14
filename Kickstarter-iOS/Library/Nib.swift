@@ -1,8 +1,8 @@
 import UIKit
 
 public enum Nib: String {
-  case ProfileEmptyStateCell
-  case ProfileProjectCell
+  case BackerDashboardEmptyStateCell
+  case BackerDashboardProjectCell
   case RewardCell
 }
 
