@@ -175,6 +175,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
+
+    self.backedProjectsButtonTappedProperty.signal
+    .observeValues { _ in AppEnvironment.current.koala.trackViewedProfileBackedTab() }
+
+    self.savedProjectsButtonTappedProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackViewedProfileSavedTab() }
   }
 
   private let backedProjectsButtonTappedProperty = MutableProperty()

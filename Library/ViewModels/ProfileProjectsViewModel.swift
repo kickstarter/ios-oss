@@ -106,9 +106,12 @@ public final class ProfileProjectsViewModel: ProfileProjectsViewModelType, Profi
         (projects.isEmpty, type)
     }
 
-    self.notifyDelegateGoToProject = self.projects
+    self.notifyDelegateGoToProject = Signal.combineLatest(projectsType, self.projects)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
-      .map { projects, project in (project, projects, RefTag.profileBacked) } // todo: change ref tag
+      .map { typeAndProjects, project in
+        let ref = (typeAndProjects.0 == .backed) ? RefTag.profileBacked : RefTag.profileSaved
+        return (project, typeAndProjects.1, ref)
+    }
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
   }
