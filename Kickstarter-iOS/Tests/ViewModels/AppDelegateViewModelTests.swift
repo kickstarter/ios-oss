@@ -23,6 +23,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let goToLogin = TestObserver<(), NoError>()
   fileprivate let goToProfile = TestObserver<(), NoError>()
+  private let goToMobileSafari = TestObserver<URL, NoError>()
   fileprivate let goToSearch = TestObserver<(), NoError>()
   fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
   fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
@@ -48,6 +49,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLiveStream.map(third).observe(self.goToLiveStreamRefTag.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
+    self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
@@ -1220,7 +1222,8 @@ final class AppDelegateViewModelTests: TestCase {
                                                  launchOptions: [:])
 
     self.findRedirectUrl.assertValues([])
-    self.presentViewController.assertValueCount(0)
+    self.presentViewController.assertValues([])
+    self.goToMobileSafari.assertValues([])
 
     // We deep-link to an email url.
     self.vm.inputs.applicationDidEnterBackground()
@@ -1232,13 +1235,48 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
-    self.presentViewController.assertValueCount(0, "No view controller is presented yet.")
+    self.presentViewController.assertValues([], "No view controller is presented yet.")
+    self.goToMobileSafari.assertValues([])
 
     // We find the redirect to be a project url.
     self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
 
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValueCount(1, "Present the project view controller.")
+    self.goToMobileSafari.assertValues([])
+  }
+
+  func testEmailDeepLinking_UnrecognizedUrl() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValueCount(0)
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: emailUrl,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented.")
+    self.goToMobileSafari.assertValues([], "Do not go to mobile safari")
+
+    // We find the redirect to be a project url.
+    let unrecognizedUrl = URL(string: "https://www.kickstarter.com/unreconizable")!
+    self.vm.inputs.foundRedirectUrl(unrecognizedUrl)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValues([], "Do not present controller since the url was unrecognizable.")
+    self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
   }
 }
 

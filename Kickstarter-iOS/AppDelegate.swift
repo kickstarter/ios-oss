@@ -13,6 +13,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import Result
+import SafariServices
 import UIKit
 
 @UIApplicationMain
@@ -100,6 +101,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToSearch
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToSearch() }
+
+    self.viewModel.outputs.goToMobileSafari
+      .observeForUI()
+      .observeValues { UIApplication.shared.openURL($0) }
 
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()

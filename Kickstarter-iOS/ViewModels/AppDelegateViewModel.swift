@@ -112,6 +112,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), NoError> { get }
 
+  /// Emits a URL when we should open it in the safari browser.
+  var goToMobileSafari: Signal<URL, NoError> { get }
+
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), NoError> { get }
 
@@ -366,6 +369,9 @@ AppDelegateViewModelOutputs {
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
+
+    self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
+      .filter { Navigation.match($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
@@ -659,6 +665,7 @@ AppDelegateViewModelOutputs {
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
+  public let goToMobileSafari: Signal<URL, NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<Notification, NoError>
   public let presentRemoteNotificationAlert: Signal<String, NoError>
