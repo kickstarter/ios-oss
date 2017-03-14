@@ -80,11 +80,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         }
       }
 
-    let requestNextPageWhen = Signal.merge(
+    let isCloseToBottom = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
-      .map { row, total in row >= total - 3 }
+      .map { row, total in total > 4 && row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
@@ -92,7 +92,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let isLoading: Signal<Bool, NoError>
     (self.projects, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
-      requestNextPageWhen: requestNextPageWhen,
+      requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },

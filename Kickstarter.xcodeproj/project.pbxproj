@@ -75,6 +75,7 @@
 		01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */; };
 		01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */; };
 		01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B31D272242004524C3 /* Main.storyboard */; };
+		01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */; };
 		01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5571D133BA0000C4252 /* DashboardRewardRowStackViewViewModel.swift */; };
 		01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5231D1327A1000C4252 /* DashboardRewardsCellViewModel.swift */; };
 		01C7CDBF1D14BBF200D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C7CDBD1D14BBE500D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift */; };
@@ -1409,6 +1410,7 @@
 		01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DashboardProjectsDrawer.storyboard; sourceTree = "<group>"; };
 		01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerViewController.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
+		01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardPagesDataSource.swift; sourceTree = "<group>"; };
 		01C7CDBD1D14BBE500D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardRowStackViewViewModelTests.swift; sourceTree = "<group>"; };
 		01C7CDC11D1A4FD100D9E0D1 /* DashboardRewardsCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCellViewModelTests.swift; sourceTree = "<group>"; };
 		01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDK/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -3172,6 +3174,7 @@
 			isa = PBXGroup;
 			children = (
 				A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */,
+				01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */,
 				014D625A1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift */,
 				A7A051E41CD12D9A005AF5E2 /* CommentsDataSource.swift */,
 				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
@@ -4627,6 +4630,7 @@
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				593AC5CF1D33F4BF002613F4 /* DashboardFundingCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,
+				01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */,
 				8072F44F1D46BAA400999EF1 /* UpdatePreviewViewModel.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,

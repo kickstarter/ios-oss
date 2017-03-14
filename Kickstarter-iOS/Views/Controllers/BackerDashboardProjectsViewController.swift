@@ -24,7 +24,10 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
   internal weak var delegate: BackerDashboardProjectsViewControllerDelegate?
 
-  internal func configureWith(projectsType: ProfileProjectsType) {
+  internal func configureWith(delegate: BackerDashboardProjectsViewControllerDelegate,
+                              projectsType: ProfileProjectsType,
+                              sort: DiscoveryParams.Sort) {
+
     self.viewModel.inputs.configureWith(type: projectsType)
   }
 
@@ -32,6 +35,10 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
+
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+    self.refreshControl = refreshControl
 
     self.tableView.register(nib: .BackerDashboardEmptyStateCell)
     self.tableView.register(nib: .BackerDashboardProjectCell)
@@ -112,7 +119,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.delegate?.profileProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
   }
 
-  @IBAction internal func refresh() {
+  @objc internal func refresh() {
     self.viewModel.inputs.refresh()
   }
 }

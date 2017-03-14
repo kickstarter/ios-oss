@@ -6,19 +6,17 @@ import UIKit
 internal final class BackerDashboardViewController: UIViewController {
 
   @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
-  @IBOutlet private weak var backedContainerView: UIView!
   @IBOutlet private weak var backedMenuButton: UIButton!
   @IBOutlet private weak var backerNameLabel: UILabel!
   @IBOutlet private weak var backerLocationLabel: UILabel!
   @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet private weak var embeddedViewsTopLayoutConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var embeddedViewTopLayoutConstraint: NSLayoutConstraint!
   @IBOutlet private weak var headerTopContainerView: UIView!
   @IBOutlet private weak var headerStackView: UIStackView!
   @IBOutlet private weak var headerView: UIView!
   @IBOutlet private weak var headerViewTopConstraint: NSLayoutConstraint!
   @IBOutlet private weak var menuButtonsStackView: UIStackView!
   @IBOutlet private weak var messagesButtonItem: UIBarButtonItem!
-  @IBOutlet private weak var savedContainerView: UIView!
   @IBOutlet private weak var savedMenuButton: UIButton!
   @IBOutlet private weak var selectedButtonIndicatorLeadingConstraint: NSLayoutConstraint!
   @IBOutlet private weak var selectedButtonIndicatorView: UIView!
@@ -27,10 +25,10 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var sortBar: ProfileSortBarView!
   @IBOutlet private weak var topBackgroundView: UIView!
 
-  private weak var backedProjectsViewController: BackerDashboardProjectsViewController!
-  private weak var savedProjectsViewController: BackerDashboardProjectsViewController!
+  private weak var pageViewController: UIPageViewController!
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
+  fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
 
   private var isCollapsed = false
 
@@ -41,15 +39,9 @@ internal final class BackerDashboardViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.backedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? BackerDashboardProjectsViewController }.first
-
-    self.backedProjectsViewController.delegate = self
-
-    self.savedProjectsViewController = self.childViewControllers
-      .flatMap { $0 as? BackerDashboardProjectsViewController }.last
-
-    self.savedProjectsViewController.delegate = self
+    self.pageViewController = self.childViewControllers
+      .flatMap { $0 as? UIPageViewController }.first
+    self.pageViewController.delegate = self
 
     _ = self.backedMenuButton
       |> UIButton.lens.targets .~ [(self, action: #selector(backedButtonTapped), .touchUpInside)]
@@ -77,11 +69,9 @@ internal final class BackerDashboardViewController: UIViewController {
     super.bindViewModel()
 
     self.avatarImageView.rac.imageUrl = self.viewModel.outputs.avatarURL
-    self.backedContainerView.rac.hidden = self.viewModel.outputs.backedProjectsAreHidden
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerLocationLabel.rac.text = self.viewModel.outputs.backerLocationText
-    self.embeddedViewsTopLayoutConstraint.rac.constant = self.viewModel.outputs.embeddedViewTopConstraintConstant
-    self.savedContainerView.rac.hidden = self.viewModel.outputs.savedProjectsAreHidden
+    self.embeddedViewTopLayoutConstraint.rac.constant = self.viewModel.outputs.embeddedViewTopConstraintConstant
     self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
     self.viewModel.outputs.backedButtonTitleText
@@ -91,16 +81,9 @@ internal final class BackerDashboardViewController: UIViewController {
         _self.setAttributedTitles(for: _self.backedMenuButton, with: string)
     }
 
-    self.viewModel.outputs.configureBackedProjectsController
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.backedProjectsViewController.configureWith(projectsType: $0)
-    }
-
-    self.viewModel.outputs.configureSavedProjectsController
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.savedProjectsViewController.configureWith(projectsType: $0)
+    self.viewModel.outputs.configurePagesDataSource
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.configurePagesDataSource(sort: $0)
     }
 
     self.viewModel.outputs.savedButtonTitleText
@@ -128,6 +111,21 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.goToSettings()
+    }
+
+    self.viewModel.outputs.navigateToTab
+      .observeForControllerAction()
+      .observeValues { [weak self] tab in
+        guard let _self = self, let controller = self?.pagesDataSource.controllerFor(tab: tab) else {
+          fatalError("Controller not found for tab \(tab)")
+        }
+
+        _self.pageViewController.setViewControllers(
+          [controller],
+          direction: .forward,
+          animated: false,
+          completion: nil
+        )
     }
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
@@ -322,6 +320,18 @@ internal final class BackerDashboardViewController: UIViewController {
 //    print("isCollapsed = \(self.isCollapsed)")
   }
 
+  private func configurePagesDataSource(sort: DiscoveryParams.Sort) {
+    self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
+
+    self.pageViewController.dataSource = self.pagesDataSource
+    self.pageViewController.setViewControllers(
+      [self.pagesDataSource.controllerFor(tab: .backed)].compact(),
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
+  }
+
   @objc private func messagesButtonTapped() {
     self.viewModel.inputs.messagesButtonTapped()
   }
@@ -338,6 +348,8 @@ internal final class BackerDashboardViewController: UIViewController {
     self.viewModel.inputs.savedProjectsButtonTapped()
   }
 }
+
+extension BackerDashboardViewController: UIPageViewControllerDelegate {}
 
 extension BackerDashboardViewController: BackerDashboardProjectsViewControllerDelegate {
   func profileProjectsDidScroll(_ scrollView: UIScrollView) {

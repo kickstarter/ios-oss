@@ -3,6 +3,11 @@ import Prelude
 import ReactiveSwift
 import Result
 
+public enum BackerDashboardTab: Int {
+  case backed
+  case saved
+}
+
 public protocol BackerDashboardViewModelInputs {
   /// Call when backed projects button is tapped.
   func backedProjectsButtonTapped()
@@ -42,14 +47,8 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a string for the backer name label.
   var backerNameText: Signal<String, NoError> { get }
 
-  /// Emits a boolean whether backed projects container should be hidden or not.
-  var backedProjectsAreHidden: Signal<Bool, NoError> { get }
-
-  /// Emits a ProfileProjectsType to configure the Backed Projects Controller.
-  var configureBackedProjectsController: Signal<ProfileProjectsType, NoError> { get }
-
-  /// Emits a ProfileProjectsType to configure the Saved Projects Controller.
-  var configureSavedProjectsController: Signal<ProfileProjectsType, NoError> { get }
+  /// Emits a default Sort for the page view controller's initial data source data.
+  var configurePagesDataSource: Signal<DiscoveryParams.Sort, NoError> { get }
 
   /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
   var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
@@ -63,14 +62,14 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits when to navigate to Settings.
   var goToSettings: Signal<(), NoError> { get }
 
+  /// Emits a BackerDashboardTab to navigate to.
+  var navigateToTab: Signal<BackerDashboardTab, NoError> { get }
+
   /// Emits an index to pin the indicator view to a particular button view with or without animation.
   var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
 
   /// Emits a string for the saved button title label.
   var savedButtonTitleText: Signal<String, NoError> { get }
-
-  /// Emits a boolean whether saved projects container should be hidden or not.
-  var savedProjectsAreHidden: Signal<Bool, NoError> { get }
 
   /// Emits when should scroll to the project item or row position.
   var scrollToProject: Signal<Int, NoError> { get }
@@ -118,11 +117,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.backerNameText = user.map { $0.name }
 
-    self.configureBackedProjectsController = self.viewDidLoadProperty.signal
-      .map { .backed }
-
-    self.configureSavedProjectsController = self.viewDidLoadProperty.signal
-      .map { .saved }
+    self.configurePagesDataSource = self.viewDidLoadProperty.signal
+      .map { DiscoveryParams.Sort.endingSoon }
 
     self.savedButtonTitleText = user.map { user in
       localizedString(
@@ -133,16 +129,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       )
     }
 
-    self.backedProjectsAreHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.backedProjectsButtonTappedProperty.signal.mapConst(false),
-      self.savedProjectsButtonTappedProperty.signal.mapConst(true)
-    )
-
-    self.savedProjectsAreHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(true),
-      self.backedProjectsButtonTappedProperty.signal.mapConst(true),
-      self.savedProjectsButtonTappedProperty.signal.mapConst(false)
+    self.navigateToTab = Signal.merge(
+      self.backedProjectsButtonTappedProperty.signal.mapConst(.backed),
+      self.savedProjectsButtonTappedProperty.signal.mapConst(.saved)
     )
 
     let selectedButtonIndex = Signal.merge(
@@ -227,16 +216,14 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let backedButtonTitleText: Signal<String, NoError>
   public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
-  public let backedProjectsAreHidden: Signal<Bool, NoError>
-  public let configureBackedProjectsController: Signal<ProfileProjectsType, NoError>
-  public let configureSavedProjectsController: Signal<ProfileProjectsType, NoError>
+  public let configurePagesDataSource: Signal<DiscoveryParams.Sort, NoError>
   public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>
   public let goToMessages: Signal<(), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<(), NoError>
+  public let navigateToTab: Signal<BackerDashboardTab, NoError>
   public let pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError>
   public let savedButtonTitleText: Signal<String, NoError>
-  public let savedProjectsAreHidden: Signal<Bool, NoError>
   public let setSelectedButton: Signal<Int, NoError>
   public let scrollToProject: Signal<Int, NoError>
   public let sortBarIsHidden: Signal<Bool, NoError>
