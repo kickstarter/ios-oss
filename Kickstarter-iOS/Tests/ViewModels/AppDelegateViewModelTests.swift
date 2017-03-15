@@ -1270,7 +1270,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([], "No view controller is presented.")
     self.goToMobileSafari.assertValues([], "Do not go to mobile safari")
 
-    // We find the redirect to be a project url.
+    // We find the redirect to be an unrecognized url.
     let unrecognizedUrl = URL(string: "https://www.kickstarter.com/unreconizable")!
     self.vm.inputs.foundRedirectUrl(unrecognizedUrl)
 
