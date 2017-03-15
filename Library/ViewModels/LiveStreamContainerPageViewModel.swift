@@ -232,7 +232,9 @@ public enum LiveStreamContainerPage {
       return .forward
     case (.chat, .info):
       return .reverse
-    default:
+    case (.chat, .chat):
+      return .forward
+    case (.info, .info):
       return .forward
     }
   }
