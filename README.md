@@ -73,7 +73,7 @@ A collection of operators we like to add to ReactiveCocoa.
 * [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
 * [Argo](https://github.com/thoughtbot/Argo)
 * [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
-* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+* [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
 
 ## Contributing
 
