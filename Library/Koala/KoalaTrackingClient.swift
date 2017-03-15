@@ -78,7 +78,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
       while !self.buffer.isEmpty {
         guard
-          nil == KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
+          nil != KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
             .flatMap(self.koalaURL)
             .flatMap(KoalaTrackingClient.koalaRequest)
             .flatMap(self.synchronousKoalaResult)
