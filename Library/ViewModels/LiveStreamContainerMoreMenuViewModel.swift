@@ -72,7 +72,7 @@ extension LiveStreamContainerMoreMenuItem: Equatable {
       return lhsLiveStreamEvent == rhsLiveStreamEvent
     case (.cancel, .cancel):
       return true
-    default:
+    case (.hideChat, _), (.share, _), (.cancel, _):
       return false
     }
   }
