@@ -111,7 +111,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
           user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
           !user.isLoggedIn
             ? LoginToutViewController.configuredWith(loginIntent: .generic) as UIViewController? : nil,
-          user.isLoggedIn  ? BackerDashboardViewController.instantiate() as UIViewController? : nil
+          user.isLoggedIn  ? profileController() : nil
         ]
       }
       .map { $0.compact() }
@@ -288,4 +288,11 @@ private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewC
       .index { $0 is VC }
       .flatMap { viewControllers[$0] as? VC }
   }
+}
+
+private func profileController() -> UIViewController? {
+  let showDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true)
+  return showDash
+    ? BackerDashboardViewController.instantiate() as UIViewController?
+    : ProfileViewController.instantiate() as UIViewController?
 }

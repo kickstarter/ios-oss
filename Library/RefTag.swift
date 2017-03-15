@@ -181,9 +181,9 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
     (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
     (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread),
-    (.profileBacked, .profileBacked), (.profileSaved, .profileSaved), (.projectPage, .projectPage),
-    (.push, .push), (.recommended, .recommended), (.search, .search), (.social, .social), (.thanks, .thanks),
-    (.update, .update):
+    (.profileBacked, .profileBacked), (.profileSaved, .profileSaved),
+    (.projectPage, .projectPage), (.push, .push), (.recommended, .recommended),
+    (.search, .search), (.social, .social), (.thanks, .thanks), (.update, .update):
     return true
   case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
     return lhs == rhs
