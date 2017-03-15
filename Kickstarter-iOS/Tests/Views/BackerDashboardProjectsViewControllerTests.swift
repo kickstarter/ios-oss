@@ -5,6 +5,7 @@ import XCTest
 @testable import KsApi
 @testable import Library
 
+// swiftlint:disable:next type_name
 internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   fileprivate var project1: Project!
   fileprivate var project2: Project!
@@ -62,21 +63,22 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   func testProjects() {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [self.project4, self.project1, self.project2,
                                                                self.project3]
-    
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
-        let controller = BackerDashboardProjectsViewController()
-        controller.configureWith(delegate: BackerDashboardViewController(),
-                                 projectsType: .backed,
-                                 sort: .endingSoon)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+                        let controller = BackerDashboardProjectsViewController()
+                        controller.configureWith(delegate: BackerDashboardViewController(),
+                                                 projectsType: .backed,
+                                                 sort: .endingSoon)
+                        let (parent, _) = traitControllers(device: device,
+                                                           orientation: .portrait,
+                                                           child: controller)
+                        self.scheduler.run()
 
-        self.scheduler.run()
-        
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        }
       }
     }
-  }
 }
