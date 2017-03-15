@@ -14,8 +14,8 @@ internal final class LiveStreamContainerMoreMenuDataSource: ValueCellDataSource 
       switch menuItem {
       case .hideChat, .share:
         self.appendRow(value: menuItem,
-                 cellClass: LiveStreamContainerMoreMenuIconTextCell.self,
-                 toSection: Section.items.rawValue)
+                       cellClass: LiveStreamContainerMoreMenuIconTextCell.self,
+                       toSection: Section.items.rawValue)
       case .cancel:
         self.appendRow(value: menuItem,
                        cellClass: LiveStreamContainerMoreMenuCancelCell.self,

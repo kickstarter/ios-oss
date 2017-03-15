@@ -212,7 +212,7 @@ public enum LiveStreamContainerPage {
     switch self {
     case .info:
       return true
-    default:
+    case .chat:
       return false
     }
   }
@@ -221,7 +221,7 @@ public enum LiveStreamContainerPage {
     switch self {
     case .chat:
       return true
-    default:
+    case .info:
       return false
     }
   }
@@ -232,7 +232,9 @@ public enum LiveStreamContainerPage {
       return .forward
     case (.chat, .info):
       return .reverse
-    default:
+    case (.chat, .chat):
+      return .forward
+    case (.info, .info):
       return .forward
     }
   }

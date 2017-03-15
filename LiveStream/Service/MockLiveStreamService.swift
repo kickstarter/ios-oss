@@ -14,10 +14,10 @@ extension Result {
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let anonymousUserId: String?
-  private let firebaseUserId: String?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
+  private let firebaseUserId: String?
   private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
   private let subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>?
 
@@ -26,17 +26,17 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   }
 
   internal init(anonymousUserId: String? = nil,
-                firebaseUserId: String? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
+                firebaseUserId: String? = nil,
                 initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
                 subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>? = nil) {
     self.anonymousUserId = anonymousUserId
-    self.firebaseUserId = firebaseUserId
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
     self.fetchEventsResult = fetchEventsResult
+    self.firebaseUserId = firebaseUserId
     self.initializeDatabaseResult = initializeDatabaseResult
     self.subscribeToResult = subscribeToResult
   }

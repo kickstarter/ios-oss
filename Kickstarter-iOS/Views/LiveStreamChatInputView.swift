@@ -7,7 +7,7 @@ import UIKit
 
 internal protocol LiveStreamChatInputViewDelegate: class {
   func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView)
-  func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String)
+  func liveStreamChatInputView(_ chatInputView: LiveStreamChatInputView, didSendMessage message: String)
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView)
 }
 
@@ -21,7 +21,7 @@ internal final class LiveStreamChatInputView: UIView {
 
   private weak var delegate: LiveStreamChatInputViewDelegate?
 
-  let viewModel: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
+  fileprivate let viewModel: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
 
   internal class func fromNib() -> LiveStreamChatInputView {
     return UINib(nibName: Nib.LiveStreamChatInputView.rawValue, bundle: .framework)
@@ -33,6 +33,13 @@ internal final class LiveStreamChatInputView: UIView {
   internal func configureWith(delegate: LiveStreamChatInputViewDelegate, chatHidden: Bool) {
     self.delegate = delegate
     self.viewModel.inputs.configureWith(chatHidden: chatHidden)
+  }
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+    self.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
   }
 
   internal override func bindStyles() {
@@ -68,14 +75,11 @@ internal final class LiveStreamChatInputView: UIView {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.moreButton.addTarget(self, action: #selector(LiveStreamChatInputView.more), for: .touchUpInside)
-    self.sendButton.addTarget(self, action: #selector(LiveStreamChatInputView.send), for: .touchUpInside)
-
     self.moreButton.rac.hidden = self.viewModel.outputs.moreButtonHidden
     self.sendButton.rac.hidden = self.viewModel.outputs.sendButtonHidden
 
     self.viewModel.outputs.notifyDelegateMoreButtonTapped.observeValues { [weak self] in
-      self.flatMap { $0.delegate?.liveStreamChatInputViewDidTapMoreButton(chatInputView: $0) }
+      self.doIfSome { $0.delegate?.liveStreamChatInputViewDidTapMoreButton(chatInputView: $0) }
     }
 
     self.viewModel.outputs.notifyDelegateMessageSent
@@ -85,13 +89,13 @@ internal final class LiveStreamChatInputView: UIView {
         self?.textField.resignFirstResponder()
       })
       .observeValues { [weak self] text in
-        self.flatMap { $0.delegate?.liveStreamChatInputViewDidSend(chatInputView: $0, message: text) }
+        self.doIfSome { $0.delegate?.liveStreamChatInputView($0, didSendMessage: text) }
     }
 
     self.viewModel.outputs.notifyDelegateRequestLogin
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self.flatMap { $0.delegate?.liveStreamChatInputViewRequestedLogin(chatInputView: $0) }
+        self.doIfSome { $0.delegate?.liveStreamChatInputViewRequestedLogin(chatInputView: $0) }
     }
 
     self.viewModel.outputs.placeholderText
@@ -107,11 +111,11 @@ internal final class LiveStreamChatInputView: UIView {
 
   // MARK: Actions
 
-  @objc private func more() {
+  @objc private func moreButtonTapped() {
     self.viewModel.inputs.moreButtonTapped()
   }
 
-  @objc private func send() {
+  @objc private func sendButtonTapped() {
     self.viewModel.inputs.sendButtonTapped()
   }
 }
