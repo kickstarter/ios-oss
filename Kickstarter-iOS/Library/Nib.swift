@@ -1,6 +1,7 @@
 import UIKit
 
 public enum Nib: String {
+  case ProfileEmptyStateCell
   case RewardCell
 }
 
