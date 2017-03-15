@@ -18,6 +18,9 @@ public protocol BackerDashboardViewModelInputs {
   /// Call when profile projects delegate is called with project, projects, and reftag.
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
 
+  /// Call to update the project navigator with new projects.
+  func profileProjectsUpdatePlaylist(_ projects: [Project])
+
   /// Call when saved projects button is tapped.
   func savedProjectsButtonTapped()
 
@@ -25,7 +28,7 @@ public protocol BackerDashboardViewModelInputs {
   func settingsButtonTapped()
 
   /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at row: Int, outOf totalRows: Int)
+  func transitionedToProject(at row: Int)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -65,20 +68,23 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a BackerDashboardTab to navigate to.
   var navigateToTab: Signal<BackerDashboardTab, NoError> { get }
 
+  /// Emits when should scroll to the project row position.
+  var notifyPageToScrollToProject: Signal<Int, NoError> { get }
+
   /// Emits an index to pin the indicator view to a particular button view with or without animation.
   var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
 
   /// Emits a string for the saved button title label.
   var savedButtonTitleText: Signal<String, NoError> { get }
 
-  /// Emits when should scroll to the project item or row position.
-  var scrollToProject: Signal<Int, NoError> { get }
-
   /// Emits an index of the selected button to update all button selected states.
   var setSelectedButton: Signal<Int, NoError> { get }
 
   /// Emits a boolean whether the sort bar is hidden or not.
   var sortBarIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits an arry of projects to update the project navigator playlist when swiping.
+  var updateProjectPlaylist: Signal<[Project], NoError> { get }
 }
 
 public protocol BackerDashboardViewModelType {
@@ -155,12 +161,14 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.goToSettings = self.settingsButtonTappedProperty.signal
 
-    self.scrollToProject = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
+    self.notifyPageToScrollToProject = self.transitionedToProjectRowProperty.signal.skipNil()
 
     self.sortBarIsHidden = self.viewDidLoadProperty.signal.mapConst(true)
 
     self.embeddedViewTopConstraintConstant = self.sortBarIsHidden
       .map { $0 ? 0.0 : Styles.grid(2) }
+
+    self.updateProjectPlaylist = self.profileProjectsUpdatePlaylistProperty.signal.skipNil()
 
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
@@ -187,6 +195,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.profileProjectsGoToProjectProperty.value = (project, projects, reftag)
   }
 
+  private let profileProjectsUpdatePlaylistProperty = MutableProperty<[Project]?>(nil)
+  public func profileProjectsUpdatePlaylist(_ projects: [Project]) {
+    self.profileProjectsUpdatePlaylistProperty.value = projects
+  }
+
   private let savedProjectsButtonTappedProperty = MutableProperty()
   public func savedProjectsButtonTapped() {
     self.savedProjectsButtonTappedProperty.value = ()
@@ -197,9 +210,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.settingsButtonTappedProperty.value = ()
   }
 
-  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
-    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
+  private let transitionedToProjectRowProperty = MutableProperty<Int?>(nil)
+  public func transitionedToProject(at row: Int) {
+    self.transitionedToProjectRowProperty.value = row
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -222,11 +235,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let goToSettings: Signal<(), NoError>
   public let navigateToTab: Signal<BackerDashboardTab, NoError>
+  public let notifyPageToScrollToProject: Signal<Int, NoError>
   public let pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError>
   public let savedButtonTitleText: Signal<String, NoError>
   public let setSelectedButton: Signal<Int, NoError>
-  public let scrollToProject: Signal<Int, NoError>
   public let sortBarIsHidden: Signal<Bool, NoError>
+  public let updateProjectPlaylist: Signal<[Project], NoError>
 
   public var inputs: BackerDashboardViewModelInputs { return self }
   public var outputs: BackerDashboardViewModelOutputs { return self }

@@ -25,7 +25,7 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var sortBar: ProfileSortBarView!
   @IBOutlet private weak var topBackgroundView: UIView!
 
-  private weak var pageViewController: UIPageViewController!
+  fileprivate weak var pageViewController: UIPageViewController!
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
@@ -139,11 +139,20 @@ internal final class BackerDashboardViewController: UIViewController {
         self?.selectButton(atIndex: $0)
     }
 
-//    self.viewModel.outputs.scrollToProject
-//      .observeForUI()
-//      .observeValues { [weak self] itemIndex in
-//        guard let _self = self else { return }
-//    }
+    self.viewModel.outputs.updateProjectPlaylist
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.updateProjectPlaylist($0)
+    }
+
+    self.viewModel.outputs.notifyPageToScrollToProject
+      .observeForUI()
+      .observeValues { [weak self] row in
+        guard let controller = self?.pageViewController.childViewControllers.first
+          else { return }
+
+        self?.pagesDataSource.scrollToProject(at: row, in: controller)
+    }
   }
 
   internal override func bindStyles() {
@@ -291,10 +300,14 @@ extension BackerDashboardViewController: BackerDashboardProjectsViewControllerDe
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
     self.viewModel.inputs.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
   }
+
+  func profileProjectsUpdatePlaylist(_ projects: [Project]) {
+    self.viewModel.inputs.profileProjectsUpdatePlaylist(projects)
+  }
 }
 
 extension BackerDashboardViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
-    //self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+    self.viewModel.inputs.transitionedToProject(at: index)
   }
 }

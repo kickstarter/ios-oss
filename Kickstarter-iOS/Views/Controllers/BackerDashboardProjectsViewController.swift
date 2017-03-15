@@ -6,6 +6,9 @@ import UIKit
 internal protocol BackerDashboardProjectsViewControllerDelegate: class {
   /// Called when a project cell is tapped.
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
+
+  /// Called when a new set of projects are loaded while swiping through projects to update the navigator.
+  func profileProjectsUpdatePlaylist(_ projects: [Project])
 }
 
 internal final class BackerDashboardProjectsViewController: UITableViewController {
@@ -19,7 +22,8 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
                               projectsType: ProfileProjectsType,
                               sort: DiscoveryParams.Sort) {
 
-    self.viewModel.inputs.configureWith(type: projectsType)
+    self.delegate = delegate
+    self.viewModel.inputs.configureWith(projectsType: projectsType, sort: sort)
   }
 
   internal override func viewDidLoad() {
@@ -62,12 +66,22 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
       .observeValues { [weak self] in
         self?.dataSource.load(projects: $0)
         self?.tableView.reloadData()
+        self?.delegate?.profileProjectsUpdatePlaylist($0)
     }
 
     self.viewModel.outputs.notifyDelegateGoToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, reftag in
         self?.delegate?.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
+    }
+
+    self.viewModel.outputs.scrollToProjectRow
+      .observeForUI()
+      .observeValues { [weak self] row in
+        guard let _self = self else { return }
+        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row),
+                                    at: .top,
+                                    animated: false)
     }
   }
 
@@ -95,6 +109,10 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     }
 
     self.viewModel.inputs.projectTapped(project)
+  }
+
+  internal func scrollToProject(at row: Int) {
+    self.viewModel.inputs.scrollToProject(at: row, outOf: self.dataSource.numberOfItems())
   }
 
   @objc internal func refresh() {

@@ -15,12 +15,19 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
     self.viewControllers = [backedController, savedController]
   }
 
-  internal func indexFor(controller: UIViewController) -> Int? {
-    return self.viewControllers.index(of: controller)
-  }
-
   internal func controllerFor(tab: BackerDashboardTab) -> UIViewController? {
     return self.viewControllers[tab.rawValue]
+  }
+
+  internal func scrollToProject(at row: Int, in controller: UIViewController) {
+    guard let currentTab = tabFor(controller: controller) else { return }
+
+    switch currentTab {
+    case .backed, .saved:
+      if let controller = controller as? BackerDashboardProjectsViewController {
+        controller.scrollToProject(at: row)
+      }
+    }
   }
 
   internal func pageViewController(
@@ -35,5 +42,11 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
     viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
     return nil
+  }
+
+  private func tabFor(controller: UIViewController) -> BackerDashboardTab? {
+    guard let index = self.viewControllers.index(of: controller) else { return nil }
+
+    return BackerDashboardTab(rawValue: index)
   }
 }

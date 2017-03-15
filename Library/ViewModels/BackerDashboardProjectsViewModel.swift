@@ -11,8 +11,8 @@ public enum ProfileProjectsType {
 }
 
 public protocol BackerDashboardProjectsViewModelInputs {
-  /// Call to configure with the type of projects to display.
-  func configureWith(type: ProfileProjectsType)
+  /// Call to configure with the ProfileProjectsType to display and the default sort.
+  func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
 
   /// Call when a project cell is tapped.
   func projectTapped(_ project: Project)
@@ -20,8 +20,8 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call when pull-to-refresh is invoked.
   func refresh()
 
-  /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at row: Int, outOf totalRows: Int)
+  /// Call when the user has swiped to a project in the navigator and the tableview should scroll to its row.
+  func scrollToProject(at row: Int, outOf totalRows: Int)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -60,30 +60,31 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
   // swiftlint:disable:next function_body_length
   public init() {
-    let projectsType = self.configureWithTypeProperty.signal.skipNil()
+    let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
+    let projectsType = projectsTypeAndSort.map(first)
 
-    let requestFirstPageWith = projectsType
+    let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
         viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
         refreshProperty.signal
         )
       )
-      .map { pType -> DiscoveryParams in
+      .map { (pType, sort) -> DiscoveryParams in
         switch pType {
         case .backed:
           return DiscoveryParams.defaults
             |> DiscoveryParams.lens.backed .~ true
-            |> DiscoveryParams.lens.sort .~ .endingSoon
+            |> DiscoveryParams.lens.sort .~ sort
         case .saved:
           return DiscoveryParams.defaults
-            |> DiscoveryParams.lens.sort .~ .endingSoon
             |> DiscoveryParams.lens.starred .~ true
+            |> DiscoveryParams.lens.sort .~ sort
         }
       }
 
     let isCloseToBottom = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
-      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
+      self.scrollToProjectRowAndTotalProperty.signal.skipNil()
       )
       .map { row, total in total > 4 && row >= total - 3 }
       .skipRepeats()
@@ -114,12 +115,13 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         return (project, typeAndProjects.1, ref)
     }
 
-    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
+    self.scrollToProjectRow = self.scrollToProjectRowAndTotalProperty.signal.skipNil().map(first)
   }
 
-  private let configureWithTypeProperty = MutableProperty<ProfileProjectsType?>(nil)
-  public func configureWith(type: ProfileProjectsType) {
-    self.configureWithTypeProperty.value = type
+  private let configureWithProjectsTypeAndSortProperty =
+    MutableProperty<(ProfileProjectsType, DiscoveryParams.Sort)?>(nil)
+  public func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
+    self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
   }
 
   private let projectTappedProperty = MutableProperty<Project?>(nil)
@@ -132,9 +134,9 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.refreshProperty.value = ()
   }
 
-  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
-    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
+  private let scrollToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func scrollToProject(at row: Int, outOf totalRows: Int) {
+    self.scrollToProjectRowAndTotalProperty.value = (row, totalRows)
   }
 
   private let viewWillAppearProperty = MutableProperty(false)
