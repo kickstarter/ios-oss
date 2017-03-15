@@ -30,8 +30,6 @@ internal final class BackerDashboardViewController: UIViewController {
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
 
-  private var isCollapsed = false
-
   internal static func instantiate() -> BackerDashboardViewController {
     return Storyboard.BackerDashboard.instantiate(BackerDashboardViewController.self)
   }
@@ -186,16 +184,16 @@ internal final class BackerDashboardViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
   }
 
-  private func goToSettings() {
-    let vc = SettingsViewController.instantiate()
+  private func configurePagesDataSource(sort: DiscoveryParams.Sort) {
+    self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = .formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.pageViewController.dataSource = self.pagesDataSource
+    self.pageViewController.setViewControllers(
+      [self.pagesDataSource.controllerFor(tab: .backed)].compact(),
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
   }
 
   private func present(project: Project, projects: [Project], refTag: RefTag) {
@@ -258,79 +256,16 @@ internal final class BackerDashboardViewController: UIViewController {
       completion: nil)
   }
 
-  fileprivate func expandOrCollapseHeaderOnRelease(scrollView: UIScrollView) {
-    // todo: put this value in view model. it changes when sort bar is hidden.
-    let minHeaderHeight = self.topBackgroundView.frame.size.height -
-      self.menuButtonsStackView.frame.size.height - Styles.grid(3)
-    let shouldCollapse = self.headerViewTopConstraint.constant <= floor(-minHeaderHeight / 2.0)
+  private func goToSettings() {
+    let vc = SettingsViewController.instantiate()
 
-    if shouldCollapse {
-      UIView.animate(
-        withDuration: 0.3,
-        delay: 0.0,
-        options: .curveEaseOut,
-        animations: {
-          self.headerViewTopConstraint.constant = -minHeaderHeight
-          self.view.layoutIfNeeded()
-        },
-        completion: { _ in
-          self.isCollapsed = true
-        }
-      )
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = .formSheet
+      self.present(nav, animated: true, completion: nil)
     } else {
-      UIView.animate(
-        withDuration: 0.3,
-        delay: 0.0,
-        options: .curveEaseOut,
-        animations: {
-          self.headerViewTopConstraint.constant = 0
-          self.view.layoutIfNeeded()
-      },
-        completion: { _ in
-          self.isCollapsed = false
-        }
-      )
+      self.navigationController?.pushViewController(vc, animated: true)
     }
-  }
-
-  fileprivate func moveHeader(with scrollView: UIScrollView) {
-    let minHeaderHeight = self.topBackgroundView.frame.size.height -
-      self.menuButtonsStackView.frame.size.height - Styles.grid(3)
-
-    if scrollView.contentOffset.y > 0 {
-      if !self.isCollapsed {
-        self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
-      }
-    } else if scrollView.contentOffset.y < 0 {
-      if isCollapsed {
-        let newConstant = self.headerViewTopConstraint.constant - scrollView.contentOffset.y
-        if newConstant <= 0 { // todo: need a constraint here, but maybe this isn't the best place
-          self.headerViewTopConstraint.constant = newConstant
-        }
-      }
-    }
-
-    if self.headerViewTopConstraint.constant <= -minHeaderHeight {
-      self.headerViewTopConstraint.constant = -minHeaderHeight
-    }
-
-    // todo: the scrollview itself shouldn't be able to tuck under when header is not yet collapsed
-
-//    print("offset = \(scrollView.contentOffset.y)")
-//    print("constant = \(self.headerViewTopConstraint.constant), -minHeight = \(-minHeaderHeight)")
-//    print("isCollapsed = \(self.isCollapsed)")
-  }
-
-  private func configurePagesDataSource(sort: DiscoveryParams.Sort) {
-    self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
-
-    self.pageViewController.dataSource = self.pagesDataSource
-    self.pageViewController.setViewControllers(
-      [self.pagesDataSource.controllerFor(tab: .backed)].compact(),
-      direction: .forward,
-      animated: false,
-      completion: nil
-    )
   }
 
   @objc private func messagesButtonTapped() {
@@ -353,20 +288,6 @@ internal final class BackerDashboardViewController: UIViewController {
 extension BackerDashboardViewController: UIPageViewControllerDelegate {}
 
 extension BackerDashboardViewController: BackerDashboardProjectsViewControllerDelegate {
-  func profileProjectsDidScroll(_ scrollView: UIScrollView) {
-    self.moveHeader(with: scrollView)
-  }
-
-  func profileProjectsDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
-  }
-
-  func profileProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate {
-      self.expandOrCollapseHeaderOnRelease(scrollView: scrollView)
-    }
-  }
-
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
     self.viewModel.inputs.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
   }

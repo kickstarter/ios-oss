@@ -4,15 +4,6 @@ import Prelude
 import UIKit
 
 internal protocol BackerDashboardProjectsViewControllerDelegate: class {
-  /// Called when the table view's scrollViewDidEndDecelerating method is called.
-  func profileProjectsDidEndDecelerating(_ scrollView: UIScrollView)
-
-  /// Called when the table view's scrollViewDidEndDragging method is called.
-  func profileProjectsDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool)
-
-  /// Called when the table view's scrollViewDidScroll method is called.
-  func profileProjectsDidScroll(_ scrollView: UIScrollView)
-
   /// Called when a project cell is tapped.
   func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag)
 }
@@ -104,19 +95,6 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     }
 
     self.viewModel.inputs.projectTapped(project)
-  }
-
-  internal override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    self.delegate?.profileProjectsDidScroll(scrollView)
-  }
-
-  internal override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    self.delegate?.profileProjectsDidEndDecelerating(scrollView)
-  }
-
-  internal override func scrollViewDidEndDragging(_ scrollView: UIScrollView,
-                                                  willDecelerate decelerate: Bool) {
-    self.delegate?.profileProjectsDidEndDragging(scrollView, willDecelerate: decelerate)
   }
 
   @objc internal func refresh() {
