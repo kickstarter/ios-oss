@@ -30,9 +30,9 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didAuthorizeChat.observe(self.didAuthorizeChat.observer)
     self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
-    self.vm.outputs.prependChatMessagesToDataSource.map(first).observe(
+    self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(first).observe(
       self.prependChatMessagesToDataSourceMessages.observer)
-    self.vm.outputs.prependChatMessagesToDataSource.map(second).observe(
+    self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(second).observe(
       self.prependChatMessagesToDataSourceReload.observer)
     self.vm.outputs.presentMoreMenuViewController.observe(self.presentMoreMenuViewController.observer)
     self.vm.outputs.shouldHideChatTableView.observe(self.shouldHideChatTableView.observer)

@@ -52,7 +52,7 @@ public protocol LiveStreamChatViewModelOutputs {
   var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
 
   /// Emits chat messages for appending to the data source.
-  var prependChatMessagesToDataSource: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
+  var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
   /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
   var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
@@ -93,7 +93,7 @@ LiveStreamChatViewModelOutputs {
           .materialize()
       }
 
-    self.prependChatMessagesToDataSource = Signal.combineLatest(
+    self.prependChatMessagesToDataSourceAndReload = Signal.combineLatest(
       self.receivedChatMessagesProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal,
       configData.ignoreValues()
@@ -213,7 +213,7 @@ LiveStreamChatViewModelOutputs {
   public let didAuthorizeChat: Signal<Bool, NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
-  public let prependChatMessagesToDataSource: Signal<([LiveStreamChatMessage], Bool), NoError>
+  public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let shouldHideChatTableView: Signal<Bool, NoError>
   public let updateLiveAuthTokenInEnvironment: Signal<String, NoError>
   public let willAuthorizeChat: Signal<(), NoError>

@@ -101,7 +101,7 @@ internal final class LiveStreamChatViewController: UIViewController {
       self?.viewModel.inputs.received(chatMessages: $0)
     }
 
-    self.viewModel.outputs.prependChatMessagesToDataSource
+    self.viewModel.outputs.prependChatMessagesToDataSourceAndReload
       .observeForUI()
       .observeValues { [weak self] chatMessages, reload in
         guard let _self = self else { return }
