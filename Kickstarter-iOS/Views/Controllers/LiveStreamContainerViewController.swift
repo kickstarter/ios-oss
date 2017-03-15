@@ -10,12 +10,12 @@ import UIKit
 //swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewController: UIViewController {
 
-  @IBOutlet private weak var gradientView: GradientView!
+  //@IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private weak var separatorView: UIView!
+  //@IBOutlet private weak var separatorView: UIView!
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
 
@@ -87,9 +87,9 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .white
 
-    _ = self.separatorView
-      |> UIView.lens.backgroundColor .~ .white
-      |> UIView.lens.alpha .~ 0.2
+//    _ = self.separatorView
+//      |> UIView.lens.backgroundColor .~ .white
+//      |> UIView.lens.alpha .~ 0.2
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -103,10 +103,10 @@ public final class LiveStreamContainerViewController: UIViewController {
       self.view.addConstraint(self.videoContainerAspectRatioConstraint_4_3)
     }
 
-    self.gradientView.startPoint = .zero
-    self.gradientView.endPoint = .init(x: 0, y: 1)
-    self.gradientView.setGradient([(UIColor.black.withAlphaComponent(0.5), 0),
-                                   (UIColor.black.withAlphaComponent(0), 1.0)])
+//    self.gradientView.startPoint = .zero
+//    self.gradientView.endPoint = .init(x: 0, y: 1)
+//    self.gradientView.setGradient([(UIColor.black.withAlphaComponent(0.5), 0),
+//                                   (UIColor.black.withAlphaComponent(0), 1.0)])
   }
 
   //swiftlint:disable:next function_body_length

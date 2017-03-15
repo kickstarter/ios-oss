@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -358,109 +358,73 @@ Mikke Snow</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7tR-zb-7Fd">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="EXE-hf-dQ1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" horizontalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="EXE-hf-dQ1">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQz-eQ-2Xj" userLabel="Live Stream View Controller">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
+                                        <connections>
+                                            <segue destination="WXN-s6-i5q" kind="embed" id="bAx-yt-F2w"/>
+                                        </connections>
+                                    </containerView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
+                                        <rect key="frame" x="8" y="121.5" width="359" height="40.5"/>
                                         <subviews>
-                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQz-eQ-2Xj" userLabel="Live Stream View Controller">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
-                                                <connections>
-                                                    <segue destination="WXN-s6-i5q" kind="embed" id="bAx-yt-F2w"/>
-                                                </connections>
-                                            </containerView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
-                                                <rect key="frame" x="8" y="121" width="359" height="40.5"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
-                                                        <rect key="frame" x="66" y="0.0" width="227" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="COg-em-r6I">
-                                                        <rect key="frame" x="169.5" y="20.5" width="20" height="20"/>
-                                                    </activityIndicatorView>
-                                                </subviews>
-                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The live stream will start soon" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg2-W1-xwo">
+                                                <rect key="frame" x="66" y="0.0" width="227" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="COg-em-r6I">
+                                                <rect key="frame" x="169.5" y="20.5" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="SQz-eQ-2Xj" secondAttribute="bottom" id="DR1-yZ-xbR"/>
-                                            <constraint firstItem="A6q-eY-g0e" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leadingMargin" id="Dmc-1Z-3uT"/>
-                                            <constraint firstItem="SQz-eQ-2Xj" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leading" id="YVt-vi-lty"/>
-                                            <constraint firstItem="A6q-eY-g0e" firstAttribute="centerY" secondItem="EXE-hf-dQ1" secondAttribute="centerY" id="Zgg-Qe-ckR"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="A6q-eY-g0e" secondAttribute="trailing" id="ffk-il-PRd"/>
-                                            <constraint firstAttribute="trailing" secondItem="SQz-eQ-2Xj" secondAttribute="trailing" id="kIS-Qc-8id"/>
-                                            <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="16:9" id="rel-3a-meW"/>
-                                            <constraint firstItem="SQz-eQ-2Xj" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="ufd-t2-hur"/>
-                                            <constraint firstAttribute="height" secondItem="EXE-hf-dQ1" secondAttribute="width" multiplier="3:4" constant="1" id="zbI-0p-ahe"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="rel-3a-meW"/>
-                                            </mask>
-                                        </variation>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2c-KJ-dcO">
-                                        <rect key="frame" x="0.0" y="282.5" width="375" height="417.5"/>
-                                        <subviews>
-                                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="euM-PC-048">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="417.5"/>
-                                                <connections>
-                                                    <segue destination="hTH-R6-TaP" kind="embed" id="wpX-RU-LlT"/>
-                                                </connections>
-                                            </containerView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZNM-vi-GmI">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="DUh-aV-5V5"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M6u-kL-0SL" customClass="GradientView" customModule="Library">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="6"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="6" id="eSA-9J-Daf"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="euM-PC-048" firstAttribute="bottom" secondItem="t2c-KJ-dcO" secondAttribute="bottom" id="DRA-Jh-8i9"/>
-                                            <constraint firstItem="M6u-kL-0SL" firstAttribute="leading" secondItem="t2c-KJ-dcO" secondAttribute="leading" id="EuI-Qj-eCb"/>
-                                            <constraint firstItem="euM-PC-048" firstAttribute="top" secondItem="t2c-KJ-dcO" secondAttribute="top" id="JJE-JK-ac3"/>
-                                            <constraint firstItem="ZNM-vi-GmI" firstAttribute="leading" secondItem="t2c-KJ-dcO" secondAttribute="leading" id="LaO-BY-woO"/>
-                                            <constraint firstItem="M6u-kL-0SL" firstAttribute="top" secondItem="t2c-KJ-dcO" secondAttribute="top" id="cmg-Wt-8FF"/>
-                                            <constraint firstItem="ZNM-vi-GmI" firstAttribute="trailing" secondItem="t2c-KJ-dcO" secondAttribute="trailing" id="iO1-YJ-Lr8"/>
-                                            <constraint firstItem="M6u-kL-0SL" firstAttribute="trailing" secondItem="t2c-KJ-dcO" secondAttribute="trailing" id="pwL-ih-dGp"/>
-                                            <constraint firstItem="euM-PC-048" firstAttribute="trailing" secondItem="t2c-KJ-dcO" secondAttribute="trailing" id="qSE-ov-sKn"/>
-                                            <constraint firstItem="ZNM-vi-GmI" firstAttribute="top" secondItem="t2c-KJ-dcO" secondAttribute="top" id="sHa-Vh-fNY"/>
-                                            <constraint firstItem="euM-PC-048" firstAttribute="leading" secondItem="t2c-KJ-dcO" secondAttribute="leading" id="ydI-Wf-quE"/>
-                                        </constraints>
-                                    </view>
+                                    </stackView>
                                 </subviews>
-                            </stackView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="SQz-eQ-2Xj" secondAttribute="bottom" id="DR1-yZ-xbR"/>
+                                    <constraint firstItem="A6q-eY-g0e" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leadingMargin" id="Dmc-1Z-3uT"/>
+                                    <constraint firstItem="SQz-eQ-2Xj" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leading" id="YVt-vi-lty"/>
+                                    <constraint firstItem="A6q-eY-g0e" firstAttribute="centerY" secondItem="EXE-hf-dQ1" secondAttribute="centerY" id="Zgg-Qe-ckR"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="A6q-eY-g0e" secondAttribute="trailing" id="ffk-il-PRd"/>
+                                    <constraint firstAttribute="trailing" secondItem="SQz-eQ-2Xj" secondAttribute="trailing" id="kIS-Qc-8id"/>
+                                    <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="16:9" id="rel-3a-meW"/>
+                                    <constraint firstItem="SQz-eQ-2Xj" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="ufd-t2-hur"/>
+                                    <constraint firstAttribute="height" secondItem="EXE-hf-dQ1" secondAttribute="width" multiplier="3:4" constant="1" id="zbI-0p-ahe"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="rel-3a-meW"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="euM-PC-048">
+                                <rect key="frame" x="0.0" y="282.5" width="375" height="417.5"/>
+                                <connections>
+                                    <segue destination="hTH-R6-TaP" kind="embed" id="wpX-RU-LlT"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7tR-zb-7Fd" firstAttribute="top" secondItem="fQm-7K-fX2" secondAttribute="topMargin" id="2iM-Jc-6en"/>
-                            <constraint firstItem="7tR-zb-7Fd" firstAttribute="bottom" secondItem="I2v-fl-8Ht" secondAttribute="top" id="3A5-5G-t7j"/>
-                            <constraint firstItem="7tR-zb-7Fd" firstAttribute="trailing" secondItem="fQm-7K-fX2" secondAttribute="trailing" id="7Z6-6g-3F4"/>
-                            <constraint firstItem="7tR-zb-7Fd" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="KlO-VD-VZf"/>
+                            <constraint firstAttribute="trailing" secondItem="EXE-hf-dQ1" secondAttribute="trailing" id="0i1-9Z-uSd"/>
+                            <constraint firstItem="euM-PC-048" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="CS1-82-QpT"/>
+                            <constraint firstItem="I2v-fl-8Ht" firstAttribute="top" secondItem="euM-PC-048" secondAttribute="bottom" id="Idf-qV-BDK"/>
+                            <constraint firstItem="euM-PC-048" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="bottom" id="X2t-1z-swf"/>
+                            <constraint firstItem="EXE-hf-dQ1" firstAttribute="top" secondItem="fQm-7K-fX2" secondAttribute="top" id="dZr-tc-vtD"/>
+                            <constraint firstAttribute="trailing" secondItem="euM-PC-048" secondAttribute="trailing" id="mIf-DV-duM"/>
+                            <constraint firstItem="EXE-hf-dQ1" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="xfV-Uw-R7g"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="700"/>
                     <connections>
-                        <outlet property="gradientView" destination="M6u-kL-0SL" id="CrW-qz-owC"/>
                         <outlet property="loaderActivityIndicatorView" destination="COg-em-r6I" id="coQ-Eh-3b8"/>
                         <outlet property="loaderLabel" destination="Qg2-W1-xwo" id="Ctg-bG-Frt"/>
                         <outlet property="loaderStackView" destination="A6q-eY-g0e" id="opA-A0-ELy"/>
                         <outlet property="loaderView" destination="EXE-hf-dQ1" id="Qir-je-xMo"/>
-                        <outlet property="separatorView" destination="ZNM-vi-GmI" id="8VI-5C-KAe"/>
                         <outlet property="videoContainerAspectRatioConstraint_16_9" destination="rel-3a-meW" id="b8e-1n-yJ8"/>
                         <outlet property="videoContainerAspectRatioConstraint_4_3" destination="zbI-0p-ahe" id="qdO-Hx-Rkb"/>
                     </connections>
@@ -481,8 +445,8 @@ Mikke Snow</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gax-Kg-Ay8">
-                                <rect key="frame" x="67" y="269" width="240" height="128"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gax-Kg-Ay8">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MPc-gU-qxa">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -637,20 +601,20 @@ Mikke Snow</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="417.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ahW-tE-kk8">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="208"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gz-JY-cXI">
-                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="59"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="208"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yr0-97-x2a">
-                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="59"/>
+                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="208"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TIW-6z-ak1">
-                                        <rect key="frame" x="0.0" y="59" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="208" width="375" height="1"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g4w-Rs-CJI">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="1"/>
@@ -668,7 +632,7 @@ Mikke Snow</string>
                                         </constraints>
                                     </view>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7Y-Ku-Q5w">
-                                        <rect key="frame" x="0.0" y="60" width="375" height="357.5"/>
+                                        <rect key="frame" x="0.0" y="209" width="375" height="208.5"/>
                                         <connections>
                                             <segue destination="nhf-Sg-ZpN" kind="embed" id="OxQ-Fv-qVz"/>
                                         </connections>
@@ -679,8 +643,8 @@ Mikke Snow</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="I5W-Gn-EUy" firstAttribute="leading" secondItem="MWA-KM-EaP" secondAttribute="leading" id="00R-zi-HCv"/>
-                            <constraint firstItem="I5W-Gn-EUy" firstAttribute="bottom" secondItem="MWA-KM-EaP" secondAttribute="bottomMargin" id="0gf-yu-q5T"/>
                             <constraint firstItem="I5W-Gn-EUy" firstAttribute="top" secondItem="MWA-KM-EaP" secondAttribute="topMargin" id="KJO-QO-RGZ"/>
+                            <constraint firstItem="LVg-2f-0Za" firstAttribute="top" secondItem="I5W-Gn-EUy" secondAttribute="bottom" id="Xbm-NT-dyo"/>
                             <constraint firstItem="I5W-Gn-EUy" firstAttribute="trailing" secondItem="MWA-KM-EaP" secondAttribute="trailing" id="k7P-iN-dTM"/>
                         </constraints>
                     </view>
@@ -709,19 +673,19 @@ Mikke Snow</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-TX-p2I">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="52" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-TX-p2I">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveStreamChatMessageCell" id="iYO-Gt-oe7" customClass="LiveStreamChatMessageCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveStreamChatMessageCell" rowHeight="52" id="iYO-Gt-oe7" customClass="LiveStreamChatMessageCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iYO-Gt-oe7" id="ReN-LF-tVY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="EY2-Eu-LJH">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="51.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="lmD-if-wtS">
                                                             <rect key="frame" x="0.0" y="0.0" width="18" height="18.5"/>
@@ -790,7 +754,6 @@ Mikke Snow</string>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lH9-zy-7tR">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xCp-Ej-CZC"/>
                                 </constraints>
@@ -799,7 +762,7 @@ Mikke Snow</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hxv-TX-p2I" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="69s-6u-VId"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="lH9-zy-7tR" secondAttribute="bottom" id="8S7-sM-jlu"/>
+                            <constraint firstItem="8Di-1C-zRr" firstAttribute="top" secondItem="lH9-zy-7tR" secondAttribute="bottom" id="VP5-U3-OU0"/>
                             <constraint firstItem="hxv-TX-p2I" firstAttribute="top" secondItem="w5S-EN-Mw3" secondAttribute="topMargin" id="VwA-JQ-b5Y"/>
                             <constraint firstAttribute="trailing" secondItem="hxv-TX-p2I" secondAttribute="trailing" id="bFf-tQ-c6f"/>
                             <constraint firstItem="lH9-zy-7tR" firstAttribute="trailing" secondItem="w5S-EN-Mw3" secondAttribute="trailing" id="big-2f-4rj"/>
@@ -809,14 +772,13 @@ Mikke Snow</string>
                     </view>
                     <connections>
                         <outlet property="chatInputViewContainer" destination="lH9-zy-7tR" id="1Rz-v7-A8s"/>
-                        <outlet property="chatInputViewContainerBottomConstraint" destination="8S7-sM-jlu" id="7hE-ad-u86"/>
                         <outlet property="chatInputViewContainerHeightConstraint" destination="xCp-Ej-CZC" id="73x-4n-5dv"/>
                         <outlet property="tableView" destination="hxv-TX-p2I" id="nbr-D8-bg4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5e-2m-hMK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3354" y="1306"/>
+            <point key="canvasLocation" x="3352.8000000000002" y="1305.697151424288"/>
         </scene>
         <!--Live Stream View Controller-->
         <scene sceneID="ahM-pw-AU9">
