@@ -38,9 +38,6 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
     self.tableView.isScrollEnabled = false
     self.automaticallyAdjustsScrollViewInsets = false
 
-    let emptyFooterView = UIView(frame: CGRect())
-    self.tableView.tableFooterView = emptyFooterView
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -84,19 +81,19 @@ internal final class LiveStreamContainerMoreMenuViewController: UITableViewContr
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if let menuItem = self.dataSource[indexPath] as? LiveStreamContainerMoreMenuItem {
-      switch menuItem {
-      case .cancel:
-        self.delegate?.moreMenuViewControllerWillDismiss(controller: self)
-      case .share(let liveStreamEvent):
-        self.delegate?.moreMenuViewControllerDidShare(controller: self, liveStreamEvent: liveStreamEvent)
-      case .hideChat(let hidden):
-        self.delegate?.moreMenuViewControllerDidSetChatHidden(controller: self, hidden: !hidden)
-      default:
-        return
-      }
+    guard let menuItem = self.dataSource[indexPath] as? LiveStreamContainerMoreMenuItem else { return }
+
+    switch menuItem {
+    case .cancel:
+      self.delegate?.moreMenuViewControllerWillDismiss(controller: self)
+    case .share(let liveStreamEvent):
+      self.delegate?.moreMenuViewControllerDidShare(controller: self, liveStreamEvent: liveStreamEvent)
+    case .hideChat(let hidden):
+      self.delegate?.moreMenuViewControllerDidSetChatHidden(controller: self, hidden: !hidden)
     }
 
-    tableView.indexPathForSelectedRow.flatMap { tableView.deselectRow(at: $0, animated: true) }
+    defer {
+      tableView.indexPathForSelectedRow.doIfSome { tableView.deselectRow(at: $0, animated: true) }
+    }
   }
 }

@@ -235,7 +235,7 @@ extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
     self.viewModel.inputs.moreMenuButtonTapped()
   }
 
-  func liveStreamChatInputViewDidSend(chatInputView: LiveStreamChatInputView, message: String) {
+  func liveStreamChatInputView(_ chatInputView: LiveStreamChatInputView, didSendMessage message: String) {
     self.liveStreamChatHandler?.sendChatMessage(message: message)
   }
 

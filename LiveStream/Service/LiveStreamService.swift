@@ -23,10 +23,10 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
         components?.queryItems = []
 
-        uid.map { uid in
+        uid.doIfSome { uid in
           components?.queryItems?.append(URLQueryItem(name: "uid", value: "\(uid)"))
         }
-        liveAuthToken.map { token in
+        liveAuthToken.doIfSome { token in
           components?.queryItems?.append(URLQueryItem(name: "h", value: "\(token)"))
         }
 

@@ -37,8 +37,8 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
-    self.goToProjectButton.addTarget(self, action: #selector(goToProject), for: [.touchUpInside])
+    self.subscribeButton.addTarget(self, action: #selector(subscribeButtonTapped), for: .touchUpInside)
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -130,6 +130,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.openLoginToutViewController
+      .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.openLoginTout()
     }
@@ -167,10 +168,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
 
     self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
-    Signal.merge(
-      self.viewModel.outputs.showErrorAlert,
-      self.viewModel.outputs.showErrorAlert
-      )
+    self.viewModel.outputs.showErrorAlert
       .observeForUI()
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
@@ -194,11 +192,11 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  @objc private func subscribe() {
+  @objc private func subscribeButtonTapped() {
     self.viewModel.inputs.subscribeButtonTapped()
   }
 
-  @objc private func goToProject() {
+  @objc private func goToProjectButtonTapped() {
     self.viewModel.inputs.goToProjectButtonTapped()
   }
 }

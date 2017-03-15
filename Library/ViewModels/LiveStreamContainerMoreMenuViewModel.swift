@@ -58,9 +58,9 @@ LiveStreamContainerMoreMenuViewModelInputs, LiveStreamContainerMoreMenuViewModel
 }
 
 public enum LiveStreamContainerMoreMenuItem {
+  case cancel
   case hideChat(hidden: Bool)
   case share(liveStreamEvent: LiveStreamEvent)
-  case cancel
 }
 
 extension LiveStreamContainerMoreMenuItem: Equatable {

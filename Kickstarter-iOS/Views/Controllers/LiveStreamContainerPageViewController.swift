@@ -40,10 +40,8 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.chatPagerButton.addTarget(self, action: #selector(LiveStreamContainerPageViewController.chat),
-                                   for: .touchUpInside)
-    self.infoPagerButton.addTarget(self, action: #selector(LiveStreamContainerPageViewController.info),
-                                   for: .touchUpInside)
+    self.chatPagerButton.addTarget(self, action: #selector(chatButtonTapped), for: .touchUpInside)
+    self.infoPagerButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 
     self.pageViewController = self.childViewControllers
       .flatMap { $0 as? UIPageViewController }
@@ -123,12 +121,12 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
       .observeValues { [weak self] page, direction in
         switch page {
         case .chat:
-          self?.liveStreamChatViewController.flatMap {
+          self?.liveStreamChatViewController.doIfSome {
             self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
                                                         completion: nil)
           }
         case .info:
-          self?.liveStreamEventDetailsViewController.flatMap {
+          self?.liveStreamEventDetailsViewController.doIfSome {
             self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
                                                         completion: nil)
           }
@@ -136,11 +134,11 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     }
   }
 
-  @objc private func info() {
+  @objc private func infoButtonTapped() {
     self.viewModel.inputs.infoButtonTapped()
   }
 
-  @objc private func chat() {
+  @objc private func chatButtonTapped() {
     self.viewModel.inputs.chatButtonTapped()
   }
 

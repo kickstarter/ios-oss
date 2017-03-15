@@ -15,7 +15,7 @@ internal final class LiveStreamNavTitleView: UIView {
   @IBOutlet private weak var numberOfPeopleWatchingLabelContainer: UIView!
   @IBOutlet private weak var numberOfPeopleWatchingStackView: UIStackView!
 
-  let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
+  private let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
 
   internal class func fromNib() -> LiveStreamNavTitleView {
     return UINib(nibName: Nib.LiveStreamNavTitleView.rawValue, bundle: .framework)
@@ -37,7 +37,7 @@ internal final class LiveStreamNavTitleView: UIView {
 
     _ = self.playbackStateLabelContainer
       |> roundedStyle()
-      |> UIView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(1)) / 2, leftRight: Styles.grid(1))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.playbackStateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
@@ -46,7 +46,7 @@ internal final class LiveStreamNavTitleView: UIView {
     _ = self.numberOfPeopleWatchingLabelContainer
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.4)
-      |> UIView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(1)) / 2, leftRight: Styles.grid(1))
+      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.numberOfPeopleWatchingLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
