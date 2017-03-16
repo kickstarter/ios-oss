@@ -50,7 +50,20 @@ final class MessageThreadCellViewModelTests: TestCase {
 
     withEnvironment(currentUser: thread.lastMessage.sender) {
       self.vm.inputs.configureWith(messageThread: thread)
+
       self.replyIndicatorHidden.assertValues([true, false])
     }
+  }
+
+  func testUnreadIndicatorHidden() {
+    let thread = MessageThread.template
+
+    self.vm.inputs.configureWith(messageThread: thread)
+
+    self.vm.inputs.setSelected(false)
+    self.unreadIndicatorHidden.assertValues([false])
+
+    self.vm.inputs.setSelected(true)
+    self.unreadIndicatorHidden.assertValues([false, true])
   }
 }
