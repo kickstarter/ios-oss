@@ -56,20 +56,20 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-    self.chatButtonTextColor.assertValues([.white])
-    self.infoButtonTextColor.assertValues([.ksr_grey_500])
-
-    self.vm.inputs.willTransition(toPage: 0)
-    self.vm.inputs.pageTransition(completed: true)
-
-    self.chatButtonTextColor.assertValues([.white, .ksr_grey_500])
-    self.infoButtonTextColor.assertValues([.ksr_grey_500, .white])
+    self.chatButtonTextColor.assertValues([.ksr_grey_500])
+    self.infoButtonTextColor.assertValues([.white])
 
     self.vm.inputs.willTransition(toPage: 1)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.chatButtonTextColor.assertValues([.white, .ksr_grey_500, .white])
-    self.infoButtonTextColor.assertValues([.ksr_grey_500, .white, .ksr_grey_500])
+    self.chatButtonTextColor.assertValues([.ksr_grey_500, .white])
+    self.infoButtonTextColor.assertValues([.white, .ksr_grey_500])
+
+    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.pageTransition(completed: true)
+
+    self.chatButtonTextColor.assertValues([.ksr_grey_500, .white, .ksr_grey_500])
+    self.infoButtonTextColor.assertValues([.white, .ksr_grey_500, .white])
   }
 
   func testFonts() {
@@ -87,25 +87,25 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-    self.chatButtonTitleFontName.assertValues([".SFUIText-Semibold"])
+    self.chatButtonTitleFontName.assertValues([".SFUIText"])
     self.chatButtonTitleFontSize.assertValues([14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText"])
+    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold"])
     self.infoButtonTitleFontSize.assertValues([14])
-
-    self.vm.inputs.willTransition(toPage: 0)
-    self.vm.inputs.pageTransition(completed: true)
-
-    self.chatButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText"])
-    self.chatButtonTitleFontSize.assertValues([14, 14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold"])
-    self.infoButtonTitleFontSize.assertValues([14, 14])
 
     self.vm.inputs.willTransition(toPage: 1)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.chatButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText", ".SFUIText-Semibold"])
+    self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold"])
+    self.chatButtonTitleFontSize.assertValues([14, 14])
+    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText"])
+    self.infoButtonTitleFontSize.assertValues([14, 14])
+
+    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.pageTransition(completed: true)
+
+    self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold", ".SFUIText"])
     self.chatButtonTitleFontSize.assertValues([14, 14, 14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold", ".SFUIText"])
+    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText", ".SFUIText-Semibold"])
     self.infoButtonTitleFontSize.assertValues([14, 14, 14])
   }
 
@@ -122,18 +122,18 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-    XCTAssertTrue(self.pagedToPage.values[0].isChatPage)
+    XCTAssertTrue(self.pagedToPage.values[0].isInfoPage)
     self.pagedToPageDirection.assertValues([.forward])
-
-    self.vm.inputs.infoButtonTapped()
-
-    XCTAssertTrue(self.pagedToPage.values[1].isInfoPage)
-    self.pagedToPageDirection.assertValues([.forward, .reverse])
 
     self.vm.inputs.chatButtonTapped()
 
-    XCTAssertTrue(self.pagedToPage.values[2].isChatPage)
-    self.pagedToPageDirection.assertValues([.forward, .reverse, .forward])
+    XCTAssertTrue(self.pagedToPage.values[1].isChatPage)
+    self.pagedToPageDirection.assertValues([.forward, .forward])
+
+    self.vm.inputs.infoButtonTapped()
+
+    XCTAssertTrue(self.pagedToPage.values[2].isInfoPage)
+    self.pagedToPageDirection.assertValues([.forward, .forward, .reverse])
   }
 
   func testLoadViewControllersIntoPagesDataSource() {
@@ -163,16 +163,16 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-    self.indicatorLineViewXPosition.assertValues([1])
-
-    self.vm.inputs.willTransition(toPage: 0)
-    self.vm.inputs.pageTransition(completed: true)
-
-    self.indicatorLineViewXPosition.assertValues([1, 0])
+    self.indicatorLineViewXPosition.assertValues([0])
 
     self.vm.inputs.willTransition(toPage: 1)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.indicatorLineViewXPosition.assertValues([1, 0, 1])
+    self.indicatorLineViewXPosition.assertValues([0, 1])
+
+    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.pageTransition(completed: true)
+
+    self.indicatorLineViewXPosition.assertValues([0, 1, 0])
   }
 }

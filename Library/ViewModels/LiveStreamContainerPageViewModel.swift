@@ -98,7 +98,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
     let firstPage = self.loadViewControllersIntoPagesDataSource
       .takeWhen(self.didLoadViewControllersIntoPagesDataSourceProperty.signal)
-      .map { $0.filter { $0.isChatPage }.first }
+      .map { $0.filter { $0.isInfoPage }.first }
       .skipNil()
       .map { ($0, UIPageViewControllerNavigationDirection.forward) }
 
