@@ -31,7 +31,7 @@ public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_navy_900
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_grey_500
   <> UIButton.lens.titleColor(forState: .disabled) .~ .ksr_grey_500
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_600.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
 public let greenBorderButtonStyle = baseButtonStyle

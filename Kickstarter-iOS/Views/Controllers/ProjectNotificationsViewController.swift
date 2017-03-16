@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal final class ProjectNotificationsViewController: UITableViewController {
@@ -15,6 +16,11 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
     self.view.backgroundColor = .ksr_grey_100
     self.tableView.dataSource = self.dataSource
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+    _ = self |> baseControllerStyle()
   }
 
   internal override func bindViewModel() {

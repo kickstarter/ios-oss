@@ -38,9 +38,8 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self
+      |> baseControllerStyle()
 
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
