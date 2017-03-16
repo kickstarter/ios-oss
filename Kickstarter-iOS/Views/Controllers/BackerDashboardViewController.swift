@@ -82,7 +82,8 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.viewModel.outputs.configurePagesDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.configurePagesDataSource(sort: $0)
+      .observeValues { [weak self] tab, sort in
+        self?.configurePagesDataSource(tab: tab, sort: sort)
     }
 
     self.viewModel.outputs.savedButtonTitleText
@@ -193,12 +194,12 @@ internal final class BackerDashboardViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
   }
 
-  private func configurePagesDataSource(sort: DiscoveryParams.Sort) {
+  private func configurePagesDataSource(tab: BackerDashboardTab, sort: DiscoveryParams.Sort) {
     self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
 
     self.pageViewController.dataSource = self.pagesDataSource
     self.pageViewController.setViewControllers(
-      [self.pagesDataSource.controllerFor(tab: .backed)].compact(),
+      [self.pagesDataSource.controllerFor(tab: tab)].compact(),
       direction: .forward,
       animated: false,
       completion: nil

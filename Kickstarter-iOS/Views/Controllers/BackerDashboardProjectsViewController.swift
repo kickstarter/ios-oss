@@ -57,7 +57,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
       .observeValues { [weak self] isVisible, type in
-        self?.dataSource.emptyState(visible: isVisible, type: type)
+        self?.dataSource.emptyState(visible: isVisible, projectsType: type)
         self?.tableView.reloadData()
     }
 

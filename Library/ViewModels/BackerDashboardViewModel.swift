@@ -50,8 +50,8 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a string for the backer name label.
   var backerNameText: Signal<String, NoError> { get }
 
-  /// Emits a default Sort for the page view controller's initial data source data.
-  var configurePagesDataSource: Signal<DiscoveryParams.Sort, NoError> { get }
+  /// Emits the initial BackerDashboardTab and a default Sort to configure the page view controller.
+  var configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError> { get }
 
   /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
   var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
@@ -124,7 +124,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.backerNameText = user.map { $0.name }
 
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
-      .map { DiscoveryParams.Sort.endingSoon }
+      .map { (.backed, DiscoveryParams.Sort.endingSoon) }
 
     self.savedButtonTitleText = user.map { user in
       localizedString(
@@ -229,7 +229,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let backedButtonTitleText: Signal<String, NoError>
   public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
-  public let configurePagesDataSource: Signal<DiscoveryParams.Sort, NoError>
+  public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError>
   public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>
   public let goToMessages: Signal<(), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>

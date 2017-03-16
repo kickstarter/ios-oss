@@ -5,12 +5,14 @@ import UIKit
 internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate: BackerDashboardViewController, sort: DiscoveryParams.Sort) {
+  internal init(delegate: UIViewController, sort: DiscoveryParams.Sort) {
     let backedController = BackerDashboardProjectsViewController()
-    backedController.configureWith(delegate: delegate, projectsType: .backed, sort: sort)
-
     let savedController = BackerDashboardProjectsViewController()
-    savedController.configureWith(delegate: delegate, projectsType: .saved, sort: sort)
+
+    if let delegate = delegate as? BackerDashboardProjectsViewControllerDelegate {
+      backedController.configureWith(delegate: delegate, projectsType: .backed, sort: sort)
+      savedController.configureWith(delegate: delegate, projectsType: .saved, sort: sort)
+    }
 
     self.viewControllers = [backedController, savedController]
   }

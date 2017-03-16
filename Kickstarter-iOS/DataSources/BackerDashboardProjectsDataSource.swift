@@ -8,8 +8,8 @@ internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
     case projects
   }
 
-  internal func emptyState(visible: Bool, type: ProfileProjectsType) {
-    self.set(values: visible ? [type] : [],
+  internal func emptyState(visible: Bool, projectsType: ProfileProjectsType) {
+    self.set(values: visible ? [projectsType] : [],
              cellClass: BackerDashboardEmptyStateCell.self,
              inSection: Section.emptyState.rawValue)
   }
@@ -21,8 +21,8 @@ internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
     )
   }
 
-  internal func indexPath(for itemPosition: Int) -> IndexPath {
-    return IndexPath(item: itemPosition, section: Section.projects.rawValue)
+  internal func indexPath(for row: Int) -> IndexPath {
+    return IndexPath(row: row, section: Section.projects.rawValue)
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
