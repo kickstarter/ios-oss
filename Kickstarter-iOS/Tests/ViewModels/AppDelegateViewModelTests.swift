@@ -1246,6 +1246,37 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToMobileSafari.assertValues([])
   }
 
+  func testEmailDeepLinking_ContinuedUserActivity() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    userActivity.webpageURL = emailUrl
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValues([])
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertTrue(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented yet.")
+    self.goToMobileSafari.assertValues([])
+
+    // We find the redirect to be a project url.
+    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValueCount(1, "Present the project view controller.")
+    self.goToMobileSafari.assertValues([])
+  }
+
   func testEmailDeepLinking_UnrecognizedUrl() {
     let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
 
