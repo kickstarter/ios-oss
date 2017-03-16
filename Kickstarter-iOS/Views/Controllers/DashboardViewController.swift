@@ -44,9 +44,6 @@ internal final class DashboardViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
       |> UITableViewController.lens.view.backgroundColor .~ .white
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length

@@ -64,9 +64,6 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
-
     self.title = Strings.activity_navigation_title_activity()
   }
 

@@ -78,9 +78,6 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   internal override func bindViewModel() {

@@ -26,10 +26,9 @@ internal final class ProjectUpdatesViewController: WebViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.navigationItem.title = Strings.project_menu_buttons_updates()
+    _ = self |> baseControllerStyle()
 
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
+    self.navigationItem.title = Strings.project_menu_buttons_updates()
   }
 
   internal override func bindViewModel() {

@@ -79,13 +79,10 @@ internal final class ProfileViewController: UICollectionViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerFeedStyle()
+      |> baseControllerStyle()
 
     _ = self.messagesButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.profile_buttons_messages() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
 
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }

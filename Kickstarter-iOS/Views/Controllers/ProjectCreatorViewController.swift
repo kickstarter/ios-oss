@@ -33,9 +33,6 @@ internal final class ProjectCreatorViewController: WebViewController {
 
     _ = self
       |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   internal override func bindViewModel() {
