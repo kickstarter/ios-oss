@@ -13,6 +13,7 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
+  private let findRedirectUrl = TestObserver<URL, NoError>()
   fileprivate let forceLogout = TestObserver<(), NoError>()
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
@@ -22,6 +23,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let goToLogin = TestObserver<(), NoError>()
   fileprivate let goToProfile = TestObserver<(), NoError>()
+  private let goToMobileSafari = TestObserver<URL, NoError>()
   fileprivate let goToSearch = TestObserver<(), NoError>()
   fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
   fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
@@ -37,6 +39,7 @@ final class AppDelegateViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
+    self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
@@ -46,6 +49,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLiveStream.map(third).observe(self.goToLiveStreamRefTag.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
+    self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
@@ -1208,6 +1212,102 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["vis", "vis"], AppEnvironment.current.cookieStorage.cookies!.map { $0.name })
     XCTAssertEqual(["DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"],
                    AppEnvironment.current.cookieStorage.cookies!.map { $0.value })
+  }
+
+  func testEmailDeepLinking() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValues([])
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: emailUrl,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented yet.")
+    self.goToMobileSafari.assertValues([])
+
+    // We find the redirect to be a project url.
+    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValueCount(1, "Present the project view controller.")
+    self.goToMobileSafari.assertValues([])
+  }
+
+  func testEmailDeepLinking_ContinuedUserActivity() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    userActivity.webpageURL = emailUrl
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValues([])
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+    XCTAssertTrue(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented yet.")
+    self.goToMobileSafari.assertValues([])
+
+    // We find the redirect to be a project url.
+    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValueCount(1, "Present the project view controller.")
+    self.goToMobileSafari.assertValues([])
+  }
+
+  func testEmailDeepLinking_UnrecognizedUrl() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValueCount(0)
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: emailUrl,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented.")
+    self.goToMobileSafari.assertValues([], "Do not go to mobile safari")
+
+    // We find the redirect to be an unrecognized url.
+    let unrecognizedUrl = URL(string: "https://www.kickstarter.com/unreconizable")!
+    self.vm.inputs.foundRedirectUrl(unrecognizedUrl)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValues([], "Do not present controller since the url was unrecognizable.")
+    self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
   }
 }
 
