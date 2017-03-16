@@ -50,7 +50,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-
+    self.tableView.keyboardDismissMode = .onDrag
     self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
 
     self.chatInputViewContainer.addSubview(self.liveStreamChatInputView)
