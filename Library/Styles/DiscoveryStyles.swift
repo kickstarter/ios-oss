@@ -28,7 +28,7 @@ public func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
-    return .ksr_navy_700
+    return .black
   case .culture:
     return .ksr_red_400
   case .entertainment:

@@ -154,6 +154,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+      |> RewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)

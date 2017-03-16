@@ -84,7 +84,6 @@ internal final class FindFriendsViewController: UITableViewController {
 
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-
     self.loadingIndicatorView.center = self.backgroundView.center
   }
 
@@ -94,9 +93,6 @@ internal final class FindFriendsViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
 
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
