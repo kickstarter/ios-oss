@@ -192,7 +192,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
   }
 
-  override public var prefersStatusBarHidden: Bool {
+  public override var prefersStatusBarHidden: Bool {
     return true
   }
 
