@@ -67,8 +67,6 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     self.unreadIndicatorHidden = Signal.merge(
       self.setSelectedProperty.signal.filter(isTrue).mapConst(true),
       messageThread.map { !hasUnreadMessages(for: $0) }
-
-
     )
   }
 
