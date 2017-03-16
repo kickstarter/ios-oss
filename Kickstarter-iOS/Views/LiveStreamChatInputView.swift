@@ -40,6 +40,8 @@ internal final class LiveStreamChatInputView: UIView {
 
     self.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
     self.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
+
+    self.textField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
   }
 
   internal override func bindStyles() {
@@ -118,21 +120,15 @@ internal final class LiveStreamChatInputView: UIView {
   @objc private func sendButtonTapped() {
     self.viewModel.inputs.sendButtonTapped()
   }
+
+  @objc private func textFieldChanged(_ textField: UITextField) {
+    textField.text.doIfSome { self.viewModel.inputs.textDidChange(toText: $0) }
+  }
 }
 
 extension LiveStreamChatInputView: UITextFieldDelegate {
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     return self.viewModel.inputs.textFieldShouldBeginEditing()
-  }
-
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-                 replacementString string: String) -> Bool {
-    let text = textField.text.coalesceWith("") as NSString
-    let newText = text.replacingCharacters(in: range, with: string)
-
-    self.viewModel.inputs.textDidChange(toText: newText)
-
-    return true
   }
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
