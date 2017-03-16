@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -406,13 +406,33 @@ Mikke Snow</string>
                                     <segue destination="hTH-R6-TaP" kind="embed" id="wpX-RU-LlT"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jcg-UX-IKZ">
+                                <rect key="frame" x="67" y="286" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="24W-RX-wnD"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vua-zM-Nqh" customClass="GradientView" customModule="Library">
+                                <rect key="frame" x="67" y="286" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="WPq-v2-vMo"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="EXE-hf-dQ1" secondAttribute="trailing" id="0i1-9Z-uSd"/>
+                            <constraint firstItem="vua-zM-Nqh" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="1qk-Ee-XCc"/>
+                            <constraint firstItem="vua-zM-Nqh" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="bottom" id="4M5-a9-jJh"/>
                             <constraint firstItem="euM-PC-048" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="CS1-82-QpT"/>
+                            <constraint firstItem="jcg-UX-IKZ" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="Cti-EE-bXT"/>
+                            <constraint firstAttribute="trailing" secondItem="jcg-UX-IKZ" secondAttribute="trailing" id="Ddo-h7-imj"/>
                             <constraint firstItem="I2v-fl-8Ht" firstAttribute="top" secondItem="euM-PC-048" secondAttribute="bottom" id="Idf-qV-BDK"/>
+                            <constraint firstItem="jcg-UX-IKZ" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="bottom" id="KPb-Yz-I0o"/>
                             <constraint firstItem="euM-PC-048" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="bottom" id="X2t-1z-swf"/>
+                            <constraint firstAttribute="trailing" secondItem="vua-zM-Nqh" secondAttribute="trailing" id="YOv-Jr-f2M"/>
                             <constraint firstItem="EXE-hf-dQ1" firstAttribute="top" secondItem="fQm-7K-fX2" secondAttribute="top" id="dZr-tc-vtD"/>
                             <constraint firstAttribute="trailing" secondItem="euM-PC-048" secondAttribute="trailing" id="mIf-DV-duM"/>
                             <constraint firstItem="EXE-hf-dQ1" firstAttribute="leading" secondItem="fQm-7K-fX2" secondAttribute="leading" id="xfV-Uw-R7g"/>
@@ -421,10 +441,12 @@ Mikke Snow</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="700"/>
                     <connections>
+                        <outlet property="gradientView" destination="vua-zM-Nqh" id="OWl-AU-WpA"/>
                         <outlet property="loaderActivityIndicatorView" destination="COg-em-r6I" id="coQ-Eh-3b8"/>
                         <outlet property="loaderLabel" destination="Qg2-W1-xwo" id="Ctg-bG-Frt"/>
                         <outlet property="loaderStackView" destination="A6q-eY-g0e" id="opA-A0-ELy"/>
                         <outlet property="loaderView" destination="EXE-hf-dQ1" id="Qir-je-xMo"/>
+                        <outlet property="separatorView" destination="jcg-UX-IKZ" id="cTn-fp-wkJ"/>
                         <outlet property="videoContainerAspectRatioConstraint_16_9" destination="rel-3a-meW" id="b8e-1n-yJ8"/>
                         <outlet property="videoContainerAspectRatioConstraint_4_3" destination="zbI-0p-ahe" id="qdO-Hx-Rkb"/>
                     </connections>
@@ -449,28 +471,28 @@ Mikke Snow</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MPc-gU-qxa">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="668"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="N5s-ci-WzI">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="592"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="593"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Eja-XR-rqJ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="143"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available to watch for 48 more hours" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbk-fz-q9d">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title of the live stream goes here and can be 60 chr max" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lfi-9R-VkT">
-                                                                <rect key="frame" x="0.0" y="20.5" width="375" height="41"/>
+                                                                <rect key="frame" x="0.0" y="21" width="375" height="41"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lws-Sr-hCK">
-                                                                <rect key="frame" x="0.0" y="61.5" width="375" height="81.5"/>
+                                                                <rect key="frame" x="0.0" y="62" width="375" height="82"/>
                                                                 <string key="text">175 char max. 175 char max 175 char max message with a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -479,11 +501,11 @@ Mikke Snow</string>
                                                         </subviews>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="1" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ugz-LO-7Rp" userLabel="Spacer">
-                                                        <rect key="frame" x="0.0" y="143" width="375" height="415"/>
+                                                        <rect key="frame" x="0.0" y="144" width="375" height="415"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AbI-np-MSX">
-                                                        <rect key="frame" x="0.0" y="558" width="375" height="34"/>
+                                                        <rect key="frame" x="0.0" y="559" width="375" height="34"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" ambiguous="YES" text="Keep up with future live streams" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDW-8G-z1a">
                                                                 <rect key="frame" x="0.0" y="0.0" width="245" height="34"/>
@@ -510,7 +532,7 @@ Mikke Snow</string>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZSp-Pu-fd3">
-                                                <rect key="frame" x="0.0" y="592" width="375" height="75"/>
+                                                <rect key="frame" x="0.0" y="593" width="375" height="75"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i6i-ss-KcY">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -575,7 +597,7 @@ Mikke Snow</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4TN-A7-IyJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1702" y="1306"/>
+            <point key="canvasLocation" x="1702" y="984"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="Rhu-bu-m5W">
@@ -778,7 +800,7 @@ Mikke Snow</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5e-2m-hMK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3352.8000000000002" y="1305.697151424288"/>
+            <point key="canvasLocation" x="3353" y="1214"/>
         </scene>
         <!--Live Stream View Controller-->
         <scene sceneID="ahM-pw-AU9">
@@ -796,7 +818,7 @@ Mikke Snow</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rys-1D-Ggk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3422" y="-47"/>
+            <point key="canvasLocation" x="3353" y="-48"/>
         </scene>
         <!--Live Stream Container More Menu View Controller-->
         <scene sceneID="6eP-my-lw7">
@@ -814,8 +836,8 @@ Mikke Snow</string>
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DBR-nx-uWn">
-                                            <rect key="frame" x="0.0" y="-8" width="375" height="60"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DBR-nx-uWn">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P5v-xv-o2T">
                                                     <rect key="frame" x="0.0" y="20" width="20" height="20"/>
@@ -925,8 +947,8 @@ Mikke Snow</string>
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K2H-BQ-fKx">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K2H-BQ-fKx">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="4w9-RY-rJI"/>
                                             </constraints>
