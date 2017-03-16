@@ -5,6 +5,11 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+internal protocol LiveStreamNavTitleViewDelegate: class {
+  func liveStreamNavTitleView(_ navTitleView: LiveStreamNavTitleView,
+                              requiresLayoutWithPreferredSize size: CGSize)
+}
+
 internal final class LiveStreamNavTitleView: UIView {
 
   @IBOutlet private weak var rootStackView: UIStackView!
@@ -15,6 +20,7 @@ internal final class LiveStreamNavTitleView: UIView {
   @IBOutlet private weak var numberOfPeopleWatchingLabelContainer: UIView!
   @IBOutlet private weak var numberOfPeopleWatchingStackView: UIStackView!
 
+  private weak var delegate: LiveStreamNavTitleViewDelegate?
   private let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
 
   internal class func fromNib() -> LiveStreamNavTitleView {
@@ -22,6 +28,15 @@ internal final class LiveStreamNavTitleView: UIView {
       .instantiate(withOwner: nil, options: nil)
       //swiftlint:disable:next force_cast
       .first as! LiveStreamNavTitleView
+  }
+
+  internal override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.delegate?.liveStreamNavTitleView(
+      self,
+      requiresLayoutWithPreferredSize: self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    )
   }
 
   internal override func bindStyles() {
@@ -59,11 +74,7 @@ internal final class LiveStreamNavTitleView: UIView {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.playbackStateLabel.rac.text =
-      self.viewModel.outputs.playbackStateLabelText
-        .on(value: { [weak self] _ in
-          self?.layoutSubviews()
-        })
+    self.playbackStateLabel.rac.text = self.viewModel.outputs.playbackStateLabelText
 
     self.playbackStateLabelContainer.rac.backgroundColor =
       self.viewModel.outputs.playbackStateContainerBackgroundColor
@@ -74,23 +85,8 @@ internal final class LiveStreamNavTitleView: UIView {
     self.numberOfPeopleWatchingLabel.rac.text = self.viewModel.outputs.numberOfPeopleWatchingLabelText
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    let stackViewSize = self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-
-    guard let superview = self.superview else { return }
-
-    let newOrigin = CGPoint(x: (superview.frame.size.width / 2) - (stackViewSize.width / 2),
-                            y: self.frame.origin.y)
-
-    self.frame = CGRect(
-      origin: newOrigin,
-      size: CGSize(width: stackViewSize.width, height: Styles.grid(5))
-    )
-  }
-
-  public func configureWith(liveStreamEvent: LiveStreamEvent) {
+  public func configureWith(liveStreamEvent: LiveStreamEvent, delegate: LiveStreamNavTitleViewDelegate?) {
+    self.delegate = delegate
     self.viewModel.inputs.configureWith(liveStreamEvent: liveStreamEvent)
   }
 

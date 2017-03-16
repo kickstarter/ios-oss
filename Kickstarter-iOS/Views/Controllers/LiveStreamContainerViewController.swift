@@ -182,7 +182,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.configureNavBarTitleView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.navBarTitleView.configureWith(liveStreamEvent: $0)
+        guard let _self = self else { return }
+        self?.navBarTitleView.configureWith(liveStreamEvent: $0, delegate: _self)
     }
 
     self.viewModel.outputs.navBarTitleViewHidden
@@ -277,5 +278,20 @@ extension LiveStreamContainerViewController: LiveStreamChatViewControllerDelegat
   func willPresentMoreMenuViewController(controller: LiveStreamChatViewController,
                                          moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
     self.viewModel.inputs.willPresentMoreMenuViewController()
+  }
+}
+
+extension LiveStreamContainerViewController: LiveStreamNavTitleViewDelegate {
+  func liveStreamNavTitleView(_ navTitleView: LiveStreamNavTitleView,
+                              requiresLayoutWithPreferredSize size: CGSize) {
+    guard let navigationBarWidth = self.navigationController?.navigationBar.frame.size.width else { return }
+
+    let newOrigin = CGPoint(x: (navigationBarWidth / 2) - (size.width / 2),
+                            y: navTitleView.frame.origin.y)
+
+    navTitleView.frame = CGRect(
+      origin: newOrigin,
+      size: CGSize(width: size.width, height: Styles.grid(5))
+    )
   }
 }
