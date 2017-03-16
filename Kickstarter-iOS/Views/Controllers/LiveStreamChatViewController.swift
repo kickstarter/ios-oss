@@ -176,10 +176,9 @@ internal final class LiveStreamChatViewController: UIViewController {
         self?.view.endEditing(true)
     }
 
-    self.viewModel.outputs.chatInputViewHidden
+    self.viewModel.outputs.shouldCollapseChatInputView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.chatInputViewContainer.isHidden = $0
         self?.chatInputViewContainerHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
     }
   }

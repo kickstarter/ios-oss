@@ -8,9 +8,8 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamChatViewModelTests: TestCase {
-  let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
+  private let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
-  private let chatInputViewHidden = TestObserver<Bool, NoError>()
   private let configureChatHandlerWithUserInfo = TestObserver<LiveStreamChatUserInfo, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let didAuthorizeChat = TestObserver<Bool, NoError>()
@@ -18,6 +17,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
   private let prependChatMessagesToDataSourceReload = TestObserver<Bool, NoError>()
   private let presentMoreMenuViewController = TestObserver<(LiveStreamEvent, Bool), NoError>()
+  private let shouldCollapseChatInputView = TestObserver<Bool, NoError>()
   private let shouldHideChatTableView = TestObserver<Bool, NoError>()
   private let updateLiveAuthTokenInEnvironment = TestObserver<String, NoError>()
   private let willAuthorizeChat = TestObserver<(), NoError>()
@@ -25,7 +25,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.chatInputViewHidden.observe(self.chatInputViewHidden.observer)
     self.vm.outputs.configureChatHandlerWithUserInfo.observe(self.configureChatHandlerWithUserInfo.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didAuthorizeChat.observe(self.didAuthorizeChat.observer)
@@ -35,6 +34,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(second).observe(
       self.prependChatMessagesToDataSourceReload.observer)
     self.vm.outputs.presentMoreMenuViewController.observe(self.presentMoreMenuViewController.observer)
+    self.vm.outputs.shouldCollapseChatInputView.observe(self.shouldCollapseChatInputView.observer)
     self.vm.outputs.shouldHideChatTableView.observe(self.shouldHideChatTableView.observer)
     self.vm.outputs.updateLiveAuthTokenInEnvironment.observe(self.updateLiveAuthTokenInEnvironment.observer)
     self.vm.outputs.willAuthorizeChat.observe(self.willAuthorizeChat.observer)
@@ -190,8 +190,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.presentMoreMenuViewController.assertValueCount(1)
   }
 
-  func testChatInputViewHidden_Live() {
-    self.chatInputViewHidden.assertValueCount(0)
+  func testShouldCollapseChatInputView_Live() {
+    self.shouldCollapseChatInputView.assertValueCount(0)
 
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
@@ -199,11 +199,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
     self.vm.inputs.viewDidLoad()
 
-    self.chatInputViewHidden.assertValues([false])
+    self.shouldCollapseChatInputView.assertValues([false])
   }
 
-  func testChatInputViewHidden_Replay() {
-    self.chatInputViewHidden.assertValueCount(0)
+  func testShouldCollapseChatInputView_Replay() {
+    self.shouldCollapseChatInputView.assertValueCount(0)
 
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ false
@@ -211,7 +211,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
     self.vm.inputs.viewDidLoad()
 
-    self.chatInputViewHidden.assertValues([true])
+    self.shouldCollapseChatInputView.assertValues([true])
   }
 
   func testDismissKeyboard() {

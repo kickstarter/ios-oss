@@ -36,10 +36,7 @@ public protocol LiveStreamChatViewModelInputs {
 }
 
 public protocol LiveStreamChatViewModelOutputs {
-  /// Emits when the chat input view should be hidden
-  var chatInputViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits with new chat user info received after authorization
+  /// Emits with new chat user info received after authorization.
   var configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError> { get }
 
   /// Emits when the keyboard should dismiss on rotate.
@@ -56,6 +53,9 @@ public protocol LiveStreamChatViewModelOutputs {
 
   /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
   var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
+
+  /// Emits when the chat input view should be collapsed for the table view to fill the height.
+  var shouldCollapseChatInputView: Signal<Bool, NoError> { get }
 
   /// Emits whether or not the chat table view should be hidden.
   var shouldHideChatTableView: Signal<Bool, NoError> { get }
@@ -163,7 +163,7 @@ LiveStreamChatViewModelOutputs {
     self.updateLiveAuthTokenInEnvironment = liveAuthTokenFetch.values().map { $0.token }
     self.willAuthorizeChat = shouldFetchAuthToken
 
-    self.chatInputViewHidden = liveStreamEvent.map { $0.liveNow }.map(negate)
+    self.shouldCollapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate)
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
   }
 
@@ -207,13 +207,13 @@ LiveStreamChatViewModelOutputs {
     self.userSessionStartedProperty.value = ()
   }
 
-  public let chatInputViewHidden: Signal<Bool, NoError>
   public let configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError>
   public let dismissKeyboard: Signal<(), NoError>
   public let didAuthorizeChat: Signal<Bool, NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
+  public let shouldCollapseChatInputView: Signal<Bool, NoError>
   public let shouldHideChatTableView: Signal<Bool, NoError>
   public let updateLiveAuthTokenInEnvironment: Signal<String, NoError>
   public let willAuthorizeChat: Signal<(), NoError>

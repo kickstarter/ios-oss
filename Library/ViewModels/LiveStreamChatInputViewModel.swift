@@ -23,7 +23,7 @@ public protocol LiveStreamChatInputViewModelInputs {
   func sendButtonTapped()
 
   /// Call when the text field should begin editing
-  func textFieldShouldBeginEditing()
+  func textFieldShouldBeginEditing() -> Bool
 
   /// Call with new value from the input field
   func textDidChange(toText text: String)
@@ -92,6 +92,10 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
           ]
         )
     }
+
+    self.textFieldShouldBeginEditingReturnValueProperty <~ self.textFieldShouldBeginEditingProperty.map {
+      return AppEnvironment.current.currentUser != nil
+    }
   }
 
   private let chatHiddenProperty = MutableProperty(false)
@@ -115,8 +119,10 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
   }
 
   private let textFieldShouldBeginEditingProperty = MutableProperty()
-  public func textFieldShouldBeginEditing() {
+  private let textFieldShouldBeginEditingReturnValueProperty = MutableProperty<Bool>(false)
+  public func textFieldShouldBeginEditing() -> Bool {
     self.textFieldShouldBeginEditingProperty.value = ()
+    return self.textFieldShouldBeginEditingReturnValueProperty.value
   }
 
   private let textProperty = MutableProperty<String?>(nil)

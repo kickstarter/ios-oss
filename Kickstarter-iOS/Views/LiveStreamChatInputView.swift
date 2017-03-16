@@ -122,8 +122,7 @@ internal final class LiveStreamChatInputView: UIView {
 
 extension LiveStreamChatInputView: UITextFieldDelegate {
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    self.viewModel.inputs.textFieldShouldBeginEditing()
-    return AppEnvironment.current.currentUser != nil
+    return self.viewModel.inputs.textFieldShouldBeginEditing()
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,

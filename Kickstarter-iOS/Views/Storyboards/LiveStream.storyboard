@@ -769,7 +769,7 @@ Mikke Snow</string>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lH9-zy-7tR">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lH9-zy-7tR">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xCp-Ej-CZC"/>
@@ -789,6 +789,7 @@ Mikke Snow</string>
                     </view>
                     <connections>
                         <outlet property="chatInputViewContainer" destination="lH9-zy-7tR" id="1Rz-v7-A8s"/>
+                        <outlet property="chatInputViewContainerBottomConstraint" destination="VP5-U3-OU0" id="J8T-DX-N5X"/>
                         <outlet property="chatInputViewContainerHeightConstraint" destination="xCp-Ej-CZC" id="73x-4n-5dv"/>
                         <outlet property="tableView" destination="hxv-TX-p2I" id="nbr-D8-bg4"/>
                     </connections>
