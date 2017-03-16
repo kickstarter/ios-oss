@@ -282,12 +282,19 @@ AppDelegateViewModelOutputs {
 
     self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
 
-    let deepLinkFromUrl = Signal
+    let deepLinkUrl = Signal
       .merge(
-        openUrl.map { Navigation.match($0.url) },
-        self.foundRedirectUrlProperty.signal.skipNil().map(Navigation.match),
-        continueUserActivityWithNavigation.map(second)
-      )
+        openUrl.map { $0.url },
+
+        self.foundRedirectUrlProperty.signal.skipNil(),
+
+        continueUserActivity
+          .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
+          .map { $0.webpageURL }
+          .skipNil()
+    )
+
+    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
 
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
@@ -309,12 +316,11 @@ AppDelegateViewModelOutputs {
       )
       .skipNil()
 
-    self.findRedirectUrl = openUrl
+    self.findRedirectUrl = deepLinkUrl
       .filter {
-        guard case .some(.emailClick(_)) = Navigation.match($0.url) else { return false }
+        guard case .some(.emailClick(_)) = Navigation.match($0) else { return false }
         return true
-      }
-      .map { $0.url }
+    }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
