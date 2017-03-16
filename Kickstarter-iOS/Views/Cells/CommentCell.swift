@@ -25,7 +25,8 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> CommentCell.lens.contentView.layoutMargins .~
+      |> UITableViewCell.lens.backgroundColor .~ .white
+      |> UITableViewCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     _ = self.bodyTextView

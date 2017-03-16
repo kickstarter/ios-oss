@@ -15,12 +15,14 @@ public enum Styles {
 }
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_grey_300
+  return VC.lens.view.backgroundColor .~ .white
+    <> (VC.lens.navigationController • navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
+    <> TVC.lens.view.backgroundColor .~ .ksr_grey_300
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
@@ -30,14 +32,6 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
     return style
   #endif
 }
-
-public let baseNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
-    NSFontAttributeName: UIFont.ksr_callout()
-  ]
-  <> UINavigationBar.lens.translucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .white
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 
@@ -101,7 +95,7 @@ public let formFieldStyle =
 
 public let separatorStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_400
-  <> UIView.lens.accessibilityElementsHidden .~ true
+    <> UIView.lens.accessibilityElementsHidden .~ true
 
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.
@@ -113,3 +107,17 @@ public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.c
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
 }
+
+// Just a lil helper lens for getting inside a nav controller's nav bar.
+private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
+  view: { $0?.navigationBar },
+  set: { _, whole in whole }
+)
+
+private let baseNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.black,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ false
+    <> UINavigationBar.lens.barTintColor .~ .white
