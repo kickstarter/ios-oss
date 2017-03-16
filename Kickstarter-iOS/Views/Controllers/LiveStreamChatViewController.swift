@@ -124,8 +124,8 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     self.viewModel.outputs.openLoginToutViewController
       .observeForControllerAction()
-      .observeValues {
-        self.openLoginTout(loginIntent: $0)
+      .observeValues { [weak self] in
+        self?.openLoginTout(loginIntent: $0)
     }
 
     Keyboard.change
