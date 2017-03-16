@@ -30,6 +30,9 @@ public protocol LiveStreamChatInputViewModelInputs {
 }
 
 public protocol LiveStreamChatInputViewModelOutputs {
+  /// Emits when the keyboard should dismiss.
+  var clearTextFieldAndResignFirstResponder: Signal<(), NoError> { get }
+
   /// Emits when the more button should be hidden
   var moreButtonHidden: Signal<Bool, NoError> { get }
 
@@ -70,6 +73,8 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
 
     self.notifyDelegateMessageSent = self.textProperty.signal.skipNil()
       .takeWhen(self.sendButtonTappedProperty.signal)
+
+    self.clearTextFieldAndResignFirstResponder = self.notifyDelegateMessageSent.signal.ignoreValues()
 
     self.notifyDelegateRequestLogin = self.textFieldShouldBeginEditingProperty.signal
       .filter { AppEnvironment.current.currentUser == nil }
@@ -130,6 +135,7 @@ LiveStreamChatInputViewModelInputs, LiveStreamChatInputViewModelOutputs {
     self.textProperty.value = text
   }
 
+  public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let moreButtonHidden: Signal<Bool, NoError>
   public let notifyDelegateMessageSent: Signal<String, NoError>
   public let notifyDelegateMoreButtonTapped: Signal<(), NoError>

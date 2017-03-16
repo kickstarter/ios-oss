@@ -86,12 +86,15 @@ internal final class LiveStreamChatInputView: UIView {
 
     self.viewModel.outputs.notifyDelegateMessageSent
       .observeForUI()
-      .on(value: { [weak self] _ in
-        self?.textField.text = nil
-        self?.textField.resignFirstResponder()
-      })
       .observeValues { [weak self] text in
         self.doIfSome { $0.delegate?.liveStreamChatInputView($0, didSendMessage: text) }
+    }
+
+    self.viewModel.outputs.clearTextFieldAndResignFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.textField.text = nil
+        self?.textField.resignFirstResponder()
     }
 
     self.viewModel.outputs.notifyDelegateRequestLogin

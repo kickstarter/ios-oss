@@ -8,18 +8,21 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamChatInputViewModelTests: TestCase {
-  let vm: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
+  private let vm: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
 
-  let moreButtonHidden = TestObserver<Bool, NoError>()
-  let notifyDelegateMessageSent = TestObserver<String, NoError>()
-  let notifyDelegateMoreButtonTapped = TestObserver<(), NoError>()
-  let notifyDelegateRequestLogin = TestObserver<(), NoError>()
-  let placeholderText = TestObserver<String, NoError>()
-  let sendButtonHidden = TestObserver<Bool, NoError>()
+  private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
+  private let moreButtonHidden = TestObserver<Bool, NoError>()
+  private let notifyDelegateMessageSent = TestObserver<String, NoError>()
+  private let notifyDelegateMoreButtonTapped = TestObserver<(), NoError>()
+  private let notifyDelegateRequestLogin = TestObserver<(), NoError>()
+  private let placeholderText = TestObserver<String, NoError>()
+  private let sendButtonHidden = TestObserver<Bool, NoError>()
 
-  override func setUp() {
+  internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.clearTextFieldAndResignFirstResponder.observe(
+      self.clearTextFieldAndResignFirstResponder.observer)
     self.vm.outputs.moreButtonHidden.observe(self.moreButtonHidden.observer)
     self.vm.outputs.notifyDelegateMessageSent.observe(self.notifyDelegateMessageSent.observer)
     self.vm.outputs.notifyDelegateMoreButtonTapped.observe(self.notifyDelegateMoreButtonTapped.observer)
@@ -86,13 +89,16 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.notifyDelegateRequestLogin.assertValueCount(0)
 
     self.vm.inputs.configureWith(chatHidden: false)
-    self.vm.inputs.textFieldShouldBeginEditing()
+    let should1 = self.vm.inputs.textFieldShouldBeginEditing()
 
+    XCTAssertFalse(should1)
     self.notifyDelegateRequestLogin.assertValueCount(1)
 
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
-    self.vm.inputs.textFieldShouldBeginEditing()
+    let should2 = self.vm.inputs.textFieldShouldBeginEditing()
+
+    XCTAssertTrue(should2)
 
     self.notifyDelegateRequestLogin.assertValueCount(1)
   }
@@ -111,5 +117,15 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
     self.vm.inputs.didSetChatHidden(hidden: false)
 
     self.placeholderText.assertValues(["Say something kind...", "Chat is hidden.", "Say something kind..."])
+  }
+
+  func testClearTextFieldAndResignFirstResponder() {
+    self.clearTextFieldAndResignFirstResponder.assertValueCount(0)
+
+    self.vm.inputs.configureWith(chatHidden: false)
+    self.vm.inputs.textDidChange(toText: "Typing")
+    self.vm.inputs.sendButtonTapped()
+
+    self.clearTextFieldAndResignFirstResponder.assertValueCount(1)
   }
 }
