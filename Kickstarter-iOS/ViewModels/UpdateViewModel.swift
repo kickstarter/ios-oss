@@ -5,15 +5,14 @@ import Prelude
 import ReactiveSwift
 import Result
 
-private struct UpdateData {
-  public let context: Koala.UpdateContext
-  public let project: Project
-  public let update: Update
+fileprivate struct UpdateData {
+  fileprivate let project: Project
+  fileprivate let update: Update
 }
 
 internal protocol UpdateViewModelInputs {
   /// Call with the project and update given to the controller.
-  func configureWith(project: Project, update: Update, context: Koala.UpdateContext)
+  func configureWith(project: Project, update: Update)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData)
@@ -152,8 +151,8 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
   // swiftlint:enable function_body_length
 
   fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)
-  internal func configureWith(project: Project, update: Update, context: Koala.UpdateContext) {
-    self.configurationDataProperty.value = UpdateData(context: context, project: project, update: update)
+  internal func configureWith(project: Project, update: Update) {
+    self.configurationDataProperty.value = UpdateData(project: project, update: update)
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)

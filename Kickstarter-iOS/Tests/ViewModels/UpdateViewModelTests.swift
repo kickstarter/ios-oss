@@ -33,7 +33,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testUpdateUrlLoads() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues(
@@ -42,7 +42,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testTitle() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .activity)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     self.title.assertValues(
@@ -59,7 +59,7 @@ final class UpdateViewModelTests: TestCase {
       .flatMap { $0.deletingLastPathComponent() }
       .map { $0.appendingPathComponent(String(prevUpdate.id)) }!
 
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
@@ -100,7 +100,7 @@ final class UpdateViewModelTests: TestCase {
       .flatMap { $0.deletingLastPathComponent() }
       .map { $0.appendingPathComponent(String(anotherProject.id)) }!
 
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .deepLink)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
@@ -127,7 +127,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testGoToComments() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     let commentsRequest = URL(string: self.update.urls.web.update)
@@ -147,7 +147,7 @@ final class UpdateViewModelTests: TestCase {
   }
 
   func testGoToSafariBrowser() {
-    self.vm.inputs.configureWith(project: self.project, update: self.update, context: .updates)
+    self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
     let updateRequest = URLRequest(url: URL(string: self.update.urls.web.update)!)
