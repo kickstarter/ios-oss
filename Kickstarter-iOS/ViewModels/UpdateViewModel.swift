@@ -5,10 +5,10 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public struct UpdateData {
+private struct UpdateData {
+  public let context: Koala.UpdateContext
   public let project: Project
   public let update: Update
-  public let context: Koala.UpdateContext
 }
 
 internal protocol UpdateViewModelInputs {
@@ -148,17 +148,12 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
     }
-
-    configurationData
-      .observeValues {
-        AppEnvironment.current.koala.trackViewedUpdate(forProject: $0.project, context: $0.context )
-    }
   }
   // swiftlint:enable function_body_length
 
   fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)
   internal func configureWith(project: Project, update: Update, context: Koala.UpdateContext) {
-    self.configurationDataProperty.value = UpdateData(project: project, update: update, context: context)
+    self.configurationDataProperty.value = UpdateData(context: context, project: project, update: update)
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
