@@ -317,8 +317,9 @@ AppDelegateViewModelOutputs {
       .skipNil()
 
     self.findRedirectUrl = deepLinkUrl
-      .filter {
-        guard case .some(.emailClick(_)) = Navigation.match($0) else { return false }
+      .filter { url -> Bool in
+        let nav = Navigation.match($0)
+        guard case .some(.emailClick(_)) = nav else { return false }
         return true
     }
 
