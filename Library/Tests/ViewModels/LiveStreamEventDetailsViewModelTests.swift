@@ -220,7 +220,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
         false, true, false, true, false, true, false, true, false
       ])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
-      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1, 0 ,1])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
