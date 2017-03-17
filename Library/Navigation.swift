@@ -224,7 +224,7 @@ extension Navigation {
 
 private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/": emailClick,
-  "/mpss": emailLink,
+  "/mpss/:a/:b/:c/:d/:e/:f/:g/:h": emailLink,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
