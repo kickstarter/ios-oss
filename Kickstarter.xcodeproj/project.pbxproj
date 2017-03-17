@@ -649,7 +649,7 @@
 		D0FD4CC91E26433C00488660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7086F3C1DB7FBA40087E5EB /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */; };
-		D73627061E71E0FD0087F2BF /* MessagesThreadsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73627051E71E0FD0087F2BF /* MessagesThreadsViewControllerTests.swift */; };
+		D73627061E71E0FD0087F2BF /* MessageThreadsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73627051E71E0FD0087F2BF /* MessageThreadsViewControllerTests.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37CF71E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */; };
@@ -1970,7 +1970,7 @@
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7086F3B1DB7FBA40087E5EB /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
-		D73627051E71E0FD0087F2BF /* MessagesThreadsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesThreadsViewControllerTests.swift; sourceTree = "<group>"; };
+		D73627051E71E0FD0087F2BF /* MessageThreadsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewControllerTests.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37CF61E3278A800EA066D /* SearchEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2269,7 +2269,7 @@
 				A71C7FAF1E2FA81D0051E5E3 /* LiveStreamDiscoveryViewControllerTests.swift */,
 				59885A5D1DB6DC2900F65825 /* LoginToutViewControllerTests.swift */,
 				59885A951DB6E04100F65825 /* LoginViewControllerTests.swift */,
-				D73627051E71E0FD0087F2BF /* MessagesThreadsViewControllerTests.swift */,
+				D73627051E71E0FD0087F2BF /* MessageThreadsViewControllerTests.swift */,
 				01EC3B981DFA0679003A673C /* ProfileViewControllerTests.swift */,
 				9D3A6B4B1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift */,
 				A7CA8C461D8F2F870086A3E9 /* ProjectNavBarViewControllerTests.swift */,
@@ -4723,7 +4723,7 @@
 				015B78BC1D481805003216AC /* HelpWebViewModelTests.swift in Sources */,
 				9D3A6B4C1D8C4F3800FE3926 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A73778DF1D81DC9B004C2A9B /* Combos.swift in Sources */,
-				D73627061E71E0FD0087F2BF /* MessagesThreadsViewControllerTests.swift in Sources */,
+				D73627061E71E0FD0087F2BF /* MessageThreadsViewControllerTests.swift in Sources */,
 				0123B4E31D919BC4004C1166 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				59235ED91DC0149B0067F4AD /* DiscoveryPageViewControllerTests.swift in Sources */,
 				59885A961DB6E04100F65825 /* LoginViewControllerTests.swift in Sources */,

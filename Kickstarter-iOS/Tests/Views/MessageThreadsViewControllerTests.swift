@@ -5,7 +5,7 @@ import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 
-internal final class MessagesThreadViewControllerTests: TestCase {
+internal final class MessageThreadViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
