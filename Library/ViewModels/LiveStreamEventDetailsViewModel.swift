@@ -77,6 +77,9 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
   /// Emits the subscribe button's title
   var subscribeButtonText: Signal<String, NoError> { get }
 
+  /// Emits the alpha value of the subscribe label
+  var subscribeLabelAlpha: Signal<CGFloat, NoError> { get }
+
   /// Emits when the subscribe button should be hidden
   var subscribeLabelHidden: Signal<Bool, NoError> { get }
 
@@ -214,6 +217,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       subscribed
     ).skipRepeats()
 
+    self.subscribeLabelAlpha = self.subscribeLabelHidden.map { $0 ? 0 : 1 }
+
     self.numberOfPeopleWatchingText = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst("0"),
       self.numberOfPeopleWatchingProperty.signal.skipNil().map { Format.wholeNumber($0) }
@@ -288,6 +293,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
   public let subscribeButtonAccessibilityLabel: Signal<String, NoError>
   public let subscribeButtonImage: Signal<String?, NoError>
   public let subscribeButtonText: Signal<String, NoError>
+  public let subscribeLabelAlpha: Signal<CGFloat, NoError>
   public let subscribeLabelHidden: Signal<Bool, NoError>
   public let subscribeLabelText: Signal<String, NoError>
 

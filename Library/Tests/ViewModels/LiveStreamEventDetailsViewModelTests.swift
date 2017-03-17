@@ -25,6 +25,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let subscribeButtonImage = TestObserver<String?, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
+  private let subscribeLabelAlpha = TestObserver<CGFloat, NoError>()
   private let subscribeLabelHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
@@ -46,6 +47,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
+    self.vm.outputs.subscribeLabelAlpha.observe(self.subscribeLabelAlpha.observer)
     self.vm.outputs.subscribeLabelHidden.observe(self.subscribeLabelHidden.observer)
   }
 
@@ -146,6 +148,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.subscribeLabelText.assertValueCount(0)
+    self.subscribeLabelAlpha.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.subscribeButtonImage.assertValueCount(0)
@@ -162,6 +165,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
       self.subscribeButtonImage.assertValues([nil])
@@ -170,6 +174,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil])
@@ -180,6 +185,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])
@@ -193,6 +199,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true,
                                                                  false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
@@ -213,6 +220,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
         false, true, false, true, false, true, false, true, false
       ])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1, 0 ,1])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
@@ -229,6 +237,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
     self.subscribeLabelText.assertValueCount(0)
+    self.subscribeLabelAlpha.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.subscribeButtonImage.assertValueCount(0)
@@ -242,6 +251,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
       self.subscribeButtonImage.assertValues([nil])
@@ -251,6 +261,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil])
@@ -267,6 +278,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])

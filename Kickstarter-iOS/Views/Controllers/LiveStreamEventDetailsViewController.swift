@@ -144,11 +144,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     self.subscribeButton.rac.accessibilityLabel
       = self.viewModel.outputs.subscribeButtonAccessibilityLabel
 
-    self.viewModel.outputs.subscribeLabelHidden
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.subscribeLabel.alpha = $0 ? 0 : 1
-    }
+    self.subscribeLabel.rac.alpha = self.viewModel.outputs.subscribeLabelAlpha
 
     self.viewModel.outputs.subscribeButtonImage
       .observeForUI()
