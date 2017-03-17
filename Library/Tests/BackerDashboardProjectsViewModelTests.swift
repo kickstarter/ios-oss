@@ -174,7 +174,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.projects.assertValues([playlist, (playlist + playlist2)], "More projects are loaded.")
 
         self.vm.inputs.scrollToProject(at: 7, outOf: playlist2.count)
-        
+
         self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
       }
     }
