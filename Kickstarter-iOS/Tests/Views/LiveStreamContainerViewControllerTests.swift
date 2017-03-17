@@ -18,46 +18,6 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(true)
     super.tearDown()
   }
-//  func testPlaybackStates() {
-//    let liveStreamEvent = .template
-//      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
-//      |> LiveStreamEvent.lens.liveNow .~ true
-//      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
-//      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
-//        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
-//
-//    let playbackStates: [LiveStreamViewControllerState] = [
-//      .greenRoom,
-//      .loading,
-//      .live(playbackState: .playing, startTime: 0)
-//    ]
-//
-//    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-//
-//    combos(Language.allLanguages, playbackStates).forEach { lang, state in
-//      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
-//        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
-//                                                                  liveStreamEvent: liveStreamEvent,
-//                                                                  refTag: .projectPage,
-//                                                                  presentedFromProject: false)
-//
-//        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-//        self.scheduler.advance(by: .seconds(3))
-//
-//        vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
-//        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
-//
-//        let stateIdentifier = state == .greenRoom ? "greenRoom"
-//          : state == .loading ? "loading"
-//          : "playing"
-//
-//        FBSnapshotVerifyView(
-//          parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"
-//        )
-//      }
-//    }
-//  }
-//
 //  func testPresentedFromProject() {
 //    let liveStreamEvent = .template
 //      |> LiveStreamEvent.lens.hasReplay .~ true
@@ -198,6 +158,48 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
+  func testPlaybackStates() {
+    self.recordMode = true
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let playbackStates: [LiveStreamViewControllerState] = [
+      .greenRoom,
+      .loading
+    ]
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    combos(Language.allLanguages, playbackStates).forEach { lang, state in
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
+
+        let stateIdentifier: String
+        if state == .greenRoom {
+          stateIdentifier = "greenRoom"
+        } else {
+          stateIdentifier = "loading"
+        }
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"
         )
       }
     }
