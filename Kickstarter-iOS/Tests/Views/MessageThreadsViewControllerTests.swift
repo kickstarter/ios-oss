@@ -31,9 +31,6 @@ internal final class MessageThreadViewControllerTests: TestCase {
     let bobTheCreator = .template
       |> User.lens.name .~ "Bob"
 
-    let blobTheCreator = .template
-      |> User.lens.id .~ 5
-
     let unreadMessage = .template
       |> Message.lens.body .~ "Hello there. You have not read this message."
       |> Message.lens.recipient .~ backer
