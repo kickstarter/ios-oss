@@ -1,4 +1,5 @@
 import Library
+import Prelude
 @testable import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import Result
@@ -56,14 +57,26 @@ final class MessageThreadCellViewModelTests: TestCase {
   }
 
   func testUnreadIndicatorHidden() {
-    let thread = MessageThread.template
+    let thread = .template |> MessageThread.lens.unreadMessagesCount .~ 1
 
     self.vm.inputs.configureWith(messageThread: thread)
 
-    self.vm.inputs.setSelected(false)
     self.unreadIndicatorHidden.assertValues([false])
 
     self.vm.inputs.setSelected(true)
     self.unreadIndicatorHidden.assertValues([false, true])
+
+    self.vm.inputs.setSelected(false)
+    self.unreadIndicatorHidden.assertValues([false, true])
+
+    let newThread = .template
+      |> MessageThread.lens.unreadMessagesCount .~ 3
+      |> MessageThread.lens.id .~ (thread.id + 1)
+
+    self.vm.inputs.configureWith(messageThread: newThread)
+    self.unreadIndicatorHidden.assertValues([false, true, false])
+
+    self.vm.inputs.configureWith(messageThread: thread)
+    self.unreadIndicatorHidden.assertValues([false, true, false, true])
   }
 }

@@ -62,7 +62,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
 
     messageThread
       .takeWhen(self.setSelectedProperty.signal.filter(isTrue))
-      .observeValues { markedAsRead(for: $0) }
+      .observeValues(markedAsRead)
 
     self.unreadIndicatorHidden = Signal.merge(
       self.setSelectedProperty.signal.filter(isTrue).mapConst(true),
