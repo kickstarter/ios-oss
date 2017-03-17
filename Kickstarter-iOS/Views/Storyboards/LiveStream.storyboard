@@ -569,10 +569,10 @@ Mikke Snow</string>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MPc-gU-qxa" firstAttribute="height" secondItem="qgM-4p-vT0" secondAttribute="height" placeholder="YES" id="FlF-SM-3GR"/>
+                            <constraint firstItem="8sp-UZ-YOZ" firstAttribute="top" secondItem="Gax-Kg-Ay8" secondAttribute="bottom" id="InE-Hf-wch"/>
                             <constraint firstItem="Gax-Kg-Ay8" firstAttribute="leading" secondItem="qgM-4p-vT0" secondAttribute="leading" id="MKm-K2-oYX"/>
                             <constraint firstItem="Gax-Kg-Ay8" firstAttribute="top" secondItem="qgM-4p-vT0" secondAttribute="topMargin" id="ayz-Ml-wFX"/>
                             <constraint firstItem="Gax-Kg-Ay8" firstAttribute="trailing" secondItem="qgM-4p-vT0" secondAttribute="trailing" id="lT5-rO-xzg"/>
-                            <constraint firstItem="Gax-Kg-Ay8" firstAttribute="bottom" secondItem="qgM-4p-vT0" secondAttribute="bottomMargin" id="mYT-Zk-0kN"/>
                         </constraints>
                     </view>
                     <connections>
