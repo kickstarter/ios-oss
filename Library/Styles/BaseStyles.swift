@@ -20,8 +20,7 @@ public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC
 }
 
 public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return baseControllerStyle()
-    <> VC.lens.view.backgroundColor .~ .black
+  return VC.lens.view.backgroundColor .~ .black
     <> (VC.lens.navigationController • navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
@@ -133,4 +132,5 @@ private let clearNavigationBarStyle =
     NSForegroundColorAttributeName: UIColor.white,
     NSFontAttributeName: UIFont.ksr_callout()
     ]
+    <> UINavigationBar.lens.translucent .~ true
     <> UINavigationBar.lens.shadowImage .~ UIImage()
