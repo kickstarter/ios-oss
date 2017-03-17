@@ -19,8 +19,6 @@ public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC
     <> (VC.lens.navigationController • navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
-
-
 public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return baseControllerStyle()
     <> VC.lens.view.backgroundColor .~ .black
