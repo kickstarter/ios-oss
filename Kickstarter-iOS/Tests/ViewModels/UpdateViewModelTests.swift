@@ -179,7 +179,7 @@ final class UpdateViewModelTests: TestCase {
     self.webViewLoadRequest.assertValueCount(1)
     self.goToSafariBrowser.assertValues([outsideUrl])
 
-    XCTAssertEqual(["Viewed Update", "Opened External Link"], self.trackingClient.events)
+    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
     XCTAssertEqual("project_update", self.trackingClient.properties.last!["context"] as? String)
   }
 }
