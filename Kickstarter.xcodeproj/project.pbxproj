@@ -54,6 +54,10 @@
 		0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */; };
 		017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */; };
 		017508781D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */; };
+		01764E1B1E7B176E0035B5A1 /* BackerDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01764E1A1E7B176E0035B5A1 /* BackerDashboardViewModelTests.swift */; };
+		01764E571E7B17840035B5A1 /* BackerDashboardProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01764E561E7B17840035B5A1 /* BackerDashboardProjectsViewModelTests.swift */; };
+		01764E591E7B17A80035B5A1 /* BackerDashboardProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01764E581E7B17A80035B5A1 /* BackerDashboardProjectCellViewModelTests.swift */; };
+		01764E5D1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01764E5C1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift */; };
 		0176984F1DB9796800EE58BA /* EmptyStatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
@@ -1399,6 +1403,10 @@
 		0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModel.swift; sourceTree = "<group>"; };
 		017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewController.swift; sourceTree = "<group>"; };
 		017508771D68C9E900BB1863 /* DiscoveryNavigationHeaderViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		01764E1A1E7B176E0035B5A1 /* BackerDashboardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardViewModelTests.swift; sourceTree = "<group>"; };
+		01764E561E7B17840035B5A1 /* BackerDashboardProjectsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackerDashboardProjectsViewModelTests.swift; path = ../BackerDashboardProjectsViewModelTests.swift; sourceTree = "<group>"; };
+		01764E581E7B17A80035B5A1 /* BackerDashboardProjectCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectCellViewModelTests.swift; sourceTree = "<group>"; };
+		01764E5C1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		0176984E1DB9796800EE58BA /* EmptyStatesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModelTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		018421F21D2C0DB700CA7566 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2214,6 +2222,7 @@
 			isa = PBXGroup;
 			children = (
 				A7208CC31CCBDA7900E3DAB3 /* ActivitiesDataSourceTests.swift */,
+				01764E5C1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift */,
 				A70119171CD921D0009F8F65 /* CommentsDataSourceTests.swift */,
 				018421F21D2C0DB700CA7566 /* DashboardDataSourceTests.swift */,
 				018422CC1D2C493D00CA7566 /* DashboardProjectsDrawerDataSourceTests.swift */,
@@ -2636,6 +2645,9 @@
 				598D96C71D42A97E003F3F66 /* ActivitySampleFollowCellViewModelTests.swift */,
 				598D96CD1D42B727003F3F66 /* ActivitySampleProjectCellViewModelTests.swift */,
 				5981BF4D1D81CE1C002E49F1 /* ActivityUpdateViewModelTests.swift */,
+				01764E581E7B17A80035B5A1 /* BackerDashboardProjectCellViewModelTests.swift */,
+				01764E561E7B17840035B5A1 /* BackerDashboardProjectsViewModelTests.swift */,
+				01764E1A1E7B176E0035B5A1 /* BackerDashboardViewModelTests.swift */,
 				A7830CDF1D005C3F00B5B6AE /* BackingCellViewModelTests.swift */,
 				80EAEF081D244274008C2353 /* BackingViewModelTests.swift */,
 				9D0FB7A71D76055B005774F2 /* CheckoutRacingViewModelTests.swift */,
@@ -4459,12 +4471,14 @@
 				A7830D1A1D005C3F00B5B6AE /* ProfileProjectCellViewModelTests.swift in Sources */,
 				9D2F4BDD1D1AE01500B7C554 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A75784311D84486F007B61AA /* PKPaymentRequestTests.swift in Sources */,
+				01764E571E7B17840035B5A1 /* BackerDashboardProjectsViewModelTests.swift in Sources */,
 				A75C81231D210EE200B5AD03 /* ShareViewModelTests.swift in Sources */,
 				9D0FB7A81D76055B005774F2 /* CheckoutRacingViewModelTests.swift in Sources */,
 				A76FAF271DB98AD000C6BF33 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				9D10B94E1D354105008B8045 /* String+TruncateTests.swift in Sources */,
 				5970738E1D061A9900B00444 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A708F1291E4267E100599688 /* LiveStreamDiscoveryViewModelTests.swift in Sources */,
+				01764E1B1E7B176E0035B5A1 /* BackerDashboardViewModelTests.swift in Sources */,
 				01FD71841D36BA2900070BAC /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A755119E1C8645A0005355CF /* UILabel+SimpleHTMLTests.swift in Sources */,
 				D05AA2361E0A8BCA00D36EFC /* LiveStreamEventDetailsViewModelTests.swift in Sources */,
@@ -4494,6 +4508,7 @@
 				A7830D181D005C3F00B5B6AE /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7830CFC1D005C3F00B5B6AE /* BackingCellViewModelTests.swift in Sources */,
 				A72C3A9C1D00F6E60075227E /* DiscoveryFiltersViewModelTests.swift in Sources */,
+				01764E591E7B17A80035B5A1 /* BackerDashboardProjectCellViewModelTests.swift in Sources */,
 				9DA4E2FC1D79C97B005C1897 /* SurveyResponseViewModelTests.swift in Sources */,
 				A77D7B351CBAC5F90077586B /* PaginateTests.swift in Sources */,
 				01FD71871D36BE1A00070BAC /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
@@ -4783,6 +4798,7 @@
 				A7EDEE7B1D83635400780B34 /* CommentsViewControllerTests.swift in Sources */,
 				A758F43B1D070B8E00169CC0 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A734A2651D219CB00080BBD5 /* UpdateViewModelTests.swift in Sources */,
+				01764E5D1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				59885A9A1DB6EA5700F65825 /* SignupViewControllerTests.swift in Sources */,
 				A70119451CD92261009F8F65 /* CommentsDataSourceTests.swift in Sources */,
 				01F8ADFC1CEA5B070026F220 /* ThanksProjectsDataSourceTests.swift in Sources */,

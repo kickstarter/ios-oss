@@ -128,16 +128,16 @@ internal final class BackerDashboardViewController: UIViewController {
         )
     }
 
-    self.viewModel.outputs.pinSelectedIndicatorToPage
+    self.viewModel.outputs.pinSelectedIndicatorToTab
       .observeForUI()
-      .observeValues { [weak self] index, animated in
-        self?.pinSelectedIndicator(to: index, animated: animated)
+      .observeValues { [weak self] tab, animated in
+        self?.pinSelectedIndicator(to: tab, animated: animated)
     }
 
     self.viewModel.outputs.setSelectedButton
       .observeForUI()
       .observeValues { [weak self] in
-        self?.selectButton(atIndex: $0)
+        self?.selectButton(atTab: $0)
     }
 
     self.viewModel.outputs.updateProjectPlaylist
@@ -160,9 +160,6 @@ internal final class BackerDashboardViewController: UIViewController {
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
 
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
@@ -240,15 +237,15 @@ internal final class BackerDashboardViewController: UIViewController {
       |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
   }
 
-  private func selectButton(atIndex index: Int) {
+  private func selectButton(atTab tab: BackerDashboardTab) {
     for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
       _ = (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == index)
+        ?|> UIButton.lens.selected .~ (idx == tab.rawValue)
     }
   }
 
-  private func pinSelectedIndicator(to index: Int, animated: Bool) {
-    guard let button = self.menuButtonsStackView.arrangedSubviews[index] as? UIButton else { return }
+  private func pinSelectedIndicator(to tab: BackerDashboardTab, animated: Bool) {
+    guard let button = self.menuButtonsStackView.arrangedSubviews[tab.rawValue] as? UIButton else { return }
 
     let leadingConstant = button.frame.origin.x + Styles.grid(1)
     let widthConstant = button.titleLabel?.frame.size.width ?? button.frame.size.width

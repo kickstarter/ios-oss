@@ -90,9 +90,6 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
     _ = self
       |> baseTableControllerStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   internal override func tableView(_ tableView: UITableView,

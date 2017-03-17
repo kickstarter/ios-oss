@@ -14,7 +14,10 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
       savedController.configureWith(delegate: delegate, projectsType: .saved, sort: sort)
     }
 
-    self.viewControllers = [backedController, savedController]
+    var controllers: [UIViewController] = []
+    controllers[BackerDashboardTab.backed.rawValue] = backedController
+    controllers[BackerDashboardTab.saved.rawValue] = savedController
+    self.viewControllers = controllers
   }
 
   internal func controllerFor(tab: BackerDashboardTab) -> UIViewController? {

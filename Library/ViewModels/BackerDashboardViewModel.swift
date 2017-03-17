@@ -71,14 +71,14 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits when should scroll to the project row position.
   var notifyPageToScrollToProject: Signal<Int, NoError> { get }
 
-  /// Emits an index to pin the indicator view to a particular button view with or without animation.
-  var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
+  /// Emits a BackerDashboardTab to pin the indicator view to with or without animation.
+  var pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError> { get }
 
   /// Emits a string for the saved button title label.
   var savedButtonTitleText: Signal<String, NoError> { get }
 
-  /// Emits an index of the selected button to update all button selected states.
-  var setSelectedButton: Signal<Int, NoError> { get }
+  /// Emits the selected BackerDashboardTab to set the selected button and update all button selected states.
+  var setSelectedButton: Signal<BackerDashboardTab, NoError> { get }
 
   /// Emits a boolean whether the sort bar is hidden or not.
   var sortBarIsHidden: Signal<Bool, NoError> { get }
@@ -140,19 +140,14 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.savedProjectsButtonTappedProperty.signal.mapConst(.saved)
     )
 
-    let selectedButtonIndex = Signal.merge(
-      self.backedProjectsButtonTappedProperty.signal.mapConst(0),
-      self.savedProjectsButtonTappedProperty.signal.mapConst(1)
-    )
-
     self.setSelectedButton = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(0),
-      selectedButtonIndex
+      self.viewDidLoadProperty.signal.mapConst(.backed),
+      self.navigateToTab
       )
 
-    self.pinSelectedIndicatorToPage = Signal.merge(
-      self.backedButtonTitleText.mapConst((0, false)),
-      selectedButtonIndex.map { ($0, true) }.skipRepeats(==)
+    self.pinSelectedIndicatorToTab = Signal.merge(
+      self.backedButtonTitleText.mapConst((.backed, false)),
+      self.navigateToTab.map { ($0, true) }.skipRepeats(==)
     )
 
     self.goToProject = self.profileProjectsGoToProjectProperty.signal.skipNil()
@@ -236,9 +231,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let goToSettings: Signal<(), NoError>
   public let navigateToTab: Signal<BackerDashboardTab, NoError>
   public let notifyPageToScrollToProject: Signal<Int, NoError>
-  public let pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError>
+  public let pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError>
   public let savedButtonTitleText: Signal<String, NoError>
-  public let setSelectedButton: Signal<Int, NoError>
+  public let setSelectedButton: Signal<BackerDashboardTab, NoError>
   public let sortBarIsHidden: Signal<Bool, NoError>
   public let updateProjectPlaylist: Signal<[Project], NoError>
 
