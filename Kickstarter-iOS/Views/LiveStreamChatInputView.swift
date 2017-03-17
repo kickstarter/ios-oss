@@ -103,11 +103,7 @@ internal final class LiveStreamChatInputView: UIView {
         self.doIfSome { $0.delegate?.liveStreamChatInputViewRequestedLogin(chatInputView: $0) }
     }
 
-    self.viewModel.outputs.placeholderText
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.textField.attributedPlaceholder = $0
-    }
+    self.textField.rac.attributedPlaceholder = self.viewModel.outputs.placeholderText
   }
 
   internal func didSetChatHidden(hidden: Bool) {
