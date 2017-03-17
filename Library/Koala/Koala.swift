@@ -1325,20 +1325,6 @@ public final class Koala {
     self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
   }
 
-  // MARK: Update Events
-
-  public func trackViewedUpdate(forProject project: Project, context: UpdateContext) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.trackingString])
-
-    self.track(event: "Viewed Update", properties: props)
-  }
-
-  public func trackViewedUpdates(forProject project: Project) {
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
-    self.track(event: "Viewed Updates", properties: props)
-  }
-
   // MARK: Update Draft Events
 
   public func trackViewedUpdateDraft(forProject project: Project) {
