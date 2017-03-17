@@ -18,39 +18,48 @@ internal final class MessagesThreadViewControllerTests: TestCase {
   }
 
   func testView() {
+    let project = Project.template
 
     let backer = .template
       |> User.lens.avatar.large .~ ""
       |> User.lens.avatar.medium .~ ""
       |> User.lens.avatar.small .~ ""
 
-    let creator = .template
+    let nativeSquadTheCreator = .template
       |> User.lens.name .~ "Native Squad"
 
-    let anotherCreator = .template
+    let bobTheCreator = .template
       |> User.lens.name .~ "Bob"
 
-    let project = .template
-      |> Project.lens.creator .~ creator
+    let blobTheCreator = .template
+      |> User.lens.id .~ 5
 
-    let message = .template
-      |> Message.lens.body .~ "Hello there. Thanks for backing!"
+    let unreadMessage = .template
+      |> Message.lens.body .~ "Hello there. You have not read this message."
       |> Message.lens.recipient .~ backer
 
-    let messageRead = .template
-      |> Message.lens.body .~ "Hi there. Thanks for backing this project!"
+    let readMessage = .template
+      |> Message.lens.body .~ "Hi there. You read this message."
       |> Message.lens.recipient .~ backer
 
-    let message1 =  .template
-      |> MessageThread.lens.participant .~ creator
-      |> MessageThread.lens.lastMessage .~ message
+    let repliedToMessage = .template
+      |> Message.lens.body .~ "Hey there. You replied to this message."
+      |> Message.lens.sender .~ backer
 
-    let message2 =  .template
-      |> MessageThread.lens.participant .~ anotherCreator
-      |> MessageThread.lens.lastMessage .~ messageRead
+    let unreadMessageThread =  .template
+      |> MessageThread.lens.participant .~ nativeSquadTheCreator
+      |> MessageThread.lens.lastMessage .~ unreadMessage
+
+    let readMessageThread =  .template
+      |> MessageThread.lens.participant .~ bobTheCreator
+      |> MessageThread.lens.lastMessage .~ readMessage
       |> MessageThread.lens.unreadMessagesCount .~ 0
 
-    let messageThreads = [message1, message2]
+    let repliedMessageThread = .template
+      |> MessageThread.lens.lastMessage .~ repliedToMessage
+      |> MessageThread.lens.unreadMessagesCount .~ 0
+
+    let messageThreads = [unreadMessageThread, readMessageThread, repliedMessageThread]
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
@@ -60,18 +69,16 @@ internal final class MessagesThreadViewControllerTests: TestCase {
       mainBundle: Bundle.framework
     )
 
-    Language.allLanguages.forEach { language in
-        withEnvironment(language: language) {
-          let controller = MessageThreadsViewController.configuredWith(project: project)
+    [Device.phone4_7inch, Device.pad].forEach { device in
 
-          let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-          parent.view.frame.size.height = 600
+      let controller = MessageThreadsViewController.configuredWith(project: project)
 
-          self.scheduler.run()
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-          FBSnapshotVerifyView(parent.view, identifier: "MessagesThread - lang_\(language)")
-        }
-      }
+      self.scheduler.run()
+
+      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+    }
 
     AppEnvironment.popEnvironment()
   }

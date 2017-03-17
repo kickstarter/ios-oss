@@ -1,8 +1,8 @@
 import KsApi
-import ReactiveSwift
-import ReactiveExtensions
-import Result
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
+import Result
 
 public protocol MessageThreadCellViewModelInputs {
   func configureWith(messageThread: MessageThread)

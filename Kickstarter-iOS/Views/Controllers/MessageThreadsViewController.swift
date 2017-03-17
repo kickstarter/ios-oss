@@ -27,12 +27,6 @@ internal final class MessageThreadsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    self.viewModel.inputs.viewWillAppear(animated: animated)
-  }
-
   internal override func bindStyles() {
     super.bindStyles()
 
