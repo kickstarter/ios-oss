@@ -44,7 +44,7 @@ public final class NavigationTests: XCTestCase {
                    "/projects/creator/project/checkouts/1/thanks?racing=1")
 
     KSRAssertMatch(.project(.slug("project"), .root, refTag: .discovery),
-                   "/projects/creator/project?ref_tag=discovery")
+                   "/projects/creator/project?ref=discovery")
 
     KSRAssertMatch(.project(.slug("project"), .comments, refTag: nil),
                    "/projects/creator/project/comments")
@@ -121,6 +121,11 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.user(.slug("self"), .survey(3)),
                    "/users/self/surveys/3")
+  }
+
+  func testRecognizesEmailUrls() {
+    XCTAssertEqual(.emailClick(qs: "deadbeef"),
+                   Navigation.match(URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!))
   }
 
   func testRecognizesKsrUrlScheme() {

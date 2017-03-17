@@ -23,18 +23,15 @@ internal final class DashboardTitleView: UIView {
 
     _ = self.titleButton
       |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
-      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_900
-      |> UIButton.lens.titleLabel.font .~ .ksr_callout()
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
       |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraitStaticText
       |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .touchUpInside)]
 
-    _ = self.titleLabel |> dashboardTitleViewTextStyle
-
     _ = self.arrowImageView
       |> UIImageView.lens.hidden .~ true
       |> UIImageView.lens.tintColor .~ .ksr_navy_700
+
+    _ = self.titleLabel |> dashboardTitleViewTextDisabledStyle
 
     self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleAccessibilityLabel
     self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleAccessibilityHint
@@ -70,7 +67,7 @@ internal final class DashboardTitleView: UIView {
       .observeValues { [weak self] isEnabled in
         guard let _titleLabel = self?.titleLabel else { return }
         if isEnabled {
-          _ = _titleLabel |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 14.0).bolded
+          _ = _titleLabel |> dashboardTitleViewTextEnabledStyle
         }
     }
   }

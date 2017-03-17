@@ -59,7 +59,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
-
     _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
     _ = self.helpButton |> disclaimerButtonStyle

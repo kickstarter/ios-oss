@@ -61,7 +61,6 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
-      |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
 
     _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
       ||> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
@@ -75,7 +74,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchBarContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> UIView.lens.backgroundColor .~ .ksr_grey_300
 
     _ = self.searchIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_500
@@ -91,12 +90,6 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
-
-    _ = self.navigationController
-      ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable:next function_body_length
