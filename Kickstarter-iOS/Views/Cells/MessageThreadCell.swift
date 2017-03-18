@@ -20,6 +20,12 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(messageThread: value)
   }
 
+  override func setSelected(_ selected: Bool, animated: Bool) {
+    super.setSelected(selected, animated: animated)
+
+    self.viewModel.inputs.setSelected(selected)
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 

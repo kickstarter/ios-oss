@@ -7,6 +7,7 @@ import KsApi
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
+  case emailClick(qs: String)
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
@@ -75,6 +76,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case let (.emailClick(lhs), .emailClick(rhs)):
+    return lhs == rhs
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
   case (.signup, .signup):
@@ -217,6 +220,7 @@ extension Navigation {
 }
 
 private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
+  "/": emailClick,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -278,6 +282,11 @@ extension Navigation.Project {
 
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
 public typealias RouteParams = JSON
+
+private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.emailClick)
+   <^> params <| "qs"
+}
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
   return .success(.tab(.activity))
@@ -353,7 +362,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.root)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
@@ -367,21 +376,21 @@ private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> checkout
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.comments)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.creatorBio)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
@@ -395,70 +404,70 @@ private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.friends)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func messageCreator(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.messageCreator)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeBigPrint(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.bigPrint))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeChangeMethod(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.changeMethod))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeDestroy(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.destroy))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeEdit(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.edit))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.new))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func posts(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
@@ -470,7 +479,7 @@ private func update(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (createUpdate
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
@@ -479,7 +488,7 @@ private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.comments))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
@@ -493,13 +502,18 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
 
-  let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
+  let recognizedHosts = [
+    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
+    "click.e.kickstarter.com"
+  ].compact()
 
-  guard isApiURL || isWebURL else { return nil }
+  let isRecognizedHost = recognizedHosts.reduce(false) { accum, host in
+    accum || url.host.map { $0.hasPrefix(host) } == .some(true)
+  }
+
+  guard isRecognizedHost else { return nil }
 
   let templateComponents = template
     .components(separatedBy: "/")

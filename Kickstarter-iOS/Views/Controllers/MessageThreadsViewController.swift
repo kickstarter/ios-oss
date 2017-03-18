@@ -46,14 +46,14 @@ internal final class MessageThreadsViewController: UITableViewController {
     self.tableView.tableFooterView?.rac.hidden = self.viewModel.outputs.loadingFooterIsHidden
 
     self.viewModel.outputs.messageThreads
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] threads in
         self?.dataSource.load(messageThreads: threads)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.emptyStateIsVisible
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
