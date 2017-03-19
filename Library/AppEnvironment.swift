@@ -118,7 +118,7 @@ public struct AppEnvironment {
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-    scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+    scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 
@@ -176,7 +176,7 @@ public struct AppEnvironment {
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
-    scheduler: DateSchedulerProtocol = AppEnvironment.current.scheduler,
+    scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
 

@@ -25,6 +25,7 @@ private func swizzle(_ v: UIView.Type) {
 }
 
 extension UIView {
+  // FIXME
   open override class func initialize() {
     // make sure this isn't a subclass
     guard self === UIView.self else { return }
