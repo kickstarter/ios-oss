@@ -68,7 +68,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.rootStackView |> loginRootStackViewStyle
     _ = self.signupButton |> signupWithEmailButtonStyle
 
-
     _ = self.bringCreativeProjectsToLifeLabel
       |> UILabel.lens.font .~ .ksr_headline()
       |> UILabel.lens.text .~ "Bring creative projects to life."
