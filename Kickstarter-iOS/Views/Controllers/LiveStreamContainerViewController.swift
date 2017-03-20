@@ -20,7 +20,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
 
   fileprivate weak var liveStreamViewController: LiveStreamViewController?
-  fileprivate weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
+  internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 

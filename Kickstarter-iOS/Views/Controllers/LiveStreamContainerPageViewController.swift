@@ -15,7 +15,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   @IBOutlet private weak var separatorView: UIView!
 
   fileprivate weak var pageViewController: UIPageViewController?
-  fileprivate weak var liveStreamChatViewController: LiveStreamChatViewController?
+  internal weak var liveStreamChatViewController: LiveStreamChatViewController?
   fileprivate weak var liveStreamChatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   fileprivate weak var liveStreamEventDetailsViewController: LiveStreamEventDetailsViewController?
 
@@ -138,7 +138,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.viewModel.inputs.infoButtonTapped()
   }
 
-  @objc private func chatButtonTapped() {
+  @objc internal func chatButtonTapped() {
     self.viewModel.inputs.chatButtonTapped()
   }
 

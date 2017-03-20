@@ -28,7 +28,7 @@ internal final class LiveStreamChatViewController: UIViewController {
   fileprivate weak var delegate: LiveStreamChatViewControllerDelegate?
   fileprivate weak var liveStreamChatHandler: LiveStreamChatHandler?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
-  fileprivate let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
+  internal let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
   public static func configuredWith(
     delegate: LiveStreamChatViewControllerDelegate,
