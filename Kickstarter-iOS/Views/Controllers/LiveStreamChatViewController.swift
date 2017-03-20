@@ -104,22 +104,8 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.viewModel.outputs.prependChatMessagesToDataSourceAndReload
       .observeForUI()
       .observeValues { [weak self] chatMessages, reload in
-        guard let _self = self else { return }
-        let indexPaths = chatMessages.map {
-          _self.dataSource.prependRow(value: $0, cellClass:
-            LiveStreamChatMessageCell.self, toSection: Section.messages.rawValue)
-        }
-
-        if reload {
-          self?.tableView.reloadData()
-        } else {
-          _self.tableView.beginUpdates()
-          if _self.tableView.numberOfSections == 0 {
-            _self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
-          }
-          _self.tableView.insertRows(at: indexPaths, with: .top)
-          _self.tableView.endUpdates()
-        }
+        let indexPaths = self?.dataSource.add(chatMessages, toSection: Section.messages.rawValue)
+        indexPaths.doIfSome { self?.insert($0, andReload: reload) }
     }
 
     self.viewModel.outputs.openLoginToutViewController
@@ -206,6 +192,23 @@ internal final class LiveStreamChatViewController: UIViewController {
     } else {
       self.present(controller, animated: true, completion: nil)
     }
+  }
+
+  private func insert(_ indexPaths: [IndexPath], andReload reload: Bool) {
+    guard reload == false else {
+      self.tableView.reloadData()
+      return
+    }
+
+    self.tableView.beginUpdates()
+
+    if self.tableView.numberOfSections == 0 {
+      self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
+    }
+
+    self.tableView.insertRows(at: indexPaths, with: .top)
+
+    self.tableView.endUpdates()
   }
 
   private func presentMoreMenu(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
