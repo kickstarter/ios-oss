@@ -166,16 +166,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
-
-
     self.showFacebookErrorAlert
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
 
     self.loginIntentProperty.producer.skipNil()
       .takeWhen(viewWillAppearProperty.signal.take(first: 1))
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
-
-
   }
   // swiftlint:enable function_body_length
 
@@ -249,10 +245,13 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   case .messageCreator:
     return "Please log in or sign up to message this creator."
   case .generic:
-    return "Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
+    return "Bring creative projects to life. Pledge to support projects and view all" +
+    "your saved and backed projects in one place. Log in or sign up to continue."
   case .discoveryOnboarding:
-    return "Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place."
+    return "Bring creative projects to life. Pledge to support projects" +
+    "and view all your saved and backed projects in one place."
   default:
-    return "DEF Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
+    return "DEF Bring creative projects to life. Pledge to support projects and view all your saved" +
+    "and backed projects in one place. Log in or sign up to continue."
   }
 }
