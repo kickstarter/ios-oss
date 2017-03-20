@@ -22,6 +22,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate weak var liveStreamViewController: LiveStreamViewController?
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
   public static func configuredWith(project: Project,
@@ -34,6 +35,9 @@ public final class LiveStreamContainerViewController: UIViewController {
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
+
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
+
     return vc
   }
 
@@ -190,6 +194,20 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeValues { [weak self] in
         self?.navBarTitleView.isHidden = $0
     }
+
+    self.viewModel.outputs.addShareBarButtonItem
+      .observeForUI()
+      .observeValues { [weak self] in
+        if $0 {
+          self?.navigationItem.rightBarButtonItem = self?.shareBarButtonItem
+        } else {
+          self?.navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
   }
 
   public override var prefersStatusBarHidden: Bool {
@@ -202,6 +220,24 @@ public final class LiveStreamContainerViewController: UIViewController {
     navBarTitleView.translatesAutoresizingMaskIntoConstraints = false
     return navBarTitleView
   }()
+
+  private func showShareSheet(controller: UIActivityViewController) {
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+      self?.shareViewModel.inputs.shareActivityCompletion(with: .init(activityType: activityType,
+                                                                      completed: completed,
+                                                                      returnedItems: returnedItems,
+                                                                      activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+      self.present(controller, animated: true, completion: nil)
+    } else {
+      self.present(controller, animated: true, completion: nil)
+    }
+  }
 
   private func displayModalOverlay() {
     self.view.addSubview(self.modalOverlayView)
@@ -242,6 +278,17 @@ public final class LiveStreamContainerViewController: UIViewController {
     return closeBarButtonItem
   }()
 
+  lazy private var shareBarButtonItem: UIBarButtonItem = {
+    let shareBarButtonItem = UIBarButtonItem()
+      |> shareBarButtonItemStyle
+      |> UIBarButtonItem.lens.tintColor .~ .white
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
+
+    shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
+
+    return shareBarButtonItem
+  }()
+
   private lazy var modalOverlayView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -253,6 +300,10 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
+  }
+
+  @objc private func share() {
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 }
 

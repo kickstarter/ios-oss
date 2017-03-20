@@ -38,6 +38,9 @@ public protocol LiveStreamContainerViewModelInputs {
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
+  /// Emits whether the share bar button item should be added
+  var addShareBarButtonItem: Signal<Bool, NoError> { get }
+
   /// Emits when the LiveStreamViewController should be configured
   var configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
 
@@ -301,6 +304,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
                                                            liveStreamEvent: liveStreamEvent,
                                                            refTag: refTag)
     }
+
+    self.addShareBarButtonItem = updatedEventFetch.values()
+      .map { $0.liveNow }
+      .map(negate)
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
@@ -348,6 +355,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
+  public let addShareBarButtonItem: Signal<Bool, NoError>
   public let configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let configureNavBarTitleView: Signal<LiveStreamEvent, NoError>

@@ -10,6 +10,7 @@ import XCTest
 internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
+  private let addShareBarButtonItem = TestObserver<Bool, NoError>()
   private let configureLiveStreamViewControllerProject =
     TestObserver<Project, NoError>()
   private let configureLiveStreamViewControllerLiveStreamEvent =
@@ -30,6 +31,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.addShareBarButtonItem.observe(self.addShareBarButtonItem.observer)
     self.vm.outputs.configureLiveStreamViewController.map(first).observe(
       self.configureLiveStreamViewControllerProject.observer)
     self.vm.outputs.configureLiveStreamViewController.map(second).observe(
@@ -687,5 +689,53 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.willDismissMoreMenuViewController()
 
     self.removeModalOverlay.assertValueCount(1)
+  }
+
+  func testAddShareBarButtonItem_Live() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ true
+    let project = Project.template
+
+    self.addShareBarButtonItem.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.addShareBarButtonItem.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.addShareBarButtonItem.assertValues([false])
+    }
+  }
+
+  func testAddShareBarButtonItem_Replay() {
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.liveNow .~ false
+    let project = Project.template
+
+    self.addShareBarButtonItem.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.addShareBarButtonItem.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(3))
+
+      self.addShareBarButtonItem.assertValues([true])
+    }
   }
 }
