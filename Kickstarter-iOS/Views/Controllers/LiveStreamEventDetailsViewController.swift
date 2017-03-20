@@ -59,8 +59,8 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .hex(0x353535)
+      |> baseLiveStreamControllerStyle()
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_navy_700
 
     _  = self.availableForLabel
       |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized

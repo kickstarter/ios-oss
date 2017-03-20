@@ -31,7 +31,7 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.contentView
-      |> UIView.lens.backgroundColor .~ UIColor.hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .ksr_navy_700
 
     _  = self.avatarImageView
       |> UIImageView.lens.layer.masksToBounds .~ true

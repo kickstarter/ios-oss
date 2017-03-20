@@ -48,7 +48,7 @@ internal final class LiveStreamChatInputView: UIView {
     super.bindStyles()
 
     _ = self
-      |> UIView.lens.backgroundColor .~ UIColor.hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .ksr_navy_700
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
@@ -59,7 +59,7 @@ internal final class LiveStreamChatInputView: UIView {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.textField
-      |> UITextField.lens.backgroundColor .~ UIColor.hex(0x353535)
+      |> UITextField.lens.backgroundColor .~ .ksr_navy_700
       |> UITextField.lens.tintColor .~ .white
       |> UITextField.lens.textColor .~ .white
       |> UITextField.lens.font .~ .ksr_body(size: 14)

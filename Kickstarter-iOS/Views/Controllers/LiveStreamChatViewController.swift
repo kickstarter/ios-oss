@@ -69,11 +69,11 @@ internal final class LiveStreamChatViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .hex(0x353535)
+      |> baseLiveStreamControllerStyle()
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_navy_700
 
     _ = self.tableView
-      |> UITableView.lens.backgroundColor .~ .hex(0x353535)
+      |> UITableView.lens.backgroundColor .~ .ksr_navy_700
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 200

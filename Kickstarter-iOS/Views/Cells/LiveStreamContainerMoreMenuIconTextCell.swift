@@ -14,7 +14,7 @@ internal final class LiveStreamContainerMoreMenuIconTextCell: UITableViewCell, V
     super.awakeFromNib()
 
     self.selectedBackgroundView = UIView()
-      |> UIView.lens.backgroundColor .~ .hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .ksr_navy_700
   }
 
   internal func configureWith(value moreMenuItem: LiveStreamContainerMoreMenuItem) {
