@@ -570,16 +570,3 @@ private func oneToBool(_ string: String?) -> Decoded<Bool?> {
 private func stringToInt(_ string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
 }
-
-/**
- Zips two optionals, returning a tuple of values if both are present and `nil` otherwise. This function
- is analagous to `zip` on sequences if you think of optionals as sequences with at most one element.
-
- - parameter a: An optional.
- - parameter b: An optional.
-
- - returns: An optional tuple.
- */
-private func zip <A, B> (_ x: A?, _ y: @autoclosure () -> B?) -> (A, B)? {
-  return x.flatMap { x_ in y().map { y_ in (x_, y_) } }
-}
