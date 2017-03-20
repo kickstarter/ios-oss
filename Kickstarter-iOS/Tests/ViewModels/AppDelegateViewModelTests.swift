@@ -1311,7 +1311,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOtherEmailDeepLink() {
-    let emailUrl = URL(string: "https://email.kickstarter.com/mpss/a/b/c/d/e/f/g/h")!
+    let emailUrl = URL(string: "https://email.kickstarter.com/mpss/a/b/c/d/e/f/g")!
 
     // The application launches.
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
