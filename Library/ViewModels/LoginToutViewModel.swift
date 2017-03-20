@@ -44,8 +44,14 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), NoError> { get }
 
+  /// Emits if label should be hidden.
+  var headlineLabelHidden: Signal<Bool, NoError> { get }
+
   /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, NoError> { get }
+
+  /// Emits the login context to be displayed.
+  var logInContext: Signal<String, NoError> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
@@ -79,6 +85,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   // swiftlint:disable function_body_length
   public init() {
+
+    let intent = self.loginIntentProperty.signal.skipNil()
+      .takeWhen(self.viewWillAppearProperty.signal)
+
+    self.logInContext = intent.map { intent in statusString(intent) }
+
+    self.headlineLabelHidden = intent.map { $0 != .generic && $0 != .discoveryOnboarding }
+
     let isLoading = MutableProperty(false)
 
     self.isLoading = isLoading.signal
@@ -152,12 +166,16 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
+
+
     self.showFacebookErrorAlert
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
 
     self.loginIntentProperty.producer.skipNil()
       .takeWhen(viewWillAppearProperty.signal.take(first: 1))
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
+
+
   }
   // swiftlint:enable function_body_length
 
@@ -207,13 +225,34 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let dismissViewController: Signal<(), NoError>
+  public let headlineLabelHidden: Signal<Bool, NoError>
   public let startLogin: Signal<(), NoError>
   public let startSignup: Signal<(), NoError>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), NoError>
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public let postNotification: Signal<Notification, NoError>
+  public let logInContext: Signal<String, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>
   public let showFacebookErrorAlert: Signal<AlertError, NoError>
+}
+
+private func statusString(_ forStatus: LoginIntent) -> String {
+  switch forStatus {
+  case .starProject:
+    return "Log in or sign up to save this project. We'll remind you 48 hours before it ends."
+  case .backProject:
+    return "Please log in or sign up to back this project."
+  case .liveStreamSubscribe:
+    return "Please log in or sign up to subscribe to this live stream."
+  case .messageCreator:
+    return "Please log in or sign up to message this creator."
+  case .generic:
+    return "Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
+  case .discoveryOnboarding:
+    return "Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place."
+  default:
+    return "DEF Bring creative projects to life. Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
+  }
 }

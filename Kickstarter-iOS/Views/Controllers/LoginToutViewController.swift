@@ -9,6 +9,8 @@ import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet fileprivate weak var fbDisclaimer: UILabel!
+  @IBOutlet fileprivate weak var contextLabel: UILabel!
+  @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
   @IBOutlet fileprivate weak var helpButton: UIButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
@@ -65,6 +67,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.rootStackView |> loginRootStackViewStyle
     _ = self.signupButton |> signupWithEmailButtonStyle
+
+
+    _ = self.bringCreativeProjectsToLifeLabel
+      |> UILabel.lens.font .~ .ksr_headline()
+      |> UILabel.lens.text .~ "Bring creative projects to life."
   }
 
   // swiftlint:disable function_body_length
@@ -148,6 +155,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
     }
+
+    self.contextLabel.rac.text = self.viewModel.outputs.logInContext
+    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
   }
   // swiftlint:enable function_body_length
 
