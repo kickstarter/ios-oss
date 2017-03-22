@@ -4989,7 +4989,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5122,7 +5122,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5148,7 +5148,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				INFOPLIST_FILE = "Kickstarter-iOS/Tests/Info.plist";
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
