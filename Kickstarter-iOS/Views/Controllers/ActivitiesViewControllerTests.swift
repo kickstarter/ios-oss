@@ -1,3 +1,4 @@
+// swiftlint:disable function_body_length
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
