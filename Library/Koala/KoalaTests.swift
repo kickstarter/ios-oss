@@ -1,3 +1,7 @@
+// swiftlint:disable force_cast
+// swiftlint:disable force_unwrapping
+// swiftlint:disable type_body_length
+// swiftlint:disable file_length
 import XCTest
 import Prelude
 @testable import KsApi

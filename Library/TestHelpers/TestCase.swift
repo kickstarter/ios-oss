@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 import AVFoundation
 import FBSnapshotTestCase
 import ReactiveSwift
