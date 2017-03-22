@@ -11,6 +11,7 @@ import UIKit
 public final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var gradientView: GradientView!
+  @IBOutlet private weak var liveStreamContainerView: UIView!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
@@ -38,6 +39,10 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
+    vc.liveStreamViewController = LiveStreamViewController(
+      liveStreamService: AppEnvironment.current.liveStreamService
+    )
+
     return vc
   }
 
@@ -48,13 +53,21 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.navigationItem.titleView = self.navBarTitleView
 
-    self.liveStreamViewController = self.childViewControllers
-      .flatMap { $0 as? LiveStreamViewController }
-      .first
-
     self.liveStreamContainerPageViewController = self.childViewControllers
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
+
+    guard let liveStreamVC = self.liveStreamViewController else { return }
+
+    NSLayoutConstraint.activate([
+      liveStreamVC.view.leftAnchor.constraint(equalTo: self.liveStreamContainerView.leftAnchor),
+      liveStreamVC.view.topAnchor.constraint(equalTo: self.liveStreamContainerView.topAnchor),
+      liveStreamVC.view.rightAnchor.constraint(equalTo: self.liveStreamContainerView.rightAnchor),
+      liveStreamVC.view.bottomAnchor.constraint(equalTo: self.liveStreamContainerView.bottomAnchor)
+      ])
+    
+    self.addChildViewController(liveStreamVC)
+    liveStreamVC.didMove(toParentViewController: self)
 
     NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in

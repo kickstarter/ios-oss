@@ -361,12 +361,9 @@ Mikke Snow</string>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="EXE-hf-dQ1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
                                 <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQz-eQ-2Xj" userLabel="Live Stream View Controller">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kcY-m9-OKX">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
-                                        <connections>
-                                            <segue destination="WXN-s6-i5q" kind="embed" id="bAx-yt-F2w"/>
-                                        </connections>
-                                    </containerView>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A6q-eY-g0e">
                                         <rect key="frame" x="8" y="121.5" width="359" height="40.5"/>
                                         <subviews>
@@ -384,14 +381,14 @@ Mikke Snow</string>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="SQz-eQ-2Xj" secondAttribute="bottom" id="DR1-yZ-xbR"/>
+                                    <constraint firstItem="kcY-m9-OKX" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leading" id="3dI-vf-OQx"/>
+                                    <constraint firstAttribute="bottom" secondItem="kcY-m9-OKX" secondAttribute="bottom" id="6lu-OO-uoj"/>
                                     <constraint firstItem="A6q-eY-g0e" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leadingMargin" id="Dmc-1Z-3uT"/>
-                                    <constraint firstItem="SQz-eQ-2Xj" firstAttribute="leading" secondItem="EXE-hf-dQ1" secondAttribute="leading" id="YVt-vi-lty"/>
+                                    <constraint firstItem="kcY-m9-OKX" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="TcR-fL-gIH"/>
                                     <constraint firstItem="A6q-eY-g0e" firstAttribute="centerY" secondItem="EXE-hf-dQ1" secondAttribute="centerY" id="Zgg-Qe-ckR"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="A6q-eY-g0e" secondAttribute="trailing" id="ffk-il-PRd"/>
-                                    <constraint firstAttribute="trailing" secondItem="SQz-eQ-2Xj" secondAttribute="trailing" id="kIS-Qc-8id"/>
+                                    <constraint firstAttribute="trailing" secondItem="kcY-m9-OKX" secondAttribute="trailing" id="mdq-hb-bVw"/>
                                     <constraint firstAttribute="width" secondItem="EXE-hf-dQ1" secondAttribute="height" multiplier="16:9" id="rel-3a-meW"/>
-                                    <constraint firstItem="SQz-eQ-2Xj" firstAttribute="top" secondItem="EXE-hf-dQ1" secondAttribute="top" id="ufd-t2-hur"/>
                                     <constraint firstAttribute="height" secondItem="EXE-hf-dQ1" secondAttribute="width" multiplier="3:4" constant="1" id="zbI-0p-ahe"/>
                                 </constraints>
                                 <variation key="default">
@@ -400,7 +397,7 @@ Mikke Snow</string>
                                     </mask>
                                 </variation>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="euM-PC-048">
+                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="euM-PC-048" userLabel="Live Stream Container Page View Controller">
                                 <rect key="frame" x="0.0" y="282.5" width="375" height="417.5"/>
                                 <connections>
                                     <segue destination="hTH-R6-TaP" kind="embed" id="wpX-RU-LlT"/>
@@ -442,6 +439,7 @@ Mikke Snow</string>
                     <size key="freeformSize" width="375" height="700"/>
                     <connections>
                         <outlet property="gradientView" destination="vua-zM-Nqh" id="OWl-AU-WpA"/>
+                        <outlet property="liveStreamContainerView" destination="kcY-m9-OKX" id="T4c-io-FUL"/>
                         <outlet property="loaderActivityIndicatorView" destination="COg-em-r6I" id="coQ-Eh-3b8"/>
                         <outlet property="loaderLabel" destination="Qg2-W1-xwo" id="Ctg-bG-Frt"/>
                         <outlet property="loaderStackView" destination="A6q-eY-g0e" id="opA-A0-ELy"/>
@@ -698,7 +696,7 @@ Mikke Snow</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iYO-Gt-oe7" id="ReN-LF-tVY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="51.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="EY2-Eu-LJH">
@@ -797,24 +795,6 @@ Mikke Snow</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5e-2m-hMK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3353" y="1214"/>
-        </scene>
-        <!--Live Stream View Controller-->
-        <scene sceneID="ahM-pw-AU9">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="WXN-s6-i5q" customClass="LiveStreamViewController" customModule="LiveStream" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ixe-QE-ERJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="bsg-Iy-OKC"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="s6K-At-qEA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="282.5"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rys-1D-Ggk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3353" y="-48"/>
         </scene>
         <!--Live Stream Container More Menu View Controller-->
         <scene sceneID="6eP-my-lw7">

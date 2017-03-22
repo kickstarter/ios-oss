@@ -43,6 +43,10 @@ internal final class LiveStreamChatViewController: UIViewController {
       vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent, chatHidden: false)
       vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
+      _ = liveStreamChatHandler.chatMessages.observeValues { [weak vc] in
+        vc?.viewModel.inputs.received(chatMessages: $0)
+      }
+
       return vc
   }
 
@@ -95,10 +99,6 @@ internal final class LiveStreamChatViewController: UIViewController {
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )
-    }
-
-    _ = self.liveStreamChatHandler?.chatMessages.observeValues { [weak self] in
-      self?.viewModel.inputs.received(chatMessages: $0)
     }
 
     self.viewModel.outputs.prependChatMessagesToDataSourceAndReload

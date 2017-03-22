@@ -1,23 +1,6 @@
 import Foundation
 import ReactiveSwift
 
-fileprivate extension QueueScheduler {
-  static func backgroundScheduler() -> QueueScheduler {
-    return QueueScheduler(qos: .background, name: "com.kickstarter.liveStreamBQ", targeting: nil)
-  }
-}
-
-public struct LiveStreamAppEnvironment {
-  let backgroundQueueScheduler: DateSchedulerProtocol
-  let scheduler: DateSchedulerProtocol
-
-  public init(backgroundQueueScheduler: DateSchedulerProtocol = QueueScheduler.backgroundScheduler(),
-              scheduler: DateSchedulerProtocol = QueueScheduler.main) {
-    self.backgroundQueueScheduler = backgroundQueueScheduler
-    self.scheduler = scheduler
-  }
-}
-
 public enum LiveVideoPlaybackError {
   case failedToConnect
   case sessionInterrupted

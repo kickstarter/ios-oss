@@ -112,4 +112,39 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer(value: self.subscribeToResult?.value ?? envelope)
   }
+
+
+  //fixme: just for conformance
+
+  func chatMessageSnapshotsValue(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig, limitedToLast limit: UInt) -> SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
+    return .empty
+  }
+
+  func chatMessageSnapshotsAdded(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
+    return .empty
+  }
+
+  func firebaseApp() -> SignalProducer<FirebaseAppType, LiveApiError> {
+    return .empty
+  }
+
+  func firebaseAuth(withApp app: FirebaseAppType) -> SignalProducer<FirebaseAuthType, LiveApiError> {
+    return .empty
+  }
+
+  func firebaseDatabaseRef(withApp app: FirebaseAppType) -> SignalProducer<FirebaseDatabaseReferenceType, LiveApiError> {
+    return .empty
+  }
+
+  func greenRoomStatus(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
+    return .empty
+  }
+
+  func signIn(withAuth auth: FirebaseAuthType, customToken: String) -> SignalProducer<String, LiveApiError> {
+    return .empty
+  }
+
+  func signInToFirebaseAnonymously(withAuth auth: FirebaseAuthType) -> SignalProducer<String, LiveApiError> {
+    return .empty
+  }
 }

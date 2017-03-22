@@ -111,7 +111,9 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(environment: LiveStreamAppEnvironment = LiveStreamAppEnvironment()) {
+  init(backgroundQueueScheduler: DateSchedulerProtocol = QueueScheduler.backgroundScheduler(),
+       liveStreamService: LiveStreamServiceProtocol,
+       scheduler: DateSchedulerProtocol = QueueScheduler.main) {
 
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
@@ -120,6 +122,32 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map(first)
 
     let liveStreamEvent = configData
+
+    //fixme: will this complete?
+    let firebaseApp = liveStreamEvent
+      .ignoreValues()
+      .flatMap {
+        liveStreamService.firebaseApp().materialize()
+    }
+
+    let firebaseDbRef = firebaseApp.values()
+      .flatMap { app in
+        liveStreamService.firebaseDatabaseRef(withApp: app).materialize()
+    }
+
+    let observedGreenRoomOffChanged = Signal.combineLatest(
+      liveStreamEvent.map { $0.firebase?.greenRoomPath }.skipNil(),
+      firebaseDbRef.values()
+      )
+      .flatMap { path, dbRef in
+        liveStreamService.greenRoomStatus(
+          withDatabaseRef: dbRef,
+          refConfig: FirebaseRefConfig(ref: path)
+        )
+        .materialize()
+      }
+      .values()
+      .skipNil()
 
     let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
       .map { $0 as? NSDictionary }
@@ -146,11 +174,6 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0 as? String }
       .skipNil()
 
-    let observedGreenRoomOffChanged = self.greenRoomOffProperty
-      .signal
-      .map { $0 as? Bool }
-      .skipNil()
-
     let isMaxOpenTokViewersReached = Signal.combineLatest(
       numberOfPeopleWatching,
       maxOpenTokViewers
@@ -166,7 +189,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         .filter(isTrue)
       )
       .take(first: 1)
-      .timeout(after: 10, raising: SomeError(), on: environment.scheduler)
+      .timeout(after: 10, raising: SomeError(), on: scheduler)
       .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
 
     let liveHlsUrl = Signal.merge(
@@ -330,13 +353,13 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     )
 
     let bufferInterval = self.viewDidLoadProperty.signal.flatMap {
-      timer(interval: .milliseconds(500), on: environment.scheduler)
+      timer(interval: .milliseconds(500), on: scheduler)
     }.take(during: Lifetime(self.token))
 
     let snapshots = self.viewDidLoadProperty.signal
       .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
         snapshot
-          .start(on: environment.backgroundQueueScheduler)
+          .start(on: backgroundQueueScheduler)
           .skipNil()
     }
 
@@ -527,6 +550,16 @@ private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool 
 
 private func didEndNormally(event: LiveStreamEvent) -> Bool {
   return !event.liveNow && event.definitelyHasReplay
+}
+
+private extension QueueScheduler {
+  static func backgroundScheduler() -> QueueScheduler {
+    return QueueScheduler(
+      qos: .background,
+      name: "com.kickstarter.liveStreamBackgroundQueue",
+      targeting: nil
+    )
+  }
 }
 
 private enum TimeIntervalBufferEvent<T> {
