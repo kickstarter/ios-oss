@@ -4,8 +4,19 @@ import FirebaseAuth
 import FirebaseDatabase
 import ReactiveSwift
 
+private var app: FIRApp?
+private var db: FIRDatabase?
+private var dbRef: FIRDatabaseReference?
+
 public struct LiveStreamService: LiveStreamServiceProtocol {
+
   public init() {
+  }
+
+  func setup() {
+    app = nil //
+    db = app.map(FIRDatabase.database(app:))
+    dbRef = db?.reference()
   }
 
   public func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
@@ -206,7 +217,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       observer.sendCompleted()//fixme: should this complete?
 
       disposable.add({
-        app.delete({ _ in })//fixme: would have to ensure this isn't duplicated
+        //app.delete({ _ in })//fixme: would have to ensure this isn't duplicated
         observer.sendInterrupted()
       })
     }
@@ -234,7 +245,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   public func greenRoomStatus(withDatabaseRef dbRef: FirebaseDatabaseReferenceType,
                               refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
       return SignalProducer { (observer, disposable) in
-        guard let ref = dbRef as? FIRDatabaseReference else { return }
+        guard let ref = dbRef as? FIRDatabaseReference else { return } // send error
 
         let query = ref.child(refConfig.ref)
           .queryOrderedByKey()

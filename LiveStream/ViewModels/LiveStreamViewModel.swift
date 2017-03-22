@@ -135,7 +135,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         liveStreamService.firebaseDatabaseRef(withApp: app).materialize()
     }
 
-    let observedGreenRoomOffChanged = Signal.combineLatest(
+    let greenRoomStatusEvent = Signal.combineLatest(
       liveStreamEvent.map { $0.firebase?.greenRoomPath }.skipNil(),
       firebaseDbRef.values()
       )
@@ -146,8 +146,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
         )
         .materialize()
       }
-      .values()
-      .skipNil()
+
+    let greenRoomStatus = greenRoomStatusEvent.values()
+    let greenRoomErrors = greenRoomStatusEvent.errors()
+//      .values()
+//      .skipNil()
 
     let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
       .map { $0 as? NSDictionary }
@@ -226,7 +229,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     .skipRepeats()
 
     let observedGreenRoomOffOrInReplay = Signal.merge(
-      observedGreenRoomOffChanged.filter(isTrue),
+      greenRoomStatusEvent.filter(isTrue),
       didLiveStreamEndedNormally.filter(isTrue)
       )
       .ignoreValues()
@@ -308,10 +311,10 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
-      .sample(on: observedGreenRoomOffChanged.filter(isFalse).ignoreValues())
+      .sample(on: greenRoomStatusEvent.filter(isFalse).ignoreValues())
       .ignoreValues()
 
-    let greenRoomState = observedGreenRoomOffChanged
+    let greenRoomState = greenRoomStatusEvent
       .filter(isFalse)
       .mapConst(LiveStreamViewControllerState.greenRoom)
 
