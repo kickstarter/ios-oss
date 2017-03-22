@@ -28,3 +28,8 @@ custom_rules:
     regex: "\.~\s+Strings\s*\."
     message: "Capture calls to `Strings` functions using `%~ { _ in Strings... }`"
     severity: error
+  record_mode_prohibited:
+    name: "Record Mode Prohibited"
+    regex: "recordMode = true"
+    message: "Do not use `recordMode = true`."
+    severity: error
