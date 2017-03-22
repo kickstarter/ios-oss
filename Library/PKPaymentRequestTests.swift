@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 import Argo
 import Runes
 import PassKit
