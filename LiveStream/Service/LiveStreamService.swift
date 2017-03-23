@@ -4,9 +4,25 @@ import FirebaseAuth
 import FirebaseDatabase
 import ReactiveSwift
 
-private var app: FIRApp?
-private var db: FIRDatabase?
-private var dbRef: FIRDatabaseReference?
+private var firebaseApp: FIRApp?
+private var firebaseAuth: FIRAuth?
+private var firebaseDb: FIRDatabase?
+private var firebaseDbRef: FIRDatabaseReference?
+
+private func startFirebase() {
+  let options: FIROptions = FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
+                                       bundleID: Secrets.Firebase.Huzza.Production.bundleID,
+                                       gcmSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
+                                       apiKey: Secrets.Firebase.Huzza.Production.apiKey,
+                                       clientID: Secrets.Firebase.Huzza.Production.clientID,
+                                       trackingID: "",
+                                       androidClientID: "",
+                                       databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
+                                       storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
+                                       deepLinkURLScheme: "")
+
+  FIRApp.configure(withName: Secrets.Firebase.Huzza.Production.appName, options: options)
+}
 
 public struct LiveStreamService: LiveStreamServiceProtocol {
 
@@ -14,9 +30,12 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 
   func setup() {
-    app = nil //
-    db = app.map(FIRDatabase.database(app:))
-    dbRef = db?.reference()
+    if FIRApp(named: Secrets.Firebase.Huzza.Production.appName) == nil { startFirebase() }
+
+    firebaseApp = FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
+    firebaseAuth = firebaseApp.flatMap(FIRAuth.init(app:))
+    firebaseDb = firebaseApp.map(FIRDatabase.database(app:))
+    firebaseDbRef = firebaseDb?.reference()
   }
 
   public func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
@@ -200,58 +219,80 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       }
   }
 
-  public func firebaseApp() -> SignalProducer<FirebaseAppType, LiveApiError> {
-    return SignalProducer { (observer, disposable) in
-      let tryApp = firebaseAppInstance()
+  // MARK: Firebase
 
-      if tryApp == nil {
-        startFirebase()
-      }
-
-      guard let app = tryApp else {
-        observer.send(error: .failedToInitializeFirebase)
-        return
-      }
-
-      observer.send(value: app)
-      observer.sendCompleted()//fixme: should this complete?
-
-      disposable.add({
-        //app.delete({ _ in })//fixme: would have to ensure this isn't duplicated
-        observer.sendInterrupted()
-      })
-    }
-  }
-
-  public func firebaseAuth(withApp app: FirebaseAppType) -> SignalProducer<FirebaseAuthType, LiveApiError> {
-    return SignalProducer { (observer, disposable) in
-      guard let app = app as? FIRApp else { return }
-
-      guard let auth = FIRAuth(app: app) else {
-        observer.send(error: .firebaseAnonymousAuthFailed)
-        return
-      }
-
-      observer.send(value: auth)
-      observer.sendCompleted()
-
-      disposable.add({
-        try? auth.signOut()
-        observer.sendInterrupted()
-      })
-    }
-  }
-
-  public func greenRoomStatus(withDatabaseRef dbRef: FirebaseDatabaseReferenceType,
-                              refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
+  public func chatMessageSnapshotsValue(withRefConfig refConfig: FirebaseRefConfig,
+                                        limitedToLast limit: UInt) ->
+    SignalProducer<[LiveStreamChatMessage], LiveApiError> {
       return SignalProducer { (observer, disposable) in
-        guard let ref = dbRef as? FIRDatabaseReference else { return } // send error
+        guard let ref = firebaseDbRef else {
+          observer.send(error: .failedToInitializeFirebase)
+          return
+        }
+
+        guard let orderBy = refConfig.orderBy as String? else {
+          observer.send(error: .genericFailure)
+          return
+        }
 
         let query = ref.child(refConfig.ref)
-          .queryOrderedByKey()
+          .queryOrdered(byChild: orderBy)
+          .queryLimited(toLast: limit)
 
         query.observe(.value, with: { snapshot in
-          observer.send(value: snapshot.value as? Bool)
+          let chatMessages = snapshot.value
+            .map(JSON.init)
+            .map([LiveStreamChatMessage].decode)
+            .flatMap { $0.value }
+            .map(Event<[LiveStreamChatMessage], LiveApiError>.value)
+            .coalesceWith(.failed(.genericFailure))
+
+          observer.action(chatMessages)
+          observer.sendCompleted()
+        })
+
+        disposable.add({
+          query.removeAllObservers()
+          observer.sendInterrupted()
+        })
+      }
+//        .start(on: QueueScheduler(
+//          qos: .background,
+//          name: "com.kickstarter.liveStreamChatDecodingQueue",
+//          targeting: nil
+//        ))
+  }
+
+  public func chatMessageSnapshotsAdded(withRefConfig refConfig: FirebaseRefConfig,
+                                        addedSinceTimeInterval timeInterval: TimeInterval) ->
+    SignalProducer<LiveStreamChatMessage, LiveApiError> {
+      return SignalProducer { (observer, disposable) in
+        guard let ref = firebaseDbRef else {
+          observer.send(error: .failedToInitializeFirebase)
+          return
+        }
+
+        guard let orderBy = refConfig.orderBy as String? else {
+          observer.send(error: .genericFailure)
+          return
+        }
+
+        let query = ref.child(refConfig.ref)
+          .queryOrdered(byChild: orderBy)
+          .queryStarting(
+            atValue: refConfig.startingAtValue,
+            childKey: refConfig.startingAtChildKey
+        )
+
+        query.observe(.childAdded, with: { snapshot in
+          let chatMessage = snapshot.value
+            .map(JSON.init)
+            .map(LiveStreamChatMessage.decode)
+            .flatMap { $0.value }
+            .map(Event<LiveStreamChatMessage, LiveApiError>.value)
+            .coalesceWith(.failed(.genericFailure))
+
+          observer.action(chatMessage)
         })
 
         disposable.add({
@@ -261,10 +302,34 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       }
   }
 
-  public func signInToFirebaseAnonymously(withAuth auth: FirebaseAuthType) ->
+  public func greenRoomStatus(withRefConfig refConfig: FirebaseRefConfig) ->
+    SignalProducer<Bool?, LiveApiError> {
+      return SignalProducer { (observer, disposable) in
+        guard let ref = firebaseDbRef else {
+          observer.send(error: .failedToInitializeFirebase)
+          return
+        }
+
+        let query = ref.child(refConfig.ref).queryOrderedByKey()
+
+        query.observe(.value, with: { snapshot in
+          observer.send(value: snapshot.value as? Bool)//fixme: cast and return nil or error out?
+        })
+
+        disposable.add({
+          query.removeAllObservers()
+          observer.sendInterrupted()
+        })
+      }
+  }
+
+  public func signInToFirebaseAnonymously() ->
     SignalProducer<String, LiveApiError> {
       return SignalProducer { (observer, disposable) in
-        guard let auth = auth as? FIRAuth else { return }
+        guard let auth = firebaseAuth else {
+          observer.send(error: .failedToInitializeFirebase)
+          return
+        }
 
         auth.signInAnonymously { user, _ in
           guard let id = user?.uid else {
@@ -277,16 +342,18 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         }
 
         disposable.add({
-          try? auth.signOut()
           observer.sendInterrupted()
         })
       }
   }
 
-  public func signIn(withAuth auth: FirebaseAuthType, customToken: String) ->
+  public func signIn(withCustomToken customToken: String) ->
     SignalProducer<String, LiveApiError> {
       return SignalProducer { (observer, disposable) in
-        guard let auth = auth as? FIRAuth else { return }
+        guard let auth = firebaseAuth else {
+          observer.send(error: .failedToInitializeFirebase)
+          return
+        }
 
         auth.signIn(withCustomToken: customToken) { user, _ in
           guard let id = user?.uid else {
@@ -303,75 +370,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         })
       }
   }
-
-  //fixme: this can't really error out but stuff earlier up the chain can?
-  public func firebaseDatabaseRef(withApp app: FirebaseAppType) ->
-    SignalProducer<FirebaseDatabaseReferenceType, LiveApiError> {
-      return SignalProducer { (observer, disposable) in
-        guard let app = app as? FIRApp else { return }//fixme: or possibly error out here?
-
-        let db = FIRDatabase.database(app: app)
-        db.goOnline()//fixme: can this be called multiple times?
-
-        observer.send(value: db.reference())
-        observer.sendCompleted()
-
-        disposable.add({
-          db.goOffline()
-          observer.sendInterrupted()
-        })
-      }
-  }
-
-  public func chatMessageSnapshotsValue(withDatabaseRef dbRef: FirebaseDatabaseReferenceType,
-                                        refConfig: FirebaseRefConfig, limitedToLast limit: UInt) ->
-    SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
-      return SignalProducer { (observer, disposable) in
-        guard let ref = dbRef as? FIRDatabaseReference else { return }
-        guard let orderBy = refConfig.orderBy as String? else { return }//fixme: send error?
-
-        let query = ref.child(refConfig.ref)
-          .queryOrdered(byChild: orderBy)
-          .queryLimited(toLast: limit)
-
-        query.observe(.childAdded, with: { snapshot in
-          observer.send(value: snapshot)
-          observer.sendCompleted()
-        })
-
-        disposable.add({
-          query.removeAllObservers()
-          observer.sendInterrupted()
-        })
-      }
-  }
-
-  //fixme: potentially only this one is public and internally chained to above producer?
-  public func chatMessageSnapshotsAdded(withDatabaseRef dbRef: FirebaseDatabaseReferenceType,
-                                   refConfig: FirebaseRefConfig,
-                                   addedSinceTimeInterval timeInterval: TimeInterval) ->
-    SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
-      return SignalProducer { (observer, disposable) in
-        guard let ref = dbRef as? FIRDatabaseReference else { return }
-        guard let orderBy = refConfig.orderBy as String? else { return }//fixme: send error?
-
-        let query = ref.child(refConfig.ref)
-          .queryOrdered(byChild: orderBy)
-          .queryStarting(
-            atValue: refConfig.startingAtValue,
-            childKey: refConfig.startingAtChildKey
-        )
-
-        query.observe(.childAdded, with: { snapshot in
-          observer.send(value: snapshot)
-        })
-
-        disposable.add({
-          query.removeAllObservers()
-          observer.sendInterrupted()
-        })
-      }
-  }
 }
 
 fileprivate func formData(withDictionary dictionary: [String:String]) -> String {
@@ -382,28 +380,4 @@ fileprivate func formData(withDictionary dictionary: [String:String]) -> String 
   }
 
   return params.joined(separator: "&")
-}
-
-private func firebaseAuth() -> FIRAuth? {
-  guard let app = firebaseAppInstance() else { return nil }
-  return FIRAuth(app: app)
-}
-
-private func firebaseAppInstance() -> FIRApp? {
-  return FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
-}
-
-private func startFirebase() {
-  let options: FIROptions = FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
-                                       bundleID: Secrets.Firebase.Huzza.Production.bundleID,
-                                       gcmSenderID: Secrets.Firebase.Huzza.Production.gcmSenderID,
-                                       apiKey: Secrets.Firebase.Huzza.Production.apiKey,
-                                       clientID: Secrets.Firebase.Huzza.Production.clientID,
-                                       trackingID: "",
-                                       androidClientID: "",
-                                       databaseURL: Secrets.Firebase.Huzza.Production.databaseURL,
-                                       storageBucket: Secrets.Firebase.Huzza.Production.storageBucket,
-                                       deepLinkURLScheme: "")
-  
-  FIRApp.configure(withName: Secrets.Firebase.Huzza.Production.appName, options: options)
 }

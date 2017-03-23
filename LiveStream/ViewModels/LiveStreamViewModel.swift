@@ -123,34 +123,18 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let liveStreamEvent = configData
 
-    //fixme: will this complete?
-    let firebaseApp = liveStreamEvent
-      .ignoreValues()
-      .flatMap {
-        liveStreamService.firebaseApp().materialize()
-    }
-
-    let firebaseDbRef = firebaseApp.values()
-      .flatMap { app in
-        liveStreamService.firebaseDatabaseRef(withApp: app).materialize()
-    }
-
-    let greenRoomStatusEvent = Signal.combineLatest(
-      liveStreamEvent.map { $0.firebase?.greenRoomPath }.skipNil(),
-      firebaseDbRef.values()
-      )
-      .flatMap { path, dbRef in
+    let greenRoomStatusEvent = liveStreamEvent
+      .map { $0.firebase?.greenRoomPath }
+      .skipNil()
+      .flatMap { path in
         liveStreamService.greenRoomStatus(
-          withDatabaseRef: dbRef,
-          refConfig: FirebaseRefConfig(ref: path)
+          withRefConfig: FirebaseRefConfig(ref: path)
         )
         .materialize()
       }
 
-    let greenRoomStatus = greenRoomStatusEvent.values()
+    let greenRoomStatus = greenRoomStatusEvent.values().skipNil()
     let greenRoomErrors = greenRoomStatusEvent.errors()
-//      .values()
-//      .skipNil()
 
     let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
       .map { $0 as? NSDictionary }
@@ -229,7 +213,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     .skipRepeats()
 
     let observedGreenRoomOffOrInReplay = Signal.merge(
-      greenRoomStatusEvent.filter(isTrue),
+      greenRoomStatus.filter(isTrue),
       didLiveStreamEndedNormally.filter(isTrue)
       )
       .ignoreValues()
@@ -311,10 +295,10 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { dbRef, event, _ in (dbRef, event) }
 
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
-      .sample(on: greenRoomStatusEvent.filter(isFalse).ignoreValues())
+      .sample(on: greenRoomStatus.filter(isFalse).ignoreValues())
       .ignoreValues()
 
-    let greenRoomState = greenRoomStatusEvent
+    let greenRoomState = greenRoomStatus
       .filter(isFalse)
       .mapConst(LiveStreamViewControllerState.greenRoom)
 

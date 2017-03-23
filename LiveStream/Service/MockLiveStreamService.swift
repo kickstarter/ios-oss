@@ -116,35 +116,23 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   //fixme: just for conformance
 
-  func chatMessageSnapshotsValue(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig, limitedToLast limit: UInt) -> SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
+  func chatMessageSnapshotsAdded(withRefConfig refConfig: FirebaseRefConfig, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<LiveStreamChatMessage, LiveApiError> {
     return .empty
   }
 
-  func chatMessageSnapshotsAdded(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<FirebaseDataSnapshotType, LiveApiError> {
+  func chatMessageSnapshotsValue(withRefConfig refConfig: FirebaseRefConfig, limitedToLast limit: UInt) -> SignalProducer<[LiveStreamChatMessage], LiveApiError> {
     return .empty
   }
 
-  func firebaseApp() -> SignalProducer<FirebaseAppType, LiveApiError> {
+  func greenRoomStatus(withRefConfig refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
     return .empty
   }
 
-  func firebaseAuth(withApp app: FirebaseAppType) -> SignalProducer<FirebaseAuthType, LiveApiError> {
+  func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError> {
     return .empty
   }
 
-  func firebaseDatabaseRef(withApp app: FirebaseAppType) -> SignalProducer<FirebaseDatabaseReferenceType, LiveApiError> {
-    return .empty
-  }
-
-  func greenRoomStatus(withDatabaseRef dbRef: FirebaseDatabaseReferenceType, refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
-    return .empty
-  }
-
-  func signIn(withAuth auth: FirebaseAuthType, customToken: String) -> SignalProducer<String, LiveApiError> {
-    return .empty
-  }
-
-  func signInToFirebaseAnonymously(withAuth auth: FirebaseAuthType) -> SignalProducer<String, LiveApiError> {
+  func signIn(withCustomToken customToken: String) -> SignalProducer<String, LiveApiError> {
     return .empty
   }
 }
