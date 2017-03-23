@@ -289,7 +289,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.rateUsLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_rate_us() }
+      |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -313,7 +313,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.wereAllEarsTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_title() }
+      |> UILabel.lens.text %~ { _ in Strings.We_re_all_ears() }
   }
   // swiftlint:enable function_body_length
 
