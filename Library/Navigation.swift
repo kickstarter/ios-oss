@@ -8,6 +8,7 @@ import KsApi
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case emailClick(qs: String)
+  case emailLink
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
@@ -78,6 +79,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhsId == rhsId && lhsCheckout == rhsCheckout
   case let (.emailClick(lhs), .emailClick(rhs)):
     return lhs == rhs
+  case (.emailLink, .emailLink):
+    return true
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
   case (.signup, .signup):
@@ -221,6 +224,7 @@ extension Navigation {
 
 private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/": emailClick,
+  "/mpss/:a/:b/:c/:d/:e/:f/:g": emailLink,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -286,6 +290,10 @@ public typealias RouteParams = JSON
 private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.emailClick)
    <^> params <| "qs"
+}
+
+private func emailLink(_ params: RouteParams) -> Decoded<Navigation> {
+  return .success(.emailLink)
 }
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
@@ -506,7 +514,11 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   let recognizedHosts = [
     AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
     AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
-    "click.e.kickstarter.com"
+    "click.e.kickstarter.com",
+    "emails.kickstarter.com",
+    "email.kickstarter.com",
+    "e2.kickstarter.com",
+    "e3.kickstarter.com",
   ].compact()
 
   let isRecognizedHost = recognizedHosts.reduce(false) { accum, host in
@@ -557,17 +569,4 @@ private func oneToBool(_ string: String?) -> Decoded<Bool?> {
 
 private func stringToInt(_ string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
-}
-
-/**
- Zips two optionals, returning a tuple of values if both are present and `nil` otherwise. This function
- is analagous to `zip` on sequences if you think of optionals as sequences with at most one element.
-
- - parameter a: An optional.
- - parameter b: An optional.
-
- - returns: An optional tuple.
- */
-private func zip <A, B> (_ x: A?, _ y: @autoclosure () -> B?) -> (A, B)? {
-  return x.flatMap { x_ in y().map { y_ in (x_, y_) } }
 }

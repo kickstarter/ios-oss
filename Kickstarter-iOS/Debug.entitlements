@@ -8,6 +8,10 @@
 	<array>
 		<string>applinks:www.kickstarter.com</string>
 		<string>applinks:click.e.kickstarter.com</string>
+		<string>applinks:email.kickstarter.com</string>
+		<string>applinks:emails.kickstarter.com</string>
+		<string>applinks:e2.kickstarter.com</string>
+		<string>applinks:e3.kickstarter.com</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array/>
