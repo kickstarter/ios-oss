@@ -237,19 +237,18 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 private func statusString(_ forStatus: LoginIntent) -> String {
   switch forStatus {
   case .starProject:
-    return "Log in or sign up to save this project. We'll remind you 48 hours before it ends."
+    return Strings.Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you()
   case .backProject:
-    return "Please log in or sign up to back this project."
+    return Strings.Please_log_in_or_sign_up_to_back_this_project()
   case .liveStreamSubscribe:
-    return "Please log in or sign up to subscribe to this live stream."
+    return Strings.Please_log_in_or_sign_up_to_subscribe_to_this_live_stream()
   case .messageCreator:
-    return "Please log in or sign up to message this creator."
+    return Strings.Please_log_in_or_sign_up_to_message_this_creator()
   case .generic:
-    return "Bring creative projects to life. Pledge to support projects and view all" +
-    "your saved and backed projects in one place. Log in or sign up to continue."
+    return
+      Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue()
   case .discoveryOnboarding:
-    return "Bring creative projects to life. Pledge to support projects" +
-    "and view all your saved and backed projects in one place."
+    return Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   default:
     return "DEF Bring creative projects to life. Pledge to support projects and view all your saved" +
     "and backed projects in one place. Log in or sign up to continue."
