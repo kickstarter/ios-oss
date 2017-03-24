@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let rewards = (1...6).map {
@@ -100,12 +100,12 @@ AppEnvironment.replaceCurrentEnvironment(
 
   currentUser: cosmicSurgery.creator,
   language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 initialize()
 let controller = DashboardViewController.instantiate()
 
-XCPlaygroundPage.currentPage.liveView = controller
+PlaygroundPage.current.liveView = controller
 controller.view |> UIView.lens.frame.size.height .~ 1_250

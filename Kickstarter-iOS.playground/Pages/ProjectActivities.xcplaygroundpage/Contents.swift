@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Setting `isVoiceOverRunning` to `true` outputs a date before every activity.
@@ -22,7 +22,7 @@ let baseActivity = .template
       |> Comment.lens.author .~ .brando
       |> Comment.lens.body .~ "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
   )
-  |> Activity.lens.memberData.amount .~ 25
+  |> Activity.lens.memberData.amount .~ 5800000
   |> Activity.lens.project .~ project
   |> Activity.lens.update .~ (
     .template
@@ -86,5 +86,5 @@ controller.bindViewModel()
 
 let (parent, _) = playgroundControllers(device: device, orientation: orientation, child: controller)
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
