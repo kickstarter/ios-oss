@@ -6,10 +6,6 @@ import ReactiveSwift
 import Result
 import UIKit
 
-fileprivate enum Section: Int {
-  case messages
-}
-
 internal protocol LiveStreamChatViewControllerDelegate: class {
   func liveStreamChatViewController(
     _ controller: LiveStreamChatViewController,
@@ -83,11 +79,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UITableView.lens.estimatedRowHeight .~ 200
 
     self.tableView.contentInset = .init(topBottom: Styles.grid(1))
-  }
-
-  //swiftlint:disable:next function_body_length
-  internal override func bindViewModel() {
-    super.bindViewModel()
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -100,12 +91,17 @@ internal final class LiveStreamChatViewController: UIViewController {
           orientation: UIApplication.shared.statusBarOrientation
         )
     }
+  }
+
+  //swiftlint:disable:next function_body_length
+  internal override func bindViewModel() {
+    super.bindViewModel()
 
     self.viewModel.outputs.prependChatMessagesToDataSourceAndReload
       .observeForUI()
       .observeValues { [weak self] chatMessages, reload in
-        let indexPaths = self?.dataSource.add(chatMessages, toSection: Section.messages.rawValue)
-        indexPaths.doIfSome { self?.insert($0, andReload: reload) }
+        let indexPathsInserted = self?.dataSource.add(chatMessages: chatMessages) ?? []
+        self?.insert(indexPathsInserted, andReload: reload)
     }
 
     self.viewModel.outputs.openLoginToutViewController
@@ -198,15 +194,17 @@ internal final class LiveStreamChatViewController: UIViewController {
       return
     }
 
+    guard let section = indexPaths.first?.section else { return }
+
     self.tableView.beginUpdates()
+    defer { self.tableView.endUpdates() }
+
 
     if self.tableView.numberOfSections == 0 {
-      self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
+      self.tableView.insertSections(IndexSet(integer: section), with: .none)
     }
 
     self.tableView.insertRows(at: indexPaths, with: .top)
-
-    self.tableView.endUpdates()
   }
 
   private func presentMoreMenu(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {

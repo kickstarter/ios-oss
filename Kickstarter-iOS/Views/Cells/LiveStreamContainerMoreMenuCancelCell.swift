@@ -8,13 +8,11 @@ internal final class LiveStreamContainerMoreMenuCancelCell: UITableViewCell, Val
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
-
     self.selectedBackgroundView = UIView()
-      |> UIView.lens.backgroundColor .~ .ksr_navy_700
+    self.titleLabel.text = Strings.general_navigation_buttons_cancel()
   }
 
   internal func configureWith(value moreMenuItem: LiveStreamContainerMoreMenuItem) {
-    self.titleLabel.text = localizedString(key: "Cancel", defaultValue: "Cancel")
   }
 
   internal override func bindStyles() {
@@ -22,6 +20,9 @@ internal final class LiveStreamContainerMoreMenuCancelCell: UITableViewCell, Val
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ .hex(0x1B1B1C)
+
+    _ = self.selectedBackgroundView
+      ?|> UIView.lens.backgroundColor .~ .ksr_navy_700
 
     self.separatorInset = UIEdgeInsets(leftRight: self.frame.size.width)
 

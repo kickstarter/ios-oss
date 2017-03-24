@@ -4,13 +4,16 @@ import Prelude
 import UIKit
 
 internal final class LiveStreamChatDataSource: ValueCellDataSource {
-  internal func add(_ chatMessages: [LiveStreamChatMessage], toSection section: Int) -> [IndexPath] {
-    let indexPaths = chatMessages.map {
-      self.prependRow(value: $0, cellClass:
-        LiveStreamChatMessageCell.self, toSection: section)
+  internal enum Section: Int {
+    case chats
+  }
+
+  internal func add(chatMessages: [LiveStreamChatMessage]) -> [IndexPath] {
+    chatMessages.forEach {
+      self.prependRow(value: $0, cellClass: LiveStreamChatMessageCell.self, toSection: Section.chats.rawValue)
     }
 
-    return indexPaths
+    return (0..<chatMessages.count).map { IndexPath.init(row: $0, section: Section.chats.rawValue) }
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

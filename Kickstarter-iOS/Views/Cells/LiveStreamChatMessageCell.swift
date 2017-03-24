@@ -30,6 +30,9 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseTableViewCellStyle()
+
     _ = self.contentView
       |> UIView.lens.backgroundColor .~ .ksr_navy_700
 
@@ -40,7 +43,7 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> UIStackView.lens.alignment .~ .top
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(2)) / 2,
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1),
                                                  leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
@@ -70,11 +73,5 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     self.creatorTextLabel.rac.hidden = self.viewModel.outputs.creatorViewsHidden
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.messageLabel.rac.text = self.viewModel.outputs.message
-  }
-
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2
   }
 }

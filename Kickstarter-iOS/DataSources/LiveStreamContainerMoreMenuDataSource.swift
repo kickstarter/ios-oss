@@ -3,11 +3,12 @@ import LiveStream
 import Prelude
 import UIKit
 
-fileprivate enum Section: Int {
-  case items
-}
-
 internal final class LiveStreamContainerMoreMenuDataSource: ValueCellDataSource {
+
+  fileprivate enum Section: Int {
+    case items
+  }
+
   internal func load(items: [LiveStreamContainerMoreMenuItem]) {
 
     items.forEach { menuItem in
