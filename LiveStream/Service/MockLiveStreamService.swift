@@ -13,31 +13,52 @@ extension Result {
 }
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
-  private let anonymousUserId: String?
+  private let chatMessagesSnapshotsAddedResult: Result<LiveStreamChatMessage, LiveApiError>?
+  private let chatMessagesSnapshotsValueResult: Result<[LiveStreamChatMessage], LiveApiError>?
+  private let greenRoomOffStatusResult: Result<Bool, LiveApiError>?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
-  private let firebaseUserId: String?
-  private let initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>?
+  private let hlsUrlResult: Result<String, LiveApiError>?
+  private let incrementNumberOfPeopleWatchingResult: Result<(), LiveApiError>?
+  private let numberOfPeopleWatchingResult: Result<Int, LiveApiError>?
+  private let scaleNumberOfPeopleWatchingResult: Result<Int, LiveApiError>?
+  private let sendChatMessageResult: Result<(), LiveApiError>?
+  private let signInToFirebaseAnonymouslyResult: Result<(), LiveApiError>?
+  private let signInToFirebaseWithCustomTokenResult: Result<String, LiveApiError>?
   private let subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>?
 
   internal init() {
     self.init(fetchEventResult: nil)
   }
 
-  internal init(anonymousUserId: String? = nil,
+  internal init(chatMessagesSnapshotsAddedResult: Result<LiveStreamChatMessage, LiveApiError>? = nil,
+                chatMessagesSnapshotsValueResult: Result<[LiveStreamChatMessage], LiveApiError>? = nil,
+                greenRoomOffStatusResult: Result<Bool, LiveApiError>? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
-                firebaseUserId: String? = nil,
-                initializeDatabaseResult: Result<FIRDatabaseReference, SomeError>? = nil,
+                hlsUrlResult: Result<String, LiveApiError>? = nil,
+                incrementNumberOfPeopleWatchingResult: Result<(), LiveApiError>? = nil,
+                numberOfPeopleWatchingResult: Result<Int, LiveApiError>? = nil,
+                scaleNumberOfPeopleWatchingResult: Result<Int, LiveApiError>? = nil,
+                sendChatMessageResult: Result<(), LiveApiError>? = nil,
+                signInToFirebaseAnonymouslyResult: Result<(), LiveApiError>? = nil,
+                signInToFirebaseWithCustomTokenResult: Result<String, LiveApiError>? = nil,
                 subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>? = nil) {
-    self.anonymousUserId = anonymousUserId
+    self.chatMessagesSnapshotsAddedResult = chatMessagesSnapshotsAddedResult
+    self.chatMessagesSnapshotsValueResult = chatMessagesSnapshotsValueResult
+    self.greenRoomOffStatusResult = greenRoomOffStatusResult
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
     self.fetchEventsResult = fetchEventsResult
-    self.firebaseUserId = firebaseUserId
-    self.initializeDatabaseResult = initializeDatabaseResult
+    self.hlsUrlResult = hlsUrlResult
+    self.incrementNumberOfPeopleWatchingResult = incrementNumberOfPeopleWatchingResult
+    self.numberOfPeopleWatchingResult = numberOfPeopleWatchingResult
+    self.scaleNumberOfPeopleWatchingResult = scaleNumberOfPeopleWatchingResult
+    self.sendChatMessageResult = sendChatMessageResult
+    self.signInToFirebaseAnonymouslyResult = signInToFirebaseAnonymouslyResult
+    self.signInToFirebaseWithCustomTokenResult = signInToFirebaseWithCustomTokenResult
     self.subscribeToResult = subscribeToResult
   }
 
@@ -73,7 +94,6 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   }
 
   internal func fetchEvents() -> SignalProducer<[LiveStreamEvent], LiveApiError> {
-
     if let error = self.fetchEventsResult?.error {
       return SignalProducer(error: error)
     }
@@ -95,47 +115,69 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
       return SignalProducer(value: self.subscribeToResult?.value ?? envelope)
   }
 
+  // MARK: Firebase
 
-  //fixme: just for conformance
+  internal func chatMessageSnapshotsAdded(withPath path: String,
+                                          addedSinceTimeInterval timeInterval: TimeInterval) ->
+    SignalProducer<LiveStreamChatMessage, LiveApiError> {
+      if let error = self.chatMessagesSnapshotsAddedResult?.error {
+        return SignalProducer(error: error)
+      }
 
-  func chatMessageSnapshotsAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<LiveStreamChatMessage, LiveApiError> {
+      return SignalProducer(
+        value: self.chatMessagesSnapshotsAddedResult?.value ?? .template
+      )
+  }
+
+  internal func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) ->
+    SignalProducer<[LiveStreamChatMessage], LiveApiError> {
+      if let error = self.chatMessagesSnapshotsValueResult?.error {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(
+        value: self.chatMessagesSnapshotsValueResult?.value ?? [.template]
+      )
+  }
+
+  internal func greenRoomOffStatus(withPath path: String) -> SignalProducer<Bool, LiveApiError> {
+    if let error = self.greenRoomOffStatusResult?.error {
+      return SignalProducer(error: error)
+    }
+
+    return SignalProducer(
+      value: self.greenRoomOffStatusResult?.value ?? false
+    )
+  }
+
+  internal func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError> {
     return .empty
   }
 
-  func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) -> SignalProducer<[LiveStreamChatMessage], LiveApiError> {
+  internal func numberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
     return .empty
   }
 
-  func greenRoomOffStatus(withPath path: String) -> SignalProducer<Bool, LiveApiError> {
-    return .empty
-  }
-
-  func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError> {
-    return .empty
-  }
-
-  func numberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
-    return .empty
-  }
-
-  func incrementNumberOfPeopleWatching(withPath path: String) ->
+  internal func incrementNumberOfPeopleWatching(withPath path: String) ->
     SignalProducer<(), LiveApiError> {
     return .empty
   }
 
-  func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
+  internal func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
     return .empty
   }
 
-  func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessage) -> SignalProducer<(), LiveApiError> {
+  internal func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessage) ->
+    SignalProducer<(), LiveApiError> {
     return .empty
   }
 
-  func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError> {
+  internal func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError> {
     return .empty
   }
 
-  func signInToFirebase(withCustomToken customToken: String) -> SignalProducer<String, LiveApiError> {
+  internal func signInToFirebase(withCustomToken customToken: String) ->
+    SignalProducer<String, LiveApiError> {
     return .empty
   }
 }

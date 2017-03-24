@@ -7,12 +7,6 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
-private class TestLiveStreamChatHandler: LiveStreamChatHandler {
-  var chatMessages: Signal<[LiveStreamChatMessage], NoError> { return .empty}
-  func sendChatMessage(message: String) {}
-  func configureChatUserInfo(info: LiveStreamChatUserInfo) {}
-}
-
 internal final class LiveStreamContainerPageViewModelTests: TestCase {
   private let vm: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
@@ -47,11 +41,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.chatButtonTextColor.assertValueCount(0)
     self.infoButtonTextColor.assertValueCount(0)
 
-    let handler = TestLiveStreamChatHandler()
-
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 liveStreamChatHandler: handler, refTag: .projectPage,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
@@ -78,11 +69,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.infoButtonTitleFontName.assertValueCount(0)
     self.infoButtonTitleFontSize.assertValueCount(0)
 
-    let handler = TestLiveStreamChatHandler()
-
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 liveStreamChatHandler: handler, refTag: .projectPage,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
@@ -113,11 +101,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.pagedToPage.assertValueCount(0)
     self.pagedToPageDirection.assertValueCount(0)
 
-    let handler = TestLiveStreamChatHandler()
-
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 liveStreamChatHandler: handler, refTag: .projectPage,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
@@ -139,11 +124,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
   func testLoadViewControllersIntoPagesDataSource() {
     self.loadViewControllersIntoPagesDataSource.assertValueCount(0)
 
-    let handler = TestLiveStreamChatHandler()
-
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 liveStreamChatHandler: handler, refTag: .projectPage,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.loadViewControllersIntoPagesDataSource.assertValueCount(1)
@@ -154,11 +136,8 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
   func testIndicatorLineViewXPosition() {
     self.indicatorLineViewXPosition.assertValueCount(0)
 
-    let handler = TestLiveStreamChatHandler()
-
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 liveStreamChatHandler: handler, refTag: .projectPage,
-                                 presentedFromProject: true)
+                                 refTag: .projectPage, presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()

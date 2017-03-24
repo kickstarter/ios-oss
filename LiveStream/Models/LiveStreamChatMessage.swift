@@ -51,6 +51,12 @@ extension LiveStreamChatMessage: Decodable {
   }
 }
 
+extension LiveStreamChatMessage: Equatable {
+  static public func == (lhs: LiveStreamChatMessage, rhs: LiveStreamChatMessage) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
 // Currently chat user ID's are prefixed with "id_" and are strings, doing this until that changes
 private func convertId(fromJson json: JSON) -> Decoded<Int> {
   switch json {

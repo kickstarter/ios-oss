@@ -18,14 +18,14 @@ public protocol LiveStreamServiceProtocol {
   /// Called to initialise internal Firebase properties.
   func setup()
 
-  /// Fetches the initial limited value of the chat messages.
-  func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) ->
-    SignalProducer<[LiveStreamChatMessage], LiveApiError>
-
   /// Emits chat messages added since a given time interval.
   func chatMessageSnapshotsAdded(withPath path: String,
                                  addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError>
+
+  /// Fetches the initial limited value of the chat messages.
+  func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) ->
+    SignalProducer<[LiveStreamChatMessage], LiveApiError>
 
   /// Fetches an event with personalization added for the user.
   func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
@@ -56,6 +56,10 @@ public protocol LiveStreamServiceProtocol {
   func scaleNumberOfPeopleWatching(withPath path: String) ->
     SignalProducer<Int, LiveApiError>
 
+  /// Sends a new chat message to the live chat.
+  func sendChatMessage(withPath path: String,
+                       chatMessage message: NewLiveStreamChatMessage) -> SignalProducer<(), LiveApiError>
+
   /// Acquires an anonymous Firebase user id to be used in the case that a user is not logged-in.
   func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError>
 
@@ -65,8 +69,4 @@ public protocol LiveStreamServiceProtocol {
   /// Subscribes/unsubscribes a user to an event.
   func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
     SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError>
-
-  /// Sends a new chat message to the live chat.
-  func sendChatMessage(withPath path: String,
-                       chatMessage message: NewLiveStreamChatMessage) -> SignalProducer<(), LiveApiError>
 }
