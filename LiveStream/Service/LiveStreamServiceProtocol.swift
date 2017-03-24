@@ -5,6 +5,7 @@ public enum LiveApiError: Error {
   case failedToInitializeFirebase
   case firebaseAnonymousAuthFailed
   case firebaseCustomTokenAuthFailed
+  case sendChatMessageFailed
   case snapshotDecodingFailed
   case genericFailure
   case invalidEventId

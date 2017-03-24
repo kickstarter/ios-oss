@@ -241,7 +241,6 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           .queryOrdered(byChild: timestampKey)
           .queryLimited(toLast: limit)
 
-        //fixme: or fix me not?
         query.observe(.value, with: { snapshot in
           let chatMessages = (snapshot.children.allObjects as? [FIRDataSnapshot] ?? [])
             .map([LiveStreamChatMessage].decode)
@@ -482,10 +481,14 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           ])
 
         let chatRef = ref.child(path).childByAutoId()
-        chatRef.setValue(messageWithTimestamp)
+        chatRef.setValue(messageWithTimestamp) { (error, _) in
+          guard error == nil else {
+            observer.send(error: .sendChatMessageFailed)
+            return
+          }
 
-        observer.action(Event<(), LiveApiError>.value(()))
-        observer.sendCompleted()
+          observer.sendCompleted()
+        }
 
         disposable.add({
           chatRef.removeAllObservers()

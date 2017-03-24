@@ -4,7 +4,7 @@ import Curry
 import Prelude
 import Runes
 
-//fixme: always .success?
+// Returns an empty array if any snapshot decodings fail
 internal extension Collection where Iterator.Element == LiveStreamChatMessage {
   static func decode(_ snapshots: [FirebaseDataSnapshotType]) -> Decoded<[LiveStreamChatMessage]> {
     return .success(snapshots.flatMap { snapshot in

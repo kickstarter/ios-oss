@@ -174,13 +174,12 @@ LiveStreamChatViewModelOutputs {
       }
       .skipNil()
 
-    //fixme: tuple?
     let sentChatMessageEvent = firebase.map { $0.chatPath }
       .takePairWhen(newChatMessage)
-      .flatMap { tuple in
+      .flatMap { path, message in
         AppEnvironment.current.liveStreamService.sendChatMessage(
-          withPath: tuple.0,
-          chatMessage: tuple.1
+          withPath: path,
+          chatMessage: message
         )
         .materialize()
     }
