@@ -11,9 +11,9 @@ public protocol LiveStreamContainerPageViewModelType {
 }
 
 public protocol LiveStreamContainerPageViewModelInputs {
-  /// Call to configure with the Project, LiveStreamEvent and LiveStreamChatHandler.
+  /// Call to configure with the Project and LiveStreamEvent.
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                     liveStreamChatHandler: LiveStreamChatHandler, refTag: RefTag, presentedFromProject: Bool)
+                     refTag: RefTag, presentedFromProject: Bool)
 
   /// Call when the chat button is tapped.
   func chatButtonTapped()
@@ -68,12 +68,11 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     ).map(first)
 
     self.loadViewControllersIntoPagesDataSource = configData.map { project, liveStreamEvent,
-      liveStreamChatHandler, refTag, presentedFromProject in
+      refTag, presentedFromProject in
       [
         .info(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag,
               presentedFromProject: presentedFromProject),
-        .chat(project: project, liveStreamEvent: liveStreamEvent,
-              liveStreamChatHandler: liveStreamChatHandler)
+        .chat(project: project, liveStreamEvent: liveStreamEvent)
       ]
     }
 
@@ -144,13 +143,11 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       .map(indexFor(page:))
   }
 
-  private let configDataProperty = MutableProperty<(Project, LiveStreamEvent, LiveStreamChatHandler,
+  private let configDataProperty = MutableProperty<(Project, LiveStreamEvent,
     RefTag, Bool)?>(nil)
   public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent,
-                            liveStreamChatHandler: LiveStreamChatHandler, refTag: RefTag,
-                            presentedFromProject: Bool) {
-    self.configDataProperty.value = (project, liveStreamEvent, liveStreamChatHandler, refTag,
-                                     presentedFromProject)
+                            refTag: RefTag, presentedFromProject: Bool) {
+    self.configDataProperty.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
   private let chatButtonTappedProperty = MutableProperty()
@@ -206,7 +203,7 @@ private func indexFor(page: LiveStreamContainerPage) -> Int {
 
 public enum LiveStreamContainerPage {
   case info(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag, presentedFromProject: Bool)
-  case chat(project: Project, liveStreamEvent: LiveStreamEvent, liveStreamChatHandler: LiveStreamChatHandler)
+  case chat(project: Project, liveStreamEvent: LiveStreamEvent)
 
   var isInfoPage: Bool {
     switch self {

@@ -4,33 +4,15 @@ import ReactiveSwift
 import Result
 import UIKit
 
-public struct LiveStreamChatUserInfo {
-  public let name: String
-  public let profilePictureUrl: String
-  public let userId: String
-  public let token: String
-
-  public init(name: String, profilePictureUrl: String, userId: String, token: String) {
-    self.name = name
-    self.profilePictureUrl = profilePictureUrl
-    self.userId = userId
-    self.token = token
-  }
-}
-
-public protocol LiveStreamChatHandler: class {
-  var chatMessages: Signal<[LiveStreamChatMessage], NoError> { get }
-
-  func configureChatUserInfo(info: LiveStreamChatUserInfo)
-  func sendChatMessage(message: String)
-}
-
 public protocol LiveStreamViewControllerDelegate: class {
-  func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
-                                            state: LiveStreamViewControllerState)
+  func liveStreamViewController(_ controller: LiveStreamViewController,
+                                stateChangedTo state: LiveStreamViewControllerState)
 
-  func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
-                                                             numberOfPeople: Int)
+  func liveStreamViewController(_ controller: LiveStreamViewController,
+                                numberOfPeopleWatchingChangedTo numberOfPeople: Int)
+
+  func liveStreamViewController(_ controller: LiveStreamViewController,
+                                didReceiveLiveStreamApiError error: LiveApiError)
 }
 
 public final class LiveStreamViewController: UIViewController {
@@ -40,6 +22,9 @@ public final class LiveStreamViewController: UIViewController {
   private var liveStreamService: LiveStreamServiceProtocol?
 
   public init(liveStreamService: LiveStreamServiceProtocol) {
+    
+    liveStreamService.setup()
+
     self.viewModel = LiveStreamViewModel(liveStreamService: liveStreamService)
 
     super.init(nibName: nil, bundle: nil)
@@ -73,81 +58,31 @@ public final class LiveStreamViewController: UIViewController {
     }
 
     self.viewModel.outputs.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged
-      .observeValues { [weak self] in
-        self?.delegate?.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: self,
-                                                                             numberOfPeople: $0)
+      .observeValues { [weak self] number in
+        self.doIfSome {
+          $0.delegate?.liveStreamViewController($0, numberOfPeopleWatchingChangedTo: number)
+        }
     }
-
-//    self.viewModel.outputs.createChatObservers
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in self?.createChatObservers(ref: $0, refConfig: $1) }
-//
-//    self.viewModel.outputs.createPresenceReference
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in self?.createPresenceReference(ref: $0, refConfig: $1) }
-//
-//    self.viewModel.outputs.createGreenRoomObservers
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in self?.createFirebaseGreenRoomObservers(ref: $0, refConfig: $1) }
-//
-//    self.viewModel.outputs.createHLSObservers
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in self?.createFirebaseHLSObservers(ref: $0, refConfig: $1) }
-//
-//    self.viewModel.outputs.createNumberOfPeopleWatchingObservers
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in
-//        self?.createFirebaseNumberOfPeopleWatchingObservers(ref: $0, refConfig: $1)
-//    }
-//
-//    self.viewModel.outputs.createScaleNumberOfPeopleWatchingObservers
-//      .map(prepare(databaseReference:config:))
-//      .skipNil()
-//      .observeValues { [weak self] in
-//        self?.createFirebaseScaleNumberOfPeopleWatchingObservers(ref: $0, refConfig: $1)
-//    }
 
     self.viewModel.outputs.notifyDelegateLiveStreamViewControllerStateChanged
-      .observeValues { [weak self] in
-        self?.delegate?.liveStreamViewControllerStateChanged(controller: self, state: $0)
+      .observeValues { [weak self] state in
+        self.doIfSome {
+          $0.delegate?.liveStreamViewController($0, stateChangedTo: state)
+        }
     }
 
-//    self.viewModel.outputs.initializeFirebase
-//      .observeForUI()
-//      .observeValues { [weak self] in
-//        self?.initializeFirebase()
-//    }
+    self.viewModel.outputs.notifyDelegateLiveStreamApiErrorOccurred
+      .observeValues { [weak self] error in
+        self.doIfSome {
+          $0.delegate?.liveStreamViewController($0, didReceiveLiveStreamApiError: error)
+        }
+    }
 
     self.viewModel.outputs.disableIdleTimer
       .observeForUI()
       .observeValues {
         UIApplication.shared.isIdleTimerDisabled = $0
     }
-
-//    self.viewModel.outputs.signInAnonymously
-//      .observeValues { [weak self] in
-//        self?.liveStreamService?.signInAnonymously { id in
-//          self?.viewModel.inputs.setFirebaseUserId(userId: id)
-//        }
-//    }
-//
-//    self.viewModel.outputs.signInWithCustomToken
-//      .observeValues { [weak self] token in
-//        self?.liveStreamService?.signIn(withCustomToken: token) { id in
-//          self?.viewModel.inputs.setFirebaseUserId(userId: id)
-//        }
-//    }
-
-//    self.viewModel.outputs.writeChatMessageToFirebase
-//    .observeValues { [weak self] (ref, refConfig, messageData) in
-//      guard let ref = ref as? FIRDatabaseReference else { return }
-//      self?.writeChatMessage(ref: ref, refConfig: refConfig, message: messageData)
-//    }
   }
 
   public override func viewDidDisappear(_ animated: Bool) {
@@ -173,77 +108,9 @@ public final class LiveStreamViewController: UIViewController {
     self.layoutVideoView(view: videoView)
   }
 
-  deinit {
-//    self.firebaseRef?.removeAllObservers()
-//    self.firebaseRef?.database.goOffline()
-//    self.liveStreamService?.deleteDatabase()
+  public func userSessionChanged(session: LiveStreamSession) {
+    self.viewModel.inputs.userSessionChanged(session: session)
   }
-
-  // MARK: Firebase
-
-//  private func initializeFirebase() {
-//    self.liveStreamService?.initializeDatabase(
-//      failed: {
-//        self.viewModel.inputs.firebaseAppFailedToInitialize()
-//      },
-//      succeeded: { ref in
-//        self.firebaseRef = ref
-//        self.viewModel.inputs.createdDatabaseRef(ref: ref, serverValue: FIRServerValue.self)
-//    })
-//  }
-//
-//  private func createChatObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
-//    let query = ref.child(refConfig.ref).queryOrderedByKey()
-//
-//    query.observe(.childAdded, with: { [weak self] snapshot in
-//      self?.viewModel.inputs.receivedChatMessageSnapshot(chatMessage: snapshot)
-//    })
-//  }
-//
-//  private func createPresenceReference(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
-//    let ref = ref.child(refConfig.ref)
-//    ref.setValue(true)
-//    ref.onDisconnectRemoveValue()
-//  }
-//
-//  private func createFirebaseGreenRoomObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
-//    let query = ref.child(refConfig.ref).queryOrderedByKey()
-//
-//    query.observe(.value, with: { [weak self] snapshot in
-//      self?.viewModel.inputs.observedGreenRoomOffChanged(off: snapshot.value)
-//    })
-//  }
-//
-//  private func createFirebaseHLSObservers(ref: FIRDatabaseReference, refConfig: FirebaseRefConfig) {
-//    let query = ref.child(refConfig.ref).queryOrderedByKey()
-//
-//    query.observe(.value, with: { [weak self] snapshot in
-//      self?.viewModel.inputs.observedHlsUrlChanged(hlsUrl: snapshot.value)
-//    })
-//  }
-//
-//  private func createFirebaseNumberOfPeopleWatchingObservers(ref: FIRDatabaseReference,
-//                                                             refConfig: FirebaseRefConfig) {
-//    let query = ref.child(refConfig.ref).queryOrderedByKey()
-//
-//    query.observe(.value, with: { [weak self] snapshot in
-//      self?.viewModel.inputs.observedNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
-//    })
-//  }
-//
-//  private func createFirebaseScaleNumberOfPeopleWatchingObservers(ref: FIRDatabaseReference,
-//                                                                  refConfig: FirebaseRefConfig) {
-//    let query = ref.child(refConfig.ref).queryOrderedByKey()
-//
-//    query.observe(.value, with: { [weak self] snapshot in
-//      self?.viewModel.inputs.observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: snapshot.value)
-//    })
-//  }
-//
-//  private func writeChatMessage(ref: FIRDatabaseReference,
-//                                refConfig: FirebaseRefConfig, message: [String:Any]) {
-//    ref.child(refConfig.ref).childByAutoId().setValue(message)
-//  }
 
   // MARK: Video
 
@@ -272,23 +139,3 @@ extension LiveStreamViewController: LiveVideoViewControllerDelegate {
     self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }
-
-extension LiveStreamViewController: LiveStreamChatHandler {
-  public var chatMessages: Signal<[LiveStreamChatMessage], NoError> {
-    return self.viewModel.outputs.chatMessages
-  }
-
-  public func configureChatUserInfo(info: LiveStreamChatUserInfo) {
-    self.viewModel.inputs.configureChatUserInfo(info: info)
-  }
-
-  public func sendChatMessage(message: String) {
-    self.viewModel.inputs.sendChatMessage(message: message)
-  }
-}
-
-//private func prepare(databaseReference ref: FirebaseDatabaseReferenceType,
-//                     config: FirebaseRefConfig) -> (FIRDatabaseReference, FirebaseRefConfig)? {
-//  guard let ref = ref as? FIRDatabaseReference else { return nil }
-//  return (ref, config)
-//}

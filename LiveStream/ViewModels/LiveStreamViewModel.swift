@@ -13,35 +13,8 @@ internal protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent.
   func configureWith(liveStreamEvent: LiveStreamEvent)
 
-  /// Call to configure the user info for chat.
-  func configureChatUserInfo(info: LiveStreamChatUserInfo)
-
-  /// Call when the firebase database is created.
-  func createdDatabaseRef(ref: FirebaseDatabaseReferenceType, serverValue: FirebaseServerValueType.Type)
-
-  /// Called when the Firebase app fails to initialise.
-  func firebaseAppFailedToInitialize()
-
-  /// Called when the green room changes to active/inactive when a creator goes on/off live, expects a Bool.
-  func observedGreenRoomOffChanged(off: Any?)
-
-  /// Called when the HLS url for the stream changes, expects a String.
-  func observedHlsUrlChanged(hlsUrl: Any?)
-
-  /// Called when the number of people watching changes in a non-scale event, expects an NSDictionary.
-  func observedNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
-
-  /// Called when the number of people watching changes in a scaled event, expects an Int.
-  func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?)
-
-  /// Called when a new chat message snapshot is received.
-  func receivedChatMessageSnapshot(chatMessage: FirebaseDataSnapshotType)
-
-  /// Call with info to send a new chat message.
-  func sendChatMessage(message: String)
-
-  /// Called to set the Firebase user ID.
-  func setFirebaseUserId(userId: String)
+  /// Call when the user session changes.
+  func userSessionChanged(session: LiveStreamSession)
 
   /// Called when the video playback state changes.
   func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
@@ -54,37 +27,14 @@ internal protocol LiveStreamViewModelInputs {
 }
 
 internal protocol LiveStreamViewModelOutputs {
-  /// Emits new chat messages.
-  var chatMessages: Signal<[LiveStreamChatMessage], NoError> { get }
-
-  /// Create chat observers.
-  var createChatObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
-
-  /// Create the presence reference to update Firebase on connect/disconnect.
-  var createPresenceReference: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
-
-  /// Create green room Firebase observers.
-  var createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
-
-  /// Create HLS url Firebase observers.
-  var createHLSObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError> { get }
-
-  /// Create non-scale event number of people watching Firebase observers.
-  var createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError> { get }
-
-  /// Create scale event number of people watching Firebase observers.
-  var createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError> { get }
-
   /// Create the video view controller based on the live stream type.
   var createVideoViewController: Signal<LiveStreamType, NoError> { get }
 
   /// Disable idle time so that the display does not sleep.
   var disableIdleTimer: Signal<Bool, NoError> { get }
 
-  /// Emits a liveStreamEvent when the firebase database should be initialized.
-  var initializeFirebase: Signal<(), NoError> { get }
+  /// Emits when a live stream api error occurred.
+  var notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError> { get }
 
   /// Notify the delegate of the number of people watching change.
   var notifyDelegateLiveStreamNumberOfPeopleWatchingChanged: Signal<Int, NoError> { get }
@@ -95,24 +45,13 @@ internal protocol LiveStreamViewModelOutputs {
 
   /// Remove the nested video view controller.
   var removeVideoViewController: Signal<(), NoError> { get }
-
-  /// Emits when an anonymous sign-in is required if the user is not logged in.
-  var signInAnonymously: Signal<(), NoError> { get }
-
-  /// Emits when the user is logged in and we have a custom auth token.
-  var signInWithCustomToken: Signal<String, NoError> { get }
-
-  /// Emits when a chat message should be written to Firebase.
-  var writeChatMessageToFirebase: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig, [String:Any]),
-    NoError> { get }
 }
 
 internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamViewModelInputs,
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(backgroundQueueScheduler: DateSchedulerProtocol = QueueScheduler.backgroundScheduler(),
-       liveStreamService: LiveStreamServiceProtocol,
+  init(liveStreamService: LiveStreamServiceProtocol,
        scheduler: DateSchedulerProtocol = QueueScheduler.main) {
 
     let configData = Signal.combineLatest(
@@ -123,43 +62,93 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let liveStreamEvent = configData
 
-    let greenRoomStatusEvent = liveStreamEvent
+    let didLiveStreamEndedNormally = liveStreamEvent
+      .map(didEndNormally(event:))
+
+    let createObservers = Signal.zip(
+      didLiveStreamEndedNormally.filter(isFalse),
+      liveStreamEvent.map(isNonStarter(event:)).filter(isFalse)
+      )
+      .ignoreValues()
+      .take(first: 1)
+
+    let greenRoomStatusEvent = Signal.combineLatest(
+      liveStreamEvent,
+      createObservers
+      )
+      .map(first)
       .map { $0.firebase?.greenRoomPath }
       .skipNil()
       .flatMap { path in
-        liveStreamService.greenRoomStatus(
-          withRefConfig: FirebaseRefConfig(ref: path)
+        liveStreamService.greenRoomOffStatus(
+          withPath: path
         )
         .materialize()
       }
 
-    let greenRoomStatus = greenRoomStatusEvent.values().skipNil()
+    let greenRoomOffStatus = greenRoomStatusEvent.values()
     let greenRoomErrors = greenRoomStatusEvent.errors()
 
-    let observedNumberOfPeopleWatchingChanged = self.numberOfPeopleWatchingProperty.signal
-      .map { $0 as? NSDictionary }
+    let numberOfPeopleWatchingEvent = Signal.combineLatest(
+      liveStreamEvent,
+      createObservers
+      )
+      .map(first)
+      .filter { $0.isScale == .some(false) }
+      .map { $0.firebase?.numberPeopleWatchingPath }
       .skipNil()
-      .map { $0.allKeys.count }
+      .flatMap { path in
+        liveStreamService.numberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
 
-    let observedScaleNumberOfPeopleWatchingChanged = self.scaleNumberOfPeopleWatchingProperty.signal
-      .map { $0 as? Int }
+    let scaleNumberOfPeopleWatchingEvent = Signal.combineLatest(
+      liveStreamEvent,
+      createObservers
+      )
+      .map(first)
+      .filter { $0.isScale == .some(true) }
+      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
       .skipNil()
+      .flatMap { path in
+        liveStreamService.scaleNumberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let numberOfPeopleWatchingErrors = Signal.merge(
+      numberOfPeopleWatchingEvent.errors(),
+      scaleNumberOfPeopleWatchingEvent.errors()
+    )
 
     let numberOfPeopleWatching = Signal.merge(
-      observedNumberOfPeopleWatchingChanged,
-      observedScaleNumberOfPeopleWatchingChanged
+      numberOfPeopleWatchingEvent.values(),
+      scaleNumberOfPeopleWatchingEvent.values()
     )
 
     let maxOpenTokViewers = liveStreamEvent
       .map { $0.maxOpenTokViewers }
       .skipNil()
 
-    let didLiveStreamEndedNormally = liveStreamEvent
-      .map(didEndNormally(event:))
-
-    let observedHlsUrlChanged = self.hlsUrlProperty.signal
-      .map { $0 as? String }
+    let hlsUrlEvent = Signal.combineLatest(
+      liveStreamEvent,
+      createObservers
+      )
+      .map(first)
+      .map { $0.firebase?.hlsUrlPath }
       .skipNil()
+      .flatMap { path in
+        liveStreamService.hlsUrl(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let observedHlsUrlChanged = hlsUrlEvent.values()
+    let observedHlsUrlErrors = hlsUrlEvent.errors()
 
     let isMaxOpenTokViewersReached = Signal.combineLatest(
       numberOfPeopleWatching,
@@ -170,7 +159,6 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     let useHlsStream = Signal.merge(
       isMaxOpenTokViewersReached,
-
       liveStreamEvent
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue)
@@ -213,7 +201,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     .skipRepeats()
 
     let observedGreenRoomOffOrInReplay = Signal.merge(
-      greenRoomStatus.filter(isTrue),
+      greenRoomOffStatus.filter(isTrue),
       didLiveStreamEndedNormally.filter(isTrue)
       )
       .ignoreValues()
@@ -231,74 +219,11 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
 
     self.notifyDelegateLiveStreamNumberOfPeopleWatchingChanged = numberOfPeopleWatching
 
-    let createObservers = Signal.zip(
-      didLiveStreamEndedNormally.filter(isFalse),
-      liveStreamEvent.map(isNonStarter(event:)).filter(isFalse)
-      )
-      .ignoreValues()
-
-    let databaseRef = self.databaseRefProperty.signal.skipNil().map(first)
-
-    let firebase = liveStreamEvent.map { $0.firebase }.skipNil()
-
-    self.createChatObservers = Signal.zip(
-      databaseRef,
-      firebase.map { FirebaseRefConfig(ref: $0.chatPath, orderBy: "") }
-    )
-
-    self.createPresenceReference = Signal.zip(
-      databaseRef,
-      Signal.combineLatest(
-        firebase.map { $0.numberPeopleWatchingPath },
-        self.firebaseUserIdProperty.signal.skipNil()
-        )
-        .map { "\($0)/\($1)" }
-        .map { FirebaseRefConfig(ref: $0, orderBy: "") },
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
-
-    self.createGreenRoomObservers = Signal.zip(
-      databaseRef,
-      firebase.map { FirebaseRefConfig(ref: $0.greenRoomPath, orderBy: "") },
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
-
-    self.createHLSObservers = Signal.zip(
-      databaseRef,
-      firebase.map { FirebaseRefConfig(ref: $0.hlsUrlPath, orderBy: "") },
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
-
-    let numberOfPeopleWatchingRef = liveStreamEvent
-      .filter { $0.isScale == .some(false) }
-      .map { $0.firebase?.numberPeopleWatchingPath }
-      .skipNil()
-      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
-
-    self.createNumberOfPeopleWatchingObservers = Signal.zip(
-      databaseRef,
-      numberOfPeopleWatchingRef,
-      createObservers
-      ).map { dbRef, event, _ in (dbRef, event) }
-
-    let scaleNumberOfPeopleWatchingRef = liveStreamEvent
-      .filter { $0.isScale == .some(true) }
-      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
-      .skipNil()
-      .map { FirebaseRefConfig(ref: $0, orderBy: "") }
-
-    self.createScaleNumberOfPeopleWatchingObservers = Signal.zip(
-      databaseRef,
-      scaleNumberOfPeopleWatchingRef,
-      createObservers
-      )
-      .map { dbRef, event, _ in (dbRef, event) }
-
     self.removeVideoViewController = self.createVideoViewController.take(first: 1)
-      .sample(on: greenRoomStatus.filter(isFalse).ignoreValues())
+      .sample(on: greenRoomOffStatus.filter(isFalse).ignoreValues())
       .ignoreValues()
 
-    let greenRoomState = greenRoomStatus
+    let greenRoomState = greenRoomOffStatus
       .filter(isFalse)
       .mapConst(LiveStreamViewControllerState.greenRoom)
 
@@ -330,155 +255,79 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
           : LiveStreamViewControllerState.loading
       }
 
+    let signInAnonymouslyEvent = Signal.merge(
+      liveStreamEvent.filter { $0.firebase?.token == nil }.ignoreValues(),
+      self.userSessionProperty.signal.skipNil().filter { $0.isAnonymous }.ignoreValues()
+      )
+      .flatMap {
+        liveStreamService.signInToFirebaseAnonymously()
+          .materialize()
+    }
+
+    let signInWithCustomTokenEvent = Signal.merge(
+      liveStreamEvent.map { $0.firebase?.token }.skipNil(),
+      self.userSessionProperty.signal.skipNil()
+        .map { session -> String? in
+          if case let .loggedIn(token) = session { return token }
+          return nil
+        }
+        .skipNil()
+      )
+      .flatMap {
+        liveStreamService.signInToFirebase(withCustomToken: $0)
+          .materialize()
+    }
+
+    let firebaseUserId = Signal.merge(
+      signInAnonymouslyEvent.values(),
+      signInWithCustomTokenEvent.values()
+    )
+
+    let incrementNumberOfPeopleWatchingEvent = Signal.combineLatest(
+      liveStreamEvent.map { $0.firebase?.numberPeopleWatchingPath }.skipNil(),
+      firebaseUserId
+      )
+      .map { "\($0)/\($1)" }
+      .switchMap { path in
+        liveStreamService.incrementNumberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    incrementNumberOfPeopleWatchingEvent
+      .values()
+      // Observation here is purely to keep the above producer alive
+      .observeValues { _ in }
+
+    let signInErrors = Signal.merge(signInAnonymouslyEvent.errors(), signInWithCustomTokenEvent.errors())
+    let incrementNumberOfPeopleWatchingErrors = incrementNumberOfPeopleWatchingEvent.errors()
+
+    self.notifyDelegateLiveStreamApiErrorOccurred = Signal.merge(
+      greenRoomErrors,
+      numberOfPeopleWatchingErrors,
+      observedHlsUrlErrors,
+      signInErrors,
+      incrementNumberOfPeopleWatchingErrors
+    )
+
     self.notifyDelegateLiveStreamViewControllerStateChanged = Signal.merge(
       nonStarterOrLoadingState,
       errorState,
-      self.firebaseAppFailedToInitializeProperty.signal.mapConst(.initializationFailed),
       greenRoomState,
       liveState,
       replayState
     )
-
-    let bufferInterval = self.viewDidLoadProperty.signal.flatMap {
-      timer(interval: .milliseconds(500), on: scheduler)
-    }.take(during: Lifetime(self.token))
-
-    let snapshots = self.viewDidLoadProperty.signal
-      .flatMap { [snapshot = self.receivedChatMessageSnapshotProperty.producer] in
-        snapshot
-          .start(on: backgroundQueueScheduler)
-          .skipNil()
-    }
-
-    self.chatMessages = Signal.merge(
-      bufferInterval.mapConst(TimeIntervalBufferEvent<FirebaseDataSnapshotType>.tick),
-      snapshots.map(TimeIntervalBufferEvent<FirebaseDataSnapshotType>.value)
-      )
-      .scan(TimeIntervalBufferState<FirebaseDataSnapshotType>.initial) { state, event in
-        state.processing(event)
-      }
-      .map { $0.output }
-      .skipNil()
-      .map([LiveStreamChatMessage].decode)
-      .filter { !$0.isEmpty }
-
-    let chatUserInfo = Signal.merge(
-      configData.map { liveStreamEvent -> LiveStreamChatUserInfo? in
-        guard
-          let userId = liveStreamEvent.firebase?.chatUserId,
-          let name = liveStreamEvent.firebase?.chatUserName,
-          let avatar = liveStreamEvent.firebase?.chatAvatarUrl,
-          let token = liveStreamEvent.firebase?.token
-        else { return nil }
-
-        return LiveStreamChatUserInfo(name: name,
-                                      profilePictureUrl: avatar,
-                                      userId: userId,
-                                      token: token)
-        }
-        .skipNil(),
-      self.chatUserInfoProperty.signal.skipNil()
-    )
-
-    let chatMessageMetaData = Signal.combineLatest(
-      chatUserInfo,
-      self.databaseRefProperty.signal.skipNil().map(second)
-      )
-      .map { userInfo, serverValue in
-        [
-          "userId": userInfo.userId,
-          "name": userInfo.name,
-          "profilePic": userInfo.profilePictureUrl,
-          "timestamp": serverValue.timestamp()
-        ]
-    }
-
-    self.writeChatMessageToFirebase = Signal.combineLatest(
-      self.createChatObservers,
-      chatMessageMetaData,
-      liveStreamEvent
-        .map { $0.liveNow }
-        .filter(isTrue)
-      )
-      .map { ($0.0, $0.1) }
-      .map(unpack)
-      .takePairWhen(self.sendChatMessageProperty.signal.skipNil())
-      .map { tuple in
-        let ref = tuple.0.0
-        let refConfig = tuple.0.1
-        let messageMetaData = tuple.0.2
-        let messageData = messageMetaData.withAllValuesFrom(["message": tuple.1])
-
-        return (ref, refConfig, messageData)
-    }
-
-    self.initializeFirebase = configData.ignoreValues()
-
-    self.signInAnonymously = configData.map { $0.firebase?.token }
-      .filter { $0 == nil }
-      .ignoreValues()
-
-    self.signInWithCustomToken = chatUserInfo.map { $0.token }
   }
-
-  // Required to limit the lifetime of the chat buffer interval timer
-  private let token = Lifetime.Token()
 
   private let configData = MutableProperty<LiveStreamEvent?>(nil)
   internal func configureWith(liveStreamEvent: LiveStreamEvent) {
     self.configData.value = liveStreamEvent
   }
 
-  private let chatUserInfoProperty = MutableProperty<LiveStreamChatUserInfo?>(nil)
-  internal func configureChatUserInfo(info: LiveStreamChatUserInfo) {
-    self.chatUserInfoProperty.value = info
-  }
-
-  private let databaseRefProperty = MutableProperty<(FirebaseDatabaseReferenceType,
-    FirebaseServerValueType.Type)?>(nil)
-  internal func createdDatabaseRef(ref: FirebaseDatabaseReferenceType,
-                                   serverValue: FirebaseServerValueType.Type) {
-    self.databaseRefProperty.value = (ref, serverValue)
-  }
-
-  private let firebaseAppFailedToInitializeProperty = MutableProperty()
-  internal func firebaseAppFailedToInitialize() {
-    self.firebaseAppFailedToInitializeProperty.value = ()
-  }
-
-  private let greenRoomOffProperty = MutableProperty<Any?>(nil)
-  internal func observedGreenRoomOffChanged(off: Any?) {
-    self.greenRoomOffProperty.value = off
-  }
-
-  private let hlsUrlProperty = MutableProperty<Any?>(nil)
-  internal func observedHlsUrlChanged(hlsUrl: Any?) {
-    self.hlsUrlProperty.value = hlsUrl
-  }
-
-  private let numberOfPeopleWatchingProperty = MutableProperty<Any?>(nil)
-  internal func observedNumberOfPeopleWatchingChanged(numberOfPeople: Any?) {
-    self.numberOfPeopleWatchingProperty.value = numberOfPeople
-  }
-
-  private let scaleNumberOfPeopleWatchingProperty = MutableProperty<Any?>(nil)
-  internal func observedScaleNumberOfPeopleWatchingChanged(numberOfPeople: Any?) {
-    self.scaleNumberOfPeopleWatchingProperty.value = numberOfPeople
-  }
-
-  private let firebaseUserIdProperty = MutableProperty<String?>(nil)
-  internal func setFirebaseUserId(userId: String) {
-    self.firebaseUserIdProperty.value = userId
-  }
-
-  private let receivedChatMessageSnapshotProperty = MutableProperty<FirebaseDataSnapshotType?>(nil)
-  internal func receivedChatMessageSnapshot(chatMessage: FirebaseDataSnapshotType) {
-    self.receivedChatMessageSnapshotProperty.value = chatMessage
-  }
-
-  private let sendChatMessageProperty = MutableProperty<String?>(nil)
-  internal func sendChatMessage(message: String) {
-    self.sendChatMessageProperty.value = message
+  private let userSessionProperty = MutableProperty<LiveStreamSession?>(nil)
+  internal func userSessionChanged(session: LiveStreamSession) {
+    self.userSessionProperty.value = session
   }
 
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
@@ -496,27 +345,13 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
     self.viewDidDisappearProperty.value = ()
   }
 
-  internal let chatMessages: Signal<[LiveStreamChatMessage], NoError>
-  internal let createChatObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
-  internal let createPresenceReference: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError>
-  internal let createGreenRoomObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
-  internal let createHLSObservers: Signal<(FirebaseDatabaseReferenceType, FirebaseRefConfig), NoError>
-  internal let createNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError>
-  internal let createScaleNumberOfPeopleWatchingObservers: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig), NoError>
   internal let createVideoViewController: Signal<LiveStreamType, NoError>
   internal let disableIdleTimer: Signal<Bool, NoError>
-  internal let initializeFirebase: Signal<(), NoError>
+  internal let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
   internal let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged: Signal<Int, NoError>
   internal let notifyDelegateLiveStreamViewControllerStateChanged: Signal<LiveStreamViewControllerState,
     NoError>
   internal let removeVideoViewController: Signal<(), NoError>
-  internal let signInAnonymously: Signal<(), NoError>
-  internal let signInWithCustomToken: Signal<String, NoError>
-  internal let writeChatMessageToFirebase: Signal<(FirebaseDatabaseReferenceType,
-    FirebaseRefConfig, [String : Any]), NoError>
 
   internal var inputs: LiveStreamViewModelInputs { return self }
   internal var outputs: LiveStreamViewModelOutputs { return self }
@@ -537,71 +372,4 @@ private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool 
 
 private func didEndNormally(event: LiveStreamEvent) -> Bool {
   return !event.liveNow && event.definitelyHasReplay
-}
-
-private extension QueueScheduler {
-  static func backgroundScheduler() -> QueueScheduler {
-    return QueueScheduler(
-      qos: .background,
-      name: "com.kickstarter.liveStreamBackgroundQueue",
-      targeting: nil
-    )
-  }
-}
-
-private enum TimeIntervalBufferEvent<T> {
-  // Interval 'tick', emit the buffered (if any) values
-  case tick
-
-  // Buffer a new value
-  case value(T)
-}
-
-// A simple state machine for buffering values
-private enum TimeIntervalBufferState<T> {
-  case initial
-  case accumulate([T])
-  case emit([T])
-
-  // Return a new state based on `event`.
-  func processing(_ event: TimeIntervalBufferEvent<T>) -> TimeIntervalBufferState<T> {
-    switch event {
-    case .tick:
-      return self.emitted()
-    case .value(let value):
-      return self.appending(value)
-    }
-  }
-
-  // Return a new state by appending `value`
-  func appending(_ value: T) -> TimeIntervalBufferState<T> {
-    switch self {
-    case .accumulate(let values):
-      return .accumulate(values + [value])
-    case .emit, .initial:
-      return .accumulate([value])
-    }
-  }
-
-  // Return a new state describing the values to be emitted, based on the current state
-  func emitted() -> TimeIntervalBufferState<T> {
-    switch self {
-    case .initial:
-      return .initial
-    case .accumulate(let values):
-      return .emit(values)
-    case .emit:
-      return .emit([])
-    }
-  }
-
-  // The values to be emitted, or `nil`.
-  var output: [T]? {
-    switch self {
-    case .emit(let values):
-      return values
-    case .initial, .accumulate:
-      return nil
-    }
-  }
 }

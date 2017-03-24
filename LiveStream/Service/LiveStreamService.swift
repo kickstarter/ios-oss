@@ -9,6 +9,8 @@ private var firebaseAuth: FIRAuth?
 private var firebaseDb: FIRDatabase?
 private var firebaseDbRef: FIRDatabaseReference?
 
+private let timestampKey = "timestamp"
+
 private func startFirebase() {
   let options: FIROptions = FIROptions(googleAppID: Secrets.Firebase.Huzza.Production.googleAppID,
                                        bundleID: Secrets.Firebase.Huzza.Production.bundleID,
@@ -25,22 +27,27 @@ private func startFirebase() {
 }
 
 public struct LiveStreamService: LiveStreamServiceProtocol {
+  private let backgroundScheduler = QueueScheduler(
+    qos: .background,
+    name: "com.kickstarter.liveStreamBackgroundQueue",
+    targeting: nil
+  )
 
   public init() {
   }
 
-  func setup() {
-    if FIRApp(named: Secrets.Firebase.Huzza.Production.appName) == nil { startFirebase() }
+  public func setup() {
+    guard FIRApp(named: Secrets.Firebase.Huzza.Production.appName) == nil else { return }
 
+    startFirebase()
     firebaseApp = FIRApp(named: Secrets.Firebase.Huzza.Production.appName)
     firebaseAuth = firebaseApp.flatMap(FIRAuth.init(app:))
     firebaseDb = firebaseApp.map(FIRDatabase.database(app:))
     firebaseDbRef = firebaseDb?.reference()
   }
 
-  public func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
-    SignalProducer<LiveStreamEvent, LiveApiError> {
-
+  public func fetchEvent(eventId: Int, uid: Int?,
+                         liveAuthToken: String?) -> SignalProducer<LiveStreamEvent, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         let apiUrl = URL(string: Secrets.LiveStreams.endpoint)?
           .appendingPathComponent("\(eventId)")
@@ -221,31 +228,26 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
   // MARK: Firebase
 
-  public func chatMessageSnapshotsValue(withRefConfig refConfig: FirebaseRefConfig,
+  public func chatMessageSnapshotsValue(withPath path: String,
                                         limitedToLast limit: UInt) ->
     SignalProducer<[LiveStreamChatMessage], LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
-          observer.send(error: .failedToInitializeFirebase)
+          observer.action(.failed(.failedToInitializeFirebase))
           return
         }
 
-        guard let orderBy = refConfig.orderBy as String? else {
-          observer.send(error: .genericFailure)
-          return
-        }
-
-        let query = ref.child(refConfig.ref)
-          .queryOrdered(byChild: orderBy)
+        let query = ref.child(path)
+          .queryOrdered(byChild: timestampKey)
           .queryLimited(toLast: limit)
 
+        //fixme: or fix me not?
         query.observe(.value, with: { snapshot in
-          let chatMessages = snapshot.value
-            .map(JSON.init)
+          let chatMessages = (snapshot.children.allObjects as? [FIRDataSnapshot] ?? [])
             .map([LiveStreamChatMessage].decode)
             .flatMap { $0.value }
             .map(Event<[LiveStreamChatMessage], LiveApiError>.value)
-            .coalesceWith(.failed(.genericFailure))
+            .coalesceWith(.failed(.snapshotDecodingFailed))
 
           observer.action(chatMessages)
           observer.sendCompleted()
@@ -255,42 +257,33 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           query.removeAllObservers()
           observer.sendInterrupted()
         })
-      }
-//        .start(on: QueueScheduler(
-//          qos: .background,
-//          name: "com.kickstarter.liveStreamChatDecodingQueue",
-//          targeting: nil
-//        ))
+        }
+        .start(on: self.backgroundScheduler)
   }
 
-  public func chatMessageSnapshotsAdded(withRefConfig refConfig: FirebaseRefConfig,
+  public func chatMessageSnapshotsAdded(withPath path: String,
                                         addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
-          observer.send(error: .failedToInitializeFirebase)
+          observer.action(.failed(.failedToInitializeFirebase))
           return
         }
 
-        guard let orderBy = refConfig.orderBy as String? else {
-          observer.send(error: .genericFailure)
-          return
-        }
-
-        let query = ref.child(refConfig.ref)
-          .queryOrdered(byChild: orderBy)
+        let query = ref.child(path)
+          .queryOrdered(byChild: timestampKey)
           .queryStarting(
-            atValue: refConfig.startingAtValue,
-            childKey: refConfig.startingAtChildKey
+            atValue: timeInterval,
+            childKey: timestampKey
         )
 
         query.observe(.childAdded, with: { snapshot in
-          let chatMessage = snapshot.value
-            .map(JSON.init)
+          let chatMessage = (snapshot as FIRDataSnapshot?)
+            .flatMap { $0 }
             .map(LiveStreamChatMessage.decode)
             .flatMap { $0.value }
             .map(Event<LiveStreamChatMessage, LiveApiError>.value)
-            .coalesceWith(.failed(.genericFailure))
+            .coalesceWith(.failed(.snapshotDecodingFailed))
 
           observer.action(chatMessage)
         })
@@ -302,18 +295,122 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       }
   }
 
-  public func greenRoomStatus(withRefConfig refConfig: FirebaseRefConfig) ->
-    SignalProducer<Bool?, LiveApiError> {
+  public func greenRoomOffStatus(withPath path: String) ->
+    SignalProducer<Bool, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
-          observer.send(error: .failedToInitializeFirebase)
+          observer.action(.failed(.failedToInitializeFirebase))
           return
         }
 
-        let query = ref.child(refConfig.ref).queryOrderedByKey()
+        let query = ref.child(path).queryOrderedByKey()
 
         query.observe(.value, with: { snapshot in
-          observer.send(value: snapshot.value as? Bool)//fixme: cast and return nil or error out?
+          let value = snapshot.value
+            .flatMap { $0 as? Bool }
+            .map(Event<Bool, LiveApiError>.value)
+            .coalesceWith(.failed(.snapshotDecodingFailed))
+
+          observer.action(value)
+        })
+
+        disposable.add({
+          query.removeAllObservers()
+          observer.sendInterrupted()
+        })
+      }
+  }
+
+  public func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError> {
+    return SignalProducer { (observer, disposable) in
+      guard let ref = firebaseDbRef else {
+        observer.action(.failed(.failedToInitializeFirebase))
+        return
+      }
+
+      let query = ref.child(path).queryOrderedByKey()
+
+      query.observe(.value, with: { snapshot in
+        let value = snapshot.value
+          .flatMap { $0 as? String }
+          .map(Event<String, LiveApiError>.value)
+          .coalesceWith(.failed(.snapshotDecodingFailed))
+
+        observer.action(value)
+      })
+
+      disposable.add({
+        query.removeAllObservers()
+        observer.sendInterrupted()
+      })
+    }
+  }
+
+  public func numberOfPeopleWatching(withPath path: String) ->
+    SignalProducer<Int, LiveApiError> {
+    return SignalProducer { (observer, disposable) in
+      guard let ref = firebaseDbRef else {
+        observer.action(.failed(.failedToInitializeFirebase))
+        return
+      }
+
+      let query = ref.child(path).queryOrderedByKey()
+
+      query.observe(.value, with: { snapshot in
+        let value = snapshot.value
+          .flatMap { $0 as? NSDictionary }
+          .map { $0.allKeys.count }
+          .map(Event<Int, LiveApiError>.value)
+          .coalesceWith(.failed(.snapshotDecodingFailed))
+
+        observer.action(value)
+      })
+
+      disposable.add({
+        query.removeAllObservers()
+        observer.sendInterrupted()
+      })
+    }
+  }
+
+  public func incrementNumberOfPeopleWatching(withPath path: String) ->
+    SignalProducer<(), LiveApiError> {
+      return SignalProducer { (observer, disposable) in
+        guard let ref = firebaseDbRef else {
+          observer.action(.failed(.failedToInitializeFirebase))
+          return
+        }
+
+        let presenceRef = ref.child(path)
+        presenceRef.setValue(true)
+        presenceRef.onDisconnectRemoveValue()
+
+        observer.action(Event<(), LiveApiError>.value(()))
+
+        disposable.add({
+          presenceRef.removeAllObservers()
+          observer.sendInterrupted()
+        })
+      }
+  }
+
+  public func scaleNumberOfPeopleWatching(withPath path: String) ->
+    SignalProducer<Int, LiveApiError> {
+      return SignalProducer { (observer, disposable) in
+        guard let ref = firebaseDbRef else {
+          observer.action(.failed(.failedToInitializeFirebase))
+          return
+        }
+
+        let query = ref.child(path).queryOrderedByKey()
+
+        query.observe(.value, with: { snapshot in
+          let value = snapshot.value
+            .flatMap { $0 as? Int }
+            .map(Event<Int, LiveApiError>.value)
+            .coalesceWith(.failed(.snapshotDecodingFailed))
+
+          observer.action(value)
         })
 
         disposable.add({
@@ -327,17 +424,17 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
     SignalProducer<String, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let auth = firebaseAuth else {
-          observer.send(error: .failedToInitializeFirebase)
+          observer.action(.failed(.failedToInitializeFirebase))
           return
         }
 
         auth.signInAnonymously { user, _ in
-          guard let id = user?.uid else {
-            observer.send(error: .firebaseAnonymousAuthFailed)
-            return
-          }
+          let value = user
+            .map { $0.uid }
+            .map(Event<String, LiveApiError>.value)
+            .coalesceWith(.failed(.firebaseAnonymousAuthFailed))
 
-          observer.send(value: id)
+          observer.action(value)
           observer.sendCompleted()
         }
 
@@ -347,32 +444,58 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       }
   }
 
-  public func signIn(withCustomToken customToken: String) ->
+  public func signInToFirebase(withCustomToken customToken: String) ->
     SignalProducer<String, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let auth = firebaseAuth else {
-          observer.send(error: .failedToInitializeFirebase)
+          observer.action(.failed(.failedToInitializeFirebase))
           return
         }
 
         auth.signIn(withCustomToken: customToken) { user, _ in
-          guard let id = user?.uid else {
-            observer.send(error: .firebaseCustomTokenAuthFailed)
-            return
-          }
+          let value = user
+            .map { $0.uid }
+            .map(Event<String, LiveApiError>.value)
+            .coalesceWith(.failed(.firebaseCustomTokenAuthFailed))
 
-          observer.send(value: id)
+          observer.action(value)
           observer.sendCompleted()
         }
 
         disposable.add({
+          observer.sendInterrupted()
+        })
+      }
+  }
+
+  public func sendChatMessage(withPath path: String,
+                              chatMessage message: NewLiveStreamChatMessage) ->
+    SignalProducer<(), LiveApiError> {
+      return SignalProducer { (observer, disposable) in
+        guard let ref = firebaseDbRef else {
+          observer.action(.failed(.failedToInitializeFirebase))
+          return
+        }
+
+        let messageWithTimestamp = message.toFirebaseDictionary().withAllValuesFrom([
+          LiveStreamChatMessageDictionaryKey.timestamp.rawValue: FIRServerValue.timestamp()
+          ])
+
+        let chatRef = ref.child(path).childByAutoId()
+        chatRef.setValue(messageWithTimestamp)
+
+        observer.action(Event<(), LiveApiError>.value(()))
+        observer.sendCompleted()
+
+        disposable.add({
+          chatRef.removeAllObservers()
           observer.sendInterrupted()
         })
       }
   }
 }
 
-fileprivate func formData(withDictionary dictionary: [String:String]) -> String {
+private func formData(withDictionary dictionary: [String:String]) -> String {
   let params = dictionary.flatMap { key, value -> String? in
     guard let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
 

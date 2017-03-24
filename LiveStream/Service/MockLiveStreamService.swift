@@ -41,15 +41,8 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.subscribeToResult = subscribeToResult
   }
 
-  internal func deleteDatabase() {
-  }
+  internal func setup() {
 
-  internal func signInAnonymously(completion: @escaping (String) -> Void) {
-    anonymousUserId.doIfSome(completion)
-  }
-
-  internal func signIn(withCustomToken customToken: String, completion: @escaping (String) -> Void) {
-    firebaseUserId.doIfSome(completion)
   }
 
   internal func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
@@ -90,17 +83,6 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func initializeDatabase(failed: (Void) -> Void,
-                                   succeeded: (FIRDatabaseReference) -> Void) {
-
-    switch initializeDatabaseResult {
-    case let .some(.success(ref)):
-      succeeded(ref)
-    case .some(.failure), .none:
-      failed()
-    }
-  }
-
   internal func subscribeTo(eventId: Int, uid: Int, isSubscribed: Bool) ->
     SignalProducer<LiveStreamSubscribeEnvelope, LiveApiError> {
 
@@ -116,15 +98,36 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   //fixme: just for conformance
 
-  func chatMessageSnapshotsAdded(withRefConfig refConfig: FirebaseRefConfig, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<LiveStreamChatMessage, LiveApiError> {
+  func chatMessageSnapshotsAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) -> SignalProducer<LiveStreamChatMessage, LiveApiError> {
     return .empty
   }
 
-  func chatMessageSnapshotsValue(withRefConfig refConfig: FirebaseRefConfig, limitedToLast limit: UInt) -> SignalProducer<[LiveStreamChatMessage], LiveApiError> {
+  func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) -> SignalProducer<[LiveStreamChatMessage], LiveApiError> {
     return .empty
   }
 
-  func greenRoomStatus(withRefConfig refConfig: FirebaseRefConfig) -> SignalProducer<Bool?, LiveApiError> {
+  func greenRoomOffStatus(withPath path: String) -> SignalProducer<Bool, LiveApiError> {
+    return .empty
+  }
+
+  func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError> {
+    return .empty
+  }
+
+  func numberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
+    return .empty
+  }
+
+  func incrementNumberOfPeopleWatching(withPath path: String) ->
+    SignalProducer<(), LiveApiError> {
+    return .empty
+  }
+
+  func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
+    return .empty
+  }
+
+  func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessage) -> SignalProducer<(), LiveApiError> {
     return .empty
   }
 
@@ -132,7 +135,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     return .empty
   }
 
-  func signIn(withCustomToken customToken: String) -> SignalProducer<String, LiveApiError> {
+  func signInToFirebase(withCustomToken customToken: String) -> SignalProducer<String, LiveApiError> {
     return .empty
   }
 }

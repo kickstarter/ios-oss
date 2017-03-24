@@ -61,9 +61,6 @@ public struct Environment {
   /// The current set of launched countries for Kickstarter.
   public let launchedCountries: LaunchedCountries
 
-  /// The current auth token for live chat.
-  public let liveAuthToken: String?
-
   /// The current service being used for live stream requests.
   public let liveStreamService: LiveStreamServiceProtocol
 
@@ -105,7 +102,6 @@ public struct Environment {
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
-    liveAuthToken: String? = nil,
     liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
@@ -131,7 +127,6 @@ public struct Environment {
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
-    self.liveAuthToken = liveAuthToken
     self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle

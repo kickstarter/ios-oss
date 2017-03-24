@@ -19,6 +19,9 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call when the device orientation changed.
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
+  /// Call with the message that was sent.
+  func didSendMessage(message: String)
+
   /// Call with the desired visibility for the chat view controller.
   func didSetChatHidden(hidden: Bool)
 
@@ -28,25 +31,22 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call when the viewDidLoad.
   func viewDidLoad()
 
-  /// Call with new chat messages.
-  func received(chatMessages: [LiveStreamChatMessage])
-
   /// Called when the user session starts.
   func userSessionStarted()
 }
 
 public protocol LiveStreamChatViewModelOutputs {
-  /// Emits with new chat user info received after authorization.
-  var configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError> { get }
-
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Emits when chat authorization is completed with success status.
-  var didAuthorizeChat: Signal<Bool, NoError> { get }
+  var didConnectToChat: Signal<Bool, NoError> { get }
 
   /// Emits when the LoginToutViewController should be presented.
   var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
+
+  /// Emits when a live stream api error occurred.
+  var notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError> { get }
 
   /// Emits chat messages for appending to the data source.
   var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
@@ -60,11 +60,8 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits whether or not the chat table view should be hidden.
   var shouldHideChatTableView: Signal<Bool, NoError> { get }
 
-  /// Emits when the live auth token should be updated in the app environment.
-  var updateLiveAuthTokenInEnvironment: Signal<String, NoError> { get }
-
   /// Emits when chat authorization begins.
-  var willAuthorizeChat: Signal<(), NoError> { get }
+  var willConnectToChat: Signal<(), NoError> { get }
 }
 
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
@@ -79,30 +76,64 @@ LiveStreamChatViewModelOutputs {
 
     let liveStreamEvent = configData.map(second)
 
-    let shouldFetchAuthToken = Signal.merge(
-      configData.ignoreValues(),
-      Signal.combineLatest(configData, self.userSessionStartedProperty.signal).ignoreValues()
+    let liveStreamEventFetch = Signal.merge(
+      liveStreamEvent,
+      Signal.combineLatest(
+        liveStreamEvent,
+        self.userSessionStartedProperty.signal
+        )
+        .map(first)
       )
-      .filter {
-        AppEnvironment.current.currentUser != nil && AppEnvironment.current.liveAuthToken == nil
-    }
-
-    let liveAuthTokenFetch = shouldFetchAuthToken.switchMap {
-        AppEnvironment.current.apiService.liveAuthToken()
+      .flatMap { liveStreamEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+        AppEnvironment.current.liveStreamService
+          .fetchEvent(
+            eventId: liveStreamEvent.id,
+            uid: AppEnvironment.current.currentUser?.id,
+            liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
+    }
+
+    let firebase = liveStreamEventFetch
+      .values()
+      .map { $0.firebase }
+      .skipNil()
+
+    let initialChatMessages = firebase
+      .map { $0.chatPath }
+      .flatMap { path in
+        AppEnvironment.current.liveStreamService.chatMessageSnapshotsValue(
+          withPath: path,
+          limitedToLast: 500
+        )
+        .materialize()
       }
+      .take(first: 1)
+
+    let chatMessages = Signal.combineLatest(
+      firebase.map { $0.chatPath },
+      initialChatMessages
+        .values()
+        .map { $0.last?.date }
+        .map { $0.coalesceWith(0) }
+      )
+      .flatMap { path, lastTimeStamp in
+        AppEnvironment.current.liveStreamService.chatMessageSnapshotsAdded(
+          withPath: path,
+          addedSinceTimeInterval: lastTimeStamp
+          )
+          .materialize()
+    }
 
     self.prependChatMessagesToDataSourceAndReload = Signal.combineLatest(
-      self.receivedChatMessagesProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal,
-      configData.ignoreValues()
+      Signal.merge(
+        initialChatMessages.values().map { ($0, true) },
+        chatMessages.values().map { ([$0], false) }
+      ),
+      configData
       )
       .map(first)
-      .filter { !$0.isEmpty }
-      .map { chatMessages in
-        (chatMessages, chatMessages.count > 25)
-    }
 
     self.openLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
       .liveStreamChat
@@ -125,43 +156,49 @@ LiveStreamChatViewModelOutputs {
         self.didSetChatHiddenProperty.signal
     )
 
-    let liveStreamEventFetch = Signal.combineLatest(
-      liveAuthTokenFetch
-        .values()
-        .map { $0.token },
-      liveStreamEvent
-      )
-      .flatMap { token, event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
-        AppEnvironment.current.liveStreamService
-          .fetchEvent(
-            eventId: event.id,
-            uid: AppEnvironment.current.currentUser?.id,
-            liveAuthToken: token
-          )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    self.configureChatHandlerWithUserInfo = liveStreamEventFetch
-      .values()
-      .map { liveStreamEvent -> LiveStreamChatUserInfo? in
-        guard
-          let userId = liveStreamEvent.firebase?.chatUserId,
-          let name = liveStreamEvent.firebase?.chatUserName,
-          let avatar = liveStreamEvent.firebase?.chatAvatarUrl,
-          let token = liveStreamEvent.firebase?.token
+    let newChatMessage = firebase
+      .takePairWhen(self.didSendMessageProperty.signal.skipNil())
+      .map { firebase, message -> NewLiveStreamChatMessage? in
+          guard
+            let userId = firebase.chatUserId,
+            let name = firebase.chatUserName,
+            let avatar = firebase.chatAvatarUrl
           else { return nil }
 
-        return LiveStreamChatUserInfo(name: name,
-                                      profilePictureUrl: avatar,
-                                      userId: userId,
-                                      token: token)
+        return NewLiveStreamChatMessage(
+          message: message,
+          name: name,
+          profilePic: avatar,
+          userId: userId
+        )
       }
       .skipNil()
 
-    self.didAuthorizeChat = liveAuthTokenFetch.filter { $0.isTerminating }.map { $0.error == nil }
-    self.updateLiveAuthTokenInEnvironment = liveAuthTokenFetch.values().map { $0.token }
-    self.willAuthorizeChat = shouldFetchAuthToken
+    //fixme: tuple?
+    let sentChatMessageEvent = firebase.map { $0.chatPath }
+      .takePairWhen(newChatMessage)
+      .flatMap { tuple in
+        AppEnvironment.current.liveStreamService.sendChatMessage(
+          withPath: tuple.0,
+          chatMessage: tuple.1
+        )
+        .materialize()
+    }
+
+    self.notifyDelegateLiveStreamApiErrorOccurred = Signal.merge(
+      initialChatMessages.errors(),
+      chatMessages.errors(),
+      sentChatMessageEvent.errors()
+    )
+
+    self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
+    self.didConnectToChat = Signal.merge(
+      liveStreamEventFetch.errors().mapConst(false),
+      liveStreamEventFetch.values()
+        .map { $0.firebase?.chatUserId }
+        .skipNil()
+        .mapConst(true)
+    )
 
     self.shouldCollapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate)
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
@@ -182,6 +219,11 @@ LiveStreamChatViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
+  private let didSendMessageProperty = MutableProperty<String?>(nil)
+  public func didSendMessage(message: String) {
+    self.didSendMessageProperty.value = message
+  }
+
   private let didSetChatHiddenProperty = MutableProperty(false)
   public func didSetChatHidden(hidden: Bool) {
     self.didSetChatHiddenProperty.value = hidden
@@ -197,26 +239,20 @@ LiveStreamChatViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let receivedChatMessagesProperty = MutableProperty<[LiveStreamChatMessage]?>(nil)
-  public func received(chatMessages: [LiveStreamChatMessage]) {
-    self.receivedChatMessagesProperty.value = chatMessages
-  }
-
   private let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-
-  public let configureChatHandlerWithUserInfo: Signal<LiveStreamChatUserInfo, NoError>
+  
   public let dismissKeyboard: Signal<(), NoError>
-  public let didAuthorizeChat: Signal<Bool, NoError>
+  public let didConnectToChat: Signal<Bool, NoError>
+  public let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
   public let openLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let shouldCollapseChatInputView: Signal<Bool, NoError>
   public let shouldHideChatTableView: Signal<Bool, NoError>
-  public let updateLiveAuthTokenInEnvironment: Signal<String, NoError>
-  public let willAuthorizeChat: Signal<(), NoError>
+  public let willConnectToChat: Signal<(), NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
   public var outputs: LiveStreamChatViewModelOutputs { return self }

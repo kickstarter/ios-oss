@@ -4,11 +4,12 @@ import Curry
 import Prelude
 import Runes
 
+//fixme: always .success?
 internal extension Collection where Iterator.Element == LiveStreamChatMessage {
-  static func decode(_ snapshots: [FirebaseDataSnapshotType]) -> [LiveStreamChatMessage] {
-    return snapshots.flatMap { snapshot in
+  static func decode(_ snapshots: [FirebaseDataSnapshotType]) -> Decoded<[LiveStreamChatMessage]> {
+    return .success(snapshots.flatMap { snapshot in
       LiveStreamChatMessage.decode(snapshot).value
-    }
+    })
   }
 }
 
@@ -24,7 +25,9 @@ public struct LiveStreamChatMessage {
   static internal func decode(_ snapshot: FirebaseDataSnapshotType) ->
     Decoded<LiveStreamChatMessage> {
       return (snapshot.value as? [String:Any])
-        .map { self.decode(JSON($0.withAllValuesFrom(["id": snapshot.key]))) }
+        .map { self.decode(
+          JSON($0.withAllValuesFrom([LiveStreamChatMessageDictionaryKey.id.rawValue: snapshot.key])))
+        }
         .coalesceWith(.failure(.custom("Unable to parse Firebase snapshot.")))
   }
 }
@@ -34,15 +37,15 @@ extension LiveStreamChatMessage: Decodable {
     let create = curry(LiveStreamChatMessage.init)
 
     let tmp1 = create
-      <^> json <| "id"
-      <*> json <|? "creator"
-      <*> json <| "message"
-      <*> json <| "name"
+      <^> json <| LiveStreamChatMessageDictionaryKey.id.rawValue
+      <*> json <|? LiveStreamChatMessageDictionaryKey.creator.rawValue
+      <*> json <| LiveStreamChatMessageDictionaryKey.message.rawValue
+      <*> json <| LiveStreamChatMessageDictionaryKey.name.rawValue
 
     let tmp2 = tmp1
-      <*> json <| "profilePic"
-      <*> json <| "timestamp"
-      <*> ((json <| "userId") >>- convertId)
+      <*> json <| LiveStreamChatMessageDictionaryKey.profilePic.rawValue
+      <*> json <| LiveStreamChatMessageDictionaryKey.timestamp.rawValue
+      <*> ((json <| LiveStreamChatMessageDictionaryKey.userId.rawValue) >>- convertId)
 
     return tmp2
   }
@@ -52,8 +55,10 @@ extension LiveStreamChatMessage: Decodable {
 private func convertId(fromJson json: JSON) -> Decoded<Int> {
   switch json {
   case .string(let string):
-    if string.hasPrefix("id_") {
-      return Int(string.replacingOccurrences(of: "id_", with: ""))
+    let idPrefix = "id_"
+
+    if string.hasPrefix(idPrefix) {
+      return Int(string.replacingOccurrences(of: idPrefix, with: ""))
         .map(Decoded.success)
         .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into Int.")))
     }

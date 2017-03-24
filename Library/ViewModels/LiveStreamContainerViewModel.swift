@@ -24,6 +24,9 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Call when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
+  /// Called when a live stream api error occurred.
+  func liveStreamApiErrorOccurred(error: LiveApiError)
+
   /// Called when the LiveStreamViewController's state changed
   func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
 
@@ -105,7 +108,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
               .fetchEvent(
                 eventId: initialEvent.id,
                 uid: AppEnvironment.current.currentUser?.id,
-                liveAuthToken: AppEnvironment.current.liveAuthToken
+                liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken
               )
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .materialize()
@@ -329,6 +332,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
   public func deviceOrientationDidChange(orientation: UIInterfaceOrientation) {
     self.deviceOrientationDidChangeProperty.value = orientation
+  }
+
+  private let liveStreamApiErrorOccurredProperty = MutableProperty<LiveApiError?>(nil)
+  public func liveStreamApiErrorOccurred(error: LiveApiError) {
+    self.liveStreamApiErrorOccurredProperty.value = error
   }
 
   private let liveStreamViewControllerStateChangedProperty =

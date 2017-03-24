@@ -1,6 +1,62 @@
 import Foundation
 import ReactiveSwift
 
+public struct NewLiveStreamChatMessage {
+  public let message: String
+  public let name: String
+  public let profilePic: String
+  public let userId: String
+
+  public init(message: String, name: String, profilePic: String, userId: String) {
+    self.message = message
+    self.name = name
+    self.profilePic = profilePic
+    self.userId = userId
+  }
+
+  public func toFirebaseDictionary() -> [String:Any] {
+    return [
+      LiveStreamChatMessageDictionaryKey.message.rawValue: self.message,
+      LiveStreamChatMessageDictionaryKey.name.rawValue: self.name,
+      LiveStreamChatMessageDictionaryKey.profilePic.rawValue: self.profilePic,
+      LiveStreamChatMessageDictionaryKey.userId.rawValue: self.userId
+    ]
+  }
+}
+
+public enum LiveStreamChatMessageDictionaryKey: String {
+  case id
+  case creator
+  case message
+  case name
+  case profilePic
+  case timestamp
+  case userId
+}
+
+public enum LiveStreamSession {
+  case anonymous
+  case loggedIn(token: String)
+
+  public var isAnonymous: Bool {
+    switch self {
+    case .anonymous:
+      return true
+    case .loggedIn:
+      return false
+    }
+  }
+
+  public var isLoggedIn: Bool {
+    switch self {
+    case .anonymous:
+      return false
+    case .loggedIn:
+      return true
+    }
+  }
+}
+
 public enum LiveVideoPlaybackError {
   case failedToConnect
   case sessionInterrupted

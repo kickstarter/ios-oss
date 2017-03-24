@@ -106,7 +106,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
           .fetchEvent(
             eventId: event.id,
             uid: AppEnvironment.current.currentUser?.id,
-            liveAuthToken: AppEnvironment.current.liveAuthToken
+            liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .prefix(value: event)
