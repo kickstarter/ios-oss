@@ -99,12 +99,6 @@ ProjectUpdatesViewModelOutputs {
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
     }
-
-    project
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackViewedUpdates(forProject: $0)
-    }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)

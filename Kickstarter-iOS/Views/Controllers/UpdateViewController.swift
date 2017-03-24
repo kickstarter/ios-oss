@@ -16,7 +16,7 @@ internal final class UpdateViewController: WebViewController {
     -> UpdateViewController {
 
     let vc = Storyboard.Update.instantiate(UpdateViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, update: update, context: context)
+    vc.viewModel.inputs.configureWith(project: project, update: update)
     vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
 
     return vc

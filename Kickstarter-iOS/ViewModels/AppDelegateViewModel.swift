@@ -39,7 +39,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidReceiveMemoryWarning()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
+  func applicationOpenUrl(application: UIApplication?,
+                          url: URL,
+                          sourceApplication: String?,
                           annotation: Any) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
@@ -53,6 +55,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
+
+  /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
+  func foundRedirectUrl(_ url: URL)
 
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
@@ -80,6 +85,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
+  /// Emits when the view needs to figure out the redirect URL for the emitted URL.
+  var findRedirectUrl: Signal<URL, NoError> { get }
+
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), NoError> { get }
 
@@ -103,6 +111,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), NoError> { get }
+
+  /// Emits a URL when we should open it in the safari browser.
+  var goToMobileSafari: Signal<URL, NoError> { get }
 
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), NoError> { get }
@@ -262,7 +273,7 @@ AppDelegateViewModelOutputs {
 
     // Deep links
 
-    let continueUserActivity = applicationContinueUserActivityProperty.signal.skipNil()
+    let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
@@ -271,11 +282,19 @@ AppDelegateViewModelOutputs {
 
     self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
 
-    let deepLinkFromUrl = Signal
+    let deepLinkUrl = Signal
       .merge(
-        openUrl.map { Navigation.match($0.url) },
-        continueUserActivityWithNavigation.map(second)
-      )
+        openUrl.map { $0.url },
+
+        self.foundRedirectUrlProperty.signal.skipNil(),
+
+        continueUserActivity
+          .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
+          .map { $0.webpageURL }
+          .skipNil()
+    )
+
+    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
 
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
@@ -296,6 +315,14 @@ AppDelegateViewModelOutputs {
         deepLinkFromShortcut
       )
       .skipNil()
+
+    self.findRedirectUrl = deepLinkUrl
+      .filter {
+        switch Navigation.match($0) {
+        case .some(.emailClick(_)), .some(.emailLink):  return true
+        default:                                        return false
+        }
+    }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
@@ -350,6 +377,9 @@ AppDelegateViewModelOutputs {
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
+
+    self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
+      .filter { Navigation.match($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
@@ -587,6 +617,11 @@ AppDelegateViewModelOutputs {
     self.deviceTokenDataProperty.value = data
   }
 
+  private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
+  public func foundRedirectUrl(_ url: URL) {
+    self.foundRedirectUrlProperty.value = url
+  }
+
   fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
   public func crashManagerDidFinishSendingCrashReport() {
     self.crashManagerDidFinishSendingCrashReportProperty.value = ()
@@ -629,6 +664,7 @@ AppDelegateViewModelOutputs {
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
+  public let findRedirectUrl: Signal<URL, NoError>
   public let forceLogout: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>
@@ -637,6 +673,7 @@ AppDelegateViewModelOutputs {
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
+  public let goToMobileSafari: Signal<URL, NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<Notification, NoError>
   public let presentRemoteNotificationAlert: Signal<String, NoError>
