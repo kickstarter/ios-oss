@@ -13,6 +13,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let didConnectToChat = TestObserver<Bool, NoError>()
+  private let notifyDelegateLiveStreamApiErrorOccurred = TestObserver<LiveApiError, NoError>()
   private let openLoginToutViewController = TestObserver<LoginIntent, NoError>()
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
   private let prependChatMessagesToDataSourceReload = TestObserver<Bool, NoError>()
@@ -26,6 +27,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didConnectToChat.observe(self.didConnectToChat.observer)
+    self.vm.outputs.notifyDelegateLiveStreamApiErrorOccurred.observe(
+      self.notifyDelegateLiveStreamApiErrorOccurred.observer)
     self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(first).observe(
       self.prependChatMessagesToDataSourceMessages.observer)
@@ -137,5 +140,81 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
 
     self.dismissKeyboard.assertValueCount(3)
+  }
+
+  func testConnectingToChat() {
+    self.willConnectToChat.assertValueCount(0)
+    self.didConnectToChat.assertValueCount(0)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
+                                   chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.willConnectToChat.assertValueCount(1)
+      self.didConnectToChat.assertValueCount(1)
+    }
+  }
+
+  func testSendMessage_Success() {
+    self.notifyDelegateLiveStreamApiErrorOccurred.assertValueCount(0)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
+                                   chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.didSendMessage(message: "Test message")
+
+      self.notifyDelegateLiveStreamApiErrorOccurred.assertValueCount(0)
+    }
+  }
+
+  func testSendMessage_Failed() {
+    self.notifyDelegateLiveStreamApiErrorOccurred.assertValueCount(0)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      sendChatMessageResult: Result(error: .sendChatMessageFailed)
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
+                                   chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.didSendMessage(message: "Test message")
+
+      self.notifyDelegateLiveStreamApiErrorOccurred.assertValues([.sendChatMessageFailed])
+    }
   }
 }
