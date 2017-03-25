@@ -22,6 +22,9 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
+  private var deviceOrientationObserver: Any?
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -54,14 +57,14 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
-    NotificationCenter.default
+    self.deviceOrientationObserver = NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )
     }
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         AppEnvironment.current.currentUser?.liveAuthToken.doIfSome {
           self?.liveStreamViewController.userSessionChanged(
@@ -70,12 +73,26 @@ public final class LiveStreamContainerViewController: UIViewController {
         }
     }
 
-    NotificationCenter.default
+    self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.liveStreamViewController.userSessionChanged(session: .anonymous)
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionEndedObserver.doIfSome {
+      NotificationCenter.default.removeObserver($0)
+    }
+
+    self.sessionStartedObserver.doIfSome {
+      NotificationCenter.default.removeObserver($0)
+    }
+
+    self.deviceOrientationObserver.doIfSome {
+      NotificationCenter.default.removeObserver($0)
+    }
   }
 
   //swiftlint:disable:next function_body_length
