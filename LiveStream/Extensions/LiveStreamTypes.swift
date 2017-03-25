@@ -16,22 +16,12 @@ public struct NewLiveStreamChatMessage {
 
   public func toFirebaseDictionary() -> [String:Any] {
     return [
-      LiveStreamChatMessageDictionaryKey.message.rawValue: self.message,
-      LiveStreamChatMessageDictionaryKey.name.rawValue: self.name,
-      LiveStreamChatMessageDictionaryKey.profilePic.rawValue: self.profilePic,
-      LiveStreamChatMessageDictionaryKey.userId.rawValue: self.userId
+      "message": self.message,
+      "name": self.name,
+      "profilePic": self.profilePic,
+      "userId": self.userId
     ]
   }
-}
-
-public enum LiveStreamChatMessageDictionaryKey: String {
-  case id
-  case creator
-  case message
-  case name
-  case profilePic
-  case timestamp
-  case userId
 }
 
 public enum LiveStreamSession {
