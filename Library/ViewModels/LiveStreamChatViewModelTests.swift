@@ -1,3 +1,4 @@
+//swiftlint:disable file_length
 import Prelude
 import ReactiveSwift
 import Result
@@ -49,8 +50,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       |> LiveStreamChatMessage.lens.id .~ "101"
 
     let liveStreamService = MockLiveStreamService(
-      chatMessagesSnapshotsAddedResult: Result(addedMessage),
-      chatMessagesSnapshotsValueResult: Result(initialMessages)
+      chatMessagesSnapshotsAddedResult: Result([addedMessage]),
+      chatMessagesSnapshotsValueResult: Result([initialMessages])
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
@@ -62,113 +63,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.prependChatMessagesToDataSourceMessages.assertValues([initialMessages, [addedMessage]])
       self.prependChatMessagesToDataSourceReload.assertValues([true, false])
     }
-  }
-
-  func testPrependMessagesToDataSource_AndReload() {
-    self.prependChatMessagesToDataSourceMessages.assertValueCount(0)
-    self.prependChatMessagesToDataSourceReload.assertValueCount(0)
-
-    let messages = Array(0...30).map { _ in
-      LiveStreamChatMessage.template
-    }
-
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
-    self.vm.inputs.viewDidLoad()
-
-    self.prependChatMessagesToDataSourceMessages.assertValueCount(1)
-    self.prependChatMessagesToDataSourceReload.assertValues([true])
-  }
-//fixme:
-  func testAuthorization_LoggedIn() {
-//    self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//    self.didAuthorizeChat.assertValueCount(0)
-//    self.willAuthorizeChat.assertValueCount(0)
-//    self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-//    let apiService = MockService(liveAuthTokenResponse: LiveAuthTokenEnvelope.template)
-//    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(LiveStreamEvent.template))
-//
-//    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3),
-//                    liveStreamService: liveStreamService) {
-//      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
-//      self.vm.inputs.viewDidLoad()
-//
-//      self.scheduler.advance()
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(0)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//      self.scheduler.advance()
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(0)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//      self.scheduler.advance(by: .seconds(3))
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(1)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(1)
-//
-//      self.scheduler.advance(by: .seconds(3))
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(1)
-//      self.didAuthorizeChat.assertValueCount(1)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(1)
-//    }
-  }
-//fixme:
-  func testAuthorization_LoggedOut() {
-//    self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//    self.didAuthorizeChat.assertValueCount(0)
-//    self.willAuthorizeChat.assertValueCount(0)
-//    self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//    let apiService = MockService(liveAuthTokenResponse: LiveAuthTokenEnvelope.template)
-//    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(LiveStreamEvent.template))
-//
-//    withEnvironment(apiService: apiService, apiDelayInterval: .seconds(3),
-//                    liveStreamService: liveStreamService) {
-//      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
-//      self.vm.inputs.viewDidLoad()
-//
-//      self.scheduler.advance()
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(0)
-//      self.willAuthorizeChat.assertValueCount(0)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-//      self.vm.inputs.userSessionStarted()
-//
-//      self.scheduler.advance()
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(0)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(0)
-//
-//      self.scheduler.advance(by: .seconds(3))
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(0)
-//      self.didAuthorizeChat.assertValueCount(1)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(1)
-//
-//      self.scheduler.advance(by: .seconds(3))
-//
-//      self.configureChatHandlerWithUserInfo.assertValueCount(1)
-//      self.didAuthorizeChat.assertValueCount(1)
-//      self.willAuthorizeChat.assertValueCount(1)
-//      self.updateLiveAuthTokenInEnvironment.assertValueCount(1)
-//    }
   }
 
   func testChatInputViewRequestedLogin() {

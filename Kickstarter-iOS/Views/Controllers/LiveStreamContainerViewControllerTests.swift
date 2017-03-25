@@ -136,8 +136,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        // FIXME (from brandon): this is erroring after my merge, but I think it was already happening...
-        //vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
+        vc.liveStreamViewController(nil, stateChangedTo: state)
 
         let stateIdentifier: String
         if state == .greenRoom {
@@ -172,9 +171,6 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       self.scheduler.advance()
-
-      // FIXME (from brandon): this is erroring after my merge, but I think it was already happening...
-      //vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
 
       FBSnapshotVerifyView(parent.view)
     }
@@ -216,7 +212,14 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    let chatMessages = (1...50)
+      .map(String.init)
+      .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
+
+    let liveStreamService = MockLiveStreamService(
+      chatMessagesSnapshotsValueResult: Result([chatMessages]),
+      fetchEventResult: Result(liveStreamEvent)
+    )
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
@@ -226,18 +229,10 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
                                                                   presentedFromProject: false)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
-        self.scheduler.advance(by: .seconds(3))
-
-        let chatMessages = (1...30)
-          .map(String.init)
-          .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
 
         vc.liveStreamContainerPageViewController?.chatButtonTapped()
 
-        // FIXME (from brandon): this is erroring after my merge, but I think it was already happening...
-        //vc.liveStreamContainerPageViewController?
-        //  .liveStreamChatViewController?
-        //  .viewModel.inputs.received(chatMessages: chatMessages)
+        self.scheduler.advance(by: .seconds(3))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -249,6 +244,8 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
   func testChat_Replay() {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.com"
       |> LiveStreamEvent.lens.liveNow .~ false
       |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
@@ -257,7 +254,14 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, .phone4inch, .pad]
     let orientations = [Orientation.landscape, .portrait]
 
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    let chatMessages = (1...50)
+      .map(String.init)
+      .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
+
+    let liveStreamService = MockLiveStreamService(
+      chatMessagesSnapshotsValueResult: Result([chatMessages]),
+      fetchEventResult: Result(liveStreamEvent)
+    )
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
       withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
@@ -267,18 +271,10 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
                                                                   presentedFromProject: false)
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
-        self.scheduler.advance(by: .seconds(3))
-
-        let chatMessages = (1...30)
-          .map(String.init)
-          .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
 
         vc.liveStreamContainerPageViewController?.chatButtonTapped()
 
-        // FIXME (from brandon): this is erroring after my merge, but I think it was already happening...
-        //vc.liveStreamContainerPageViewController?
-        //  .liveStreamChatViewController?
-        //  .viewModel.inputs.received(chatMessages: chatMessages)
+        self.scheduler.advance(by: .seconds(3))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"

@@ -242,7 +242,7 @@ LiveStreamChatViewModelOutputs {
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  
+
   public let dismissKeyboard: Signal<(), NoError>
   public let didConnectToChat: Signal<Bool, NoError>
   public let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>

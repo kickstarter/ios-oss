@@ -84,7 +84,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
     self.createVideoViewController.assertValues([openTokStreamType])
   }
 
-
   func testCreateVideoViewController_OverMaxOpenTokViews() {
     let mockService = MockLiveStreamService(
       greenRoomOffStatusResult: Result([false, true]),
@@ -288,7 +287,6 @@ internal final class LiveStreamViewModelTests: XCTestCase {
 
     self.disableIdleTimer.assertValues([true, false])
   }
-
 
   func testNotifyDelegateLiveStreamViewControllerStateChanged_LifeCycle() {
     let mockService = MockLiveStreamService(

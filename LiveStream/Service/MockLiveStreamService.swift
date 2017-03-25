@@ -217,7 +217,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
       if let error = self.signInToFirebaseWithCustomTokenResult?.error {
         return SignalProducer(error: error)
       }
-      
+
       return SignalProducer(
         self.signInToFirebaseWithCustomTokenResult?.value ?? []
       )
