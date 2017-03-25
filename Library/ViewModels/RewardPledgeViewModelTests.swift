@@ -2506,7 +2506,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             )
           )
         )
-        let _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+        _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
 
         self.showAlertMessage.assertValueCount(0)
 
@@ -2539,7 +2539,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
                 )
               )
             )
-            let _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+            _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
 
             self.showAlertMessage.assertValueCount(1)
 

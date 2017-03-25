@@ -22,7 +22,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
-  private var deviceOrientationObserver: Any?
+  private var deviceOrientationChangedObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -57,7 +57,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
-    self.deviceOrientationObserver = NotificationCenter.default
+    self.deviceOrientationChangedObserver = NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
@@ -82,17 +82,9 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   deinit {
-    self.sessionEndedObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
-
-    self.sessionStartedObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
-
-    self.deviceOrientationObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
+    self.deviceOrientationChangedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
+    self.sessionEndedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
+    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   //swiftlint:disable:next function_body_length

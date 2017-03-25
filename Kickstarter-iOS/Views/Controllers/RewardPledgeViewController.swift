@@ -68,6 +68,8 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var topStackView: UIStackView!
   @IBOutlet fileprivate weak var updatePledgeButton: UIButton!
 
+  private var sessionStartedObserver: Any?
+
   internal static func configuredWith(
     project: Project,
     reward: Reward,
@@ -77,6 +79,10 @@ internal final class RewardPledgeViewController: UIViewController {
       let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
       vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
       return vc
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   fileprivate var statusBarHidden = true
@@ -139,7 +145,7 @@ internal final class RewardPledgeViewController: UIViewController {
       self, action: #selector(updatePledgeButtonTapped), for: .touchUpInside
     )
 
-    NotificationCenter
+    self.sessionStartedObserver = NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

@@ -70,7 +70,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
     self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
@@ -79,9 +79,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
   }
 
   deinit {
-    self.sessionStartedObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
+    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   //swiftlint:disable:next function_body_length
