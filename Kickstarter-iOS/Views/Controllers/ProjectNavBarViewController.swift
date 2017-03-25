@@ -11,6 +11,8 @@ public protocol ProjectNavBarViewControllerDelegate: class {
 public final class ProjectNavBarViewController: UIViewController {
   internal weak var delegate: ProjectNavBarViewControllerDelegate?
   fileprivate let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
@@ -48,19 +50,24 @@ public final class ProjectNavBarViewController: UIViewController {
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
 
-    NotificationCenter
+    self.sessionStartedObserver = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter
+    self.sessionEndedObserver = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionEndedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
+    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   // swiftlint:disable function_body_length

@@ -40,6 +40,8 @@ public final class LiveStreamContainerViewController: UIViewController {
   fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
   private weak var liveStreamViewController: LiveStreamViewController?
+  private var deviceOrientationChangedObserver: Any?
+  private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -89,12 +91,12 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamViewController }
       .first
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter.default
+    self.deviceOrientationChangedObserver = NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
@@ -103,6 +105,11 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.deviceOrientationChangedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
+    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   //swiftlint:disable:next function_body_length
