@@ -22,7 +22,7 @@ let baseActivity = .template
       |> Comment.lens.author .~ .brando
       |> Comment.lens.body .~ "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
   )
-  |> Activity.lens.memberData.amount .~ 5800000
+  |> Activity.lens.memberData.amount .~ 25
   |> Activity.lens.project .~ project
   |> Activity.lens.update .~ (
     .template

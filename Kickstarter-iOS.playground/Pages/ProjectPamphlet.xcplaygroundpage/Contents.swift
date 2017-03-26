@@ -8,7 +8,7 @@ import PlaygroundSupport
 
 let project = .cosmicSurgery
   |> Project.lens.state .~ .failed
-  |> Project.lens.dates.deadline .~ NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 2
+  |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 2)
   |> Project.lens.stats.staticUsdRate .~ 1.32
   |> Project.lens.rewards .~ [Project.cosmicSurgery.rewards.last! |> Reward.lens.remaining .~ 0]
 //  |> Project.lens.personalization.isBacking .~ true
@@ -24,8 +24,8 @@ AppEnvironment.replaceCurrentEnvironment(
     fetchProjectResponse: project
   ),
   config: .template |> Config.lens.countryCode .~ "US",
-  mainBundle: Bundle.framework,
-  language: .en
+  language: .en,
+  mainBundle: Bundle.framework
 )
 
 initialize()
