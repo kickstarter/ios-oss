@@ -334,10 +334,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
-    closeBarButtonItem.accessibilityHint = localizedString(
-      key: "Closes_the_live_stream",
-      defaultValue: "Closes the live stream."
-    )
+    closeBarButtonItem.accessibilityHint = Strings.Closes_live_stream()
 
     return closeBarButtonItem
   }()
