@@ -84,7 +84,7 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.configureWith(helpContext: .settings)
     self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
 
-    if let _ = self.presentingViewController {
+    if self.presentingViewController != nil {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
 
