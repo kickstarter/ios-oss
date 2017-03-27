@@ -153,7 +153,7 @@ internal final class DashboardViewController: UITableViewController {
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let cell = tableView.cellForRow(at: indexPath)
-    if let _ = cell as? DashboardContextCell {
+    if cell as? DashboardContextCell != nil {
       self.viewModel.inputs.projectContextCellTapped()
     }
   }

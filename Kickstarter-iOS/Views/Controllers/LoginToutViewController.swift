@@ -43,7 +43,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    if let _ = self.presentingViewController {
+    if self.presentingViewController != nil {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
