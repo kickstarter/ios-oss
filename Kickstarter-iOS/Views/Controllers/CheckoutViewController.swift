@@ -10,7 +10,6 @@ import UIKit
 internal final class CheckoutViewController: DeprecatedWebViewController {
   fileprivate weak var loginToutViewController: UIViewController?
   fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
-  private var sessionStartedObserver: Any?
 
   internal static func configuredWith(initialRequest: URLRequest,
                                       project: Project,
@@ -36,10 +35,6 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
                       action: #selector(cancelButtonTapped))
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  deinit {
-    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   // swiftlint:disable function_body_length
@@ -104,8 +99,8 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
