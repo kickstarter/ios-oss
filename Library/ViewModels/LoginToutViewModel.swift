@@ -247,7 +247,6 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   case .discoveryOnboarding, .generic:
     return Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   default:
-    return "DEF Bring creative projects to life. Pledge to support projects and view all your saved" +
-    "and backed projects in one place. Log in or sign up to continue."
+    return " "
   }
 }
