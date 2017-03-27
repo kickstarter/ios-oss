@@ -63,7 +63,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progressBarColor = project.map(progressBarColor(for:))
 
-    self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) ?? true }
+    self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)

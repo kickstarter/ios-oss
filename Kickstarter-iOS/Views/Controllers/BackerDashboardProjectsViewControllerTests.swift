@@ -7,14 +7,20 @@ import XCTest
 
 // swiftlint:disable:next type_name
 internal final class BackerDashboardProjectsViewControllerTests: TestCase {
-  fileprivate var project1: Project!
-  fileprivate var project2: Project!
-  fileprivate var project3: Project!
-  fileprivate var project4: Project!
-
   override func setUp() {
     super.setUp()
 
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
+    UIView.setAnimationsEnabled(false)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
+  func testProjects() {
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let deadline2 = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 2.0
 
@@ -45,24 +51,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 0.8
       |> Project.lens.personalization.isStarred .~ true
 
-    self.project1 = liveProject
-    self.project2 = deadProject
-    self.project3 = failed
-    self.project4 = saved
-
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    UIView.setAnimationsEnabled(false)
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    UIView.setAnimationsEnabled(true)
-    super.tearDown()
-  }
-
-  func testProjects() {
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ [self.project4, self.project1, self.project2,
-                                                               self.project3]
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ [saved, liveProject, deadProject, failed]
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
@@ -78,7 +67,47 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
                         self.scheduler.run()
 
                         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-        }
       }
     }
+  }
+
+  func testEmpty_BackedProjects() {
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
+                      currentUser: User.template,
+                      language: language) {
+                        let controller = BackerDashboardProjectsViewController()
+                        controller.configureWith(delegate: BackerDashboardViewController(),
+                                                 projectsType: .backed,
+                                                 sort: .endingSoon)
+                        let (parent, _) = traitControllers(device: device,
+                                                           orientation: .portrait,
+                                                           child: controller)
+                        self.scheduler.run()
+
+                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testEmpty_SavedProjects() {
+    let env = .template |> DiscoveryEnvelope.lens.projects .~ []
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
+                      currentUser: User.template,
+                      language: language) {
+                        let controller = BackerDashboardProjectsViewController()
+                        controller.configureWith(delegate: BackerDashboardViewController(),
+                                                 projectsType: .saved,
+                                                 sort: .endingSoon)
+                        let (parent, _) = traitControllers(device: device,
+                                                           orientation: .portrait,
+                                                           child: controller)
+                        self.scheduler.run()
+
+                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }

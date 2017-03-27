@@ -8,6 +8,13 @@ import Result
 public enum ProfileProjectsType {
   case backed
   case saved
+
+  var trackingString: String {
+    switch self {
+    case .backed:  return "backed"
+    case .saved:   return "saved"
+    }
+  }
 }
 
 public protocol BackerDashboardProjectsViewModelInputs {
@@ -116,6 +123,12 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     }
 
     self.scrollToProjectRow = self.scrollToProjectRowAndTotalProperty.signal.skipNil().map(first)
+
+    projectsType
+      .takeWhen(self.viewWillAppearProperty.signal.filter(isFalse))
+      .observeValues { pType in
+        AppEnvironment.current.koala.trackViewedProfileTab(projectsType: pType)
+    }
   }
 
   private let configureWithProjectsTypeAndSortProperty =

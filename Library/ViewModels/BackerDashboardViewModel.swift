@@ -3,9 +3,11 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public enum BackerDashboardTab: Int {
+public enum BackerDashboardTab {
   case backed
   case saved
+
+  public static let allTabs: [BackerDashboardTab] = [.backed, .saved]
 }
 
 public protocol BackerDashboardViewModelInputs {
@@ -167,12 +169,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
-
-    self.backedProjectsButtonTappedProperty.signal
-    .observeValues { _ in AppEnvironment.current.koala.trackViewedProfileBackedTab() }
-
-    self.savedProjectsButtonTappedProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackViewedProfileSavedTab() }
   }
 
   private let backedProjectsButtonTappedProperty = MutableProperty()

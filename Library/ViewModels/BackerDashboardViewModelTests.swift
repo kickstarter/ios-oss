@@ -175,15 +175,5 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     XCTAssertEqual(["Profile View My", "Viewed Profile"], self.trackingClient.events,
                    "Tracking does not emit")
-
-    self.vm.inputs.backedProjectsButtonTapped()
-
-    XCTAssertEqual(["Profile View My", "Viewed Profile", "Viewed Profile Backed Tab"],
-                   self.trackingClient.events)
-
-    self.vm.inputs.savedProjectsButtonTapped()
-
-    XCTAssertEqual(["Profile View My", "Viewed Profile", "Viewed Profile Backed Tab",
-                    "Viewed Profile Saved Tab"], self.trackingClient.events)
   }
 }

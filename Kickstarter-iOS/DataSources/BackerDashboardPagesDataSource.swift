@@ -14,11 +14,21 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
       savedController.configureWith(delegate: delegate, projectsType: .saved, sort: sort)
     }
 
-    self.viewControllers = [backedController, savedController]
+    self.viewControllers = BackerDashboardTab.allTabs.map { tab in
+      switch tab {
+      case .backed: return backedController
+      case .saved:  return savedController
+      }
+    }
   }
 
   internal func controllerFor(tab: BackerDashboardTab) -> UIViewController? {
-    return self.viewControllers[tab.rawValue]
+    guard let index = indexFor(tab: tab) else { return nil }
+    return self.viewControllers[index]
+  }
+
+  internal func indexFor(tab: BackerDashboardTab) -> Int? {
+    return BackerDashboardTab.allTabs.index(of: tab)
   }
 
   internal func scrollToProject(at row: Int, in controller: UIViewController) {
@@ -49,6 +59,6 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   private func tabFor(controller: UIViewController) -> BackerDashboardTab? {
     guard let index = self.viewControllers.index(of: controller) else { return nil }
 
-    return BackerDashboardTab(rawValue: index)
+    return BackerDashboardTab.allTabs[index]
   }
 }

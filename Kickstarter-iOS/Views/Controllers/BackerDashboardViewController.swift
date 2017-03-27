@@ -238,14 +238,17 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   private func selectButton(atTab tab: BackerDashboardTab) {
+    guard let index = self.pagesDataSource.indexFor(tab: tab) else { return }
+
     for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
       _ = (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == tab.rawValue)
+        ?|> UIButton.lens.selected .~ (idx == index)
     }
   }
 
   private func pinSelectedIndicator(to tab: BackerDashboardTab, animated: Bool) {
-    guard let button = self.menuButtonsStackView.arrangedSubviews[tab.rawValue] as? UIButton else { return }
+    guard let index = self.pagesDataSource.indexFor(tab: tab) else { return }
+    guard let button = self.menuButtonsStackView.arrangedSubviews[index] as? UIButton else { return }
 
     let leadingConstant = button.frame.origin.x + Styles.grid(1)
     let widthConstant = button.titleLabel?.frame.size.width ?? button.frame.size.width
