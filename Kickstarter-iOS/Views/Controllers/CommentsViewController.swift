@@ -89,8 +89,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.emptyStateVisible
       .observeForControllerAction()
-      .observeValues { [weak self] project, update in
-        self?.dataSource.load(project: project, update: update)
+      .observeValues { [weak self] project, update, visible in
+        self?.dataSource.load(project: project, update: update, visible: visible)
         self?.tableView.reloadData()
     }
 

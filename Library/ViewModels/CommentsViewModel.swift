@@ -39,7 +39,7 @@ public protocol CommentsViewModelOutputs {
   var commentBarButtonVisible: Signal<Bool, NoError> { get }
 
   /// Emits a project and an update to display the empty state.
-  var emptyStateVisible: Signal<(Project, Update?), NoError> { get }
+  var emptyStateVisible: Signal<(Project, Update?, Bool), NoError> { get }
 
   /// Emits a project and optional update when the comment dialog should be presented.
   var presentPostCommentDialog: Signal<(Project, Update?), NoError> { get }
@@ -124,9 +124,9 @@ CommentsViewModelOutputs {
 
     self.commentsAreLoading = isLoading
 
-    self.emptyStateVisible = Signal.combineLatest(comments, project, update)
-      .filter { comments, _, _ in comments.isEmpty }
-      .map { _, project, update in (project, update) }
+    self.emptyStateVisible = Signal.combineLatest(project, update, comments)
+      //.filter { _, _, comments in comments.isEmpty }
+      .map { project, update, comments in (project, update, comments.isEmpty) }
 
     let userCanComment = Signal.combineLatest(comments, project)
       .map { comments, project in !comments.isEmpty && canComment(onProject: project) }
@@ -218,7 +218,7 @@ CommentsViewModelOutputs {
   public let commentBarButtonVisible: Signal<Bool, NoError>
   public let commentsAreLoading: Signal<Bool, NoError>
   public let dataSource: Signal<([Comment], Project, User?), NoError>
-  public var emptyStateVisible: Signal<(Project, Update?), NoError>
+  public var emptyStateVisible: Signal<(Project, Update?, Bool), NoError>
   public let openLoginTout: Signal<(), NoError>
   public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
 

@@ -14,8 +14,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
              inSection: Section.comments.rawValue)
   }
 
-  internal func load(project: Project, update: Update?) {
-    self.set(values: [(project, update)],
+  internal func load(project: Project, update: Update?, visible: Bool) {
+    self.set(values: visible ? [(project, update)] : [],
              cellClass: CommentsEmptyStateCell.self,
              inSection: Section.emptyState.rawValue)
   }
