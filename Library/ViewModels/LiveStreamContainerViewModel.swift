@@ -166,7 +166,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.showErrorAlert = Signal.merge(
       eventFetchError,
-      liveStreamControllerStateError
+      liveStreamControllerStateError,
+      self.liveStreamApiErrorOccurredProperty.signal
+        .skipNil()
+        .map { $0.description }
     )
 
     self.loaderText = Signal.merge(

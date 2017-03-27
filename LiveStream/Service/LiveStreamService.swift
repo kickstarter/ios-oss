@@ -64,7 +64,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         }
 
         guard let url = components?.url else {
-          observer.send(error: .invalidEventId)
+          observer.send(error: .invalidRequest)
           return
         }
 
@@ -147,7 +147,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         components?.queryItems = uid.map { uid in [URLQueryItem(name: "uid", value: "\(uid)")] }
 
         guard let url = components?.url else {
-          observer.send(error: .invalidProjectId)
+          observer.send(error: .invalidRequest)
           return
         }
 
@@ -190,7 +190,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         let components = apiUrl.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
 
         guard let url = components?.url else {
-          observer.send(error: .invalidEventId)
+          observer.send(error: .invalidRequest)
           return
         }
 

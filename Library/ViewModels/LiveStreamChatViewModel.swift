@@ -28,11 +28,11 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call when the more button is tapped.
   func moreMenuButtonTapped()
 
+  /// Call when the user session changes.
+  func userSessionChanged(session: LiveStreamSession)
+
   /// Call when the viewDidLoad.
   func viewDidLoad()
-
-  /// Called when the user session starts.
-  func userSessionStarted()
 }
 
 public protocol LiveStreamChatViewModelOutputs {
@@ -48,9 +48,6 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits whether or not the chat table view should be hidden.
   var hideChatTableView: Signal<Bool, NoError> { get }
 
-  /// Emits when a live stream api error occurred.
-  var notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError> { get }
-
   /// Emits chat messages for appending to the data source.
   var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
@@ -59,6 +56,9 @@ public protocol LiveStreamChatViewModelOutputs {
 
   /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
   var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
+
+  /// Emits when an error has occurred with an error message.
+  var showErrorAlert: Signal<String, NoError> { get }
 
   /// Emits when chat authorization begins.
   var willConnectToChat: Signal<(), NoError> { get }
@@ -74,13 +74,13 @@ LiveStreamChatViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    let liveStreamEvent = configData.map(second)
+    let initialLiveStreamEvent = configData.map(second)
 
     let liveStreamEventFetch = Signal.merge(
-      liveStreamEvent,
+      initialLiveStreamEvent,
       Signal.combineLatest(
-        liveStreamEvent,
-        self.userSessionStartedProperty.signal
+        initialLiveStreamEvent,
+        self.userSessionProperty.signal.skipNil()
         )
         .map(first)
       )
@@ -91,12 +91,14 @@ LiveStreamChatViewModelOutputs {
             uid: AppEnvironment.current.currentUser?.id,
             liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken
           )
+          .prefix(SignalProducer(value: liveStreamEvent))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
-    let firebase = liveStreamEventFetch
-      .values()
+    let liveStreamEvent = liveStreamEventFetch.values()
+
+    let firebase = liveStreamEvent
       .map { $0.firebase }
       .skipNil()
 
@@ -112,7 +114,7 @@ LiveStreamChatViewModelOutputs {
       .take(first: 1)
 
     let chatMessages = Signal.combineLatest(
-      firebase.map { $0.chatPath },
+      firebase.map { $0.chatPath }.take(first: 1),
       initialChatMessages
         .values()
         .map { $0.last?.date }
@@ -135,9 +137,8 @@ LiveStreamChatViewModelOutputs {
       )
       .map(first)
 
-    self.presentLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
-      .liveStreamChat
-    )
+    self.presentLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal
+      .mapConst(.liveStreamChat)
 
     let chatHidden = Signal.merge(
       configData.map { _, _, chatHidden in chatHidden },
@@ -145,7 +146,7 @@ LiveStreamChatViewModelOutputs {
     )
 
     self.presentMoreMenuViewController = Signal.combineLatest(
-      configData.map { _, liveStreamEvent, _ in liveStreamEvent },
+      liveStreamEvent,
       chatHidden
       )
       .takeWhen(self.moreMenuButtonTappedProperty.signal)
@@ -184,22 +185,36 @@ LiveStreamChatViewModelOutputs {
         .materialize()
     }
 
-    self.notifyDelegateLiveStreamApiErrorOccurred = Signal.merge(
+    let signInWithCustomTokenEvent = Signal.merge(
+      liveStreamEvent.map { $0.firebase?.token }.skipNil(),
+      self.userSessionProperty.signal.skipNil()
+        .map { session -> String? in
+          if case let .loggedIn(token) = session { return token }
+          return nil
+        }
+        .skipNil()
+      )
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .flatMap {
+        AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
+          .materialize()
+    }
+
+    self.showErrorAlert = Signal.merge(
       initialChatMessages.errors(),
       chatMessages.errors(),
-      sentChatMessageEvent.errors()
-    )
+      sentChatMessageEvent.errors(),
+      signInWithCustomTokenEvent.errors()
+      )
+      .map { $0.description }
 
     self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
     self.didConnectToChat = Signal.merge(
       liveStreamEventFetch.errors().mapConst(false),
-      liveStreamEventFetch.values()
-        .map { $0.firebase?.chatUserId }
-        .skipNil()
-        .mapConst(true)
+      signInWithCustomTokenEvent.values().mapConst(true)
     )
 
-    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate)
+    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate).skipRepeats()
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
   }
 
@@ -238,21 +253,42 @@ LiveStreamChatViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
+  private let userSessionProperty = MutableProperty<LiveStreamSession?>(nil)
+  public func userSessionChanged(session: LiveStreamSession) {
+    self.userSessionProperty.value = session
   }
 
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
   public let didConnectToChat: Signal<Bool, NoError>
   public let hideChatTableView: Signal<Bool, NoError>
-  public let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>
   public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
+  public let showErrorAlert: Signal<String, NoError>
   public let willConnectToChat: Signal<(), NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
   public var outputs: LiveStreamChatViewModelOutputs { return self }
+}
+
+extension LiveApiError: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .failedToInitializeFirebase,
+         .firebaseAnonymousAuthFailed,
+         .firebaseCustomTokenAuthFailed:
+      return localizedString(key: "We_were_unable_to_connect_to_the_live_stream_chat",
+                             defaultValue: "We were unable to connect to the live stream chat.")
+    case .sendChatMessageFailed:
+      return localizedString(key: "Your_chat_message_wasnt_sent_successfully",
+                             defaultValue: "Your chat message wasn't sent successfully.")
+    case .snapshotDecodingFailed,
+         .genericFailure,
+         .invalidJson,
+         .invalidRequest:
+      return localizedString(key: "Something_went_wrong_please_try_again",
+                             defaultValue: "Something went wrong, please try again.")
+    }
+  }
 }

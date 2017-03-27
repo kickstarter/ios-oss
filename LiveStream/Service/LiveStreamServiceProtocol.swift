@@ -8,9 +8,8 @@ public enum LiveApiError: Error {
   case sendChatMessageFailed
   case snapshotDecodingFailed
   case genericFailure
-  case invalidEventId
   case invalidJson
-  case invalidProjectId
+  case invalidRequest
 }
 
 public protocol LiveStreamServiceProtocol {

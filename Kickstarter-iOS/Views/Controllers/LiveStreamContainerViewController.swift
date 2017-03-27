@@ -371,11 +371,6 @@ extension LiveStreamContainerViewController: LiveStreamChatViewControllerDelegat
     willPresentMoreMenuViewController moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
     self.viewModel.inputs.willPresentMoreMenuViewController()
   }
-
-  internal func liveStreamChatViewController(_ controller: LiveStreamChatViewController,
-                                             didReceiveLiveStreamApiError error: LiveApiError) {
-    self.viewModel.inputs.liveStreamApiErrorOccurred(error: error)
-  }
 }
 
 extension LiveStreamContainerViewController: LiveStreamNavTitleViewDelegate {

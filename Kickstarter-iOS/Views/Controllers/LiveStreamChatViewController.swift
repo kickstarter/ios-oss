@@ -14,10 +14,6 @@ internal protocol LiveStreamChatViewControllerDelegate: class {
   func liveStreamChatViewController(
     _ controller: LiveStreamChatViewController,
     willDismissMoreMenuViewController moreMenuViewController: LiveStreamContainerMoreMenuViewController)
-
-  func liveStreamChatViewController(
-    _ controller: LiveStreamChatViewController,
-    didReceiveLiveStreamApiError error: LiveApiError)
 }
 
 internal final class LiveStreamChatViewController: UIViewController {
@@ -64,7 +60,16 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
+        AppEnvironment.current.currentUser?.liveAuthToken.doIfSome {
+          self?.viewModel.inputs.userSessionChanged(
+            session: .loggedIn(token: $0)
+          )
+        }
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionChanged(session: .anonymous)
     }
 
     NotificationCenter.default
@@ -154,12 +159,10 @@ internal final class LiveStreamChatViewController: UIViewController {
         self?.chatInputViewContainerHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
     }
 
-    self.viewModel.outputs.notifyDelegateLiveStreamApiErrorOccurred
+    self.viewModel.outputs.showErrorAlert
       .observeForUI()
-      .observeValues { [weak self] error in
-        self.doIfSome {
-          $0.delegate?.liveStreamChatViewController($0, didReceiveLiveStreamApiError: error)
-        }
+      .observeValues { [weak self] in
+        self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
   }
 
