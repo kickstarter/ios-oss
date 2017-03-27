@@ -105,7 +105,7 @@ LiveStreamChatViewModelOutputs {
     let initialChatMessages = firebase
       .map { $0.chatPath }
       .flatMap { path in
-        AppEnvironment.current.liveStreamService.chatMessageSnapshotsValue(
+        AppEnvironment.current.liveStreamService.initialChatMessages(
           withPath: path,
           limitedToLast: 500
         )
@@ -121,7 +121,7 @@ LiveStreamChatViewModelOutputs {
         .map { $0.coalesceWith(0) }
       )
       .flatMap { path, lastTimeStamp in
-        AppEnvironment.current.liveStreamService.chatMessageSnapshotsAdded(
+        AppEnvironment.current.liveStreamService.chatMessagesAdded(
           withPath: path,
           addedSinceTimeInterval: lastTimeStamp
           )

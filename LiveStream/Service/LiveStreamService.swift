@@ -229,8 +229,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
   // MARK: Firebase
 
-  public func chatMessageSnapshotsValue(withPath path: String,
-                                        limitedToLast limit: UInt) ->
+  public func initialChatMessages(withPath path: String, limitedToLast limit: UInt) ->
     SignalProducer<[LiveStreamChatMessage], LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
@@ -261,8 +260,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         .start(on: self.backgroundScheduler)
   }
 
-  public func chatMessageSnapshotsAdded(withPath path: String,
-                                        addedSinceTimeInterval timeInterval: TimeInterval) ->
+  public func chatMessagesAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {

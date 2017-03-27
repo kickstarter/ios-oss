@@ -19,13 +19,9 @@ public protocol LiveStreamServiceProtocol {
   func setup()
 
   /// Emits chat messages added since a given time interval.
-  func chatMessageSnapshotsAdded(withPath path: String,
-                                 addedSinceTimeInterval timeInterval: TimeInterval) ->
+  func chatMessagesAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError>
 
-  /// Fetches the initial limited value of the chat messages.
-  func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) ->
-    SignalProducer<[LiveStreamChatMessage], LiveApiError>
 
   /// Fetches an event with personalization added for the user.
   func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
@@ -43,6 +39,10 @@ public protocol LiveStreamServiceProtocol {
 
   /// Emits the HLS url for the live stream if it changes after going live.
   func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError>
+
+  /// Fetches the initial limited value of the chat messages.
+  func initialChatMessages(withPath path: String, limitedToLast limit: UInt) ->
+    SignalProducer<[LiveStreamChatMessage], LiveApiError>
 
   /// Emits the number of people watching for a normal live stream event.
   func numberOfPeopleWatching(withPath path: String) ->

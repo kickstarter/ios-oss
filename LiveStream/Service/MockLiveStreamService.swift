@@ -13,14 +13,14 @@ extension Result {
 }
 
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
-  private let chatMessagesSnapshotsAddedResult: Result<[LiveStreamChatMessage], LiveApiError>?
-  private let chatMessagesSnapshotsValueResult: Result<[[LiveStreamChatMessage]], LiveApiError>?
+  private let chatMessagesAddedResult: Result<[LiveStreamChatMessage], LiveApiError>?
   private let greenRoomOffStatusResult: Result<[Bool], LiveApiError>?
   private let fetchEventResult: Result<LiveStreamEvent, LiveApiError>?
   private let fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>?
   private let fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>?
   private let hlsUrlResult: Result<[String], LiveApiError>?
   private let incrementNumberOfPeopleWatchingResult: Result<[()], LiveApiError>?
+  private let initialChatMessagesResult: Result<[[LiveStreamChatMessage]], LiveApiError>?
   private let numberOfPeopleWatchingResult: Result<[Int], LiveApiError>?
   private let scaleNumberOfPeopleWatchingResult: Result<[Int], LiveApiError>?
   private let sendChatMessageResult: Result<[()], LiveApiError>?
@@ -32,22 +32,22 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.init(fetchEventResult: nil)
   }
 
-  internal init(chatMessagesSnapshotsAddedResult: Result<[LiveStreamChatMessage], LiveApiError>? = nil,
-                chatMessagesSnapshotsValueResult: Result<[[LiveStreamChatMessage]], LiveApiError>? = nil,
+  internal init(chatMessagesAddedResult: Result<[LiveStreamChatMessage], LiveApiError>? = nil,
                 greenRoomOffStatusResult: Result<[Bool], LiveApiError>? = nil,
                 fetchEventResult: Result<LiveStreamEvent, LiveApiError>? = nil,
                 fetchEventsForProjectResult: Result<LiveStreamEventsEnvelope, LiveApiError>? = nil,
                 fetchEventsResult: Result<[LiveStreamEvent], LiveApiError>? = nil,
                 hlsUrlResult: Result<[String], LiveApiError>? = nil,
                 incrementNumberOfPeopleWatchingResult: Result<[()], LiveApiError>? = nil,
+                initialChatMessagesResult: Result<[[LiveStreamChatMessage]], LiveApiError>? = nil,
                 numberOfPeopleWatchingResult: Result<[Int], LiveApiError>? = nil,
                 scaleNumberOfPeopleWatchingResult: Result<[Int], LiveApiError>? = nil,
                 sendChatMessageResult: Result<[()], LiveApiError>? = nil,
                 signInToFirebaseAnonymouslyResult: Result<[String], LiveApiError>? = nil,
                 signInToFirebaseWithCustomTokenResult: Result<[String], LiveApiError>? = nil,
                 subscribeToResult: Result<LiveStreamSubscribeEnvelope, LiveApiError>? = nil) {
-    self.chatMessagesSnapshotsAddedResult = chatMessagesSnapshotsAddedResult
-    self.chatMessagesSnapshotsValueResult = chatMessagesSnapshotsValueResult
+    self.chatMessagesAddedResult = chatMessagesAddedResult
+    self.initialChatMessagesResult = initialChatMessagesResult
     self.greenRoomOffStatusResult = greenRoomOffStatusResult
     self.fetchEventResult = fetchEventResult
     self.fetchEventsForProjectResult = fetchEventsForProjectResult
@@ -117,26 +117,25 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   // MARK: Firebase
 
-  internal func chatMessageSnapshotsAdded(withPath path: String,
-                                          addedSinceTimeInterval timeInterval: TimeInterval) ->
+  func chatMessagesAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError> {
-      if let error = self.chatMessagesSnapshotsAddedResult?.error {
+      if let error = self.chatMessagesAddedResult?.error {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(
-        self.chatMessagesSnapshotsAddedResult?.value ?? []
+        self.chatMessagesAddedResult?.value ?? []
       )
   }
 
-  internal func chatMessageSnapshotsValue(withPath path: String, limitedToLast limit: UInt) ->
+  func initialChatMessages(withPath path: String, limitedToLast limit: UInt) ->
     SignalProducer<[LiveStreamChatMessage], LiveApiError> {
-      if let error = self.chatMessagesSnapshotsValueResult?.error {
+      if let error = self.initialChatMessagesResult?.error {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(
-        self.chatMessagesSnapshotsValueResult?.value ?? []
+        self.initialChatMessagesResult?.value ?? []
       )
   }
 
