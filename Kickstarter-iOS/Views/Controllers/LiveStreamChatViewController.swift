@@ -202,7 +202,6 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.tableView.beginUpdates()
     defer { self.tableView.endUpdates() }
 
-
     if self.tableView.numberOfSections == 0 {
       self.tableView.insertSections(IndexSet(integer: section), with: .none)
     }
