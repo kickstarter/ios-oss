@@ -6,14 +6,12 @@ import ReactiveSwift
 import UIKit
 
 internal protocol LiveStreamChatInputViewDelegate: class {
-  func liveStreamChatInputViewDidTapMoreButton(chatInputView: LiveStreamChatInputView)
   func liveStreamChatInputView(_ chatInputView: LiveStreamChatInputView, didSendMessage message: String)
   func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView)
 }
 
 internal final class LiveStreamChatInputView: UIView {
 
-  @IBOutlet private weak var moreButton: UIButton!
   @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var sendButton: UIButton!
   @IBOutlet private weak var separatorView: UIView!
@@ -30,18 +28,13 @@ internal final class LiveStreamChatInputView: UIView {
       .first as! LiveStreamChatInputView
   }
 
-  internal func configureWith(delegate: LiveStreamChatInputViewDelegate, chatHidden: Bool) {
-    self.delegate = delegate
-    self.viewModel.inputs.configureWith(chatHidden: chatHidden)
-  }
-
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
     self.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
-
     self.textField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
+
+    self.viewModel.inputs.didAwakeFromNib()
   }
 
   internal override func bindStyles() {
@@ -69,20 +62,12 @@ internal final class LiveStreamChatInputView: UIView {
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
       |> UIButton.lens.title(forState: .normal) .~ localizedString(key: "Send", defaultValue: "Send")
-
-    _ = self.moreButton
-      |> UIButton.lens.tintColor .~ .white
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.moreButton.rac.hidden = self.viewModel.outputs.moreButtonHidden
-    self.sendButton.rac.hidden = self.viewModel.outputs.sendButtonHidden
-
-    self.viewModel.outputs.notifyDelegateMoreButtonTapped.observeValues { [weak self] in
-      self.doIfSome { $0.delegate?.liveStreamChatInputViewDidTapMoreButton(chatInputView: $0) }
-    }
+    self.sendButton.rac.enabled = self.viewModel.outputs.sendButtonEnabled
 
     self.viewModel.outputs.notifyDelegateMessageSent
       .observeForUI()
@@ -106,15 +91,7 @@ internal final class LiveStreamChatInputView: UIView {
     self.textField.rac.attributedPlaceholder = self.viewModel.outputs.placeholderText
   }
 
-  internal func didSetChatHidden(hidden: Bool) {
-    self.viewModel.inputs.didSetChatHidden(hidden: hidden)
-  }
-
   // MARK: Actions
-
-  @objc private func moreButtonTapped() {
-    self.viewModel.inputs.moreButtonTapped()
-  }
 
   @objc private func sendButtonTapped() {
     self.viewModel.inputs.sendButtonTapped()

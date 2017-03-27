@@ -20,13 +20,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   private let configureNavBarTitleView =
     TestObserver<LiveStreamEvent, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let displayModalOverlay = TestObserver<(), NoError>()
   private let loaderActivityIndicatorAnimating = TestObserver<Bool, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
-  private let removeModalOverlay = TestObserver<(), NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
 
@@ -41,13 +39,11 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.configureNavBarTitleView.observe(
       self.configureNavBarTitleView.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.displayModalOverlayView.observe(self.displayModalOverlay.observer)
     self.vm.outputs.loaderActivityIndicatorAnimating.observe(self.loaderActivityIndicatorAnimating.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
-    self.vm.outputs.removeModalOverlayView.observe(self.removeModalOverlay.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
   }
@@ -669,28 +665,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.navBarTitleViewHidden.assertValues([true, false])
     }
-  }
-
-  func testDisplayRemoveModalOverlay() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.displayModalOverlay.assertValueCount(0)
-    self.removeModalOverlay.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.willPresentMoreMenuViewController()
-
-    self.displayModalOverlay.assertValueCount(1)
-
-    self.vm.inputs.willDismissMoreMenuViewController()
-
-    self.removeModalOverlay.assertValueCount(1)
   }
 
   func testAddShareBarButtonItem_Live() {

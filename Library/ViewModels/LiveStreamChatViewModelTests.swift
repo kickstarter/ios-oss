@@ -14,11 +14,9 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   private let collapseChatInputView = TestObserver<Bool, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let didConnectToChat = TestObserver<Bool, NoError>()
-  private let hideChatTableView = TestObserver<Bool, NoError>()
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
   private let prependChatMessagesToDataSourceReload = TestObserver<Bool, NoError>()
   private let presentLoginToutViewController = TestObserver<LoginIntent, NoError>()
-  private let presentMoreMenuViewController = TestObserver<(LiveStreamEvent, Bool), NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let willConnectToChat = TestObserver<(), NoError>()
 
@@ -28,13 +26,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.outputs.collapseChatInputView.observe(self.collapseChatInputView.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didConnectToChat.observe(self.didConnectToChat.observer)
-    self.vm.outputs.hideChatTableView.observe(self.hideChatTableView.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(first).observe(
       self.prependChatMessagesToDataSourceMessages.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(second).observe(
       self.prependChatMessagesToDataSourceReload.observer)
     self.vm.outputs.presentLoginToutViewController.observe(self.presentLoginToutViewController.observer)
-    self.vm.outputs.presentMoreMenuViewController.observe(self.presentMoreMenuViewController.observer)
     self.vm.outputs.showErrorAlert.observe(
       self.showErrorAlert.observer)
     self.vm.outputs.willConnectToChat.observe(self.willConnectToChat.observer)
@@ -53,12 +49,12 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       |> LiveStreamChatMessage.lens.id .~ "101"
 
     let liveStreamService = MockLiveStreamService(
-      chatMessagesSnapshotsAddedResult: Result([addedMessage]),
-      chatMessagesSnapshotsValueResult: Result([initialMessages])
+      chatMessagesAddedResult: Result([addedMessage]),
+      initialChatMessagesResult: Result([initialMessages])
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -73,11 +69,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.prependChatMessagesToDataSourceReload.assertValueCount(0)
 
     let liveStreamService = MockLiveStreamService(
-      chatMessagesSnapshotsValueResult: Result(error: .snapshotDecodingFailed)
+      initialChatMessagesResult: Result(error: .snapshotDecodingFailed)
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -92,44 +88,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   func testChatInputViewRequestedLogin() {
     self.presentLoginToutViewController.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.chatInputViewRequestedLogin()
 
     self.presentLoginToutViewController.assertValues([.liveStreamChat])
-  }
-
-  func testHideTableView() {
-    self.hideChatTableView.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.didSetChatHidden(hidden: true)
-
-    self.hideChatTableView.assertValues([false, true])
-  }
-
-  func testPresentMoreMenuViewController() {
-    self.presentMoreMenuViewController.assertValueCount(0)
-
-    let initialLiveStreamEvent = LiveStreamEvent.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    let liveStreamService = MockLiveStreamService(
-      fetchEventResult: Result(liveStreamEvent)
-    )
-
-    withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.vm.inputs.moreMenuButtonTapped()
-
-      self.presentMoreMenuViewController.assertValueCount(1)
-    }
   }
 
   func testCollapseChatInputView_Live() {
@@ -146,8 +109,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -169,8 +131,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -185,7 +146,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ false
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
 
     self.dismissKeyboard.assertValueCount(1)
@@ -216,8 +177,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -242,8 +202,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -275,8 +234,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -301,8 +259,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -327,8 +284,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
-                                   chatHidden: false)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()

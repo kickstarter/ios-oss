@@ -18,7 +18,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="411" height="87"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wzb-1n-89m">
-                            <rect key="frame" x="0.0" y="0.0" width="344" height="87"/>
+                            <rect key="frame" x="0.0" y="0.0" width="365" height="87"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
@@ -26,10 +26,6 @@
                                 <outlet property="delegate" destination="iN0-l3-epB" id="Yln-hD-g1e"/>
                             </connections>
                         </textField>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IKf-i9-HjB">
-                            <rect key="frame" x="344" y="0.0" width="21" height="87"/>
-                            <state key="normal" image="ellipsis"/>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wt-Lv-Xdh">
                             <rect key="frame" x="365" y="0.0" width="46" height="87"/>
                             <state key="normal" title="Button"/>
@@ -56,7 +52,6 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="moreButton" destination="IKf-i9-HjB" id="kQT-dy-1n7"/>
                 <outlet property="rootStackView" destination="QyZ-zH-F9D" id="eGJ-Zx-Osu"/>
                 <outlet property="sendButton" destination="3wt-Lv-Xdh" id="mUQ-Fj-4qP"/>
                 <outlet property="separatorView" destination="hIQ-C9-LaK" id="Ucm-cj-OYw"/>
@@ -65,7 +60,4 @@
             <point key="canvasLocation" x="8" y="75"/>
         </view>
     </objects>
-    <resources>
-        <image name="ellipsis" width="21" height="5"/>
-    </resources>
 </document>

@@ -217,8 +217,8 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
 
     let liveStreamService = MockLiveStreamService(
-      chatMessagesSnapshotsValueResult: Result([chatMessages]),
-      fetchEventResult: Result(liveStreamEvent)
+      fetchEventResult: Result(liveStreamEvent),
+      initialChatMessagesResult: Result([chatMessages])
     )
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
@@ -259,8 +259,8 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
 
     let liveStreamService = MockLiveStreamService(
-      chatMessagesSnapshotsValueResult: Result([chatMessages]),
-      fetchEventResult: Result(liveStreamEvent)
+      fetchEventResult: Result(liveStreamEvent),
+      initialChatMessagesResult: Result([chatMessages])
     )
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in

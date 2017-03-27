@@ -14,19 +14,13 @@ public protocol LiveStreamChatViewModelInputs {
   func chatInputViewRequestedLogin()
 
   /// Call with the LiveStreamEvent and chat visibility.
-  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool)
+  func configureWith(project: Project, liveStreamEvent: LiveStreamEvent)
 
   /// Call when the device orientation changed.
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
   /// Call with the message that was sent.
   func didSendMessage(message: String)
-
-  /// Call with the desired visibility for the chat view controller.
-  func didSetChatHidden(hidden: Bool)
-
-  /// Call when the more button is tapped.
-  func moreMenuButtonTapped()
 
   /// Call when the user session changes.
   func userSessionChanged(session: LiveStreamSession)
@@ -45,17 +39,11 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits when chat authorization is completed with success status.
   var didConnectToChat: Signal<Bool, NoError> { get }
 
-  /// Emits whether or not the chat table view should be hidden.
-  var hideChatTableView: Signal<Bool, NoError> { get }
-
   /// Emits chat messages for appending to the data source.
   var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
   /// Emits when the LoginToutViewController should be presented.
   var presentLoginToutViewController: Signal<LoginIntent, NoError> { get }
-
-  /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
-  var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
 
   /// Emits when an error has occurred with an error message.
   var showErrorAlert: Signal<String, NoError> { get }
@@ -140,23 +128,6 @@ LiveStreamChatViewModelOutputs {
     self.presentLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal
       .mapConst(.liveStreamChat)
 
-    let chatHidden = Signal.merge(
-      configData.map { _, _, chatHidden in chatHidden },
-      self.didSetChatHiddenProperty.signal
-    )
-
-    self.presentMoreMenuViewController = Signal.combineLatest(
-      liveStreamEvent,
-      chatHidden
-      )
-      .takeWhen(self.moreMenuButtonTappedProperty.signal)
-
-    self.hideChatTableView =
-      Signal.merge(
-        configData.map { $2 },
-        self.didSetChatHiddenProperty.signal
-    )
-
     let newChatMessage = firebase
       .takePairWhen(self.didSendMessageProperty.signal.skipNil())
       .map { firebase, message -> NewLiveStreamChatMessage? in
@@ -222,9 +193,9 @@ LiveStreamChatViewModelOutputs {
     self.chatInputViewRequestedLoginProperty.value = ()
   }
 
-  private let configData = MutableProperty<(Project, LiveStreamEvent, Bool)?>(nil)
-  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
-    self.configData.value = (project, liveStreamEvent, chatHidden)
+  private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
+  public func configureWith(project: Project, liveStreamEvent: LiveStreamEvent) {
+    self.configData.value = (project, liveStreamEvent)
   }
 
   private let deviceOrientationDidChangeProperty = MutableProperty<UIInterfaceOrientation?>(nil)
@@ -235,16 +206,6 @@ LiveStreamChatViewModelOutputs {
   private let didSendMessageProperty = MutableProperty<String?>(nil)
   public func didSendMessage(message: String) {
     self.didSendMessageProperty.value = message
-  }
-
-  private let didSetChatHiddenProperty = MutableProperty(false)
-  public func didSetChatHidden(hidden: Bool) {
-    self.didSetChatHiddenProperty.value = hidden
-  }
-
-  private let moreMenuButtonTappedProperty = MutableProperty()
-  public func moreMenuButtonTapped() {
-    self.moreMenuButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -260,10 +221,8 @@ LiveStreamChatViewModelOutputs {
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
   public let didConnectToChat: Signal<Bool, NoError>
-  public let hideChatTableView: Signal<Bool, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>
-  public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let willConnectToChat: Signal<(), NoError>
 

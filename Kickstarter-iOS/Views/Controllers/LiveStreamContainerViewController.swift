@@ -21,7 +21,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
 
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
-  private weak var chatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -147,7 +146,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         _self.liveStreamContainerPageViewController?.configureWith(
           project: project,
           liveStreamEvent: liveStreamEvent,
-          liveStreamChatViewControllerDelegate: _self,
           refTag: refTag,
           presentedFromProject: presentedFromProject
         )
@@ -174,18 +172,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
-    }
-
-    self.viewModel.outputs.displayModalOverlayView
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.displayModalOverlay()
-    }
-
-    self.viewModel.outputs.removeModalOverlayView
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.removeModelOverLay()
     }
 
     self.viewModel.outputs.configureNavBarTitleView
@@ -264,31 +250,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
   }
 
-  private func displayModalOverlay() {
-    self.view.addSubview(self.modalOverlayView)
-
-    self.modalOverlayView.alpha = 0
-
-    NSLayoutConstraint.activate([
-      self.modalOverlayView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.modalOverlayView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.modalOverlayView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.modalOverlayView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-      ])
-
-    UIView.animate(withDuration: 0.3) {
-      self.modalOverlayView.alpha = 1
-    }
-  }
-
-  private func removeModelOverLay() {
-    UIView.animate(withDuration: 0.3, animations: {
-      self.modalOverlayView.alpha = 0
-    }) { _ in
-      self.modalOverlayView.removeFromSuperview()
-    }
-  }
-
   // MARK: Subviews
 
   private lazy var closeBarButtonItem: UIBarButtonItem = {
@@ -312,13 +273,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
 
     return shareBarButtonItem
-  }()
-
-  private lazy var modalOverlayView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = UIColor.hex(0x1B1B1C).withAlphaComponent(0.7)
-    return view
   }()
 
   fileprivate lazy var liveStreamViewController: LiveStreamViewController = {
@@ -356,20 +310,6 @@ extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   public func liveStreamViewController(_ controller: LiveStreamViewController?,
                                        didReceiveLiveStreamApiError error: LiveApiError) {
     self.viewModel.inputs.liveStreamApiErrorOccurred(error: error)
-  }
-}
-
-extension LiveStreamContainerViewController: LiveStreamChatViewControllerDelegate {
-  internal func liveStreamChatViewController(
-    _ controller: LiveStreamChatViewController,
-    willDismissMoreMenuViewController moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
-    self.viewModel.inputs.willDismissMoreMenuViewController()
-  }
-
-  internal func liveStreamChatViewController(
-    _ controller: LiveStreamChatViewController,
-    willPresentMoreMenuViewController moreMenuViewController: LiveStreamContainerMoreMenuViewController) {
-    self.viewModel.inputs.willPresentMoreMenuViewController()
   }
 }
 

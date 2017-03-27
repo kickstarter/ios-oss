@@ -22,7 +22,6 @@ public protocol LiveStreamServiceProtocol {
   func chatMessagesAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError>
 
-
   /// Fetches an event with personalization added for the user.
   func fetchEvent(eventId: Int, uid: Int?, liveAuthToken: String?) ->
     SignalProducer<LiveStreamEvent, LiveApiError>

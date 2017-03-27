@@ -16,7 +16,6 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
   fileprivate weak var pageViewController: UIPageViewController?
   internal weak var liveStreamChatViewController: LiveStreamChatViewController?
-  fileprivate weak var liveStreamChatViewControllerDelegate: LiveStreamChatViewControllerDelegate?
   fileprivate weak var liveStreamEventDetailsViewController: LiveStreamEventDetailsViewController?
 
   fileprivate var pagesDataSource = LiveStreamContainerPagesDataSource()
@@ -24,11 +23,8 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
   internal func configureWith(project: Project,
                               liveStreamEvent: LiveStreamEvent,
-                              liveStreamChatViewControllerDelegate: LiveStreamChatViewControllerDelegate,
                               refTag: RefTag,
                               presentedFromProject: Bool) {
-    self.liveStreamChatViewControllerDelegate = liveStreamChatViewControllerDelegate
-
     self.viewModel.inputs.configureWith(project: project,
                                         liveStreamEvent: liveStreamEvent,
                                         refTag: refTag,
@@ -141,13 +137,10 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   }
 
   private func loadViewControllersIntoPagesDataSource(pages: [LiveStreamContainerPage]) {
-    guard let liveStreamChatViewControllerDelegate = self.liveStreamChatViewControllerDelegate else { return }
-
     let viewControllers = pages.map { page -> UIViewController in
       switch page {
       case .chat(let project, let liveStreamEvent):
         let vc = LiveStreamChatViewController.configuredWith(
-          delegate: liveStreamChatViewControllerDelegate,
           project: project,
           liveStreamEvent: liveStreamEvent
         )

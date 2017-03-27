@@ -32,12 +32,6 @@ public protocol LiveStreamContainerViewModelInputs {
 
   /// Call when the viewDidLoad
   func viewDidLoad()
-
-  /// Call when the more menu view controller will be presented
-  func willPresentMoreMenuViewController()
-
-  /// Call when the more menu view controller will be dismissed
-  func willDismissMoreMenuViewController()
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
@@ -56,9 +50,6 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
 
-  /// Emits when the modal overlay view should be displayed
-  var displayModalOverlayView: Signal<(), NoError> { get }
-
   /// Emits when the loader activity indicator should animate
   var loaderActivityIndicatorAnimating: Signal<Bool, NoError> { get }
 
@@ -73,9 +64,6 @@ public protocol LiveStreamContainerViewModelOutputs {
 
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
-
-  /// Emits when the modal overlay view should be removed
-  var removeModalOverlayView: Signal<(), NoError> { get }
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -253,12 +241,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
-    self.displayModalOverlayView = self.willPresentMoreMenuViewControllerProperty.signal
-    self.removeModalOverlayView = Signal.zip(
-      self.displayModalOverlayView,
-      self.willDismissMoreMenuViewControllerProperty.signal
-    ).ignoreValues()
-
     self.configureNavBarTitleView = updatedEventFetch.values()
     self.navBarTitleViewHidden = Signal.merge(
       initialEvent.mapConst(true),
@@ -353,16 +335,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let willDismissMoreMenuViewControllerProperty = MutableProperty()
-  public func willDismissMoreMenuViewController() {
-    self.willDismissMoreMenuViewControllerProperty.value = ()
-  }
-
-  private let willPresentMoreMenuViewControllerProperty = MutableProperty()
-  public func willPresentMoreMenuViewController() {
-    self.willPresentMoreMenuViewControllerProperty.value = ()
-  }
-
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
@@ -371,13 +343,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let configureNavBarTitleView: Signal<LiveStreamEvent, NoError>
   public let dismiss: Signal<(), NoError>
-  public let displayModalOverlayView: Signal<(), NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
-  public let removeModalOverlayView: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>

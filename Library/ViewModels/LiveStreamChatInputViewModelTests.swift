@@ -11,84 +11,64 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   private let vm: LiveStreamChatInputViewModelType = LiveStreamChatInputViewModel()
 
   private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
-  private let moreButtonHidden = TestObserver<Bool, NoError>()
   private let notifyDelegateMessageSent = TestObserver<String, NoError>()
-  private let notifyDelegateMoreButtonTapped = TestObserver<(), NoError>()
   private let notifyDelegateRequestLogin = TestObserver<(), NoError>()
   private let placeholderText = TestObserver<String, NoError>()
-  private let sendButtonHidden = TestObserver<Bool, NoError>()
+  private let sendButtonEnabled = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm.outputs.clearTextFieldAndResignFirstResponder.observe(
       self.clearTextFieldAndResignFirstResponder.observer)
-    self.vm.outputs.moreButtonHidden.observe(self.moreButtonHidden.observer)
     self.vm.outputs.notifyDelegateMessageSent.observe(self.notifyDelegateMessageSent.observer)
-    self.vm.outputs.notifyDelegateMoreButtonTapped.observe(self.notifyDelegateMoreButtonTapped.observer)
     self.vm.outputs.notifyDelegateRequestLogin.observe(self.notifyDelegateRequestLogin.observer)
     self.vm.outputs.placeholderText.map { $0.string }.observe(self.placeholderText.observer)
-    self.vm.outputs.sendButtonHidden.observe(self.sendButtonHidden.observer)
+    self.vm.outputs.sendButtonEnabled.observe(self.sendButtonEnabled.observer)
   }
 
-  func testButtonsShowingHiding() {
-    self.moreButtonHidden.assertValueCount(0)
-    self.sendButtonHidden.assertValueCount(0)
+  func testSendButtonEnabled() {
+    self.sendButtonEnabled.assertValueCount(0)
 
-    self.vm.inputs.configureWith(chatHidden: false)
+    self.vm.inputs.didAwakeFromNib()
 
-    self.moreButtonHidden.assertValues([false])
-    self.sendButtonHidden.assertValues([true])
+    self.sendButtonEnabled.assertValues([false])
 
     self.vm.inputs.textDidChange(toText: "Typing")
 
-    self.moreButtonHidden.assertValues([false, true])
-    self.sendButtonHidden.assertValues([true, false])
+    self.sendButtonEnabled.assertValues([false, true])
 
     self.vm.inputs.textDidChange(toText: "    ")
 
-    self.moreButtonHidden.assertValues([false, true, false])
-    self.sendButtonHidden.assertValues([true, false, true])
+    self.sendButtonEnabled.assertValues([false, true, false])
 
     self.vm.inputs.textDidChange(toText: "")
 
-    self.moreButtonHidden.assertValues([false, true, false, false])
-    self.sendButtonHidden.assertValues([true, false, true, true])
+    self.sendButtonEnabled.assertValues([false, true, false, false])
 
     self.vm.inputs.textDidChange(toText: "Typing")
 
-    self.moreButtonHidden.assertValues([false, true, false, false, true])
-    self.sendButtonHidden.assertValues([true, false, true, true, false])
+    self.sendButtonEnabled.assertValues([false, true, false, false, true])
 
     self.vm.inputs.sendButtonTapped()
 
-    self.moreButtonHidden.assertValues([false, true, false, false, true, false])
-    self.sendButtonHidden.assertValues([true, false, true, true, false, true])
+    self.sendButtonEnabled.assertValues([false, true, false, false, true, false])
   }
 
   func testMessageSent() {
     self.notifyDelegateMessageSent.assertValueCount(0)
 
-    self.vm.inputs.configureWith(chatHidden: false)
+    self.vm.inputs.didAwakeFromNib()
+
     self.vm.inputs.textDidChange(toText: "Typing")
     self.vm.inputs.sendButtonTapped()
 
     self.notifyDelegateMessageSent.assertValues(["Typing"])
   }
 
-  func testMoreButtonTapped() {
-    self.notifyDelegateMoreButtonTapped.assertValueCount(0)
-
-    self.vm.inputs.configureWith(chatHidden: false)
-    self.vm.inputs.moreButtonTapped()
-
-    self.notifyDelegateMoreButtonTapped.assertValueCount(1)
-  }
-
   func testRequestLogin() {
     self.notifyDelegateRequestLogin.assertValueCount(0)
 
-    self.vm.inputs.configureWith(chatHidden: false)
     let should1 = self.vm.inputs.textFieldShouldBeginEditing()
 
     XCTAssertFalse(should1)
@@ -106,23 +86,16 @@ internal final class LiveStreamChatInputViewModelTests: TestCase {
   func testPlaceholderText() {
     self.placeholderText.assertValueCount(0)
 
-    self.vm.inputs.configureWith(chatHidden: false)
+    self.vm.inputs.didAwakeFromNib()
 
     self.placeholderText.assertValues(["Say something kind..."])
-
-    self.vm.inputs.didSetChatHidden(hidden: true)
-
-    self.placeholderText.assertValues(["Say something kind...", "Chat is hidden."])
-
-    self.vm.inputs.didSetChatHidden(hidden: false)
-
-    self.placeholderText.assertValues(["Say something kind...", "Chat is hidden.", "Say something kind..."])
   }
 
   func testClearTextFieldAndResignFirstResponder() {
     self.clearTextFieldAndResignFirstResponder.assertValueCount(0)
 
-    self.vm.inputs.configureWith(chatHidden: false)
+    self.vm.inputs.didAwakeFromNib()
+
     self.vm.inputs.textDidChange(toText: "Typing")
     self.vm.inputs.sendButtonTapped()
 
