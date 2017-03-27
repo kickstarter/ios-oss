@@ -1,3 +1,4 @@
+//swiftlint:disable file_length
 import Argo
 import FirebaseAnalytics
 import FirebaseAuth
@@ -477,7 +478,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         }
 
         let messageWithTimestamp = message.toFirebaseDictionary().withAllValuesFrom([
-          LiveStreamChatMessageDictionaryKey.timestamp.rawValue: FIRServerValue.timestamp()
+          timestampKey: FIRServerValue.timestamp()
           ])
 
         let chatRef = ref.child(path).childByAutoId()

@@ -54,7 +54,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
-    NotificationCenter.default
+	NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
@@ -343,17 +343,17 @@ public final class LiveStreamContainerViewController: UIViewController {
 }
 
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  public func liveStreamViewController(_ controller: LiveStreamViewController,
+  public func liveStreamViewController(_ controller: LiveStreamViewController?,
                                        numberOfPeopleWatchingChangedTo numberOfPeople: Int) {
     self.navBarTitleView.set(numberOfPeopleWatching: numberOfPeople)
   }
 
-  public func liveStreamViewController(_ controller: LiveStreamViewController,
+  public func liveStreamViewController(_ controller: LiveStreamViewController?,
                                        stateChangedTo state: LiveStreamViewControllerState) {
     self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
   }
 
-  public func liveStreamViewController(_ controller: LiveStreamViewController,
+  public func liveStreamViewController(_ controller: LiveStreamViewController?,
                                        didReceiveLiveStreamApiError error: LiveApiError) {
     self.viewModel.inputs.liveStreamApiErrorOccurred(error: error)
   }
@@ -373,7 +373,7 @@ extension LiveStreamContainerViewController: LiveStreamChatViewControllerDelegat
   }
 
   internal func liveStreamChatViewController(_ controller: LiveStreamChatViewController,
-                                    didReceiveLiveStreamApiError error: LiveApiError) {
+                                             didReceiveLiveStreamApiError error: LiveApiError) {
     self.viewModel.inputs.liveStreamApiErrorOccurred(error: error)
   }
 }

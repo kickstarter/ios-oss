@@ -5,13 +5,13 @@ import Result
 import UIKit
 
 public protocol LiveStreamViewControllerDelegate: class {
-  func liveStreamViewController(_ controller: LiveStreamViewController,
+  func liveStreamViewController(_ controller: LiveStreamViewController?,
                                 stateChangedTo state: LiveStreamViewControllerState)
 
-  func liveStreamViewController(_ controller: LiveStreamViewController,
+  func liveStreamViewController(_ controller: LiveStreamViewController?,
                                 numberOfPeopleWatchingChangedTo numberOfPeople: Int)
 
-  func liveStreamViewController(_ controller: LiveStreamViewController,
+  func liveStreamViewController(_ controller: LiveStreamViewController?,
                                 didReceiveLiveStreamApiError error: LiveApiError)
 }
 
@@ -22,14 +22,14 @@ public final class LiveStreamViewController: UIViewController {
   private var liveStreamService: LiveStreamServiceProtocol?
 
   public init(liveStreamService: LiveStreamServiceProtocol) {
-    
+
     liveStreamService.setup()
 
     self.viewModel = LiveStreamViewModel(liveStreamService: liveStreamService)
 
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

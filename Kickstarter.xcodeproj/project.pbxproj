@@ -628,9 +628,9 @@
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
+		D06E49941E866320004D9E2F /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */; };
 		D07226961E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226951E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift */; };
 		D07226981E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226971E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift */; };
-		D07226AD1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */; };
 		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
 		D07226EB1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */; };
 		D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */; };
@@ -1979,9 +1979,9 @@
 		D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModel.swift; sourceTree = "<group>"; };
 		D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModel.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
+		D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypesTests.swift; sourceTree = "<group>"; };
 		D07226951E640EA300C2E537 /* LiveStreamContainerMoreMenuIconTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuIconTextCell.swift; sourceTree = "<group>"; };
 		D07226971E64277A00C2E537 /* LiveStreamContainerMoreMenuCancelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerMoreMenuCancelCell.swift; sourceTree = "<group>"; };
-		D07226AC1E65BE2A00C2E537 /* LiveStreamChatDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSourceTests.swift; sourceTree = "<group>"; };
 		D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewController.swift; sourceTree = "<group>"; };
 		D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewController.swift; sourceTree = "<group>"; };
 		D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPagesDataSource.swift; sourceTree = "<group>"; };
@@ -2692,6 +2692,7 @@
 			children = (
 				A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */,
 				A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */,
+				D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */,
 				A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */,
 			);
 			path = Extensions;
@@ -4556,6 +4557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D08056AA1E4DB808008F67A7 /* LiveStreamChatMessageTests.swift in Sources */,
+				D06E49941E866320004D9E2F /* LiveStreamTypesTests.swift in Sources */,
 				D01673E41E3A35ED00651DBA /* LiveStreamEventsEnvelopeTests.swift in Sources */,
 				A7BC37341E237F7500C4D031 /* LiveVideoViewModelTests.swift in Sources */,
 				A7BC37331E237F7500C4D031 /* LiveStreamViewModelTests.swift in Sources */,

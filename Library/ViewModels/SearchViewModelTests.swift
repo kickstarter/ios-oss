@@ -21,6 +21,8 @@ internal final class SearchViewModelTests: TestCase {
   private let hasAddedProjects = TestObserver<Bool, NoError>()
   fileprivate let hasProjects = TestObserver<Bool, NoError>()
   fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
+  fileprivate let popularLoaderIndicatorIsAnimating = TestObserver<Bool, NoError>()
+  fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, NoError>()
   fileprivate var noProjects = TestObserver<Bool, NoError>()
   fileprivate let resignFirstResponder = TestObserver<(), NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
@@ -34,6 +36,8 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.changeSearchFieldFocus.map(first).observe(self.changeSearchFieldFocusFocused.observer)
     self.vm.outputs.changeSearchFieldFocus.map(second).observe(self.changeSearchFieldFocusAnimated.observer)
     self.vm.outputs.isPopularTitleVisible.observe(self.isPopularTitleVisible.observer)
+    self.vm.outputs.popularLoaderIndicatorIsAnimating.observe(self.popularLoaderIndicatorIsAnimating.observer)
+    self.vm.outputs.searchLoaderIndicatorIsAnimating.observe(self.searchLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.projects.map { !$0.isEmpty }.skipRepeats(==).observe(self.hasProjects.observer)
     self.vm.outputs.projects.map { $0.isEmpty }.skipRepeats(==).observe(self.noProjects.observer)
     self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
@@ -126,6 +130,41 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.clearSearchText()
 
     XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
+  }
+
+  func testPopularLoaderIndicatorIsAnimating() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.popularLoaderIndicatorIsAnimating.assertValues([true])
+
+    self.scheduler.advance()
+
+    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+
+    self.vm.inputs.searchTextChanged("b")
+
+    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+
+    self.scheduler.advance()
+
+    self.popularLoaderIndicatorIsAnimating.assertValues([true, false])
+  }
+
+  func testSearchLoaderIndicatorIsAnimating() {
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+
+    self.scheduler.advance()
+
+    self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
+
+    self.vm.inputs.searchTextChanged("b")
+
+    self.searchLoaderIndicatorIsAnimating.assertValues([true])
+
+    self.scheduler.advance()
+
+    self.searchLoaderIndicatorIsAnimating.assertValues([true, false])
   }
 
   // Tests a standard flow of searching for projects.

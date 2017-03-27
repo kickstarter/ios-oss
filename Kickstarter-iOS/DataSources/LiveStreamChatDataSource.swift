@@ -16,6 +16,10 @@ internal final class LiveStreamChatDataSource: ValueCellDataSource {
     return (0..<chatMessages.count).map { IndexPath.init(row: $0, section: Section.chats.rawValue) }
   }
 
+  internal var chatMessagesSection: Int {
+    return Section.messages.rawValue
+  }
+
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as LiveStreamChatMessageCell, value as LiveStreamChatMessage):

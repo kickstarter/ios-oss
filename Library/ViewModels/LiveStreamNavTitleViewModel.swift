@@ -42,9 +42,16 @@ LiveStreamNavTitleViewModelInputs, LiveStreamNavTitleViewModelOutputs {
     self.playbackStateContainerBackgroundColor = self.liveStreamEventProperty.signal.skipNil().map {
       $0.liveNow ? .ksr_green_500 : UIColor.black.withAlphaComponent(0.4)
     }
-    self.numberOfPeopleWatchingContainerHidden = self.liveStreamEventProperty.signal.skipNil()
-      .map { $0.liveNow }
-      .map(negate)
+    self.numberOfPeopleWatchingContainerHidden = Signal.merge(
+      self.liveStreamEventProperty.signal.skipNil().mapConst(true),
+      self.liveStreamEventProperty.signal.skipNil()
+        .takePairWhen(self.numberOfPeopleWatchingProperty.signal.skipNil())
+        .map { liveStreamEvent, numberOfPeople in
+          liveStreamEvent.liveNow && numberOfPeople > 0
+        }
+        .map(negate)
+      )
+      .skipRepeats()
 
     self.numberOfPeopleWatchingLabelText = Signal.merge(
       Signal.combineLatest(

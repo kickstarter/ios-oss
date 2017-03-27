@@ -78,8 +78,13 @@ internal final class LiveStreamNavTitleViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 0)
 
-    self.numberOfPeopleWatchingContainerHidden.assertValues([false])
+    self.numberOfPeopleWatchingContainerHidden.assertValues([true])
+
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 1)
+
+    self.numberOfPeopleWatchingContainerHidden.assertValues([true, false])
   }
 
   func testNumberOfPeopleWatchingContainerHidden_Replay() {

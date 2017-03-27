@@ -5,7 +5,7 @@ import Prelude
 internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
   private let viewModel: LiveStreamChatMessageCellViewModelType = LiveStreamChatMessageCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
   @IBOutlet private weak var avatarImageViewWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var contentStackView: UIStackView!
   @IBOutlet private weak var creatorIndicatorDotImageView: UIImageView!

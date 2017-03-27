@@ -26,7 +26,7 @@ public struct LiveStreamChatMessage {
     Decoded<LiveStreamChatMessage> {
       return (snapshot.value as? [String:Any])
         .map { self.decode(
-          JSON($0.withAllValuesFrom([LiveStreamChatMessageDictionaryKey.id.rawValue: snapshot.key])))
+          JSON($0.withAllValuesFrom(["id": snapshot.key])))
         }
         .coalesceWith(.failure(.custom("Unable to parse Firebase snapshot.")))
   }
@@ -37,15 +37,15 @@ extension LiveStreamChatMessage: Decodable {
     let create = curry(LiveStreamChatMessage.init)
 
     let tmp1 = create
-      <^> json <| LiveStreamChatMessageDictionaryKey.id.rawValue
-      <*> json <|? LiveStreamChatMessageDictionaryKey.creator.rawValue
-      <*> json <| LiveStreamChatMessageDictionaryKey.message.rawValue
-      <*> json <| LiveStreamChatMessageDictionaryKey.name.rawValue
+      <^> json <| "id"
+      <*> json <|? "creator"
+      <*> json <| "message"
+      <*> json <| "name"
 
     let tmp2 = tmp1
-      <*> json <| LiveStreamChatMessageDictionaryKey.profilePic.rawValue
-      <*> json <| LiveStreamChatMessageDictionaryKey.timestamp.rawValue
-      <*> ((json <| LiveStreamChatMessageDictionaryKey.userId.rawValue) >>- convertId)
+      <*> json <| "profilePic"
+      <*> json <| "timestamp"
+      <*> ((json <| "userId") >>- convertId)
 
     return tmp2
   }
