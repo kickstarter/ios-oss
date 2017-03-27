@@ -15,9 +15,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var helpButton: UIButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
   @IBOutlet fileprivate weak var signupButton: UIButton!
+  @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
   fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
@@ -69,8 +70,17 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.signupButton |> signupWithEmailButtonStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
-      |> UILabel.lens.font .~ .ksr_headline()
-      |> UILabel.lens.text .~ "Bring creative projects to life."
+      |> UILabel.lens.font .~ .ksr_headline(size: 16)
+      |> UILabel.lens.text .~ Strings.Bring_creative_projects_to_life()
+
+    _ = self.contextLabel
+      |> UILabel.lens.font .~ .ksr_subhead(size: 16)
+
+    _ = self.loginContextStackView
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
   }
 
   // swiftlint:disable function_body_length
@@ -80,6 +90,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] _ in
         self?.pushLoginViewController()
     }
+
     self.viewModel.outputs.startSignup
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -155,8 +166,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self?.goToHelpType(helpType)
     }
 
-    self.contextLabel.rac.text = self.viewModel.outputs.logInContext
-    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
+    self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
+    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden // better name??
   }
   // swiftlint:enable function_body_length
 

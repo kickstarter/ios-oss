@@ -14,6 +14,8 @@ internal final class LoginToutViewControllerTests: TestCase {
         let controller = Storyboard.Login.instantiate(LoginToutViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
+        controller.viewModel.inputs.loginIntent(.generic)
+        controller.viewModel.inputs.viewWillAppear()
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

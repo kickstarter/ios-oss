@@ -51,7 +51,7 @@ public protocol LoginToutViewModelOutputs {
   var isLoading: Signal<Bool, NoError> { get }
 
   /// Emits the login context to be displayed.
-  var logInContext: Signal<String, NoError> { get }
+  var logInContextText: Signal<String, NoError> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
@@ -89,7 +89,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let intent = self.loginIntentProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
-    self.logInContext = intent.map { intent in statusString(intent) }
+    self.logInContextText = intent.map { intent in statusString(intent) }
 
     self.headlineLabelHidden = intent.map { $0 != .generic && $0 != .discoveryOnboarding }
 
@@ -228,7 +228,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public let postNotification: Signal<Notification, NoError>
-  public let logInContext: Signal<String, NoError>
+  public let logInContextText: Signal<String, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>
   public let showFacebookErrorAlert: Signal<AlertError, NoError>
@@ -244,10 +244,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Please_log_in_or_sign_up_to_subscribe_to_this_live_stream()
   case .messageCreator:
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
-  case .generic:
-    return
-      Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue()
-  case .discoveryOnboarding:
+  case .discoveryOnboarding, .generic:
     return Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   default:
     return "DEF Bring creative projects to life. Pledge to support projects and view all your saved" +

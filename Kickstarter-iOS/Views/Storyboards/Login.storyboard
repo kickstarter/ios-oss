@@ -22,22 +22,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                <rect key="frame" x="0.0" y="114.5" width="400" height="371"/>
+                                <rect key="frame" x="0.0" y="163.5" width="400" height="273.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bring creative projects to life." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="prf-Wp-LAx">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="17"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login Context" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x09-HQ-5IM">
-                                        <rect key="frame" x="0.0" y="47" width="400" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1tl-3X-f58">
-                                        <rect key="frame" x="0.0" y="97.5" width="400" height="69.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="69.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
@@ -62,7 +50,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                        <rect key="frame" x="0.0" y="197" width="400" height="100"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="400" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
@@ -93,7 +81,7 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="RUt-ea-H2e">
-                                        <rect key="frame" x="0.0" y="327" width="400" height="44"/>
+                                        <rect key="frame" x="0.0" y="229.5" width="400" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="QDd-D3-De3"/>
                                         </constraints>
@@ -108,12 +96,45 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OrM-zi-yOH">
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="163.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Q9a-f5-7eI">
+                                        <rect key="frame" x="10" y="67" width="380" height="51"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdC-V8-RTt">
+                                                <rect key="frame" x="0.0" y="0.0" width="380" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpL-Nr-tUh">
+                                                <rect key="frame" x="0.0" y="30.5" width="380" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Q9a-f5-7eI" firstAttribute="centerY" secondItem="OrM-zi-yOH" secondAttribute="centerY" constant="10.5" id="EYD-y4-9aO"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q9a-f5-7eI" secondAttribute="trailing" constant="10" id="Qe6-Vh-BLi"/>
+                                    <constraint firstItem="Q9a-f5-7eI" firstAttribute="leading" secondItem="OrM-zi-yOH" secondAttribute="leading" constant="10" id="cnK-ff-EFl"/>
+                                    <constraint firstItem="Q9a-f5-7eI" firstAttribute="centerX" secondItem="OrM-zi-yOH" secondAttribute="centerX" id="i6m-AM-PCe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UHD-eb-qXC" firstAttribute="centerY" secondItem="vPL-WX-Xrs" secondAttribute="centerY" id="BGR-48-jE2"/>
                             <constraint firstAttribute="trailing" secondItem="UHD-eb-qXC" secondAttribute="trailing" id="NLd-0R-5xk"/>
+                            <constraint firstItem="OrM-zi-yOH" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leading" id="YjK-FP-SW3"/>
+                            <constraint firstItem="UHD-eb-qXC" firstAttribute="top" secondItem="OrM-zi-yOH" secondAttribute="bottom" id="c7q-Q2-zEY"/>
+                            <constraint firstAttribute="trailing" secondItem="OrM-zi-yOH" secondAttribute="trailing" id="jnc-dg-c5g"/>
                             <constraint firstItem="UHD-eb-qXC" firstAttribute="leading" secondItem="vPL-WX-Xrs" secondAttribute="leading" id="jvx-WU-G68"/>
+                            <constraint firstItem="OrM-zi-yOH" firstAttribute="top" secondItem="vPL-WX-Xrs" secondAttribute="top" id="taR-QX-RQT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gR4-vH-q2u">
@@ -124,12 +145,13 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
-                        <outlet property="bringCreativeProjectsToLifeLabel" destination="prf-Wp-LAx" id="rIg-Ct-TyQ"/>
-                        <outlet property="contextLabel" destination="x09-HQ-5IM" id="31u-sn-2B0"/>
+                        <outlet property="bringCreativeProjectsToLifeLabel" destination="IdC-V8-RTt" id="zB4-FN-a6D"/>
+                        <outlet property="contextLabel" destination="dpL-Nr-tUh" id="BOf-Py-pLj"/>
                         <outlet property="fbDisclaimer" destination="npz-Cl-wqX" id="iQh-wC-YCl"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
                         <outlet property="helpButton" destination="RUt-ea-H2e" id="3Uh-Ol-5W8"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
+                        <outlet property="loginContextStackView" destination="Q9a-f5-7eI" id="62n-by-ckH"/>
                         <outlet property="rootStackView" destination="UHD-eb-qXC" id="aZl-hb-zFS"/>
                         <outlet property="signupButton" destination="ytH-Nw-2z0" id="kt8-oh-pu8"/>
                     </connections>

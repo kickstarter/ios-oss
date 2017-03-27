@@ -23,6 +23,9 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
   fileprivate let dismissViewController = TestObserver<(), NoError>()
 
+  fileprivate let headlineLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let logInContextText = TestObserver<String, NoError>()
+
   override func setUp() {
     super.setUp()
 
@@ -37,6 +40,9 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+
+    self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
+    self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
   }
 
   func testLoginIntentTracking_Default() {
@@ -73,6 +79,28 @@ final class LoginToutViewModelTests: TestCase {
     vm.inputs.signupButtonPressed()
 
     startSignup.assertValueCount(1, "Start sign up emitted")
+  }
+
+  func testHeadlineLabelHidden() {
+    vm.inputs.loginIntent(.starProject)
+    vm.inputs.viewWillAppear()
+
+    headlineLabelHidden.assertValues([true])
+  }
+
+  func testHeadlineLabelShown() {
+    vm.inputs.loginIntent(.generic)
+    vm.inputs.viewWillAppear()
+
+    headlineLabelHidden.assertValues([false])
+  }
+
+
+  func testLoginContextText() {
+    vm.inputs.loginIntent(.starProject)
+    vm.inputs.viewWillAppear()
+
+    logInContextText.assertValues(["Log in or sign up to save this project. We’ll remind you 48 hours before it ends."], "Emits login Context Text")
   }
 
   func testFacebookLoginFlow_Success() {
