@@ -188,11 +188,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   fileprivate func showRatingAlert() {
     self.present(
       UIAlertController.rating(
-        yesHandler: { [weak self] action in
+        yesHandler: { [weak self] _ in
           self?.viewModel.inputs.rateNowButtonTapped()
-        }, remindHandler: { [weak self] action in
+        }, remindHandler: { [weak self] _ in
           self?.viewModel.inputs.rateRemindLaterButtonTapped()
-        }, noHandler: { [weak self] action in
+        }, noHandler: { [weak self] _ in
           self?.viewModel.inputs.rateNoThanksButtonTapped()
       }),
       animated: true,
