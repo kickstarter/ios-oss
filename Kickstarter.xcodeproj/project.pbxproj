@@ -340,6 +340,8 @@
 		A782B4951D2D36BF0069D10E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		A782B4961D2D36BF0069D10E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78355B81E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift */; };
+		A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */; };
+		A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */; };
 		A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537BB1CB5416700385B73 /* UIDeviceType.swift */; };
 		A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537E11CB5422100385B73 /* UIScreenType.swift */; };
 		A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */; };
@@ -1655,6 +1657,8 @@
 		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
 		A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModel.swift; sourceTree = "<group>"; };
 		A78355B81E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
+		A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsDataSourceTests.swift; sourceTree = "<group>"; };
+		A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsViewControllerTests.swift; sourceTree = "<group>"; };
 		A78537BB1CB5416700385B73 /* UIDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceType.swift; sourceTree = "<group>"; };
 		A78537E11CB5422100385B73 /* UIScreenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScreenType.swift; sourceTree = "<group>"; };
 		A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSHTTPCookieStorageType.swift; sourceTree = "<group>"; };
@@ -2370,8 +2374,6 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A751A51C1C85EAD8009C5DEA /* Cells */,
-				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
@@ -2379,6 +2381,8 @@
 				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
+				A751A51C1C85EAD8009C5DEA /* Cells */,
+				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
 			);
@@ -2459,9 +2463,10 @@
 			isa = PBXGroup;
 			children = (
 				A7F761741C85FA40005405ED /* ActivitiesViewController.swift */,
-				0157067C1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift */,
-				015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */,
 				A7ED203C1E8323E900BFFA01 /* ActivitiesViewControllerTests.swift */,
+				0157067C1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift */,
+				A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */,
+				015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */,
 				80EAEF011D243B69008C2353 /* BackingViewController.swift */,
 				A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */,
 				9DDE1F711D5925A90092D9A5 /* CheckoutViewController.swift */,
@@ -3003,9 +3008,10 @@
 			isa = PBXGroup;
 			children = (
 				A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */,
+				A7ED20051E83229E00BFFA01 /* ActivitiesDataSourceTests.swift */,
 				01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */,
 				014D625A1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift */,
-				A7ED20051E83229E00BFFA01 /* ActivitiesDataSourceTests.swift */,
+				A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */,
 				A7A051E41CD12D9A005AF5E2 /* CommentsDataSource.swift */,
 				A7ED20061E83229E00BFFA01 /* CommentsDataSourceTests.swift */,
 				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
@@ -4695,9 +4701,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01764E5D1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
-				015572761E79F9C0005FB8CC /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
+				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
 				A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
@@ -4737,6 +4742,7 @@
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */,
+				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
 				A7ED20131E83229E00BFFA01 /* DashboardDataSourceTests.swift in Sources */,
 				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
