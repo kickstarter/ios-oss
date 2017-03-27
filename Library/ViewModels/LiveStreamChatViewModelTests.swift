@@ -68,6 +68,27 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     }
   }
 
+  func testFetchInitialChatMessagesError() {
+    self.prependChatMessagesToDataSourceMessages.assertValueCount(0)
+    self.prependChatMessagesToDataSourceReload.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(
+      chatMessagesSnapshotsValueResult: Result(error: .snapshotDecodingFailed)
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.prependChatMessagesToDataSourceMessages.assertValueCount(0)
+      self.prependChatMessagesToDataSourceReload.assertValueCount(0)
+
+      self.showErrorAlert.assertValues(["Something went wrong, please try again."])
+    }
+  }
+
   func testChatInputViewRequestedLogin() {
     self.presentLoginToutViewController.assertValueCount(0)
 
@@ -203,6 +224,67 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
       self.willConnectToChat.assertValueCount(2)
       self.didConnectToChat.assertValueCount(1)
+    }
+  }
+
+  func testConnectingToChat_LoggedOut() {
+    self.willConnectToChat.assertValueCount(0)
+    self.didConnectToChat.assertValueCount(0)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      signInToFirebaseWithCustomTokenResult: Result(["deadbeef"])
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
+                                   chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.willConnectToChat.assertValueCount(2)
+      self.didConnectToChat.assertValueCount(0)
+
+      AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+      self.vm.inputs.userSessionChanged(session: .loggedIn(token: "feedbeef"))
+
+      self.didConnectToChat.assertValueCount(1)
+    }
+  }
+
+  func testConnectingToChat_Failed() {
+    self.willConnectToChat.assertValueCount(0)
+    self.didConnectToChat.assertValueCount(0)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      signInToFirebaseWithCustomTokenResult: Result(error: .firebaseCustomTokenAuthFailed)
+    )
+
+    AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent,
+                                   chatHidden: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.willConnectToChat.assertValueCount(2)
+      self.didConnectToChat.assertValueCount(0)
+
+      self.showErrorAlert.assertValues(["We were unable to connect to the live stream chat."])
     }
   }
 

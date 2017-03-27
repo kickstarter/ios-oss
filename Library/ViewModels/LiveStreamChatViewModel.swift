@@ -202,7 +202,6 @@ LiveStreamChatViewModelOutputs {
 
     self.showErrorAlert = Signal.merge(
       initialChatMessages.errors(),
-      chatMessages.errors(),
       sentChatMessageEvent.errors(),
       signInWithCustomTokenEvent.errors()
       )
