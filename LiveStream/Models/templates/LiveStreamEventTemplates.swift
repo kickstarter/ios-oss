@@ -16,6 +16,7 @@ extension LiveStreamEvent {
       apiKey: "deadbeef",
       chatAvatarUrl: "http://www.kickstarter.com/avatar.jpg",
       chatPath: "/chat",
+      chatPostPath: "/chatPost",
       chatUserId: "id_1234",
       chatUserName: "Chat User Name",
       greenRoomPath: "/green-room",

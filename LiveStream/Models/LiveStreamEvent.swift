@@ -39,6 +39,7 @@ public struct LiveStreamEvent: Equatable {
     public fileprivate(set) var apiKey: String
     public fileprivate(set) var chatAvatarUrl: String?
     public fileprivate(set) var chatPath: String
+    public fileprivate(set) var chatPostPath: String?
     public fileprivate(set) var chatUserId: String?
     public fileprivate(set) var chatUserName: String?
     public fileprivate(set) var greenRoomPath: String
@@ -168,6 +169,7 @@ extension LiveStreamEvent.Firebase: Decodable {
       <^> json <| "firebase_api_key"
       <*> json <|? "avatar"
       <*> json <| "chat_path"
+      <*> json <|? "chat_post_path"
       <*> json <|? "user_id"
       <*> json <|? "user_name"
     return tmp
@@ -313,6 +315,10 @@ extension LiveStreamEvent.Firebase {
     public static let chatPath = Lens<LiveStreamEvent.Firebase, String>(
       view: { $0.chatPath },
       set: { var new = $1; new.chatPath = $0; return new }
+    )
+    public static let chatPostPath = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatPostPath },
+      set: { var new = $1; new.chatPostPath = $0; return new }
     )
     public static let chatUserId = Lens<LiveStreamEvent.Firebase, String?>(
       view: { $0.chatUserId },

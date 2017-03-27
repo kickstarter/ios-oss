@@ -175,7 +175,7 @@ LiveStreamChatViewModelOutputs {
       }
       .skipNil()
 
-    let sentChatMessageEvent = firebase.map { $0.chatPath }
+    let sentChatMessageEvent = firebase.map { $0.chatPostPath.coalesceWith($0.chatPath) }
       .takePairWhen(newChatMessage)
       .flatMap { path, message in
         AppEnvironment.current.liveStreamService.sendChatMessage(

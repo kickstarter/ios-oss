@@ -47,6 +47,7 @@ final class LiveStreamEventTests: XCTestCase {
         "number_people_watching_path": "presence/path",
         "scale_number_people_watching_path": "globalpresence/path",
         "chat_path": "messages/path",
+        "chat_post_path": "messages/post_path",
         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9",
         "avatar": "https://s3.amazonaws.com/justin-profile.jpg?1467136041",
         "user_id": "id_18",
@@ -103,6 +104,7 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase?.numberPeopleWatchingPath)
     XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase?.scaleNumberPeopleWatchingPath)
     XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase?.chatPath)
+    XCTAssertEqual("messages/post_path", liveStreamEvent.value?.firebase?.chatPostPath)
     XCTAssertEqual("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9", liveStreamEvent.value?.firebase?.token)
     XCTAssertEqual("https://s3.amazonaws.com/justin-profile.jpg?1467136041",
                    liveStreamEvent.value?.firebase?.chatAvatarUrl)
