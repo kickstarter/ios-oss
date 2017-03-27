@@ -7,8 +7,6 @@ import UIKit
 internal final class ActivitiesViewController: UITableViewController {
   fileprivate let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   fileprivate let dataSource = ActivitiesDataSource()
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
 
   fileprivate var emptyStatesController: EmptyStatesViewController?
 
@@ -19,20 +17,15 @@ internal final class ActivitiesViewController: UITableViewController {
   internal required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
-    self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    self.sessionEndedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
-  }
-
-  deinit {
-    self.sessionEndedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
-    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   internal override func viewDidLayoutSubviews() {

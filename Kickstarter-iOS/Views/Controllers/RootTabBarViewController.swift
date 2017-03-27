@@ -5,41 +5,31 @@ import Prelude
 import UIKit
 
 public final class RootTabBarViewController: UITabBarController {
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
-  private var userUpdatedObserver: Any?
-
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
   override public func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
 
-    self.sessionStartedObserver = NotificationCenter
+    NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    self.sessionEndedObserver = NotificationCenter
+    NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
-    self.userUpdatedObserver = NotificationCenter
+    NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
     }
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  deinit {
-    self.sessionEndedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
-    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
-    self.userUpdatedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   override public func bindStyles() {

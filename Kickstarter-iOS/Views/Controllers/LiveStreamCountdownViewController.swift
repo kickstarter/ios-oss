@@ -39,7 +39,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
-  private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
@@ -69,17 +68,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
-    self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
-  }
-
-  deinit {
-    self.sessionStartedObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   //swiftlint:disable:next function_body_length

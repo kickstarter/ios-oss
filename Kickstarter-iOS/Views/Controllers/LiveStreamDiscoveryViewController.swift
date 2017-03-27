@@ -4,7 +4,6 @@ import LiveStream
 import Prelude
 
 internal final class LiveStreamDiscoveryViewController: UITableViewController {
-  private var applicationWillEnterForegroundObserver: Any?
   private let dataSource = LiveStreamDiscoveryDataSource()
   private let viewModel: LiveStreamDiscoveryViewModelType = LiveStreamDiscoveryViewModel()
 
@@ -14,10 +13,6 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  deinit {
-    self.applicationWillEnterForegroundObserver.doIfSome { NotificationCenter.default.removeObserver($0) }
   }
 
   /// Call from discovery when this controller becomes active.
@@ -35,7 +30,7 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.applicationWillEnterForegroundObserver = NotificationCenter.default
+    NotificationCenter.default
       .addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self ]_ in
         guard let _self = self else { return }
         _self.viewModel.inputs.appWillEnterForeground()

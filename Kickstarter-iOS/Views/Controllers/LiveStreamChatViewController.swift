@@ -33,8 +33,6 @@ internal final class LiveStreamChatViewController: UIViewController {
 
   fileprivate let dataSource = LiveStreamChatDataSource()
   fileprivate weak var delegate: LiveStreamChatViewControllerDelegate?
-  private var deviceOrientationObserver: Any?
-  private var sessionStartedObserver: Any?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   internal let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
@@ -50,16 +48,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
       return vc
-  }
-
-  deinit {
-    self.sessionStartedObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
-
-    self.deviceOrientationObserver.doIfSome {
-      NotificationCenter.default.removeObserver($0)
-    }
   }
 
   internal override func viewDidLoad() {
@@ -101,12 +89,12 @@ internal final class LiveStreamChatViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.sessionStartedObserver = NotificationCenter.default
+    NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    self.deviceOrientationObserver = NotificationCenter.default
+    NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
