@@ -14,13 +14,13 @@ final class LiveStreamChatDataSourceTests: TestCase {
       .map(String.init)
       .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
 
-    let indexPaths = self.dataSource.add(chatMessages)
+    let indexPaths = self.dataSource.add(chatMessages: chatMessages)
 
     XCTAssertEqual(0, indexPaths[0].row)
-    XCTAssertEqual(0, indexPaths[1].row)
-    XCTAssertEqual(0, indexPaths[2].row)
-    XCTAssertEqual(0, indexPaths[3].row)
-    XCTAssertEqual(0, indexPaths[4].row)
+    XCTAssertEqual(1, indexPaths[1].row)
+    XCTAssertEqual(2, indexPaths[2].row)
+    XCTAssertEqual(3, indexPaths[3].row)
+    XCTAssertEqual(4, indexPaths[4].row)
 
     XCTAssertEqual(0, indexPaths[0].section)
     XCTAssertEqual(0, indexPaths[1].section)

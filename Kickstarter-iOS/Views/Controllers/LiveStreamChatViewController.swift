@@ -105,8 +105,8 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.viewModel.outputs.prependChatMessagesToDataSourceAndReload
       .observeForUI()
       .observeValues { [weak self] chatMessages, reload in
-        let indexPaths = self?.dataSource.add(chatMessages)
-        indexPaths.doIfSome { self?.insert($0, andReload: reload) }
+        let indexPathsInserted = self?.dataSource.add(chatMessages: chatMessages) ?? []
+        self?.insert(indexPathsInserted, andReload: reload)
     }
 
     self.viewModel.outputs.presentLoginToutViewController
@@ -197,15 +197,17 @@ internal final class LiveStreamChatViewController: UIViewController {
       return
     }
 
+    guard let section = indexPaths.first?.section else { return }
+
     self.tableView.beginUpdates()
+    defer { self.tableView.endUpdates() }
+
 
     if self.tableView.numberOfSections == 0 {
-      self.tableView.insertSections(IndexSet(integer: self.dataSource.chatMessagesSection), with: .none)
+      self.tableView.insertSections(IndexSet(integer: section), with: .none)
     }
 
     self.tableView.insertRows(at: indexPaths, with: .top)
-
-    self.tableView.endUpdates()
   }
 
   private func presentMoreMenu(liveStreamEvent: LiveStreamEvent, chatHidden: Bool) {
