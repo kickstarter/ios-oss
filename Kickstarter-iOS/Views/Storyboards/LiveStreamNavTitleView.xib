@@ -44,9 +44,9 @@
                                     <rect key="frame" x="8" y="8" width="322" height="321"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-ZN-5dw">
-                                            <rect key="frame" x="0.0" y="154" width="13" height="13"/>
+                                            <rect key="frame" x="0.0" y="155" width="13" height="11"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="nXt-ZN-5dw" secondAttribute="height" multiplier="1:1" id="tPT-b4-iV0"/>
+                                                <constraint firstAttribute="height" secondItem="nXt-ZN-5dw" secondAttribute="width" multiplier="1:1" constant="-2" id="tPT-b4-iV0"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ir2-yq-ZoU">
