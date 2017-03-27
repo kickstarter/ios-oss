@@ -74,18 +74,6 @@ internal final class LiveStreamChatViewController: UIViewController {
         )
     }
 
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
-    }
-
-    NotificationCenter.default
-      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.deviceOrientationDidChange(
-          orientation: UIApplication.shared.statusBarOrientation
-        )
-    }
-
     self.viewModel.inputs.viewDidLoad()
   }
 
