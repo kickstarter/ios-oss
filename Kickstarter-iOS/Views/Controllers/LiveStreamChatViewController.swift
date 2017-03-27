@@ -6,10 +6,6 @@ import ReactiveSwift
 import Result
 import UIKit
 
-fileprivate enum Section: Int {
-  case messages
-}
-
 internal protocol LiveStreamChatViewControllerDelegate: class {
   func liveStreamChatViewController(
     _ controller: LiveStreamChatViewController,
@@ -66,6 +62,18 @@ internal final class LiveStreamChatViewController: UIViewController {
       self.liveStreamChatInputView.rightAnchor.constraint(equalTo: self.chatInputViewContainer.rightAnchor)
       ])
 
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.deviceOrientationDidChange(
+          orientation: UIApplication.shared.statusBarOrientation
+        )
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -89,29 +97,17 @@ internal final class LiveStreamChatViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
-    }
-
-    NotificationCenter.default
-      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.deviceOrientationDidChange(
-          orientation: UIApplication.shared.statusBarOrientation
-        )
-    }
-
     self.viewModel.outputs.prependChatMessagesToDataSourceAndReload
       .observeForUI()
       .observeValues { [weak self] chatMessages, reload in
-        let indexPaths = self?.dataSource.add(chatMessages, toSection: Section.messages.rawValue)
+        let indexPaths = self?.dataSource.add(chatMessages)
         indexPaths.doIfSome { self?.insert($0, andReload: reload) }
     }
 
-    self.viewModel.outputs.openLoginToutViewController
+    self.viewModel.outputs.presentLoginToutViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.openLoginTout(loginIntent: $0)
+        self?.presentLoginTout(loginIntent: $0)
     }
 
     Keyboard.change
@@ -139,7 +135,7 @@ internal final class LiveStreamChatViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
 
-    self.viewModel.outputs.shouldHideChatTableView
+    self.viewModel.outputs.hideChatTableView
       .observeForUI()
       .observeValues { [weak self] in
         self?.tableView.alpha = $0 ? 0 : 1
@@ -152,7 +148,7 @@ internal final class LiveStreamChatViewController: UIViewController {
         self?.view.endEditing(true)
     }
 
-    self.viewModel.outputs.shouldCollapseChatInputView
+    self.viewModel.outputs.collapseChatInputView
       .observeForUI()
       .observeValues { [weak self] in
         self?.chatInputViewContainerHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
@@ -201,7 +197,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.tableView.beginUpdates()
 
     if self.tableView.numberOfSections == 0 {
-      self.tableView.insertSections(IndexSet(integer: Section.messages.rawValue), with: .none)
+      self.tableView.insertSections(IndexSet(integer: self.dataSource.chatMessagesSection), with: .none)
     }
 
     self.tableView.insertRows(at: indexPaths, with: .top)
@@ -221,7 +217,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func openLoginTout(loginIntent: LoginIntent) {
+  fileprivate func presentLoginTout(loginIntent: LoginIntent) {
     let vc = LoginToutViewController.configuredWith(loginIntent: loginIntent)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet

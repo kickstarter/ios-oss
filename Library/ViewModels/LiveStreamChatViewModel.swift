@@ -36,14 +36,17 @@ public protocol LiveStreamChatViewModelInputs {
 }
 
 public protocol LiveStreamChatViewModelOutputs {
+  /// Emits when the chat input view should be collapsed for the table view to fill the height.
+  var collapseChatInputView: Signal<Bool, NoError> { get }
+
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Emits when chat authorization is completed with success status.
   var didConnectToChat: Signal<Bool, NoError> { get }
 
-  /// Emits when the LoginToutViewController should be presented.
-  var openLoginToutViewController: Signal<LoginIntent, NoError> { get }
+  /// Emits whether or not the chat table view should be hidden.
+  var hideChatTableView: Signal<Bool, NoError> { get }
 
   /// Emits when a live stream api error occurred.
   var notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError> { get }
@@ -51,14 +54,11 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits chat messages for appending to the data source.
   var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
+  /// Emits when the LoginToutViewController should be presented.
+  var presentLoginToutViewController: Signal<LoginIntent, NoError> { get }
+
   /// Emits when the more menu should be presented with the LiveStreamEvent and chat visibility status.
   var presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError> { get }
-
-  /// Emits when the chat input view should be collapsed for the table view to fill the height.
-  var shouldCollapseChatInputView: Signal<Bool, NoError> { get }
-
-  /// Emits whether or not the chat table view should be hidden.
-  var shouldHideChatTableView: Signal<Bool, NoError> { get }
 
   /// Emits when chat authorization begins.
   var willConnectToChat: Signal<(), NoError> { get }
@@ -135,7 +135,7 @@ LiveStreamChatViewModelOutputs {
       )
       .map(first)
 
-    self.openLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
+    self.presentLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal.mapConst(
       .liveStreamChat
     )
 
@@ -150,7 +150,7 @@ LiveStreamChatViewModelOutputs {
       )
       .takeWhen(self.moreMenuButtonTappedProperty.signal)
 
-    self.shouldHideChatTableView =
+    self.hideChatTableView =
       Signal.merge(
         configData.map { $2 },
         self.didSetChatHiddenProperty.signal
@@ -199,7 +199,7 @@ LiveStreamChatViewModelOutputs {
         .mapConst(true)
     )
 
-    self.shouldCollapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate)
+    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate)
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
   }
 
@@ -243,14 +243,14 @@ LiveStreamChatViewModelOutputs {
     self.userSessionStartedProperty.value = ()
   }
 
+  public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
   public let didConnectToChat: Signal<Bool, NoError>
+  public let hideChatTableView: Signal<Bool, NoError>
   public let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
-  public let openLoginToutViewController: Signal<LoginIntent, NoError>
-  public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
-  public let shouldCollapseChatInputView: Signal<Bool, NoError>
-  public let shouldHideChatTableView: Signal<Bool, NoError>
+  public let presentLoginToutViewController: Signal<LoginIntent, NoError>
+  public let presentMoreMenuViewController: Signal<(LiveStreamEvent, Bool), NoError>
   public let willConnectToChat: Signal<(), NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }

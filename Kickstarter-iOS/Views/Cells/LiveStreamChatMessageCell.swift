@@ -5,7 +5,7 @@ import Prelude
 internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
   private let viewModel: LiveStreamChatMessageCellViewModelType = LiveStreamChatMessageCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
+  @IBOutlet private weak var avatarImageView: CircleAvatarImageView!
   @IBOutlet private weak var avatarImageViewWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var contentStackView: UIStackView!
   @IBOutlet private weak var creatorIndicatorDotImageView: UIImageView!
@@ -40,7 +40,7 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> UIStackView.lens.alignment .~ .top
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: CGFloat(Styles.grid(2)) / 2,
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(2),
                                                  leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
@@ -70,11 +70,5 @@ internal final class LiveStreamChatMessageCell: UITableViewCell, ValueCell {
     self.creatorTextLabel.rac.hidden = self.viewModel.outputs.creatorViewsHidden
     self.nameLabel.rac.text = self.viewModel.outputs.name
     self.messageLabel.rac.text = self.viewModel.outputs.message
-  }
-
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2
   }
 }

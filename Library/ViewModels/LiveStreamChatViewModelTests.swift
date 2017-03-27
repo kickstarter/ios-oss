@@ -11,32 +11,32 @@ import XCTest
 internal final class LiveStreamChatViewModelTests: TestCase {
   private let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
+  private let collapseChatInputView = TestObserver<Bool, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let didConnectToChat = TestObserver<Bool, NoError>()
+  private let hideChatTableView = TestObserver<Bool, NoError>()
   private let notifyDelegateLiveStreamApiErrorOccurred = TestObserver<LiveApiError, NoError>()
-  private let openLoginToutViewController = TestObserver<LoginIntent, NoError>()
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
   private let prependChatMessagesToDataSourceReload = TestObserver<Bool, NoError>()
+  private let presentLoginToutViewController = TestObserver<LoginIntent, NoError>()
   private let presentMoreMenuViewController = TestObserver<(LiveStreamEvent, Bool), NoError>()
-  private let shouldCollapseChatInputView = TestObserver<Bool, NoError>()
-  private let shouldHideChatTableView = TestObserver<Bool, NoError>()
   private let willConnectToChat = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.collapseChatInputView.observe(self.collapseChatInputView.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.didConnectToChat.observe(self.didConnectToChat.observer)
+    self.vm.outputs.hideChatTableView.observe(self.hideChatTableView.observer)
     self.vm.outputs.notifyDelegateLiveStreamApiErrorOccurred.observe(
       self.notifyDelegateLiveStreamApiErrorOccurred.observer)
-    self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(first).observe(
       self.prependChatMessagesToDataSourceMessages.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(second).observe(
       self.prependChatMessagesToDataSourceReload.observer)
+    self.vm.outputs.presentLoginToutViewController.observe(self.presentLoginToutViewController.observer)
     self.vm.outputs.presentMoreMenuViewController.observe(self.presentMoreMenuViewController.observer)
-    self.vm.outputs.shouldCollapseChatInputView.observe(self.shouldCollapseChatInputView.observer)
-    self.vm.outputs.shouldHideChatTableView.observe(self.shouldHideChatTableView.observer)
     self.vm.outputs.willConnectToChat.observe(self.willConnectToChat.observer)
   }
 
@@ -69,23 +69,23 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   }
 
   func testChatInputViewRequestedLogin() {
-    self.openLoginToutViewController.assertValueCount(0)
+    self.presentLoginToutViewController.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.chatInputViewRequestedLogin()
 
-    self.openLoginToutViewController.assertValues([.liveStreamChat])
+    self.presentLoginToutViewController.assertValues([.liveStreamChat])
   }
 
-  func testShouldHideTableView() {
-    self.shouldHideChatTableView.assertValueCount(0)
+  func testHideTableView() {
+    self.hideChatTableView.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template, chatHidden: false)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.didSetChatHidden(hidden: true)
 
-    self.shouldHideChatTableView.assertValues([false, true])
+    self.hideChatTableView.assertValues([false, true])
   }
 
   func testPresentMoreMenuViewController() {
@@ -98,8 +98,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.presentMoreMenuViewController.assertValueCount(1)
   }
 
-  func testShouldCollapseChatInputView_Live() {
-    self.shouldCollapseChatInputView.assertValueCount(0)
+  func testCollapseChatInputView_Live() {
+    self.collapseChatInputView.assertValueCount(0)
 
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
@@ -107,11 +107,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
     self.vm.inputs.viewDidLoad()
 
-    self.shouldCollapseChatInputView.assertValues([false])
+    self.collapseChatInputView.assertValues([false])
   }
 
-  func testShouldCollapseChatInputView_Replay() {
-    self.shouldCollapseChatInputView.assertValueCount(0)
+  func testCollapseChatInputView_Replay() {
+    self.collapseChatInputView.assertValueCount(0)
 
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ false
@@ -119,7 +119,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent, chatHidden: false)
     self.vm.inputs.viewDidLoad()
 
-    self.shouldCollapseChatInputView.assertValues([true])
+    self.collapseChatInputView.assertValues([true])
   }
 
   func testDismissKeyboard() {
