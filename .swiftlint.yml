@@ -1,9 +1,10 @@
 disabled_rules:
   - closure_parameter_position
+  - discarded_notification_center_observer
   - function_parameter_count
+  - identifier_name
   - large_tuple
   - nesting
-  - variable_name
   - weak_delegate
   - trailing_comma
 opt_in_rules:
@@ -27,4 +28,9 @@ custom_rules:
     name: "Localized Lensing"
     regex: "\.~\s+Strings\s*\."
     message: "Capture calls to `Strings` functions using `%~ { _ in Strings... }`"
+    severity: error
+  record_mode_prohibited:
+    name: "Record Mode Prohibited"
+    regex: "recordMode = true"
+    message: "Do not use `recordMode = true`."
     severity: error

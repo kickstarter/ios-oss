@@ -39,7 +39,7 @@ playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarte
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
 write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
-as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/Tests/ViewModels)
+as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
 them heavily, including tests for localization, accessibility and event
 tracking.
 
@@ -102,7 +102,7 @@ We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)
 ## License
 
 ```
-Copyright 2016 Kickstarter, PBC.
+Copyright 2017 Kickstarter, PBC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
