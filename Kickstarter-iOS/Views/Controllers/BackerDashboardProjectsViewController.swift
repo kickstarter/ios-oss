@@ -38,7 +38,15 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
+    self.viewModel.outputs.isRefreshing
+      .observeForUI()
+      .observeValues { [weak self] isRefreshing in
+        if isRefreshing {
+          self?.refreshControl?.beginRefreshing()
+        } else {
+          self?.refreshControl?.endRefreshing()
+        }
+    }
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
