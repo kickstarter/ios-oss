@@ -21,13 +21,11 @@ internal final class BackerDashboardViewModelTests: TestCase {
   private let goToProject = TestObserver<Project, NoError>()
   private let goToSettings = TestObserver<(), NoError>()
   private let navigateToTab = TestObserver<BackerDashboardTab, NoError>()
-  private let notifyPageToScrollToProject = TestObserver<Int, NoError>()
   private let pinSelectedIndicatorToTab = TestObserver<BackerDashboardTab, NoError>()
   private let pinSelectedIndicatorToTabAnimated = TestObserver<Bool, NoError>()
   private let savedButtonTitleText = TestObserver<String, NoError>()
   private let setSelectedButton = TestObserver<BackerDashboardTab, NoError>()
   private let sortBarIsHidden = TestObserver<Bool, NoError>()
-  private let updateProjectPlaylist = TestObserver<[Project], NoError>()
 
   override func setUp() {
     super.setUp()
@@ -40,17 +38,14 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.outputs.configurePagesDataSource.map(second).observe(self.configurePagesDataSourceSort.observer)
     self.vm.outputs.embeddedViewTopConstraintConstant.observe(self.embeddedViewTopConstraintConstant.observer)
     self.vm.outputs.goToMessages.observe(self.goToMessages.observer)
-    self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
     self.vm.outputs.goToSettings.observe(self.goToSettings.observer)
     self.vm.outputs.navigateToTab.observe(self.navigateToTab.observer)
-    self.vm.outputs.notifyPageToScrollToProject.observe(self.notifyPageToScrollToProject.observer)
     self.vm.outputs.pinSelectedIndicatorToTab.map(first).observe(self.pinSelectedIndicatorToTab.observer)
     self.vm.outputs.pinSelectedIndicatorToTab.map(second)
       .observe(self.pinSelectedIndicatorToTabAnimated.observer)
     self.vm.outputs.savedButtonTitleText.observe(self.savedButtonTitleText.observer)
     self.vm.outputs.setSelectedButton.observe(self.setSelectedButton.observer)
     self.vm.outputs.sortBarIsHidden.observe(self.sortBarIsHidden.observer)
-    self.vm.outputs.updateProjectPlaylist.observe(self.updateProjectPlaylist.observer)
   }
 
   func testUserAndHeaderDisplayData() {
@@ -87,12 +82,14 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.backedButtonTitleText.assertValues(["45\nbacked", "45\nbacked"])
       self.backerLocationText.assertValues(["Siberia", "Siberia"])
       self.backerNameText.assertValues(["Princess Vespa", "Princess Vespa"])
-      self.pinSelectedIndicatorToTab.assertValues([.backed, .backed])
-      self.pinSelectedIndicatorToTabAnimated.assertValues([false, false])
       self.savedButtonTitleText.assertValues(["58\nsaved", "58\nsaved"])
       self.setSelectedButton.assertValues([.backed])
       self.sortBarIsHidden.assertValues([true])
       self.embeddedViewTopConstraintConstant.assertValues([0.0])
+
+      // Signals that emit just once because they rely on the datasource tab index to exist first.
+      self.pinSelectedIndicatorToTab.assertValues([.backed])
+      self.pinSelectedIndicatorToTabAnimated.assertValues([false])
     }
   }
 
@@ -107,38 +104,43 @@ internal final class BackerDashboardViewModelTests: TestCase {
   }
 
   func testTabNavigation() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(false)
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: .template)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
-    self.navigateToTab.assertValueCount(0)
-    self.setSelectedButton.assertValues([.backed])
-    self.pinSelectedIndicatorToTab.assertValues([.backed])
-    self.pinSelectedIndicatorToTabAnimated.assertValues([false])
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(false)
 
-    self.vm.inputs.savedProjectsButtonTapped()
+      self.setSelectedButton.assertValueCount(0)
+      self.pinSelectedIndicatorToTab.assertValueCount(0)
+      self.pinSelectedIndicatorToTabAnimated.assertValueCount(0)
 
-    self.navigateToTab.assertValues([.saved])
-    self.setSelectedButton.assertValues([.backed, .saved])
-    self.pinSelectedIndicatorToTab.assertValues([.backed, .saved])
-    self.pinSelectedIndicatorToTabAnimated.assertValues([false, true])
+      self.scheduler.advance()
 
-    self.vm.inputs.backedProjectsButtonTapped()
+      self.navigateToTab.assertValueCount(0)
+      self.setSelectedButton.assertValues([.backed])
+      self.pinSelectedIndicatorToTab.assertValues([.backed])
+      self.pinSelectedIndicatorToTabAnimated.assertValues([false])
 
-    self.navigateToTab.assertValues([.saved, .backed])
-    self.setSelectedButton.assertValues([.backed, .saved, .backed])
-    self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed])
-    self.pinSelectedIndicatorToTabAnimated.assertValues([false, true, true])
+      self.vm.inputs.savedProjectsButtonTapped()
+
+      self.navigateToTab.assertValues([.saved])
+      self.setSelectedButton.assertValues([.backed, .saved])
+      self.pinSelectedIndicatorToTab.assertValues([.backed, .saved])
+      self.pinSelectedIndicatorToTabAnimated.assertValues([false, true])
+
+      self.vm.inputs.backedProjectsButtonTapped()
+
+      self.navigateToTab.assertValues([.saved, .backed])
+      self.setSelectedButton.assertValues([.backed, .saved, .backed])
+      self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed])
+      self.pinSelectedIndicatorToTabAnimated.assertValues([false, true, true])
+    }
   }
 
   func testGoPlaces() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(false)
 
-    self.goToProject.assertValueCount(0)
-
-    self.vm.inputs.profileProjectsGoToProject(.template, projects: [.template], reftag: .profileBacked)
-
-    self.goToProject.assertValues([.template])
     self.goToSettings.assertValueCount(0)
 
     self.vm.inputs.settingsButtonTapped()
@@ -149,20 +151,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.inputs.messagesButtonTapped()
 
     self.goToMessages.assertValueCount(1)
-  }
-
-  func testUpdatePlaylist_AndNotifyPageToScroll() {
-    let projects = [.template, .template |> Project.lens.id .~ 2]
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(false)
-    self.vm.inputs.profileProjectsUpdatePlaylist(projects)
-
-    self.updateProjectPlaylist.assertValues([projects])
-
-    self.vm.inputs.transitionedToProject(at: 1)
-
-    self.notifyPageToScrollToProject.assertValues([1])
   }
 
   func testTracking() {

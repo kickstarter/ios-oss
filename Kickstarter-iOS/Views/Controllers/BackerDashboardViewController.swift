@@ -101,12 +101,6 @@ internal final class BackerDashboardViewController: UIViewController {
         _self.navigationController?.pushViewController(vc, animated: true)
     }
 
-    self.viewModel.outputs.goToProject
-      .observeForControllerAction()
-      .observeValues { [weak self] project, projects, refTag in
-        self?.present(project: project, projects: projects, refTag: refTag)
-    }
-
     self.viewModel.outputs.goToSettings
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -138,21 +132,6 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.selectButton(atTab: $0)
-    }
-
-    self.viewModel.outputs.updateProjectPlaylist
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.updateProjectPlaylist($0)
-    }
-
-    self.viewModel.outputs.notifyPageToScrollToProject
-      .observeForUI()
-      .observeValues { [weak self] row in
-        guard let controller = self?.pageViewController.childViewControllers.first
-          else { return }
-
-        self?.pagesDataSource.scrollToProject(at: row, in: controller)
     }
   }
 
@@ -201,19 +180,6 @@ internal final class BackerDashboardViewController: UIViewController {
       animated: false,
       completion: nil
     )
-  }
-
-  private func present(project: Project, projects: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: projects,
-                                                           navigatorDelegate: self)
-    self.present(vc, animated: true, completion: nil)
-  }
-
-  private func updateProjectPlaylist(_ playlist: [Project]) {
-    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
-    navigator.updatePlaylist(playlist)
   }
 
   private func setAttributedTitles(for button: UIButton, with string: String) {
@@ -296,19 +262,3 @@ internal final class BackerDashboardViewController: UIViewController {
 }
 
 extension BackerDashboardViewController: UIPageViewControllerDelegate {}
-
-extension BackerDashboardViewController: BackerDashboardProjectsViewControllerDelegate {
-  func profileProjectsGoToProject(_ project: Project, projects: [Project], reftag: RefTag) {
-    self.viewModel.inputs.profileProjectsGoToProject(project, projects: projects, reftag: reftag)
-  }
-
-  func profileProjectsUpdatePlaylist(_ projects: [Project]) {
-    self.viewModel.inputs.profileProjectsUpdatePlaylist(projects)
-  }
-}
-
-extension BackerDashboardViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {
-    self.viewModel.inputs.transitionedToProject(at: index)
-  }
-}

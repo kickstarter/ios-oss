@@ -13,8 +13,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let emptyStateIsVisible = TestObserver<Bool, NoError>()
   private let emptyStateProjectsType = TestObserver<ProfileProjectsType, NoError>()
   private let isRefreshing = TestObserver<Bool, NoError>()
-  private let notifyDelegateGoToProject = TestObserver<Project, NoError>()
-  private let notifyDelegateRefTag = TestObserver<RefTag, NoError>()
+  private let goToProject = TestObserver<Project, NoError>()
+  private let goToProjectRefTag = TestObserver<RefTag, NoError>()
   private let projects = TestObserver<[Project], NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
 
@@ -24,8 +24,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.emptyStateIsVisible.map(first).observe(self.emptyStateIsVisible.observer)
     self.vm.outputs.emptyStateIsVisible.map(second).observe(self.emptyStateProjectsType.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
-    self.vm.outputs.notifyDelegateGoToProject.map(first).observe(self.notifyDelegateGoToProject.observer)
-    self.vm.outputs.notifyDelegateGoToProject.map(third).observe(self.notifyDelegateRefTag.observer)
+    self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
   }
@@ -134,8 +134,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
 
       self.vm.inputs.projectTapped(project)
 
-      self.notifyDelegateGoToProject.assertValues([project], "Project emmitted.")
-      self.notifyDelegateRefTag.assertValues([.profileBacked], "RefTag = profile_backed emitted.")
+      self.goToProject.assertValues([project], "Project emmitted.")
+      self.goToProjectRefTag.assertValues([.profileBacked], "RefTag = profile_backed emitted.")
     }
   }
 
@@ -157,27 +157,27 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.projects.assertValues([playlist], "Projects are loaded.")
 
       self.vm.inputs.projectTapped(playlist[4])
-      self.vm.inputs.scrollToProject(at: 5, outOf: playlist.count)
+      self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
 
       self.scrollToProjectRow.assertValues([5])
 
-      self.vm.inputs.scrollToProject(at: 6, outOf: playlist.count)
+      self.vm.inputs.transitionedToProject(at: 6, outOf: playlist.count)
 
       self.scrollToProjectRow.assertValues([5, 6])
 
-      self.vm.inputs.scrollToProject(at: 7, outOf: playlist.count)
+      self.vm.inputs.transitionedToProject(at: 7, outOf: playlist.count)
 
       self.scrollToProjectRow.assertValues([5, 6, 7])
 
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
-        self.vm.inputs.scrollToProject(at: 8, outOf: playlist.count)
+        self.vm.inputs.transitionedToProject(at: 8, outOf: playlist.count)
 
         self.scheduler.advance()
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8])
         self.projects.assertValues([playlist, (playlist + playlist2)], "More projects are loaded.")
 
-        self.vm.inputs.scrollToProject(at: 7, outOf: playlist2.count)
+        self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
       }

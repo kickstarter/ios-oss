@@ -7,12 +7,10 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
 
   internal init(delegate: UIViewController, sort: DiscoveryParams.Sort) {
     let backedController = BackerDashboardProjectsViewController()
-    let savedController = BackerDashboardProjectsViewController()
+    backedController.configureWith(projectsType: .backed, sort: sort)
 
-    if let delegate = delegate as? BackerDashboardProjectsViewControllerDelegate {
-      backedController.configureWith(delegate: delegate, projectsType: .backed, sort: sort)
-      savedController.configureWith(delegate: delegate, projectsType: .saved, sort: sort)
-    }
+    let savedController = BackerDashboardProjectsViewController()
+    savedController.configureWith(projectsType: .saved, sort: sort)
 
     self.viewControllers = BackerDashboardTab.allTabs.map { tab in
       switch tab {
@@ -29,17 +27,6 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
 
   internal func indexFor(tab: BackerDashboardTab) -> Int? {
     return BackerDashboardTab.allTabs.index(of: tab)
-  }
-
-  internal func scrollToProject(at row: Int, in controller: UIViewController) {
-    guard let currentTab = tabFor(controller: controller) else { return }
-
-    switch currentTab {
-    case .backed, .saved:
-      if let controller = controller as? BackerDashboardProjectsViewController {
-        controller.scrollToProject(at: row)
-      }
-    }
   }
 
   internal func pageViewController(

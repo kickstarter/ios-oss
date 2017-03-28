@@ -27,8 +27,8 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call when pull-to-refresh is invoked.
   func refresh()
 
-  /// Call when the user has swiped to a project in the navigator and the tableview should scroll to its row.
-  func scrollToProject(at row: Int, outOf totalRows: Int)
+  /// Call when the project navigator has transitioned to a new project with its index.
+  func transitionedToProject(at row: Int, outOf totalRows: Int)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -44,11 +44,11 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   /// Emits a boolean that determines if the empty state is visible and a ProfileProjectsType.
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError> { get }
 
+  /// Emits the project, projects, and ref tag when should go to project page.
+  var goToProject: Signal<(Project, [Project], RefTag), NoError > { get }
+
   /// Emits when the pull-to-refresh control is refreshing or not.
   var isRefreshing: Signal<Bool, NoError> { get }
-
-  /// Emits the project and ref tag when should go to project page.
-  var notifyDelegateGoToProject: Signal<(Project, [Project], RefTag), NoError > { get }
 
   /// Emits a list of projects for the tableview datasource.
   var projects: Signal<[Project], NoError> { get }
@@ -72,8 +72,8 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
-        viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
-        refreshProperty.signal
+        self.viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
+        self.refreshProperty.signal
         )
       )
       .map { (pType, sort) -> DiscoveryParams in
@@ -91,7 +91,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
     let isCloseToBottom = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
-      self.scrollToProjectRowAndTotalProperty.signal.skipNil()
+      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
       .map { row, total in total > 4 && row >= total - 3 }
       .skipRepeats()
@@ -115,14 +115,14 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         (projects.isEmpty, type)
     }
 
-    self.notifyDelegateGoToProject = Signal.combineLatest(projectsType, self.projects)
+    self.goToProject = Signal.combineLatest(projectsType, self.projects)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
       .map { typeAndProjects, project in
         let ref = (typeAndProjects.0 == .backed) ? RefTag.profileBacked : RefTag.profileSaved
         return (project, typeAndProjects.1, ref)
     }
 
-    self.scrollToProjectRow = self.scrollToProjectRowAndTotalProperty.signal.skipNil().map(first)
+    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     projectsType
       .takeWhen(self.viewWillAppearProperty.signal.filter(isFalse))
@@ -147,9 +147,9 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.refreshProperty.value = ()
   }
 
-  private let scrollToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func scrollToProject(at row: Int, outOf totalRows: Int) {
-    self.scrollToProjectRowAndTotalProperty.value = (row, totalRows)
+  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
+    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
 
   private let viewWillAppearProperty = MutableProperty(false)
@@ -168,8 +168,8 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError>
+  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isRefreshing: Signal<Bool, NoError>
-  public let notifyDelegateGoToProject: Signal<(Project, [Project], RefTag), NoError>
   public let projects: Signal<[Project], NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
 
