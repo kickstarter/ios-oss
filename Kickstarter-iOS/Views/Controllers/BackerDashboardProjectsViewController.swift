@@ -117,4 +117,3 @@ extension BackerDashboardProjectsViewController: ProjectNavigatorDelegate {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }
-
