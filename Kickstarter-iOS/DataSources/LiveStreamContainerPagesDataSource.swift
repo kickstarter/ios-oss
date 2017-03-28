@@ -33,6 +33,15 @@ internal final class LiveStreamContainerPagesDataSource: NSObject {
   internal func controller(forPage page: LiveStreamContainerPage) -> UIViewController? {
     return self.pages.index(of: page).flatMap { self.viewControllers[$0] }
   }
+
+  internal func controller(forIndex index: Int) -> UIViewController? {
+    guard index >= 0 && index < self.viewControllers.count else { return nil }
+    return self.viewControllers[index]
+  }
+
+  internal func page(forController controller: UIViewController) -> LiveStreamContainerPage? {
+    return self.viewControllers.index(of: controller).flatMap { self.pages[$0] }
+  }
 }
 
 extension LiveStreamContainerPagesDataSource: UIPageViewControllerDataSource {
