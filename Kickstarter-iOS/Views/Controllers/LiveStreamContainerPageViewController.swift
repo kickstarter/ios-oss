@@ -14,11 +14,8 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   @IBOutlet private weak var pagerTabStripStackView: UIStackView!
   @IBOutlet private weak var separatorView: UIView!
 
-  fileprivate weak var pageViewController: UIPageViewController?
-  internal weak var liveStreamChatViewController: LiveStreamChatViewController?
-  fileprivate weak var liveStreamEventDetailsViewController: LiveStreamEventDetailsViewController?
-
   fileprivate var pagesDataSource = LiveStreamContainerPagesDataSource()
+  fileprivate weak var pageViewController: UIPageViewController?
   fileprivate let viewModel: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
   internal func configureWith(project: Project,
@@ -113,17 +110,9 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.viewModel.outputs.pagedToPage
       .observeForUI()
       .observeValues { [weak self] page, direction in
-        switch page {
-        case .chat:
-          self?.liveStreamChatViewController.doIfSome {
-            self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
-                                                        completion: nil)
-          }
-        case .info:
-          self?.liveStreamEventDetailsViewController.doIfSome {
-            self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
-                                                        completion: nil)
-          }
+        self?.pagesDataSource.controller(forPage: page).doIfSome {
+          self?.pageViewController?.setViewControllers([$0], direction: direction, animated: true,
+                                                       completion: nil)
         }
     }
   }
@@ -137,28 +126,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
   }
 
   private func loadViewControllersIntoPagesDataSource(pages: [LiveStreamContainerPage]) {
-    let viewControllers = pages.map { page -> UIViewController in
-      switch page {
-      case .chat(let project, let liveStreamEvent):
-        let vc = LiveStreamChatViewController.configuredWith(
-          project: project,
-          liveStreamEvent: liveStreamEvent
-        )
-        self.liveStreamChatViewController = vc
-        return vc
-      case .info(let project, let liveStreamEvent, let refTag, let presentedFromProject):
-        let vc = LiveStreamEventDetailsViewController.configuredWith(
-          project: project,
-          liveStreamEvent: liveStreamEvent,
-          refTag: refTag,
-          presentedFromProject: presentedFromProject
-        )
-        self.liveStreamEventDetailsViewController = vc
-        return vc
-      }
-    }
-
-    self.pagesDataSource.load(viewControllers: viewControllers)
+    self.pagesDataSource.load(pages: pages)
     self.viewModel.inputs.didLoadViewControllersIntoPagesDataSource()
   }
 
@@ -181,7 +149,7 @@ extension LiveStreamContainerPageViewController: UIPageViewControllerDelegate {
     _ pageViewController: UIPageViewController,
     willTransitionTo pendingViewControllers: [UIViewController]) {
 
-    guard let idx = pendingViewControllers.first.flatMap(self.pagesDataSource.indexFor(controller:)) else {
+    guard let idx = pendingViewControllers.first.flatMap(self.pagesDataSource.index(forController:)) else {
       return
     }
 

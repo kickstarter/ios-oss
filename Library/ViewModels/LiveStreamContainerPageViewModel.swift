@@ -140,7 +140,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       .map { $0 ? .ksr_headline(size: 14) : .ksr_body(size: 14) }
 
     self.indicatorLineViewXPosition = pageChangedToPage
-      .map(indexFor(page:))
+      .map(index(forPage:))
   }
 
   private let configDataProperty = MutableProperty<(Project, LiveStreamEvent,
@@ -192,7 +192,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
   public var outputs: LiveStreamContainerPageViewModelOutputs { return self }
 }
 
-private func indexFor(page: LiveStreamContainerPage) -> Int {
+private func index(forPage page: LiveStreamContainerPage) -> Int {
   switch page {
   case .info:
     return 0
@@ -233,6 +233,25 @@ public enum LiveStreamContainerPage {
       return .forward
     case (.info, .info):
       return .forward
+    }
+  }
+}
+
+extension LiveStreamContainerPage: Equatable {
+  public static func == (lhs: LiveStreamContainerPage, rhs: LiveStreamContainerPage) -> Bool {
+    switch (lhs, rhs) {
+    case (.info(let lhsProject, let lhsLiveStreamEvent, let lhsRefTag, let lhsPresentedFromProject),
+          .info(let rhsProject, let rhsLiveStreamEvent, let rhsRefTag, let rhsPresentedFromProject)):
+      return lhsProject == rhsProject
+        && lhsLiveStreamEvent == rhsLiveStreamEvent
+        && lhsRefTag == rhsRefTag
+        && lhsPresentedFromProject == rhsPresentedFromProject
+    case (.chat(let lhsProject, let lhsLiveStreamEvent),
+          .chat(let rhsProject, let rhsLiveStreamEvent)):
+      return lhsProject == rhsProject
+        && lhsLiveStreamEvent == rhsLiveStreamEvent
+    case (.info, _), (.chat, _):
+      return false
     }
   }
 }

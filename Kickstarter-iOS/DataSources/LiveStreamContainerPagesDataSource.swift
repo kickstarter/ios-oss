@@ -3,13 +3,35 @@ import Library
 
 internal final class LiveStreamContainerPagesDataSource: NSObject {
   fileprivate var viewControllers: [UIViewController] = []
+  fileprivate var pages: [LiveStreamContainerPage] = []
 
-  internal func load(viewControllers: [UIViewController]) {
-    self.viewControllers = viewControllers
+  internal func load(pages: [LiveStreamContainerPage]) {
+    self.pages = pages
+
+    self.viewControllers = pages.map { page -> UIViewController in
+      switch page {
+      case .chat(let project, let liveStreamEvent):
+        return LiveStreamChatViewController.configuredWith(
+          project: project,
+          liveStreamEvent: liveStreamEvent
+        )
+      case .info(let project, let liveStreamEvent, let refTag, let presentedFromProject):
+        return LiveStreamEventDetailsViewController.configuredWith(
+          project: project,
+          liveStreamEvent: liveStreamEvent,
+          refTag: refTag,
+          presentedFromProject: presentedFromProject
+        )
+      }
+    }
   }
 
-  internal func indexFor(controller: UIViewController) -> Int? {
+  internal func index(forController controller: UIViewController) -> Int? {
     return self.viewControllers.index(of: controller)
+  }
+
+  internal func controller(forPage page: LiveStreamContainerPage) -> UIViewController? {
+    return self.pages.index(of: page).flatMap { self.viewControllers[$0] }
   }
 }
 
