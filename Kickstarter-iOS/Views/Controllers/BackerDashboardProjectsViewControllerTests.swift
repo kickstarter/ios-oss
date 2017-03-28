@@ -41,6 +41,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
+      |> Project.lens.stats.fundingProgress .~ 0.45
       |> Project.lens.state .~ .failed
 
     let saved = Project.cosmicSurgery
@@ -53,14 +54,13 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     let env = .template |> DiscoveryEnvelope.lens.projects .~ [saved, liveProject, deadProject, failed]
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
                         let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(delegate: BackerDashboardViewController(),
-                                                 projectsType: .backed,
-                                                 sort: .endingSoon)
+                        controller.configureWith(projectsType: .backed, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)
@@ -78,9 +78,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
                       currentUser: User.template,
                       language: language) {
                         let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(delegate: BackerDashboardViewController(),
-                                                 projectsType: .backed,
-                                                 sort: .endingSoon)
+                        controller.configureWith(projectsType: .backed, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)
@@ -98,9 +96,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
                       currentUser: User.template,
                       language: language) {
                         let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(delegate: BackerDashboardViewController(),
-                                                 projectsType: .saved,
-                                                 sort: .endingSoon)
+                        controller.configureWith(projectsType: .saved, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)

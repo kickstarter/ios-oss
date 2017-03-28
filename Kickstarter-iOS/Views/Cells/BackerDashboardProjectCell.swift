@@ -60,7 +60,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layoutMargins .~ .init(top: Styles.gridHalf(3),
                                             left: Styles.grid(2),
-                                            bottom: Styles.grid(2),
+                                            bottom: Styles.grid(1),
                                             right: Styles.grid(2))
 
     _ = self.metadataBackgroundView
@@ -68,7 +68,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
       |> UIView.lens.layer.shadowOpacity .~ 0.3
       |> UIView.lens.layer.cornerRadius .~ 2.0
-      |> UIView.lens.backgroundColor .~ .ksr_green_500
 
     _ = self.metadataLabel
       |> UILabel.lens.textColor .~ .white
