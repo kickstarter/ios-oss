@@ -15,7 +15,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   internal let hasComments = TestObserver<Bool, NoError>()
   internal let commentBarButtonVisible = TestObserver<Bool, NoError>()
-  internal let emptyStateVisible = TestObserver<Void, NoError>()
+  internal let emptyStateVisible = TestObserver<Bool, NoError>()
   internal let presentPostCommentDialog = TestObserver<(Project, Update?), NoError>()
   internal let loginToutIsOpen = TestObserver<Bool, NoError>()
   internal let commentsAreLoading = TestObserver<Bool, NoError>()
@@ -26,7 +26,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.dataSource.map { !$0.0.isEmpty }.observe(self.hasComments.observer)
     self.vm.outputs.commentBarButtonVisible.observe(self.commentBarButtonVisible.observer)
     self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
-    self.vm.outputs.emptyStateVisible.ignoreValues().observe(self.emptyStateVisible.observer)
+    self.vm.outputs.emptyStateVisible.map { $0.2 }.observe(self.emptyStateVisible.observer)
     self.vm.outputs.presentPostCommentDialog.observe(self.presentPostCommentDialog.observer)
 
     Signal.merge(
@@ -38,7 +38,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testLoggedOutUser_ViewingEmptyState() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       self.hasComments.assertValues([])
-      self.emptyStateVisible.assertValueCount(0)
+      self.emptyStateVisible.assertValues([])
       self.commentBarButtonVisible.assertValues([])
 
       self.vm.inputs.configureWith(project: Project.template, update: nil)
@@ -46,7 +46,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments emitted.")
-      self.emptyStateVisible.assertValueCount(1, "Empty state emitted.")
+      self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
 
       XCTAssertEqual(["Project Comment View", "Viewed Comments"], self.trackingClient.events)
@@ -58,7 +58,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testLoggedOutUser_ViewingComments() {
     self.hasComments.assertValues([])
-    self.emptyStateVisible.assertValueCount(0)
+    self.emptyStateVisible.assertValues([])
     self.commentBarButtonVisible.assertValues([])
 
     self.vm.inputs.configureWith(project: Project.template, update: nil)
@@ -66,7 +66,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.hasComments.assertValues([true], "A set of comments is emitted.")
-    self.emptyStateVisible.assertValueCount(0)
+    self.emptyStateVisible.assertValues([false], "Empty state is hidden.")
     self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
   }
 
@@ -84,7 +84,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
-      self.emptyStateVisible.assertValueCount(1, "Empty state emitted.")
+      self.emptyStateVisible.assertValueCount([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
     }
   }
@@ -298,7 +298,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
       self.commentBarButtonVisible.assertValues(
         [false], "Comment button is not visible since there's a button in the empty state.")
-      self.emptyStateVisible.assertValueCount(1, "Empty state visible.")
+      self.emptyStateVisible.assertValues([true], "Empty state visible.")
 
       self.vm.inputs.commentButtonPressed()
 
@@ -310,7 +310,7 @@ internal final class CommentsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.hasComments.assertValues([false, true], "Newly posted comment emits after posting.")
-        self.emptyStateVisible.assertValueCount(1, "Empty state not visible again.")
+        self.emptyStateVisible.assertValues([true, false ], "Empty state not visible again.")
       }
     }
   }

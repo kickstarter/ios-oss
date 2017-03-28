@@ -24,7 +24,7 @@ final class CommentsDataSourceTests: XCTestCase {
   }
 
   func testLoadingEmptyState() {
-    self.dataSource.load(project: Project.template, update: nil)
+    self.dataSource.load(project: Project.template, update: nil, visible: true)
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(
