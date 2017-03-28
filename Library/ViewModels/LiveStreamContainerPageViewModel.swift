@@ -31,7 +31,7 @@ public protocol LiveStreamContainerPageViewModelInputs {
   func viewDidLoad()
 
   /// Call when the UIPageViewController begins a transition sequence.
-  func willTransition(toPage nextPage: Int)
+  func willTransition(toPage page: LiveStreamContainerPage)
 }
 
 public protocol LiveStreamContainerPageViewModelOutputs {
@@ -88,12 +88,9 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       }
       .skipNil()
 
-    let pageControllerPagedToPage = Signal.combineLatest(
-      self.loadViewControllersIntoPagesDataSource,
-      self.willTransitionToPageProperty.signal
-        .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
-      )
-      .map { $0[$1] }
+    let pageControllerPagedToPage = self.willTransitionToPageProperty.signal
+      .skipNil()
+      .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
 
     let firstPage = self.loadViewControllersIntoPagesDataSource
       .takeWhen(self.didLoadViewControllersIntoPagesDataSourceProperty.signal)
@@ -139,8 +136,10 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     self.chatButtonTitleFont = isChatPage
       .map { $0 ? .ksr_headline(size: 14) : .ksr_body(size: 14) }
 
-    self.indicatorLineViewXPosition = pageChangedToPage
-      .map(index(forPage:))
+    self.indicatorLineViewXPosition = self.loadViewControllersIntoPagesDataSource
+      .takePairWhen(pageChangedToPage)
+      .map { $0.index(of: $1) }
+      .skipNil()
   }
 
   private let configDataProperty = MutableProperty<(Project, LiveStreamEvent,
@@ -175,9 +174,9 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     self.viewDidLoadProperty.value = ()
   }
 
-  private let willTransitionToPageProperty = MutableProperty<Int>(0)
-  public func willTransition(toPage nextPage: Int) {
-    self.willTransitionToPageProperty.value = nextPage
+  private let willTransitionToPageProperty = MutableProperty<LiveStreamContainerPage?>(nil)
+  public func willTransition(toPage page: LiveStreamContainerPage) {
+    self.willTransitionToPageProperty.value = page
   }
 
   public let chatButtonTextColor: Signal<UIColor, NoError>
@@ -190,15 +189,6 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
   public var inputs: LiveStreamContainerPageViewModelInputs { return self }
   public var outputs: LiveStreamContainerPageViewModelOutputs { return self }
-}
-
-private func index(forPage page: LiveStreamContainerPage) -> Int {
-  switch page {
-  case .info:
-    return 0
-  case .chat:
-    return 1
-  }
 }
 
 public enum LiveStreamContainerPage {

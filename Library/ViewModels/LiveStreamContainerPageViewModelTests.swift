@@ -7,6 +7,11 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
+private let pages: [LiveStreamContainerPage] = [
+  .info(project: .template, liveStreamEvent: .template, refTag: .projectPage, presentedFromProject: false),
+  .chat(project: .template, liveStreamEvent: .template)
+]
+
 internal final class LiveStreamContainerPageViewModelTests: TestCase {
   private let vm: LiveStreamContainerPageViewModelType = LiveStreamContainerPageViewModel()
 
@@ -50,13 +55,17 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.chatButtonTextColor.assertValues([.ksr_grey_500])
     self.infoButtonTextColor.assertValues([.white])
 
-    self.vm.inputs.willTransition(toPage: 1)
+    let infoPage = LiveStreamContainerPage.info(project: .template, liveStreamEvent: .template,
+                                                refTag: .projectPage, presentedFromProject: true)
+    let chatPage = LiveStreamContainerPage.chat(project: .template, liveStreamEvent: .template)
+
+    self.vm.inputs.willTransition(toPage: chatPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.chatButtonTextColor.assertValues([.ksr_grey_500, .white])
     self.infoButtonTextColor.assertValues([.white, .ksr_grey_500])
 
-    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.willTransition(toPage: infoPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.chatButtonTextColor.assertValues([.ksr_grey_500, .white, .ksr_grey_500])
@@ -75,12 +84,16 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
+    let infoPage = LiveStreamContainerPage.info(project: .template, liveStreamEvent: .template,
+                                                refTag: .projectPage, presentedFromProject: true)
+    let chatPage = LiveStreamContainerPage.chat(project: .template, liveStreamEvent: .template)
+
     self.chatButtonTitleFontName.assertValues([".SFUIText"])
     self.chatButtonTitleFontSize.assertValues([14])
     self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold"])
     self.infoButtonTitleFontSize.assertValues([14])
 
-    self.vm.inputs.willTransition(toPage: 1)
+    self.vm.inputs.willTransition(toPage: chatPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold"])
@@ -88,7 +101,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText"])
     self.infoButtonTitleFontSize.assertValues([14, 14])
 
-    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.willTransition(toPage: infoPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold", ".SFUIText"])
@@ -142,14 +155,18 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
+    let infoPage = LiveStreamContainerPage.info(project: .template, liveStreamEvent: .template,
+                                                refTag: .projectPage, presentedFromProject: true)
+    let chatPage = LiveStreamContainerPage.chat(project: .template, liveStreamEvent: .template)
+
     self.indicatorLineViewXPosition.assertValues([0])
 
-    self.vm.inputs.willTransition(toPage: 1)
+    self.vm.inputs.willTransition(toPage: chatPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.indicatorLineViewXPosition.assertValues([0, 1])
 
-    self.vm.inputs.willTransition(toPage: 0)
+    self.vm.inputs.willTransition(toPage: infoPage)
     self.vm.inputs.pageTransition(completed: true)
 
     self.indicatorLineViewXPosition.assertValues([0, 1, 0])

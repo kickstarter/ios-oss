@@ -149,10 +149,10 @@ extension LiveStreamContainerPageViewController: UIPageViewControllerDelegate {
     _ pageViewController: UIPageViewController,
     willTransitionTo pendingViewControllers: [UIViewController]) {
 
-    guard let idx = pendingViewControllers.first.flatMap(self.pagesDataSource.index(forController:)) else {
+    guard let page = pendingViewControllers.first.flatMap(self.pagesDataSource.page(forController:)) else {
       return
     }
 
-    self.viewModel.inputs.willTransition(toPage: idx)
+    self.viewModel.inputs.willTransition(toPage: page)
   }
 }
