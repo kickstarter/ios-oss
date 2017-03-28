@@ -25,7 +25,8 @@ private func swizzle(_ v: UIView.Type) {
 }
 
 extension UIView {
-  // FIXME
+  // FIXME: "Method 'initialize' defines Objective-C class method, which is not guaranteedto be invoked by 
+  // by Swift and will be disallowed in future versions.
   open override class func initialize() {
     // make sure this isn't a subclass
     guard self === UIView.self else { return }
