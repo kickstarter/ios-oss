@@ -84,7 +84,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
-      self.emptyStateVisible.assertValueCount([true], "Empty state emitted.")
+      self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
     }
   }
