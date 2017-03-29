@@ -124,9 +124,14 @@ CommentsViewModelOutputs {
 
     self.commentsAreLoading = isLoading
 
-    self.emptyStateVisible = Signal.combineLatest(project, update, comments)
-      //.filter { _, _, comments in comments.isEmpty }
+    let emptyStateFromAPI = Signal.combineLatest(project, update, comments)
       .map { project, update, comments in (project, update, comments.isEmpty) }
+
+    let emptyStateFromCommentPosted = Signal.combineLatest(project, update)
+      .takeWhen(self.commentPostedProperty.signal)
+      .map { projects, update in (projects, update, false) }
+
+    self.emptyStateVisible = Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
 
     let userCanComment = Signal.combineLatest(comments, project)
       .map { comments, project in !comments.isEmpty && canComment(onProject: project) }

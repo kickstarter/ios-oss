@@ -40,9 +40,6 @@ public protocol CommentDialogViewModelOutputs {
   /// Emits a boolean that determines if the post button is enabled.
   var postButtonEnabled: Signal<Bool, NoError> { get }
 
-  /// Emits a boolean that determines if the comment is currently posting.
-  var loadingViewIsHidden: Signal<Bool, NoError> { get }
-
   /// Emits the newly posted comment when the present of this dialog should be notified that posting
   /// was successful.
   var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError> { get }
@@ -106,7 +103,6 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
 
   public let bodyTextViewText: Signal<String, NoError>
   public let postButtonEnabled: Signal<Bool, NoError>
-  public let loadingViewIsHidden: Signal<Bool, NoError>
   public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError>
   public let notifyPresenterDialogWantsDismissal: Signal<(), NoError>
   public let subtitle: Signal<String, NoError>
@@ -155,11 +151,6 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
       }
 
     self.notifyPresenterCommentWasPostedSuccesfully = commentPostedEvent.values()
-
-    self.loadingViewIsHidden = Signal.merge(
-      self.viewWillAppearProperty.signal.mapConst(true),
-      isLoading.signal.map(negate)
-    )
 
     self.notifyPresenterDialogWantsDismissal = Signal.merge([
       self.cancelButtonPressedProperty.signal,
