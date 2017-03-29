@@ -94,14 +94,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
 
-    self.backedButtonTitleText = user
-      .map { user in
-        localizedString(
-          key: "projects_count_newline_backed",
-          defaultValue: "%{projects_count}\nbacked",
-          count: user.stats.backedProjectsCount ?? 0,
-          substitutions: ["projects_count": Format.wholeNumber(user.stats.backedProjectsCount ?? 0)]
-        )
+    self.backedButtonTitleText = user.map { user in
+        Strings.projects_count_newline_backed(projects_count: user.stats.backedProjectsCount ?? 0)
     }
 
     self.backerLocationText = user.map { $0.location?.displayableName ?? "" }
@@ -109,12 +103,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.backerNameText = user.map { $0.name }
 
     self.savedButtonTitleText = user.map { user in
-      localizedString(
-        key: "projects_count_newline_saved",
-        defaultValue: "%{projects_count}\nsaved",
-        count: user.stats.starredProjectsCount ?? 0,
-        substitutions: ["projects_count": Format.wholeNumber(user.stats.starredProjectsCount ?? 0)]
-      )
+      Strings.projects_count_newline_saved(projects_count: user.stats.starredProjectsCount ?? 0)
     }
 
     self.navigateToTab = Signal.merge(
