@@ -143,6 +143,7 @@ internal final class LiveStreamChatViewController: UIViewController {
   private lazy var liveStreamChatInputView: LiveStreamChatInputView = {
     let chatInputView = LiveStreamChatInputView.fromNib()
     chatInputView.translatesAutoresizingMaskIntoConstraints = false
+    chatInputView.configureWith(delegate: self)
     return chatInputView
   }()
 

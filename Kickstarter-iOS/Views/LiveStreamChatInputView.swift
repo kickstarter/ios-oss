@@ -28,7 +28,11 @@ internal final class LiveStreamChatInputView: UIView {
       .first as! LiveStreamChatInputView
   }
 
-  override func awakeFromNib() {
+  internal func configureWith(delegate: LiveStreamChatInputViewDelegate) {
+    self.delegate = delegate
+  }
+
+  internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
