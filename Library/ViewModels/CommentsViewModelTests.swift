@@ -310,7 +310,7 @@ internal final class CommentsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.hasComments.assertValues([false, true], "Newly posted comment emits after posting.")
-        self.emptyStateVisible.assertValues([true, false ], "Empty state not visible again.")
+        self.emptyStateVisible.assertValues([true, false, false ], "Empty state not visible again.")
       }
     }
   }
