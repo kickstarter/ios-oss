@@ -13,19 +13,11 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
     switch value {
     case .backed:
       self.iconImageView.tintColor = .clear
-      self.messageLabel.text = localizedString(
-        key: "Pledge_to_your_favorites_then_view_all_the_projects",
-        defaultValue: "Pledge to your favorites, then view all the projects you’ve backed here."
-      )
-      self.titleLabel.text = localizedString(key: "Explore_creative_projects",
-                                             defaultValue: "Explore creative projects")
+      self.messageLabel.text = Strings.Pledge_to_your_favorites_then_view_all_the_projects()
+      self.titleLabel.text = Strings.Explore_creative_projects()
     case .saved:
-      self.messageLabel.text = localizedString(
-        key: "Tap_the_star_on_a_project_to_get_notified",
-        defaultValue: "Tap the star icon on a project to get notified 48 hours before it ends."
-      )
-      self.titleLabel.text = localizedString(key: "Save_projects",
-                                               defaultValue: "Save projects")
+      self.messageLabel.text = Strings.Tap_the_star_on_a_project_to_get_notified()
+      self.titleLabel.text = Strings.Save_projects()
       self.iconImageView.tintColor = .black
     }
   }
