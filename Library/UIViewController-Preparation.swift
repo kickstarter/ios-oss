@@ -30,12 +30,13 @@ private func swizzle(_ vc: UIViewController.Type) {
   }
 }
 
+private var hasSwizzled = false
+
 extension UIViewController {
-  open override class func initialize() {
+  final public class func doBadSwizzleStuff() {
+    guard !hasSwizzled else { return }
 
-    // make sure this isn't a subclass
-    guard self === UIViewController.self else { return }
-
+    hasSwizzled = true
     swizzle(self)
   }
 

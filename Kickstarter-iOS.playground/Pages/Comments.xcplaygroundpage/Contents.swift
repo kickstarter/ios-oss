@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let backer = User.brando
@@ -38,8 +38,8 @@ AppEnvironment.replaceCurrentEnvironment(
   ),
   currentUser: backer,
   language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 // Initialize the view controller.
@@ -49,5 +49,5 @@ let controller = CommentsViewController.configuredWith(project: project)
 let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

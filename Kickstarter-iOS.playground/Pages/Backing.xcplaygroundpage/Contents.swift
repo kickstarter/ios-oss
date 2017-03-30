@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import ReactiveSwift
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let reward = .template
@@ -24,13 +24,13 @@ AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",
 )
 
 AppEnvironment.replaceCurrentEnvironment(
-  language: .es,
-  locale: NSLocale(localeIdentifier: "en"),
   apiService: MockService(fetchBackingResponse: backing),
-  mainBundle: NSBundle.framework
+  language: .es,
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 initialize()
 let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
-XCPlaygroundPage.currentPage.liveView = controller
+PlaygroundPage.current.liveView = controller

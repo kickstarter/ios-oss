@@ -30,6 +30,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+    UIView.doBadSwizzleStuff()
+    UIViewController.doBadSwizzleStuff()
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default(),

@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let project = Project.cosmicSurgery
@@ -22,8 +22,8 @@ AppEnvironment.replaceCurrentEnvironment(
     fetchProjectResponse: project
   ),
   config: Config.template |> Config.lens.countryCode .~ "US",
-  mainBundle: NSBundle.framework,
-  language: .de
+  language: .de,
+  mainBundle: Bundle.framework
 )
 
 initialize()
@@ -33,5 +33,5 @@ let controller = RewardPledgeViewController
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 800
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

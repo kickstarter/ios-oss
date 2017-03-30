@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 initialize()
@@ -16,10 +16,10 @@ let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .por
 // Set the device language.
 AppEnvironment.replaceCurrentEnvironment(
   language: .de,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

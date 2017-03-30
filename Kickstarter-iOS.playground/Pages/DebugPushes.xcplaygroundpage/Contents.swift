@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Instantiate the Settings view controller.
@@ -15,5 +15,5 @@ let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .por
 
 // Render the screen.
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_400
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

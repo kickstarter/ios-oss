@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Setting `isVoiceOverRunning` to `true` outputs a date before every activity.
@@ -86,5 +86,5 @@ controller.bindViewModel()
 
 let (parent, _) = playgroundControllers(device: device, orientation: orientation, child: controller)
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
