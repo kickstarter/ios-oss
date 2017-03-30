@@ -1091,7 +1091,7 @@
 "project_count_projects.two" = "%{project_count} Projekte";
 "project_count_projects.zero" = "%{project_count} Projekte";
 "projects_count_newline_backed.few" = "%{projects_count}\nunterstützt";
-"projects_count_newline_backed.many" = "%{project_count}\nunterstützt";
+"projects_count_newline_backed.many" = "%{projects_count}\nunterstützt";
 "projects_count_newline_backed.one" = "1\nunterstützt";
 "projects_count_newline_backed.two" = "2\nunterstützt";
 "projects_count_newline_backed.zero" = "0\nunterstützt";

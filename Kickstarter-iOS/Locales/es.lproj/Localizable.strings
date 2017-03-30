@@ -1091,7 +1091,7 @@
 "project_count_projects.two" = "%{project_count} proyectos";
 "project_count_projects.zero" = "%{project_count} proyectos";
 "projects_count_newline_backed.few" = "%{projects_count}\npatrocinados";
-"projects_count_newline_backed.many" = "%{project_count}\npatrocinados";
+"projects_count_newline_backed.many" = "%{projects_count}\npatrocinados";
 "projects_count_newline_backed.one" = "1\npatrocinados";
 "projects_count_newline_backed.two" = "2\npatrocinados";
 "projects_count_newline_backed.zero" = "0\npatrocinados";
