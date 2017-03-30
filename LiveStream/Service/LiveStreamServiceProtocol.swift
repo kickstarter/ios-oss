@@ -13,6 +13,35 @@ public enum LiveApiError: Error {
   case invalidRequest
 }
 
+extension LiveApiError: Equatable {
+  public static func == (lhs: LiveApiError, rhs: LiveApiError) -> Bool {
+    switch (lhs, rhs) {
+    case (.chatMessageDecodingFailed, .chatMessageDecodingFailed):
+      return true
+    case (failedToInitializeFirebase, .failedToInitializeFirebase):
+      return true
+    case (firebaseAnonymousAuthFailed, .firebaseAnonymousAuthFailed):
+      return true
+    case (firebaseCustomTokenAuthFailed, .firebaseCustomTokenAuthFailed):
+      return true
+    case (sendChatMessageFailed, .sendChatMessageFailed):
+      return true
+    case (snapshotDecodingFailed(let lhsPath), .snapshotDecodingFailed(let rhsPath)):
+      return lhsPath == rhsPath
+    case (genericFailure, .genericFailure):
+      return true
+    case (invalidJson, .invalidJson):
+      return true
+    case (invalidRequest, .invalidRequest):
+      return true
+    case (chatMessageDecodingFailed, _), (failedToInitializeFirebase, _), (firebaseAnonymousAuthFailed, _),
+         (firebaseCustomTokenAuthFailed, _), (sendChatMessageFailed, _), (snapshotDecodingFailed, _),
+         (genericFailure, _), (invalidJson, _), (invalidRequest, _):
+      return false
+    }
+  }
+}
+
 public protocol LiveStreamServiceProtocol {
   init()
 
