@@ -30,17 +30,17 @@ public final class ReferralChartView: UIView {
 
     guard let context = UIGraphicsGetCurrentContext() else { return }
 
-    let internalPercentageAngle = CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI)
+    let internalPercentageAngle = CGFloat(-.pi / 2.0) + self.internalPercentage * CGFloat(2.0 * .pi)
     let internalAndExternalPercentage = min(self.internalPercentage + self.externalPercentage, 1.0)
-    let internalAndExternalPercentageAngle = CGFloat(-M_PI_2) + internalAndExternalPercentage *
-      CGFloat(2.0 * M_PI)
+    let internalAndExternalPercentageAngle
+      = CGFloat(-.pi / 2.0) + internalAndExternalPercentage * CGFloat(2.0 * .pi)
 
     UIColor.ksr_green_700.set()
     context.move(to: CGPoint(x: self.bounds.width/2, y: self.bounds.height/2))
     context.addLine(to: CGPoint(x: self.bounds.width/2, y: 0))
     context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
                    radius: self.bounds.width/2,
-                   startAngle: CGFloat(-M_PI_2),
+                   startAngle: CGFloat(-.pi / 2.0),
                    endAngle: internalPercentageAngle,
                    clockwise: false)
     context.closePath()
@@ -56,8 +56,8 @@ public final class ReferralChartView: UIView {
     )
     context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
                    radius: self.bounds.width/2,
-                   startAngle: CGFloat(-M_PI_2) + self.internalPercentage * CGFloat(2.0 * M_PI),
-                   endAngle: CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
+                   startAngle: CGFloat(-.pi / 2.0) + self.internalPercentage * CGFloat(2.0 * .pi),
+                   endAngle: CGFloat(-.pi / 2.0) + internalAndExternalPercentage * CGFloat(2.0 * .pi),
                    clockwise: false)
     context.closePath()
     context.fillPath()
@@ -72,8 +72,8 @@ public final class ReferralChartView: UIView {
     )
     context.addArc(center: .init(x: self.bounds.width/2, y: self.bounds.height/2),
                    radius: self.bounds.height/2,
-                   startAngle: CGFloat(-M_PI_2) + internalAndExternalPercentage * CGFloat(2.0 * M_PI),
-                   endAngle: CGFloat(-M_PI_2),
+                   startAngle: CGFloat(-.pi / 2.0) + internalAndExternalPercentage * CGFloat(2.0 * .pi),
+                   endAngle: CGFloat(-.pi / 2.0),
                    clockwise: false)
     context.closePath()
     context.fillPath()
