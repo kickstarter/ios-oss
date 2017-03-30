@@ -6,11 +6,11 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   private let viewControllers: [UIViewController]
 
   internal init(delegate: UIViewController, sort: DiscoveryParams.Sort) {
-    let backedController = BackerDashboardProjectsViewController()
-    backedController.configureWith(projectsType: .backed, sort: sort)
+    let backedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .backed,
+                                                                                sort: sort)
 
-    let savedController = BackerDashboardProjectsViewController()
-    savedController.configureWith(projectsType: .saved, sort: sort)
+    let savedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .saved,
+                                                                               sort: sort)
 
     self.viewControllers = BackerDashboardTab.allTabs.map { tab in
       switch tab {

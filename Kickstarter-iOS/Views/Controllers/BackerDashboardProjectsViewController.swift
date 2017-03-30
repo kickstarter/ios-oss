@@ -8,8 +8,11 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
 
-  internal func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
-    self.viewModel.inputs.configureWith(projectsType: projectsType, sort: sort)
+  internal static func configuredWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
+    -> BackerDashboardProjectsViewController {
+    let vc = BackerDashboardProjectsViewController()
+    vc.viewModel.inputs.configureWith(projectsType: projectsType, sort: sort)
+    return vc
   }
 
   internal override func viewDidLoad() {
