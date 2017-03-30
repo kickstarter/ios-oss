@@ -246,7 +246,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
             .map([LiveStreamChatMessage].decode)
             .flatMap { $0.value }
             .map(Event<[LiveStreamChatMessage], LiveApiError>.value)
-            .coalesceWith(.failed(.snapshotDecodingFailed))
+            .coalesceWith(.failed(.chatMessageDecodingFailed))
 
           observer.action(chatMessages)
           observer.sendCompleted()
@@ -281,7 +281,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
             .map(LiveStreamChatMessage.decode)
             .flatMap { $0.value }
             .map(Event<LiveStreamChatMessage, LiveApiError>.value)
-            .coalesceWith(.failed(.snapshotDecodingFailed))
+            .coalesceWith(.failed(.chatMessageDecodingFailed))
 
           observer.action(chatMessage)
         })
@@ -307,7 +307,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           let value = snapshot.value
             .flatMap { $0 as? Bool }
             .map(Event<Bool, LiveApiError>.value)
-            .coalesceWith(.failed(.snapshotDecodingFailed))
+            .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
           observer.action(value)
         })
@@ -332,7 +332,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         let value = snapshot.value
           .flatMap { $0 as? String }
           .map(Event<String, LiveApiError>.value)
-          .coalesceWith(.failed(.snapshotDecodingFailed))
+          .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
         observer.action(value)
       })
@@ -359,7 +359,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           .flatMap { $0 as? NSDictionary }
           .map { $0.allKeys.count }
           .map(Event<Int, LiveApiError>.value)
-          .coalesceWith(.failed(.snapshotDecodingFailed))
+          .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
         observer.action(value)
       })
@@ -406,7 +406,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           let value = snapshot.value
             .flatMap { $0 as? Int }
             .map(Event<Int, LiveApiError>.value)
-            .coalesceWith(.failed(.snapshotDecodingFailed))
+            .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
           observer.action(value)
         })

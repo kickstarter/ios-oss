@@ -154,10 +154,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.showErrorAlert = Signal.merge(
       eventFetchError,
-      liveStreamControllerStateError,
-      self.liveStreamApiErrorOccurredProperty.signal
-        .skipNil()
-        .map { $0.description }
+      liveStreamControllerStateError
     )
 
     self.loaderText = Signal.merge(
@@ -291,6 +288,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         AppEnvironment.current.koala.trackViewedLiveStream(project: project,
                                                            liveStreamEvent: liveStreamEvent,
                                                            refTag: refTag)
+    }
+
+    configData
+      .takePairWhen(self.liveStreamApiErrorOccurredProperty.signal.skipNil())
+      .observeValues { configData, error in
+        let (project, liveStreamEvent, _, _) = configData
+
+        AppEnvironment.current.koala.trackLiveStreamApiErrorOccurred(project: project,
+                                                                     liveStreamEvent: liveStreamEvent,
+                                                                     error: error)
     }
 
     self.addShareBarButtonItem = updatedEventFetch.values()

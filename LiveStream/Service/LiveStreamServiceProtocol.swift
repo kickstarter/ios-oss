@@ -2,11 +2,12 @@ import FirebaseDatabase
 import ReactiveSwift
 
 public enum LiveApiError: Error {
+  case chatMessageDecodingFailed
   case failedToInitializeFirebase
   case firebaseAnonymousAuthFailed
   case firebaseCustomTokenAuthFailed
   case sendChatMessageFailed
-  case snapshotDecodingFailed
+  case snapshotDecodingFailed(path: String)
   case genericFailure
   case invalidJson
   case invalidRequest

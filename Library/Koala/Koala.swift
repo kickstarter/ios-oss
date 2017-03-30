@@ -1653,6 +1653,24 @@ public final class Koala {
     self.track(event: "Closed Live Stream", properties: props)
   }
 
+  public func trackLiveStreamApiErrorOccurred(project: Project,
+                                              liveStreamEvent: LiveStreamEvent,
+                                              error: LiveApiError) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
+      .withAllValuesFrom(
+        [
+          "context": stateContext(forLiveStreamEvent: liveStreamEvent).trackingString,
+          "error": error
+        ]
+    )
+
+    self.track(
+      event: "Live API Error",
+      properties: props
+    )
+  }
+
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStreamEvent: LiveStreamEvent,
                                                 subscribed: Bool) {

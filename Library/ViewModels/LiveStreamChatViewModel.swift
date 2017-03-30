@@ -176,7 +176,25 @@ LiveStreamChatViewModelOutputs {
       sentChatMessageEvent.errors(),
       signInWithCustomTokenEvent.errors()
       )
-      .map { $0.description }
+      .map {
+        switch $0 {
+        case .failedToInitializeFirebase,
+             .firebaseAnonymousAuthFailed,
+             .firebaseCustomTokenAuthFailed:
+          return localizedString(key: "We_were_unable_to_connect_to_the_live_stream_chat",
+                                 defaultValue: "We were unable to connect to the live stream chat.")
+        case .sendChatMessageFailed:
+          return localizedString(key: "Your_chat_message_wasnt_sent_successfully",
+                                 defaultValue: "Your chat message wasn't sent successfully.")
+        case .snapshotDecodingFailed,
+             .chatMessageDecodingFailed,
+             .genericFailure,
+             .invalidJson,
+             .invalidRequest:
+          return localizedString(key: "Something_went_wrong_please_try_again",
+                                 defaultValue: "Something went wrong, please try again.")
+        }
+    }
 
     self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
     self.didConnectToChat = Signal.merge(
@@ -228,25 +246,4 @@ LiveStreamChatViewModelOutputs {
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
   public var outputs: LiveStreamChatViewModelOutputs { return self }
-}
-
-extension LiveApiError: CustomStringConvertible {
-  public var description: String {
-    switch self {
-    case .failedToInitializeFirebase,
-         .firebaseAnonymousAuthFailed,
-         .firebaseCustomTokenAuthFailed:
-      return localizedString(key: "We_were_unable_to_connect_to_the_live_stream_chat",
-                             defaultValue: "We were unable to connect to the live stream chat.")
-    case .sendChatMessageFailed:
-      return localizedString(key: "Your_chat_message_wasnt_sent_successfully",
-                             defaultValue: "Your chat message wasn't sent successfully.")
-    case .snapshotDecodingFailed,
-         .genericFailure,
-         .invalidJson,
-         .invalidRequest:
-      return localizedString(key: "Something_went_wrong_please_try_again",
-                             defaultValue: "Something went wrong, please try again.")
-    }
-  }
 }
