@@ -59,8 +59,8 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
-                        let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(projectsType: .backed, sort: .endingSoon)
+                        let controller = BackerDashboardProjectsViewController
+                          .configuredWith(projectsType: .backed, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)
@@ -77,8 +77,8 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
-                        let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(projectsType: .backed, sort: .endingSoon)
+                        let controller = BackerDashboardProjectsViewController
+                          .configuredWith(projectsType: .backed, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)
@@ -95,8 +95,8 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
-                        let controller = BackerDashboardProjectsViewController()
-                        controller.configureWith(projectsType: .saved, sort: .endingSoon)
+                        let controller = BackerDashboardProjectsViewController
+                          .configuredWith(projectsType: .saved, sort: .endingSoon)
                         let (parent, _) = traitControllers(device: device,
                                                            orientation: .portrait,
                                                            child: controller)
