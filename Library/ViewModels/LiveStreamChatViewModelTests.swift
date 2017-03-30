@@ -69,7 +69,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.prependChatMessagesToDataSourceReload.assertValueCount(0)
 
     let liveStreamService = MockLiveStreamService(
-      initialChatMessagesResult: Result(error: .snapshotDecodingFailed)
+      initialChatMessagesResult: Result(error: .chatMessageDecodingFailed)
     )
 
     withEnvironment(liveStreamService: liveStreamService) {

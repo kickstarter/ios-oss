@@ -714,4 +714,20 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.addShareBarButtonItem.assertValues([true])
     }
   }
+
+  func testTrackLiveApiErrors() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.configureWith(project: .template,
+                                 liveStreamEvent: .template,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
+
+    self.vm.inputs.liveStreamApiErrorOccurred(error: .chatMessageDecodingFailed)
+
+    XCTAssertEqual(["Viewed Live Stream", "Live API Error"], self.trackingClient.events)
+  }
 }
