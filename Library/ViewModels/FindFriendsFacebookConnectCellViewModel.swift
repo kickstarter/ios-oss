@@ -114,7 +114,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .map { AlertError.facebookConnectEmailTaken(envelope: $0) }
 
     let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
-      .map { $0 as? NSError }
+      .map { $0 as NSError? }
       .skipNil()
       .map(AlertError.facebookLoginAttemptFail)
 
