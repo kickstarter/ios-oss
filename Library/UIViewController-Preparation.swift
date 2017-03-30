@@ -30,13 +30,13 @@ private func swizzle(_ vc: UIViewController.Type) {
   }
 }
 
-extension UIViewController {
-  // FIXME: "Method 'initialize' defines Objective-C class method, which is not guaranteedto be invoked by
-  // by Swift and will be disallowed in future versions.
-  open override class func initialize() {
-    // make sure this isn't a subclass
-    guard self === UIViewController.self else { return }
+private var hasSwizzled = false
 
+extension UIViewController {
+  final public class func doBadSwizzleStuff() {
+    guard !hasSwizzled else { return }
+
+    hasSwizzled = true
     swizzle(self)
   }
 
