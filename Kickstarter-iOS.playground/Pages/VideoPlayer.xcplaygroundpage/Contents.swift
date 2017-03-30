@@ -3,10 +3,10 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
-XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+PlaygroundPage.current.needsIndefiniteExecution = true
 
 let project = .template
   |> Project.lens.video .~ (
@@ -15,12 +15,12 @@ let project = .template
 )
 
 AppEnvironment.replaceCurrentEnvironment(
-  mainBundle: NSBundle.framework,
   apiService: MockService(
     oauthToken: OauthToken(token: "deadbeef")
-  )
+  ),
+  mainBundle: Bundle.framework
 )
 
 initialize()
 let controller = VideoViewController.configuredWith(project: project)
-XCPlaygroundPage.currentPage.liveView = controller
+PlaygroundPage.current.liveView = controller

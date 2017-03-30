@@ -4,7 +4,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 
 //: __Thanks Page__
 
@@ -23,12 +23,12 @@ let projects = [
 let projectsResponse = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
 AppEnvironment.replaceCurrentEnvironment(
-  mainBundle: NSBundle.framework,
-  apiService: MockService(
-    oauthToken: OauthToken(token: "deadbeef"),
-    fetchDiscoveryResponse: projectsResponse
-  ),
-  language: .en, locale: NSLocale(localeIdentifier: "en")
+    apiService: MockService(
+        oauthToken: OauthToken(token: "deadbeef"),
+        fetchDiscoveryResponse: projectsResponse
+    ),
+    language: .en, locale: Locale(identifier: "en"),
+    mainBundle: Bundle.framework
 )
 
 initialize()
@@ -37,5 +37,5 @@ let nav = UINavigationController(rootViewController: controller)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: nav)
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
