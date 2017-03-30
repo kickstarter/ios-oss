@@ -4,8 +4,8 @@ import ReactiveSwift
 import Result
 
 public protocol BackerDashboardProjectCellViewModelInputs {
-  /// Call with a backed project.
-  func project(_ project: Project)
+  /// Call to configure with a backed project.
+  func configureWith(project: Project)
 }
 
 public protocol BackerDashboardProjectCellViewModelOutputs {
@@ -67,7 +67,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func project(_ project: Project) {
+  public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
 

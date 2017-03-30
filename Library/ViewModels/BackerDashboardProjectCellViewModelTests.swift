@@ -43,7 +43,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 0.5
       |> Project.lens.dates.deadline .~ endingInDays
 
-    self.vm.inputs.project(project)
+    self.vm.inputs.configureWith(project: project)
 
     self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat live"])
     self.metadataIconIsHidden.assertValues([false])
@@ -63,7 +63,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 1.1
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.project(project)
+    self.vm.inputs.configureWith(project: project)
 
     self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat successful"])
     self.metadataIconIsHidden.assertValues([true])
@@ -83,7 +83,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.stats.fundingProgress .~ 0.2
       |> Project.lens.state .~ .failed
 
-    self.vm.inputs.project(project)
+    self.vm.inputs.configureWith(project: project)
 
     self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat failed"])
     self.metadataIconIsHidden.assertValues([true])
@@ -104,7 +104,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isStarred .~ true
 
-    self.vm.inputs.project(project)
+    self.vm.inputs.configureWith(project: project)
 
     self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat successful"])
     self.metadataIconIsHidden.assertValues([true])

@@ -20,7 +20,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var savedIconImageView: UIImageView!
 
   internal func configureWith(value: Project) {
-    self.viewModel.inputs.project(value)
+    self.viewModel.inputs.configureWith(project: value)
   }
 
   internal override func bindViewModel() {
