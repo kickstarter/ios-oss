@@ -29,7 +29,7 @@ public enum Strings {
    "Access all your favorite categories in the explore dropdown at the top of the app."
 
    - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
-   - **de**: "Access all your favorite categories in the explore dropdown at the top of the app."
+   - **de**: "Zugang zu deinen meist besuchten Kategorien im Dropdown-Menü im oberen Bereich der App."
    - **fr**: "Access all your favorite categories in the explore dropdown at the top of the app."
    - **en**: "Access all your favorite categories in the explore dropdown at the top of the app."
   */
@@ -546,8 +546,8 @@ backers"
    "Bring creative projects to life."
 
    - **es**: "Dale vida a proyectos creativos."
-   - **de**: "Bring creative projects to life."
-   - **fr**: "Bring creative projects to life."
+   - **de**: "Kreative Projekte werden Wirklichkeit!"
+   - **fr**: "Réalisez vos projets créatifs."
    - **en**: "Bring creative projects to life."
   */
   public static func Bring_creative_projects_to_life() -> String {
@@ -1114,6 +1114,22 @@ backers"
     return localizedString(
       key: "Expands_subcategories",
       defaultValue: "Expands subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Explore creative projects"
+
+   - **es**: "Explora proyectos creativos"
+   - **de**: "Explore creative projects"
+   - **fr**: "Découvrez des projets créatifs"
+   - **en**: "Explore creative projects"
+  */
+  public static func Explore_creative_projects() -> String {
+    return localizedString(
+      key: "Explore_creative_projects",
+      defaultValue: "Explore creative projects",
       count: nil,
       substitutions: [:]
     )
@@ -2116,8 +2132,8 @@ with friends."
    "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
 
    - **es**: "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice."
-   - **de**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
-   - **fr**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
+   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung."
+   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Nous vous enverrons un rappel 48 heures avant la fin de sa campagne."
    - **en**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
   */
   public static func Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you() -> String {
@@ -2647,8 +2663,8 @@ from friends yet."
    "Please log in or sign up to back this project."
 
    - **es**: "Por favor inicia sesión o regístrate para patrocinar este proyecto."
-   - **de**: "Please log in or sign up to back this project."
-   - **fr**: "Please log in or sign up to back this project."
+   - **de**: "Um dieses Projekt zu unterstützen, musst du dich bitte anmelden oder registrieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour soutenir ce projet."
    - **en**: "Please log in or sign up to back this project."
   */
   public static func Please_log_in_or_sign_up_to_back_this_project() -> String {
@@ -2663,8 +2679,8 @@ from friends yet."
    "Please log in or sign up to message this creator."
 
    - **es**: "Por favor inicia sesión o regístrate para mandarle un mensaje a este creador."
-   - **de**: "Please log in or sign up to message this creator."
-   - **fr**: "Please log in or sign up to message this creator."
+   - **de**: "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour écrire à ce créateur."
    - **en**: "Please log in or sign up to message this creator."
   */
   public static func Please_log_in_or_sign_up_to_message_this_creator() -> String {
@@ -2679,8 +2695,8 @@ from friends yet."
    "Please log in or sign up to subscribe to this live stream."
 
    - **es**: "Por favor inicia sesión o regístrate para suscribirte a este Live Stream."
-   - **de**: "Please log in or sign up to subscribe to this live stream."
-   - **fr**: "Please log in or sign up to subscribe to this live stream."
+   - **de**: "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct."
    - **en**: "Please log in or sign up to subscribe to this live stream."
   */
   public static func Please_log_in_or_sign_up_to_subscribe_to_this_live_stream() -> String {
@@ -2727,8 +2743,8 @@ from friends yet."
    "Pledge to support projects and view all your saved and backed projects in one place."
 
    - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar."
-   - **de**: "Pledge to support projects and view all your saved and backed projects in one place."
-   - **fr**: "Pledge to support projects and view all your saved and backed projects in one place."
+   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte."
+   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit."
    - **en**: "Pledge to support projects and view all your saved and backed projects in one place."
   */
   public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
@@ -2743,14 +2759,30 @@ from friends yet."
    "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
 
    - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar. Para continuar, por favor inicia sesión o regístrate."
-   - **de**: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
-   - **fr**: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
+   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick. Um fortzufahren, melde dich bitte an oder registriere dich."
+   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit. Connectez-vous ou inscrivez-vous pour continuer."
    - **en**: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
   */
   public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue() -> String {
     return localizedString(
       key: "Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue",
       defaultValue: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge to your favorites, then view all the projects you’ve backed here."
+
+   - **es**: "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar."
+   - **de**: "Pledge to your favorites, then view all the projects you’ve backed here."
+   - **fr**: "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici."
+   - **en**: "Pledge to your favorites, then view all the projects you’ve backed here."
+  */
+  public static func Pledge_to_your_favorites_then_view_all_the_projects() -> String {
+    return localizedString(
+      key: "Pledge_to_your_favorites_then_view_all_the_projects",
+      defaultValue: "Pledge to your favorites, then view all the projects you’ve backed here.",
       count: nil,
       substitutions: [:]
     )
@@ -2921,8 +2953,8 @@ daring ideas."
    "Rate us in the App Store"
 
    - **es**: "¡Califícanos en la App Store!"
-   - **de**: "Rate us in the App Store"
-   - **fr**: "Rate us in the App Store"
+   - **de**: "Bewerte uns im App Store!"
+   - **fr**: "Évaluez-nous dans l'App Store"
    - **en**: "Rate us in the App Store"
   */
   public static func Rate_us_in_the_App_Store() -> String {
@@ -2985,8 +3017,8 @@ daring ideas."
    "Recommended For You"
 
    - **es**: "Recomendaciones para ti"
-   - **de**: "Recommended For You"
-   - **fr**: "Recommended For You"
+   - **de**: "Empfehlungen für dich"
+   - **fr**: "Rien que pour vous"
    - **en**: "Recommended For You"
   */
   public static func Recommended_For_You() -> String {
@@ -3027,22 +3059,6 @@ daring ideas."
       defaultValue: "Recorded live with <b>%{creator_name}</b>",
       count: nil,
       substitutions: ["creator_name": creator_name]
-    )
-  }
-  /**
-   "Reminder: 48 hours left to back %{project_name}"
-
-   - **es**: "Recordatorio: Quedan sólo 48 horas para patrocinar el proyecto %{project_name}"
-   - **de**: "Reminder: 48 hours left to back %{project_name}"
-   - **fr**: "Reminder: 48 hours left to back %{project_name}"
-   - **en**: "Reminder: 48 hours left to back %{project_name}"
-  */
-  public static func Reminder_48_hours_left_to_back_project_name(project_name: String) -> String {
-    return localizedString(
-      key: "Reminder_48_hours_left_to_back_project_name",
-      defaultValue: "Reminder: 48 hours left to back %{project_name}",
-      count: nil,
-      substitutions: ["project_name": project_name]
     )
   }
   /**
@@ -3201,6 +3217,22 @@ daring ideas."
     return localizedString(
       key: "Save",
       defaultValue: "Save",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Save projects"
+
+   - **es**: "Save projects"
+   - **de**: "Save projects"
+   - **fr**: "Enregistrer des projets"
+   - **en**: "Save projects"
+  */
+  public static func Save_projects() -> String {
+    return localizedString(
+      key: "Save_projects",
+      defaultValue: "Save projects",
       count: nil,
       substitutions: [:]
     )
@@ -3576,6 +3608,22 @@ catch your eye?"
     )
   }
   /**
+   "Tap the star icon on a project to get notified 48 hours before it ends."
+
+   - **es**: "Marca un proyecto con asterisco y te notificaremos 48 horas antes de que termine."
+   - **de**: "Tap the star icon on a project to get notified 48 hours before it ends."
+   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
+   - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
+  */
+  public static func Tap_the_star_on_a_project_to_get_notified() -> String {
+    return localizedString(
+      key: "Tap_the_star_on_a_project_to_get_notified",
+      defaultValue: "Tap the star icon on a project to get notified 48 hours before it ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
 
    - **es**: "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine."
@@ -3755,8 +3803,8 @@ catch your eye?"
    "To read this project update, you must be a backer. Please log in or sign up to continue."
 
    - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
-   - **de**: "To read this project update, you must be a backer. Please log in or sign up to continue."
-   - **fr**: "To read this project update, you must be a backer. Please log in or sign up to continue."
+   - **de**: "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich."
+   - **fr**: "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer."
    - **en**: "To read this project update, you must be a backer. Please log in or sign up to continue."
   */
   public static func To_read_this_project_update_you_must_be_a_backer() -> String {
@@ -4011,8 +4059,8 @@ catch your eye?"
    "We’re all ears."
 
    - **es**: "¡Somos todo oídos!"
-   - **de**: "We’re all ears."
-   - **fr**: "We’re all ears."
+   - **de**: "Wir sind ganz Ohr!"
+   - **fr**: "Nous sommes tout ouïe."
    - **en**: "We’re all ears."
   */
   public static func We_re_all_ears() -> String {
@@ -6015,9 +6063,9 @@ Please try again later."
   /**
    "%{category_name}/%{subcategory_name} saved."
 
-   - **es**: "%{category_name}/%{subcategory_name} saved."
-   - **de**: "%{category_name}/%{subcategory_name} saved."
-   - **fr**: "%{category_name}/%{subcategory_name} saved."
+   - **es**: "%{category_name}/%{subcategory_name} guardado."
+   - **de**: "%{category_name}/%{subcategory_name} gespeichert."
+   - **fr**: "%{category_name}/%{subcategory_name} : enregistré."
    - **en**: "%{category_name}/%{subcategory_name} saved."
   */
   public static func category_name_subcategory_name_saved(category_name: String, subcategory_name: String) -> String {
@@ -13117,7 +13165,7 @@ Thank you for your support!"
    "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
 
    - **es**: "Lamentamos no poder procesar el pago con Android Pay en estos momentos. Por favor inténtalo de nuevo."
-   - **de**: "Der Zahlungsvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
+   - **de**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
    - **fr**: "Nous sommes désolés, mais nous ne sommes pas en mesure de traiter votre demande Android Pay pour le moment. Veuillez réessayer ultérieurement."
    - **en**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
   */
@@ -13197,7 +13245,7 @@ Thank you for your support!"
    "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
 
    - **es**: "Al contribuir, aceptas los <u>terms of use</u> y la <u>privacy policy</u> de Kickstarter."
-   - **de**: "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden."
+   - **de**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
    - **fr**: "En vous engageant, vous acceptez les <u>conditions d'utilisation</u> et la <u>politique de confidentialité</u> de Kickstarter."
    - **en**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
   */
@@ -14637,6 +14685,48 @@ Thank you for your support!"
     )
   }
   /**
+   "%{projects_count}
+backed"
+
+   - **es**: "%{projects_count}
+patrocinados"
+   - **de**: "%{projects_count}
+backed"
+   - **fr**: "%{projects_count}
+projets soutenus"
+   - **en**: "%{projects_count}
+backed"
+  */
+  public static func projects_count_newline_backed(projects_count: Int) -> String {
+    return localizedString(
+      key: "projects_count_newline_backed",
+      defaultValue: "%{projects_count}\nbacked",
+      count: projects_count,
+      substitutions: ["projects_count": Format.wholeNumber(projects_count)]
+    )
+  }
+  /**
+   "%{projects_count}
+saved"
+
+   - **es**: "%{projects_count}
+guardados"
+   - **de**: "%{projects_count}
+saved"
+   - **fr**: "%{projects_count}
+projets enregistrés"
+   - **en**: "%{projects_count}
+saved"
+  */
+  public static func projects_count_newline_saved(projects_count: Int) -> String {
+    return localizedString(
+      key: "projects_count_newline_saved",
+      defaultValue: "%{projects_count}\nsaved",
+      count: projects_count,
+      substitutions: ["projects_count": Format.wholeNumber(projects_count)]
+    )
+  }
+  /**
    "Close"
 
    - **es**: "Cerrar"
@@ -15657,7 +15747,7 @@ Thank you for your support!"
    "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
 
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Contáctanos en app@kickstarter.com."
-   - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter android@kickstarter.com."
+   - **de**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse android@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
   */
