@@ -1121,9 +1121,9 @@ backers"
   /**
    "Explore creative projects"
 
-   - **es**: "Explore creative projects"
-   - **de**: "Explore creative projects"
-   - **fr**: "Explore creative projects"
+   - **es**: "Explora proyectos creativos"
+   - **de**: "Erkunde kreative Projekte"
+   - **fr**: "Découvrez des projets créatifs"
    - **en**: "Explore creative projects"
   */
   public static func Explore_creative_projects() -> String {
@@ -2774,9 +2774,9 @@ from friends yet."
   /**
    "Pledge to your favorites, then view all the projects you’ve backed here."
 
-   - **es**: "Pledge to your favorites, then view all the projects you’ve backed here."
-   - **de**: "Pledge to your favorites, then view all the projects you’ve backed here."
-   - **fr**: "Pledge to your favorites, then view all the projects you’ve backed here."
+   - **es**: "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar."
+   - **de**: "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt."
+   - **fr**: "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici."
    - **en**: "Pledge to your favorites, then view all the projects you’ve backed here."
   */
   public static func Pledge_to_your_favorites_then_view_all_the_projects() -> String {
@@ -3226,7 +3226,7 @@ daring ideas."
 
    - **es**: "Save projects"
    - **de**: "Save projects"
-   - **fr**: "Save projects"
+   - **fr**: "Enregistrer des projets"
    - **en**: "Save projects"
   */
   public static func Save_projects() -> String {
@@ -3610,9 +3610,9 @@ catch your eye?"
   /**
    "Tap the star icon on a project to get notified 48 hours before it ends."
 
-   - **es**: "Tap the star icon on a project to get notified 48 hours before it ends."
-   - **de**: "Tap the star icon on a project to get notified 48 hours before it ends."
-   - **fr**: "Tap the star icon on a project to get notified 48 hours before it ends."
+   - **es**: "Marca un proyecto con asterisco y te notificaremos 48 horas antes de que termine."
+   - **de**: "Tippe auf den Stern neben einem Projekt - wir benachrichtigen dich 48 Stunden, bevor es abläuft."
+   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
    - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
   */
   public static func Tap_the_star_on_a_project_to_get_notified() -> String {
@@ -3804,7 +3804,7 @@ catch your eye?"
 
    - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
    - **de**: "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich."
-   - **fr**: "To read this project update, you must be a backer. Please log in or sign up to continue."
+   - **fr**: "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer."
    - **en**: "To read this project update, you must be a backer. Please log in or sign up to continue."
   */
   public static func To_read_this_project_update_you_must_be_a_backer() -> String {
@@ -13165,7 +13165,7 @@ Thank you for your support!"
    "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
 
    - **es**: "Lamentamos no poder procesar el pago con Android Pay en estos momentos. Por favor inténtalo de nuevo."
-   - **de**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
+   - **de**: "Der Zahlvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
    - **fr**: "Nous sommes désolés, mais nous ne sommes pas en mesure de traiter votre demande Android Pay pour le moment. Veuillez réessayer ultérieurement."
    - **en**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
   */
@@ -13245,7 +13245,7 @@ Thank you for your support!"
    "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
 
    - **es**: "Al contribuir, aceptas los <u>terms of use</u> y la <u>privacy policy</u> de Kickstarter."
-   - **de**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
+   - **de**: "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden."
    - **fr**: "En vous engageant, vous acceptez les <u>conditions d'utilisation</u> et la <u>politique de confidentialité</u> de Kickstarter."
    - **en**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
   */
@@ -14689,11 +14689,11 @@ Thank you for your support!"
 backed"
 
    - **es**: "%{projects_count}
-backed"
+patrocinados"
    - **de**: "%{projects_count}
-backed"
+unterstützt"
    - **fr**: "%{projects_count}
-backed"
+projets soutenus"
    - **en**: "%{projects_count}
 backed"
   */
@@ -14710,11 +14710,11 @@ backed"
 saved"
 
    - **es**: "%{projects_count}
-saved"
+guardados"
    - **de**: "%{projects_count}
-saved"
+gespeichert"
    - **fr**: "%{projects_count}
-saved"
+projets enregistrés"
    - **en**: "%{projects_count}
 saved"
   */
@@ -15747,7 +15747,7 @@ saved"
    "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
 
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Contáctanos en app@kickstarter.com."
-   - **de**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
+   - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse android@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
   */
