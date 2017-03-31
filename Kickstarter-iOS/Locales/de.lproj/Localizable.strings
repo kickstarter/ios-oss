@@ -1,5 +1,5 @@
 "About_reward_amount" = "Ungefähr %{reward_amount}";
-"Access_all_your_favorite_categories_in_the_explore_dropdown" = "Access all your favorite categories in the explore dropdown at the top of the app.";
+"Access_all_your_favorite_categories_in_the_explore_dropdown" = "Zugang zu deinen meist besuchten Kategorien im Dropdown-Menü im oberen Bereich der App.";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -35,7 +35,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
-"Bring_creative_projects_to_life" = "Bring creative projects to life.";
+"Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
@@ -71,6 +71,7 @@
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
+"Explore_creative_projects" = "Erkunde kreative Projekte";
 "Explore_projects" = "Projekte erkunden";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
@@ -141,7 +142,7 @@
 "Live_streaming_now" = "Wird gerade live gestreamt";
 "Live_with_creator_name" = "Live mit <b>%{creator_name}</b>";
 "Loading" = "Ladevorgang läuft";
-"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Log in or sign up to save this project. We’ll remind you 48 hours before it ends.";
+"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung.";
 "Log_in_or_sign_up_to_subscribe" = "Bitte einloggen oder registrieren";
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
@@ -174,13 +175,14 @@
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
-"Please_log_in_or_sign_up_to_back_this_project" = "Please log in or sign up to back this project.";
-"Please_log_in_or_sign_up_to_message_this_creator" = "Please log in or sign up to message this creator.";
-"Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Please log in or sign up to subscribe to this live stream.";
+"Please_log_in_or_sign_up_to_back_this_project" = "Um dieses Projekt zu unterstützen, musst du dich bitte anmelden oder registrieren.";
+"Please_log_in_or_sign_up_to_message_this_creator" = "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren.";
+"Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
 "Pledge" = "Beitrag:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Pledge to support projects and view all your saved and backed projects in one place.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue.";
+"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte.";
+"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick. Um fortzufahren, melde dich bitte an oder registriere dich.";
+"Pledge_to_your_favorites_then_view_all_the_projects" = "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt.";
 "Pledge_was_dropped" = "Finanzierungsbeitrag wurde nicht übernommen.";
 "Pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Popular" = "Beliebt";
@@ -191,14 +193,13 @@
 "Public_comment" = "Öffentlicher Kommentar";
 "Pursue_daring_ideas" = "Zündende Ideen.";
 "Push_notifications" = "Push-Benachrichtigungen";
-"Rate_us_in_the_App_Store" = "Rate us in the App Store";
+"Rate_us_in_the_App_Store" = "Bewerte uns im App Store!";
 "Read_more_about_the_campaign_arrow" = "Mehr über diese Kampagne lesen  →";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
 "Recommended" = "Empfehlungen";
-"Recommended_For_You" = "Recommended For You";
+"Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
-"Reminder_48_hours_left_to_back_project_name" = "Reminder: 48 hours left to back %{project_name}";
 "Replay" = "Wiedergabe";
 "Replay_available_for_time_more_units" = "Wiedergabe verfügbar für weitere %{time} %{units}";
 "Replay_live_stream_with_creator_name" = "Wiedergabe des Live-Streams von<br><b>%{creator_name}</b>";
@@ -221,6 +222,7 @@
 "Rewards_count_rewards_colon.two" = "%{rewards_count} Belohnungen:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} Belohnungen:";
 "Save" = "Speichern";
+"Save_projects" = "Save projects";
 "Save_this_project" = "Dieses Projekt speichern";
 "Saved" = "Gespeichert";
 "Saved_projects" = "Gespeicherte Projekte";
@@ -244,6 +246,7 @@
 "Subscribed" = "Abo aktiviert";
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
 "Survey" = "Befragung";
+"Tap_the_star_on_a_project_to_get_notified" = "Tippe auf den Stern neben einem Projekt - wir benachrichtigen dich 48 Stunden, bevor es abläuft.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken.";
 "Thank_you_for_supporting_this_project" = "Vielen Dank für deine Unterstützung dieses Projekts.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
@@ -255,7 +258,7 @@
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "Time_left_left" = "%{time_left} übrig";
-"To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
+"To_read_this_project_update_you_must_be_a_backer" = "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich.";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
 "Unsaves_project" = "Macht Speichern dieses Projektes rückgängig.";
@@ -271,7 +274,7 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
-"We_re_all_ears" = "We’re all ears.";
+"We_re_all_ears" = "Wir sind ganz Ohr!";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "You_Launched" = "Dein Projekt ist live!";
@@ -396,7 +399,7 @@
 "backing_info.estimated_delivery_date" = "Voraussichtliche Lieferung am %{delivery_date}";
 "backing_info.info_button" = "Infos zur Unterstützung";
 "backing_info.pledged_backing_amount" = "Beigetragen: %{backing_amount}";
-"category_name_subcategory_name_saved" = "%{category_name}/%{subcategory_name} saved.";
+"category_name_subcategory_name_saved" = "%{category_name}/%{subcategory_name} gespeichert.";
 "category_promo.explore_category" = "Erkunde %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} Live-Projekte";
 "comments_count_comments.few" = "%{comments_count} Kommentare";
@@ -982,7 +985,7 @@
 "project.checkout.android_pay.backer_101" = "<b>Fragen?</b> Einfach im <u>Unterstützer-Einmaleins</u> nachlesen!";
 "project.checkout.android_pay.change" = "Ändern";
 "project.checkout.android_pay.confirm" = "Bestätigen";
-"project.checkout.android_pay.error.message" = "Der Zahlungsvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen.";
+"project.checkout.android_pay.error.message" = "Der Zahlvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen.";
 "project.checkout.android_pay.error.title" = "Fehler bei Android Pay aufgetreten";
 "project.checkout.android_pay.payment_method" = "Zahlungmethode";
 "project.checkout.android_pay.pledge_disclaimer" = "Deine Zahlungsmethode wird jetzt noch nicht belastet. Erst nachdem das Projekt erfolgreich finanziert wurde, wird sie nach Ablauf desselben mit %{charge_amount} belastet.";
@@ -1087,6 +1090,16 @@
 "project_count_projects.one" = "%{project_count} Projekt";
 "project_count_projects.two" = "%{project_count} Projekte";
 "project_count_projects.zero" = "%{project_count} Projekte";
+"projects_count_newline_backed.few" = "%{projects_count}\nunterstützt";
+"projects_count_newline_backed.many" = "%{projects_count}\nunterstützt";
+"projects_count_newline_backed.one" = "1\nunterstützt";
+"projects_count_newline_backed.two" = "2\nunterstützt";
+"projects_count_newline_backed.zero" = "0\nunterstützt";
+"projects_count_newline_saved.few" = "%{projects_count}\ngespeichert";
+"projects_count_newline_saved.many" = "%{projects_count}\ngespeichert";
+"projects_count_newline_saved.one" = "1\ngespeichert";
+"projects_count_newline_saved.two" = "2\ngespeichert";
+"projects_count_newline_saved.zero" = "0\ngespeichert";
 "push_notifications.alert.buttons.close" = "Schließen";
 "push_notifications.alert.buttons.view" = "Anzeigen";
 "rewards.info.all_gone" = "Alle weg";
@@ -1168,7 +1181,7 @@
 "support_email.button.ok" = "OK";
 "support_email.chooser" = "Auswahl E-Mail-App:";
 "support_email.noemail.message" = "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com.";
-"support_email.noemail.message_android" = "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter android@kickstarter.com.";
+"support_email.noemail.message_android" = "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com.";
 "support_email.noemail.title" = "Support";
 "support_email.subject" = "Hallo Kickstarter App Support";
 "support_email.to" = "app@kickstarter.com";
