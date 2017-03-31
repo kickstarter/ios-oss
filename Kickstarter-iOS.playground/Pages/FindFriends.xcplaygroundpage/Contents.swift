@@ -1,6 +1,6 @@
 import Library
 import Prelude
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 @testable import KsApi
 
@@ -15,8 +15,8 @@ AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(fetchFriendsResponse: friendsResponse),
   currentUser: currentUser,
   language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 // Instantiate the Find Friends view controller.
@@ -24,9 +24,9 @@ initialize()
 let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
 
 // Set the device type and orientation.
-let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone5_5inch, orientation: .portrait, child: controller)
 
 // Render the screen.
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
