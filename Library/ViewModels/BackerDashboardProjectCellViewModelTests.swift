@@ -45,7 +45,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat live"])
+    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat "])
     self.metadataIconIsHidden.assertValues([false])
     self.metadataText.assertValues(["14 days"])
     self.percentFundedText.assertValues(["50%"])
@@ -65,7 +65,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat successful"])
+    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Successful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Successful"])
     self.percentFundedText.assertValues(["110%"])
@@ -85,7 +85,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat failed"])
+    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Unsuccessful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Unsuccessful"])
     self.percentFundedText.assertValues(["20%"])
@@ -106,7 +106,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat successful"])
+    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Successful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Successful"])
     self.percentFundedText.assertValues(["110%"])
