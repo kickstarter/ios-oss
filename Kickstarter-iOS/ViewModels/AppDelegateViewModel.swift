@@ -385,7 +385,7 @@ AppDelegateViewModelOutputs {
       .filter { link in
         // NB: have to do this cause we handle the live stream subpage in a different manner than we do
         // the other subpages.
-        if case .project(_, .liveStream(_), _) = link { return false }
+        if case .project(_, .liveStream, _) = link { return false }
         return true
       }
       .map { link -> (Param, Navigation.Project, RefTag?)? in

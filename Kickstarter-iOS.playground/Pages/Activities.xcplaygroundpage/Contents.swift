@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let creator = .template |> User.lens.avatar.small .~ ""
@@ -100,6 +100,6 @@ let controller = ActivitiesViewController.instantiate()
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 2200
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
 

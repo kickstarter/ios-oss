@@ -76,7 +76,7 @@ public struct Environment {
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
-  public let scheduler: DateSchedulerProtocol
+  public let scheduler: DateScheduler
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
@@ -106,7 +106,7 @@ public struct Environment {
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
-    scheduler: DateSchedulerProtocol = QueueScheduler.main,
+    scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
     userDefaults: KeyValueStoreType = UserDefaults.standard) {
 

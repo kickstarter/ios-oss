@@ -85,7 +85,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(scheduler: DateSchedulerProtocol = QueueScheduler.main) {
+  init(scheduler: DateScheduler = QueueScheduler.main) {
 
     let configData = Signal.combineLatest(self.configData.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)

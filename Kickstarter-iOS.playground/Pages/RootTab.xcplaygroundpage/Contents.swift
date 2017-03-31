@@ -4,7 +4,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 
 let loggedOut: User? = nil
 let loggedIn = User.brando
@@ -16,12 +16,12 @@ let currentUser = loggedOut
 //let currentUser = loggedIn
 //let currentUser = member
 
-AppEnvironment.replaceCurrentEnvironment(currentUser: currentUser, mainBundle: NSBundle.framework)
+AppEnvironment.replaceCurrentEnvironment(currentUser: currentUser, mainBundle: Bundle.framework)
 
 initialize()
-let controller = Storyboard.Main.instantiate(RootTabBarViewController)
+let controller = Storyboard.Main.instantiate(RootTabBarViewController.self)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

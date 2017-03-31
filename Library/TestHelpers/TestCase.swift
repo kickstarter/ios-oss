@@ -28,6 +28,9 @@ internal class TestCase: FBSnapshotTestCase {
   override func setUp() {
     super.setUp()
 
+    UIView.doBadSwizzleStuff()
+    UIViewController.doBadSwizzleStuff()
+
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 

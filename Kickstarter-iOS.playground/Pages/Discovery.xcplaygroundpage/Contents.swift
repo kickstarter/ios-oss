@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let basicParams = DiscoveryParams.defaults
@@ -48,7 +48,7 @@ let launch = .template
   |> Activity.lens.project .~ Project.cosmicSurgery
 
 // Instantiate projects with metadata.
-let today = AppEnvironment.current.calendar.startOfDayForDate(NSDate()).timeIntervalSince1970
+let today = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
 
 let potd = .todayByScottThrift
   |> Project.lens.dates.potdAt .~ today
@@ -65,26 +65,26 @@ let featured = .anomalisa
 // Set the current app environment.
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
+    fetchActivitiesResponse: [projectUpdate, follow, backing],
     fetchDiscoveryResponse: .template |> DiscoveryEnvelope.lens.projects .~ [
       potd,
       starred,
       backed,
       featured
-    ],
-    fetchActivitiesResponse: [projectUpdate, follow, backing]
+    ]
   ),
   currentUser: User.template,
   language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 // Initialize the view controller.
 initialize()
 let controller = DiscoveryViewController.instantiate()
 
-let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
