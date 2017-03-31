@@ -5,12 +5,15 @@ internal final class LoginToutViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
+    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(LoginToutViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -25,7 +28,9 @@ internal final class LoginToutViewControllerTests: TestCase {
   }
 
   func testStarProjectContext() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(LoginToutViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -40,7 +45,9 @@ internal final class LoginToutViewControllerTests: TestCase {
   }
 
   func testBackProjectContext() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(LoginToutViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -55,7 +62,9 @@ internal final class LoginToutViewControllerTests: TestCase {
   }
 
   func testLiveStreamContext() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(LoginToutViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

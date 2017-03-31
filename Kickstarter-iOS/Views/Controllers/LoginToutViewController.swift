@@ -61,6 +61,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.view
+      |> UIView.lens.layoutMargins .~ (
+        self.traitCollection.isRegularRegular
+          ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
+          : .init(top: 0, left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
+    )
+
     _ = self |> baseControllerStyle()
     _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
@@ -70,18 +77,19 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.signupButton |> signupWithEmailButtonStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 16)
+      |> UILabel.lens.font %~~ { _, l in  l.traitCollection.isRegularRegular ? .ksr_headline(size: 20) : .ksr_headline(size: 14)  }
       |> UILabel.lens.text .~ Strings.Bring_creative_projects_to_life()
 
     _ = self.contextLabel
-      |> UILabel.lens.font .~ .ksr_subhead(size: 16)
+      |> UILabel.lens.font %~~ { _, l in  l.traitCollection.isRegularRegular ? .ksr_subhead(size: 20) : .ksr_subhead(size: 14)  }
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+      |> UIStackView.lens.layoutMargins %~~ { _, stack in stack.traitCollection.isRegularRegular
+      ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3)) }
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-
-  }
+    }
 
   // swiftlint:disable function_body_length
   override func bindViewModel() {
