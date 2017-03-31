@@ -291,7 +291,7 @@ private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewC
 }
 
 private func profileController() -> UIViewController {
-  let showDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true)
+  let showDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true) || true
   return showDash
     ? BackerDashboardViewController.instantiate()
     : ProfileViewController.instantiate()

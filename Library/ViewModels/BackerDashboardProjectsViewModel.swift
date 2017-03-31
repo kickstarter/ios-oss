@@ -117,9 +117,10 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
     self.goToProject = Signal.combineLatest(projectsType, self.projects)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
-      .map { typeAndProjects, project in
-        let ref = (typeAndProjects.0 == .backed) ? RefTag.profileBacked : RefTag.profileSaved
-        return (project, typeAndProjects.1, ref)
+      .map(unpack)
+      .map { projectsType, projects, project in
+        let ref = (projectsType == .backed) ? RefTag.profileBacked : RefTag.profileSaved
+        return (project, projects, ref)
     }
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)

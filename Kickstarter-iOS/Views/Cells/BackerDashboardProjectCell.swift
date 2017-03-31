@@ -80,7 +80,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .black
       |> UIView.lens.alpha .~ 0.15
 
-    _ = self.savedIconImageView
+    _ = self.savedIconImageView 
       |> UIImageView.lens.tintColor .~ .init(white: 1.0, alpha: 0.99)
   }
 }

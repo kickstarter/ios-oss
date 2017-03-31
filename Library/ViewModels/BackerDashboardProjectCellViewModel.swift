@@ -53,7 +53,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progress = project.map { $0.stats.fundingProgress }
 
-    self.cellAccessibilityLabel = project.map { "\($0.name) \($0.state.rawValue)" }
+    self.cellAccessibilityLabel = project.map { "\($0.name) \(stateString(for: $0))" }
 
     self.metadataText = project.map(metadataString(for:))
 
