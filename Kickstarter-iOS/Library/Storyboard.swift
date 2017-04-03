@@ -3,6 +3,7 @@ import UIKit
 public enum Storyboard: String {
   case Activity
   case Backing
+  case BackerDashboard
   case Checkout
   case Comments
   case Dashboard
