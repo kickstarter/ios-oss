@@ -198,7 +198,7 @@ public let postcardStatsSubtitleStyle =
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
-  UILabel.lens.font .~ .ksr_headline(size: 14)
+  UILabel.lens.font .~ .ksr_body()
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
