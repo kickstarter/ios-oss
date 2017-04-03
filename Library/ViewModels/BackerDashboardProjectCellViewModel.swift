@@ -9,9 +9,6 @@ public protocol BackerDashboardProjectCellViewModelInputs {
 }
 
 public protocol BackerDashboardProjectCellViewModelOutputs {
-  /// Emits project name and state for screen reader.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
-
   /// Emits a boolean whether to show the metadata timer icon.
   var metadataIconIsHidden: Signal<Bool, NoError> { get }
 
@@ -53,8 +50,6 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progress = project.map { $0.stats.fundingProgress }
 
-    self.cellAccessibilityLabel = project.map { "\($0.name) \(stateString(for: $0))" }
-
     self.metadataText = project.map(metadataString(for:))
 
     self.metadataIconIsHidden = project.map { $0.state != .live }
@@ -71,7 +66,6 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
     self.projectProperty.value = project
   }
 
-  public let cellAccessibilityLabel: Signal<String, NoError>
   public let metadataIconIsHidden: Signal<Bool, NoError>
   public let metadataText: Signal<String, NoError>
   public let percentFundedText: Signal<NSAttributedString, NoError>

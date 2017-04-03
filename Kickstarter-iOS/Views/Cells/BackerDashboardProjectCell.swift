@@ -33,8 +33,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
     self.savedIconImageView.rac.hidden = self.viewModel.outputs.savedIconIsHidden
 
-    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
-
     self.viewModel.outputs.progress
       .observeForUI()
       .observeValues { [weak element = progressBarView] progress in

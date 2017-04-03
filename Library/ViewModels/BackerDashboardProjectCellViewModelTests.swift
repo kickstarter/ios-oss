@@ -10,7 +10,6 @@ import XCTest
 internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   private let vm: BackerDashboardProjectCellViewModelType = BackerDashboardProjectCellViewModel()
 
-  private let cellAccessibilityLabel = TestObserver<String, NoError>()
   private let metadataIconIsHidden = TestObserver<Bool, NoError>()
   private let metadataText = TestObserver<String, NoError>()
   private let percentFundedText = TestObserver<String, NoError>()
@@ -23,7 +22,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
     self.vm.outputs.metadataIconIsHidden.observe(self.metadataIconIsHidden.observer)
     self.vm.outputs.metadataText.observe(self.metadataText.observer)
     self.vm.outputs.percentFundedText.map { $0.string }.observe(self.percentFundedText.observer)
@@ -45,7 +43,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat "])
     self.metadataIconIsHidden.assertValues([false])
     self.metadataText.assertValues(["14 days"])
     self.percentFundedText.assertValues(["50%"])
@@ -65,7 +62,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Successful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Successful"])
     self.percentFundedText.assertValues(["110%"])
@@ -85,7 +81,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Unsuccessful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Unsuccessful"])
     self.percentFundedText.assertValues(["20%"])
@@ -106,7 +101,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.cellAccessibilityLabel.assertValues(["Best of Lazy Bathtub Cat Successful"])
     self.metadataIconIsHidden.assertValues([true])
     self.metadataText.assertValues(["Successful"])
     self.percentFundedText.assertValues(["110%"])
