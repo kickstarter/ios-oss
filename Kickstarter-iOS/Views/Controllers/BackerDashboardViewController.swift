@@ -282,12 +282,13 @@ internal final class BackerDashboardViewController: UIViewController {
       //print("contant = \(self.headerViewTopConstraint.constant)")
       //print("translation = \(translation.y)")
       let newConstant = min(0.0, self.initialTopConstant + translation.y)
-      //print("newConstant = \(newConstant)")
-      //print("-minHeader = \(-minHeaderHeight)")
-      //print("offset = \(controller.tableView.contentOffset.y)")
+      print("newConstant = \(newConstant)")
+      print("-minHeader = \(-minHeaderHeight)")
+      print("offset = \(controller.tableView.contentOffset.y)")
 
-      //print("controller offset = \(controller.tableView.contentOffset.y)")
+      print("controller offset = \(controller.tableView.contentOffset.y)")
 
+      // this causes abrupt adjustment back to 0, so should be newconstant - the offset
       if (newConstant >= -minHeaderHeight) && (controller.tableView.contentOffset.y <= minHeaderHeight) {
         self.headerViewTopConstraint.constant = newConstant
       }
@@ -326,16 +327,6 @@ extension BackerDashboardViewController: UIGestureRecognizerDelegate {
     guard let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return false }
 
     let translation = gestureRecognizer.translation(in: self.view)
-    //print("translation = \(translation)")
-    //print("velocity = \(gestureRecognizer.velocity(in: self.view))")
-    if let controller = self.pagesDataSource.controllerFor(tab: .backed) as?
-      BackerDashboardProjectsViewController {
-      //print("controller offset = \(controller.tableView.contentOffset.y)")
-      if controller.tableView.contentOffset.y < 0.0 {
-        //return false
-      }
-    }
-
     if translation.x != 0 { // only respond to horizontal movement.
       return false
     }
