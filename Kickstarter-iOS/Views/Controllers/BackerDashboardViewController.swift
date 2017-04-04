@@ -30,6 +30,10 @@ internal final class BackerDashboardViewController: UIViewController {
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
 
+  private var panGesture = UIPanGestureRecognizer()
+  private var initialTopConstant: CGFloat = 0.0
+  private var shouldCollapse = false
+
   internal static func instantiate() -> BackerDashboardViewController {
     return Storyboard.BackerDashboard.instantiate(BackerDashboardViewController.self)
   }
@@ -52,6 +56,10 @@ internal final class BackerDashboardViewController: UIViewController {
 
     _ = self.settingsButtonItem
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(settingsButtonTapped))
+
+    panGesture.addTarget(self, action: #selector(handlePan))
+    panGesture.delegate = self
+    self.view.addGestureRecognizer(panGesture)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -188,14 +196,14 @@ internal final class BackerDashboardViewController: UIViewController {
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
       NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
-    ])
+      ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
       NSForegroundColorAttributeName: UIColor.black
-    ])
+      ])
 
     _ = button
       |> UIButton.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
@@ -228,7 +236,7 @@ internal final class BackerDashboardViewController: UIViewController {
         self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
         self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
         self.headerView.layoutIfNeeded()
-      },
+    },
       completion: nil)
   }
 
@@ -259,6 +267,115 @@ internal final class BackerDashboardViewController: UIViewController {
   @objc private func savedButtonTapped() {
     self.viewModel.inputs.savedProjectsButtonTapped()
   }
+
+  @objc private func handlePan(gesture: UIPanGestureRecognizer) {
+    guard let controller = self.pagesDataSource.controllerFor(tab: .backed) as? BackerDashboardProjectsViewController else { return }
+    // todo: put this value in view model. it changes when sort bar is hidden.
+    let minHeaderHeight = self.topBackgroundView.frame.size.height
+      - self.menuButtonsStackView.frame.size.height - Styles.grid(3)
+
+    switch gesture.state {
+    case .began:
+      self.initialTopConstant = self.headerViewTopConstraint.constant
+    case.changed:
+      let translation = gesture.translation(in: self.view)
+      //print("contant = \(self.headerViewTopConstraint.constant)")
+      //print("translation = \(translation.y)")
+      let newConstant = min(0.0, self.initialTopConstant + translation.y)
+      print("newConstant = \(newConstant)")
+      print("-minHeader = \(-minHeaderHeight)")
+      //print("offset = \(controller.tableView.contentOffset.y)")
+
+      print("controller offset = \(controller.tableView.contentOffset.y)")
+      if controller.tableView.contentOffset.y < 0.0 {
+
+      }
+
+      if (newConstant >= -minHeaderHeight) {
+        self.headerViewTopConstraint.constant = newConstant
+      }
+      self.shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
+
+      //      print("constant = \(self.headerViewTopConstraint.constant)")
+      //     print("translation = \(translation.y)")
+      //print("newConstant = \(newConstant)")
+      //      print("minHeader = \(minHeaderHeight)")
+
+      // Table view offset should move only when min or max constraint has been reached.
+      //      let enableScrolling = (newConstant <= -minHeaderHeight) || newConstant == 0.0
+      //      //print("enableScrolling!!!!!!!!!! = \(enableScrolling)")
+      //      if let controller = self.pagesDataSource.controllerFor(tab: .backed) as? BackerDashboardProjectsViewController {
+      //        //controller.tableView.isScrollEnabled = enableScrolling
+      //        print("offset = \(controller.tableView.contentOffset.y)")
+      //        if enableScrolling && newConstant < 0.0 {
+      //          // controller.tableView.contentOffset.y = -newConstant
+      //        }
+      //      }
+
+      //let offset =
+      //print("OFFSET = \(offset?.y)")
+      //        if let controllerOffset = (controller as? BackerDashboardProjectsViewController)?.tableView.contentOffset {
+      //          if (newConstant <= -minHeaderHeight) || newConstant == 0.0 {
+      //            (controller as? BackerDashboardProjectsViewController)?.tableView.contentOffset.y
+      //              = controllerOffset.y + translation.y
+      //          }
+      //        }
+      //}
+
+    case .ended:
+      if self.shouldCollapse {
+        UIView.animate(
+          withDuration: 0.3,
+          delay: 0.0,
+          options: .curveEaseOut,
+          animations: {
+            self.headerViewTopConstraint.constant = -minHeaderHeight
+            self.view.layoutIfNeeded()
+        },
+          completion: nil)
+      } else {
+        UIView.animate(
+          withDuration: 0.3,
+          delay: 0.0,
+          options: .curveEaseOut,
+          animations: {
+            self.headerViewTopConstraint.constant = 0.0
+            self.view.layoutIfNeeded()
+        },
+          completion: nil)
+      }
+    default: ()
+    }
+  }
 }
 
 extension BackerDashboardViewController: UIPageViewControllerDelegate {}
+
+extension BackerDashboardViewController: UIGestureRecognizerDelegate {
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+
+    let translation = gestureRecognizer.translation(in: self.view)
+    //print("translation = \(translation)")
+    //print("velocity = \(gestureRecognizer.velocity(in: self.view))")
+    if let controller = self.pagesDataSource.controllerFor(tab: .backed) as?
+      BackerDashboardProjectsViewController {
+      //print("controller offset = \(controller.tableView.contentOffset.y)")
+      if controller.tableView.contentOffset.y < 0.0 {
+        //return false
+      }
+    }
+
+    if translation.x != 0 { // only respond to horizontal movement.
+      return false
+    }
+    
+    return true
+  }
+  
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
+    -> Bool {
+      return true
+  }
+}

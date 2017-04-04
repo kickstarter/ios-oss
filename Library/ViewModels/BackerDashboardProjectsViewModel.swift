@@ -82,10 +82,12 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
           return DiscoveryParams.defaults
             |> DiscoveryParams.lens.backed .~ true
             |> DiscoveryParams.lens.sort .~ sort
+            |> DiscoveryParams.lens.perPage .~ 20
         case .saved:
           return DiscoveryParams.defaults
             |> DiscoveryParams.lens.starred .~ true
             |> DiscoveryParams.lens.sort .~ sort
+            |> DiscoveryParams.lens.perPage .~ 20
         }
       }
 
@@ -93,7 +95,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
-      .map { row, total in total > 4 && row >= total - 3 }
+      .map { row, total in row >= total - 10 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
