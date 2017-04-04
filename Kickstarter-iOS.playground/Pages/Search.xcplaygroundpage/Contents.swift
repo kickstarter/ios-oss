@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 AppEnvironment.replaceCurrentEnvironment(
@@ -17,7 +17,7 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 initialize()
-let controller = Storyboard.Search.instantiate(SearchViewController)
+let controller = Storyboard.Search.instantiate(SearchViewController.self)
 
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
@@ -25,10 +25,10 @@ let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portr
 // Set the device language.
 AppEnvironment.replaceCurrentEnvironment(
   language: .es,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

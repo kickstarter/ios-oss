@@ -1122,7 +1122,7 @@ backers"
    "Explore creative projects"
 
    - **es**: "Explora proyectos creativos"
-   - **de**: "Explore creative projects"
+   - **de**: "Erkunde kreative Projekte"
    - **fr**: "Découvrez des projets créatifs"
    - **en**: "Explore creative projects"
   */
@@ -2775,7 +2775,7 @@ from friends yet."
    "Pledge to your favorites, then view all the projects you’ve backed here."
 
    - **es**: "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar."
-   - **de**: "Pledge to your favorites, then view all the projects you’ve backed here."
+   - **de**: "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt."
    - **fr**: "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici."
    - **en**: "Pledge to your favorites, then view all the projects you’ve backed here."
   */
@@ -3611,7 +3611,7 @@ catch your eye?"
    "Tap the star icon on a project to get notified 48 hours before it ends."
 
    - **es**: "Marca un proyecto con asterisco y te notificaremos 48 horas antes de que termine."
-   - **de**: "Tap the star icon on a project to get notified 48 hours before it ends."
+   - **de**: "Tippe auf den Stern neben einem Projekt - wir benachrichtigen dich 48 Stunden, bevor es abläuft."
    - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
    - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
   */
@@ -13165,7 +13165,7 @@ Thank you for your support!"
    "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
 
    - **es**: "Lamentamos no poder procesar el pago con Android Pay en estos momentos. Por favor inténtalo de nuevo."
-   - **de**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
+   - **de**: "Der Zahlvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
    - **fr**: "Nous sommes désolés, mais nous ne sommes pas en mesure de traiter votre demande Android Pay pour le moment. Veuillez réessayer ultérieurement."
    - **en**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
   */
@@ -13245,7 +13245,7 @@ Thank you for your support!"
    "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
 
    - **es**: "Al contribuir, aceptas los <u>terms of use</u> y la <u>privacy policy</u> de Kickstarter."
-   - **de**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
+   - **de**: "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden."
    - **fr**: "En vous engageant, vous acceptez les <u>conditions d'utilisation</u> et la <u>politique de confidentialité</u> de Kickstarter."
    - **en**: "By pledging you agree to Kickstarter’s <u>terms of use</u> and <u>privacy policy</u>."
   */
@@ -14691,7 +14691,7 @@ backed"
    - **es**: "%{projects_count}
 patrocinados"
    - **de**: "%{projects_count}
-backed"
+unterstützt"
    - **fr**: "%{projects_count}
 projets soutenus"
    - **en**: "%{projects_count}
@@ -14712,7 +14712,7 @@ saved"
    - **es**: "%{projects_count}
 guardados"
    - **de**: "%{projects_count}
-saved"
+gespeichert"
    - **fr**: "%{projects_count}
 projets enregistrés"
    - **en**: "%{projects_count}
@@ -15747,7 +15747,7 @@ saved"
    "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
 
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Contáctanos en app@kickstarter.com."
-   - **de**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
+   - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse android@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
   */

@@ -2,16 +2,16 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 
 let liveView = UIView(frame: .init(x: 0, y: 0, width: 800, height: 600))
   |> UIView.lens.backgroundColor .~ .ksr_grey_100
-XCPlaygroundPage.currentPage.liveView = liveView
+PlaygroundPage.current.liveView = liveView
 
 let rootStackView = UIStackView(frame: liveView.bounds)
-  |> UIStackView.lens.alignment .~ .Leading
-  |> UIStackView.lens.axis .~ .Vertical
-  |> UIStackView.lens.distribution .~ .Fill
+  |> UIStackView.lens.alignment .~ .leading
+  |> UIStackView.lens.axis .~ .vertical
+  |> UIStackView.lens.distribution .~ .fill
   |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.layoutMargins .~ .init(top: 16, left: 16, bottom: 16, right: 16)
   |> UIStackView.lens.spacing .~ 8.0
@@ -28,7 +28,7 @@ let fonts: [(String, UIFont)] = [
   ("footnote", .ksr_footnote()),
   ("caption1", .ksr_caption1()),
   ("caption2", .ksr_caption2())
-  ].sort { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
+  ].sorted { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
 
 let base = UILabel.lens.text .~ "The quick brown fox jumps over the lazy dog"
   <> UILabel.lens.textColor .~ .ksr_text_navy_900

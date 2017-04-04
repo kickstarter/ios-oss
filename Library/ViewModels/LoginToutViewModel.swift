@@ -139,7 +139,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .mapConst(AlertError.facebookTokenFail)
 
     let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
-      .map { $0 as? NSError }
+      .map { $0 as NSError? }
       .skipNil()
       .map(AlertError.facebookLoginAttemptFail)
 

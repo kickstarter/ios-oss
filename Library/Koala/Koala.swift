@@ -1216,6 +1216,10 @@ public final class Koala {
     self.track(event: "Viewed Profile")
   }
 
+  public func trackViewedProfileTab(projectsType: ProfileProjectsType) {
+    self.track(event: "Viewed Profile Tab", properties: ["type": projectsType.trackingString])
+  }
+
   // MARK: Settings Events
   public func trackAppStoreRatingOpen() {
     // deprecated

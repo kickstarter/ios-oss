@@ -100,7 +100,7 @@ public func playgroundControllers(device: Device = .phone4_7inch,
     }
 
     child.view.frame = parent.view.frame
-
+    parent.preferredContentSize = parent.view.frame.size
     parent.view.backgroundColor = .white
     child.view.backgroundColor = .white
 

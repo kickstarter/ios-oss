@@ -17,10 +17,8 @@ public struct LaunchedCountries {
    - returns: A boolean.
    */
   public func currencyNeedsCode(_ currencySymbol: String) -> Bool {
-    for country in self.countries {
-      if country.currencySymbol == currencySymbol {
-        return country.trailingCode
-      }
+    for country in self.countries where country.currencySymbol == currencySymbol {
+      return country.trailingCode
     }
     return false
   }

@@ -41,7 +41,7 @@ DeprecatedWebViewModelOutputs {
       // Hide loading if the web view fails with a non-102 error code (102 is the interrupted error that
       // occurs anytime we cancel a request).
       self.webViewDidFailErrorProperty.signal
-        .filter { ($0 as? NSError)?.code != .some(102) }
+        .filter { ($0 as NSError?)?.code != .some(102) }
         .mapConst((true, true))
       )
       .skipRepeats(==)
