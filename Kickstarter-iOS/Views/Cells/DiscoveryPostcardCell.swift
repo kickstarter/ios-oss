@@ -50,16 +50,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
-    _ = self.backersSubtitleLabel
-      |> postcardStatsSubtitleStyle
-      |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
-      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.fundingTitleLabel]
+      ||> postcardStatsTitleStyle
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 15)
-
-    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.fundingTitleLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 15)
+      ||> postcardStatsSubtitleStyle
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -70,6 +65,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.fundingSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_green_700
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
+
+    _ = self.backersSubtitleLabel
+      |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
+      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
 
     _ = self.cardView
       |> dropShadowStyle()

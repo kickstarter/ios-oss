@@ -192,13 +192,13 @@ public let postcardSocialStackViewStyle =
 public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in
       label.traitCollection.isRegularRegular
-        ? .ksr_caption1(size: 14)
-        : .ksr_caption1(size: 12)
+        ? .ksr_body(size: 17)
+        : .ksr_body(size: 15)
     }
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
-  UILabel.lens.font .~ .ksr_body()
+  UILabel.lens.font .~ .ksr_body(size: 15)
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
