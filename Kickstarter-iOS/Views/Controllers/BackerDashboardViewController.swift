@@ -269,7 +269,10 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   @objc private func handlePan(gesture: UIPanGestureRecognizer) {
-    guard let controller = self.pagesDataSource.controllerFor(tab: .backed) as? BackerDashboardProjectsViewController else { return }
+    // this controller stuff is just for testing
+    guard let controller = self.pagesDataSource.controllerFor(tab: .backed) as?
+      BackerDashboardProjectsViewController else { return }
+
     // todo: put this value in view model. it changes when sort bar is hidden.
     let minHeaderHeight = self.topBackgroundView.frame.size.height
       - self.menuButtonsStackView.frame.size.height - Styles.grid(3)
@@ -282,14 +285,18 @@ internal final class BackerDashboardViewController: UIViewController {
       //print("contant = \(self.headerViewTopConstraint.constant)")
       //print("translation = \(translation.y)")
       let newConstant = min(0.0, self.initialTopConstant + translation.y)
-      print("newConstant = \(newConstant)")
-      print("-minHeader = \(-minHeaderHeight)")
-      print("offset = \(controller.tableView.contentOffset.y)")
+//      print("newConstant = \(newConstant)")
+//      print("-minHeader = \(-minHeaderHeight)")
+//      print("offset = \(controller.tableView.contentOffset.y)")
+//
+//      print("controller offset = \(controller.tableView.contentOffset.y)")
 
-      print("controller offset = \(controller.tableView.contentOffset.y)")
-
-      // this causes abrupt adjustment back to 0, so should be newconstant - the offset
-      if (newConstant >= -minHeaderHeight) && (controller.tableView.contentOffset.y <= minHeaderHeight) {
+      // notes for brandon:
+      // we don't want the header to move down until the scrollview is back at 0
+      // i was playing with what this would look like, something like:
+      // && (controller.tableView.contentOffset.y <= minHeaderHeight
+      // but, it will cause abrupt movement once the scrollview is back to 0, so that needs to be calculated
+      if (newConstant >= -minHeaderHeight) {
         self.headerViewTopConstraint.constant = newConstant
       }
       self.shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
