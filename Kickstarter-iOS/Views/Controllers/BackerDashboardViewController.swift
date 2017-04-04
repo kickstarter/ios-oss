@@ -282,46 +282,16 @@ internal final class BackerDashboardViewController: UIViewController {
       //print("contant = \(self.headerViewTopConstraint.constant)")
       //print("translation = \(translation.y)")
       let newConstant = min(0.0, self.initialTopConstant + translation.y)
-      print("newConstant = \(newConstant)")
-      print("-minHeader = \(-minHeaderHeight)")
+      //print("newConstant = \(newConstant)")
+      //print("-minHeader = \(-minHeaderHeight)")
       //print("offset = \(controller.tableView.contentOffset.y)")
 
-      print("controller offset = \(controller.tableView.contentOffset.y)")
-      if controller.tableView.contentOffset.y < 0.0 {
+      //print("controller offset = \(controller.tableView.contentOffset.y)")
 
-      }
-
-      if (newConstant >= -minHeaderHeight) {
+      if (newConstant >= -minHeaderHeight) && (controller.tableView.contentOffset.y <= minHeaderHeight) {
         self.headerViewTopConstraint.constant = newConstant
       }
       self.shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
-
-      //      print("constant = \(self.headerViewTopConstraint.constant)")
-      //     print("translation = \(translation.y)")
-      //print("newConstant = \(newConstant)")
-      //      print("minHeader = \(minHeaderHeight)")
-
-      // Table view offset should move only when min or max constraint has been reached.
-      //      let enableScrolling = (newConstant <= -minHeaderHeight) || newConstant == 0.0
-      //      //print("enableScrolling!!!!!!!!!! = \(enableScrolling)")
-      //      if let controller = self.pagesDataSource.controllerFor(tab: .backed) as? BackerDashboardProjectsViewController {
-      //        //controller.tableView.isScrollEnabled = enableScrolling
-      //        print("offset = \(controller.tableView.contentOffset.y)")
-      //        if enableScrolling && newConstant < 0.0 {
-      //          // controller.tableView.contentOffset.y = -newConstant
-      //        }
-      //      }
-
-      //let offset =
-      //print("OFFSET = \(offset?.y)")
-      //        if let controllerOffset = (controller as? BackerDashboardProjectsViewController)?.tableView.contentOffset {
-      //          if (newConstant <= -minHeaderHeight) || newConstant == 0.0 {
-      //            (controller as? BackerDashboardProjectsViewController)?.tableView.contentOffset.y
-      //              = controllerOffset.y + translation.y
-      //          }
-      //        }
-      //}
-
     case .ended:
       if self.shouldCollapse {
         UIView.animate(

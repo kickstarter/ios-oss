@@ -95,7 +95,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
-      .map { row, total in row >= total - 10 }
+      .map { row, total in total > 5 && row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
