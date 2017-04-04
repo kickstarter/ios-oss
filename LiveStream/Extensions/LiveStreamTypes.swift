@@ -45,6 +45,15 @@ public enum LiveStreamSession {
       return true
     }
   }
+
+  public var token: String? {
+    switch self {
+    case .anonymous:
+      return nil
+    case let .loggedIn(token):
+      return token
+    }
+  }
 }
 
 public enum LiveVideoPlaybackError {

@@ -21,10 +21,8 @@ internal final class LiveStreamChatViewController: UIViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   internal let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
-  public static func configuredWith(
-    project: Project,
-    liveStreamEvent: LiveStreamEvent) ->
-    LiveStreamChatViewController {
+  public static func configuredWith(project: Project, liveStreamEvent: LiveStreamEvent)
+    -> LiveStreamChatViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamChatViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
@@ -228,6 +226,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 }
 
 extension LiveStreamChatViewController: UITextFieldDelegate {
+
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     return self.viewModel.inputs.textFieldShouldBeginEditing()
   }

@@ -67,13 +67,16 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       self.viewDidLoadProperty.signal
     ).map(first)
 
-    self.loadViewControllersIntoPagesDataSource = configData.map { project, liveStreamEvent,
-      refTag, presentedFromProject in
-      [
-        .info(project: project, liveStreamEvent: liveStreamEvent, refTag: refTag,
-              presentedFromProject: presentedFromProject),
-        .chat(project: project, liveStreamEvent: liveStreamEvent)
-      ]
+    self.loadViewControllersIntoPagesDataSource = configData
+      .map { project, liveStreamEvent, refTag, presentedFromProject in
+        [
+          .info(project: project,
+                liveStreamEvent: liveStreamEvent,
+                refTag: refTag,
+                presentedFromProject: presentedFromProject),
+          .chat(project: project,
+                liveStreamEvent: liveStreamEvent)
+        ]
     }
 
     let infoButtonPage = self.loadViewControllersIntoPagesDataSource
@@ -94,8 +97,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
     let firstPage = self.loadViewControllersIntoPagesDataSource
       .takeWhen(self.didLoadViewControllersIntoPagesDataSourceProperty.signal)
-      .map { $0.filter { $0.isInfoPage }.first }
-      .skipNil()
+      .filterMap { $0.filter { $0.isInfoPage }.first }
       .map { ($0, UIPageViewControllerNavigationDirection.forward) }
 
     let pagedToPage = Signal.merge(
@@ -195,7 +197,7 @@ public enum LiveStreamContainerPage {
   case info(project: Project, liveStreamEvent: LiveStreamEvent, refTag: RefTag, presentedFromProject: Bool)
   case chat(project: Project, liveStreamEvent: LiveStreamEvent)
 
-  var isInfoPage: Bool {
+  fileprivate var isInfoPage: Bool {
     switch self {
     case .info:
       return true
@@ -204,7 +206,7 @@ public enum LiveStreamContainerPage {
     }
   }
 
-  var isChatPage: Bool {
+  fileprivate var isChatPage: Bool {
     switch self {
     case .chat:
       return true
@@ -213,7 +215,7 @@ public enum LiveStreamContainerPage {
     }
   }
 
-  func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewControllerNavigationDirection {
+  fileprivate func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewControllerNavigationDirection {
     switch (self, toPage) {
     case (.info, .chat):
       return .forward
@@ -230,16 +232,10 @@ public enum LiveStreamContainerPage {
 extension LiveStreamContainerPage: Equatable {
   public static func == (lhs: LiveStreamContainerPage, rhs: LiveStreamContainerPage) -> Bool {
     switch (lhs, rhs) {
-    case (.info(let lhsProject, let lhsLiveStreamEvent, let lhsRefTag, let lhsPresentedFromProject),
-          .info(let rhsProject, let rhsLiveStreamEvent, let rhsRefTag, let rhsPresentedFromProject)):
-      return lhsProject == rhsProject
-        && lhsLiveStreamEvent == rhsLiveStreamEvent
-        && lhsRefTag == rhsRefTag
-        && lhsPresentedFromProject == rhsPresentedFromProject
-    case (.chat(let lhsProject, let lhsLiveStreamEvent),
-          .chat(let rhsProject, let rhsLiveStreamEvent)):
-      return lhsProject == rhsProject
-        && lhsLiveStreamEvent == rhsLiveStreamEvent
+    case let (.info(lhs), .info(rhs)):
+      return lhs == rhs
+    case let (.chat(lhs), .chat(rhs)):
+      return lhs == rhs
     case (.info, _), (.chat, _):
       return false
     }

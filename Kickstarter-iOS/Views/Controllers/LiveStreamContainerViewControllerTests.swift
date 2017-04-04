@@ -138,12 +138,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         vc.liveStreamViewController(nil, stateChangedTo: state)
 
-        let stateIdentifier: String
-        if state == .greenRoom {
-          stateIdentifier = "greenRoom"
-        } else {
-          stateIdentifier = "loading"
-        }
+        let stateIdentifier = state == .greenRoom ? "greenRoom" : "loading"
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"

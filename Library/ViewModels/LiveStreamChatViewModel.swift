@@ -75,7 +75,7 @@ LiveStreamChatViewModelOutputs {
       initialLiveStreamEvent
         .takeWhen(self.userSessionProperty.signal.skipNil())
       )
-      .flatMap { liveStreamEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+      .flatMap { liveStreamEvent in
         AppEnvironment.current.liveStreamService
           .fetchEvent(
             eventId: liveStreamEvent.id,
@@ -106,10 +106,7 @@ LiveStreamChatViewModelOutputs {
 
     let chatMessages = Signal.combineLatest(
       firebase.map { $0.chatPath }.take(first: 1),
-      initialChatMessages
-        .values()
-        .map { $0.last?.date }
-        .map { $0.coalesceWith(0) }
+      initialChatMessages.values().map { $0.last?.date ?? 0 }
       )
       .flatMap { path, lastTimeStamp in
         AppEnvironment.current.liveStreamService.chatMessagesAdded(
@@ -119,14 +116,10 @@ LiveStreamChatViewModelOutputs {
           .materialize()
     }
 
-    self.prependChatMessagesToDataSourceAndReload = Signal.combineLatest(
-      Signal.merge(
-        initialChatMessages.values().map { ($0, true) },
-        chatMessages.values().map { ([$0], false) }
-      ),
-      configData
-      )
-      .map(first)
+    self.prependChatMessagesToDataSourceAndReload = Signal.merge(
+      initialChatMessages.values().map { ($0, true) },
+      chatMessages.values().map { ([$0], false) }
+    )
 
     self.presentLoginToutViewController = self.textFieldShouldBeginEditingProperty.signal
       .filter { AppEnvironment.current.currentUser == nil }
@@ -138,13 +131,11 @@ LiveStreamChatViewModelOutputs {
           .materialize()
     }
 
-    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate).skipRepeats()
+    self.collapseChatInputView = liveStreamEvent.map { !$0.liveNow }.skipRepeats()
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
 
     let textIsEmpty = Signal.merge(
-      self.textProperty.signal.skipNil()
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        .map { $0.isEmpty },
+      self.textProperty.signal.skipNil().map(isWhitespacesAndNewlines),
       self.sendButtonTappedProperty.signal.mapConst(true)
     )
 
@@ -157,16 +148,12 @@ LiveStreamChatViewModelOutputs {
       .takeWhen(self.sendButtonTappedProperty.signal)
       .ignoreValues()
 
-    let didSendChatMessage = Signal.combineLatest(
-      self.textProperty.signal.skipNil(),
-      textIsEmpty
-      )
-      .filter { _, isEmpty in !isEmpty }
-      .map(first)
+    let wantsToSendChat = self.textProperty.signal.skipNil()
+      .filter { !isWhitespacesAndNewlines($0) }
       .takeWhen(self.sendButtonTappedProperty.signal)
 
     let newChatMessage = firebase
-      .takePairWhen(didSendChatMessage)
+      .takePairWhen(wantsToSendChat)
       .map { firebase, message -> NewLiveStreamChatMessage? in
         guard
           let userId = firebase.chatUserId,
@@ -183,13 +170,11 @@ LiveStreamChatViewModelOutputs {
       }
       .skipNil()
 
-    let sentChatMessageEvent = firebase.map { $0.chatPostPath.coalesceWith($0.chatPath) }
+    let sentChatMessageEvent = firebase
+      .map { $0.chatPostPath.coalesceWith($0.chatPath) }
       .takePairWhen(newChatMessage)
       .flatMap { path, message in
-        AppEnvironment.current.liveStreamService.sendChatMessage(
-          withPath: path,
-          chatMessage: message
-          )
+        AppEnvironment.current.liveStreamService.sendChatMessage(withPath: path, chatMessage: message)
           .materialize()
     }
 

@@ -94,7 +94,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
     self.vm.inputs.viewDidLoad()
-    _ = self.vm.inputs.textFieldShouldBeginEditing()
+    let shouldBegin = self.vm.inputs.textFieldShouldBeginEditing()
+    XCTAssertFalse(shouldBegin)
 
     self.presentLoginToutViewController.assertValues([.liveStreamChat])
   }

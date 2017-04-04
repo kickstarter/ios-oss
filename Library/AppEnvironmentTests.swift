@@ -144,8 +144,7 @@ final class AppEnvironmentTests: XCTestCase {
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
 
-    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService,
-                                                            currentUser: currentUser),
+    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService, currentUser: currentUser),
                                    ubiquitousStore: ubiquitousStore,
                                    userDefaults: userDefaults)
 
