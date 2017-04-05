@@ -177,7 +177,7 @@ internal final class LiveStreamChatViewController: UIViewController {
   }
 
   @objc private func textFieldChanged(_ textField: UITextField) {
-    textField.text.doIfSome { self.viewModel.inputs.textDidChange(toText: $0) }
+    self.viewModel.inputs.textDidChange(toText: textField.text)
   }
 
   private func showShareSheet(controller: UIActivityViewController) {

@@ -23,7 +23,7 @@ public protocol LiveStreamChatViewModelInputs {
   func textFieldShouldBeginEditing() -> Bool
 
   /// Call with new value from the input field
-  func textDidChange(toText text: String)
+  func textDidChange(toText text: String?)
 
   /// Call when the user session changes.
   func userSessionChanged(session: LiveStreamSession)
@@ -135,6 +135,7 @@ LiveStreamChatViewModelOutputs {
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
 
     let textIsEmpty = Signal.merge(
+      self.textProperty.signal.filter { $0 == nil }.mapConst(true),
       self.textProperty.signal.skipNil().map(isWhitespacesAndNewlines),
       self.sendButtonTappedProperty.signal.mapConst(true)
     )
@@ -242,7 +243,7 @@ LiveStreamChatViewModelOutputs {
   }
 
   private let textProperty = MutableProperty<String?>(nil)
-  public func textDidChange(toText text: String) {
+  public func textDidChange(toText text: String?) {
     self.textProperty.value = text
   }
 
