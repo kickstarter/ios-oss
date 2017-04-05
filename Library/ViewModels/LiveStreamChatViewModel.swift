@@ -10,17 +10,20 @@ public protocol LiveStreamChatViewModelType {
 }
 
 public protocol LiveStreamChatViewModelInputs {
-  /// Call when the chat input view requests login auth.
-  func chatInputViewRequestedLogin()
-
   /// Call with the LiveStreamEvent and chat visibility.
   func configureWith(project: Project, liveStreamEvent: LiveStreamEvent)
 
   /// Call when the device orientation changed.
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
-  /// Call with the message that was sent.
-  func didSendMessage(message: String)
+  /// Call when send button was tapped
+  func sendButtonTapped()
+
+  /// Call when the text field should begin editing
+  func textFieldShouldBeginEditing() -> Bool
+
+  /// Call with new value from the input field
+  func textDidChange(toText text: String)
 
   /// Call when the user session changes.
   func userSessionChanged(session: LiveStreamSession)
@@ -30,6 +33,9 @@ public protocol LiveStreamChatViewModelInputs {
 }
 
 public protocol LiveStreamChatViewModelOutputs {
+  /// Emits when the keyboard should dismiss.
+  var clearTextFieldAndResignFirstResponder: Signal<(), NoError> { get }
+
   /// Emits when the chat input view should be collapsed for the table view to fill the height.
   var collapseChatInputView: Signal<Bool, NoError> { get }
 
@@ -39,11 +45,17 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits when chat authorization is completed with success status.
   var didConnectToChat: Signal<Bool, NoError> { get }
 
+  /// Emits the placeholder text
+  var chatInputViewPlaceholderText: Signal<NSAttributedString, NoError> { get }
+
   /// Emits chat messages for appending to the data source.
   var prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError> { get }
 
   /// Emits when the LoginToutViewController should be presented.
   var presentLoginToutViewController: Signal<LoginIntent, NoError> { get }
+
+  /// Emits when the send button should be hidden
+  var sendButtonEnabled: Signal<Bool, NoError> { get }
 
   /// Emits when an error has occurred with an error message.
   var showErrorAlert: Signal<String, NoError> { get }
@@ -125,16 +137,65 @@ LiveStreamChatViewModelOutputs {
       )
       .map(first)
 
-    self.presentLoginToutViewController = self.chatInputViewRequestedLoginProperty.signal
+    self.presentLoginToutViewController = self.textFieldShouldBeginEditingProperty.signal
+      .filter { AppEnvironment.current.currentUser == nil }
       .mapConst(.liveStreamChat)
 
+    let signInWithCustomTokenEvent = Signal.merge(
+      liveStreamEvent.map { $0.firebase?.token }.skipNil(),
+      self.userSessionProperty.signal.skipNil()
+        .map { session -> String? in
+          if case let .loggedIn(token) = session { return token }
+          return nil
+        }
+        .skipNil()
+      )
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .flatMap {
+        AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
+          .materialize()
+    }
+
+    self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
+    self.didConnectToChat = Signal.merge(
+      liveStreamEventFetch.errors().mapConst(false),
+      signInWithCustomTokenEvent.values().mapConst(true)
+    )
+
+    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate).skipRepeats()
+    self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
+
+    let textIsEmpty = Signal.merge(
+      self.textProperty.signal.skipNil()
+        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        .map { $0.isEmpty },
+      self.sendButtonTappedProperty.signal.mapConst(true)
+    )
+
+    self.sendButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      textIsEmpty.map(negate)
+    )
+
+    self.clearTextFieldAndResignFirstResponder = self.textProperty.signal.skipNil()
+      .takeWhen(self.sendButtonTappedProperty.signal)
+      .ignoreValues()
+
+    let didSendChatMessage = Signal.combineLatest(
+      self.textProperty.signal.skipNil(),
+      textIsEmpty
+      )
+      .filter { _, isEmpty in !isEmpty }
+      .map(first)
+      .takeWhen(self.sendButtonTappedProperty.signal)
+
     let newChatMessage = firebase
-      .takePairWhen(self.didSendMessageProperty.signal.skipNil())
+      .takePairWhen(didSendChatMessage)
       .map { firebase, message -> NewLiveStreamChatMessage? in
-          guard
-            let userId = firebase.chatUserId,
-            let name = firebase.chatUserName,
-            let avatar = firebase.chatAvatarUrl
+        guard
+          let userId = firebase.chatUserId,
+          let name = firebase.chatUserName,
+          let avatar = firebase.chatAvatarUrl
           else { return nil }
 
         return NewLiveStreamChatMessage(
@@ -152,23 +213,23 @@ LiveStreamChatViewModelOutputs {
         AppEnvironment.current.liveStreamService.sendChatMessage(
           withPath: path,
           chatMessage: message
-        )
-        .materialize()
+          )
+          .materialize()
     }
 
-    let signInWithCustomTokenEvent = Signal.merge(
-      liveStreamEvent.map { $0.firebase?.token }.skipNil(),
-      self.userSessionProperty.signal.skipNil()
-        .map { session -> String? in
-          if case let .loggedIn(token) = session { return token }
-          return nil
-        }
-        .skipNil()
-      )
-      .filter { _ in AppEnvironment.current.currentUser != nil }
-      .flatMap {
-        AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
-          .materialize()
+    self.chatInputViewPlaceholderText = self.viewDidLoadProperty.signal
+      .map {
+        NSAttributedString(
+          string: localizedString(key: "Say_something_kind", defaultValue: "Say something kind..."),
+          attributes: [
+            NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.8),
+            NSFontAttributeName: UIFont.ksr_body(size: 14)
+          ]
+        )
+    }
+
+    self.textFieldShouldBeginEditingReturnValueProperty <~ self.textFieldShouldBeginEditingProperty.map {
+      return AppEnvironment.current.currentUser != nil
     }
 
     self.showErrorAlert = Signal.merge(
@@ -195,20 +256,6 @@ LiveStreamChatViewModelOutputs {
                                  defaultValue: "Something went wrong, please try again.")
         }
     }
-
-    self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
-    self.didConnectToChat = Signal.merge(
-      liveStreamEventFetch.errors().mapConst(false),
-      signInWithCustomTokenEvent.values().mapConst(true)
-    )
-
-    self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate).skipRepeats()
-    self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
-  }
-
-  private let chatInputViewRequestedLoginProperty = MutableProperty()
-  public func chatInputViewRequestedLogin() {
-    self.chatInputViewRequestedLoginProperty.value = ()
   }
 
   private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
@@ -221,9 +268,21 @@ LiveStreamChatViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let didSendMessageProperty = MutableProperty<String?>(nil)
-  public func didSendMessage(message: String) {
-    self.didSendMessageProperty.value = message
+  private let sendButtonTappedProperty = MutableProperty()
+  public func sendButtonTapped() {
+    self.sendButtonTappedProperty.value = ()
+  }
+
+  private let textFieldShouldBeginEditingProperty = MutableProperty()
+  private let textFieldShouldBeginEditingReturnValueProperty = MutableProperty<Bool>(false)
+  public func textFieldShouldBeginEditing() -> Bool {
+    self.textFieldShouldBeginEditingProperty.value = ()
+    return self.textFieldShouldBeginEditingReturnValueProperty.value
+  }
+
+  private let textProperty = MutableProperty<String?>(nil)
+  public func textDidChange(toText text: String) {
+    self.textProperty.value = text
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -236,11 +295,14 @@ LiveStreamChatViewModelOutputs {
     self.userSessionProperty.value = session
   }
 
+  public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
   public let didConnectToChat: Signal<Bool, NoError>
+  public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>
+  public let sendButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let willConnectToChat: Signal<(), NoError>
 

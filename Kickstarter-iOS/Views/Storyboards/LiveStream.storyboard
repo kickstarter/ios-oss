@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -689,7 +689,7 @@ Mikke Snow</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="52" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-TX-p2I">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="637"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveStreamChatMessageCell" rowHeight="52" id="iYO-Gt-oe7" customClass="LiveStreamChatMessageCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -767,29 +767,68 @@ Mikke Snow</string>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lH9-zy-7tR">
-                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qyB-pr-9pD">
+                                <rect key="frame" x="0.0" y="637" width="375" height="30"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Il-v1-C6g">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x5K-3L-n6w">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="30"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="jpa-EL-Un6" id="yEh-dG-Qu1"/>
+                                                </connections>
+                                            </textField>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SXR-EY-eHY">
+                                                <rect key="frame" x="329" y="0.0" width="46" height="30"/>
+                                                <state key="normal" title="Button"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ipj-wh-1gG">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="5bI-uf-eDx"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="xCp-Ej-CZC"/>
+                                    <constraint firstAttribute="trailing" secondItem="1Il-v1-C6g" secondAttribute="trailing" id="8JJ-9z-ZAe"/>
+                                    <constraint firstAttribute="height" constant="30" id="HaZ-w4-Cdj"/>
+                                    <constraint firstItem="1Il-v1-C6g" firstAttribute="leading" secondItem="qyB-pr-9pD" secondAttribute="leading" id="Pg5-cP-WqV"/>
+                                    <constraint firstItem="ipj-wh-1gG" firstAttribute="top" secondItem="qyB-pr-9pD" secondAttribute="top" id="aT3-sX-Is8"/>
+                                    <constraint firstItem="ipj-wh-1gG" firstAttribute="leading" secondItem="qyB-pr-9pD" secondAttribute="leading" id="oK7-xN-7x0"/>
+                                    <constraint firstItem="1Il-v1-C6g" firstAttribute="top" secondItem="qyB-pr-9pD" secondAttribute="top" id="qkX-eD-YBT"/>
+                                    <constraint firstAttribute="trailing" secondItem="ipj-wh-1gG" secondAttribute="trailing" id="wiP-pj-o92"/>
+                                    <constraint firstAttribute="bottom" secondItem="1Il-v1-C6g" secondAttribute="bottom" id="zEo-jT-qGf"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hxv-TX-p2I" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="69s-6u-VId"/>
-                            <constraint firstItem="8Di-1C-zRr" firstAttribute="top" secondItem="lH9-zy-7tR" secondAttribute="bottom" id="VP5-U3-OU0"/>
+                            <constraint firstAttribute="trailing" secondItem="qyB-pr-9pD" secondAttribute="trailing" id="9ws-uS-ORK"/>
                             <constraint firstItem="hxv-TX-p2I" firstAttribute="top" secondItem="w5S-EN-Mw3" secondAttribute="topMargin" id="VwA-JQ-b5Y"/>
                             <constraint firstAttribute="trailing" secondItem="hxv-TX-p2I" secondAttribute="trailing" id="bFf-tQ-c6f"/>
-                            <constraint firstItem="lH9-zy-7tR" firstAttribute="trailing" secondItem="w5S-EN-Mw3" secondAttribute="trailing" id="big-2f-4rj"/>
-                            <constraint firstItem="hxv-TX-p2I" firstAttribute="bottom" secondItem="lH9-zy-7tR" secondAttribute="top" id="fGt-IM-0Rw"/>
-                            <constraint firstItem="lH9-zy-7tR" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="uhM-wo-GV2"/>
+                            <constraint firstItem="qyB-pr-9pD" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="eru-Hz-57W"/>
+                            <constraint firstItem="qyB-pr-9pD" firstAttribute="top" secondItem="hxv-TX-p2I" secondAttribute="bottom" id="lCx-5p-kc9"/>
+                            <constraint firstItem="8Di-1C-zRr" firstAttribute="top" secondItem="qyB-pr-9pD" secondAttribute="bottom" id="yqp-80-NM0"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="chatInputViewContainer" destination="lH9-zy-7tR" id="1Rz-v7-A8s"/>
-                        <outlet property="chatInputViewContainerBottomConstraint" destination="VP5-U3-OU0" id="J8T-DX-N5X"/>
-                        <outlet property="chatInputViewContainerHeightConstraint" destination="xCp-Ej-CZC" id="73x-4n-5dv"/>
+                        <outlet property="chatInputView" destination="qyB-pr-9pD" id="9EG-hl-Bft"/>
+                        <outlet property="chatInputViewBottomConstraint" destination="lCx-5p-kc9" id="SUp-ge-Bo5"/>
+                        <outlet property="chatInputViewHeightConstraint" destination="HaZ-w4-Cdj" id="HY4-bl-p1a"/>
+                        <outlet property="chatInputViewStackView" destination="1Il-v1-C6g" id="ZY3-h0-xaq"/>
+                        <outlet property="sendButton" destination="SXR-EY-eHY" id="yxV-0p-OeG"/>
+                        <outlet property="separatorView" destination="ipj-wh-1gG" id="JoV-Ej-mnJ"/>
                         <outlet property="tableView" destination="hxv-TX-p2I" id="nbr-D8-bg4"/>
+                        <outlet property="textField" destination="x5K-3L-n6w" id="ee9-Ys-cTV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5e-2m-hMK" userLabel="First Responder" sceneMemberID="firstResponder"/>

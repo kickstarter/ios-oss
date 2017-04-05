@@ -8,10 +8,14 @@ import UIKit
 
 internal final class LiveStreamChatViewController: UIViewController {
 
+  @IBOutlet private weak var chatInputView: UIView!
+  @IBOutlet private weak var chatInputViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var chatInputViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var chatInputViewStackView: UIStackView!
+  @IBOutlet private weak var sendButton: UIButton!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var tableView: UITableView!
-  @IBOutlet private weak var chatInputViewContainer: UIView!
-  @IBOutlet private weak var chatInputViewContainerBottomConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var chatInputViewContainerHeightConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var textField: UITextField!
 
   fileprivate let dataSource = LiveStreamChatDataSource()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -36,15 +40,6 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.tableView.keyboardDismissMode = .onDrag
     self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
 
-    self.chatInputViewContainer.addSubview(self.liveStreamChatInputView)
-
-    NSLayoutConstraint.activate([
-      self.liveStreamChatInputView.leftAnchor.constraint(equalTo: self.chatInputViewContainer.leftAnchor),
-      self.liveStreamChatInputView.topAnchor.constraint(equalTo: self.chatInputViewContainer.topAnchor),
-      self.liveStreamChatInputView.bottomAnchor.constraint(equalTo: self.chatInputViewContainer.bottomAnchor),
-      self.liveStreamChatInputView.rightAnchor.constraint(equalTo: self.chatInputViewContainer.rightAnchor)
-      ])
-
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         AppEnvironment.current.currentUser?.liveAuthToken.doIfSome {
@@ -66,6 +61,9 @@ internal final class LiveStreamChatViewController: UIViewController {
         )
     }
 
+    self.sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
+    self.textField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -83,6 +81,29 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UITableView.lens.estimatedRowHeight .~ 200
 
     self.tableView.contentInset = .init(topBottom: Styles.grid(1))
+
+    _ = self.chatInputView
+      |> UIView.lens.backgroundColor .~ .ksr_navy_700
+
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
+
+    _ = self.chatInputViewStackView
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    _ = self.textField
+      |> UITextField.lens.backgroundColor .~ .ksr_navy_700
+      |> UITextField.lens.tintColor .~ .white
+      |> UITextField.lens.textColor .~ .white
+      |> UITextField.lens.font .~ .ksr_body(size: 14)
+      |> UITextField.lens.borderStyle .~ .none
+      |> UITextField.lens.returnKeyType .~ .done
+
+    _ = self.sendButton
+      |> UIButton.lens.tintColor .~ .white
+      |> UIButton.lens.title(forState: .normal) .~ localizedString(key: "Send", defaultValue: "Send")
   }
 
   //swiftlint:disable:next function_body_length
@@ -106,9 +127,9 @@ internal final class LiveStreamChatViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] change in
         if change.notificationName == .UIKeyboardWillShow {
-          self?.chatInputViewContainerBottomConstraint.constant = change.frame.height
+          self?.chatInputViewBottomConstraint.constant = change.frame.height
         } else {
-          self?.chatInputViewContainerBottomConstraint.constant = 0
+          self?.chatInputViewBottomConstraint.constant = 0
         }
 
         UIView.animate(withDuration: change.duration, delay: 0,
@@ -130,7 +151,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.viewModel.outputs.collapseChatInputView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.chatInputViewContainerHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
+        self?.chatInputViewHeightConstraint.constant = $0 ? 0 : Styles.grid(8)
     }
 
     self.viewModel.outputs.showErrorAlert
@@ -138,14 +159,28 @@ internal final class LiveStreamChatViewController: UIViewController {
       .observeValues { [weak self] in
         self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
+
+    self.sendButton.rac.enabled = self.viewModel.outputs.sendButtonEnabled
+
+    self.viewModel.outputs.clearTextFieldAndResignFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.textField.text = nil
+        self?.textField.resignFirstResponder()
+    }
+
+    self.textField.rac.attributedPlaceholder = self.viewModel.outputs.chatInputViewPlaceholderText
   }
 
-  private lazy var liveStreamChatInputView: LiveStreamChatInputView = {
-    let chatInputView = LiveStreamChatInputView.fromNib()
-    chatInputView.translatesAutoresizingMaskIntoConstraints = false
-    chatInputView.configureWith(delegate: self)
-    return chatInputView
-  }()
+  // MARK: Actions
+
+  @objc private func sendButtonTapped() {
+    self.viewModel.inputs.sendButtonTapped()
+  }
+
+  @objc private func textFieldChanged(_ textField: UITextField) {
+    textField.text.doIfSome { self.viewModel.inputs.textDidChange(toText: $0) }
+  }
 
   private func showShareSheet(controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
@@ -192,12 +227,14 @@ internal final class LiveStreamChatViewController: UIViewController {
   }
 }
 
-extension LiveStreamChatViewController: LiveStreamChatInputViewDelegate {
-  func liveStreamChatInputView(_ chatInputView: LiveStreamChatInputView, didSendMessage message: String) {
-    self.viewModel.inputs.didSendMessage(message: message)
+extension LiveStreamChatViewController: UITextFieldDelegate {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    return self.viewModel.inputs.textFieldShouldBeginEditing()
   }
 
-  func liveStreamChatInputViewRequestedLogin(chatInputView: LiveStreamChatInputView) {
-    self.viewModel.inputs.chatInputViewRequestedLogin()
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+
+    return true
   }
 }
