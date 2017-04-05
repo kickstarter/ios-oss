@@ -689,7 +689,7 @@ Mikke Snow</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="52" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-TX-p2I">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="637"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="617"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveStreamChatMessageCell" rowHeight="52" id="iYO-Gt-oe7" customClass="LiveStreamChatMessageCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -811,9 +811,9 @@ Mikke Snow</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="hxv-TX-p2I" firstAttribute="top" secondItem="jJq-eS-idy" secondAttribute="bottom" id="2Jf-BB-kcX"/>
                             <constraint firstItem="hxv-TX-p2I" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="69s-6u-VId"/>
                             <constraint firstAttribute="trailing" secondItem="qyB-pr-9pD" secondAttribute="trailing" id="9ws-uS-ORK"/>
-                            <constraint firstItem="hxv-TX-p2I" firstAttribute="top" secondItem="w5S-EN-Mw3" secondAttribute="topMargin" id="VwA-JQ-b5Y"/>
                             <constraint firstAttribute="trailing" secondItem="hxv-TX-p2I" secondAttribute="trailing" id="bFf-tQ-c6f"/>
                             <constraint firstItem="qyB-pr-9pD" firstAttribute="leading" secondItem="w5S-EN-Mw3" secondAttribute="leading" id="eru-Hz-57W"/>
                             <constraint firstItem="qyB-pr-9pD" firstAttribute="top" secondItem="hxv-TX-p2I" secondAttribute="bottom" id="lCx-5p-kc9"/>
