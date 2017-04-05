@@ -98,7 +98,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
       )
       .map(first)
 
-    let initialEvent = configData.map { $0.1 }
+    let initialEvent = configData.map { _, event, _, _ in event }
 
     let updatedEventFetch = initialEvent
       .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in

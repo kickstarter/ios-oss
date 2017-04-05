@@ -114,13 +114,11 @@ public enum LiveStreamType {
 extension LiveStreamType: Equatable {
   public static func == (lhs: LiveStreamType, rhs: LiveStreamType) -> Bool {
     switch (lhs, rhs) {
-    case (.hlsStream(let lhsHLSStreamUrl), .hlsStream(let rhsHLSStreamUrl)):
-      return lhsHLSStreamUrl == rhsHLSStreamUrl
+    case let (.hlsStream(lhs), .hlsStream(rhs)):
+      return lhs == rhs
 
-    case (.openTok(let lhsSessionConfig), .openTok(let rhsSessionConfig)):
-      return lhsSessionConfig.apiKey == rhsSessionConfig.apiKey
-        && lhsSessionConfig.sessionId == rhsSessionConfig.sessionId
-        && lhsSessionConfig.token == rhsSessionConfig.token
+    case let (.openTok(lhs), .openTok(rhs)):
+      return lhs == rhs
 
     case (.hlsStream, _), (.openTok, _):
       return false
@@ -156,12 +154,12 @@ extension LiveStreamViewControllerState: Equatable {
       return true
     case (.greenRoom, .greenRoom):
       return true
-    case (.live(let lhsPlaybackState, let lhsStartTime), .live(let rhsPlaybackState, let rhsStartTime)):
-      return lhsPlaybackState == rhsPlaybackState && lhsStartTime == rhsStartTime
-    case (.replay(let lhsPlaybackState, let lhsDuration), .replay(let rhsPlaybackState, let rhsDuration)):
-      return lhsPlaybackState == rhsPlaybackState && lhsDuration == rhsDuration
-    case (.error(let lhsError), .error(let rhsError)):
-      return lhsError == rhsError
+    case let (.live(lhs), .live(rhs)):
+      return lhs == rhs
+    case let (.replay(lhs), .replay(rhs)):
+      return lhs == rhs
+    case let (.error(lhs), .error(rhs)):
+      return lhs == rhs
     case (.nonStarter, .nonStarter):
       return true
     case (.initializationFailed, .initializationFailed):

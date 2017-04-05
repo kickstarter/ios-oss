@@ -61,21 +61,15 @@ extension LiveStreamChatMessage: Equatable {
 private func convertId(fromJson json: JSON) -> Decoded<Int> {
   switch json {
   case .string(let string):
-    let idPrefix = "id_"
 
-    if string.hasPrefix(idPrefix) {
-      return Int(string.replacingOccurrences(of: idPrefix, with: ""))
-        .map(Decoded.success)
-        .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into Int.")))
-    }
-
-    return Int(string)
+    return (Int(string) ?? Int(string.replacingOccurrences(of: "id_", with: "")))
       .map(Decoded.success)
-      .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into Int.")))
+      .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into an Int.")))
+
   case .number(let number):
     return .success(number.intValue)
   default:
-    return .failure(.custom("Couldn't decoded Int."))
+    return .failure(.custom("Couldn't decoded \(json) into an Int."))
   }
 }
 
