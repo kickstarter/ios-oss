@@ -135,7 +135,6 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-
     self.pagedToPage.assertValues([infoPage])
     self.pagedToPageDirection.assertValues([.forward])
 
