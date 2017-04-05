@@ -15,13 +15,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
   private let collapseChatInputView = TestObserver<Bool, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
-  private let didConnectToChat = TestObserver<Bool, NoError>()
   private let prependChatMessagesToDataSourceMessages = TestObserver<[LiveStreamChatMessage], NoError>()
   private let prependChatMessagesToDataSourceReload = TestObserver<Bool, NoError>()
   private let presentLoginToutViewController = TestObserver<LoginIntent, NoError>()
   private let sendButtonEnabled = TestObserver<Bool, NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
-  private let willConnectToChat = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -32,7 +30,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       .observe(self.clearTextFieldAndResignFirstResponder.observer)
     self.vm.outputs.collapseChatInputView.observe(self.collapseChatInputView.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.didConnectToChat.observe(self.didConnectToChat.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(first).observe(
       self.prependChatMessagesToDataSourceMessages.observer)
     self.vm.outputs.prependChatMessagesToDataSourceAndReload.map(second).observe(
@@ -41,7 +38,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.outputs.sendButtonEnabled.observe(self.sendButtonEnabled.observer)
     self.vm.outputs.showErrorAlert.observe(
       self.showErrorAlert.observer)
-    self.vm.outputs.willConnectToChat.observe(self.willConnectToChat.observer)
   }
 
   func testPrependMessagesToDataSource() {
@@ -169,9 +165,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   }
 
   func testConnectingToChat_LoggedIn() {
-    self.willConnectToChat.assertValueCount(0)
-    self.didConnectToChat.assertValueCount(0)
-
     let initialLiveStreamEvent = .template
       |> LiveStreamEvent.lens.firebase .~ nil
 
@@ -190,15 +183,11 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.willConnectToChat.assertValueCount(2)
-      self.didConnectToChat.assertValueCount(1)
+      self.showErrorAlert.assertValueCount(0)
     }
   }
 
   func testConnectingToChat_LoggedOut() {
-    self.willConnectToChat.assertValueCount(0)
-    self.didConnectToChat.assertValueCount(0)
-
     let initialLiveStreamEvent = .template
       |> LiveStreamEvent.lens.firebase .~ nil
 
@@ -212,13 +201,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
-      self.willConnectToChat.assertValueCount(0)
-      self.didConnectToChat.assertValueCount(0)
-
       self.scheduler.advance()
-
-      self.willConnectToChat.assertValueCount(2)
-      self.didConnectToChat.assertValueCount(0)
     }
 
     let liveStreamServiceWithToken = MockLiveStreamService(
@@ -230,18 +213,13 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
       self.vm.inputs.userSessionChanged(session: .loggedIn(token: "feedbeef"))
 
-      self.willConnectToChat.assertValueCount(2)
-
       self.scheduler.advance()
 
-      self.didConnectToChat.assertValueCount(1)
+      self.showErrorAlert.assertValueCount(0)
     }
   }
 
   func testConnectingToChat_Failed() {
-    self.willConnectToChat.assertValueCount(0)
-    self.didConnectToChat.assertValueCount(0)
-
     let initialLiveStreamEvent = .template
       |> LiveStreamEvent.lens.firebase .~ nil
 
@@ -259,9 +237,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
-
-      self.willConnectToChat.assertValueCount(2)
-      self.didConnectToChat.assertValueCount(0)
 
       self.showErrorAlert.assertValues(["We were unable to connect to the live stream chat."])
     }

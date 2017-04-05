@@ -42,9 +42,6 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
 
-  /// Emits when chat authorization is completed with success status.
-  var didConnectToChat: Signal<Bool, NoError> { get }
-
   /// Emits the placeholder text
   var chatInputViewPlaceholderText: Signal<NSAttributedString, NoError> { get }
 
@@ -59,9 +56,6 @@ public protocol LiveStreamChatViewModelOutputs {
 
   /// Emits when an error has occurred with an error message.
   var showErrorAlert: Signal<String, NoError> { get }
-
-  /// Emits when chat authorization begins.
-  var willConnectToChat: Signal<(), NoError> { get }
 }
 
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
@@ -143,12 +137,6 @@ LiveStreamChatViewModelOutputs {
         AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
           .materialize()
     }
-
-    self.willConnectToChat = liveStreamEventFetch.map { $0.isTerminating }.filter(isFalse).ignoreValues()
-    self.didConnectToChat = Signal.merge(
-      liveStreamEventFetch.errors().mapConst(false),
-      signInWithCustomTokenEvent.values().mapConst(true)
-    )
 
     self.collapseChatInputView = liveStreamEvent.map { $0.liveNow }.map(negate).skipRepeats()
     self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
@@ -286,13 +274,11 @@ LiveStreamChatViewModelOutputs {
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
-  public let didConnectToChat: Signal<Bool, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>
   public let sendButtonEnabled: Signal<Bool, NoError>
   public let showErrorAlert: Signal<String, NoError>
-  public let willConnectToChat: Signal<(), NoError>
 
   public var inputs: LiveStreamChatViewModelInputs { return self }
   public var outputs: LiveStreamChatViewModelOutputs { return self }
