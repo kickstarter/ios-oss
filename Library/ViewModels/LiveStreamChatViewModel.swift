@@ -78,11 +78,8 @@ LiveStreamChatViewModelOutputs {
 
     let liveStreamEventFetch = Signal.merge(
       initialLiveStreamEvent,
-      Signal.combineLatest(
-        initialLiveStreamEvent,
-        self.userSessionProperty.signal.skipNil()
-        )
-        .map(first)
+      initialLiveStreamEvent
+        .takeWhen(self.userSessionProperty.signal.skipNil())
       )
       .flatMap { liveStreamEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
         AppEnvironment.current.liveStreamService
@@ -141,16 +138,7 @@ LiveStreamChatViewModelOutputs {
       .filter { AppEnvironment.current.currentUser == nil }
       .mapConst(.liveStreamChat)
 
-    let signInWithCustomTokenEvent = Signal.merge(
-      liveStreamEvent.map { $0.firebase?.token }.skipNil(),
-      self.userSessionProperty.signal.skipNil()
-        .map { session -> String? in
-          if case let .loggedIn(token) = session { return token }
-          return nil
-        }
-        .skipNil()
-      )
-      .filter { _ in AppEnvironment.current.currentUser != nil }
+    let signInWithCustomTokenEvent = firebase.map { $0.token }.skipNil()
       .flatMap {
         AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
           .materialize()

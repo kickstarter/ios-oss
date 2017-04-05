@@ -202,24 +202,37 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     let initialLiveStreamEvent = .template
       |> LiveStreamEvent.lens.firebase .~ nil
 
-    let liveStreamEvent = LiveStreamEvent.template
+    let liveStreamEventWithToken = LiveStreamEvent.template
 
     let liveStreamService = MockLiveStreamService(
-      fetchEventResult: Result(liveStreamEvent),
-      signInToFirebaseWithCustomTokenResult: Result(["deadbeef"])
+      fetchEventResult: Result(initialLiveStreamEvent)
     )
 
     withEnvironment(liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
       self.vm.inputs.viewDidLoad()
 
+      self.willConnectToChat.assertValueCount(0)
+      self.didConnectToChat.assertValueCount(0)
+
       self.scheduler.advance()
 
       self.willConnectToChat.assertValueCount(2)
       self.didConnectToChat.assertValueCount(0)
+    }
 
+    let liveStreamServiceWithToken = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEventWithToken),
+      signInToFirebaseWithCustomTokenResult: Result(["deadbeef"])
+    )
+
+    withEnvironment(liveStreamService: liveStreamServiceWithToken) {
       AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
       self.vm.inputs.userSessionChanged(session: .loggedIn(token: "feedbeef"))
+
+      self.willConnectToChat.assertValueCount(2)
+
+      self.scheduler.advance()
 
       self.didConnectToChat.assertValueCount(1)
     }

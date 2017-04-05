@@ -8,18 +8,6 @@ import Prelude
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
-private struct TestFirebaseAppType: FirebaseAppType {}
-private struct TestFirebaseDatabaseReferenceType: FirebaseDatabaseReferenceType {}
-private struct TestFirebaseDataSnapshotType: FirebaseDataSnapshotType {
-  let key: String
-  let value: Any?
-}
-private struct TestFirebaseServerValueType: FirebaseServerValueType {
-  static func timestamp() -> [AnyHashable : Any] {
-    return ["timestamp": 12345678]
-  }
-}
-
 internal final class LiveStreamViewModelTests: XCTestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
