@@ -180,8 +180,7 @@
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Por favor inicia sesión o regístrate para suscribirte a este Live Stream.";
 "Pledge" = "Contribución:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar. Para continuar, por favor inicia sesión o regístrate.";
+"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar.";
 "Pledge_was_dropped" = "Contribución fue descartada.";
 "Pledge_without_a_reward" = "Contribuir sin recompensa";
@@ -222,7 +221,7 @@
 "Rewards_count_rewards_colon.two" = "%{rewards_count} recompensas:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} recompensas:";
 "Save" = "Guardar";
-"Save_projects" = "Save projects";
+"Save_projects" = "Guardar proyectos";
 "Save_this_project" = "Guardar este proyecto";
 "Saved" = "Guardado";
 "Saved_projects" = "Proyectos guardados";

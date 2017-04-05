@@ -2132,8 +2132,8 @@ with friends."
    "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
 
    - **es**: "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice."
-   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung."
-   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Nous vous enverrons un rappel 48 heures avant la fin de sa campagne."
+   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf eine Benachrichtigung."
+   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Vous recevrez un rappel 48 heures avant la fin."
    - **en**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
   */
   public static func Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you() -> String {
@@ -2740,33 +2740,17 @@ from friends yet."
     )
   }
   /**
-   "Pledge to support projects and view all your saved and backed projects in one place."
+   "Pledge to projects and view all your saved and backed projects in one place."
 
    - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar."
-   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte."
-   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit."
-   - **en**: "Pledge to support projects and view all your saved and backed projects in one place."
+   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick."
+   - **fr**: "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus."
+   - **en**: "Pledge to projects and view all your saved and backed projects in one place."
   */
-  public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
+  public static func Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
     return localizedString(
-      key: "Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place",
-      defaultValue: "Pledge to support projects and view all your saved and backed projects in one place.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
-
-   - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar. Para continuar, por favor inicia sesión o regístrate."
-   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick. Um fortzufahren, melde dich bitte an oder registriere dich."
-   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit. Connectez-vous ou inscrivez-vous pour continuer."
-   - **en**: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
-  */
-  public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue() -> String {
-    return localizedString(
-      key: "Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue",
-      defaultValue: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue.",
+      key: "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place",
+      defaultValue: "Pledge to projects and view all your saved and backed projects in one place.",
       count: nil,
       substitutions: [:]
     )
@@ -3224,8 +3208,8 @@ daring ideas."
   /**
    "Save projects"
 
-   - **es**: "Save projects"
-   - **de**: "Save projects"
+   - **es**: "Guardar proyectos"
+   - **de**: "Projekte speichern"
    - **fr**: "Enregistrer des projets"
    - **en**: "Save projects"
   */

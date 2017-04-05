@@ -142,7 +142,7 @@
 "Live_streaming_now" = "Diffusion en direct en cours";
 "Live_with_creator_name" = "En direct avec <b>%{creator_name}</b>";
 "Loading" = "Chargement";
-"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
+"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Vous recevrez un rappel 48 heures avant la fin.";
 "Log_in_or_sign_up_to_subscribe" = "Connectez-vous ou inscrivez-vous pour vous abonner";
 "Log_in_to_leave_a_comment" = "Connectez-vous pour laisser un commentaire.";
 "Make_a_pledge_without_a_reward" = "S'engager sans recevoir de récompense";
@@ -180,8 +180,7 @@
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct.";
 "Pledge" = "Engagement :";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit. Connectez-vous ou inscrivez-vous pour continuer.";
+"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici.";
 "Pledge_was_dropped" = "Engagement abandonné.";
 "Pledge_without_a_reward" = "Engagement sans récompense";

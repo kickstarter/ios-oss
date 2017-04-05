@@ -142,7 +142,7 @@
 "Live_streaming_now" = "Wird gerade live gestreamt";
 "Live_with_creator_name" = "Live mit <b>%{creator_name}</b>";
 "Loading" = "Ladevorgang läuft";
-"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung.";
+"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf eine Benachrichtigung.";
 "Log_in_or_sign_up_to_subscribe" = "Bitte einloggen oder registrieren";
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
@@ -180,8 +180,7 @@
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
 "Pledge" = "Beitrag:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick. Um fortzufahren, melde dich bitte an oder registriere dich.";
+"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt.";
 "Pledge_was_dropped" = "Finanzierungsbeitrag wurde nicht übernommen.";
 "Pledge_without_a_reward" = "Ohne Belohnung unterstützen";
@@ -222,7 +221,7 @@
 "Rewards_count_rewards_colon.two" = "%{rewards_count} Belohnungen:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} Belohnungen:";
 "Save" = "Speichern";
-"Save_projects" = "Save projects";
+"Save_projects" = "Projekte speichern";
 "Save_this_project" = "Dieses Projekt speichern";
 "Saved" = "Gespeichert";
 "Saved_projects" = "Gespeicherte Projekte";
@@ -990,7 +989,8 @@
 "project.checkout.android_pay.payment_method" = "Zahlungmethode";
 "project.checkout.android_pay.pledge_disclaimer" = "Deine Zahlungsmethode wird jetzt noch nicht belastet. Erst nachdem das Projekt erfolgreich finanziert wurde, wird sie nach Ablauf desselben mit %{charge_amount} belastet.";
 "project.checkout.android_pay.pledged_disclaimer" = "Deine Zahlungsmethode wird jetzt noch nicht belastet. Erst nachdem das Projekt erfolgreich finanziert wurde, wird sie nach Ablauf desselben mit %{charge_amount} belastet.";
-"project.checkout.android_pay.terms_and_privacy" = "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden.";"project.checkout.apple_pay.alert.button.ok" = "OK";
+"project.checkout.android_pay.terms_and_privacy" = "Durch Leistung deines Beitrags erklärst du dich mit Kickstarters <u>terms of use</u> und <u>privacy policy</u> einverstanden.";
+"project.checkout.apple_pay.alert.button.ok" = "OK";
 "project.checkout.apple_pay.alert.error" = "Fehler";
 "project.checkout.backing.navbar_title" = "Dieses Projekt unterstützen";
 "project.checkout.finalizing.failed.button" = "Zurück zum Projekt";

@@ -245,7 +245,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   case .messageCreator:
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
   case .discoveryOnboarding, .generic:
-    return Strings.Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+    return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   default:
     return " "
   }
