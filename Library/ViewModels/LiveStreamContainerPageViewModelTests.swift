@@ -114,36 +114,66 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.pagedToPage.assertValueCount(0)
     self.pagedToPageDirection.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 refTag: .projectPage, presentedFromProject: true)
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+    let refTag = RefTag.projectPage
+    let presentedFromProject = true
+
+    let infoPage = LiveStreamContainerPage.info(
+      project: project,
+      liveStreamEvent: liveStreamEvent,
+      refTag: refTag,
+      presentedFromProject: presentedFromProject
+    )
+    let chatPage = LiveStreamContainerPage.chat(project: project, liveStreamEvent: liveStreamEvent)
+
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: refTag,
+                                 presentedFromProject: presentedFromProject)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didLoadViewControllersIntoPagesDataSource()
 
-    XCTAssertTrue(self.pagedToPage.values[0].isInfoPage)
+
+    self.pagedToPage.assertValues([infoPage])
     self.pagedToPageDirection.assertValues([.forward])
 
     self.vm.inputs.chatButtonTapped()
 
-    XCTAssertTrue(self.pagedToPage.values[1].isChatPage)
+    self.pagedToPage.assertValues([infoPage, chatPage])
     self.pagedToPageDirection.assertValues([.forward, .forward])
 
     self.vm.inputs.infoButtonTapped()
 
-    XCTAssertTrue(self.pagedToPage.values[2].isInfoPage)
+    self.pagedToPage.assertValues([infoPage, chatPage, infoPage])
     self.pagedToPageDirection.assertValues([.forward, .forward, .reverse])
   }
 
   func testLoadViewControllersIntoPagesDataSource() {
     self.loadViewControllersIntoPagesDataSource.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
-                                 refTag: .projectPage, presentedFromProject: true)
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+    let refTag = RefTag.projectPage
+    let presentedFromProject = true
+
+    let infoPage = LiveStreamContainerPage.info(
+      project: project,
+      liveStreamEvent: liveStreamEvent,
+      refTag: refTag,
+      presentedFromProject: presentedFromProject
+    )
+    let chatPage = LiveStreamContainerPage.chat(project: project, liveStreamEvent: liveStreamEvent)
+
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: refTag,
+                                 presentedFromProject: presentedFromProject)
+
     self.vm.inputs.viewDidLoad()
 
-    self.loadViewControllersIntoPagesDataSource.assertValueCount(1)
-    XCTAssertTrue(self.loadViewControllersIntoPagesDataSource.values[0][0].isInfoPage)
-    XCTAssertTrue(self.loadViewControllersIntoPagesDataSource.values[0][1].isChatPage)
+    self.loadViewControllersIntoPagesDataSource.assertValues([[infoPage, chatPage]])
   }
 
   func testIndicatorLineViewXPosition() {
