@@ -141,9 +141,7 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
       .map { $0.firebase?.hlsUrlPath }
       .skipNil()
       .flatMap { path in
-        liveStreamService.hlsUrl(
-          withPath: path
-          )
+        liveStreamService.hlsUrl(withPath: path)
           .materialize()
     }
 
