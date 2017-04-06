@@ -250,7 +250,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     let observedHlsUrlChanged = hlsUrlEvent.values()
-    let observedHlsUrlErrors = hlsUrlEvent.errors()
 
     let isMaxOpenTokViewersReached = Signal.combineLatest(
       numberOfPeopleWatching,
@@ -340,6 +339,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { event in isNonStarter(event: event) }
       .filter(isTrue)
 
+    //fixme: below does not ouput anything but perhaps we want to test it?
     let signInAnonymouslyEvent = Signal.merge(
       updatedEventFetch.values().filter { $0.firebase?.token == nil }.ignoreValues(),
       self.userSessionStartedProperty.signal.filter { AppEnvironment.current.currentUser == nil }
@@ -404,9 +404,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     self.titleViewText = Signal.merge(
-      Signal.combineLatest(liveState, isPlaying).mapConst(Strings.Live()),
+      liveState.mapConst(Strings.Live()),
       greenRoomState.mapConst(Strings.Starting_soon()),
-      Signal.combineLatest(replayState, isPlaying).mapConst(Strings.Recorded_Live()),
+      replayState.mapConst(Strings.Recorded_Live()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading())
     )
 
@@ -439,9 +439,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.loaderText = Signal.merge(
-      Signal.combineLatest(liveState, isPlaying).mapConst(Strings.The_live_stream_will_start_soon()),
+      liveState.mapConst(Strings.The_live_stream_will_start_soon()),
       greenRoomState.mapConst(Strings.The_live_stream_will_start_soon()),
-      Signal.combineLatest(replayState, isPlaying).mapConst(Strings.The_replay_will_start_soon()),
+      replayState.mapConst(Strings.The_replay_will_start_soon()),
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
       self.showErrorAlert
