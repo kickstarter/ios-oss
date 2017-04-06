@@ -19,12 +19,12 @@ internal extension Collection where Iterator.Element == LiveStreamChatMessage {
 }
 
 public struct LiveStreamChatMessage {
+  public fileprivate(set) var date: TimeInterval
   public fileprivate(set) var id: String
   public fileprivate(set) var isCreator: Bool?
   public fileprivate(set) var message: String
   public fileprivate(set) var name: String
   public fileprivate(set) var profilePictureUrl: String
-  public fileprivate(set) var date: TimeInterval
   public fileprivate(set) var userId: Int
 
   static internal func decode(_ snapshot: FirebaseDataSnapshotType) ->
@@ -42,14 +42,14 @@ extension LiveStreamChatMessage: Decodable {
     let create = curry(LiveStreamChatMessage.init)
 
     let tmp1 = create
-      <^> json <| "id"
+      <^> json <| "timestamp"
+      <*> json <| "id"
       <*> json <|? "creator"
       <*> json <| "message"
-      <*> json <| "name"
 
     let tmp2 = tmp1
+      <*> json <| "name"
       <*> json <| "profilePic"
-      <*> json <| "timestamp"
       <*> ((json <| "userId") >>- convertId)
 
     return tmp2
