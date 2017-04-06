@@ -3,6 +3,7 @@ import ReactiveSwift
 import Result
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
+@testable import Library
 @testable import LiveStream
 
 private struct TestOTStreamType: OTStreamType {
@@ -10,7 +11,7 @@ private struct TestOTStreamType: OTStreamType {
 }
 private class TestOTErrorType: NSError, OTErrorType {}
 
-internal final class LiveVideoViewModelTests: XCTestCase {
+internal final class LiveVideoViewModelTests: TestCase {
   private let vm: LiveVideoViewModelType = LiveVideoViewModel()
 
   private let addAndConfigureSubscriberStreamId = TestObserver<String, NoError>()

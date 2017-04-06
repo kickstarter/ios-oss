@@ -212,7 +212,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
     withEnvironment(liveStreamService: liveStreamServiceWithToken) {
       AppEnvironment.login(AccessTokenEnvelope.init(accessToken: "deadbeef", user: User.template))
-      self.vm.inputs.userSessionChanged(session: .loggedIn(token: "feedbeef"))
+      self.vm.inputs.userSessionStarted()
 
       self.scheduler.advance()
 
