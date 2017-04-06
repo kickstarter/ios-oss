@@ -24,38 +24,6 @@ public struct NewLiveStreamChatMessage {
   }
 }
 
-public enum LiveStreamSession {
-  case anonymous
-  case loggedIn(token: String)
-
-  public var isAnonymous: Bool {
-    switch self {
-    case .anonymous:
-      return true
-    case .loggedIn:
-      return false
-    }
-  }
-
-  public var isLoggedIn: Bool {
-    switch self {
-    case .anonymous:
-      return false
-    case .loggedIn:
-      return true
-    }
-  }
-
-  public var token: String? {
-    switch self {
-    case .anonymous:
-      return nil
-    case let .loggedIn(token):
-      return token
-    }
-  }
-}
-
 public enum LiveVideoPlaybackError {
   case failedToConnect
   case sessionInterrupted
@@ -121,51 +89,6 @@ extension LiveStreamType: Equatable {
       return lhs == rhs
 
     case (.hlsStream, _), (.openTok, _):
-      return false
-    }
-  }
-}
-
-/**
- - error:                The LiveVideoPlaybackError returned by the LiveVideoViewController.
- - greenRoom:            The green room is active (streamer not ready to go live yet).
- - initializationFailed: LiveStreamViewController initialization failed.
- - live:                 The LiveStreamViewController is Live along with its respective LiveVideoPlaybackState
-                         and startTime.
- - loading:              The LiveStreamViewController is loading.
- - nonStarter:           The event failed to start and has no replay.
- - replay:               The LiveStreamViewController is Replay along with its respective 
-                         LiveVideoPlaybackState and duration.
- */
-public enum LiveStreamViewControllerState {
-  case error(error: LiveVideoPlaybackError)
-  case greenRoom
-  case initializationFailed
-  case live(playbackState: LiveVideoPlaybackState, startTime: TimeInterval)
-  case loading
-  case nonStarter
-  case replay(playbackState: LiveVideoPlaybackState, duration: TimeInterval)
-}
-
-extension LiveStreamViewControllerState: Equatable {
-  public static func == (lhs: LiveStreamViewControllerState, rhs: LiveStreamViewControllerState) -> Bool {
-    switch (lhs, rhs) {
-    case (.loading, .loading):
-      return true
-    case (.greenRoom, .greenRoom):
-      return true
-    case let (.live(lhs), .live(rhs)):
-      return lhs == rhs
-    case let (.replay(lhs), .replay(rhs)):
-      return lhs == rhs
-    case let (.error(lhs), .error(rhs)):
-      return lhs == rhs
-    case (.nonStarter, .nonStarter):
-      return true
-    case (.initializationFailed, .initializationFailed):
-      return true
-    case (.loading, _), (.greenRoom, _), (.live, _), (.replay, _), (.error, _), (.nonStarter, _),
-         (.initializationFailed, _):
       return false
     }
   }

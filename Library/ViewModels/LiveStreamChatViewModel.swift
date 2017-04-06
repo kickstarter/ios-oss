@@ -25,8 +25,11 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call with new value from the input field
   func textDidChange(toText text: String?)
 
-  /// Call when the user session changes.
-  func userSessionChanged(session: LiveStreamSession)
+  /// Call when the user session ended.
+  func userSessionEnded()
+
+  /// Call when the user session started.
+  func userSessionStarted()
 
   /// Call when the viewDidLoad.
   func viewDidLoad()
@@ -73,7 +76,7 @@ LiveStreamChatViewModelOutputs {
     let liveStreamEventFetch = Signal.merge(
       initialLiveStreamEvent,
       initialLiveStreamEvent
-        .takeWhen(self.userSessionProperty.signal.skipNil())
+        .takeWhen(self.userSessionStartedProperty.signal)
       )
       .flatMap { liveStreamEvent in
         AppEnvironment.current.liveStreamService
@@ -247,14 +250,19 @@ LiveStreamChatViewModelOutputs {
     self.textProperty.value = text
   }
 
+  private let userSessionEndedProperty = MutableProperty()
+  public func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
+  }
+
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let userSessionProperty = MutableProperty<LiveStreamSession?>(nil)
-  public func userSessionChanged(session: LiveStreamSession) {
-    self.userSessionProperty.value = session
   }
 
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>

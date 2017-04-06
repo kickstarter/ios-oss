@@ -40,16 +40,12 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        AppEnvironment.current.currentUser?.liveAuthToken.doIfSome {
-          self?.viewModel.inputs.userSessionChanged(
-            session: .loggedIn(token: $0)
-          )
-        }
+        self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionChanged(session: .anonymous)
+        self?.viewModel.inputs.userSessionEnded()
     }
 
     NotificationCenter.default

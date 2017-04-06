@@ -30,6 +30,8 @@ public final class LiveStreamContainerViewController: UIViewController {
                                     refTag: RefTag,
                                     presentedFromProject: Bool) -> LiveStreamContainerViewController {
 
+    AppEnvironment.current.liveStreamService.setup()
+
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
                                       liveStreamEvent: liveStreamEvent,

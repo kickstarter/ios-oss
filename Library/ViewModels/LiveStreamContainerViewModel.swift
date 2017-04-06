@@ -325,35 +325,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let greenRoomState = greenRoomOffStatus
       .filter(isFalse)
-      .mapConst(LiveStreamViewControllerState.greenRoom)
 
     let replayState = didLiveStreamEndedNormally
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { didEndNormally, playbackState in didEndNormally && !playbackState.isError }
-      .map { _, playbackState in
-        LiveStreamViewControllerState.replay(playbackState: playbackState, duration: 0)
-    }
 
     let liveState = updatedEventFetch.values()
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { event, playbackState in
         event.liveNow && !playbackState.isError
       }
-      .map { _, playbackState in
-        LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
-    }
 
-    let errorState = self.videoPlaybackStateChangedProperty.signal.skipNil()
-      .map { $0.error }
-      .skipNil()
-      .map(LiveStreamViewControllerState.error)
-
-    let nonStarterOrLoadingState = updatedEventFetch.values()
-      .map { event in
-        isNonStarter(event: event)
-          ? LiveStreamViewControllerState.nonStarter
-          : LiveStreamViewControllerState.loading
-    }
+    let nonStarterState = updatedEventFetch.values()
+      .map { event in isNonStarter(event: event) }
+      .filter(isTrue)
 
     let signInAnonymouslyEvent = Signal.merge(
       updatedEventFetch.values().filter { $0.firebase?.token == nil }.ignoreValues(),
@@ -397,49 +382,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       // Observation here is purely to keep the above producer alive
       .observeValues { _ in }
 
-//    let signInErrors = Signal.merge(signInAnonymouslyEvent.errors(), signInWithCustomTokenEvent.errors())
-//    let incrementNumberOfPeopleWatchingErrors = incrementNumberOfPeopleWatchingEvent.errors()
-
-//    self.notifyDelegateLiveStreamApiErrorOccurred = Signal.merge(
-//      greenRoomErrors,
-//      numberOfPeopleWatchingErrors,
-//      observedHlsUrlErrors,
-//      signInErrors,
-//      incrementNumberOfPeopleWatchingErrors
-//    )
-
-    //fixme: this is the old live stream view controller state stuff, needs refactoring
-    let oldLiveStreamViewControllerState = Signal.merge(
-      nonStarterOrLoadingState,
-      errorState,
-      greenRoomState,
-      liveState,
-      replayState
-    )
-
-    let liveStreamControllerState = Signal.merge(
-      Signal.combineLatest(
-        oldLiveStreamViewControllerState,
-        self.viewDidLoadProperty.signal
-        ).map(first),
-      project.mapConst(.loading)
-    )
+    let isPlaying = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .map { state -> Bool in
+        switch state {
+        case .playing:
+          return true
+        case .error,
+             .loading:
+          return false
+        }
+    }
 
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      liveStreamControllerState
-        .map { state -> Bool in
-          switch state {
-          case .live(playbackState: .playing, _):
-            return true
-          case .replay(playbackState: .playing, _):
-            return true
-          default:
-            return false
-          }
-        }
-        .filter(isTrue)
-        .take(first: 1)
+      isPlaying.filter(isTrue).take(first: 1)
     )
 
     self.projectImageUrl = project.flatMap { project in
@@ -447,50 +403,28 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         .prefix(value: nil)
     }
 
-    self.titleViewText = liveStreamControllerState.map {
-      switch $0 {
-      case .live(_, _):   return Strings.Live()
-      case .greenRoom:    return Strings.Starting_soon()
-      case .replay(_, _): return Strings.Recorded_Live()
-      default:            return Strings.Loading()
-      }
-    }
+    self.titleViewText = Signal.merge(
+      Signal.combineLatest(liveState, isPlaying).mapConst(Strings.Live()),
+      greenRoomState.mapConst(Strings.Starting_soon()),
+      Signal.combineLatest(replayState, isPlaying).mapConst(Strings.Recorded_Live()),
+      self.viewDidLoadProperty.signal.mapConst(Strings.Loading())
+    )
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    let numberOfMinutesWatched = liveStreamControllerState
-      .filter { state in
-        switch state {
-        case .live(playbackState: .playing, _):   return true
-        case .replay(playbackState: .playing, _): return true
-        default:                                  return false
-        }
-      }
+    let numberOfMinutesWatched = isPlaying
+      .filter(isTrue)
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
     self.videoViewControllerHidden = Signal.combineLatest(
-      liveStreamControllerState.map { state -> Bool in
-        switch state {
-        case .live(playbackState: .playing, _):   return false
-        case .replay(playbackState: .playing, _): return false
-        default:                                  return true
-        }
-      },
+      isPlaying.filter(isFalse),
       self.createVideoViewController
       )
       .map(first)
 
-    let liveStreamControllerStateError = liveStreamControllerState
-      .map { state -> LiveVideoPlaybackError? in
-        switch state {
-        case .error(let error):                   return error
-        case let .live(.error(videoError), _):    return videoError
-        case let .replay(.error(videoError), _):  return videoError
-        case .initializationFailed:               return .failedToConnect
-        default:                                  return nil
-        }
-      }
+    let liveStreamControllerStateError = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .map { $0.error }
       .skipNil()
       .map { error -> String in
         switch error {
@@ -505,27 +439,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.loaderText = Signal.merge(
-      liveStreamControllerState.map {
-        switch $0 {
-        case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
-        case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
-        case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
-        case .nonStarter:                         return Strings.No_replay_is_available_for_this_live_stream()
-        default:                                  return Strings.Loading()
-        }
-      },
+      Signal.combineLatest(liveState, isPlaying).mapConst(Strings.The_live_stream_will_start_soon()),
+      greenRoomState.mapConst(Strings.The_live_stream_will_start_soon()),
+      Signal.combineLatest(replayState, isPlaying).mapConst(Strings.The_replay_will_start_soon()),
+      nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
+      self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
       self.showErrorAlert
     )
 
-    let nonStarter = liveStreamControllerState.map { state -> Bool in
-      switch state {
-      case .nonStarter: return true
-      default:          return false
-      }
-    }
-
     self.loaderActivityIndicatorAnimating = Signal.merge(
-      nonStarter.map(negate),
+      nonStarterState.map(negate),
       self.showErrorAlert.mapConst(false)
     )
 
