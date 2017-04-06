@@ -670,6 +670,26 @@
 		D0D2AB2C1E9644B0008D298A /* LiveVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB251E9644A3008D298A /* LiveVideoViewModel.swift */; };
 		D0D2AB2D1E9644B7008D298A /* LiveStreamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB241E9644A3008D298A /* LiveStreamViewModelTests.swift */; };
 		D0D2AB2E1E9644B7008D298A /* LiveVideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB261E9644A3008D298A /* LiveVideoViewModelTests.swift */; };
+		D0D2AB561E964849008D298A /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
+		D0D2AB571E964849008D298A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
+		D0D2AB581E964849008D298A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
+		D0D2AB591E964849008D298A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAA1E26428700488660 /* CFNetwork.framework */; };
+		D0D2AB5A1E964849008D298A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAC1E26428E00488660 /* CoreGraphics.framework */; };
+		D0D2AB5B1E964849008D298A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAE1E26429500488660 /* CoreMedia.framework */; };
+		D0D2AB5C1E964849008D298A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB01E26429C00488660 /* CoreTelephony.framework */; };
+		D0D2AB5D1E964849008D298A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB21E2642A300488660 /* CoreVideo.framework */; };
+		D0D2AB5E1E964849008D298A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB41E2642A900488660 /* GLKit.framework */; };
+		D0D2AB5F1E964849008D298A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB61E2642AF00488660 /* OpenGLES.framework */; };
+		D0D2AB601E964849008D298A /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53E61E1E47F400E54377 /* OpenTok.framework */; };
+		D0D2AB611E964849008D298A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB81E2642B700488660 /* QuartzCore.framework */; };
+		D0D2AB621E964849008D298A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBA1E2642BE00488660 /* Security.framework */; };
+		D0D2AB631E964849008D298A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBC1E2642C600488660 /* SystemConfiguration.framework */; };
+		D0D2AB641E964849008D298A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBE1E2642CF00488660 /* UIKit.framework */; };
+		D0D2AB651E964849008D298A /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC01E2642D400488660 /* VideoToolbox.framework */; };
+		D0D2ABA01E964852008D298A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC21E2642DC00488660 /* libc++.tbd */; };
+		D0D2ABA11E964852008D298A /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC41E2642EB00488660 /* libicucore.tbd */; };
+		D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC61E2642F200488660 /* libsqlite3.tbd */; };
+		D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
 		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
 		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
@@ -2126,11 +2146,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */,
+				D0D2AB5B1E964849008D298A /* CoreMedia.framework in Frameworks */,
 				A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */,
+				D0D2AB561E964849008D298A /* AddressBook.framework in Frameworks */,
+				D0D2AB581E964849008D298A /* AVFoundation.framework in Frameworks */,
 				A709698D1D1468A200DB39D3 /* AlamofireImage.framework in Frameworks */,
+				D0D2AB591E964849008D298A /* CFNetwork.framework in Frameworks */,
+				D0D2AB631E964849008D298A /* SystemConfiguration.framework in Frameworks */,
+				D0D2ABA11E964852008D298A /* libicucore.tbd in Frameworks */,
+				D0D2AB571E964849008D298A /* AudioToolbox.framework in Frameworks */,
+				D0D2AB5D1E964849008D298A /* CoreVideo.framework in Frameworks */,
+				D0D2AB611E964849008D298A /* QuartzCore.framework in Frameworks */,
 				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
+				D0D2AB5C1E964849008D298A /* CoreTelephony.framework in Frameworks */,
+				D0D2AB601E964849008D298A /* OpenTok.framework in Frameworks */,
 				017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */,
+				D0D2ABA01E964852008D298A /* libc++.tbd in Frameworks */,
+				D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */,
+				D0D2AB651E964849008D298A /* VideoToolbox.framework in Frameworks */,
+				D0D2AB621E964849008D298A /* Security.framework in Frameworks */,
+				D0D2AB5F1E964849008D298A /* OpenGLES.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				D0D2AB5A1E964849008D298A /* CoreGraphics.framework in Frameworks */,
+				D0D2AB5E1E964849008D298A /* GLKit.framework in Frameworks */,
+				D0D2AB641E964849008D298A /* UIKit.framework in Frameworks */,
 				A75F71631D897E4C0091258A /* Stripe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5150,6 +5190,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
@@ -5462,6 +5503,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
@@ -5498,6 +5540,7 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS = NO;
 				IBSC_ERRORS = NO;
