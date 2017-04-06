@@ -243,9 +243,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { $0.firebase?.hlsUrlPath }
       .skipNil()
       .flatMap { path in
-        AppEnvironment.current.liveStreamService.hlsUrl(
-          withPath: path
-          )
+        AppEnvironment.current.liveStreamService.hlsUrl(withPath: path)
           .materialize()
     }
 
