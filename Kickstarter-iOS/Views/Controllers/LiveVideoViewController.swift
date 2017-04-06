@@ -40,7 +40,6 @@ public final class LiveVideoViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-    self.bindVM()
 
     self.view.backgroundColor = .black
     self.view.addSubview(self.videoGridView)
@@ -66,7 +65,9 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   //swiftlint:disable:next function_body_length
-  public func bindVM() {
+  public override func bindViewModel() {
+    super.bindViewModel()
+    
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
       .observeValues { [weak self] in

@@ -12,7 +12,7 @@ public protocol LiveStreamContainerViewModelType {
 }
 
 public protocol LiveStreamContainerViewModelInputs {
-  /// Call with the Project, Project.LiveStream and LiveStreamEvent
+  /// Call with the Project, LiveStreamEvent, RefTag and whether presentation occurred from the project.
   func configureWith(project: Project,
                      liveStreamEvent: LiveStreamEvent,
                      refTag: RefTag,
@@ -24,11 +24,17 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Call when the device's orientation changed
   func deviceOrientationDidChange(orientation: UIInterfaceOrientation)
 
-  /// Called when a live stream api error occurred.
-  func liveStreamApiErrorOccurred(error: LiveApiError)
+  /// Call when the user session starts.
+  func userSessionStarted()
 
-  /// Called when the LiveStreamViewController's state changed
-  func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState)
+  /// Call when the user session end.
+  func userSessionEnded()
+
+  /// Called when the video playback state changes.
+  func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
+
+  /// Call when the viewDidDisappear.
+  func viewDidDisappear()
 
   /// Call when the viewDidLoad
   func viewDidLoad()
@@ -38,14 +44,17 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits whether the share bar button item should be added
   var addShareBarButtonItem: Signal<Bool, NoError> { get }
 
-  /// Emits when the LiveStreamViewController should be configured
-  var configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError> { get }
-
   /// Emits when the LiveStreamContainerPageViewController should be configured
   var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
 
   /// Emits when the nav bar title view should be configured.
   var configureNavBarTitleView: Signal<LiveStreamEvent, NoError> { get }
+
+  /// Create the video view controller based on the live stream type.
+  var createVideoViewController: Signal<LiveStreamType, NoError> { get }
+
+  /// Disable idle time so that the display does not sleep.
+  var disableIdleTimer: Signal<Bool, NoError> { get }
 
   /// Emits when the view controller should dismiss
   var dismiss: Signal<(), NoError> { get }
@@ -62,8 +71,14 @@ public protocol LiveStreamContainerViewModelOutputs {
   /// Emits when the nav bar title view should be hidden.
   var navBarTitleViewHidden: Signal<Bool, NoError> { get }
 
+  /// Emits the number of people currently watching the live stream.
+  var numberOfPeopleWatching: Signal<Int, NoError> { get }
+
   /// Emits the project's image url
   var projectImageUrl: Signal<URL?, NoError> { get }
+
+  /// Remove the nested video view controller.
+  var removeVideoViewController: Signal<(), NoError> { get }
 
   /// Emits when an error occurred
   var showErrorAlert: Signal<String, NoError> { get }
@@ -84,7 +99,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .map(first)
 
-    let initialEvent = configData.map { _, event, _, _ in event }
+    let initialEvent = configData.map { $0.1 }
 
     let updatedEventFetch = initialEvent
       .switchMap { initialEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
@@ -115,71 +130,299 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let refTag = configData.map { _, _, refTag, _ in refTag }
     let presentedFromProject = configData.map { _, _, _, presentedFromProject in presentedFromProject }
 
-    self.configureLiveStreamViewController = Signal.combineLatest(project, updatedEventFetch.values())
-
     self.configurePageViewController = Signal.combineLatest(
       project, initialEvent, refTag, presentedFromProject
       )
       .map { project, event, refTag, presentedFromProject in (project, event, refTag, presentedFromProject) }
 
-    let liveStreamControllerState = Signal.merge(
-      Signal.combineLatest(
-        self.liveStreamViewControllerStateChangedProperty.signal.skipNil(),
-        self.viewDidLoadProperty.signal
-      ).map(first),
-      project.mapConst(.loading)
-    )
-
     let eventFetchError = updatedEventFetch.errors().map { _ in
       return Strings.The_live_stream_failed_to_connect()
     }
 
-    let liveStreamControllerStateError = liveStreamControllerState
-      .map { state -> LiveVideoPlaybackError? in
-        switch state {
-        case .error(let error):                   return error
-        case let .live(.error(videoError), _):    return videoError
-        case let .replay(.error(videoError), _):  return videoError
-        case .initializationFailed:               return .failedToConnect
-        default:                                  return nil
-        }
-      }
-      .skipNil()
-      .map { error -> String in
-        switch error {
-        case .sessionInterrupted: return Strings.The_live_stream_was_interrupted()
-        case .failedToConnect:    return Strings.The_live_stream_failed_to_connect()
-        }
-      }
-
-    self.showErrorAlert = Signal.merge(
-      eventFetchError,
-      liveStreamControllerStateError
+    self.configureNavBarTitleView = updatedEventFetch.values()
+    self.navBarTitleViewHidden = Signal.merge(
+      initialEvent.mapConst(true),
+      updatedEventFetch.values().mapConst(false)
     )
 
-    self.loaderText = Signal.merge(
-      liveStreamControllerState.map {
-        switch $0 {
-        case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
-        case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
-        case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
-        case .nonStarter:                         return Strings.No_replay_is_available_for_this_live_stream()
-        default:                                  return Strings.Loading()
-        }
-      },
-      self.showErrorAlert
-    )
-
-    let nonStarter = liveStreamControllerState.map { state -> Bool in
-      switch state {
-      case .nonStarter: return true
-      default:          return false
-      }
+    configData
+      .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
+      .observeValues { data, orientation in
+        let (project, liveStream, _, _) = data
+        AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
+                                                                       liveStreamEvent: liveStream,
+                                                                       toOrientation: orientation)
     }
 
-    self.loaderActivityIndicatorAnimating = Signal.merge(
-      nonStarter.map(negate),
-      self.showErrorAlert.mapConst(false)
+    let startEndTimes = Signal.zip(
+      configData.map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 },
+      self.closeButtonTappedProperty.signal
+        .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
+    )
+
+    self.addShareBarButtonItem = updatedEventFetch.values()
+      .map { $0.liveNow }
+      .map(negate)
+
+    let didLiveStreamEndedNormally = updatedEventFetch.values()
+      .map(didEndNormally(event:))
+
+    let createObservers = Signal.zip(
+      didLiveStreamEndedNormally.filter(isFalse),
+      updatedEventFetch.values().map(isNonStarter(event:)).filter(isFalse)
+      )
+      .ignoreValues()
+      .take(first: 1)
+
+    let greenRoomStatusEvent = Signal.combineLatest(
+      updatedEventFetch.values(),
+      createObservers
+      )
+      .map(first)
+      .map { $0.firebase?.greenRoomPath }
+      .skipNil()
+      .flatMap { path in
+        AppEnvironment.current.liveStreamService.greenRoomOffStatus(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let greenRoomOffStatus = greenRoomStatusEvent.values()
+    let greenRoomErrors = greenRoomStatusEvent.errors()
+
+    let numberOfPeopleWatchingEvent = Signal.combineLatest(
+      updatedEventFetch.values(),
+      createObservers
+      )
+      .map(first)
+      .filter { $0.isScale == .some(false) }
+      .map { $0.firebase?.numberPeopleWatchingPath }
+      .skipNil()
+      .flatMap { path in
+        AppEnvironment.current.liveStreamService.numberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let scaleNumberOfPeopleWatchingEvent = Signal.combineLatest(
+      updatedEventFetch.values(),
+      createObservers
+      )
+      .map(first)
+      .filter { $0.isScale == .some(true) }
+      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
+      .skipNil()
+      .flatMap { path in
+        AppEnvironment.current.liveStreamService.scaleNumberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let numberOfPeopleWatchingErrors = Signal.merge(
+      numberOfPeopleWatchingEvent.errors(),
+      scaleNumberOfPeopleWatchingEvent.errors()
+    )
+
+    self.numberOfPeopleWatching = Signal.merge(
+      numberOfPeopleWatchingEvent.values(),
+      scaleNumberOfPeopleWatchingEvent.values()
+    )
+
+    let maxOpenTokViewers = updatedEventFetch.values()
+      .map { $0.maxOpenTokViewers }
+      .skipNil()
+
+    let hlsUrlEvent = Signal.combineLatest(
+      updatedEventFetch.values(),
+      createObservers
+      )
+      .map(first)
+      .map { $0.firebase?.hlsUrlPath }
+      .skipNil()
+      .flatMap { path in
+        AppEnvironment.current.liveStreamService.hlsUrl(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    let observedHlsUrlChanged = hlsUrlEvent.values()
+    let observedHlsUrlErrors = hlsUrlEvent.errors()
+
+    let isMaxOpenTokViewersReached = Signal.combineLatest(
+      numberOfPeopleWatching,
+      maxOpenTokViewers
+      )
+      .map { $0 > $1 }
+      .take(first: 1)
+
+    let useHlsStream = Signal.merge(
+      isMaxOpenTokViewersReached,
+      updatedEventFetch.values()
+        .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
+        .filter(isTrue)
+      )
+      .take(first: 1)
+      .timeout(after: 10, raising: SomeError(), on: AppEnvironment.current.scheduler)
+      .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
+
+    let liveHlsUrl = Signal.merge(
+      updatedEventFetch.values()
+        .filter { $0.liveNow }
+        .map { $0.hlsUrl }
+        .skipNil()
+        .map(LiveStreamType.hlsStream),
+      observedHlsUrlChanged.map(LiveStreamType.hlsStream)
+    )
+
+    let replayHlsUrl = updatedEventFetch.values()
+      .filter(didEndNormally(event:))
+      .map { $0.replayUrl }
+      .skipNil()
+      .map(LiveStreamType.hlsStream)
+
+    let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)
+
+    let openTokSessionConfig = updatedEventFetch.values().map { $0.openTok }
+      .skipNil()
+      .map {
+        LiveStreamType.openTok(
+          sessionConfig: OpenTokSessionConfig(
+            apiKey: $0.appId, sessionId: $0.sessionId, token: $0.token
+          )
+        )
+    }
+
+    let liveStreamType = Signal.merge(
+      Signal.combineLatest(hlsStreamUrl, useHlsStream.filter(isTrue)).map(first),
+      Signal.combineLatest(openTokSessionConfig, useHlsStream.filter(isFalse)).map(first)
+      )
+      .skipRepeats()
+
+    let observedGreenRoomOffOrInReplay = Signal.merge(
+      greenRoomOffStatus.filter(isTrue),
+      didLiveStreamEndedNormally.filter(isTrue)
+      )
+      .ignoreValues()
+
+    self.createVideoViewController = Signal.combineLatest(
+      liveStreamType,
+      observedGreenRoomOffOrInReplay
+      )
+      .map(first)
+
+    self.disableIdleTimer = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      self.viewDidDisappearProperty.signal.mapConst(false)
+    )
+
+    self.removeVideoViewController = self.createVideoViewController.take(first: 1)
+      .sample(on: greenRoomOffStatus.filter(isFalse).ignoreValues())
+      .ignoreValues()
+
+    let greenRoomState = greenRoomOffStatus
+      .filter(isFalse)
+      .mapConst(LiveStreamViewControllerState.greenRoom)
+
+    let replayState = didLiveStreamEndedNormally
+      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
+      .filter { didEndNormally, playbackState in didEndNormally && !playbackState.isError }
+      .map { _, playbackState in
+        LiveStreamViewControllerState.replay(playbackState: playbackState, duration: 0)
+    }
+
+    let liveState = updatedEventFetch.values()
+      .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
+      .filter { event, playbackState in
+        event.liveNow && !playbackState.isError
+      }
+      .map { _, playbackState in
+        LiveStreamViewControllerState.live(playbackState: playbackState, startTime: 0)
+    }
+
+    let errorState = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .map { $0.error }
+      .skipNil()
+      .map(LiveStreamViewControllerState.error)
+
+    let nonStarterOrLoadingState = updatedEventFetch.values()
+      .map { event in
+        isNonStarter(event: event)
+          ? LiveStreamViewControllerState.nonStarter
+          : LiveStreamViewControllerState.loading
+    }
+
+    let signInAnonymouslyEvent = Signal.merge(
+      updatedEventFetch.values().filter { $0.firebase?.token == nil }.ignoreValues(),
+      self.userSessionStartedProperty.signal.filter { AppEnvironment.current.currentUser == nil }
+        .ignoreValues()
+      )
+      .flatMap {
+        AppEnvironment.current.liveStreamService.signInToFirebaseAnonymously()
+          .materialize()
+    }
+
+    let signInWithCustomTokenEvent = Signal.merge(
+      updatedEventFetch.values().map { $0.firebase?.token }.skipNil(),
+      self.userSessionStartedProperty.signal.map { AppEnvironment.current.currentUser?.liveAuthToken }
+        .skipNil()
+      )
+      .flatMap {
+        AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
+          .materialize()
+    }
+
+    let firebaseUserId = Signal.merge(
+      signInAnonymouslyEvent.values(),
+      signInWithCustomTokenEvent.values()
+    )
+
+    let incrementNumberOfPeopleWatchingEvent = Signal.combineLatest(
+      updatedEventFetch.values().map { $0.firebase?.numberPeopleWatchingPath }.skipNil(),
+      firebaseUserId
+      )
+      .map { "\($0)/\($1)" }
+      .switchMap { path in
+        AppEnvironment.current.liveStreamService.incrementNumberOfPeopleWatching(
+          withPath: path
+          )
+          .materialize()
+    }
+
+    incrementNumberOfPeopleWatchingEvent
+      .values()
+      // Observation here is purely to keep the above producer alive
+      .observeValues { _ in }
+
+//    let signInErrors = Signal.merge(signInAnonymouslyEvent.errors(), signInWithCustomTokenEvent.errors())
+//    let incrementNumberOfPeopleWatchingErrors = incrementNumberOfPeopleWatchingEvent.errors()
+
+//    self.notifyDelegateLiveStreamApiErrorOccurred = Signal.merge(
+//      greenRoomErrors,
+//      numberOfPeopleWatchingErrors,
+//      observedHlsUrlErrors,
+//      signInErrors,
+//      incrementNumberOfPeopleWatchingErrors
+//    )
+
+    //fixme: this is the old live stream view controller state stuff, needs refactoring
+    let oldLiveStreamViewControllerState = Signal.merge(
+      nonStarterOrLoadingState,
+      errorState,
+      greenRoomState,
+      liveState,
+      replayState
+    )
+
+    let liveStreamControllerState = Signal.merge(
+      Signal.combineLatest(
+        oldLiveStreamViewControllerState,
+        self.viewDidLoadProperty.signal
+        ).map(first),
+      project.mapConst(.loading)
     )
 
     self.loaderStackViewHidden = Signal.merge(
@@ -213,18 +456,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       }
     }
 
-    self.videoViewControllerHidden = Signal.combineLatest(
-      liveStreamControllerState.map { state -> Bool in
-        switch state {
-        case .live(playbackState: .playing, _):   return false
-        case .replay(playbackState: .playing, _): return false
-        default:                                  return true
-        }
-      },
-      self.configureLiveStreamViewController
-      )
-      .map(first)
-
     self.dismiss = self.closeButtonTappedProperty.signal
 
     let numberOfMinutesWatched = liveStreamControllerState
@@ -238,25 +469,64 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
-    self.configureNavBarTitleView = updatedEventFetch.values()
-    self.navBarTitleViewHidden = Signal.merge(
-      initialEvent.mapConst(true),
-      updatedEventFetch.values().mapConst(false)
-    )
+    self.videoViewControllerHidden = Signal.combineLatest(
+      liveStreamControllerState.map { state -> Bool in
+        switch state {
+        case .live(playbackState: .playing, _):   return false
+        case .replay(playbackState: .playing, _): return false
+        default:                                  return true
+        }
+      },
+      self.createVideoViewController
+      )
+      .map(first)
 
-    configData
-      .takePairWhen(self.deviceOrientationDidChangeProperty.signal.skipNil())
-      .observeValues { data, orientation in
-        let (project, liveStream, _, _) = data
-        AppEnvironment.current.koala.trackChangedLiveStreamOrientation(project: project,
-                                                                       liveStreamEvent: liveStream,
-                                                                       toOrientation: orientation)
+    let liveStreamControllerStateError = liveStreamControllerState
+      .map { state -> LiveVideoPlaybackError? in
+        switch state {
+        case .error(let error):                   return error
+        case let .live(.error(videoError), _):    return videoError
+        case let .replay(.error(videoError), _):  return videoError
+        case .initializationFailed:               return .failedToConnect
+        default:                                  return nil
+        }
+      }
+      .skipNil()
+      .map { error -> String in
+        switch error {
+        case .sessionInterrupted: return Strings.The_live_stream_was_interrupted()
+        case .failedToConnect:    return Strings.The_live_stream_failed_to_connect()
+        }
     }
 
-    let startEndTimes = Signal.zip(
-      configData.map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 },
-      self.closeButtonTappedProperty.signal
-        .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
+    self.showErrorAlert = Signal.merge(
+      eventFetchError,
+      liveStreamControllerStateError
+    )
+
+    self.loaderText = Signal.merge(
+      liveStreamControllerState.map {
+        switch $0 {
+        case .live(playbackState: .loading, _):   return Strings.The_live_stream_will_start_soon()
+        case .greenRoom:                          return Strings.The_live_stream_will_start_soon()
+        case .replay(playbackState: .loading, _): return Strings.The_replay_will_start_soon()
+        case .nonStarter:                         return Strings.No_replay_is_available_for_this_live_stream()
+        default:                                  return Strings.Loading()
+        }
+      },
+      self.showErrorAlert
+    )
+
+    let nonStarter = liveStreamControllerState.map { state -> Bool in
+      switch state {
+      case .nonStarter: return true
+      default:          return false
+      }
+    }
+
+    self.loaderActivityIndicatorAnimating = Signal.merge(
+      nonStarter.map(negate),
+      self.showErrorAlert.mapConst(false)
     )
 
     Signal.combineLatest(configData, startEndTimes)
@@ -289,20 +559,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
                                                            liveStreamEvent: liveStreamEvent,
                                                            refTag: refTag)
     }
-
-    configData
-      .takePairWhen(self.liveStreamApiErrorOccurredProperty.signal.skipNil())
-      .observeValues { configData, error in
-        let (project, liveStreamEvent, _, _) = configData
-
-        AppEnvironment.current.koala.trackLiveStreamApiErrorOccurred(project: project,
-                                                                     liveStreamEvent: liveStreamEvent,
-                                                                     error: error)
-    }
-
-    self.addShareBarButtonItem = updatedEventFetch.values()
-      .map { $0.liveNow }
-      .map(negate)
   }
   //swiftlint:enable function_body_length
   //swiftlint:enable cyclomatic_complexity
@@ -326,15 +582,24 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let liveStreamApiErrorOccurredProperty = MutableProperty<LiveApiError?>(nil)
-  public func liveStreamApiErrorOccurred(error: LiveApiError) {
-    self.liveStreamApiErrorOccurredProperty.value = error
+  private let userSessionEndedProperty = MutableProperty()
+  public func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
   }
 
-  private let liveStreamViewControllerStateChangedProperty =
-    MutableProperty<LiveStreamViewControllerState?>(nil)
-  public func liveStreamViewControllerStateChanged(state: LiveStreamViewControllerState) {
-    self.liveStreamViewControllerStateChangedProperty.value = state
+  private let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
+  private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
+  public func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
+    self.videoPlaybackStateChangedProperty.value = state
+  }
+
+  private let viewDidDisappearProperty = MutableProperty()
+  public func viewDidDisappear() {
+    self.viewDidDisappearProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -346,19 +611,39 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   private let token = Lifetime.Token()
 
   public let addShareBarButtonItem: Signal<Bool, NoError>
-  public let configureLiveStreamViewController: Signal<(Project, LiveStreamEvent), NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let configureNavBarTitleView: Signal<LiveStreamEvent, NoError>
+  public let createVideoViewController: Signal<LiveStreamType, NoError>
+  public let disableIdleTimer: Signal<Bool, NoError>
   public let dismiss: Signal<(), NoError>
   public let loaderActivityIndicatorAnimating: Signal<Bool, NoError>
   public let loaderStackViewHidden: Signal<Bool, NoError>
   public let loaderText: Signal<String, NoError>
   public let navBarTitleViewHidden: Signal<Bool, NoError>
+  public let numberOfPeopleWatching: Signal<Int, NoError>
   public let projectImageUrl: Signal<URL?, NoError>
+  public let removeVideoViewController: Signal<(), NoError>
   public let showErrorAlert: Signal<String, NoError>
   public let titleViewText: Signal<String, NoError>
   public let videoViewControllerHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamContainerViewModelInputs { return self }
   public var outputs: LiveStreamContainerViewModelOutputs { return self }
+}
+
+private func isNonStarter(event: LiveStreamEvent) -> Bool {
+  return !event.liveNow
+    && !event.definitelyHasReplay
+    && startDateMoreThanFifteenMinutesAgo(event: event)
+}
+
+private func startDateMoreThanFifteenMinutesAgo(event: LiveStreamEvent) -> Bool {
+  let minute = Calendar.current
+    .dateComponents([.minute], from: event.startDate as Date, to: Date())
+    .minute ?? 0
+  return minute > 15
+}
+
+private func didEndNormally(event: LiveStreamEvent) -> Bool {
+  return !event.liveNow && event.definitelyHasReplay
 }

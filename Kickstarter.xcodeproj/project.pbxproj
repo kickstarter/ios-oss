@@ -664,9 +664,7 @@
 		D0CDA8A31E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */; };
 		D0D2AA311E9623F4008D298A /* LiveStreamNavTitleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */; };
 		D0D2AB201E964485008D298A /* VideoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB1A1E96444B008D298A /* VideoGridView.swift */; };
-		D0D2AB211E964485008D298A /* LiveStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB1C1E96445C008D298A /* LiveStreamViewController.swift */; };
 		D0D2AB221E964485008D298A /* LiveVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB1E1E964467008D298A /* LiveVideoViewController.swift */; };
-		D0D2AB2B1E9644B0008D298A /* LiveStreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB231E9644A3008D298A /* LiveStreamViewModel.swift */; };
 		D0D2AB2C1E9644B0008D298A /* LiveVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB251E9644A3008D298A /* LiveVideoViewModel.swift */; };
 		D0D2AB2D1E9644B7008D298A /* LiveStreamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB241E9644A3008D298A /* LiveStreamViewModelTests.swift */; };
 		D0D2AB2E1E9644B7008D298A /* LiveVideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB261E9644A3008D298A /* LiveVideoViewModelTests.swift */; };
@@ -2043,9 +2041,7 @@
 		D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamNavTitleViewModel.swift; sourceTree = "<group>"; };
 		D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamNavTitleViewTests.swift; sourceTree = "<group>"; };
 		D0D2AB1A1E96444B008D298A /* VideoGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoGridView.swift; sourceTree = "<group>"; };
-		D0D2AB1C1E96445C008D298A /* LiveStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewController.swift; sourceTree = "<group>"; };
 		D0D2AB1E1E964467008D298A /* LiveVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewController.swift; sourceTree = "<group>"; };
-		D0D2AB231E9644A3008D298A /* LiveStreamViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModel.swift; sourceTree = "<group>"; };
 		D0D2AB241E9644A3008D298A /* LiveStreamViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModelTests.swift; sourceTree = "<group>"; };
 		D0D2AB251E9644A3008D298A /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
 		D0D2AB261E9644A3008D298A /* LiveVideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModelTests.swift; sourceTree = "<group>"; };
@@ -2588,7 +2584,6 @@
 				A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */,
 				A7ED20351E8323E900BFFA01 /* LiveStreamDiscoveryViewControllerTests.swift */,
 				D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */,
-				D0D2AB1C1E96445C008D298A /* LiveStreamViewController.swift */,
 				D0D2AB1E1E964467008D298A /* LiveVideoViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
 				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
@@ -3248,7 +3243,6 @@
 				A7ED1F5B1E831C5C00BFFA01 /* LiveStreamEventDetailsViewModelTests.swift */,
 				D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */,
 				A70E9EE01E859C96009E67F2 /* LiveStreamNavTitleViewModelTests.swift */,
-				D0D2AB231E9644A3008D298A /* LiveStreamViewModel.swift */,
 				D0D2AB241E9644A3008D298A /* LiveStreamViewModelTests.swift */,
 				D0D2AB251E9644A3008D298A /* LiveVideoViewModel.swift */,
 				D0D2AB261E9644A3008D298A /* LiveVideoViewModelTests.swift */,
@@ -4385,7 +4379,6 @@
 				A710573B1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */,
 				A7DC83961C9DBBE700BB2B44 /* RefTag.swift in Sources */,
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
-				D0D2AB2B1E9644B0008D298A /* LiveStreamViewModel.swift in Sources */,
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
@@ -4725,7 +4718,6 @@
 				018422BD1D2C484200CA7566 /* DashboardProjectsDrawerCell.swift in Sources */,
 				9D14FF931D133351005F4ABB /* ProjectActivityUpdateCell.swift in Sources */,
 				A747A8B91D45893100AF199A /* ProjectPamphletContentDataSource.swift in Sources */,
-				D0D2AB211E964485008D298A /* LiveStreamViewController.swift in Sources */,
 				01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */,
 				59B0E0041D1203970081D2DC /* DashboardActionCell.swift in Sources */,
 				D0D2AB221E964485008D298A /* LiveVideoViewController.swift in Sources */,

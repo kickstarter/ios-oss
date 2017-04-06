@@ -20,6 +20,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
 
+  private var liveVideoViewController: LiveVideoViewController?
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
@@ -43,8 +44,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupLiveStreamViewController()
-
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
 
     self.navigationItem.titleView = self.navBarTitleView
@@ -53,7 +52,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
-	NotificationCenter.default
+    NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
@@ -62,16 +61,12 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        AppEnvironment.current.currentUser?.liveAuthToken.doIfSome {
-          self?.liveStreamViewController.userSessionChanged(
-            session: .loggedIn(token: $0)
-          )
-        }
+        self?.viewModel.inputs.userSessionStarted()
     }
 
     NotificationCenter.default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.liveStreamViewController.userSessionChanged(session: .anonymous)
+        self?.viewModel.inputs.userSessionEnded()
     }
 
     self.viewModel.inputs.viewDidLoad()
@@ -127,17 +122,6 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configureLiveStreamViewController
-      .observeForUI()
-      .observeValues { [weak self] _, liveStreamEvent in
-        guard let _self = self else { return }
-        _self.liveStreamViewController.configureWith(
-          liveStreamEvent: liveStreamEvent,
-          delegate: _self,
-          liveStreamService: AppEnvironment.current.liveStreamService
-        )
-    }
-
     self.viewModel.outputs.configurePageViewController
       .observeForUI()
       .observeValues { [weak self] project, liveStreamEvent, refTag, presentedFromProject in
@@ -154,7 +138,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
       .observeValues { [weak self] in
-        self?.liveStreamViewController.view.isHidden = $0
+        self?.liveVideoViewController?.view.isHidden = $0
     }
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
@@ -200,29 +184,62 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+
+    self.viewModel.outputs.createVideoViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.createAndAddChildVideoViewController(withLiveStreamType: $0)
+    }
+
+    self.viewModel.outputs.removeVideoViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.liveVideoViewController?.removeFromParentViewController()
+        self?.liveVideoViewController = nil
+    }
+
+    self.viewModel.outputs.numberOfPeopleWatching
+      .observeValues { [weak self] number in
+        self?.navBarTitleView?.set(numberOfPeopleWatching: number)
+    }
+
+    self.viewModel.outputs.disableIdleTimer
+      .observeForUI()
+      .observeValues {
+        UIApplication.shared.isIdleTimerDisabled = $0
+    }
   }
 
   public override var prefersStatusBarHidden: Bool {
     return true
   }
 
-  private func setupLiveStreamViewController() {
-    self.liveStreamContainerView.addSubview(self.liveStreamViewController.view)
+  private func layoutVideoView(view: UIView) {
+    view.frame = self.view.bounds
+  }
+
+  private func createAndAddChildVideoViewController(withLiveStreamType liveStreamType: LiveStreamType) {
+    self.liveVideoViewController?.removeFromParentViewController()
+
+    let videoViewController = LiveVideoViewController(liveStreamType: liveStreamType, delegate: self)
+    videoViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    self.liveStreamContainerView.addSubview(videoViewController.view)
 
     NSLayoutConstraint.activate([
-      self.liveStreamViewController.view.leftAnchor.constraint(
+      videoViewController.view.leftAnchor.constraint(
         equalTo: self.liveStreamContainerView.leftAnchor),
-      self.liveStreamViewController.view.topAnchor.constraint(
+      videoViewController.view.topAnchor.constraint(
         equalTo: self.liveStreamContainerView.topAnchor),
-      self.liveStreamViewController.view.rightAnchor.constraint(
+      videoViewController.view.rightAnchor.constraint(
         equalTo: self.liveStreamContainerView.rightAnchor),
-      self.liveStreamViewController.view.bottomAnchor.constraint(
+      videoViewController.view.bottomAnchor.constraint(
         equalTo: self.liveStreamContainerView.bottomAnchor)
       ])
 
-    self.liveStreamViewController.willMove(toParentViewController: self)
-    self.addChildViewController(self.liveStreamViewController)
-    self.liveStreamViewController.didMove(toParentViewController: self)
+    self.addChildViewController(videoViewController)
+    videoViewController.didMove(toParentViewController: self)
+
+    self.liveVideoViewController = videoViewController
   }
 
   fileprivate lazy var navBarTitleView: LiveStreamNavTitleView? = {
@@ -275,16 +292,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     return shareBarButtonItem
   }()
 
-  fileprivate lazy var liveStreamViewController: LiveStreamViewController = {
-    let liveStreamViewController = LiveStreamViewController(
-        liveStreamService: AppEnvironment.current.liveStreamService
-    )
-
-    liveStreamViewController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    return liveStreamViewController
-  }()
-
   // MARK: Actions
 
   @objc private func close() {
@@ -296,20 +303,10 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 }
 
-extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  public func liveStreamViewController(_ controller: LiveStreamViewController?,
-                                       numberOfPeopleWatchingChangedTo numberOfPeople: Int) {
-    self.navBarTitleView?.set(numberOfPeopleWatching: numberOfPeople)
-  }
-
-  public func liveStreamViewController(_ controller: LiveStreamViewController?,
-                                       stateChangedTo state: LiveStreamViewControllerState) {
-    self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-  }
-
-  public func liveStreamViewController(_ controller: LiveStreamViewController?,
-                                       didReceiveLiveStreamApiError error: LiveApiError) {
-    self.viewModel.inputs.liveStreamApiErrorOccurred(error: error)
+extension LiveStreamContainerViewController: LiveVideoViewControllerDelegate {
+  public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
+                                                          state: LiveVideoPlaybackState) {
+    self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }
 
