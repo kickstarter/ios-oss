@@ -119,9 +119,9 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let playbackStates: [LiveStreamViewControllerState] = [
-      .greenRoom,
-      .loading
+    let playbackStates: [LiveVideoPlaybackState] = [
+      .loading,
+      .playing
     ]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -136,9 +136,27 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        vc.liveStreamViewController(nil, stateChangedTo: state)
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
-        let stateIdentifier = state == .greenRoom ? "greenRoom" : "loading"
+        let stateIdentifier = state == .playing ? "playing" : "loading"
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"
+        )
+      }
+    }
+
+    Language.allLanguages.forEach { lang in
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        let stateIdentifier = "greenRoom"
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"

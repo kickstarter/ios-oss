@@ -8,7 +8,7 @@ import AVKit
 private let statusKeyPath = "status"
 
 public protocol LiveVideoViewControllerDelegate: class {
-  func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController,
+  func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController?,
                                                    state: LiveVideoPlaybackState)
 }
 

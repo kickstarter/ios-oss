@@ -5035,6 +5035,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5574,6 +5575,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5592,6 +5594,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
