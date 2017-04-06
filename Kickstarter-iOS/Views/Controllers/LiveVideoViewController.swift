@@ -207,8 +207,10 @@ public final class LiveVideoViewController: UIViewController {
   }()
 }
 
-extension LiveVideoViewController: OTSessionDelegate {
+extension OTStream: OTStreamType {}
+extension OTError: OTErrorType {}
 
+extension LiveVideoViewController: OTSessionDelegate {
   public func sessionDidConnect(_ session: OTSession) {
     self.viewModel.inputs.sessionDidConnect()
   }

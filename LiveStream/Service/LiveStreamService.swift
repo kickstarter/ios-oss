@@ -10,6 +10,8 @@ private var firebaseAuth: FIRAuth?
 private var firebaseDb: FIRDatabase?
 private var firebaseDbRef: FIRDatabaseReference?
 
+extension FIRDataSnapshot: FirebaseDataSnapshotType {}
+
 private let timestampKey = "timestamp"
 
 private func startFirebase() {
@@ -467,7 +469,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 
   public func sendChatMessage(withPath path: String,
-                              chatMessage message: NewLiveStreamChatMessage) ->
+                              chatMessage message: NewLiveStreamChatMessageType) ->
     SignalProducer<(), LiveApiError> {
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {

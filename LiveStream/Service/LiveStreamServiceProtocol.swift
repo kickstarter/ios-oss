@@ -16,30 +16,34 @@ public enum LiveApiError: Error {
 extension LiveApiError: Equatable {
   public static func == (lhs: LiveApiError, rhs: LiveApiError) -> Bool {
     switch (lhs, rhs) {
-    case (.chatMessageDecodingFailed, .chatMessageDecodingFailed):
-      return true
-    case (failedToInitializeFirebase, .failedToInitializeFirebase):
-      return true
-    case (firebaseAnonymousAuthFailed, .firebaseAnonymousAuthFailed):
-      return true
-    case (firebaseCustomTokenAuthFailed, .firebaseCustomTokenAuthFailed):
-      return true
-    case (sendChatMessageFailed, .sendChatMessageFailed):
+    case (.chatMessageDecodingFailed, .chatMessageDecodingFailed),
+         (failedToInitializeFirebase, .failedToInitializeFirebase),
+         (firebaseAnonymousAuthFailed, .firebaseAnonymousAuthFailed),
+         (firebaseCustomTokenAuthFailed, .firebaseCustomTokenAuthFailed),
+         (sendChatMessageFailed, .sendChatMessageFailed),
+         (genericFailure, .genericFailure),
+         (invalidJson, .invalidJson),
+         (invalidRequest, .invalidRequest):
       return true
     case (snapshotDecodingFailed(let lhsPath), .snapshotDecodingFailed(let rhsPath)):
       return lhsPath == rhsPath
-    case (genericFailure, .genericFailure):
-      return true
-    case (invalidJson, .invalidJson):
-      return true
-    case (invalidRequest, .invalidRequest):
-      return true
     case (chatMessageDecodingFailed, _), (failedToInitializeFirebase, _), (firebaseAnonymousAuthFailed, _),
          (firebaseCustomTokenAuthFailed, _), (sendChatMessageFailed, _), (snapshotDecodingFailed, _),
          (genericFailure, _), (invalidJson, _), (invalidRequest, _):
       return false
     }
   }
+}
+
+public protocol NewLiveStreamChatMessageType {
+  var message: String { get }
+  var name: String { get }
+  var profilePic: String { get }
+  var userId: String { get }
+
+  init(message: String, name: String, profilePic: String, userId: String)
+
+  func toFirebaseDictionary() -> [String:Any]
 }
 
 public protocol LiveStreamServiceProtocol {
@@ -87,7 +91,7 @@ public protocol LiveStreamServiceProtocol {
 
   /// Sends a new chat message to the live chat.
   func sendChatMessage(withPath path: String,
-                       chatMessage message: NewLiveStreamChatMessage) -> SignalProducer<(), LiveApiError>
+                       chatMessage message: NewLiveStreamChatMessageType) -> SignalProducer<(), LiveApiError>
 
   /// Acquires an anonymous Firebase user id to be used in the case that a user is not logged-in.
   func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError>

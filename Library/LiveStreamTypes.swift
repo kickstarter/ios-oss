@@ -1,7 +1,8 @@
 import Foundation
 import ReactiveSwift
+import LiveStream
 
-public struct NewLiveStreamChatMessage {
+public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageType {
   public let message: String
   public let name: String
   public let profilePic: String
@@ -93,3 +94,26 @@ extension LiveStreamType: Equatable {
     }
   }
 }
+
+public struct OpenTokSessionConfig: Equatable {
+  public let sessionId: String
+  public let apiKey: String
+  public let token: String
+
+  public init(apiKey: String, sessionId: String, token: String) {
+    self.apiKey = apiKey
+    self.sessionId = sessionId
+    self.token = token
+  }
+}
+
+public func == (lhs: OpenTokSessionConfig, rhs: OpenTokSessionConfig) -> Bool {
+  return lhs.apiKey == rhs.apiKey &&
+    lhs.sessionId == rhs.sessionId &&
+    lhs.token == rhs.token
+}
+
+public protocol OTStreamType {
+  var streamId: String { get }
+}
+public protocol OTErrorType {}

@@ -1,4 +1,5 @@
 import XCTest
+import Library
 @testable import LiveStream
 
 class LiveStreamTypesTests: XCTestCase {

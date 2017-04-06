@@ -4,6 +4,11 @@ import Curry
 import Prelude
 import Runes
 
+internal protocol FirebaseDataSnapshotType {
+  var key: String { get }
+  var value: Any? { get }
+}
+
 // Returns an empty array if any snapshot decodings fail
 internal extension Collection where Iterator.Element == LiveStreamChatMessage {
   static func decode(_ snapshots: [FirebaseDataSnapshotType]) -> Decoded<[LiveStreamChatMessage]> {

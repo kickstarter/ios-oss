@@ -378,11 +378,7 @@
 		A7BA54331E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
 		A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
 		A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */; };
-		A7BA54A01E1E4A9E00E54377 /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */; };
-		A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */; };
 		A7BA54AC1E1E4A9E00E54377 /* LiveStreamEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */; };
-		A7BA54B01E1E4ABC00E54377 /* OpenTok.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53E61E1E47F400E54377 /* OpenTok.framework */; };
 		A7BA54B11E1E4AD100E54377 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53E91E1E482E00E54377 /* FirebaseAnalytics.framework */; };
 		A7BA54B21E1E4AD100E54377 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53EA1E1E482E00E54377 /* FirebaseInstanceID.framework */; };
 		A7BA54B31E1E4AD100E54377 /* GoogleInterchangeUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA53EB1E1E482E00E54377 /* GoogleInterchangeUtilities.framework */; };
@@ -636,7 +632,6 @@
 		D03340841E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03340831E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
-		D06E49941E866320004D9E2F /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */; };
 		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
 		D07226EB1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */; };
 		D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */; };
@@ -688,25 +683,8 @@
 		D0D2ABA11E964852008D298A /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC41E2642EB00488660 /* libicucore.tbd */; };
 		D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC61E2642F200488660 /* libsqlite3.tbd */; };
 		D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
-		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
-		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
-		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
-		D0FD4CAB1E26428700488660 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAA1E26428700488660 /* CFNetwork.framework */; };
-		D0FD4CAD1E26428E00488660 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAC1E26428E00488660 /* CoreGraphics.framework */; };
-		D0FD4CAF1E26429500488660 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CAE1E26429500488660 /* CoreMedia.framework */; };
-		D0FD4CB11E26429C00488660 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB01E26429C00488660 /* CoreTelephony.framework */; };
-		D0FD4CB31E2642A300488660 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB21E2642A300488660 /* CoreVideo.framework */; };
-		D0FD4CB51E2642A900488660 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB41E2642A900488660 /* GLKit.framework */; };
-		D0FD4CB71E2642AF00488660 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB61E2642AF00488660 /* OpenGLES.framework */; };
-		D0FD4CB91E2642B700488660 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CB81E2642B700488660 /* QuartzCore.framework */; };
-		D0FD4CBB1E2642BE00488660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBA1E2642BE00488660 /* Security.framework */; };
-		D0FD4CBD1E2642C600488660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBC1E2642C600488660 /* SystemConfiguration.framework */; };
-		D0FD4CBF1E2642CF00488660 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CBE1E2642CF00488660 /* UIKit.framework */; };
-		D0FD4CC11E2642D500488660 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC01E2642D400488660 /* VideoToolbox.framework */; };
-		D0FD4CC31E2642DC00488660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC21E2642DC00488660 /* libc++.tbd */; };
-		D0FD4CC51E2642EB00488660 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC41E2642EB00488660 /* libicucore.tbd */; };
-		D0FD4CC71E2642F200488660 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC61E2642F200488660 /* libsqlite3.tbd */; };
-		D0FD4CC91E26433C00488660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
+		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
+		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
@@ -1748,9 +1726,6 @@
 		A7BA54291E1E493500E54377 /* LiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7BA542D1E1E493600E54377 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
-		A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypes.swift; sourceTree = "<group>"; };
-		A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTokExtensions.swift; sourceTree = "<group>"; };
 		A7BA549A1E1E4A9E00E54377 /* LiveStreamEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.swift; sourceTree = "<group>"; };
 		A7BA54F21E1E4D5A00E54377 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = SOURCE_ROOT; };
 		A7BA54FA1E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEvent.CreatorLenses.swift; sourceTree = "<group>"; };
@@ -2016,7 +1991,6 @@
 		D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModel.swift; sourceTree = "<group>"; };
 		D03340831E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPagesDataSourceTests.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
-		D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypesTests.swift; sourceTree = "<group>"; };
 		D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewController.swift; sourceTree = "<group>"; };
 		D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewController.swift; sourceTree = "<group>"; };
 		D07226FF1E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPagesDataSource.swift; sourceTree = "<group>"; };
@@ -2045,6 +2019,8 @@
 		D0D2AB241E9644A3008D298A /* LiveStreamViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamViewModelTests.swift; sourceTree = "<group>"; };
 		D0D2AB251E9644A3008D298A /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
 		D0D2AB261E9644A3008D298A /* LiveVideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModelTests.swift; sourceTree = "<group>"; };
+		D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypes.swift; sourceTree = "<group>"; };
+		D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamTypesTests.swift; sourceTree = "<group>"; };
 		D0FD4CA31E26422C00488660 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D0FD4CA61E26427A00488660 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0FD4CA81E26428000488660 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2098,25 +2074,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0FD4CC91E26433C00488660 /* libz.tbd in Frameworks */,
-				D0FD4CC71E2642F200488660 /* libsqlite3.tbd in Frameworks */,
-				D0FD4CC51E2642EB00488660 /* libicucore.tbd in Frameworks */,
-				D0FD4CC31E2642DC00488660 /* libc++.tbd in Frameworks */,
-				D0FD4CC11E2642D500488660 /* VideoToolbox.framework in Frameworks */,
-				D0FD4CBF1E2642CF00488660 /* UIKit.framework in Frameworks */,
-				D0FD4CBD1E2642C600488660 /* SystemConfiguration.framework in Frameworks */,
-				D0FD4CBB1E2642BE00488660 /* Security.framework in Frameworks */,
-				D0FD4CB91E2642B700488660 /* QuartzCore.framework in Frameworks */,
-				D0FD4CB71E2642AF00488660 /* OpenGLES.framework in Frameworks */,
-				D0FD4CB51E2642A900488660 /* GLKit.framework in Frameworks */,
-				D0FD4CB31E2642A300488660 /* CoreVideo.framework in Frameworks */,
-				D0FD4CB11E26429C00488660 /* CoreTelephony.framework in Frameworks */,
-				D0FD4CAF1E26429500488660 /* CoreMedia.framework in Frameworks */,
-				D0FD4CAD1E26428E00488660 /* CoreGraphics.framework in Frameworks */,
-				D0FD4CAB1E26428700488660 /* CFNetwork.framework in Frameworks */,
-				D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */,
-				D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */,
-				D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */,
 				A7BA54B71E1E4AD100E54377 /* GoogleNetworkingUtilities.framework in Frameworks */,
 				A7BA54B51E1E4AD100E54377 /* GoogleUtilities.framework in Frameworks */,
 				A7BA54B61E1E4AD100E54377 /* FirebaseAuth.framework in Frameworks */,
@@ -2126,7 +2083,6 @@
 				A7BA54B41E1E4AD100E54377 /* GoogleSymbolUtilities.framework in Frameworks */,
 				A7BA54B21E1E4AD100E54377 /* FirebaseInstanceID.framework in Frameworks */,
 				A7BA54B81E1E4AD100E54377 /* GoogleParsingUtilities.framework in Frameworks */,
-				A7BA54B01E1E4ABC00E54377 /* OpenTok.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2742,22 +2698,10 @@
 			children = (
 				A7BA542D1E1E493600E54377 /* Info.plist */,
 				A7BA54F21E1E4D5A00E54377 /* Secrets.swift */,
-				A7BA54881E1E4A9E00E54377 /* Extensions */,
 				A7BA54991E1E4A9E00E54377 /* Models */,
 				A7B76BC81E23E47100C8E312 /* Service */,
 			);
 			path = LiveStream;
-			sourceTree = "<group>";
-		};
-		A7BA54881E1E4A9E00E54377 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				A7BA54891E1E4A9E00E54377 /* FirebaseExtensions.swift */,
-				A7BA548A1E1E4A9E00E54377 /* LiveStreamTypes.swift */,
-				D06E49581E8661A5004D9E2F /* LiveStreamTypesTests.swift */,
-				A7BA548B1E1E4A9E00E54377 /* OpenTokExtensions.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		A7BA54991E1E4A9E00E54377 /* Models */ = {
@@ -2899,6 +2843,8 @@
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
 				A7ED1F191E830FDC00BFFA01 /* LaunchedCountriesTests.swift */,
 				D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */,
+				D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */,
+				D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */,
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
@@ -4316,6 +4262,7 @@
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
 				9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */,
+				D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
 				A7CA8C0E1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift in Sources */,
 				A7F441C51D005A9400FE6FC5 /* LoginToutViewModel.swift in Sources */,
@@ -4504,6 +4451,7 @@
 				A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */,
 				A7ED1FCC1E831C5C00BFFA01 /* ProjectActivityBackingCellViewModelTests.swift in Sources */,
+				D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */,
 				A7ED1FED1E831C5C00BFFA01 /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
 				A7ED1FC01E831C5C00BFFA01 /* BackingViewModelTests.swift in Sources */,
 				A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
@@ -4588,11 +4536,8 @@
 				A7BA55001E1E9D4B00E54377 /* LiveStreamEvent.CreatorLenses.swift in Sources */,
 				A7B76C061E23E4CF00C8E312 /* LiveStreamService.swift in Sources */,
 				A70482281E2F768D00292625 /* LiveStreamEvent.ProjectLenses.swift in Sources */,
-				A7BA549F1E1E4A9E00E54377 /* FirebaseExtensions.swift in Sources */,
 				A7792C3F1E31202B002BAD63 /* LiveStreamEvent.BackgroundImageLenses.swift in Sources */,
-				A7BA54A11E1E4A9E00E54377 /* OpenTokExtensions.swift in Sources */,
 				A7BA54AC1E1E4A9E00E54377 /* LiveStreamEvent.swift in Sources */,
-				A7BA54A01E1E4A9E00E54377 /* LiveStreamTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4601,7 +4546,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D08056AA1E4DB808008F67A7 /* LiveStreamChatMessageTests.swift in Sources */,
-				D06E49941E866320004D9E2F /* LiveStreamTypesTests.swift in Sources */,
 				D01673E41E3A35ED00651DBA /* LiveStreamEventsEnvelopeTests.swift in Sources */,
 				A7BC37361E237F8600C4D031 /* LiveStreamEventTests.swift in Sources */,
 			);
@@ -5114,6 +5058,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -5217,6 +5162,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
@@ -5253,6 +5199,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
