@@ -21,13 +21,17 @@ internal final class LiveStreamNavTitleView: UIView {
   @IBOutlet private weak var numberOfPeopleWatchingStackView: UIStackView!
 
   private weak var delegate: LiveStreamNavTitleViewDelegate?
-  private let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
+  internal let viewModel: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
 
-  internal class func fromNib() -> LiveStreamNavTitleView {
-    return UINib(nibName: Nib.LiveStreamNavTitleView.rawValue, bundle: .framework)
+  internal class func fromNib() -> LiveStreamNavTitleView? {
+    guard let view = UINib(nibName: Nib.LiveStreamNavTitleView.rawValue, bundle: .framework)
       .instantiate(withOwner: nil, options: nil)
-      //swiftlint:disable:next force_cast
-      .first as! LiveStreamNavTitleView
+      .first as? LiveStreamNavTitleView else {
+        assertionFailure("Nib not found")
+        return nil
+    }
+
+    return view
   }
 
   internal override func layoutSubviews() {

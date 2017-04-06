@@ -671,6 +671,7 @@
 		D0CDA89F1E7434AF00AA3450 /* LiveStreamNavTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */; };
 		D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0CDA8A01E7434E400AA3450 /* LiveStreamNavTitleView.xib */; };
 		D0CDA8A31E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */; };
+		D0D2AA311E9623F4008D298A /* LiveStreamNavTitleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */; };
 		D0FD4CA51E26427100488660 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA31E26422C00488660 /* AddressBook.framework */; };
 		D0FD4CA71E26427A00488660 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA61E26427A00488660 /* AudioToolbox.framework */; };
 		D0FD4CA91E26428000488660 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CA81E26428000488660 /* AVFoundation.framework */; };
@@ -2031,6 +2032,7 @@
 		D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamNavTitleView.swift; sourceTree = "<group>"; };
 		D0CDA8A01E7434E400AA3450 /* LiveStreamNavTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveStreamNavTitleView.xib; sourceTree = "<group>"; };
 		D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamNavTitleViewModel.swift; sourceTree = "<group>"; };
+		D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamNavTitleViewTests.swift; sourceTree = "<group>"; };
 		D0FD4CA31E26422C00488660 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D0FD4CA61E26427A00488660 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0FD4CA81E26428000488660 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2423,8 +2425,9 @@
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
-				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
+				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
+				D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */,
 				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
@@ -4837,6 +4840,7 @@
 				A7ED201C1E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift in Sources */,
 				A7ED20191E83229E00BFFA01 /* LiveStreamDiscoveryDataSourceTests.swift in Sources */,
 				A7ED20501E8323E900BFFA01 /* LiveStreamDiscoveryViewControllerTests.swift in Sources */,
+				D0D2AA311E9623F4008D298A /* LiveStreamNavTitleViewTests.swift in Sources */,
 				A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */,
 				A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */,
 				A7ED20461E8323E900BFFA01 /* BackingViewControllerTests.swift in Sources */,

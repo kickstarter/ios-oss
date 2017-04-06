@@ -178,13 +178,13 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.navBarTitleView.configureWith(liveStreamEvent: $0, delegate: _self)
+        _self.navBarTitleView?.configureWith(liveStreamEvent: $0, delegate: _self)
     }
 
     self.viewModel.outputs.navBarTitleViewHidden
       .observeForUI()
       .observeValues { [weak self] in
-        self?.navBarTitleView.isHidden = $0
+        self?.navBarTitleView?.isHidden = $0
     }
 
     self.viewModel.outputs.addShareBarButtonItem
@@ -225,8 +225,8 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.liveStreamViewController.didMove(toParentViewController: self)
   }
 
-  fileprivate lazy var navBarTitleView: LiveStreamNavTitleView = {
-    let navBarTitleView = LiveStreamNavTitleView.fromNib()
+  fileprivate lazy var navBarTitleView: LiveStreamNavTitleView? = {
+    guard let navBarTitleView = LiveStreamNavTitleView.fromNib() else { return nil }
     navBarTitleView.backgroundColor = .clear
     navBarTitleView.translatesAutoresizingMaskIntoConstraints = false
     return navBarTitleView
@@ -299,7 +299,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
   public func liveStreamViewController(_ controller: LiveStreamViewController?,
                                        numberOfPeopleWatchingChangedTo numberOfPeople: Int) {
-    self.navBarTitleView.set(numberOfPeopleWatching: numberOfPeople)
+    self.navBarTitleView?.set(numberOfPeopleWatching: numberOfPeople)
   }
 
   public func liveStreamViewController(_ controller: LiveStreamViewController?,
