@@ -5,12 +5,12 @@ import ReactiveSwift
 import ReactiveExtensions
 import Result
 
-internal protocol LiveStreamViewModelType {
+public protocol LiveStreamViewModelType {
   var inputs: LiveStreamViewModelInputs { get }
   var outputs: LiveStreamViewModelOutputs { get }
 }
 
-internal protocol LiveStreamViewModelInputs {
+public protocol LiveStreamViewModelInputs {
   /// Call to set the Firebase app and LiveStreamEvent.
   func configureWith(liveStreamEvent: LiveStreamEvent)
 
@@ -27,7 +27,7 @@ internal protocol LiveStreamViewModelInputs {
   func viewDidDisappear()
 }
 
-internal protocol LiveStreamViewModelOutputs {
+public protocol LiveStreamViewModelOutputs {
   /// Create the video view controller based on the live stream type.
   var createVideoViewController: Signal<LiveStreamType, NoError> { get }
 
@@ -48,11 +48,11 @@ internal protocol LiveStreamViewModelOutputs {
   var removeVideoViewController: Signal<(), NoError> { get }
 }
 
-internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamViewModelInputs,
+public final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamViewModelInputs,
   LiveStreamViewModelOutputs {
 
   //swiftlint:disable:next function_body_length
-  init(liveStreamService: LiveStreamServiceProtocol,
+  public init(liveStreamService: LiveStreamServiceProtocol,
        scheduler: DateScheduler = QueueScheduler.main) {
 
     let configData = Signal.combineLatest(
@@ -322,40 +322,40 @@ internal final class LiveStreamViewModel: LiveStreamViewModelType, LiveStreamVie
   }
 
   private let configData = MutableProperty<LiveStreamEvent?>(nil)
-  internal func configureWith(liveStreamEvent: LiveStreamEvent) {
+  public func configureWith(liveStreamEvent: LiveStreamEvent) {
     self.configData.value = liveStreamEvent
   }
 
   private let userSessionProperty = MutableProperty<LiveStreamSession?>(nil)
-  internal func userSessionChanged(session: LiveStreamSession) {
+  public func userSessionChanged(session: LiveStreamSession) {
     self.userSessionProperty.value = session
   }
 
   private let videoPlaybackStateChangedProperty = MutableProperty<LiveVideoPlaybackState?>(nil)
-  internal func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
+  public func videoPlaybackStateChanged(state: LiveVideoPlaybackState) {
     self.videoPlaybackStateChangedProperty.value = state
   }
 
   private let viewDidLoadProperty = MutableProperty()
-  internal func viewDidLoad() {
+  public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   private let viewDidDisappearProperty = MutableProperty()
-  internal func viewDidDisappear() {
+  public func viewDidDisappear() {
     self.viewDidDisappearProperty.value = ()
   }
 
-  internal let createVideoViewController: Signal<LiveStreamType, NoError>
-  internal let disableIdleTimer: Signal<Bool, NoError>
-  internal let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
-  internal let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged: Signal<Int, NoError>
-  internal let notifyDelegateLiveStreamViewControllerStateChanged: Signal<LiveStreamViewControllerState,
+  public let createVideoViewController: Signal<LiveStreamType, NoError>
+  public let disableIdleTimer: Signal<Bool, NoError>
+  public let notifyDelegateLiveStreamApiErrorOccurred: Signal<LiveApiError, NoError>
+  public let notifyDelegateLiveStreamNumberOfPeopleWatchingChanged: Signal<Int, NoError>
+  public let notifyDelegateLiveStreamViewControllerStateChanged: Signal<LiveStreamViewControllerState,
     NoError>
-  internal let removeVideoViewController: Signal<(), NoError>
+  public let removeVideoViewController: Signal<(), NoError>
 
-  internal var inputs: LiveStreamViewModelInputs { return self }
-  internal var outputs: LiveStreamViewModelOutputs { return self }
+  public var inputs: LiveStreamViewModelInputs { return self }
+  public var outputs: LiveStreamViewModelOutputs { return self }
 }
 
 private func isNonStarter(event: LiveStreamEvent) -> Bool {

@@ -2,13 +2,12 @@
 // swiftlint:disable type_body_length
 import ReactiveSwift
 import Result
-import XCTest
 import Prelude
 @testable import LiveStream
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class LiveStreamViewModelTests: XCTestCase {
+internal final class LiveStreamViewModelTests: TestCase {
   private let scheduler = TestScheduler()
   private var vm: LiveStreamViewModelType!
 

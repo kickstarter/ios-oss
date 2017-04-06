@@ -1,11 +1,10 @@
 import AVFoundation
 import LiveStream
-import OpenTok
 import Prelude
 import ReactiveSwift
 import Result
 
-internal protocol LiveVideoViewModelInputs {
+public protocol LiveVideoViewModelInputs {
   /// Call with the live stream given to the view.
   func configureWith(liveStreamType: LiveStreamType)
 
@@ -34,7 +33,7 @@ internal protocol LiveVideoViewModelInputs {
   func viewWillAppear()
 }
 
-internal protocol LiveVideoViewModelOutputs {
+public protocol LiveVideoViewModelOutputs {
   /// Emits when the HLS player should be created and configured.
   var addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError> { get }
 
@@ -60,15 +59,15 @@ internal protocol LiveVideoViewModelOutputs {
   var unsubscribeAllSubscribersFromSession: Signal<(), NoError> { get }
 }
 
-internal protocol LiveVideoViewModelType {
+public protocol LiveVideoViewModelType {
   var inputs: LiveVideoViewModelInputs { get }
   var outputs: LiveVideoViewModelOutputs { get }
 }
 
-internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewModelInputs,
+public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewModelInputs,
   LiveVideoViewModelOutputs {
 
-  internal init() {
+  public init() {
     let liveStreamType = Signal.combineLatest(
       self.liveStreamTypeProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
@@ -124,61 +123,61 @@ internal final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMo
   }
 
   private let liveStreamTypeProperty = MutableProperty<LiveStreamType?>(nil)
-  internal func configureWith(liveStreamType: LiveStreamType) {
+  public func configureWith(liveStreamType: LiveStreamType) {
     self.liveStreamTypeProperty.value = liveStreamType
   }
 
   private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItemStatus?>(nil)
-  internal func hlsPlayerStateChanged(state: AVPlayerItemStatus) {
+  public func hlsPlayerStateChanged(state: AVPlayerItemStatus) {
     self.hlsPlayerStateChangedProperty.value = state
   }
 
   private let sessionDidConnectProperty = MutableProperty()
-  internal func sessionDidConnect() {
+  public func sessionDidConnect() {
     self.sessionDidConnectProperty.value = ()
   }
 
   private let sessionDidFailWithErrorProperty = MutableProperty<OTErrorType?>(nil)
-  internal func sessionDidFailWithError(error: OTErrorType) {
+  public func sessionDidFailWithError(error: OTErrorType) {
     self.sessionDidFailWithErrorProperty.value = error
   }
 
   private let sessionStreamCreatedProperty = MutableProperty<OTStreamType?>(nil)
-  internal func sessionStreamCreated(stream: OTStreamType) {
+  public func sessionStreamCreated(stream: OTStreamType) {
     self.sessionStreamCreatedProperty.value = stream
   }
 
   private let sessionStreamDestroyedProperty = MutableProperty<OTStreamType?>(nil)
-  internal func sessionStreamDestroyed(stream: OTStreamType) {
+  public func sessionStreamDestroyed(stream: OTStreamType) {
     self.sessionStreamDestroyedProperty.value = stream
   }
 
   private let viewDidDisappearProperty = MutableProperty()
-  internal func viewDidDisappear() {
+  public func viewDidDisappear() {
     self.viewDidDisappearProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
-  internal func viewDidLoad() {
+  public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   private let viewWillAppearProperty = MutableProperty()
-  internal func viewWillAppear() {
+  public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
 
-  internal let addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError>
-  internal let addAndConfigureSubscriber: Signal<OTStreamType, NoError>
-  internal let createAndConfigureSessionWithConfig: Signal<OpenTokSessionConfig, NoError>
-  internal let notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError>
-  internal let removeSubscriber: Signal<OTStreamType, NoError>
-  internal let resubscribeAllSubscribersToSession: Signal<(), NoError>
-  internal let shouldPauseHlsPlayer: Signal<Bool, NoError>
-  internal let unsubscribeAllSubscribersFromSession: Signal<(), NoError>
+  public let addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError>
+  public let addAndConfigureSubscriber: Signal<OTStreamType, NoError>
+  public let createAndConfigureSessionWithConfig: Signal<OpenTokSessionConfig, NoError>
+  public let notifyDelegateOfPlaybackStateChange: Signal<LiveVideoPlaybackState, NoError>
+  public let removeSubscriber: Signal<OTStreamType, NoError>
+  public let resubscribeAllSubscribersToSession: Signal<(), NoError>
+  public let shouldPauseHlsPlayer: Signal<Bool, NoError>
+  public let unsubscribeAllSubscribersFromSession: Signal<(), NoError>
 
-  internal var inputs: LiveVideoViewModelInputs { return self }
-  internal var outputs: LiveVideoViewModelOutputs { return self }
+  public var inputs: LiveVideoViewModelInputs { return self }
+  public var outputs: LiveVideoViewModelOutputs { return self }
 }
 
 private func playbackState(fromHlsPlayState state: AVPlayerItemStatus) -> LiveVideoPlaybackState {
