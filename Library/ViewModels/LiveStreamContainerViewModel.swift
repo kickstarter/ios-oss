@@ -183,7 +183,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     }
 
     let greenRoomOffStatus = greenRoomStatusEvent.values()
-    let greenRoomErrors = greenRoomStatusEvent.errors()
 
     let numberOfPeopleWatchingEvent = Signal.combineLatest(
       updatedEventFetch.values(),
@@ -222,14 +221,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       scaleNumberOfPeopleWatchingEvent.errors()
     )
 
-    //FIXME: want to just tidy up a bit
+    let numberPeopleWatchingTimeOutError = numberOfPeopleWatchingErrors.filter { $0 == .timedOut }
+    let numberPeopleWatchingErrorsExceptTimeOut = numberOfPeopleWatchingErrors.filter { $0 != .timedOut }
+
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
       scaleNumberOfPeopleWatchingEvent.values(),
-      numberOfPeopleWatchingErrors.filter{
-        if case .timedOut = $0 { return false }
-        return true
-      }.mapConst(0)
+      numberPeopleWatchingErrorsExceptTimeOut.mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -266,10 +264,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       updatedEventFetch.values()
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue),
-      numberOfPeopleWatchingErrors.map {
-        if case .timedOut = $0 { return true }
-        return false
-      }.filter(isTrue)
+      numberPeopleWatchingTimeOutError.mapConst(true)
       )
       .take(first: 1)
 
