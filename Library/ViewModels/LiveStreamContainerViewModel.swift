@@ -391,6 +391,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
     }
 
+    let isLoading = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .map { state -> Bool in
+        switch state {
+        case .loading:
+          return true
+        case .playing,
+             .error:
+          return false
+        }
+    }
+
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       isPlaying.filter(isTrue).take(first: 1)
@@ -415,13 +426,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .flatMap { _ in timer(interval: .seconds(60), on: AppEnvironment.current.scheduler) }
       .mapConst(1)
 
-    self.videoViewControllerHidden = Signal.combineLatest(
-      isPlaying.filter(isFalse),
-      self.createVideoViewController
-      )
-      .map(first)
+    self.videoViewControllerHidden = Signal.merge(
+      isPlaying.map(negate),
+      isLoading
+    ).skipRepeats()
 
-    let liveStreamControllerStateError = self.videoPlaybackStateChangedProperty.signal.skipNil()
+    let playbackError = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { $0.error }
       .skipNil()
       .map { error -> String in
@@ -433,7 +443,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.showErrorAlert = Signal.merge(
       eventFetchError,
-      liveStreamControllerStateError
+      playbackError
     )
 
     self.loaderText = Signal.merge(
@@ -446,6 +456,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     )
 
     self.loaderActivityIndicatorAnimating = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
       nonStarterState.map(negate),
       self.showErrorAlert.mapConst(false)
     )
