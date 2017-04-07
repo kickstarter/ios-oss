@@ -124,9 +124,9 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
           .take(first: 1)
     }
 
-    let project = configData.map { project, _, _, _ in project }
-    let refTag = configData.map { _, _, refTag, _ in refTag }
-    let presentedFromProject = configData.map { _, _, _, presentedFromProject in presentedFromProject }
+    let project = configData.map { $0.0 }
+    let refTag = configData.map { $0.2 }
+    let presentedFromProject = configData.map { $0.3 }
 
     self.configurePageViewController = Signal.combineLatest(
       project, initialEvent, refTag, presentedFromProject

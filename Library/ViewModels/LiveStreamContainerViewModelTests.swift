@@ -720,7 +720,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-  func testCreateVideoViewController_Live_UnderMaxOpentTokViewers() {
+  func testCreateVideoViewController_Live_UnderMaxOpenTokViewers() {
     let project = Project.template
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
@@ -759,7 +759,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-  func testCreateVideoViewController_Live_OverMaxOpentTokViewers() {
+  func testCreateVideoViewController_Live_OverMaxOpenTokViewers() {
     let project = Project.template
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
