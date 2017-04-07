@@ -691,6 +691,39 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
+  func testCreateVideoViewController_Live_NumberOfPeopleTimesOut() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(6))
+
+      self.createVideoViewController.assertValues([hlsStreamType])
+    }
+  }
+
   func testCreateVideoViewController_Replay() {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ false
