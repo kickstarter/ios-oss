@@ -366,7 +366,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-
   func testTrackViewedLiveStream() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template

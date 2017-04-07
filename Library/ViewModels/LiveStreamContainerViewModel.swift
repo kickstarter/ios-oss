@@ -87,6 +87,7 @@ public protocol LiveStreamContainerViewModelOutputs {
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
 }
 
+//swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 

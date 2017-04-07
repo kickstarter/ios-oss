@@ -67,7 +67,7 @@ public final class LiveVideoViewController: UIViewController {
   //swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
-    
+
     self.viewModel.outputs.addAndConfigureHLSPlayerWithStreamUrl
       .observeForUI()
       .observeValues { [weak self] in
