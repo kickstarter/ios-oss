@@ -190,8 +190,8 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessageProtocol) ->
-    SignalProducer<(), LiveApiError> {
+  internal func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessageProtocol)
+    -> SignalProducer<(), LiveApiError> {
       if let error = self.sendChatMessageResult?.error {
         return SignalProducer(error: error)
       }

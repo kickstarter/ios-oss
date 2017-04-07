@@ -53,8 +53,8 @@ public protocol LiveStreamServiceProtocol {
   func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError>
 
   /// Sends a new chat message to the live chat.
-  func sendChatMessage(withPath path: String,
-                       chatMessage message: NewLiveStreamChatMessageProtocol) -> SignalProducer<(), LiveApiError>
+  func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessageProtocol)
+    -> SignalProducer<(), LiveApiError>
 
   /// Acquires an anonymous Firebase user id to be used in the case that a user is not logged-in.
   func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError>
