@@ -969,4 +969,34 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.navBarTitleViewHidden.assertValues([true, false])
     }
   }
+
+  func testGreenRoomErrorBeforeCreatingVideoViewController() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result(error: .genericFailure),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.showErrorAlert.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.showErrorAlert.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.showErrorAlert.assertValueCount(1)
+      self.createVideoViewController.assertValueCount(0)
+    }
+  }
 }

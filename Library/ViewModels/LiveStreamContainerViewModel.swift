@@ -442,9 +442,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
     }
 
+    let greenRoomErrorBeforeValue = greenRoomStatusEvent
+      .map { $0.error != nil }
+      .take(first: 1)
+      .filter(isTrue)
+
     self.showErrorAlert = Signal.merge(
       eventFetchError,
-      playbackError
+      playbackError,
+      greenRoomErrorBeforeValue.mapConst(Strings.The_live_stream_failed_to_connect())
     )
 
     self.loaderText = Signal.merge(
