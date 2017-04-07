@@ -33,7 +33,7 @@ public protocol CommentsViewModelInputs {
 
 public protocol CommentsViewModelOutputs {
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], Project, User?), NoError> { get }
+  var dataSource: Signal<([Comment], Project, Update?, User?, Bool), NoError> { get }
 
   /// Emits a boolean that determines if the comment bar button is visible.
   var commentBarButtonVisible: Signal<Bool, NoError> { get }
@@ -119,19 +119,26 @@ CommentsViewModelOutputs {
       },
       requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) })
 
-    self.dataSource = Signal.combineLatest(comments, project, user)
-      .skipRepeats { lhs, rhs in lhs.0.isEmpty && rhs.0.isEmpty }
+//    self.dataSource = Signal.combineLatest(comments, project, update, user)
+//      .map {comments, project, update, user in (comments, project, update, user, comments.isEmpty) }
+//      .skipRepeats { lhs, rhs in lhs.0.isEmpty && rhs.0.isEmpty }
 
     self.commentsAreLoading = isLoading
 
-    let emptyStateFromAPI = Signal.combineLatest(project, update, comments)
-      .map { project, update, comments in (project, update, comments.isEmpty) }
+//    comments
+//      .takeWhen(self.commentsPostedProperty.signal)
 
-    let emptyStateFromCommentPosted = Signal.combineLatest(project, update)
+    let emptyStateFromAPI = Signal.combineLatest(comments, project, update, user)
+      .map { comments, project, update, user in (comments, project, update, user, comments.isEmpty) }
+
+    let emptyStateFromCommentPosted = Signal.combineLatest(comments, project, update, user)
       .takeWhen(self.commentPostedProperty.signal)
-      .map { projects, update in (projects, update, false) }
+      .map { comments, projects, update, user in (comments, projects, update, user, false) }
 
-    self.emptyStateVisible = Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
+    self.dataSource = Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
+
+    self.emptyStateVisible = .empty
+      //Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
 
     let userCanComment = Signal.combineLatest(comments, project)
       .map { comments, project in !comments.isEmpty && canComment(onProject: project) }
@@ -222,7 +229,7 @@ CommentsViewModelOutputs {
   public let closeLoginTout: Signal<(), NoError>
   public let commentBarButtonVisible: Signal<Bool, NoError>
   public let commentsAreLoading: Signal<Bool, NoError>
-  public let dataSource: Signal<([Comment], Project, User?), NoError>
+  public let dataSource: Signal<([Comment], Project, Update?, User?, Bool), NoError>
   public var emptyStateVisible: Signal<(Project, Update?, Bool), NoError>
   public let openLoginTout: Signal<(), NoError>
   public let presentPostCommentDialog: Signal<(Project, Update?), NoError>

@@ -82,17 +82,17 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.dataSource
       .observeForUI()
-      .observeValues { [weak self] comments, project, user in
-        self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
+      .observeValues { [weak self] comments, project, update, user, visible in
+        self?.dataSource.load(comments: comments, project: project, update: update, loggedInUser: user, visible: visible)
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.emptyStateVisible
-      .observeForControllerAction()
-      .observeValues { [weak self] project, update, visible in
-        self?.dataSource.load(project: project, update: update, visible: visible)
-        self?.tableView.reloadData()
-    }
+//    self.viewModel.outputs.emptyStateVisible
+//      .observeForControllerAction()
+//      .observeValues { [weak self] project, update, visible in
+//        self?.dataSource.load(project: project, update: update, visible: visible)
+//        self?.tableView.reloadData()
+//    }
 
     self.viewModel.outputs.openLoginTout
       .observeForControllerAction()
