@@ -221,13 +221,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       scaleNumberOfPeopleWatchingEvent.errors()
     )
 
-    let numberPeopleWatchingTimeOutError = numberOfPeopleWatchingErrors.filter { $0 == .timedOut }
-    let numberPeopleWatchingErrorsExceptTimeOut = numberOfPeopleWatchingErrors.filter { $0 != .timedOut }
+    let numberPeopleWatchingTimedOutError = numberOfPeopleWatchingErrors.filter { $0 == .timedOut }
+    let numberPeopleWatchingErrorsExceptTimedOut = numberOfPeopleWatchingErrors.filter { $0 != .timedOut }
 
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
       scaleNumberOfPeopleWatchingEvent.values(),
-      numberPeopleWatchingErrorsExceptTimeOut.mapConst(0)
+      numberPeopleWatchingErrorsExceptTimedOut.mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -264,7 +264,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       updatedEventFetch.values()
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue),
-      numberPeopleWatchingTimeOutError.mapConst(true)
+      numberPeopleWatchingTimedOutError.mapConst(true)
       )
       .take(first: 1)
 
