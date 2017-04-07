@@ -12,7 +12,6 @@ import XCTest
 internal final class LiveStreamContainerViewModelTests: TestCase {
   private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
-  private let addShareBarButtonItem = TestObserver<Bool, NoError>()
   private let configurePageViewControllerProject = TestObserver<Project, NoError>()
   private let configurePageViewControllerLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
   private let configurePageViewControllerRefTag = TestObserver<RefTag, NoError>()
@@ -33,7 +32,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.addShareBarButtonItem.observe(self.addShareBarButtonItem.observer)
     self.vm.outputs.configurePageViewController.map { $0.0 }
       .observe(self.configurePageViewControllerProject.observer)
     self.vm.outputs.configurePageViewController.map { $0.1 }
@@ -54,6 +52,27 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
+  }
+
+  func testConfigurePageViewController() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+
+    self.configurePageViewControllerProject.assertValueCount(0)
+    self.configurePageViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configurePageViewControllerRefTag.assertValueCount(0)
+    self.configurePageViewControllerPresentedFromProject.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePageViewControllerProject.assertValues([project])
+    self.configurePageViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    self.configurePageViewControllerRefTag.assertValues([.projectPage])
+    self.configurePageViewControllerPresentedFromProject.assertValues([true])
   }
 
   func testDismiss() {
@@ -291,6 +310,86 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.projectImageUrlString.assertValues([nil, "http://www.kickstarter.com/full.jpg"])
+  }
+
+  func testNumberOfPeopleWatching_NonScaleEvent() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.isScale .~ false
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.numberOfPeopleWatching.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.numberOfPeopleWatching.assertValues([10])
+    }
+  }
+
+  func testNumberOfPeopleWatching_ScaleEvent() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.isScale .~ true
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      scaleNumberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.numberOfPeopleWatching.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.numberOfPeopleWatching.assertValues([10])
+    }
+  }
+
+  func testNumberOfPeopleWatching_ZeroOnErrors() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result(error: .genericFailure)
+    )
+
+    self.numberOfPeopleWatching.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.numberOfPeopleWatching.assertValues([0])
+    }
   }
 
   func testShowVideoView_Live() {
@@ -859,54 +958,6 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(3))
 
       self.navBarTitleViewHidden.assertValues([true, false])
-    }
-  }
-
-  func testAddShareBarButtonItem_Live() {
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
-    let project = Project.template
-
-    self.addShareBarButtonItem.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.addShareBarButtonItem.assertValueCount(0)
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.addShareBarButtonItem.assertValues([false])
-    }
-  }
-
-  func testAddShareBarButtonItem_Replay() {
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-    let project = Project.template
-
-    self.addShareBarButtonItem.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.addShareBarButtonItem.assertValueCount(0)
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.addShareBarButtonItem.assertValues([true])
     }
   }
 }

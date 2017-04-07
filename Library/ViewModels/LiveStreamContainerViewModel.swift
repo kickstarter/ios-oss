@@ -41,9 +41,6 @@ public protocol LiveStreamContainerViewModelInputs {
 }
 
 public protocol LiveStreamContainerViewModelOutputs {
-  /// Emits whether the share bar button item should be added
-  var addShareBarButtonItem: Signal<Bool, NoError> { get }
-
   /// Emits when the LiveStreamContainerPageViewController should be configured
   var configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError> { get }
 
@@ -161,10 +158,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
     )
 
-    self.addShareBarButtonItem = updatedEventFetch.values()
-      .map { $0.liveNow }
-      .map(negate)
-
     let didLiveStreamEndedNormally = updatedEventFetch.values()
       .map(didEndNormally(event:))
 
@@ -229,7 +222,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
-      scaleNumberOfPeopleWatchingEvent.values()
+      scaleNumberOfPeopleWatchingEvent.values(),
+      numberOfPeopleWatchingErrors.mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -542,7 +536,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
   // Required to limit the lifetime of the minutes watched tracking timer
   private let token = Lifetime.Token()
 
-  public let addShareBarButtonItem: Signal<Bool, NoError>
   public let configurePageViewController: Signal<(Project, LiveStreamEvent, RefTag, Bool), NoError>
   public let configureNavBarTitleView: Signal<LiveStreamEvent, NoError>
   public let createVideoViewController: Signal<LiveStreamType, NoError>

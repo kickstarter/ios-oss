@@ -47,6 +47,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     super.viewDidLoad()
 
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
+    self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
     self.navigationItem.titleView = self.navBarTitleView
 
@@ -171,16 +172,6 @@ public final class LiveStreamContainerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.navBarTitleView?.isHidden = $0
-    }
-
-    self.viewModel.outputs.addShareBarButtonItem
-      .observeForUI()
-      .observeValues { [weak self] in
-        if $0 {
-          self?.navigationItem.rightBarButtonItem = self?.shareBarButtonItem
-        } else {
-          self?.navigationItem.rightBarButtonItem = nil
-        }
     }
 
     self.shareViewModel.outputs.showShareSheet
