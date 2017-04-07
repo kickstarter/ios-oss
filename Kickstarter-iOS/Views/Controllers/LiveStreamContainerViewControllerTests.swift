@@ -147,7 +147,11 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     }
 
     Language.allLanguages.forEach { lang in
-      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang,
+                      liveStreamService: MockLiveStreamService(
+                        greenRoomOffStatusResult: Result([false]),
+                        fetchEventResult: Result(liveStreamEvent)
+      )) {
         let vc = LiveStreamContainerViewController.configuredWith(project: .template,
                                                                   liveStreamEvent: liveStreamEvent,
                                                                   refTag: .projectPage,
@@ -156,10 +160,8 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        let stateIdentifier = "greenRoom"
-
         FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"
+          parent.view, identifier: "lang_\(lang)_state_greenRoom"
         )
       }
     }
