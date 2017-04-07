@@ -822,7 +822,7 @@ Mikke Snow</string>
                     </view>
                     <connections>
                         <outlet property="chatInputView" destination="qyB-pr-9pD" id="9EG-hl-Bft"/>
-                        <outlet property="chatInputViewBottomConstraint" destination="lCx-5p-kc9" id="SUp-ge-Bo5"/>
+                        <outlet property="chatInputViewBottomConstraint" destination="yqp-80-NM0" id="RWk-ez-NeN"/>
                         <outlet property="chatInputViewHeightConstraint" destination="HaZ-w4-Cdj" id="HY4-bl-p1a"/>
                         <outlet property="chatInputViewStackView" destination="1Il-v1-C6g" id="ZY3-h0-xaq"/>
                         <outlet property="sendButton" destination="SXR-EY-eHY" id="yxV-0p-OeG"/>
