@@ -197,6 +197,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         AppEnvironment.current.liveStreamService.numberOfPeopleWatching(
           withPath: path
           )
+          .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -212,6 +213,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         AppEnvironment.current.liveStreamService.scaleNumberOfPeopleWatching(
           withPath: path
           )
+          .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
@@ -220,10 +222,14 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       scaleNumberOfPeopleWatchingEvent.errors()
     )
 
+    //FIXME: want to just tidy up a bit
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
       scaleNumberOfPeopleWatchingEvent.values(),
-      numberOfPeopleWatchingErrors.mapConst(0)
+      numberOfPeopleWatchingErrors.filter{
+        if case .timedOut = $0 { return false }
+        return true
+      }.mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -259,11 +265,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       isMaxOpenTokViewersReached,
       updatedEventFetch.values()
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
-        .filter(isTrue)
+        .filter(isTrue),
+      numberOfPeopleWatchingErrors.map {
+        if case .timedOut = $0 { return true }
+        return false
+      }.filter(isTrue)
       )
       .take(first: 1)
-      .timeout(after: 10, raising: SomeError(), on: AppEnvironment.current.scheduler)
-      .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
 
     let replayHlsUrl = updatedEventFetch.values()
       .filter(didEndNormally(event:))

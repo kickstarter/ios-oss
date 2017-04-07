@@ -797,9 +797,16 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
       |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
 
+    let liveStreamEventIncomplete = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.firebase .~ nil
+
     let liveStreamServiceLiveEvent = MockLiveStreamService(
       greenRoomOffStatusResult: Result([true]),
-      fetchEventResult: Result(liveStreamEvent)
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResultNever: true,
+      scaleNumberOfPeopleWatchingResultNever: true
     )
 
     guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
@@ -807,7 +814,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
     withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
       self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
+                                   liveStreamEvent: liveStreamEventIncomplete,
                                    refTag: .projectPage,
                                    presentedFromProject: true)
       self.vm.inputs.viewDidLoad()
@@ -818,7 +825,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.createVideoViewController.assertValueCount(0)
 
-      self.scheduler.advance(by: .seconds(6))
+      self.scheduler.advance(by: .seconds(10))
 
       self.createVideoViewController.assertValues([hlsStreamType])
     }

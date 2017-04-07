@@ -22,7 +22,9 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let incrementNumberOfPeopleWatchingResult: Result<[()], LiveApiError>?
   private let initialChatMessagesResult: Result<[[LiveStreamChatMessage]], LiveApiError>?
   private let numberOfPeopleWatchingResult: Result<[Int], LiveApiError>?
+  private let numberOfPeopleWatchingResultNever: Bool?
   private let scaleNumberOfPeopleWatchingResult: Result<[Int], LiveApiError>?
+  private let scaleNumberOfPeopleWatchingResultNever: Bool?
   private let sendChatMessageResult: Result<[()], LiveApiError>?
   private let signInToFirebaseAnonymouslyResult: Result<[String], LiveApiError>?
   private let signInToFirebaseWithCustomTokenResult: Result<[String], LiveApiError>?
@@ -41,7 +43,9 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
                 incrementNumberOfPeopleWatchingResult: Result<[()], LiveApiError>? = nil,
                 initialChatMessagesResult: Result<[[LiveStreamChatMessage]], LiveApiError>? = nil,
                 numberOfPeopleWatchingResult: Result<[Int], LiveApiError>? = nil,
+                numberOfPeopleWatchingResultNever: Bool? = nil,
                 scaleNumberOfPeopleWatchingResult: Result<[Int], LiveApiError>? = nil,
+                scaleNumberOfPeopleWatchingResultNever: Bool? = nil,
                 sendChatMessageResult: Result<[()], LiveApiError>? = nil,
                 signInToFirebaseAnonymouslyResult: Result<[String], LiveApiError>? = nil,
                 signInToFirebaseWithCustomTokenResult: Result<[String], LiveApiError>? = nil,
@@ -55,7 +59,9 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     self.hlsUrlResult = hlsUrlResult
     self.incrementNumberOfPeopleWatchingResult = incrementNumberOfPeopleWatchingResult
     self.numberOfPeopleWatchingResult = numberOfPeopleWatchingResult
+    self.numberOfPeopleWatchingResultNever = numberOfPeopleWatchingResultNever
     self.scaleNumberOfPeopleWatchingResult = scaleNumberOfPeopleWatchingResult
+    self.scaleNumberOfPeopleWatchingResultNever = scaleNumberOfPeopleWatchingResultNever
     self.sendChatMessageResult = sendChatMessageResult
     self.signInToFirebaseAnonymouslyResult = signInToFirebaseAnonymouslyResult
     self.signInToFirebaseWithCustomTokenResult = signInToFirebaseWithCustomTokenResult
@@ -164,6 +170,10 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
       return SignalProducer(error: error)
     }
 
+    if self.numberOfPeopleWatchingResultNever == .some(true) {
+      return SignalProducer.never
+    }
+
     return SignalProducer(
       self.numberOfPeopleWatchingResult?.value ?? []
     )
@@ -183,6 +193,10 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   internal func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
     if let error = self.scaleNumberOfPeopleWatchingResult?.error {
       return SignalProducer(error: error)
+    }
+
+    if self.scaleNumberOfPeopleWatchingResultNever == .some(true) {
+      return SignalProducer.never
     }
 
     return SignalProducer(

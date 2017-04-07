@@ -215,6 +215,7 @@ LiveStreamChatViewModelOutputs {
         case .snapshotDecodingFailed,
              .chatMessageDecodingFailed,
              .genericFailure,
+             .timedOut,
              .invalidJson,
              .invalidRequest:
           return localizedString(key: "Something_went_wrong_please_try_again",

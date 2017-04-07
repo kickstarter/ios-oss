@@ -5,6 +5,7 @@ public enum LiveApiError: Error {
   case firebaseCustomTokenAuthFailed
   case sendChatMessageFailed
   case snapshotDecodingFailed(path: String)
+  case timedOut
   case genericFailure
   case invalidJson
   case invalidRequest
@@ -20,13 +21,14 @@ extension LiveApiError: Equatable {
          (sendChatMessageFailed, .sendChatMessageFailed),
          (genericFailure, .genericFailure),
          (invalidJson, .invalidJson),
-         (invalidRequest, .invalidRequest):
+         (invalidRequest, .invalidRequest),
+         (timedOut, timedOut):
       return true
     case let (snapshotDecodingFailed(lhs), .snapshotDecodingFailed(rhs)):
       return lhs == rhs
     case (chatMessageDecodingFailed, _), (failedToInitializeFirebase, _), (firebaseAnonymousAuthFailed, _),
          (firebaseCustomTokenAuthFailed, _), (sendChatMessageFailed, _), (snapshotDecodingFailed, _),
-         (genericFailure, _), (invalidJson, _), (invalidRequest, _):
+         (genericFailure, _), (invalidJson, _), (invalidRequest, _), (timedOut, _):
       return false
     }
   }
