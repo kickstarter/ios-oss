@@ -27,11 +27,10 @@ public struct LiveStreamChatMessage {
   public fileprivate(set) var profilePictureUrl: String
   public fileprivate(set) var userId: Int
 
-  static internal func decode(_ snapshot: FirebaseDataSnapshotType) ->
-    Decoded<LiveStreamChatMessage> {
+  static internal func decode(_ snapshot: FirebaseDataSnapshotType) -> Decoded<LiveStreamChatMessage> {
       return (snapshot.value as? [String:Any])
-        .map { self.decode(
-          JSON($0.withAllValuesFrom(["id": snapshot.key])))
+        .map {
+          self.decode(JSON($0.withAllValuesFrom(["id": snapshot.key])))
         }
         .coalesceWith(.failure(.custom("Unable to parse Firebase snapshot.")))
   }
