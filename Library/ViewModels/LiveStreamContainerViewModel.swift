@@ -255,7 +255,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { $0 > $1 }
       .take(first: 1)
 
-    //fixme: timeout not working in tests?
     let useHlsStream = Signal.merge(
       isMaxOpenTokViewersReached,
       updatedEventFetch.values()
