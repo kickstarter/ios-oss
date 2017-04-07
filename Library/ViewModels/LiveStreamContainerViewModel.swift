@@ -240,14 +240,18 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       createObservers
       )
       .map(first)
-      .map { $0.firebase?.hlsUrlPath }
+      .map { liveStreamEvent -> (String, String?)? in
+        guard let hlsUrl = liveStreamEvent.hlsUrl else { return nil }
+        return (hlsUrl, liveStreamEvent.firebase?.hlsUrlPath)
+      }
       .skipNil()
-      .flatMap { path in
-        AppEnvironment.current.liveStreamService.hlsUrl(withPath: path)
+      .flatMap { hlsUrl, hlsUrlPath -> SignalProducer<Event<String, LiveApiError>, NoError> in
+        guard let hlsUrlPath = hlsUrlPath else { return SignalProducer(value: hlsUrl).materialize() }
+
+        return AppEnvironment.current.liveStreamService.hlsUrl(withPath: hlsUrlPath)
+          .prefix(value: hlsUrl)
           .materialize()
     }
-
-    let observedHlsUrlChanged = hlsUrlEvent.values()
 
     let isMaxOpenTokViewersReached = Signal.combineLatest(
       numberOfPeopleWatching,
@@ -266,19 +270,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .timeout(after: 10, raising: SomeError(), on: AppEnvironment.current.scheduler)
       .flatMapError { _ in SignalProducer<Bool, NoError>(value: true) }
 
-    let liveHlsUrl = Signal.merge(
-      updatedEventFetch.values()
-        .filter { $0.liveNow }
-        .map { $0.hlsUrl }
-        .skipNil()
-        .map(LiveStreamType.hlsStream),
-      observedHlsUrlChanged.map(LiveStreamType.hlsStream)
-    )
-
     let replayHlsUrl = updatedEventFetch.values()
       .filter(didEndNormally(event:))
       .map { $0.replayUrl }
       .skipNil()
+      .map(LiveStreamType.hlsStream)
+
+    let liveHlsUrl = hlsUrlEvent.values()
       .map(LiveStreamType.hlsStream)
 
     let hlsStreamUrl = Signal.merge(liveHlsUrl, replayHlsUrl)

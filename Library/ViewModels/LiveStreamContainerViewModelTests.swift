@@ -622,7 +622,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-  func testCreateVideoViewController_Live() {
+  func testCreateVideoViewController_Live_UnderMaxOpentTokViewers() {
     let project = Project.template
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
@@ -658,6 +658,36 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.createVideoViewController.assertValues([openTokStreamType])
+    }
+  }
+
+  func testCreateVideoViewController_Live_OverMaxOpentTokViewers() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([30])
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([hlsStreamType])
     }
   }
 
@@ -721,6 +751,38 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.createVideoViewController.assertValueCount(0)
 
       self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
+    }
+  }
+
+  func testCreateVideoViewController_Live_HlsUrlChanges() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      hlsUrlResult: Result(["http://www.url2.com"]),
+      numberOfPeopleWatchingResult: Result([30])
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+    let changedHlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: "http://www.url2.com")
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([hlsStreamType, changedHlsStreamType])
     }
   }
 
