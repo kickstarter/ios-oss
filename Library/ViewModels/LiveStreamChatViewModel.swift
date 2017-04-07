@@ -114,7 +114,7 @@ LiveStreamChatViewModelOutputs {
       .flatMap { path, lastTimeStamp in
         AppEnvironment.current.liveStreamService.chatMessagesAdded(
           withPath: path,
-          addedSinceTimeInterval: lastTimeStamp
+          addedSince: lastTimeStamp
           )
           .materialize()
     }

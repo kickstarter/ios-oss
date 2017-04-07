@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 import LiveStream
 
-public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageType {
+public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageProtocol {
   public let message: String
   public let name: String
   public let profilePic: String

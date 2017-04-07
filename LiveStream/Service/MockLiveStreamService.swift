@@ -117,7 +117,7 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
 
   // MARK: Firebase
 
-  func chatMessagesAdded(withPath path: String, addedSinceTimeInterval timeInterval: TimeInterval) ->
+  func chatMessagesAdded(withPath path: String, addedSince timeInterval: TimeInterval) ->
     SignalProducer<LiveStreamChatMessage, LiveApiError> {
       if let error = self.chatMessagesAddedResult?.error {
         return SignalProducer(error: error)
@@ -190,8 +190,8 @@ internal struct MockLiveStreamService: LiveStreamServiceProtocol {
     )
   }
 
-  internal func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessageType) ->
-    SignalProducer<(), LiveApiError> {
+  internal func sendChatMessage(withPath path: String, chatMessage message: NewLiveStreamChatMessageProtocol)
+    -> SignalProducer<(), LiveApiError> {
       if let error = self.sendChatMessageResult?.error {
         return SignalProducer(error: error)
       }
