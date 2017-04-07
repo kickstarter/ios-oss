@@ -10,7 +10,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamContainerViewModelTests: TestCase {
-  private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
+  private var vm: LiveStreamContainerViewModelType!
 
   private let configurePageViewControllerProject = TestObserver<Project, NoError>()
   private let configurePageViewControllerLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
@@ -31,6 +31,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = LiveStreamContainerViewModel()
 
     self.vm.outputs.configurePageViewController.map { $0.0 }
       .observe(self.configurePageViewControllerProject.observer)
