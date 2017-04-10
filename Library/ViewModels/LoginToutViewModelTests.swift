@@ -11,38 +11,38 @@ import XCTest
 @testable import FBSDKCoreKit
 
 final class LoginToutViewModelTests: TestCase {
+
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
-  fileprivate let startLogin = TestObserver<(), NoError>()
-  fileprivate let startSignup = TestObserver<(), NoError>()
-  fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
-  fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
+
+  fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
+  fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let headlineLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let isLoading = TestObserver<Bool, NoError>()
+  fileprivate let logInContextText = TestObserver<String, NoError>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
   fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
-  fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
-  fileprivate let isLoading = TestObserver<Bool, NoError>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-
-  fileprivate let headlineLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let logInContextText = TestObserver<String, NoError>()
+  fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
+  fileprivate let startLogin = TestObserver<(), NoError>()
+  fileprivate let startSignup = TestObserver<(), NoError>()
+  fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.startLogin.observe(self.startLogin.observer)
-    self.vm.outputs.startSignup.observe(self.startSignup.observer)
-    self.vm.outputs.startFacebookConfirmation.map { _, token in token }
-      .observe(self.startFacebookConfirmation.observer)
-    self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
+    self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
+    self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
-    self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
-    self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
-    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
-
-    self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
-    self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
+    self.vm.outputs.startFacebookConfirmation.map { _, token in token }
+      .observe(self.startFacebookConfirmation.observer)
+    self.vm.outputs.startLogin.observe(self.startLogin.observer)
+    self.vm.outputs.startSignup.observe(self.startSignup.observer)
+    self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
   }
 
   func testLoginIntentTracking_Default() {

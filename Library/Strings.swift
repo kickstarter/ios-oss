@@ -26,22 +26,6 @@ public enum Strings {
     )
   }
   /**
-   "Access all your favorite categories in the explore dropdown at the top of the app."
-
-   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
-   - **de**: "Zugang zu deinen meist besuchten Kategorien im Dropdown-Menü im oberen Bereich der App."
-   - **fr**: "Access all your favorite categories in the explore dropdown at the top of the app."
-   - **en**: "Access all your favorite categories in the explore dropdown at the top of the app."
-  */
-  public static func Access_all_your_favorite_categories_in_the_explore_dropdown() -> String {
-    return localizedString(
-      key: "Access_all_your_favorite_categories_in_the_explore_dropdown",
-      defaultValue: "Access all your favorite categories in the explore dropdown at the top of the app.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Add attachments…"
 
    - **es**: "Agregar anexos …"
@@ -1759,6 +1743,22 @@ backers"
     )
   }
   /**
+   "Funding successful"
+
+   - **es**: "Funding successful"
+   - **de**: "Funding successful"
+   - **fr**: "Funding successful"
+   - **en**: "Funding successful"
+  */
+  public static func Funding_successful() -> String {
+    return localizedString(
+      key: "Funding_successful",
+      defaultValue: "Funding successful",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Get notified about this creator’s live streams"
 
    - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
@@ -2743,7 +2743,7 @@ from friends yet."
    "Pledge to projects and view all your saved and backed projects in one place."
 
    - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar."
-   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick."
+   - **de**: "Unterstütze Projekte und sehe alle deine Projekte auf einen Blick."
    - **fr**: "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus."
    - **en**: "Pledge to projects and view all your saved and backed projects in one place."
   */
@@ -2863,6 +2863,22 @@ from friends yet."
     return localizedString(
       key: "Project_Suspended",
       defaultValue: "Project Suspended.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project cancelled"
+
+   - **es**: "Project cancelled"
+   - **de**: "Project cancelled"
+   - **fr**: "Project cancelled"
+   - **en**: "Project cancelled"
+  */
+  public static func Project_cancelled() -> String {
+    return localizedString(
+      key: "Project_cancelled",
+      defaultValue: "Project cancelled",
       count: nil,
       substitutions: [:]
     )
@@ -3784,6 +3800,22 @@ catch your eye?"
     )
   }
   /**
+   "To access all your favorite categories, tap the explore dropdown at the top of the app."
+
+   - **es**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **de**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **fr**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **en**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+  */
+  public static func To_access_all_your_favorite_categories_tap_the_explore_dropdown() -> String {
+    return localizedString(
+      key: "To_access_all_your_favorite_categories_tap_the_explore_dropdown",
+      defaultValue: "To access all your favorite categories, tap the explore dropdown at the top of the app.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "To read this project update, you must be a backer. Please log in or sign up to continue."
 
    - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
@@ -4037,22 +4069,6 @@ catch your eye?"
       defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
-    )
-  }
-  /**
-   "We’re all ears."
-
-   - **es**: "¡Somos todo oídos!"
-   - **de**: "Wir sind ganz Ohr!"
-   - **fr**: "Nous sommes tout ouïe."
-   - **en**: "We’re all ears."
-  */
-  public static func We_re_all_ears() -> String {
-    return localizedString(
-      key: "We_re_all_ears",
-      defaultValue: "We’re all ears.",
-      count: nil,
-      substitutions: [:]
     )
   }
   /**
@@ -6045,19 +6061,19 @@ Please try again later."
     )
   }
   /**
-   "%{category_name}/%{subcategory_name} saved."
+   "%{category_name} saved."
 
-   - **es**: "%{category_name}/%{subcategory_name} guardado."
-   - **de**: "%{category_name}/%{subcategory_name} gespeichert."
-   - **fr**: "%{category_name}/%{subcategory_name} : enregistré."
-   - **en**: "%{category_name}/%{subcategory_name} saved."
+   - **es**: "%{category_name} saved."
+   - **de**: "%{category_name} saved."
+   - **fr**: "%{category_name} saved."
+   - **en**: "%{category_name} saved."
   */
-  public static func category_name_subcategory_name_saved(category_name: String, subcategory_name: String) -> String {
+  public static func category_name_saved(category_name: String) -> String {
     return localizedString(
-      key: "category_name_subcategory_name_saved",
-      defaultValue: "%{category_name}/%{subcategory_name} saved.",
+      key: "category_name_saved",
+      defaultValue: "%{category_name} saved.",
       count: nil,
-      substitutions: ["category_name": category_name, "subcategory_name": subcategory_name]
+      substitutions: ["category_name": category_name]
     )
   }
   /**
@@ -8913,7 +8929,7 @@ Please try again later."
 
    - **es**: "Presentado en %{category_name}"
    - **de**: "Vorgestellt in %{category_name}"
-   - **fr**: "Un projet sélectionné de la catégorie %{category_name}"
+   - **fr**: "Un projet %{category_name} sélectionné"
    - **en**: "Featured in %{category_name}"
   */
   public static func discovery_baseball_card_metadata_featured_project(category_name: String) -> String {

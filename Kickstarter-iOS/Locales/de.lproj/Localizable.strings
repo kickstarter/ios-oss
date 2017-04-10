@@ -1,5 +1,4 @@
 "About_reward_amount" = "Ungefähr %{reward_amount}";
-"Access_all_your_favorite_categories_in_the_explore_dropdown" = "Zugang zu deinen meist besuchten Kategorien im Dropdown-Menü im oberen Bereich der App.";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -115,6 +114,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> hat ein <i>Technologie-Projekt</i> unterstützt.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt.";
 "Friend_name_launched_a_project" = "%{friend_name} hat ein Projekt veröffentlicht!";
+"Funding_successful" = "Funding successful";
 "Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
 "Go_to_project_page" = "Zu Projektseite";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
@@ -180,7 +180,7 @@
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
 "Pledge" = "Beitrag:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
-"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick.";
+"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine Projekte auf einen Blick.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt.";
 "Pledge_was_dropped" = "Finanzierungsbeitrag wurde nicht übernommen.";
 "Pledge_without_a_reward" = "Ohne Belohnung unterstützen";
@@ -188,6 +188,7 @@
 "Popular_Projects" = "Beliebte Projekte";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
+"Project_cancelled" = "Project cancelled";
 "Projects_We_Love" = "Team-Favoriten";
 "Public_comment" = "Öffentlicher Kommentar";
 "Pursue_daring_ideas" = "Zündende Ideen.";
@@ -257,6 +258,7 @@
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "Time_left_left" = "%{time_left} übrig";
+"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich.";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
@@ -273,7 +275,6 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
-"We_re_all_ears" = "Wir sind ganz Ohr!";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "You_Launched" = "Dein Projekt ist live!";
@@ -398,7 +399,7 @@
 "backing_info.estimated_delivery_date" = "Voraussichtliche Lieferung am %{delivery_date}";
 "backing_info.info_button" = "Infos zur Unterstützung";
 "backing_info.pledged_backing_amount" = "Beigetragen: %{backing_amount}";
-"category_name_subcategory_name_saved" = "%{category_name}/%{subcategory_name} gespeichert.";
+"category_name_saved" = "%{category_name} saved.";
 "category_promo.explore_category" = "Erkunde %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} Live-Projekte";
 "comments_count_comments.few" = "%{comments_count} Kommentare";
