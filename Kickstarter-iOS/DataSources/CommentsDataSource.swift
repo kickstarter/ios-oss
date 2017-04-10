@@ -8,7 +8,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case comments
   }
 
-  internal func load(comments: [Comment], project: Project, update: Update?, loggedInUser: User?, visible: Bool){
+  internal func load(comments: [Comment],
+                     project: Project, update: Update?, loggedInUser: User?, visible: Bool) {
     if comments.isEmpty {
       self.set(values: visible ? [(project, update)] : [],
               cellClass: CommentsEmptyStateCell.self,
@@ -19,7 +20,6 @@ internal final class CommentsDataSource: ValueCellDataSource {
              inSection: Section.comments.rawValue)
     }
   }
-
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {

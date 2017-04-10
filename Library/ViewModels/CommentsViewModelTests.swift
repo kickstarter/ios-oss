@@ -108,7 +108,6 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-
    func testRefreshing() {
     let comment = Comment.template
 
