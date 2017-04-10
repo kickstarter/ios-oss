@@ -88,6 +88,37 @@ final class RootViewModelTests: TestCase {
     )
   }
 
+  func testBackerDashboardFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_backer_dashboard": true]
+
+    withEnvironment(config: config) {
+      vm.inputs.viewDidLoad()
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      vm.inputs.userSessionStarted()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Show the BackerDashboard instead of Profile."
+      )
+
+      AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+      vm.inputs.currentUserUpdated()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"]
+        ],
+        "Show the creator dashboard tab."
+      )
+    }
+  }
+
   func testViewControllersDontOverEmit() {
     let viewControllerNames = TestObserver<[String], NoError>()
     vm.outputs.setViewControllers.map(extractRootNames)
