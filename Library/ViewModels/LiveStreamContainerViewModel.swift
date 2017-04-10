@@ -27,9 +27,6 @@ public protocol LiveStreamContainerViewModelInputs {
   /// Call when the user session starts.
   func userSessionStarted()
 
-  /// Call when the user session end.
-  func userSessionEnded()
-
   /// Called when the video playback state changes.
   func videoPlaybackStateChanged(state: LiveVideoPlaybackState)
 
@@ -99,9 +96,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let initialEvent = configData.map { $0.1 }
 
-    let updatedEventFetch = initialEvent
+    let updatedEventFetch = Signal.merge(
+      initialEvent,
+      initialEvent.takeWhen(self.userSessionStartedProperty.signal)
+      )
       .switchMap { initialEvent -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
-
         timer(interval: .seconds(5), on: AppEnvironment.current.scheduler)
           .prefix(value: Date())
           .flatMap { _ in
@@ -158,23 +157,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         .map { _ in AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970 }
     )
 
-    let didLiveStreamEndedNormally = updatedEventFetch.values()
-      .map(didEndNormally(event:))
-
-    let createObservers = Signal.zip(
-      didLiveStreamEndedNormally.filter(isFalse),
-      updatedEventFetch.values().map(isNonStarter(event:)).filter(isFalse)
-      )
-      .ignoreValues()
+    let firebase = updatedEventFetch.values()
+      .filter { !didEndNormally(event: $0) }
+      .filter { !isNonStarter(event: $0) }
+      .map { $0.firebase }
+      .skipNil()
       .take(first: 1)
 
-    let greenRoomStatusEvent = Signal.combineLatest(
-      updatedEventFetch.values(),
-      createObservers
-      )
-      .map(first)
-      .map { $0.firebase?.greenRoomPath }
-      .skipNil()
+    let greenRoomStatusEvent = firebase
+      .map { $0.greenRoomPath }
       .flatMap { path in
         AppEnvironment.current.liveStreamService.greenRoomOffStatus(
           withPath: path
@@ -184,49 +175,22 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let greenRoomOffStatus = greenRoomStatusEvent.values()
 
-    let numberOfPeopleWatchingEvent = Signal.combineLatest(
-      updatedEventFetch.values(),
-      createObservers
+    let numberOfPeopleWatchingEvent = Signal.zip(
+      updatedEventFetch.values().map { $0.isScale }.skipNil(),
+      firebase
       )
-      .map(first)
-      .filter { $0.isScale == .some(false) }
-      .map { $0.firebase?.numberPeopleWatchingPath }
-      .skipNil()
-      .flatMap { path in
-        AppEnvironment.current.liveStreamService.numberOfPeopleWatching(
-          withPath: path
-          )
+      .flatMap { isScale, firebase in
+        numberOfPeopleWatchingProducer(withFirebase: firebase, isScale: isScale)
           .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
-    let scaleNumberOfPeopleWatchingEvent = Signal.combineLatest(
-      updatedEventFetch.values(),
-      createObservers
-      )
-      .map(first)
-      .filter { $0.isScale == .some(true) }
-      .map { $0.firebase?.scaleNumberPeopleWatchingPath }
-      .skipNil()
-      .flatMap { path in
-        AppEnvironment.current.liveStreamService.scaleNumberOfPeopleWatching(
-          withPath: path
-          )
-          .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
-          .materialize()
-    }
-
-    let numberOfPeopleWatchingErrors = Signal.merge(
-      numberOfPeopleWatchingEvent.errors(),
-      scaleNumberOfPeopleWatchingEvent.errors()
-    )
-
-    let numberPeopleWatchingTimedOutError = numberOfPeopleWatchingErrors.filter { $0 == .timedOut }
-    let numberPeopleWatchingErrorsExceptTimedOut = numberOfPeopleWatchingErrors.filter { $0 != .timedOut }
+    let numberPeopleWatchingTimedOutError = numberOfPeopleWatchingEvent.errors().filter { $0 == .timedOut }
+    let numberPeopleWatchingErrorsExceptTimedOut = numberOfPeopleWatchingEvent.errors()
+      .filter { $0 != .timedOut }
 
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
-      scaleNumberOfPeopleWatchingEvent.values(),
       numberPeopleWatchingErrorsExceptTimedOut.mapConst(0)
     )
 
@@ -234,14 +198,13 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { $0.maxOpenTokViewers }
       .skipNil()
 
-    let hlsUrlEvent = Signal.combineLatest(
+    let hlsUrlEvent = Signal.zip(
       updatedEventFetch.values(),
-      createObservers
+      firebase
       )
-      .map(first)
-      .map { liveStreamEvent -> (String, String?)? in
+      .map { liveStreamEvent, firebase -> (String, String?)? in
         guard let hlsUrl = liveStreamEvent.hlsUrl else { return nil }
-        return (hlsUrl, liveStreamEvent.firebase?.hlsUrlPath)
+        return (hlsUrl, firebase.hlsUrlPath)
       }
       .skipNil()
       .flatMap { hlsUrl, hlsUrlPath -> SignalProducer<Event<String, LiveApiError>, NoError> in
@@ -295,9 +258,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       )
       .skipRepeats()
 
+    let liveStreamEndedNormally = updatedEventFetch.values()
+      .map(didEndNormally(event:))
+
     let observedGreenRoomOffOrInReplay = Signal.merge(
       greenRoomOffStatus.filter(isTrue),
-      didLiveStreamEndedNormally.filter(isTrue)
+      liveStreamEndedNormally.filter(isTrue)
       )
       .ignoreValues()
 
@@ -319,7 +285,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let greenRoomState = greenRoomOffStatus
       .filter(isFalse)
 
-    let replayState = didLiveStreamEndedNormally
+    let replayState = liveStreamEndedNormally
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
       .filter { didEndNormally, playbackState in didEndNormally && !playbackState.isError }
 
@@ -333,30 +299,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { event in isNonStarter(event: event) }
       .filter(isTrue)
 
-    let signInAnonymouslyEvent = Signal.merge(
-      updatedEventFetch.values().filter { $0.firebase?.token == nil }.ignoreValues(),
-      self.userSessionStartedProperty.signal.filter { AppEnvironment.current.currentUser == nil }
-        .ignoreValues()
-      )
-      .flatMap {
-        AppEnvironment.current.liveStreamService.signInToFirebaseAnonymously()
+    let firebaseUserId = updatedEventFetch.values()
+      .map { $0.firebase?.token }
+      .flatMap { token in
+        signInToFirebase(withCustomToken: token)
           .materialize()
     }
-
-    let signInWithCustomTokenEvent = Signal.merge(
-      updatedEventFetch.values().map { $0.firebase?.token }.skipNil(),
-      self.userSessionStartedProperty.signal.map { AppEnvironment.current.currentUser?.liveAuthToken }
-        .skipNil()
-      )
-      .flatMap {
-        AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: $0)
-          .materialize()
-    }
-
-    let firebaseUserId = Signal.merge(
-      signInAnonymouslyEvent.values(),
-      signInWithCustomTokenEvent.values()
-    )
 
     let incrementNumberOfPeopleWatchingEvent = Signal.combineLatest(
       updatedEventFetch.values().map { $0.firebase?.numberPeopleWatchingPath }.skipNil(),
@@ -515,11 +463,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let userSessionEndedProperty = MutableProperty()
-  public func userSessionEnded() {
-    self.userSessionEndedProperty.value = ()
-  }
-
   private let userSessionStartedProperty = MutableProperty()
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -561,6 +504,25 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
   public var inputs: LiveStreamContainerViewModelInputs { return self }
   public var outputs: LiveStreamContainerViewModelOutputs { return self }
+}
+
+private func signInToFirebase(withCustomToken customToken: String?) -> SignalProducer<String, LiveApiError> {
+  if let token = customToken {
+    return AppEnvironment.current.liveStreamService.signInToFirebase(withCustomToken: token)
+  }
+
+  return AppEnvironment.current.liveStreamService.signInToFirebaseAnonymously()
+}
+
+private func numberOfPeopleWatchingProducer(withFirebase firebase: LiveStreamEvent.Firebase,
+                                            isScale: Bool) -> SignalProducer<Int, LiveApiError> {
+  if isScale {
+    return AppEnvironment.current.liveStreamService
+      .scaleNumberOfPeopleWatching(withPath: firebase.scaleNumberPeopleWatchingPath)
+  }
+
+  return AppEnvironment.current.liveStreamService
+    .numberOfPeopleWatching(withPath: firebase.numberPeopleWatchingPath)
 }
 
 private func isNonStarter(event: LiveStreamEvent) -> Bool {
