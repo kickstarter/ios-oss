@@ -25,9 +25,6 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call with new value from the input field
   func textDidChange(toText text: String?)
 
-  /// Call when the user session ended.
-  func userSessionEnded()
-
   /// Call when the user session started.
   func userSessionStarted()
 
@@ -249,11 +246,6 @@ LiveStreamChatViewModelOutputs {
   private let textProperty = MutableProperty<String?>(nil)
   public func textDidChange(toText text: String?) {
     self.textProperty.value = text
-  }
-
-  private let userSessionEndedProperty = MutableProperty()
-  public func userSessionEnded() {
-    self.userSessionEndedProperty.value = ()
   }
 
   private let userSessionStartedProperty = MutableProperty()
