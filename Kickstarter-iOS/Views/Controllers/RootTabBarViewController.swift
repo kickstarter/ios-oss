@@ -96,9 +96,8 @@ public final class RootTabBarViewController: UITabBarController {
     self.switchToProfile()
 
     guard let profileNav = self.selectedViewController as? UINavigationController,
-      let profileVC = profileNav.viewControllers.first as? ProfileViewController else {
-        return
-    }
+      let profileVC = profileNav.viewControllers.first
+      else { return }
 
     let threadsVC = MessageThreadsViewController.configuredWith(project: nil)
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)

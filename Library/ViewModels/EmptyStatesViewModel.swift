@@ -201,7 +201,7 @@ private func textForSubtitle(emptyState: EmptyState) -> String {
 private func textForTitle(emptyState: EmptyState) -> String {
   switch emptyState {
   case .activity:
-    return Strings.Bring_new_ideas_to_life()
+    return Strings.Bring_creative_projects_to_life()
   case .socialDisabled:
     return Strings.Its_better_with_friends()
   case .socialNoPledges:
