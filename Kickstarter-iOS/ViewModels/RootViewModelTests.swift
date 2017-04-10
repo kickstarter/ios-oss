@@ -290,6 +290,10 @@ final class RootViewModelTests: TestCase {
 
     vm.inputs.viewDidLoad()
 
+    let params = DiscoveryParams.defaults
+    self.vm.inputs.switchToDiscovery(params: params)
+    self.filterDiscovery.assertValues([params])
+
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     vm.inputs.userSessionStarted()
 
@@ -300,7 +304,7 @@ final class RootViewModelTests: TestCase {
     vm.inputs.userSessionEnded()
 
     self.viewControllerNames.assertValueCount(4)
-    self.filterDiscovery.assertValueCount(0)
+    self.filterDiscovery.assertValues([params])
   }
 }
 
