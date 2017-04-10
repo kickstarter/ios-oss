@@ -280,6 +280,32 @@ final class RootViewModelTests: TestCase {
 
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
   }
+
+  func testSetViewControllers_DoesNotFilterDiscovery() {
+    self.filterDiscovery.assertValueCount(0)
+
+    let viewControllerNames = TestObserver<[String], NoError>()
+    vm.outputs.setViewControllers.map(extractRootNames)
+      .observe(viewControllerNames.observer)
+
+    vm.inputs.viewDidLoad()
+
+    let params = DiscoveryParams.defaults
+    self.vm.inputs.switchToDiscovery(params: params)
+    self.filterDiscovery.assertValues([params])
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+    vm.inputs.userSessionStarted()
+
+    AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+    vm.inputs.currentUserUpdated()
+
+    AppEnvironment.logout()
+    vm.inputs.userSessionEnded()
+
+    self.viewControllerNames.assertValueCount(4)
+    self.filterDiscovery.assertValues([params])
+  }
 }
 
 private func extractRootNames(_ vcs: [UIViewController]) -> [String] {

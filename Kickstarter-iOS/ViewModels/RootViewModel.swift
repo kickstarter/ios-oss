@@ -138,8 +138,8 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map(first(DiscoveryViewController.self))
       .skipNil()
 
-    self.filterDiscovery =
-      Signal.combineLatest(discovery, self.switchToDiscoveryProperty.signal.skipNil())
+    self.filterDiscovery = discovery
+      .takePairWhen(self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboard = viewControllers
       .map(first(DashboardViewController.self))
