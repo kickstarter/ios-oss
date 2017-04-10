@@ -11,6 +11,7 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   internal let bodyTextViewText = TestObserver<String, NoError>()
   internal var postButtonEnabled = TestObserver<Bool, NoError>()
+  internal var loadingViewIsHidden = TestObserver<Bool, NoError>()
   internal var presentError = TestObserver<String, NoError>()
   internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, NoError>()
   internal let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
@@ -23,6 +24,7 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.outputs.postButtonEnabled.observe(self.postButtonEnabled.observer)
     self.vm.outputs.notifyPresenterDialogWantsDismissal
       .observe(self.notifyPresenterDialogWantsDismissal.observer)
+    self.vm.outputs.loadingViewIsHidden.observe(self.loadingViewIsHidden.observer)
     self.vm.outputs.notifyPresenterCommentWasPostedSuccesfully
       .observe(self.notifyPresenterCommentWasPostedSuccesfully.observer)
     self.vm.errors.presentError.observe(self.presentError.observer)
@@ -49,6 +51,7 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
+    self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
 
     self.vm.inputs.commentBodyChanged("h")
     self.postButtonEnabled.assertValues([false, true], "Button enabled after typing comment body.")
@@ -66,6 +69,9 @@ internal final class CommentDialogViewModelTests: TestCase {
                                         "Button re-enabled after typing comment body.")
 
     self.vm.inputs.postButtonPressed()
+
+    self.loadingViewIsHidden.assertValues([true, false, true],
+                                          "Comment is posting and then done after pressing button.")
 
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
@@ -83,6 +89,7 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
+    self.loadingViewIsHidden.assertValues([true], "Loading view starts hidden")
 
     self.vm.inputs.commentBodyChanged("h")
     self.postButtonEnabled.assertValues([false, true], "Button enabled after typing comment body.")
@@ -100,6 +107,9 @@ internal final class CommentDialogViewModelTests: TestCase {
                                         "Button re-enabled after typing comment body.")
 
     self.vm.inputs.postButtonPressed()
+
+    self.loadingViewIsHidden.assertValues([true, false, true],
+                                          "Comment is posting and then done after pressing button.")
 
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
@@ -127,6 +137,8 @@ internal final class CommentDialogViewModelTests: TestCase {
       self.vm.inputs.postButtonPressed()
 
       self.presentError.assertValues(["ijc"], "Error message is emitted.")
+      self.loadingViewIsHidden.assertValues([true, false, true],
+                                            "Comment is posting and then done after pressing button.")
 
       self.notifyPresenterCommentWasPostedSuccesfully
         .assertValueCount(0, "Comment does not post successfuly.")

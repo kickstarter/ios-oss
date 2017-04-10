@@ -21,6 +21,7 @@ internal final class CommentDialogViewController: UIViewController {
   @IBOutlet fileprivate weak var subtitleLabel: UILabel!
   @IBOutlet fileprivate weak var bodyTextView: UITextView!
   @IBOutlet fileprivate weak var postButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var loadingView: UIView!
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -68,6 +69,7 @@ internal final class CommentDialogViewController: UIViewController {
     self.bodyTextView.rac.text = self.viewModel.outputs.bodyTextViewText
     self.postButton.rac.enabled = self.viewModel.outputs.postButtonEnabled
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitle
+    self.loadingView.rac.hidden = self.viewModel.outputs.loadingViewIsHidden
 
     self.viewModel.outputs.showKeyboard
       .observeForControllerAction()
