@@ -20,7 +20,7 @@ public struct SelectableRow {
   // swiftlint:enable type_name
 }
 
-public extension LensType where Whole == SelectableRow, Part == DiscoveryParams {
+public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
   public var social: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params • DiscoveryParams.lens.social
   }
