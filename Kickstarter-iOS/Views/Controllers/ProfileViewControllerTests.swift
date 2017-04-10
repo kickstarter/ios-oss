@@ -12,7 +12,7 @@ internal final class ProfileViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    
+
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let liveProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""

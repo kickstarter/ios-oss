@@ -95,12 +95,13 @@ final class LoginToutViewModelTests: TestCase {
     headlineLabelHidden.assertValues([false])
   }
 
-
   func testLoginContextText() {
     vm.inputs.loginIntent(.starProject)
     vm.inputs.viewWillAppear()
 
-    logInContextText.assertValues(["Log in or sign up to save this project. We’ll remind you 48 hours before it ends."], "Emits login Context Text")
+    logInContextText.assertValues(
+      ["Log in or sign up to save this project. We’ll remind you 48 hours before it ends."],
+      "Emits login Context Text")
   }
 
   func testFacebookLoginFlow_Success() {

@@ -77,16 +77,23 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.signupButton |> signupWithEmailButtonStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
-      |> UILabel.lens.font %~~ { _, l in  l.traitCollection.isRegularRegular ? .ksr_headline(size: 20) : .ksr_headline(size: 14)  }
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular
+          ? .ksr_headline(size: 20)
+          : .ksr_headline(size: 14)  }
       |> UILabel.lens.text .~ Strings.Bring_creative_projects_to_life()
 
     _ = self.contextLabel
-      |> UILabel.lens.font %~~ { _, l in  l.traitCollection.isRegularRegular ? .ksr_subhead(size: 20) : .ksr_subhead(size: 14)  }
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular
+          ? .ksr_subhead(size: 20)
+          : .ksr_subhead(size: 14)  }
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.layoutMargins %~~ { _, stack in stack.traitCollection.isRegularRegular
-      ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+      |> UIStackView.lens.layoutMargins %~~ { _, stack in
+        stack.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
         : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3)) }
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
     }
@@ -175,7 +182,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
-    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden // better name??
+    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
   }
   // swiftlint:enable function_body_length
 
