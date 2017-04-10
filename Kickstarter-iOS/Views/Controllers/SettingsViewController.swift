@@ -67,7 +67,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
   @IBOutlet fileprivate weak var updatesButton: UIButton!
   @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var wereAllEarsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
 
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
@@ -310,10 +309,6 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.numberOfLines .~ 0
-
-    _ = self.wereAllEarsTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.We_re_all_ears() }
   }
   // swiftlint:enable function_body_length
 

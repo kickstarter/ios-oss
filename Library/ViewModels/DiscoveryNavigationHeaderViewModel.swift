@@ -211,10 +211,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         Strings.discovery_favorite_categories_buttons_favorite_a11y_label() }
 
     self.showFavoriteOnboardingAlert = strings
-      .map { $0.subcategory != nil
-        ? Strings.category_name_subcategory_name_saved(
-          category_name: $0.filter, subcategory_name: $0.subcategory ??  "")
-        :  "\($0.filter) Saved"
+      .map { Strings.category_name_saved(category_name: $0.subcategory ?? $0.filter)
       }
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in

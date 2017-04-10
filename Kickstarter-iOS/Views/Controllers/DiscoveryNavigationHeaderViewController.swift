@@ -199,7 +199,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate func showFavoriteCategoriesAlert(categoryName: String) {
     let alertController = UIAlertController(
       title: categoryName,
-      message: Strings.Access_all_your_favorite_categories_in_the_explore_dropdown(),
+      message: Strings.To_access_all_your_favorite_categories_tap_the_explore_dropdown(),
       preferredStyle: .alert
     )
     alertController.addAction(

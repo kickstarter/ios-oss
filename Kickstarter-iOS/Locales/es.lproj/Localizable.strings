@@ -1,5 +1,4 @@
 "About_reward_amount" = "Aprox. %{reward_amount}";
-"Access_all_your_favorite_categories_in_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "Add_attachments" = "Agregar anexos …";
 "All_Art_Projects" = "Todos los proyectos de la categoría Arte";
 "All_Comics_Projects" = "Todos los proyectos de la categoría Comics";
@@ -115,6 +114,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
+"Funding_successful" = "Funding successful";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
 "Go_to_project_page" = "Ir a la página de proyecto";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
@@ -180,8 +180,7 @@
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Por favor inicia sesión o regístrate para suscribirte a este Live Stream.";
 "Pledge" = "Contribución:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
-"Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar. Para continuar, por favor inicia sesión o regístrate.";
+"Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar.";
 "Pledge_was_dropped" = "Contribución fue descartada.";
 "Pledge_without_a_reward" = "Contribuir sin recompensa";
@@ -189,6 +188,7 @@
 "Popular_Projects" = "Proyectos populares";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
+"Project_cancelled" = "Project cancelled";
 "Projects_We_Love" = "Nuestros Favoritos";
 "Public_comment" = "Comentario público";
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
@@ -222,7 +222,7 @@
 "Rewards_count_rewards_colon.two" = "%{rewards_count} recompensas:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} recompensas:";
 "Save" = "Guardar";
-"Save_projects" = "Save projects";
+"Save_projects" = "Guardar proyectos";
 "Save_this_project" = "Guardar este proyecto";
 "Saved" = "Guardado";
 "Saved_projects" = "Proyectos guardados";
@@ -258,6 +258,7 @@
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "Time_left_left" = "%{time_left} restantes";
+"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
 "Total_pledged" = "Contribuciones en total";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
@@ -274,7 +275,6 @@
 "View_your_reward" = "Mostrar recompensa";
 "Watch_live" = "Ver en vivo";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
-"We_re_all_ears" = "¡Somos todo oídos!";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "You_Launched" = "¡Tu proyecto fue publicado!";
@@ -399,7 +399,7 @@
 "backing_info.estimated_delivery_date" = "Entrega estimada %{delivery_date}";
 "backing_info.info_button" = "Info sobre patrocinamiento";
 "backing_info.pledged_backing_amount" = "Contribuido: %{backing_amount}";
-"category_name_subcategory_name_saved" = "%{category_name}/%{subcategory_name} guardado.";
+"category_name_saved" = "%{category_name} saved.";
 "category_promo.explore_category" = "Explorar %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} proyectos activos";
 "comments_count_comments.few" = "%{comments_count} commentarios";
