@@ -333,7 +333,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { event in isNonStarter(event: event) }
       .filter(isTrue)
 
-    //FIXME: below does not ouput anything but perhaps we want to test it?
     let signInAnonymouslyEvent = Signal.merge(
       updatedEventFetch.values().filter { $0.firebase?.token == nil }.ignoreValues(),
       self.userSessionStartedProperty.signal.filter { AppEnvironment.current.currentUser == nil }
