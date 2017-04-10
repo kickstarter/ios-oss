@@ -67,11 +67,6 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionEnded()
-    }
-
     self.viewModel.inputs.viewDidLoad()
   }
 
