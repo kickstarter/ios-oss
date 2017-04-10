@@ -87,13 +87,6 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
     }
 
-//    self.viewModel.outputs.emptyStateVisible
-//      .observeForControllerAction()
-//      .observeValues { [weak self] project, update, visible in
-//        self?.dataSource.load(project: project, update: update, visible: visible)
-//        self?.tableView.reloadData()
-//    }
-
     self.viewModel.outputs.openLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in self?.presentLoginTout() }

@@ -38,9 +38,6 @@ public protocol CommentsViewModelOutputs {
   /// Emits a boolean that determines if the comment bar button is visible.
   var commentBarButtonVisible: Signal<Bool, NoError> { get }
 
-  /// Emits a project and an update to display the empty state.
-  var emptyStateVisible: Signal<(Project, Update?, Bool), NoError> { get }
-
   /// Emits a project and optional update when the comment dialog should be presented.
   var presentPostCommentDialog: Signal<(Project, Update?), NoError> { get }
 
@@ -119,14 +116,7 @@ CommentsViewModelOutputs {
       },
       requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) })
 
-//    self.dataSource = Signal.combineLatest(comments, project, update, user)
-//      .map {comments, project, update, user in (comments, project, update, user, comments.isEmpty) }
-//      .skipRepeats { lhs, rhs in lhs.0.isEmpty && rhs.0.isEmpty }
-
     self.commentsAreLoading = isLoading
-
-//    comments
-//      .takeWhen(self.commentsPostedProperty.signal)
 
     let emptyStateFromAPI = Signal.combineLatest(comments, project, update, user)
       .map { comments, project, update, user in (comments, project, update, user, comments.isEmpty) }
@@ -136,9 +126,6 @@ CommentsViewModelOutputs {
       .map { comments, projects, update, user in (comments, projects, update, user, false) }
 
     self.dataSource = Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
-
-    self.emptyStateVisible = .empty
-      //Signal.merge(emptyStateFromAPI, emptyStateFromCommentPosted)
 
     let userCanComment = Signal.combineLatest(comments, project)
       .map { comments, project in !comments.isEmpty && canComment(onProject: project) }
@@ -230,7 +217,6 @@ CommentsViewModelOutputs {
   public let commentBarButtonVisible: Signal<Bool, NoError>
   public let commentsAreLoading: Signal<Bool, NoError>
   public let dataSource: Signal<([Comment], Project, Update?, User?, Bool), NoError>
-  public var emptyStateVisible: Signal<(Project, Update?, Bool), NoError>
   public let openLoginTout: Signal<(), NoError>
   public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
 

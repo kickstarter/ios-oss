@@ -13,9 +13,9 @@ import Prelude
 internal final class CommentsViewModelTests: TestCase {
   internal let vm: CommentsViewModelType = CommentsViewModel()
 
+  internal let emptyStateVisible = TestObserver<Bool, NoError>()
   internal let hasComments = TestObserver<Bool, NoError>()
   internal let commentBarButtonVisible = TestObserver<Bool, NoError>()
-  internal let emptyStateVisible = TestObserver<Bool, NoError>()
   internal let presentPostCommentDialog = TestObserver<(Project, Update?), NoError>()
   internal let loginToutIsOpen = TestObserver<Bool, NoError>()
   internal let commentsAreLoading = TestObserver<Bool, NoError>()
@@ -23,10 +23,10 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.dataSource.map { $0.4 }.observe(self.emptyStateVisible.observer)
     self.vm.outputs.dataSource.map { !$0.0.isEmpty }.observe(self.hasComments.observer)
     self.vm.outputs.commentBarButtonVisible.observe(self.commentBarButtonVisible.observer)
     self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
-    self.vm.outputs.emptyStateVisible.map { $0.2 }.observe(self.emptyStateVisible.observer)
     self.vm.outputs.presentPostCommentDialog.observe(self.presentPostCommentDialog.observer)
 
     Signal.merge(
@@ -37,9 +37,9 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testLoggedOutUser_ViewingEmptyState() {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
-      self.hasComments.assertValues([])
-      self.emptyStateVisible.assertValues([])
-      self.commentBarButtonVisible.assertValues([])
+      self.hasComments.assertDidNotEmitValue()
+      self.emptyStateVisible.assertDidNotEmitValue()
+      self.commentBarButtonVisible.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(project: Project.template, update: nil)
       self.vm.inputs.viewDidLoad()
@@ -57,9 +57,9 @@ internal final class CommentsViewModelTests: TestCase {
   }
 
   func testLoggedOutUser_ViewingComments() {
-    self.hasComments.assertValues([])
-    self.emptyStateVisible.assertValues([])
-    self.commentBarButtonVisible.assertValues([])
+    self.hasComments.assertDidNotEmitValue()
+    self.emptyStateVisible.assertDidNotEmitValue()
+    self.commentBarButtonVisible.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(project: Project.template, update: nil)
     self.vm.inputs.viewDidLoad()
@@ -74,9 +74,9 @@ internal final class CommentsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-      self.hasComments.assertValues([])
-      self.emptyStateVisible.assertValueCount(0)
-      self.commentBarButtonVisible.assertValues([])
+      self.hasComments.assertDidNotEmitValue()
+      self.emptyStateVisible.assertDidNotEmitValue()
+      self.commentBarButtonVisible.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(project: .template |> Project.lens.personalization.isBacking .~ false,
                                    update: nil)
@@ -93,9 +93,9 @@ internal final class CommentsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-      self.hasComments.assertValues([])
-      self.emptyStateVisible.assertValueCount(0)
-      self.commentBarButtonVisible.assertValues([])
+      self.hasComments.assertDidNotEmitValue()
+      self.emptyStateVisible.assertDidNotEmitValue()
+      self.commentBarButtonVisible.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(project: .template |> Project.lens.personalization.isBacking .~ true,
                                    update: nil)
@@ -108,7 +108,8 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testRefreshing() {
+
+   func testRefreshing() {
     let comment = Comment.template
 
     withEnvironment(apiService: MockService(fetchCommentsResponse: [comment])) {
@@ -287,9 +288,9 @@ internal final class CommentsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCommentsResponse: [])) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
-      self.hasComments.assertValues([])
-      self.commentBarButtonVisible.assertValues([])
-      self.emptyStateVisible.assertValueCount(0)
+      self.hasComments.assertDidNotEmitValue()
+      self.commentBarButtonVisible.assertDidNotEmitValue()
+      self.emptyStateVisible.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(project: project, update: nil)
       self.vm.inputs.viewDidLoad()
@@ -298,7 +299,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
       self.commentBarButtonVisible.assertValues(
         [false], "Comment button is not visible since there's a button in the empty state.")
-      self.emptyStateVisible.assertValues([true], "Empty state visible.")
 
       self.vm.inputs.commentButtonPressed()
 
@@ -309,7 +309,7 @@ internal final class CommentsViewModelTests: TestCase {
         self.vm.inputs.commentPosted(Comment.template)
         self.scheduler.advance()
 
-        self.hasComments.assertValues([false, true], "Newly posted comment emits after posting.")
+        self.hasComments.assertValues([false, false, true], "Newly posted comment emits after posting.")
         self.emptyStateVisible.assertValues([true, false, false ], "Empty state not visible again.")
       }
     }
@@ -329,7 +329,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasComments.assertValues([false], "No comments are emitted.")
-      self.emptyStateVisible.assertValueCount(1, "Empty state emitted.")
+      self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
 
       self.vm.inputs.loginButtonPressed()
@@ -342,8 +342,8 @@ internal final class CommentsViewModelTests: TestCase {
         self.vm.inputs.userSessionStarted()
 
         self.loginToutIsOpen.assertValues([true, false], "Login prompt is closed.")
-        self.hasComments.assertValues([false], "Still no comments are emitted.")
-        self.emptyStateVisible.assertValueCount(2, "Empty state for backer shown.")
+        self.hasComments.assertValues([false, false, false], "Still no comments are emitted.")
+        self.emptyStateVisible.assertValues([true, true, true], "Empty state for backer shown.")
         self.commentBarButtonVisible.assertValues(
           [false], "Comment button is not visible since there's a button in the empty state.")
         self.presentPostCommentDialog.assertValueCount(1, "Immediately open the post comment dialog.")
