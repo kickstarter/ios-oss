@@ -26,7 +26,7 @@ public struct ExpandableRow {
   // swiftlint:enable type_name
 }
 
-public extension LensType where Whole == ExpandableRow, Part == DiscoveryParams {
+public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {
   public var social: Lens<ExpandableRow, Bool?> {
     return ExpandableRow.lens.params • DiscoveryParams.lens.social
   }
