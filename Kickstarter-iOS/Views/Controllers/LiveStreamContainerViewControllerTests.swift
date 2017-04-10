@@ -43,6 +43,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance(by: .seconds(3))
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -186,6 +187,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       self.scheduler.advance()
+      vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
       FBSnapshotVerifyView(parent.view)
     }
@@ -211,6 +213,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       self.scheduler.advance()
+      vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
       FBSnapshotVerifyView(parent.view)
     }
@@ -290,6 +293,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         vc.liveStreamContainerPageViewController?.chatButtonTapped()
 
         self.scheduler.advance(by: .seconds(3))
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
