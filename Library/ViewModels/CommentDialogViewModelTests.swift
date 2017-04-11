@@ -72,7 +72,6 @@ internal final class CommentDialogViewModelTests: TestCase {
 
     self.loadingViewIsHidden.assertValues([true, false, true],
                                           "Comment is posting and then done after pressing button.")
-
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
@@ -110,7 +109,6 @@ internal final class CommentDialogViewModelTests: TestCase {
 
     self.loadingViewIsHidden.assertValues([true, false, true],
                                           "Comment is posting and then done after pressing button.")
-
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")

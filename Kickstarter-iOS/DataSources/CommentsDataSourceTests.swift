@@ -14,8 +14,7 @@ final class CommentsDataSourceTests: XCTestCase {
                          project: Project.template,
                          update: Update.template,
                          loggedInUser: User.template,
-                         visible: false
-                         )
+                         shouldShowEmptyState: false)
 
     XCTAssertEqual(2, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(0, self.dataSource.tableView(

@@ -9,9 +9,13 @@ internal final class CommentsDataSource: ValueCellDataSource {
   }
 
   internal func load(comments: [Comment],
-                     project: Project, update: Update?, loggedInUser: User?, visible: Bool) {
+                     project: Project,
+                     update: Update?,
+                     loggedInUser: User?,
+                     shouldShowEmptyState: Bool) {
+
     if comments.isEmpty {
-      self.set(values: visible ? [(project, update)] : [],
+      self.set(values: shouldShowEmptyState ? [(project, update)] : [],
               cellClass: CommentsEmptyStateCell.self,
               inSection: Section.emptyState.rawValue)
     } else {

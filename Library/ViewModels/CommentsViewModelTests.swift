@@ -23,8 +23,9 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.dataSource.map { $0.4 }.observe(self.emptyStateVisible.observer)
-    self.vm.outputs.dataSource.map { !$0.0.isEmpty }.observe(self.hasComments.observer)
+    self.vm.outputs.dataSource.map { _, _, _, _, visible in visible }.observe(self.emptyStateVisible.observer)
+    self.vm.outputs.dataSource.map { comments, _, _, _, _ in !comments.isEmpty }
+        .observe(self.hasComments.observer)
     self.vm.outputs.commentBarButtonVisible.observe(self.commentBarButtonVisible.observer)
     self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
     self.vm.outputs.presentPostCommentDialog.observe(self.presentPostCommentDialog.observer)
@@ -296,6 +297,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
+      self.emptyStateVisible.assertValues([true])
       self.commentBarButtonVisible.assertValues(
         [false], "Comment button is not visible since there's a button in the empty state.")
 
@@ -309,7 +311,7 @@ internal final class CommentsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.hasComments.assertValues([false, false, true], "Newly posted comment emits after posting.")
-        self.emptyStateVisible.assertValues([true, false, false ], "Empty state not visible again.")
+        self.emptyStateVisible.assertValues([true, false, false], "Empty state not visible again.")
       }
     }
   }
