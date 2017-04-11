@@ -193,12 +193,16 @@ public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in
       label.traitCollection.isRegularRegular
         ? .ksr_body(size: 17)
-        : .ksr_body(size: 15)
+        : .ksr_body(size: 11.5)
     }
     <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
-  UILabel.lens.font .~ .ksr_body(size: 15)
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? .ksr_body(size: 17)
+      : .ksr_body(size: 11.5)
+  }
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
