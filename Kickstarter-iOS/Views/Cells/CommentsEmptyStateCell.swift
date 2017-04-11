@@ -45,6 +45,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> CommentsEmptyStateCell.lens.backgroundColor .~ .white
       |> CommentsEmptyStateCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(9), leftRight: Styles.grid(3))
 
