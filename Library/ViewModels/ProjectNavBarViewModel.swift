@@ -120,7 +120,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map(first)
 
     let revertStarToggle = projectOnStarToggle
-      .takeWhen(projectOnStarToggleAndSuccess.filter(negate • second))
+      .takeWhen(projectOnStarToggleAndSuccess.filter(second >>> isFalse))
       .map(toggleStarLens)
 
     let project = Signal

@@ -28,7 +28,6 @@
 		0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151AE871C8F60370067F1BE /* UIColor.swift */; };
 		015572711E79C427005FB8CC /* ProfileProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015572701E79C426005FB8CC /* ProfileProjectCellViewModel.swift */; };
 		015572731E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015572721E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift */; };
-		015572761E79F9C0005FB8CC /* BackerDashboardProjectsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015572741E79F707005FB8CC /* BackerDashboardProjectsViewControllerTests.swift */; };
 		0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */; };
 		0156B4191D10B419000C4252 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B4181D10B419000C4252 /* UIAlertController.swift */; };
 		015706161E649DEE0087DD68 /* BackerDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */; };
@@ -46,7 +45,6 @@
 		0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */; };
 		0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */; };
 		017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */; };
-		01764E5D1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01764E5C1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift */; };
 		0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */; };
 		017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
@@ -183,7 +181,6 @@
 		A71A50DC1E2B4A6C00574C42 /* ReactiveSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A509F1E2B4A3500574C42 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71A50DF1E2B4A7A00574C42 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50B81E2B4A3E00574C42 /* Result.framework */; };
 		A71A50E01E2B4A7A00574C42 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50B81E2B4A3E00574C42 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A71A50E31E2B4A8600574C42 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50CE1E2B4A4C00574C42 /* Runes.framework */; };
 		A71A50E41E2B4A8600574C42 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50CE1E2B4A4C00574C42 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */; };
 		A71C7FAA1E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */; };
@@ -963,13 +960,6 @@
 			remoteGlobalIDString = D454807C1A957361009D7229;
 			remoteInfo = "Result-iOS";
 		};
-		A71A50E51E2B4A8600574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F802D4D11A5F218E005E236C;
-			remoteInfo = "Runes-iOS";
-		};
 		A724BA621D2BFCC10041863C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -1377,7 +1367,6 @@
 		0151AE871C8F60370067F1BE /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		015572701E79C426005FB8CC /* ProfileProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileProjectCellViewModel.swift; sourceTree = "<group>"; };
 		015572721E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectCellViewModel.swift; sourceTree = "<group>"; };
-		015572741E79F707005FB8CC /* BackerDashboardProjectsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsViewControllerTests.swift; sourceTree = "<group>"; };
 		0156B4181D10B419000C4252 /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		0156B5231D1327A1000C4252 /* DashboardRewardsCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCellViewModel.swift; sourceTree = "<group>"; };
 		0156B5571D133BA0000C4252 /* DashboardRewardRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardRowStackViewViewModel.swift; sourceTree = "<group>"; };
@@ -1394,7 +1383,6 @@
 		0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewController.swift; sourceTree = "<group>"; };
 		0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModel.swift; sourceTree = "<group>"; };
 		017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewController.swift; sourceTree = "<group>"; };
-		01764E5C1E7B1A4A0035B5A1 /* BackerDashboardProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		018422841D2C47A400CA7566 /* DashboardTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardTitleView.swift; sourceTree = "<group>"; };
 		018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerCell.swift; sourceTree = "<group>"; };
@@ -2104,7 +2092,6 @@
 				A71A50DF1E2B4A7A00574C42 /* Result.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
 				A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */,
-				A71A50E31E2B4A8600574C42 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3412,7 +3399,6 @@
 				A7BA543D1E1E493600E54377 /* PBXTargetDependency */,
 				A71A50DE1E2B4A6C00574C42 /* PBXTargetDependency */,
 				A71A50E21E2B4A7A00574C42 /* PBXTargetDependency */,
-				A71A50E61E2B4A8600574C42 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -4783,11 +4769,6 @@
 			isa = PBXTargetDependency;
 			name = "Result-iOS";
 			targetProxy = A71A50E11E2B4A7A00574C42 /* PBXContainerItemProxy */;
-		};
-		A71A50E61E2B4A8600574C42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Runes-iOS";
-			targetProxy = A71A50E51E2B4A8600574C42 /* PBXContainerItemProxy */;
 		};
 		A724BA631D2BFCC10041863C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -192,7 +192,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
-      .filter(negate • second)
+      .filter(second >>> negate)
       .map(first)
       .map { !$0.isEmpty }
 
