@@ -18,7 +18,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  internal let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
   fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
@@ -61,26 +61,22 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> UIView.lens.layoutMargins .~ (
-        self.traitCollection.isRegularRegular
-          ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
-          : .init(top: 0, left: Styles.grid(2), bottom: Styles.grid(3), right: Styles.grid(2))
-    )
-
     _ = self |> baseControllerStyle()
     _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
     _ = self.helpButton |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
-    _ = self.rootStackView |> loginRootStackViewStyle
+    _ = self.rootStackView
+      |> loginRootStackViewStyle
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
     _ = self.signupButton |> signupWithEmailButtonStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
       |> UILabel.lens.font %~~ { _, l in
         l.traitCollection.isRegularRegular
           ? .ksr_headline(size: 20)
-          : .ksr_headline(size: 14)  }
+          : .ksr_headline(size: 14)
+      }
       |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
 
     _ = self.contextLabel
@@ -93,8 +89,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.layoutMargins %~~ { _, stack in
         stack.traitCollection.isRegularRegular
-        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3)) }
+          ? .init(topBottom: Styles.grid(10), leftRight: 0)
+          : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
+      }
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
     }
 
