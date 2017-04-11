@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 let w = 80
@@ -16,18 +16,18 @@ let draft = .blank
 }
 
 AppEnvironment.replaceCurrentEnvironment(
-  mainBundle: NSBundle.framework,
-  apiService: MockService(
-    oauthToken: OauthToken(token: "deadbeef"),
-    fetchDraftResponse: draft
-  ),
-//  language: .es, locale: NSLocale(localeIdentifier: "es"),
-  currentUser: Project.cosmicSurgery.creator
+    apiService: MockService(
+        oauthToken: OauthToken(token: "deadbeef"),
+        fetchDraftResponse: draft
+    ),
+    //  language: .es, locale: Locale(identifier: "es"),
+    currentUser: Project.cosmicSurgery.creator,
+    mainBundle: Bundle.framework
 )
 
 initialize()
 let controller = UpdateDraftViewController.configuredWith(project: .template)
 
-XCPlaygroundPage.currentPage.liveView =
+PlaygroundPage.current.liveView =
 //  controller
   UINavigationController(rootViewController: controller)
