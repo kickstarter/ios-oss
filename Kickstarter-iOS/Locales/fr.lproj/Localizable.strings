@@ -114,7 +114,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>technologie</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
-"Funding_successful" = "Funding successful";
+"Funding_successful" = "Intégralement financé";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
 "Go_to_project_page" = "Accéder à la page de projet";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
@@ -188,7 +188,7 @@
 "Popular_Projects" = "Les tendances";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
-"Project_cancelled" = "Project cancelled";
+"Project_cancelled" = "Projet annulé";
 "Projects_We_Love" = "Nos coups de cœur";
 "Public_comment" = "Commentaire public";
 "Pursue_daring_ideas" = "Des idées audacieuses.";
@@ -258,7 +258,7 @@
 "There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "Time_left_left" = "Plus que %{time_left}";
-"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
+"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application.";
 "To_read_this_project_update_you_must_be_a_backer" = "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer.";
 "Total_pledged" = "Total engagé";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";

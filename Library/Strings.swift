@@ -1745,9 +1745,9 @@ backers"
   /**
    "Funding successful"
 
-   - **es**: "Funding successful"
+   - **es**: "Financiado con éxito"
    - **de**: "Funding successful"
-   - **fr**: "Funding successful"
+   - **fr**: "Intégralement financé"
    - **en**: "Funding successful"
   */
   public static func Funding_successful() -> String {
@@ -2870,9 +2870,9 @@ from friends yet."
   /**
    "Project cancelled"
 
-   - **es**: "Project cancelled"
+   - **es**: "Proyecto cancelado"
    - **de**: "Project cancelled"
-   - **fr**: "Project cancelled"
+   - **fr**: "Projet annulé"
    - **en**: "Project cancelled"
   */
   public static func Project_cancelled() -> String {
@@ -3802,9 +3802,9 @@ catch your eye?"
   /**
    "To access all your favorite categories, tap the explore dropdown at the top of the app."
 
-   - **es**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
    - **de**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
-   - **fr**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **fr**: "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application."
    - **en**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
   */
   public static func To_access_all_your_favorite_categories_tap_the_explore_dropdown() -> String {
@@ -6063,7 +6063,7 @@ Please try again later."
   /**
    "%{category_name} saved."
 
-   - **es**: "%{category_name} saved."
+   - **es**: "%{category_name} guardado."
    - **de**: "%{category_name} saved."
    - **fr**: "%{category_name} saved."
    - **en**: "%{category_name} saved."

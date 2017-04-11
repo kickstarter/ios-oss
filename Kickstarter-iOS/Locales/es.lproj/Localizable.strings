@@ -114,7 +114,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
-"Funding_successful" = "Funding successful";
+"Funding_successful" = "Financiado con éxito";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
 "Go_to_project_page" = "Ir a la página de proyecto";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
@@ -188,7 +188,7 @@
 "Popular_Projects" = "Proyectos populares";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
-"Project_cancelled" = "Project cancelled";
+"Project_cancelled" = "Proyecto cancelado";
 "Projects_We_Love" = "Nuestros Favoritos";
 "Public_comment" = "Comentario público";
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
@@ -258,7 +258,7 @@
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "Time_left_left" = "%{time_left} restantes";
-"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
+"To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
 "Total_pledged" = "Contribuciones en total";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
@@ -399,7 +399,7 @@
 "backing_info.estimated_delivery_date" = "Entrega estimada %{delivery_date}";
 "backing_info.info_button" = "Info sobre patrocinamiento";
 "backing_info.pledged_backing_amount" = "Contribuido: %{backing_amount}";
-"category_name_saved" = "%{category_name} saved.";
+"category_name_saved" = "%{category_name} guardado.";
 "category_promo.explore_category" = "Explorar %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} proyectos activos";
 "comments_count_comments.few" = "%{comments_count} commentarios";
