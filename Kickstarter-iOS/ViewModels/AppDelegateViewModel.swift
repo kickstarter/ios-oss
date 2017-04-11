@@ -263,7 +263,7 @@ AppDelegateViewModelOutputs {
       .takeWhen(self.openRemoteNotificationTappedOkProperty.signal)
 
     let pushEnvelope = Signal.merge(
-      pushEnvelopeAndIsActive.filter(second >>> negate),
+      pushEnvelopeAndIsActive.filter(second >>> isFalse),
       explicitlyOpenedNotification
       )
       .map(first)
