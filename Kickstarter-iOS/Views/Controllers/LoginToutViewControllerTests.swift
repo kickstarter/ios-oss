@@ -5,7 +5,6 @@ internal final class LoginToutViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
