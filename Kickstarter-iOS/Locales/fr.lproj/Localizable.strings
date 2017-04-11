@@ -37,6 +37,7 @@
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "Cancel_your_pledge" = "Annuler mon engagement";
 "Change_payment_method" = "Changer de moyen de paiement";
+"Chat" = "Chat";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
 "Close_live_stream" = "Fermer la diffusion en direct";
 "Close_project" = "Fermer le projet";
@@ -54,6 +55,7 @@
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
 "Created_projects_projects_count" = "Projets créés : %{projects_count}";
+"Creator" = "Creator";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> est en direct en ce moment";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} est en direct sur Kickstarter";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> a fait une diffusion en direct %{time_ago}";
@@ -120,6 +122,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
+"Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
 "Just_for_you" = "Rien que pour vous.";
@@ -227,8 +230,10 @@
 "Saved" = "Projets enregistrés";
 "Saved_projects" = "Projets enregistrés";
 "Saves_project" = "Enregistre le projet.";
+"Say_something_kind" = "Say something kind...";
 "Select_this_reward" = "Sélectionner cette récompense";
 "Select_this_reward_instead" = "Choisir cette récompense";
+"Send" = "Send";
 "Share_an_update_about_your_project" = "Parlez de votre projet dans une actu.";
 "Share_this_live_stream" = "Partager cette diffusion en direct.";
 "Share_this_project_on_Facebook" = "Partagez ce projet sur Facebook.";
@@ -240,6 +245,7 @@
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
+"Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
 "Subscribe" = "S'abonner";
@@ -275,11 +281,13 @@
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
+"We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "Nous n'avons pas été en mesure de charger les destinations d'expédition.\nVeuillez réessayer ultérieurement.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
 "You_Launched" = "Projet lancé !";
 "You_backed_this_project" = "Vous avez soutenu ce projet.";
 "You_saved_this_project" = "Vous avez enregistré ce projet.";
+"Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_friends_havent_backed_any_projects_yet" = "Vos amis n'ont encore rien soutenu, mais dès qu'ils s'y seront mis, leurs engagements s'afficheront ici.";
 "Your_payment_method_was_successfully_charged" = "Votre moyen de paiement a bien été débité.";
 "Your_pledge" = "Mon engagement";
@@ -399,7 +407,7 @@
 "backing_info.estimated_delivery_date" = "Livraison prévue le %{delivery_date}";
 "backing_info.info_button" = "Infos sur la contribution";
 "backing_info.pledged_backing_amount" = "Montant engagé : %{backing_amount}";
-"category_name_saved" = "%{category_name} saved.";
+"category_name_saved" = "Catégorie enregistrée : %{category_name}.";
 "category_promo.explore_category" = "Découvrir la catégorie %{category_name}";
 "category_promo.project_count_live_projects" = "%{project_count} projets actifs";
 "comments_count_comments.few" = "%{comments_count} commentaires";

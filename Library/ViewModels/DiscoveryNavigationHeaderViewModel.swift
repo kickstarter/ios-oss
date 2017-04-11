@@ -207,12 +207,14 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { id, animated in (selected: isFavoriteCategoryStored(withId: id), animated: animated) }
 
     self.favoriteButtonAccessibilityLabel = self.updateFavoriteButton
-      .map { $0.selected ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label() :
-        Strings.discovery_favorite_categories_buttons_favorite_a11y_label() }
+      .map {
+        $0.selected
+          ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
+          : Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+    }
 
     self.showFavoriteOnboardingAlert = strings
-      .map { Strings.category_name_saved(category_name: $0.subcategory ?? $0.filter)
-      }
+      .map { Strings.category_name_saved(category_name: $0.subcategory ?? $0.filter) }
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
