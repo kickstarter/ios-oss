@@ -575,6 +575,22 @@ backers"
     )
   }
   /**
+   "Chat"
+
+   - **es**: "Chat"
+   - **de**: "Chat"
+   - **fr**: "Chat"
+   - **en**: "Chat"
+  */
+  public static func Chat() -> String {
+    return localizedString(
+      key: "Chat",
+      defaultValue: "Chat",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Chooses %{location} for shipping."
 
    - **es**: "Destino determinado: %{location}."
@@ -844,6 +860,22 @@ backers"
       defaultValue: "Created projects %{projects_count}",
       count: nil,
       substitutions: ["projects_count": projects_count]
+    )
+  }
+  /**
+   "Creator"
+
+   - **es**: "Creador"
+   - **de**: "Projektgründer"
+   - **fr**: "Créateur"
+   - **en**: "Creator"
+  */
+  public static func Creator() -> String {
+    return localizedString(
+      key: "Creator",
+      defaultValue: "Creator",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -1745,9 +1777,9 @@ backers"
   /**
    "Funding successful"
 
-   - **es**: "Funding successful"
-   - **de**: "Funding successful"
-   - **fr**: "Funding successful"
+   - **es**: "Financiado con éxito"
+   - **de**: "Finazierung erfolgreich"
+   - **fr**: "Intégralement financé"
    - **en**: "Funding successful"
   */
   public static func Funding_successful() -> String {
@@ -1834,6 +1866,22 @@ backers"
     return localizedString(
       key: "Id_just_like_to_support_the_project",
       defaultValue: "I’d just like to support the project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Info"
+
+   - **es**: "Información"
+   - **de**: "Info"
+   - **fr**: "Info"
+   - **en**: "Info"
+  */
+  public static func Info() -> String {
+    return localizedString(
+      key: "Info",
+      defaultValue: "Info",
       count: nil,
       substitutions: [:]
     )
@@ -2870,9 +2918,9 @@ from friends yet."
   /**
    "Project cancelled"
 
-   - **es**: "Project cancelled"
-   - **de**: "Project cancelled"
-   - **fr**: "Project cancelled"
+   - **es**: "Proyecto cancelado"
+   - **de**: "Projekt abgebrochen"
+   - **fr**: "Projet annulé"
    - **en**: "Project cancelled"
   */
   public static func Project_cancelled() -> String {
@@ -3302,6 +3350,22 @@ daring ideas."
     )
   }
   /**
+   "Say something kind..."
+
+   - **es**: "Di algo amable..."
+   - **de**: "Sag etwas Nettes ..."
+   - **fr**: "Un petit mot sympa..."
+   - **en**: "Say something kind..."
+  */
+  public static func Say_something_kind() -> String {
+    return localizedString(
+      key: "Say_something_kind",
+      defaultValue: "Say something kind...",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this reward"
 
    - **es**: "Seleccionar esta recompensa"
@@ -3329,6 +3393,22 @@ daring ideas."
     return localizedString(
       key: "Select_this_reward_instead",
       defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Send"
+
+   - **es**: "Enviar"
+   - **de**: "Senden"
+   - **fr**: "Envoyer"
+   - **en**: "Send"
+  */
+  public static func Send() -> String {
+    return localizedString(
+      key: "Send",
+      defaultValue: "Send",
       count: nil,
       substitutions: [:]
     )
@@ -3507,6 +3587,22 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something \ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something went wrong, please try again."
+
+   - **es**: "Ocurrió un error. Inténtalo nuevamente más tarde."
+   - **de**: "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal."
+   - **fr**: "Un problème est survenu. Veuillez réessayer."
+   - **en**: "Something went wrong, please try again."
+  */
+  public static func Something_went_wrong_please_try_again() -> String {
+    return localizedString(
+      key: "Something_went_wrong_please_try_again",
+      defaultValue: "Something went wrong, please try again.",
       count: nil,
       substitutions: [:]
     )
@@ -3802,9 +3898,9 @@ catch your eye?"
   /**
    "To access all your favorite categories, tap the explore dropdown at the top of the app."
 
-   - **es**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
-   - **de**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
-   - **fr**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
+   - **de**: "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben."
+   - **fr**: "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application."
    - **en**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
   */
   public static func To_access_all_your_favorite_categories_tap_the_explore_dropdown() -> String {
@@ -4072,6 +4168,22 @@ catch your eye?"
     )
   }
   /**
+   "We were unable to connect to the live stream chat."
+
+   - **es**: "No se pudo conectar al chat de live stream."
+   - **de**: "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden."
+   - **fr**: "Connexion au chat en direct impossible."
+   - **en**: "We were unable to connect to the live stream chat."
+  */
+  public static func We_were_unable_to_connect_to_the_live_stream_chat() -> String {
+    return localizedString(
+      key: "We_were_unable_to_connect_to_the_live_stream_chat",
+      defaultValue: "We were unable to connect to the live stream chat.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We were unable to load the shipping destinations.
 Please try again later."
 
@@ -4152,6 +4264,22 @@ Please try again later."
     return localizedString(
       key: "You_saved_this_project",
       defaultValue: "You saved this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your chat message wasn't sent successfully."
+
+   - **es**: "Tu mensaje no fue enviado."
+   - **de**: "Deine Chat-Nachricht konnte leider nicht gesendet werden."
+   - **fr**: "Votre message n'a pas été envoyé."
+   - **en**: "Your chat message wasn't sent successfully."
+  */
+  public static func Your_chat_message_wasnt_sent_successfully() -> String {
+    return localizedString(
+      key: "Your_chat_message_wasnt_sent_successfully",
+      defaultValue: "Your chat message wasn't sent successfully.",
       count: nil,
       substitutions: [:]
     )
@@ -6063,9 +6191,9 @@ Please try again later."
   /**
    "%{category_name} saved."
 
-   - **es**: "%{category_name} saved."
-   - **de**: "%{category_name} saved."
-   - **fr**: "%{category_name} saved."
+   - **es**: "%{category_name} guardado."
+   - **de**: "%{category_name} gespeichert."
+   - **fr**: "Catégorie enregistrée : %{category_name}."
    - **en**: "%{category_name} saved."
   */
   public static func category_name_saved(category_name: String) -> String {
