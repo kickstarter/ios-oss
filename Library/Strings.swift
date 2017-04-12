@@ -866,8 +866,8 @@ backers"
    "Creator"
 
    - **es**: "Creador"
-   - **de**: "Creator"
-   - **fr**: "Creator"
+   - **de**: "Projektgründer"
+   - **fr**: "Créateur"
    - **en**: "Creator"
   */
   public static func Creator() -> String {
@@ -3353,8 +3353,8 @@ daring ideas."
    "Say something kind..."
 
    - **es**: "Di algo amable..."
-   - **de**: "Say something kind..."
-   - **fr**: "Say something kind..."
+   - **de**: "Sag etwas Nettes ..."
+   - **fr**: "Un petit mot sympa..."
    - **en**: "Say something kind..."
   */
   public static func Say_something_kind() -> String {
@@ -3401,8 +3401,8 @@ daring ideas."
    "Send"
 
    - **es**: "Enviar"
-   - **de**: "Send"
-   - **fr**: "Send"
+   - **de**: "Senden"
+   - **fr**: "Envoyer"
    - **en**: "Send"
   */
   public static func Send() -> String {
@@ -3595,8 +3595,8 @@ catch your eye?"
    "Something went wrong, please try again."
 
    - **es**: "Ocurrió un error. Inténtalo nuevamente más tarde."
-   - **de**: "Something went wrong, please try again."
-   - **fr**: "Something went wrong, please try again."
+   - **de**: "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal."
+   - **fr**: "Un problème est survenu. Veuillez réessayer."
    - **en**: "Something went wrong, please try again."
   */
   public static func Something_went_wrong_please_try_again() -> String {
@@ -4171,8 +4171,8 @@ catch your eye?"
    "We were unable to connect to the live stream chat."
 
    - **es**: "No se pudo conectar al chat de live stream."
-   - **de**: "We were unable to connect to the live stream chat."
-   - **fr**: "We were unable to connect to the live stream chat."
+   - **de**: "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden."
+   - **fr**: "Connexion au chat en direct impossible."
    - **en**: "We were unable to connect to the live stream chat."
   */
   public static func We_were_unable_to_connect_to_the_live_stream_chat() -> String {
@@ -4272,8 +4272,8 @@ Please try again later."
    "Your chat message wasn't sent successfully."
 
    - **es**: "Tu mensaje no fue enviado."
-   - **de**: "Your chat message wasn't sent successfully."
-   - **fr**: "Your chat message wasn't sent successfully."
+   - **de**: "Deine Chat-Nachricht konnte leider nicht gesendet werden."
+   - **fr**: "Votre message n'a pas été envoyé."
    - **en**: "Your chat message wasn't sent successfully."
   */
   public static func Your_chat_message_wasnt_sent_successfully() -> String {
