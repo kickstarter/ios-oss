@@ -13,6 +13,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let cellAccessibilityValue = TestObserver<String, NoError>()
   internal let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
+  internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
+  internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
@@ -36,6 +38,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
+    self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
+    self.vm.outputs.fundingProgressContainerViewHidden.observe(self.fundingProgressContainerViewHidden.observer)
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
@@ -267,15 +271,19 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStateStackViewHidden.assertValues([true])
     self.projectStateSubtitleLabelText.assertValueCount(1, "Empty subtitle string emits.")
     self.projectStatsStackViewHidden.assertValues([false])
+    self.fundingProgressContainerViewHidden.assertValues([false])
+    self.fundingProgressBarViewHidden.assertValues([false])
 
     self.vm.inputs.configureWith(project: canceled)
     self.projectStateIconHidden.assertValues([true, true])
     self.projectStateSubtitleLabelText.assertValueCount(2)
     self.projectStateTitleLabelText.assertValues(["",
-      Strings.discovery_baseball_card_status_banner_canceled()])
+      Strings.Project_cancelled()])
     self.projectStateTitleLabelColor.assertValues([navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
+    self.fundingProgressBarViewHidden.assertValues([false, false])
+    self.fundingProgressContainerViewHidden.assertValues([false, true])
 
     self.vm.inputs.configureWith(project: failed)
     self.projectStateIconHidden.assertValues([true, true, true])
@@ -283,13 +291,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStateTitleLabelText.assertValues(
       [
         "",
-        Strings.discovery_baseball_card_status_banner_canceled(),
+        Strings.Project_cancelled(),
         Strings.dashboard_creator_project_funding_unsuccessful()
       ]
     )
     self.projectStateTitleLabelColor.assertValues([navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
+    self.fundingProgressBarViewHidden.assertValues([false, false, true])
+    self.fundingProgressContainerViewHidden.assertValues([false, true, false])
 
     self.vm.inputs.configureWith(project: successful)
     self.projectStateIconHidden.assertValues([true, true, true, false])
@@ -297,14 +307,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStateTitleLabelText.assertValues(
       [
         "",
-        Strings.discovery_baseball_card_status_banner_canceled(),
+        Strings.Project_cancelled(),
         Strings.dashboard_creator_project_funding_unsuccessful(),
-        Strings.project_status_funded()
+        Strings.Funding_successful()
       ]
     )
     self.projectStateTitleLabelColor.assertValues([navyColor, greenColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
+    self.fundingProgressBarViewHidden.assertValues([false, false, true, false])
+    self.fundingProgressContainerViewHidden.assertValues([false, true, false, false])
+
 
     self.vm.inputs.configureWith(project: suspended)
     self.projectStateIconHidden.assertValues([true, true, true, false, true])
@@ -312,14 +325,16 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStateTitleLabelText.assertValues(
       [
         "",
-        Strings.discovery_baseball_card_status_banner_canceled(),
+        Strings.Project_cancelled(),
         Strings.dashboard_creator_project_funding_unsuccessful(),
-        Strings.project_status_funded(),
+        Strings.Funding_successful(),
         Strings.dashboard_creator_project_funding_suspended()
       ]
     )
     self.projectStateTitleLabelColor.assertValues([navyColor, greenColor, navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
+    self.fundingProgressBarViewHidden.assertValues([false, false, true, false, false])
+    self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, false])
   }
 }

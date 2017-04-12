@@ -24,7 +24,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
   @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
   @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
-  @IBOutlet fileprivate weak var projectStateIconImageView: UIImageView!
   @IBOutlet fileprivate weak var projectStateSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
@@ -52,9 +51,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.fundingTitleLabel]
       ||> postcardStatsTitleStyle
+//      ||> UILabel.lens.font .~ .ksr_headline(size: 15)
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
+//      ||> UILabel.lens.font .~ .ksr_body(size: 12)
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
@@ -98,14 +99,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
-    _ = self.projectStateIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_green_700
-
     _ = self.projectStateSubtitleLabel
       |> postcardStatsSubtitleStyle
 
     _ = self.projectStateTitleLabel
-      |> postcardStatsTitleStyle
+//      |> postcardStatsTitleStyle // postcardStatsTitleStyle
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
 
     _ = self.projectStateStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -143,7 +142,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
-    self.projectStateIconImageView.rac.hidden = self.viewModel.outputs.projectStateIconHidden
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText
     self.projectStateTitleLabel.rac.textColor = self.viewModel.outputs.projectStateTitleLabelColor
     self.projectStateTitleLabel.rac.text = self.viewModel.outputs.projectStateTitleLabelText
@@ -151,6 +149,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
+
+    self.fundingProgressContainerView.rac.hidden = self.viewModel.outputs.fundingProgressContainerViewHidden
+    self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
+
 
     self.viewModel.outputs.metadataData
       .observeForUI()

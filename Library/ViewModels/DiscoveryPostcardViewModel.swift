@@ -64,6 +64,12 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the text for the deadline title label.
   var deadlineTitleLabelText: Signal<String, NoError> { get }
 
+  /// Emits a boolean to determine whether or not to display funding progress container view.
+  var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean to determine whether or not to display the funding progress bar view.
+  var fundingProgressBarViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits the disparate data to be displayed on the metadata view label.
   var metadataData: Signal<PostcardMetadataData, NoError> { get }
 
@@ -197,6 +203,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.personalization.friends == nil || $0.personalization.friends?.count ?? 0 == 0 }
       .skipRepeats()
 
+    self.fundingProgressContainerViewHidden = project
+      .map { $0.state == .canceled || $0.state == .suspended }
+
+    self.fundingProgressBarViewHidden = project
+      .map { $0.state == .failed }
+
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
     self.cellAccessibilityValue = project.map(Project.lens.blurb.view)
@@ -214,6 +226,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let cellAccessibilityValue: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
+  public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
+  public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
@@ -253,11 +267,11 @@ private func socialText(forFriends friends: [User]) -> String? {
 private func fundingStatusText(forProject project: Project) -> String {
   switch project.state {
   case .canceled:
-    return Strings.discovery_baseball_card_status_banner_canceled()
+    return Strings.Project_cancelled()
   case .failed:
     return Strings.dashboard_creator_project_funding_unsuccessful()
   case .successful:
-    return Strings.project_status_funded()
+    return Strings.Funding_successful()
   case .suspended:
     return Strings.dashboard_creator_project_funding_suspended()
   case .live, .purged, .started, .submitted:
