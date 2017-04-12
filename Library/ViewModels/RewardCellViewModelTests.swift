@@ -422,7 +422,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
-    self.footerLabelText.assertValues(["3\u{00a0}days\u{00a0}left • 42\u{00a0}backers"])
+    self.footerLabelText.assertValues(["3\u{00a0}days\u{00a0}left..42\u{00a0}backers"])
   }
 
   func testFooterLabelText_NotLimited_BadScheduledData_Live() {

@@ -22,28 +22,28 @@ public struct SelectableRow {
 
 public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
   public var social: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.social
+    return SelectableRow.lens.params..DiscoveryParams.lens.social
   }
   public var staffPicks: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.staffPicks
+    return SelectableRow.lens.params..DiscoveryParams.lens.staffPicks
   }
   public var starred: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.starred
+    return SelectableRow.lens.params..DiscoveryParams.lens.starred
   }
   public var category: Lens<SelectableRow, KsApi.Category?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.category
+    return SelectableRow.lens.params..DiscoveryParams.lens.category
   }
   public var hasLiveStreams: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.hasLiveStreams
+    return SelectableRow.lens.params..DiscoveryParams.lens.hasLiveStreams
   }
   public var includePOTD: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.includePOTD
+    return SelectableRow.lens.params..DiscoveryParams.lens.includePOTD
   }
   public var recommended: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.recommended
+    return SelectableRow.lens.params..DiscoveryParams.lens.recommended
   }
   public var backed: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params • DiscoveryParams.lens.backed
+    return SelectableRow.lens.params..DiscoveryParams.lens.backed
   }
 }
 

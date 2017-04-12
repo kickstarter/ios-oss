@@ -181,7 +181,6 @@
 		A71A50DC1E2B4A6C00574C42 /* ReactiveSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A509F1E2B4A3500574C42 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71A50DF1E2B4A7A00574C42 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50B81E2B4A3E00574C42 /* Result.framework */; };
 		A71A50E01E2B4A7A00574C42 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50B81E2B4A3E00574C42 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A71A50E41E2B4A8600574C42 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A71A50CE1E2B4A4C00574C42 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */; };
 		A71C7FAA1E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */; };
 		A71C7FAE1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */; };
@@ -1338,7 +1337,6 @@
 				A7C5C5361DF894DA0048D14C /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7C5C53A1DF894E00048D14C /* Prelude.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
-				A71A50E41E2B4A8600574C42 /* Runes.framework in Embed Frameworks */,
 				A7C5C53E1DF894E70048D14C /* Argo.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";

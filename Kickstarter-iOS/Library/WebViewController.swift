@@ -59,6 +59,6 @@ extension LensHolder where Object: WebViewControllerProtocol {
 
 extension Lens where Whole: WebViewControllerProtocol, Part == WKWebView {
   internal var scrollView: Lens<Whole, UIScrollView> {
-    return Whole.lens.webView • Part.lens.scrollView
+    return Whole.lens.webView..Part.lens.scrollView
   }
 }
