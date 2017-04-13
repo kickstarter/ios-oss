@@ -236,6 +236,8 @@
 		A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A73924041D272404004524C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A73924051D27247E004524C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B31D272242004524C3 /* Main.storyboard */; };
+		A73B2FD31E9FBBE500F05597 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73B2FD21E9FBBE500F05597 /* Runes.framework */; };
+		A73B2FD41E9FBBE500F05597 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A73B2FD21E9FBBE500F05597 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EF6D11DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift */; };
 		A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */; };
 		A742CC7D1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */; };
@@ -1282,6 +1284,7 @@
 				A71A50E01E2B4A7A00574C42 /* Result.framework in Embed Frameworks */,
 				A71A50DC1E2B4A6C00574C42 /* ReactiveSwift.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
+				A73B2FD41E9FBBE500F05597 /* Runes.framework in Embed Frameworks */,
 				A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */,
 				A7C5C54E1DF895050048D14C /* KsApi.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
@@ -1519,6 +1522,7 @@
 		A73923B91D272242004524C3 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		A73923BA1D272242004524C3 /* Update.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Update.storyboard; sourceTree = "<group>"; };
 		A73923BB1D272242004524C3 /* UpdateDraft.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UpdateDraft.storyboard; sourceTree = "<group>"; };
+		A73B2FD21E9FBBE500F05597 /* Runes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Runes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A73EF6D11DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorViewModel.swift; sourceTree = "<group>"; };
 		A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPagesDataSource.swift; sourceTree = "<group>"; };
 		A742CC7C1E43B3A00029D256 /* LiveStreamDiscoveryLiveNowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryLiveNowCell.swift; sourceTree = "<group>"; };
@@ -2033,6 +2037,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A73B2FD31E9FBBE500F05597 /* Runes.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
@@ -2869,6 +2874,7 @@
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
+				A73B2FD21E9FBBE500F05597 /* Runes.framework */,
 				A7C795C71C873B800081977F /* Kickstarter-iOS.playground */,
 				802800561C88F62500141235 /* Configs */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
