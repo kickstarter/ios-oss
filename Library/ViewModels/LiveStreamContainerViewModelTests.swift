@@ -183,6 +183,36 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.vm.inputs.videoPlaybackStateChanged(state: .loading)
 
+      self.loaderText.assertValues(["Loading", "Joining the live stream"])
+    }
+  }
+
+  func testLoaderText_LiveFromCountdown() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.loaderText.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .liveStreamCountdown,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance()
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
       self.loaderText.assertValues(["Loading", "The live stream will start soon"])
     }
   }

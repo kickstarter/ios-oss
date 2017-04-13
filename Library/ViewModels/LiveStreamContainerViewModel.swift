@@ -395,8 +395,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       greenRoomErrorBeforeValue.mapConst(Strings.The_live_stream_failed_to_connect())
     )
 
+    let liveStateLoaderText = refTag
+      .takeWhen(liveState)
+      .map { refTag -> String in
+        if refTag == .liveStreamCountdown { return Strings.The_live_stream_will_start_soon() }
+
+        return localizedString(key: "Joining_the_live_stream", defaultValue: "Joining the live stream")
+    }
+
     self.loaderText = Signal.merge(
-      liveState.mapConst(Strings.The_live_stream_will_start_soon()),
+      liveStateLoaderText,
       greenRoomState.mapConst(Strings.The_live_stream_will_start_soon()),
       replayState.mapConst(Strings.The_replay_will_start_soon()),
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
