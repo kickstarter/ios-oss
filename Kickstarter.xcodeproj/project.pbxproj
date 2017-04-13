@@ -896,55 +896,6 @@
 			remoteGlobalIDString = D03579B01B2B78A1005D26AE;
 			remoteInfo = "Result-watchOSTests";
 		};
-		A71A50CD1E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F802D4D21A5F218E005E236C;
-			remoteInfo = "Runes-iOS";
-		};
-		A71A50CF1E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F86B2E0B1A5F2B8D00C3B8BD;
-			remoteInfo = "Runes-Mac";
-		};
-		A71A50D11E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 51DE8A121BAB363500124320;
-			remoteInfo = "Runes-tvOS";
-		};
-		A71A50D31E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F8624C261A645A9600C883B3;
-			remoteInfo = "Runes-iOS Tests";
-		};
-		A71A50D51E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F8624C451A645C9500C883B3;
-			remoteInfo = "Runes-Mac Tests";
-		};
-		A71A50D71E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 51DE8A211BAB36E600124320;
-			remoteInfo = "Runes-tvOS Tests";
-		};
-		A71A50D91E2B4A4C00574C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EAA6A5101B2F154D0058E9A8;
-			remoteInfo = "Runes-watchOS";
-		};
 		A71A50DD1E2B4A6C00574C42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A71A50901E2B4A3500574C42 /* ReactiveSwift.xcodeproj */;
@@ -1514,7 +1465,6 @@
 		A718885C1DE0DDCE0094856D /* ShortcutItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		A71A50901E2B4A3500574C42 /* ReactiveSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveSwift.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/ReactiveExtensions/Frameworks/ReactiveSwift/ReactiveSwift.xcodeproj"; sourceTree = "<group>"; };
 		A71A50A81E2B4A3E00574C42 /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/ReactiveExtensions/Frameworks/ReactiveSwift/Carthage/Checkouts/Result/Result.xcodeproj"; sourceTree = "<group>"; };
-		A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Runes.xcodeproj; path = "Frameworks/ios-ksapi/Frameworks/Runes/Runes.xcodeproj"; sourceTree = "<group>"; };
 		A71C7F6D1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LiveStreamDiscovery.storyboard; sourceTree = "<group>"; };
 		A71C7FA91E2FA40D0051E5E3 /* LiveStreamDiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryViewController.swift; sourceTree = "<group>"; };
 		A71C7FAD1E2FA65F0051E5E3 /* LiveStreamDiscoveryDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryDataSource.swift; sourceTree = "<group>"; };
@@ -2184,20 +2134,6 @@
 				A71A50BE1E2B4A3E00574C42 /* Result-tvOSTests.xctest */,
 				A71A50C01E2B4A3E00574C42 /* Result.framework */,
 				A71A50C21E2B4A3E00574C42 /* Result-watchOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A71A50C41E2B4A4C00574C42 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A71A50CE1E2B4A4C00574C42 /* Runes.framework */,
-				A71A50D01E2B4A4C00574C42 /* Runes.framework */,
-				A71A50D21E2B4A4C00574C42 /* Runes.framework */,
-				A71A50D41E2B4A4C00574C42 /* Runes-iOS Tests.xctest */,
-				A71A50D61E2B4A4C00574C42 /* Runes-Mac Tests.xctest */,
-				A71A50D81E2B4A4C00574C42 /* Runes-tvOS Tests.xctest */,
-				A71A50DA1E2B4A4C00574C42 /* Runes.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2973,7 +2909,6 @@
 				A76E0AC51D00D05F00EC525A /* ReactiveExtensions.xcodeproj */,
 				A71A50901E2B4A3500574C42 /* ReactiveSwift.xcodeproj */,
 				A71A50A81E2B4A3E00574C42 /* Result.xcodeproj */,
-				A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */,
 				A7424F0D1C84F40E00FDC1E4 /* Embedded */,
 			);
 			name = Frameworks;
@@ -3541,10 +3476,6 @@
 					ProductGroup = A71A50A91E2B4A3E00574C42 /* Products */;
 					ProjectRef = A71A50A81E2B4A3E00574C42 /* Result.xcodeproj */;
 				},
-				{
-					ProductGroup = A71A50C41E2B4A4C00574C42 /* Products */;
-					ProjectRef = A71A50C31E2B4A4C00574C42 /* Runes.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -3761,55 +3692,6 @@
 			fileType = wrapper.cfbundle;
 			path = "Result-watchOSTests.xctest";
 			remoteRef = A71A50C11E2B4A3E00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50CE1E2B4A4C00574C42 /* Runes.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Runes.framework;
-			remoteRef = A71A50CD1E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50D01E2B4A4C00574C42 /* Runes.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Runes.framework;
-			remoteRef = A71A50CF1E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50D21E2B4A4C00574C42 /* Runes.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Runes.framework;
-			remoteRef = A71A50D11E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50D41E2B4A4C00574C42 /* Runes-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Runes-iOS Tests.xctest";
-			remoteRef = A71A50D31E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50D61E2B4A4C00574C42 /* Runes-Mac Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Runes-Mac Tests.xctest";
-			remoteRef = A71A50D51E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50D81E2B4A4C00574C42 /* Runes-tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Runes-tvOS Tests.xctest";
-			remoteRef = A71A50D71E2B4A4C00574C42 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A71A50DA1E2B4A4C00574C42 /* Runes.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Runes.framework;
-			remoteRef = A71A50D91E2B4A4C00574C42 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A73778AF1D819736004C2A9B /* FBSnapshotTestCase.framework */ = {
