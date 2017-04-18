@@ -182,7 +182,7 @@ LiveStreamChatViewModelOutputs {
     self.chatInputViewPlaceholderText = self.viewDidLoadProperty.signal
       .map {
         NSAttributedString(
-          string: localizedString(key: "Say_something_kind", defaultValue: "Say something kind..."),
+          string: Strings.Say_something_kind(),
           attributes: [
             NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.8),
             NSFontAttributeName: UIFont.ksr_body(size: 14)
@@ -204,19 +204,16 @@ LiveStreamChatViewModelOutputs {
         case .failedToInitializeFirebase,
              .firebaseAnonymousAuthFailed,
              .firebaseCustomTokenAuthFailed:
-          return localizedString(key: "We_were_unable_to_connect_to_the_live_stream_chat",
-                                 defaultValue: "We were unable to connect to the live stream chat.")
+          return Strings.We_were_unable_to_connect_to_the_live_stream_chat()
         case .sendChatMessageFailed:
-          return localizedString(key: "Your_chat_message_wasnt_sent_successfully",
-                                 defaultValue: "Your chat message wasn't sent successfully.")
+          return Strings.Your_chat_message_wasnt_sent_successfully()
         case .snapshotDecodingFailed,
              .chatMessageDecodingFailed,
              .genericFailure,
              .timedOut,
              .invalidJson,
              .invalidRequest:
-          return localizedString(key: "Something_went_wrong_please_try_again",
-                                 defaultValue: "Something went wrong, please try again.")
+          return Strings.Something_went_wrong_please_try_again()
         }
     }
   }

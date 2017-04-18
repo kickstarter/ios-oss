@@ -62,10 +62,10 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2))
 
     _ = self.infoPagerButton
-      |> UIButton.lens.title(forState: .normal) .~ localizedString(key: "Info", defaultValue: "Info")
+      |> UIButton.lens.title(forState: .normal) .~ Strings.Info()
 
     _ = self.chatPagerButton
-      |> UIButton.lens.title(forState: .normal) .~ localizedString(key: "Chat", defaultValue: "Chat")
+      |> UIButton.lens.title(forState: .normal) .~ Strings.Chat()
   }
 
   internal override func bindViewModel() {
