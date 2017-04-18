@@ -92,7 +92,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.title(forState: .normal) .~ Strings.Send()
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Send() }
   }
 
   //swiftlint:disable:next function_body_length
