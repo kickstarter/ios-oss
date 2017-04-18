@@ -349,7 +349,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false])
     self.updateFavoriteButtonAnimated.assertValues([false, true])
     self.updateFavoriteButtonSelected.assertValues([false, true])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."])
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
@@ -364,7 +364,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false, true])
     self.updateFavoriteButtonAnimated.assertValues([false, true])
     self.updateFavoriteButtonSelected.assertValues([false, true])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."])
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
@@ -376,7 +376,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false, true, false])
     self.updateFavoriteButtonAnimated.assertValues([false, true])
     self.updateFavoriteButtonSelected.assertValues([false, true])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"])
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."])
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
@@ -393,7 +393,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false, true, false])
     self.updateFavoriteButtonAnimated.assertValues([false, true, true])
     self.updateFavoriteButtonSelected.assertValues([false, true, false])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."], "Alert does not emit again.")
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
@@ -412,7 +412,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false, true, false, true])
     self.updateFavoriteButtonAnimated.assertValues([false, true, true])
     self.updateFavoriteButtonSelected.assertValues([false, true, false])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."], "Alert does not emit again.")
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
@@ -425,7 +425,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteViewIsDimmed.assertValues([false, true, false, true])
     self.updateFavoriteButtonAnimated.assertValues([false, true, true])
     self.updateFavoriteButtonSelected.assertValues([false, true, false])
-    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects"], "Alert does not emit again.")
+    self.showFavoriteOnboardingAlert.assertValues(["All Art Projects saved."], "Alert does not emit again.")
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),

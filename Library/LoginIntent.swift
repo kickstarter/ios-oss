@@ -2,7 +2,6 @@ public enum LoginIntent: String {
   case activity
   case backProject
   case discoveryOnboarding
-  case favoriteCategory
   case generic
   case liveStreamChat
   case liveStreamSubscribe
@@ -18,8 +17,6 @@ public enum LoginIntent: String {
       return "pledge"
     case .discoveryOnboarding:
       return "discovery_prompt"
-    case .favoriteCategory:
-      return "favorite_category"
     case .generic:
       return "generic"
     case .liveStreamChat:

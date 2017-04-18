@@ -26,22 +26,6 @@ public enum Strings {
     )
   }
   /**
-   "Access all your favorite categories in the explore dropdown at the top of the app."
-
-   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
-   - **de**: "Zugang zu deinen meist besuchten Kategorien im Dropdown-Menü im oberen Bereich der App."
-   - **fr**: "Access all your favorite categories in the explore dropdown at the top of the app."
-   - **en**: "Access all your favorite categories in the explore dropdown at the top of the app."
-  */
-  public static func Access_all_your_favorite_categories_in_the_explore_dropdown() -> String {
-    return localizedString(
-      key: "Access_all_your_favorite_categories_in_the_explore_dropdown",
-      defaultValue: "Access all your favorite categories in the explore dropdown at the top of the app.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Add attachments…"
 
    - **es**: "Agregar anexos …"
@@ -591,6 +575,22 @@ backers"
     )
   }
   /**
+   "Chat"
+
+   - **es**: "Chat"
+   - **de**: "Chat"
+   - **fr**: "Chat"
+   - **en**: "Chat"
+  */
+  public static func Chat() -> String {
+    return localizedString(
+      key: "Chat",
+      defaultValue: "Chat",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Chooses %{location} for shipping."
 
    - **es**: "Destino determinado: %{location}."
@@ -860,6 +860,22 @@ backers"
       defaultValue: "Created projects %{projects_count}",
       count: nil,
       substitutions: ["projects_count": projects_count]
+    )
+  }
+  /**
+   "Creator"
+
+   - **es**: "Creador"
+   - **de**: "Projektgründer"
+   - **fr**: "Créateur"
+   - **en**: "Creator"
+  */
+  public static func Creator() -> String {
+    return localizedString(
+      key: "Creator",
+      defaultValue: "Creator",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -1759,6 +1775,22 @@ backers"
     )
   }
   /**
+   "Funding successful"
+
+   - **es**: "Financiado con éxito"
+   - **de**: "Finazierung erfolgreich"
+   - **fr**: "Intégralement financé"
+   - **en**: "Funding successful"
+  */
+  public static func Funding_successful() -> String {
+    return localizedString(
+      key: "Funding_successful",
+      defaultValue: "Funding successful",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Get notified about this creator’s live streams"
 
    - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
@@ -1834,6 +1866,22 @@ backers"
     return localizedString(
       key: "Id_just_like_to_support_the_project",
       defaultValue: "I’d just like to support the project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Info"
+
+   - **es**: "Información"
+   - **de**: "Info"
+   - **fr**: "Info"
+   - **en**: "Info"
+  */
+  public static func Info() -> String {
+    return localizedString(
+      key: "Info",
+      defaultValue: "Info",
       count: nil,
       substitutions: [:]
     )
@@ -2132,8 +2180,8 @@ with friends."
    "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
 
    - **es**: "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice."
-   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung."
-   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Nous vous enverrons un rappel 48 heures avant la fin de sa campagne."
+   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf eine Benachrichtigung."
+   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Vous recevrez un rappel 48 heures avant la fin."
    - **en**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
   */
   public static func Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you() -> String {
@@ -2740,33 +2788,17 @@ from friends yet."
     )
   }
   /**
-   "Pledge to support projects and view all your saved and backed projects in one place."
+   "Pledge to projects and view all your saved and backed projects in one place."
 
    - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar."
-   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte."
-   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit."
-   - **en**: "Pledge to support projects and view all your saved and backed projects in one place."
+   - **de**: "Unterstütze Projekte und sehe alle deine Projekte auf einen Blick."
+   - **fr**: "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus."
+   - **en**: "Pledge to projects and view all your saved and backed projects in one place."
   */
-  public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
+  public static func Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
     return localizedString(
-      key: "Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place",
-      defaultValue: "Pledge to support projects and view all your saved and backed projects in one place.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
-
-   - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar. Para continuar, por favor inicia sesión o regístrate."
-   - **de**: "Unterstütze Projekte und sehe alle deine gespeicherten und unterstützten Projekte auf einen Blick. Um fortzufahren, melde dich bitte an oder registriere dich."
-   - **fr**: "Engagez-vous à soutenir des projets et consultez la liste de vos projets enregistrés et soutenus, le tout au même endroit. Connectez-vous ou inscrivez-vous pour continuer."
-   - **en**: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue."
-  */
-  public static func Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue() -> String {
-    return localizedString(
-      key: "Pledge_to_support_projects_and_view_all_your_saved_and_backed_projects_in_one_place_Log_in_or_sign_up_to_continue",
-      defaultValue: "Pledge to support projects and view all your saved and backed projects in one place. Log in or sign up to continue.",
+      key: "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place",
+      defaultValue: "Pledge to projects and view all your saved and backed projects in one place.",
       count: nil,
       substitutions: [:]
     )
@@ -2879,6 +2911,22 @@ from friends yet."
     return localizedString(
       key: "Project_Suspended",
       defaultValue: "Project Suspended.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project cancelled"
+
+   - **es**: "Proyecto cancelado"
+   - **de**: "Projekt abgebrochen"
+   - **fr**: "Projet annulé"
+   - **en**: "Project cancelled"
+  */
+  public static func Project_cancelled() -> String {
+    return localizedString(
+      key: "Project_cancelled",
+      defaultValue: "Project cancelled",
       count: nil,
       substitutions: [:]
     )
@@ -3224,8 +3272,8 @@ daring ideas."
   /**
    "Save projects"
 
-   - **es**: "Save projects"
-   - **de**: "Save projects"
+   - **es**: "Guardar proyectos"
+   - **de**: "Projekte speichern"
    - **fr**: "Enregistrer des projets"
    - **en**: "Save projects"
   */
@@ -3302,6 +3350,22 @@ daring ideas."
     )
   }
   /**
+   "Say something kind..."
+
+   - **es**: "Di algo amable..."
+   - **de**: "Sag etwas Nettes ..."
+   - **fr**: "Un petit mot sympa..."
+   - **en**: "Say something kind..."
+  */
+  public static func Say_something_kind() -> String {
+    return localizedString(
+      key: "Say_something_kind",
+      defaultValue: "Say something kind...",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this reward"
 
    - **es**: "Seleccionar esta recompensa"
@@ -3329,6 +3393,22 @@ daring ideas."
     return localizedString(
       key: "Select_this_reward_instead",
       defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Send"
+
+   - **es**: "Enviar"
+   - **de**: "Senden"
+   - **fr**: "Envoyer"
+   - **en**: "Send"
+  */
+  public static func Send() -> String {
+    return localizedString(
+      key: "Send",
+      defaultValue: "Send",
       count: nil,
       substitutions: [:]
     )
@@ -3507,6 +3587,22 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something \ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something went wrong, please try again."
+
+   - **es**: "Ocurrió un error. Inténtalo nuevamente más tarde."
+   - **de**: "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal."
+   - **fr**: "Un problème est survenu. Veuillez réessayer."
+   - **en**: "Something went wrong, please try again."
+  */
+  public static func Something_went_wrong_please_try_again() -> String {
+    return localizedString(
+      key: "Something_went_wrong_please_try_again",
+      defaultValue: "Something went wrong, please try again.",
       count: nil,
       substitutions: [:]
     )
@@ -3800,6 +3896,22 @@ catch your eye?"
     )
   }
   /**
+   "To access all your favorite categories, tap the explore dropdown at the top of the app."
+
+   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
+   - **de**: "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben."
+   - **fr**: "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application."
+   - **en**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+  */
+  public static func To_access_all_your_favorite_categories_tap_the_explore_dropdown() -> String {
+    return localizedString(
+      key: "To_access_all_your_favorite_categories_tap_the_explore_dropdown",
+      defaultValue: "To access all your favorite categories, tap the explore dropdown at the top of the app.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "To read this project update, you must be a backer. Please log in or sign up to continue."
 
    - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
@@ -4056,17 +4168,17 @@ catch your eye?"
     )
   }
   /**
-   "We’re all ears."
+   "We were unable to connect to the live stream chat."
 
-   - **es**: "¡Somos todo oídos!"
-   - **de**: "Wir sind ganz Ohr!"
-   - **fr**: "Nous sommes tout ouïe."
-   - **en**: "We’re all ears."
+   - **es**: "No se pudo conectar al chat de live stream."
+   - **de**: "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden."
+   - **fr**: "Connexion au chat en direct impossible."
+   - **en**: "We were unable to connect to the live stream chat."
   */
-  public static func We_re_all_ears() -> String {
+  public static func We_were_unable_to_connect_to_the_live_stream_chat() -> String {
     return localizedString(
-      key: "We_re_all_ears",
-      defaultValue: "We’re all ears.",
+      key: "We_were_unable_to_connect_to_the_live_stream_chat",
+      defaultValue: "We were unable to connect to the live stream chat.",
       count: nil,
       substitutions: [:]
     )
@@ -4152,6 +4264,22 @@ Please try again later."
     return localizedString(
       key: "You_saved_this_project",
       defaultValue: "You saved this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your chat message wasn't sent successfully."
+
+   - **es**: "Tu mensaje no fue enviado."
+   - **de**: "Deine Chat-Nachricht konnte leider nicht gesendet werden."
+   - **fr**: "Votre message n'a pas été envoyé."
+   - **en**: "Your chat message wasn't sent successfully."
+  */
+  public static func Your_chat_message_wasnt_sent_successfully() -> String {
+    return localizedString(
+      key: "Your_chat_message_wasnt_sent_successfully",
+      defaultValue: "Your chat message wasn't sent successfully.",
       count: nil,
       substitutions: [:]
     )
@@ -6061,19 +6189,19 @@ Please try again later."
     )
   }
   /**
-   "%{category_name}/%{subcategory_name} saved."
+   "%{category_name} saved."
 
-   - **es**: "%{category_name}/%{subcategory_name} guardado."
-   - **de**: "%{category_name}/%{subcategory_name} gespeichert."
-   - **fr**: "%{category_name}/%{subcategory_name} : enregistré."
-   - **en**: "%{category_name}/%{subcategory_name} saved."
+   - **es**: "%{category_name} guardado."
+   - **de**: "%{category_name} gespeichert."
+   - **fr**: "Catégorie enregistrée : %{category_name}."
+   - **en**: "%{category_name} saved."
   */
-  public static func category_name_subcategory_name_saved(category_name: String, subcategory_name: String) -> String {
+  public static func category_name_saved(category_name: String) -> String {
     return localizedString(
-      key: "category_name_subcategory_name_saved",
-      defaultValue: "%{category_name}/%{subcategory_name} saved.",
+      key: "category_name_saved",
+      defaultValue: "%{category_name} saved.",
       count: nil,
-      substitutions: ["category_name": category_name, "subcategory_name": subcategory_name]
+      substitutions: ["category_name": category_name]
     )
   }
   /**
@@ -8929,7 +9057,7 @@ Please try again later."
 
    - **es**: "Presentado en %{category_name}"
    - **de**: "Vorgestellt in %{category_name}"
-   - **fr**: "Un projet sélectionné de la catégorie %{category_name}"
+   - **fr**: "Un projet %{category_name} sélectionné"
    - **en**: "Featured in %{category_name}"
   */
   public static func discovery_baseball_card_metadata_featured_project(category_name: String) -> String {
