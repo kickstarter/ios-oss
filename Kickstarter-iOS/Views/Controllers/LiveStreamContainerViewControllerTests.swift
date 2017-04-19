@@ -82,6 +82,74 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     }
   }
 
+  func testView_ChatFeatureFlagDisabled() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch]
+    let orientations = [Orientation.portrait]
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": false]
+
+    combos([Language.en], devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), config: config, language: lang,
+                      liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
+  func testView_ChatFeatureFlagEnabled() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch]
+    let orientations = [Orientation.portrait]
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": true]
+
+    combos([Language.en], devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), config: config, language: lang,
+                      liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
   func testFreshLiveStreamEventFetchFailed() {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date

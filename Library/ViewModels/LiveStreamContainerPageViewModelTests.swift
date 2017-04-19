@@ -18,6 +18,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
   private let chatButtonTextColor = TestObserver<UIColor, NoError>()
   private let chatButtonTitleFontName = TestObserver<String, NoError>()
   private let chatButtonTitleFontSize = TestObserver<CGFloat, NoError>()
+  private let indicatorLineViewHidden = TestObserver<Bool, NoError>()
   private let indicatorLineViewXPosition = TestObserver<Int, NoError>()
   private let infoButtonTextColor = TestObserver<UIColor, NoError>()
   private let infoButtonTitleFontName = TestObserver<String, NoError>()
@@ -25,6 +26,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
   private let loadViewControllersIntoPagesDataSource = TestObserver<[LiveStreamContainerPage], NoError>()
   private let pagedToPage = TestObserver<LiveStreamContainerPage, NoError>()
   private let pagedToPageDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
+  private let pagerTabStripStackViewHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -32,6 +34,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.vm.outputs.chatButtonTextColor.observe(self.chatButtonTextColor.observer)
     self.vm.outputs.chatButtonTitleFont.map { $0.fontName }.observe(self.chatButtonTitleFontName.observer)
     self.vm.outputs.chatButtonTitleFont.map { $0.pointSize }.observe(self.chatButtonTitleFontSize.observer)
+    self.vm.outputs.indicatorLineViewHidden.observe(self.indicatorLineViewHidden.observer)
     self.vm.outputs.indicatorLineViewXPosition.observe(self.indicatorLineViewXPosition.observer)
     self.vm.outputs.infoButtonTextColor.observe(self.infoButtonTextColor.observer)
     self.vm.outputs.infoButtonTitleFont.map { $0.fontName }.observe(self.infoButtonTitleFontName.observer)
@@ -40,6 +43,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
       self.loadViewControllersIntoPagesDataSource.observer)
     self.vm.outputs.pagedToPage.map(first).observe(self.pagedToPage.observer)
     self.vm.outputs.pagedToPage.map(second).observe(self.pagedToPageDirection.observer)
+    self.vm.outputs.pagerTabStripStackViewHidden.observe(self.pagerTabStripStackViewHidden.observer)
   }
 
   func testColors() {
@@ -149,7 +153,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.pagedToPageDirection.assertValues([.forward, .forward, .reverse])
   }
 
-  func testLoadViewControllersIntoPagesDataSource() {
+  func testLoadViewControllersIntoPagesDataSource_ChatFeatureFlagAbsent() {
     self.loadViewControllersIntoPagesDataSource.assertValueCount(0)
 
     let project = Project.template
@@ -173,6 +177,67 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.loadViewControllersIntoPagesDataSource.assertValues([[infoPage, chatPage]])
+  }
+
+  func testLoadViewControllersIntoPagesDataSource_ChatFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": true]
+
+    withEnvironment(config: config) {
+      self.loadViewControllersIntoPagesDataSource.assertValueCount(0)
+
+      let project = Project.template
+      let liveStreamEvent = LiveStreamEvent.template
+      let refTag = RefTag.projectPage
+      let presentedFromProject = true
+
+      let infoPage = LiveStreamContainerPage.info(
+        project: project,
+        liveStreamEvent: liveStreamEvent,
+        refTag: refTag,
+        presentedFromProject: presentedFromProject
+      )
+      let chatPage = LiveStreamContainerPage.chat(project: project, liveStreamEvent: liveStreamEvent)
+
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: refTag,
+                                   presentedFromProject: presentedFromProject)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadViewControllersIntoPagesDataSource.assertValues([[infoPage, chatPage]])
+    }
+  }
+
+  func testLoadViewControllersIntoPagesDataSource_ChatFeatureFlag_Disabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": false]
+
+    withEnvironment(config: config) {
+      self.loadViewControllersIntoPagesDataSource.assertValueCount(0)
+
+      let project = Project.template
+      let liveStreamEvent = LiveStreamEvent.template
+      let refTag = RefTag.projectPage
+      let presentedFromProject = true
+
+      let infoPage = LiveStreamContainerPage.info(
+        project: project,
+        liveStreamEvent: liveStreamEvent,
+        refTag: refTag,
+        presentedFromProject: presentedFromProject
+      )
+
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: refTag,
+                                   presentedFromProject: presentedFromProject)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadViewControllersIntoPagesDataSource.assertValues([[infoPage]])
+    }
   }
 
   func testIndicatorLineViewXPosition() {
@@ -199,5 +264,51 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
     self.vm.inputs.pageTransition(completed: true)
 
     self.indicatorLineViewXPosition.assertValues([0, 1, 0])
+  }
+
+  func testViewsHidden_ChatFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": true]
+
+    withEnvironment(config: config) {
+      self.pagerTabStripStackViewHidden.assertValueCount(0)
+      self.indicatorLineViewHidden.assertValueCount(0)
+
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                   refTag: .projectPage, presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.pagerTabStripStackViewHidden.assertValues([false])
+      self.indicatorLineViewHidden.assertValues([false])
+    }
+  }
+
+  func testViewsHidden_ChatFeatureFlagDisabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": false]
+
+    withEnvironment(config: config) {
+      self.pagerTabStripStackViewHidden.assertValueCount(0)
+      self.indicatorLineViewHidden.assertValueCount(0)
+
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                   refTag: .projectPage, presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.pagerTabStripStackViewHidden.assertValues([true])
+      self.indicatorLineViewHidden.assertValues([true])
+    }
+  }
+
+  func testViewsHidden_ChatFeatureFlagAbsent() {
+    self.pagerTabStripStackViewHidden.assertValueCount(0)
+    self.indicatorLineViewHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                 refTag: .projectPage, presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.pagerTabStripStackViewHidden.assertValues([false])
+    self.indicatorLineViewHidden.assertValues([false])
   }
 }

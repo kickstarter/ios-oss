@@ -115,6 +115,18 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
                                                        completion: nil)
         }
     }
+
+    self.viewModel.outputs.pagerTabStripStackViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.pagerTabStripStackView.isHidden = $0
+    }
+
+    self.viewModel.outputs.indicatorLineViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.indicatorLineView.isHidden = $0
+    }
   }
 
   @objc private func infoButtonTapped() {

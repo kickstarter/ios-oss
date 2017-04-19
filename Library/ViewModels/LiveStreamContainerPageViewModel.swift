@@ -41,6 +41,9 @@ public protocol LiveStreamContainerPageViewModelOutputs {
   /// Emits the title font for the chat button.
   var chatButtonTitleFont: Signal<UIFont, NoError> { get }
 
+  /// Emits whether the indicator line view should be hidden.
+  var indicatorLineViewHidden: Signal<Bool, NoError> { get }
+
   /// Emits the X offset position for the indicator line view.
   var indicatorLineViewXPosition: Signal<Int, NoError> { get }
 
@@ -55,6 +58,9 @@ public protocol LiveStreamContainerPageViewModelOutputs {
 
   /// Emits the page that should be paged to and in which direction.
   var pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError> { get }
+
+  /// Emits whether the pager tab strip stack view should be hidden.
+  var pagerTabStripStackViewHidden: Signal<Bool, NoError> { get }
 }
 
 public final class LiveStreamContainerPageViewModel: LiveStreamContainerPageViewModelType,
@@ -69,11 +75,18 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
     self.loadViewControllersIntoPagesDataSource = configData
       .map { project, liveStreamEvent, refTag, presentedFromProject in
-        [
+        let pages: [LiveStreamContainerPage] = [
           .info(project: project,
                 liveStreamEvent: liveStreamEvent,
                 refTag: refTag,
-                presentedFromProject: presentedFromProject),
+                presentedFromProject: presentedFromProject)
+        ]
+
+        guard AppEnvironment.current.config?.features["ios_live_stream_chat"] != .some(false) else {
+          return pages
+        }
+
+        return pages + [
           .chat(project: project,
                 liveStreamEvent: liveStreamEvent)
         ]
@@ -142,6 +155,15 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
       .takePairWhen(pageChangedToPage)
       .map { $0.index(of: $1) }
       .skipNil()
+
+    let chatFeatureFlagDisabled = self.viewDidLoadProperty.signal
+      .map {
+        return AppEnvironment.current.config?.features["ios_live_stream_chat"] != .some(false)
+      }
+      .map(negate)
+
+    self.indicatorLineViewHidden = chatFeatureFlagDisabled
+    self.pagerTabStripStackViewHidden = chatFeatureFlagDisabled
   }
 
   private let configDataProperty = MutableProperty<(Project, LiveStreamEvent,
@@ -183,11 +205,13 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
   public let chatButtonTextColor: Signal<UIColor, NoError>
   public let chatButtonTitleFont: Signal<UIFont, NoError>
+  public let indicatorLineViewHidden: Signal<Bool, NoError>
   public let indicatorLineViewXPosition: Signal<Int, NoError>
   public let infoButtonTextColor: Signal<UIColor, NoError>
   public let infoButtonTitleFont: Signal<UIFont, NoError>
   public let loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError>
   public let pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError>
+  public let pagerTabStripStackViewHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamContainerPageViewModelInputs { return self }
   public var outputs: LiveStreamContainerPageViewModelOutputs { return self }
