@@ -37,6 +37,7 @@
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "Cancel_your_pledge" = "Cancela tu contribución";
 "Change_payment_method" = "Cambiar método de pago";
+"Chat" = "Chat";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Close_live_stream" = "Cerrar Live Stream";
 "Close_project" = "Cerrar proyecto";
@@ -54,6 +55,7 @@
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
 "Created_projects_projects_count" = "Proyectos creados: %{projects_count}";
+"Creator" = "Creador";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> está transmitiendo en vivo";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} está transmitiendo en vivo en Kickstarter";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}";
@@ -120,6 +122,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
 "Home" = "Inicio";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
+"Info" = "Información";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
 "Just_for_you" = "Sólo para ti.";
@@ -227,8 +230,10 @@
 "Saved" = "Guardado";
 "Saved_projects" = "Proyectos guardados";
 "Saves_project" = "Guarda este proyecto.";
+"Say_something_kind" = "Di algo amable...";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
+"Send" = "Enviar";
 "Share_an_update_about_your_project" = "Comparte una actualización de tu proyecto …";
 "Share_this_live_stream" = "Compartir este Live-Stream.";
 "Share_this_project_on_Facebook" = "Compartir este proyecto en Facebook.";
@@ -240,6 +245,7 @@
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
+"Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Subscribe" = "Suscribir";
@@ -275,11 +281,13 @@
 "View_your_reward" = "Mostrar recompensa";
 "Watch_live" = "Ver en vivo";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
+"We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
 "You_saved_this_project" = "Uno de tus proyectos guardados.";
+"Your_chat_message_wasnt_sent_successfully" = "Tu mensaje no fue enviado.";
 "Your_friends_havent_backed_any_projects_yet" = "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí.";
 "Your_payment_method_was_successfully_charged" = "Se efectuó el cargo a tu método de pago.";
 "Your_pledge" = "Tu contribución";

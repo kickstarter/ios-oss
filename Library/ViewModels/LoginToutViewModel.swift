@@ -44,8 +44,14 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), NoError> { get }
 
+  /// Emits if label should be hidden.
+  var headlineLabelHidden: Signal<Bool, NoError> { get }
+
   /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, NoError> { get }
+
+  /// Emits the login context to be displayed.
+  var logInContextText: Signal<String, NoError> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
@@ -79,6 +85,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   // swiftlint:disable function_body_length
   public init() {
+
+    let intent = self.loginIntentProperty.signal.skipNil()
+      .takeWhen(self.viewWillAppearProperty.signal)
+
+    self.logInContextText = intent.map { intent in statusString(intent) }
+
+    self.headlineLabelHidden = intent.map { $0 != .generic && $0 != .discoveryOnboarding }
+
     let isLoading = MutableProperty(false)
 
     self.isLoading = isLoading.signal
@@ -207,13 +221,30 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let dismissViewController: Signal<(), NoError>
+  public let headlineLabelHidden: Signal<Bool, NoError>
   public let startLogin: Signal<(), NoError>
   public let startSignup: Signal<(), NoError>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), NoError>
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
   public let postNotification: Signal<Notification, NoError>
+  public let logInContextText: Signal<String, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>
   public let showFacebookErrorAlert: Signal<AlertError, NoError>
+}
+
+private func statusString(_ forStatus: LoginIntent) -> String {
+  switch forStatus {
+  case .starProject:
+    return Strings.Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you()
+  case .backProject:
+    return Strings.Please_log_in_or_sign_up_to_back_this_project()
+  case .liveStreamSubscribe:
+    return Strings.Please_log_in_or_sign_up_to_subscribe_to_this_live_stream()
+  case .messageCreator:
+    return Strings.Please_log_in_or_sign_up_to_message_this_creator()
+  case .discoveryOnboarding, .generic, .activity, .loginTab:
+    return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+  }
 }

@@ -1,0 +1,112 @@
+fastlane_version "2.26.1"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+  end
+
+  ### BETA
+
+  desc "Build Beta"
+  lane :beta_gym do
+    build_app(
+      output_name: "KickBeta",
+      export_method: "enterprise",
+      configuration: "Hockey"
+    )
+  end
+
+  desc "Upload Beta to HockeyApp"
+  lane :beta_hockey do
+    upload_hockey(
+      ipa: "KickBeta.ipa",
+      dsym: "KickBeta.app.dSYM.zip",
+      public_identifier: ENV["HOCKEY_BETA_APP_ID"]
+    )
+  end
+
+  ### PRODUCTION
+
+  desc "Build Production"
+  lane :itunes_gym do
+    build_app(
+      output_name: "Kickstarter",
+      export_method: "app-store",
+      configuration: "Release"
+    )
+  end
+
+  desc "Upload Production to HockeyApp"
+  lane :itunes_hockey do
+    upload_hockey(
+      ipa: "Kickstarter.ipa",
+      dsym: "Kickstarter.app.dSYM.zip",
+      public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
+    )
+  end
+
+  desc "Upload to the app store"
+  lane :itunes_deliver do
+    # NB: still to be implemented, placeholder values
+    deliver(
+      username: ENV["ITUNES_APPLE_ID"],
+      app_identifier: ENV["ITUNES_BUNDLE_IDENTIFIER"],
+      app: ENV["ITUNES_APP_ID"],
+      ipa: "Kickstarter.ipa",
+      team_id: ENV["ITUNES_TEAM_ID"]
+    )
+  end
+
+  ### LIVE STREAM BETA
+
+  desc "Build Live Stream Beta"
+  lane :live_stream_beta_gym do
+    build_app(
+      output_name: "KickBeta",
+      export_method: "enterprise",
+      configuration: "Hockey"
+    )
+  end
+
+  desc "Upload Live Stream Beta to HockeyApp"
+  lane :live_stream_beta_hockey do
+    upload_hockey(
+      ipa: "KickBeta.ipa",
+      dsym: "KickBeta.app.dSYM.zip",
+      public_identifier: ENV["HOCKEY_LIVE_APP_ID"]
+    )
+  end
+
+  ### SHARED
+
+  private_lane :build_app do |options|
+    gym(
+      output_name: options[:output_name],
+      export_method: options[:export_method],
+      scheme: "Kickstarter-iOS",
+      configuration: options[:configuration]
+    )
+  end
+
+  private_lane :upload_hockey do |options|
+    hockey(
+      api_token: ENV["HOCKEY_APP_TOKEN"],
+      ipa: options[:ipa],
+      dsym: options[:dsym],
+      public_identifier: options[:public_identifier],
+      repository_url: ENV["CIRCLE_REPOSITORY_URL"],
+      build_server_url: ENV["CIRCLE_BUILD_URL"],
+      commit_sha: ENV["CIRCLE_SHA1"],
+      notes: "CircleCI build " + ENV["CIRCLE_BUILD_NUM"],
+      bypass_cdn: true,
+      notify: "1"
+    )
+  end
+
+  after_all do |lane|
+  end
+
+  error do |lane, exception|
+  end
+end

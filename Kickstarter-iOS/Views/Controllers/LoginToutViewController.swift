@@ -9,10 +9,13 @@ import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   @IBOutlet fileprivate weak var fbDisclaimer: UILabel!
+  @IBOutlet fileprivate weak var contextLabel: UILabel!
+  @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
   @IBOutlet fileprivate weak var helpButton: UIButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
   @IBOutlet fileprivate weak var signupButton: UIButton!
+  @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
   fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
@@ -63,9 +66,34 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.fbLoginButton |> fbLoginButtonStyle
     _ = self.helpButton |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
-    _ = self.rootStackView |> loginRootStackViewStyle
+    _ = self.rootStackView
+      |> loginRootStackViewStyle
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
     _ = self.signupButton |> signupWithEmailButtonStyle
-  }
+
+    _ = self.bringCreativeProjectsToLifeLabel
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular
+          ? .ksr_headline(size: 20)
+          : .ksr_headline(size: 14)
+      }
+      |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
+
+    _ = self.contextLabel
+      |> UILabel.lens.font %~~ { _, l in
+        l.traitCollection.isRegularRegular
+          ? .ksr_subhead(size: 20)
+          : .ksr_subhead(size: 14)  }
+
+    _ = self.loginContextStackView
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+      |> UIStackView.lens.layoutMargins %~~ { _, stack in
+        stack.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(10), leftRight: 0)
+          : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
+      }
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    }
 
   // swiftlint:disable function_body_length
   override func bindViewModel() {
@@ -74,6 +102,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] _ in
         self?.pushLoginViewController()
     }
+
     self.viewModel.outputs.startSignup
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -148,6 +177,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
     }
+
+    self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
+    self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
   }
   // swiftlint:enable function_body_length
 

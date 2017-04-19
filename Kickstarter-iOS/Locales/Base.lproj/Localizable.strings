@@ -37,6 +37,7 @@
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
+"Chat" = "Chat";
 "Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
 "Close_live_stream" = "Close live stream";
 "Close_project" = "Close project";
@@ -54,6 +55,7 @@
 "Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
 "Created_projects_projects_count" = "Created projects %{projects_count}";
+"Creator" = "Creator";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> is live now";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} is streaming live on Kickstarter";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> live streamed %{time_ago}";
@@ -120,6 +122,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
+"Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Just_for_you" = "Just for you.";
@@ -227,8 +230,10 @@
 "Saved" = "Saved";
 "Saved_projects" = "Saved projects";
 "Saves_project" = "Saves project.";
+"Say_something_kind" = "Say something kind...";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
+"Send" = "Send";
 "Share_an_update_about_your_project" = "Share an update about your project…";
 "Share_this_live_stream" = "Share this live stream.";
 "Share_this_project_on_Facebook" = "Share this project on Facebook.";
@@ -240,6 +245,7 @@
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something \ncatch your eye?";
+"Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Starting_soon" = "Starting soon";
 "Status" = "Status:";
 "Subscribe" = "Subscribe";
@@ -275,11 +281,13 @@
 "View_your_reward" = "View your reward";
 "Watch_live" = "Watch live";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
+"We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";
 "You_saved_this_project" = "You saved this project.";
+"Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Your pledge";

@@ -137,6 +137,7 @@ internal final class CommentDialogViewModelTests: TestCase {
       self.presentError.assertValues(["ijc"], "Error message is emitted.")
       self.loadingViewIsHidden.assertValues([true, false, true],
                                             "Comment is posting and then done after pressing button.")
+
       self.notifyPresenterCommentWasPostedSuccesfully
         .assertValueCount(0, "Comment does not post successfuly.")
       self.notifyPresenterDialogWantsDismissal
