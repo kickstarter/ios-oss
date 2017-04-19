@@ -9,7 +9,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -41,6 +40,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       }
     }
   }
+
 
   func testView_Card_NoMetadata() {
     let project = anomalisaNoPhoto

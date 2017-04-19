@@ -14,7 +14,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
   @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var metadataView: UIView!
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
@@ -49,23 +48,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }
 
-    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.fundingTitleLabel]
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel]
       ||> postcardStatsTitleStyle
-//      ||> UILabel.lens.font .~ .ksr_headline(size: 15)
 
-    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> postcardStatsSubtitleStyle
-//      ||> UILabel.lens.font .~ .ksr_body(size: 12)
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
-
-    _ = self.fundingTitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
-
-    _ = self.fundingSubtitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
-      |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
@@ -100,12 +90,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.projectStateSubtitleLabel
-//      |> postcardStatsSubtitleStyle
+      |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.projectStateTitleLabel
-//      |> postcardStatsTitleStyle // postcardStatsTitleStyle
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.numberOfLines .~ 2
 
@@ -142,7 +131,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
-    self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
+    self.fundingTitleLabel.rac.attributedText = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText
