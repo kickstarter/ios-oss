@@ -48,10 +48,13 @@ platform :ios do
 
   desc "Upload to the app store"
   lane :itunes_deliver do
-    # NB: still to be implemented, placeholder values
+
+    ENV["FASTLANE_PASSWORD"] = ENV["ITUNES_CONNECT_PASSWORD"]
+
     deliver(
-      username: ENV["ITUNES_APPLE_ID"],
-      app_identifier: ENV["ITUNES_BUNDLE_IDENTIFIER"],
+      force: true,
+      username: ENV["ITUNES_CONNECT_ACCOUNT"],
+      app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
       ipa: "Kickstarter.ipa",
       team_id: ENV["ITUNES_TEAM_ID"]
