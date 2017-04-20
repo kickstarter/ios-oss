@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -658,7 +658,7 @@ Mikke Snow</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="I5W-Gn-EUy" firstAttribute="leading" secondItem="MWA-KM-EaP" secondAttribute="leading" id="00R-zi-HCv"/>
-                            <constraint firstItem="I5W-Gn-EUy" firstAttribute="top" secondItem="MWA-KM-EaP" secondAttribute="topMargin" id="KJO-QO-RGZ"/>
+                            <constraint firstItem="I5W-Gn-EUy" firstAttribute="top" secondItem="cXc-cC-33k" secondAttribute="bottom" id="MjL-Za-v18"/>
                             <constraint firstItem="LVg-2f-0Za" firstAttribute="top" secondItem="I5W-Gn-EUy" secondAttribute="bottom" id="Xbm-NT-dyo"/>
                             <constraint firstItem="I5W-Gn-EUy" firstAttribute="trailing" secondItem="MWA-KM-EaP" secondAttribute="trailing" id="k7P-iN-dTM"/>
                         </constraints>
