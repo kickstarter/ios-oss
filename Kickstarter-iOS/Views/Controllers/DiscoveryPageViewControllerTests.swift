@@ -133,8 +133,4 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   fileprivate let magicParams = .defaults
     |> DiscoveryParams.lens.sort .~ .magic
-
-  fileprivate let starredParams = .defaults
-    |> DiscoveryParams.lens.starred .~ true
-
 }

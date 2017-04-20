@@ -14,8 +14,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
   @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var metadataView: UIView!
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
   @IBOutlet fileprivate weak var metadataLabel: UILabel!

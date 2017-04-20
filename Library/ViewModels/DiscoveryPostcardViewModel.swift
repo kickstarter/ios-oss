@@ -64,11 +64,11 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the text for the deadline title label.
   var deadlineTitleLabelText: Signal<String, NoError> { get }
 
-  /// Emits a boolean to determine whether or not to display funding progress container view.
-  var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
-
   /// Emits a boolean to determine whether or not to display the funding progress bar view.
   var fundingProgressBarViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean to determine whether or not to display funding progress container view.
+  var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the disparate data to be displayed on the metadata view label.
   var metadataData: Signal<PostcardMetadataData, NoError> { get }
@@ -226,8 +226,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let cellAccessibilityValue: Signal<String, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
-  public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
+  public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
