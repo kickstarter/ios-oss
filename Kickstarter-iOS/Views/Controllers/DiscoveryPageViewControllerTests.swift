@@ -179,7 +179,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             parent.view.frame.size.height = device == .pad ? 500 : 450
 
             controller.change(filter: starredParams)
-            
+
             self.scheduler.run()
 
             controller.tableView.layoutIfNeeded()
