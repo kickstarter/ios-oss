@@ -41,7 +41,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-
   func testView_Card_NoMetadata() {
     let project = anomalisaNoPhoto
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
@@ -90,12 +89,12 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
               parent.view.frame.size.height = device == .pad ? 500 : 450
 
               controller.change(filter: starredParams)
-              
+
               self.scheduler.run()
-              
+
               controller.tableView.layoutIfNeeded()
               controller.tableView.reloadData()
-              
+
               FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
         }
       }
@@ -122,10 +121,10 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             controller.change(filter: starredParams)
 
             self.scheduler.run()
-            
+
             controller.tableView.layoutIfNeeded()
             controller.tableView.reloadData()
-            
+
             FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -152,15 +151,14 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             controller.change(filter: starredParams)
 
             self.scheduler.run()
-            
+
             controller.tableView.layoutIfNeeded()
             controller.tableView.reloadData()
-            
+
             FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
-
 
   func testView_Card_SuspendedProjectStarred() {
     let project = anomalisaNoPhoto
@@ -183,10 +181,10 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             controller.change(filter: starredParams)
             
             self.scheduler.run()
-            
+
             controller.tableView.layoutIfNeeded()
             controller.tableView.reloadData()
-            
+
             FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }

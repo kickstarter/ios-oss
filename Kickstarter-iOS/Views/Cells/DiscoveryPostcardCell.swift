@@ -54,7 +54,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
-    _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel, self.deadlineSubtitleLabel]
+    _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
+         self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.backersSubtitleLabel
@@ -144,7 +145,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.fundingProgressContainerView.rac.hidden = self.viewModel.outputs.fundingProgressContainerViewHidden
     self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
-
 
     self.viewModel.outputs.metadataData
       .observeForUI()
