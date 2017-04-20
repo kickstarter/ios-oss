@@ -77,7 +77,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var metadataViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the text for the pledged title label.
-  var percentFundedTitleLabelText: Signal<NSAttributedString, NoError> { get }
+  var percentFundedTitleLabelText: Signal<String, NoError> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
   var progressPercentage: Signal<Float, NoError> { get }
@@ -161,19 +161,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 
     self.percentFundedTitleLabelText = project
-      .filter { $0.state == .live }
-      .map {
-        let string = Strings.percentage_funded(
-          percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
-        return string.simpleHtmlAttributedString(base:[
-          NSFontAttributeName: UIFont.ksr_body(size: 12.0),
-          NSForegroundColorAttributeName: UIColor.ksr_text_green_700
-           ],
-        bold: [
-          NSFontAttributeName: UIFont.ksr_headline(size: 15.0),
-          NSForegroundColorAttributeName: UIColor.ksr_text_green_700
-          ]) ?? NSAttributedString(string: "")
-    }
+      .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -242,7 +230,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
-  public let percentFundedTitleLabelText: Signal<NSAttributedString, NoError>
+  public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
   public let projectNameAndBlurbLabelText: Signal<NSAttributedString, NoError>

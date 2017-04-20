@@ -15,6 +15,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
   @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var metadataView: UIView!
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
   @IBOutlet fileprivate weak var metadataLabel: UILabel!
@@ -51,7 +52,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = [self.backersTitleLabel, self.deadlineTitleLabel]
       ||> postcardStatsTitleStyle
 
-    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
@@ -60,7 +61,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
-      |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+
+    _ = self.fundingTitleLabel
+      |> postcardStatsTitleStyle
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
+
+    _ = self.fundingSubtitleLabel
+      |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
+      |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     _ = self.cardView
       |> dropShadowStyle()
@@ -132,7 +140,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
-    self.fundingTitleLabel.rac.attributedText = self.viewModel.outputs.percentFundedTitleLabelText
+    self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText

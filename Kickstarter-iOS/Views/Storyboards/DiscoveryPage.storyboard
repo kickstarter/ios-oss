@@ -336,10 +336,16 @@
                                                                     <rect key="frame" x="24" y="123" width="316" height="41"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="crV-JF-Zp6">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="41" height="41"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="54.5" height="41"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="150%" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKY-lM-bEh">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="41" height="41"/>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="150%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKY-lM-bEh">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="54.5" height="20.5"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="funded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZW-iA-YlR">
+                                                                                    <rect key="frame" x="0.0" y="20.5" width="54.5" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -347,7 +353,7 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bFG-DX-XIW">
-                                                                            <rect key="frame" x="65" y="0.0" width="60.5" height="41"/>
+                                                                            <rect key="frame" x="78.5" y="0.0" width="60.5" height="41"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="2,307" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAH-bd-Fw0">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="60.5" height="20.5"/>
@@ -364,16 +370,16 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cw4-IQ-io5">
-                                                                            <rect key="frame" x="149.5" y="0.0" width="166.5" height="41"/>
+                                                                            <rect key="frame" x="163" y="0.0" width="153" height="41"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="299-JH-gFX">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="166.5" height="20.5"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="153" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="days left" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HKL-zO-HnI">
-                                                                                    <rect key="frame" x="0.0" y="20.5" width="166.5" height="20.5"/>
+                                                                                    <rect key="frame" x="0.0" y="20.5" width="153" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -482,7 +488,8 @@
                                     <outlet property="deadlineTitleLabel" destination="299-JH-gFX" id="3V8-ct-KhR"/>
                                     <outlet property="fundingProgressBarView" destination="ZCD-Uq-aen" id="cN6-KT-LRP"/>
                                     <outlet property="fundingProgressContainerView" destination="AjI-7F-4q1" id="eku-kg-RsI"/>
-                                    <outlet property="fundingTitleLabel" destination="UKY-lM-bEh" id="nGN-41-CjF"/>
+                                    <outlet property="fundingSubtitleLabel" destination="eZW-iA-YlR" id="HWl-u7-yTn"/>
+                                    <outlet property="fundingTitleLabel" destination="UKY-lM-bEh" id="ls5-yX-sbY"/>
                                     <outlet property="metadataBackgroundView" destination="8v0-Ix-KPn" id="wXo-Nr-tbX"/>
                                     <outlet property="metadataIconImageView" destination="muw-ic-gpV" id="WZr-U7-D1v"/>
                                     <outlet property="metadataLabel" destination="zWM-jg-i8M" id="Vei-Bl-CU1"/>

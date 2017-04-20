@@ -195,7 +195,6 @@ public let postcardStatsSubtitleStyle =
         ? .ksr_body(size: 14)
         : .ksr_body(size: 12)
     }
-   // <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
   UILabel.lens.font %~~ { _, label in
