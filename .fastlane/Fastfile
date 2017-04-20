@@ -57,7 +57,9 @@ platform :ios do
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
       ipa: "Kickstarter.ipa",
-      team_id: ENV["ITUNES_TEAM_ID"]
+      team_id: ENV["ITUNES_TEAM_ID"],
+      skip_screenshots: true,
+      skip_metadata: true
     )
   end
 
