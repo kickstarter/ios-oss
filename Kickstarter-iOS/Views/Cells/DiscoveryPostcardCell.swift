@@ -140,6 +140,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
+    self.fundingProgressContainerView.rac.hidden = self.viewModel.outputs.fundingProgressContainerViewHidden
+    self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
@@ -150,9 +152,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
-
-    self.fundingProgressContainerView.rac.hidden = self.viewModel.outputs.fundingProgressContainerViewHidden
-    self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
 
     self.viewModel.outputs.metadataData
       .observeForUI()

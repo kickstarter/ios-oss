@@ -74,6 +74,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let projectTemplate = anomalisaNoPhoto
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
+    let starredParams = .defaults
+      |> DiscoveryParams.lens.starred .~ true
+
     let states = [Project.State.successful, .canceled, .failed, .suspended]
     let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
 
