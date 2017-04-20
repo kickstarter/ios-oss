@@ -335,6 +335,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
     self.fundingProgressBarViewHidden.assertValues([false, false, true, false, false])
-    self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, false])
+    self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
   }
 }
