@@ -61,6 +61,14 @@ platform :ios do
       skip_screenshots: true,
       skip_metadata: true
     )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: "Successfully uploaded"
+        + " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj")
+        + " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")"
+        + " of the Kickstarter iOS app to iTunes Connect 🚀"
+    )
   end
 
   ### LIVE STREAM BETA
