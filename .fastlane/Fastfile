@@ -49,8 +49,6 @@ platform :ios do
   desc "Upload to the app store"
   lane :itunes_deliver do
 
-    ENV["FASTLANE_PASSWORD"] = ENV["ITUNES_CONNECT_PASSWORD"]
-
     deliver(
       force: true,
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
