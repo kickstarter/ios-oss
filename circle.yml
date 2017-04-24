@@ -12,7 +12,7 @@ dependencies:
     - security find-identity -p codesigning
     - instruments -s devices
     - xcodebuild -showsdks
-    - gem install fastlane -NVv 2.26.1
+    - gem install fastlane -NVv 2.28.3
 test:
   pre:
     - xcrun instruments -w 'iPhone 7 (10.2)' || true

@@ -1,4 +1,4 @@
-fastlane_version "2.26.1"
+fastlane_version "2.28.3"
 
 default_platform :ios
 
@@ -48,13 +48,24 @@ platform :ios do
 
   desc "Upload to the app store"
   lane :itunes_deliver do
-    # NB: still to be implemented, placeholder values
+
     deliver(
-      username: ENV["ITUNES_APPLE_ID"],
-      app_identifier: ENV["ITUNES_BUNDLE_IDENTIFIER"],
+      force: true,
+      username: ENV["ITUNES_CONNECT_ACCOUNT"],
+      app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
       ipa: "Kickstarter.ipa",
-      team_id: ENV["ITUNES_TEAM_ID"]
+      team_id: ENV["ITUNES_TEAM_ID"],
+      skip_screenshots: true,
+      skip_metadata: true
+    )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: "Successfully uploaded"
+        + " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj")
+        + " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")"
+        + " of the Kickstarter iOS app to iTunes Connect 🚀"
     )
   end
 
