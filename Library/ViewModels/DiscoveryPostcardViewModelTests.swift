@@ -66,8 +66,20 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
-    self.cellAccessibilityValue.assertValues([project.blurb + "."])
+    self.cellAccessibilityValue.assertValues([project.blurb + "." + " "])
   }
+
+  func testCellAccessibilityProjectCancelledState() {
+    let project = .template
+      |> Project.lens.name .~ "Hammocks for All"
+      |> Project.lens.blurb .~ "Let's make hammocks universal for all creatures!"
+      |> Project.lens.state .~ .canceled
+
+    self.vm.inputs.configureWith(project: project)
+    self.cellAccessibilityLabel.assertValues([project.name])
+    self.cellAccessibilityValue.assertValues([project.blurb + "." + " " + "Project cancelled"])
+  }
+
 
   func testMetadata() {
     let featuredAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970

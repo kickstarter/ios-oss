@@ -213,7 +213,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
     self.cellAccessibilityValue = Signal.zip(project, self.projectStateTitleLabelText)
-      .map { project, projectState in "\(project.blurb).\(projectState)" }
+      .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
   // swiftlint:enable function_body_length
 
