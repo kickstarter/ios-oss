@@ -207,9 +207,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.clearSearchTextProperty.signal
       .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
-    self.goToProject = self.projects
+    self.goToProject = Signal.combineLatest(self.projects, popular)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projects, project in (project, projects, RefTag.search) }
+      .map { projects, project in (project, projects.0, refTag(popularProjects: projects.1, projects: projects.0, project: project)) }
 
     query.combinePrevious()
       .map(first)
