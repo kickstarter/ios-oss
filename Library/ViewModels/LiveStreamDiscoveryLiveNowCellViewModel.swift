@@ -44,7 +44,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.playVideoUrl = Signal.combineLatest(liveStreamEvent, reachability)
       .filter { _, reach in reach == .wifi }
       .switchMap { event, _ in
-        AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil)
+        AppEnvironment.current.liveStreamService.fetchEvent(eventId: event.id, uid: nil, liveAuthToken: nil)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .prefix(value: event)

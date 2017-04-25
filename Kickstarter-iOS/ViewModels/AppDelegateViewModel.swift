@@ -908,7 +908,9 @@ private func liveStreamData(fromNavigation nav: Navigation)
         .demoteErrors(),
 
       AppEnvironment.current.liveStreamService
-        .fetchEvent(eventId: eventId, uid: AppEnvironment.current.currentUser?.id)
+        .fetchEvent(eventId: eventId,
+                    uid: AppEnvironment.current.currentUser?.id,
+                    liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken)
         .demoteErrors()
       )
       .map { project, liveStreamEvent -> (Project, LiveStreamEvent, RefTag?)? in

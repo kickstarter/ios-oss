@@ -43,8 +43,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance(by: .seconds(3))
-
-        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -76,7 +75,73 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
+  func testView_ChatFeatureFlagDisabled() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch]
+    let orientations = [Orientation.portrait]
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": false]
+
+    combos([Language.en], devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), config: config, language: lang,
+                      liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
+  func testView_ChatFeatureFlagEnabled() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch]
+    let orientations = [Orientation.portrait]
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    let config = .template
+      |> Config.lens.features .~ ["ios_live_stream_chat": true]
+
+    combos([Language.en], devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), config: config, language: lang,
+                      liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+        self.scheduler.advance(by: .seconds(3))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
@@ -123,10 +188,9 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let playbackStates: [LiveStreamViewControllerState] = [
-      .greenRoom,
+    let playbackStates: [LiveVideoPlaybackState] = [
       .loading,
-      .live(playbackState: .playing, startTime: 0)
+      .playing
     ]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -141,15 +205,32 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        vc.liveStreamViewControllerStateChanged(controller: nil, state: state)
-        vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
-        let stateIdentifier = state == .greenRoom ? "greenRoom"
-          : state == .loading ? "loading"
-          : "playing"
+        let stateIdentifier = state == .playing ? "playing" : "loading"
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"
+        )
+      }
+    }
+
+    Language.allLanguages.forEach { lang in
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang,
+                      liveStreamService: MockLiveStreamService(
+                        greenRoomOffStatusResult: Result([false]),
+                        fetchEventResult: Result(liveStreamEvent)
+      )) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        self.scheduler.advance(by: .seconds(3))
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_state_greenRoom"
         )
       }
     }
@@ -174,8 +255,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       self.scheduler.advance()
-
-      vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+      vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
       FBSnapshotVerifyView(parent.view)
     }
@@ -201,10 +281,92 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       self.scheduler.advance()
-
-      vc.liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: nil, numberOfPeople: 2_532)
+      vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
       FBSnapshotVerifyView(parent.view)
+    }
+  }
+
+  func testChat_Live() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let orientations = [Orientation.landscape, .portrait]
+
+    let chatMessages = (1...50)
+      .map(String.init)
+      .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      initialChatMessagesResult: Result([chatMessages])
+    )
+
+    combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+
+        vc.liveStreamContainerPageViewController?.chatButtonTapped()
+
+        self.scheduler.advance(by: .seconds(3))
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
+    }
+  }
+
+  func testChat_Replay() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.com"
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.name .~ "Title of the live stream goes here and can be 60 chr max"
+      |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
+        "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
+
+    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let orientations = [Orientation.landscape, .portrait]
+
+    let chatMessages = (1...50)
+      .map(String.init)
+      .map { .template |> LiveStreamChatMessage.lens.id .~ $0 }
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      initialChatMessagesResult: Result([chatMessages])
+    )
+
+    combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in
+      withEnvironment(apiDelayInterval: .seconds(3), language: lang, liveStreamService: liveStreamService) {
+        let vc = LiveStreamContainerViewController.configuredWith(project: .template,
+                                                                  liveStreamEvent: liveStreamEvent,
+                                                                  refTag: .projectPage,
+                                                                  presentedFromProject: false)
+
+        let (parent, _) = traitControllers(device: device, orientation: orientation, child: vc)
+
+        vc.liveStreamContainerPageViewController?.chatButtonTapped()
+
+        self.scheduler.advance(by: .seconds(3))
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(lang)_device_\(device)_orientation_\(orientation)"
+        )
+      }
     }
   }
 }

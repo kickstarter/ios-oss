@@ -10,36 +10,18 @@ import UIKit
 //swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewController: UIViewController {
 
-  @IBOutlet private weak var availableForLabel: UILabel!
-  @IBOutlet private weak var creatorAvatarImageView: UIImageView!
-  @IBOutlet private weak var creatorAvatarLabel: SimpleHTMLLabel!
-  @IBOutlet private weak var creatorAvatarLiveDotImageView: UIImageView!
-  @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var detailsContainerStackView: UIStackView!
-  @IBOutlet private weak var detailsStackView: UIStackView!
-  @IBOutlet private weak var goToProjectButton: UIButton!
-  @IBOutlet private weak var goToProjectButtonContainerView: UIView!
   @IBOutlet private weak var gradientView: GradientView!
-  @IBOutlet private weak var liveStreamParagraphLabel: UILabel!
-  @IBOutlet private weak var liveStreamTitleLabel: UILabel!
+  @IBOutlet private weak var liveStreamContainerView: UIView!
   @IBOutlet private weak var loaderActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet private weak var loaderLabel: UILabel!
   @IBOutlet private weak var loaderStackView: UIStackView!
   @IBOutlet private weak var loaderView: UIView!
-  @IBOutlet private var separatorViews: [UIView]!
-  @IBOutlet private weak var subscribeActivityIndicatorView: UIActivityIndicatorView!
-  @IBOutlet private weak var subscribeButton: UIButton!
-  @IBOutlet private weak var subscribeLabel: UILabel!
-  @IBOutlet private weak var subscribeStackView: UIStackView!
-  @IBOutlet private weak var titleStackView: UIStackView!
+  @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private var videoContainerAspectRatioConstraint_4_3: NSLayoutConstraint!
   @IBOutlet private var videoContainerAspectRatioConstraint_16_9: NSLayoutConstraint!
-  @IBOutlet private weak var watchingBadgeView: UIView!
-  @IBOutlet private weak var watchingLabel: UILabel!
 
-  fileprivate let eventDetailsViewModel: LiveStreamEventDetailsViewModelType
-    = LiveStreamEventDetailsViewModel()
-  private weak var liveStreamViewController: LiveStreamViewController?
+  private var liveVideoViewController: LiveVideoViewController?
+  internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -48,12 +30,14 @@ public final class LiveStreamContainerViewController: UIViewController {
                                     refTag: RefTag,
                                     presentedFromProject: Bool) -> LiveStreamContainerViewController {
 
+    AppEnvironment.current.liveStreamService.setup()
+
     let vc = Storyboard.LiveStream.instantiate(LiveStreamContainerViewController.self)
     vc.viewModel.inputs.configureWith(project: project,
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
+
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc
@@ -62,37 +46,14 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
-    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
-
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.navBarTitleStackViewBackgroundView.addSubview(self.navBarTitleStackView)
-    self.navBarTitleStackView.addArrangedSubview(self.navBarLiveDotImageView)
-    self.navBarTitleStackView.addArrangedSubview(self.navBarTitleLabel)
+    self.navigationItem.titleView = self.navBarTitleView
 
-    NSLayoutConstraint.activate([
-      self.navBarTitleStackView.leadingAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.leadingAnchor),
-      self.navBarTitleStackView.topAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.topAnchor),
-      self.navBarTitleStackView.trailingAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.trailingAnchor),
-      self.navBarTitleStackView.bottomAnchor.constraint(
-        equalTo: self.navBarTitleStackViewBackgroundView.bottomAnchor),
-      ])
-
-    self.navigationItem.titleView = navBarTitleStackViewBackgroundView
-
-    self.liveStreamViewController = self.childViewControllers
-      .flatMap { $0 as? LiveStreamViewController }
+    self.liveStreamContainerPageViewController = self.childViewControllers
+      .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
-
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.eventDetailsViewModel.inputs.userSessionStarted()
-    }
 
     NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
@@ -101,8 +62,12 @@ public final class LiveStreamContainerViewController: UIViewController {
         )
     }
 
+    NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
     self.viewModel.inputs.viewDidLoad()
-    self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
   //swiftlint:disable:next function_body_length
@@ -119,7 +84,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.distribution .~ .fillEqually
 
     _  = self.loaderView
-      |> UIView.lens.backgroundColor .~ .hex(0x353535)
+      |> UIView.lens.backgroundColor .~ .black
 
     _  = self.loaderActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
@@ -129,134 +94,9 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .white
 
-    _ = self.separatorViews
-      ||> UIView.lens.backgroundColor .~ .white
-      ||> UIView.lens.alpha .~ 0.2
-
-    _  = self.titleStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
-
-    _  = self.availableForLabel
-      |> UILabel.lens.font .~ UIFont.ksr_footnote(size: 11).italicized
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.detailsStackView
-      |> UIStackView.lens.axis .~ .vertical
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
-
-    _  = self.subscribeStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
-      |> UIStackView.lens.layoutMargins .~ .init(top: 0,
-                                                 left: Styles.grid(4),
-                                                 bottom: Styles.grid(4),
-                                                 right: Styles.grid(4))
-
-    let creatorLabelFont = self.traitCollection.isRegularRegular
-      ? UIFont.ksr_title3(size: 18)
-      : UIFont.ksr_title3(size: 14)
-
-    let creatorLabelBaseAttributes = [
-      NSFontAttributeName: creatorLabelFont,
-      NSForegroundColorAttributeName: UIColor.white
-    ]
-    let creatorLabelBoldAttributes = [
-      NSFontAttributeName: creatorLabelFont.bolded
-    ]
-
-    _  = self.creatorAvatarLabel
-      |> SimpleHTMLLabel.lens.numberOfLines .~ 0
-      |> SimpleHTMLLabel.lens.textColor .~ .white
-      |> SimpleHTMLLabel.lens.baseAttributes .~ creatorLabelBaseAttributes
-      |> SimpleHTMLLabel.lens.boldAttributes .~ creatorLabelBoldAttributes
-
-    _  = self.creatorAvatarImageView
-      |> UIImageView.lens.layer.masksToBounds .~ true
-
-    self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
-      ? Styles.grid(10) : Styles.grid(5)
-
-    _  = self.liveStreamTitleLabel
-      |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_title2() : .ksr_title2(size: 18)
-      }
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.liveStreamParagraphLabel
-      |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular ? .ksr_body() : .ksr_body(size: 14)
-      }
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.subscribeLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13)
-      |> UILabel.lens.numberOfLines .~ 3
-      |> UILabel.lens.textColor .~ .white
-
-    _  = self.subscribeActivityIndicatorView
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-
-    _  = self.subscribeButton
-      |> lightSubscribeButtonStyle
-
-    _  = self.navBarTitleStackViewBackgroundView
-      |> UIView.lens.layer.cornerRadius .~ 2
-      |> UIView.lens.layer.masksToBounds .~ true
-      |> UIView.lens.backgroundColor .~ UIColor.black.withAlphaComponent(0.5)
-
-    _  = self.navBarTitleStackView
-      |> UIStackView.lens.axis .~ .horizontal
-      |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-
-    _  = self.navBarLiveDotImageView
-      |> UIImageView.lens.image .~ UIImage(named: "live-dot")
-      |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.contentHuggingPriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultHigh
-
-    _  = self.navBarTitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.textAlignment .~ .center
-
-    _ = self.watchingBadgeView
-      |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.1)
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-      |> roundedStyle()
-
-    _ = self.watchingLabel
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-
-    _ = [self.titleStackView, self.detailsStackView, self.subscribeStackView]
-      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-      ||> UIStackView.lens.layoutMargins %~~ { _, s in
-        s.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
-          : .init(all: Styles.grid(4))
-    }
-
-    _ = self.goToProjectButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .white
-      |> liveStreamGoToProjectStyle
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.alpha .~ 0.2
 
     if self.traitCollection.isVerticallyCompact {
       self.videoContainerAspectRatioConstraint_4_3.isActive = false
@@ -280,30 +120,24 @@ public final class LiveStreamContainerViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.eventDetailsViewModel.outputs.openLoginToutViewController
-      .observeValues { [weak self] _ in
-        self?.openLoginTout()
-    }
-
-    self.viewModel.outputs.configureLiveStreamViewController
+    self.viewModel.outputs.configurePageViewController
       .observeForUI()
-      .observeValues { [weak self] _, userId, event in
+      .observeValues { [weak self] project, liveStreamEvent, refTag, presentedFromProject in
         guard let _self = self else { return }
-        _self.liveStreamViewController?.configureWith(
-          event: event,
-          userId: userId,
-          delegate: _self,
-          liveStreamService: AppEnvironment.current.liveStreamService
+
+        _self.liveStreamContainerPageViewController?.configureWith(
+          project: project,
+          liveStreamEvent: liveStreamEvent,
+          refTag: refTag,
+          presentedFromProject: presentedFromProject
         )
     }
 
     self.viewModel.outputs.videoViewControllerHidden
       .observeForUI()
       .observeValues { [weak self] in
-        self?.liveStreamViewController?.view.isHidden = $0
+        self?.liveVideoViewController?.view.isHidden = $0
     }
-
-    self.goToProjectButtonContainerView.rac.hidden = self.viewModel.outputs.goToProjectButtonContainerHidden
 
     self.loaderLabel.rac.text = self.viewModel.outputs.loaderText
     self.loaderStackView.rac.hidden = self.viewModel.outputs.loaderStackViewHidden
@@ -314,115 +148,101 @@ public final class LiveStreamContainerViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.creatorAvatarLabel.rac.html = self.viewModel.outputs.creatorIntroText
-
-    self.creatorAvatarImageView.rac.imageUrl = self.eventDetailsViewModel.outputs.creatorAvatarUrl
-
-    self.navBarLiveDotImageView.rac.hidden = self.viewModel.outputs.navBarLiveDotImageViewHidden
-    self.creatorAvatarLiveDotImageView.rac.hidden = self.viewModel.outputs.creatorAvatarLiveDotImageViewHidden
-    self.watchingBadgeView.rac.hidden = self.viewModel.outputs.numberWatchingBadgeViewHidden
-    self.availableForLabel.rac.hidden = self.viewModel.outputs.availableForLabelHidden
-
-    self.navBarTitleStackViewBackgroundView.rac.hidden = self.viewModel.outputs.navBarTitleViewHidden
-
-    self.viewModel.outputs.titleViewText
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.navBarTitleLabel.text = $0
-        self?.view.setNeedsLayout()
-    }
-
     self.loaderActivityIndicatorView.rac.animating = self.viewModel.outputs.loaderActivityIndicatorAnimating
-    self.liveStreamTitleLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamTitle
-    self.liveStreamParagraphLabel.rac.text = self.eventDetailsViewModel.outputs.liveStreamParagraph
-    self.subscribeLabel.rac.text = self.eventDetailsViewModel.outputs.subscribeLabelText
-    self.subscribeButton.rac.title = self.eventDetailsViewModel.outputs.subscribeButtonText
-    self.subscribeButton.rac.accessibilityHint
-      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityHint
-    self.subscribeButton.rac.accessibilityLabel
-      = self.eventDetailsViewModel.outputs.subscribeButtonAccessibilityLabel
-    self.watchingLabel.rac.text = self.eventDetailsViewModel.outputs.numberOfPeopleWatchingText
 
-    self.eventDetailsViewModel.outputs.subscribeLabelHidden
+    self.viewModel.outputs.showErrorAlert
       .observeForUI()
       .observeValues { [weak self] in
-        self?.subscribeLabel.alpha = $0 ? 0 : 1
+        self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
     }
 
-    self.eventDetailsViewModel.outputs.subscribeButtonImage
+    self.viewModel.outputs.configureNavBarTitleView
       .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.subscribeButton.setImage(imageName.flatMap { image(named: $0) },
-                                       for: .normal)
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.navBarTitleView?.configureWith(liveStreamEvent: $0, delegate: _self)
     }
 
-    self.availableForLabel.rac.text = self.viewModel.outputs.availableForText
-
-    self.subscribeActivityIndicatorView.rac.animating = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
-
-    self.subscribeButton.rac.hidden = self.eventDetailsViewModel.outputs
-      .animateSubscribeButtonActivityIndicator
-
-    Signal.merge(
-      self.viewModel.outputs.showErrorAlert,
-      self.eventDetailsViewModel.outputs.showErrorAlert
-    )
-    .observeForUI()
-    .observeValues { [weak self] in
-      self?.present(UIAlertController.genericError($0), animated: true, completion: nil)
+    self.viewModel.outputs.navBarTitleViewHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.navBarTitleView?.isHidden = $0
     }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
 
-    self.viewModel.outputs.goToProject
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.goTo(project: $0, refTag: $1) }
+    self.viewModel.outputs.createVideoViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.createAndAddChildVideoViewController(withLiveStreamType: $0)
+    }
+
+    self.viewModel.outputs.removeVideoViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.liveVideoViewController?.removeFromParentViewController()
+        self?.liveVideoViewController = nil
+    }
+
+    self.viewModel.outputs.numberOfPeopleWatching
+      .observeValues { [weak self] number in
+        self?.navBarTitleView?.set(numberOfPeopleWatching: number)
+    }
+
+    self.viewModel.outputs.disableIdleTimer
+      .observeForUI()
+      .observeValues {
+        UIApplication.shared.isIdleTimerDisabled = $0
+    }
   }
 
-  private func openLoginTout() {
-    let vc = LoginToutViewController.configuredWith(loginIntent: .liveStreamSubscribe)
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
-
-    self.present(nav, animated: true, completion: nil)
-  }
-
-  override public var prefersStatusBarHidden: Bool {
+  public override var prefersStatusBarHidden: Bool {
     return true
   }
 
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
-    self.watchingBadgeView.layer.cornerRadius = self.watchingBadgeView.frame.size.height / 2
-
-    self.layoutNavBarTitle()
+  private func layoutVideoView(view: UIView) {
+    view.frame = self.view.bounds
   }
 
-  private func layoutNavBarTitle() {
-    let stackViewSize = self.navBarTitleStackView.systemLayoutSizeFitting(
-      CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height))
+  private func createAndAddChildVideoViewController(withLiveStreamType liveStreamType: LiveStreamType) {
+    self.liveVideoViewController?.removeFromParentViewController()
 
-    let newOrigin = CGPoint(x: (self.view.frame.size.width / 2) - (stackViewSize.width / 2),
-                         y: self.navBarTitleStackViewBackgroundView.frame.origin.y)
+    let videoViewController = LiveVideoViewController(liveStreamType: liveStreamType, delegate: self)
+    videoViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    self.liveStreamContainerView.addSubview(videoViewController.view)
 
-    self.navBarTitleStackViewBackgroundView.frame = CGRect(
-      origin: newOrigin,
-      size: CGSize(width: stackViewSize.width, height: Styles.grid(5))
-    )
+    NSLayoutConstraint.activate([
+      videoViewController.view.leftAnchor.constraint(
+        equalTo: self.liveStreamContainerView.leftAnchor),
+      videoViewController.view.topAnchor.constraint(
+        equalTo: self.liveStreamContainerView.topAnchor),
+      videoViewController.view.rightAnchor.constraint(
+        equalTo: self.liveStreamContainerView.rightAnchor),
+      videoViewController.view.bottomAnchor.constraint(
+        equalTo: self.liveStreamContainerView.bottomAnchor)
+      ])
+
+    self.addChildViewController(videoViewController)
+    videoViewController.didMove(toParentViewController: self)
+
+    self.liveVideoViewController = videoViewController
   }
+
+  fileprivate lazy var navBarTitleView: LiveStreamNavTitleView? = {
+    guard let navBarTitleView = LiveStreamNavTitleView.fromNib() else { return nil }
+    navBarTitleView.backgroundColor = .clear
+    navBarTitleView.translatesAutoresizingMaskIntoConstraints = false
+    return navBarTitleView
+  }()
 
   private func showShareSheet(controller: UIActivityViewController) {
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
+      self?.shareViewModel.inputs.shareActivityCompletion(with: .init(activityType: activityType,
+                                                                      completed: completed,
+                                                                      returnedItems: returnedItems,
+                                                                      activityError: error)
       )
     }
 
@@ -430,36 +250,21 @@ public final class LiveStreamContainerViewController: UIViewController {
       controller.modalPresentationStyle = .popover
       controller.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
       self.present(controller, animated: true, completion: nil)
-
     } else {
       self.present(controller, animated: true, completion: nil)
     }
   }
 
-  private func goTo(project: Project, refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-    self.present(vc, animated: true, completion: nil)
-  }
-
   // MARK: Subviews
 
-  lazy var navBarTitleStackViewBackgroundView = { UIView() }()
-  lazy var navBarTitleStackView = { UIStackView() }()
-  lazy var navBarLiveDotImageView = { UIImageView() }()
-  lazy var navBarTitleLabel = { UILabel() }()
-
-  lazy private var closeBarButtonItem: UIBarButtonItem = {
+  private lazy var closeBarButtonItem: UIBarButtonItem = {
     let closeBarButtonItem = UIBarButtonItem()
       |> closeBarButtonItemStyle
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(close))
 
     closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
-
-    closeBarButtonItem.accessibilityHint = localizedString(
-      key: "Closes_the_live_stream",
-      defaultValue: "Closes the live stream."
-    )
+    closeBarButtonItem.accessibilityHint = Strings.Closes_live_stream()
 
     return closeBarButtonItem
   }()
@@ -470,19 +275,12 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIBarButtonItem.lens.tintColor .~ .white
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(share))
 
-    shareBarButtonItem.accessibilityLabel = localizedString(
-      key: "Share_this_live_stream",
-      defaultValue: "Share this live stream."
-    )
+    shareBarButtonItem.accessibilityLabel = Strings.Share_this_live_stream()
 
     return shareBarButtonItem
   }()
 
   // MARK: Actions
-
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
-  }
 
   @objc private func close() {
     self.viewModel.inputs.closeButtonTapped()
@@ -491,21 +289,26 @@ public final class LiveStreamContainerViewController: UIViewController {
   @objc private func share() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
+}
 
-  @objc private func subscribe() {
-    self.eventDetailsViewModel.inputs.subscribeButtonTapped()
+extension LiveStreamContainerViewController: LiveVideoViewControllerDelegate {
+  public func liveVideoViewControllerPlaybackStateChanged(controller: LiveVideoViewController?,
+                                                          state: LiveVideoPlaybackState) {
+    self.viewModel.inputs.videoPlaybackStateChanged(state: state)
   }
 }
 
-extension LiveStreamContainerViewController: LiveStreamViewControllerDelegate {
-  public func liveStreamViewControllerNumberOfPeopleWatchingChanged(controller: LiveStreamViewController?,
-                                                                    numberOfPeople: Int) {
-    self.eventDetailsViewModel.inputs.setNumberOfPeopleWatching(numberOfPeople: numberOfPeople)
-  }
+extension LiveStreamContainerViewController: LiveStreamNavTitleViewDelegate {
+  func liveStreamNavTitleView(_ navTitleView: LiveStreamNavTitleView,
+                              requiresLayoutWithPreferredSize size: CGSize) {
+    guard let navigationBarWidth = self.navigationController?.navigationBar.frame.size.width else { return }
 
-  public func liveStreamViewControllerStateChanged(controller: LiveStreamViewController?,
-                                                   state: LiveStreamViewControllerState) {
-    self.viewModel.inputs.liveStreamViewControllerStateChanged(state: state)
-    self.eventDetailsViewModel.inputs.liveStreamViewControllerStateChanged(state: state)
+    let newOrigin = CGPoint(x: (navigationBarWidth / 2) - (size.width / 2),
+                            y: navTitleView.frame.origin.y)
+
+    navTitleView.frame = CGRect(
+      origin: newOrigin,
+      size: CGSize(width: size.width, height: Styles.grid(5))
+    )
   }
 }

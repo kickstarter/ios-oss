@@ -17,7 +17,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self
   internal let facebookAppDelegate = MockFacebookAppDelegate()
-  internal let liveStreamService = MockLiveStreamService(fetchEventResult: nil)
+  internal let liveStreamService = MockLiveStreamService()
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
