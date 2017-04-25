@@ -283,3 +283,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }
 }
+
+private func refTag(popularProjects: [Project], projects: [Project], project: Project) -> RefTag {
+  if project == popularProjects.first {
+    return RefTag.searchPopularFeatured
+  } else if projects == popularProjects {
+    return RefTag.searchPopular
+  } else if project == projects.first {
+    return RefTag.searchFeatured
+  } else {
+    return RefTag.search
+  }
+}
