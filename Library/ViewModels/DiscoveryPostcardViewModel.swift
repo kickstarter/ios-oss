@@ -212,8 +212,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
-    self.cellAccessibilityValue = Signal.combineLatest(project, self.projectStateTitleLabelText)
-      .map { project, projectState in "\(project.blurb)\(projectState)" }
+    self.cellAccessibilityValue = Signal.zip(project, self.projectStateTitleLabelText)
+      .map { project, projectState in "\(project.blurb).\(projectState)" }
   }
   // swiftlint:enable function_body_length
 

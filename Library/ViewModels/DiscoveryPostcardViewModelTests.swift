@@ -66,7 +66,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
-    self.cellAccessibilityValue.assertValues([project.blurb])
+    self.cellAccessibilityValue.assertValues([project.blurb + "."])
   }
 
   func testMetadata() {
