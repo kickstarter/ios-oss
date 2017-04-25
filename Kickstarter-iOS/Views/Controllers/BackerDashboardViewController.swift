@@ -200,7 +200,7 @@ internal final class BackerDashboardViewController: UIViewController {
     _ = button
       |> UIButton.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
       |> UIButton.lens.attributedTitle(forState: .selected) %~ { _ in selectedTitleString }
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byWordWrapping
+      |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byWordWrapping
   }
 
   private func selectButton(atTab tab: BackerDashboardTab) {

@@ -23,7 +23,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> NoRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
-      |> (NoRewardCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
+      |> (NoRewardCell.lens.contentView..UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(1), left: Styles.grid(16), bottom: Styles.grid(2), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))

@@ -650,7 +650,7 @@ RewardPledgeViewModelOutputs {
     }
 
     projectAndRewardAndPledgeContext
-      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first))
+      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(first >>> isNotNil))
       .observeValues {
         AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
           project: $0, reward: $1, pledgeContext: $2
@@ -658,7 +658,7 @@ RewardPledgeViewModelOutputs {
     }
 
     projectAndRewardAndPledgeContext
-      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second))
+      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(second >>> isNotNil))
       .observeValues {
         AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
           project: $0, reward: $1, pledgeContext: $2
@@ -667,8 +667,8 @@ RewardPledgeViewModelOutputs {
 
     let applePaySuccessful = Signal.merge(
       self.paymentAuthorizationWillAuthorizeProperty.signal.mapConst(false),
-      self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second).mapConst(false),
-      self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first).mapConst(true)
+      self.stripeTokenAndErrorProperty.signal.filter(second >>> isNotNil).mapConst(false),
+      self.stripeTokenAndErrorProperty.signal.filter(first >>> isNotNil).mapConst(true)
     )
 
     Signal.combineLatest(projectAndRewardAndPledgeContext, applePaySuccessful)

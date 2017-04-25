@@ -82,7 +82,7 @@ public final class ProjectNavBarViewController: UIViewController {
         .~ .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(1), right: Styles.grid(3))
       |> UIButton.lens.image(forState: .normal) .~ image(named: "category-icon")
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byTruncatingTail
+      |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byTruncatingTail
       |> UIButton.lens.backgroundColor(forState: .highlighted) .~ .init(white: 0, alpha: 0.1)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true

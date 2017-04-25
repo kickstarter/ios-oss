@@ -16,20 +16,20 @@ internal final class ProfileViewControllerTests: TestCase {
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let liveProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.stats.fundingProgress .~ 0.5
 
     let deadProject = Project.anomalisa
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.state .~ .successful
 
     let failed = Project.cosmicSurgery
       |> Project.lens.name .~ "A Failed Project About Mittens"
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.state .~ .failed
 

@@ -12,6 +12,6 @@ extension LiveStreamEvent.BackgroundImage {
 
 extension Lens where Whole == LiveStreamEvent, Part == LiveStreamEvent.BackgroundImage {
   public var smallCropped: Lens<Whole, String> {
-    return LiveStreamEvent.lens.backgroundImage • LiveStreamEvent.BackgroundImage.lens.smallCropped
+    return LiveStreamEvent.lens.backgroundImage..LiveStreamEvent.BackgroundImage.lens.smallCropped
   }
 }
