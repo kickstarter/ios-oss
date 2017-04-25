@@ -80,7 +80,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.cellAccessibilityValue.assertValues([project.blurb + "." + " " + "Project cancelled"])
   }
 
-
   func testMetadata() {
     let featuredAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
     let potdAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
