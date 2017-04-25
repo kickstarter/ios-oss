@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: 8.3
+    version: 8.3.2
 dependencies:
   cache_directories:
     - "Frameworks/OpenTok"
