@@ -66,7 +66,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
-    self.cellAccessibilityValue.assertValues([project.blurb + "." + " "])
+    self.cellAccessibilityValue.assertValues([project.blurb + ". "])
   }
 
   func testCellAccessibilityProjectCancelledState() {
@@ -77,7 +77,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
-    self.cellAccessibilityValue.assertValues([project.blurb + "." + " " + "Project cancelled"])
+    self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
   }
 
   func testMetadata() {
