@@ -207,9 +207,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.clearSearchTextProperty.signal
       .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
-    self.goToProject = Signal.combineLatest(self.projects, popular)
+    self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projects, project in (project, projects.0, refTag(popularProjects: projects.1, projects: projects.0, project: project)) }
+      .map { projectsAndQuery, tappedProject in
+        let (projects, query) = projectsAndQuery
+
+        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+    }
 
     query.combinePrevious()
       .map(first)
@@ -284,13 +288,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public var outputs: SearchViewModelOutputs { return self }
 }
 
-private func refTag(popularProjects: [Project], projects: [Project], project: Project) -> RefTag {
-  if project == popularProjects.first {
+/// Calculates a ref tag from the search query, the list of displayed projects, and the project
+/// tapped.
+private func refTag(query: String, projects: [Project], project: Project) -> RefTag {
+  if project == projects.first && query.characters.count == 0 {
     return RefTag.searchPopularFeatured
-  } else if projects == popularProjects {
-    return RefTag.searchPopular
-  } else if project == projects.first {
+  } else if project == projects.first && query.characters.count > 0 {
     return RefTag.searchFeatured
+  } else if query.characters.count == 0 {
+    return RefTag.searchPopular
   } else {
     return RefTag.search
   }
