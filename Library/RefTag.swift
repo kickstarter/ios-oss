@@ -20,6 +20,7 @@ public enum RefTag {
   case liveStreamReplay
   case messageThread
   case profileBacked
+  case profileSaved
   case projectPage
   case push
   case recommended
@@ -73,6 +74,7 @@ public enum RefTag {
     case "live_stream_replay":        self = .liveStreamReplay
     case "message_thread":            self = .messageThread
     case "profile_backed":            self = .profileBacked
+    case "profile_saved":             self = .profileSaved
     case "project_page":              self = .projectPage
     case "push":                      self = .push
     case "recommended":               self = .recommended
@@ -146,6 +148,8 @@ public enum RefTag {
       return "message_thread"
     case .profileBacked:
       return "profile_backed"
+    case .profileSaved:
+      return "profile_saved"
     case .projectPage:
       return "project_page"
     case .push:

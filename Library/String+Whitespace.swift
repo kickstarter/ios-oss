@@ -10,10 +10,14 @@ extension String {
    - returns: The new string.
    */
   public func nonBreakingSpaced() -> String {
-    return replacingOccurrences(of: " ", with: "\u{00a0}")
+    return self.replacingOccurrences(of: " ", with: "\u{00a0}")
   }
 
   public func trimmed() -> String {
-    return trimmingCharacters(in: .whitespacesAndNewlines)
+    return self.trimmingCharacters(in: .whitespacesAndNewlines)
   }
+}
+
+public func isWhitespacesAndNewlines(_ s: String) -> Bool {
+  return s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 }

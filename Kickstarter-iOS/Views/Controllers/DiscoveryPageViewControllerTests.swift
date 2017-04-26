@@ -70,6 +70,40 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Card_Project() {
+    let projectTemplate = anomalisaNoPhoto
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
+
+    let starredParams = .defaults
+      |> DiscoveryParams.lens.starred .~ true
+
+    let states = [Project.State.successful, .canceled, .failed, .suspended]
+    let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+
+    combos(Language.allLanguages, devices, states )
+      .forEach { language, device, state in
+        let discoveryResponse = .template
+          |> DiscoveryEnvelope.lens.projects .~ [projectTemplate |> Project.lens.state .~ state]
+
+        let apiService =  MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+        withEnvironment(apiService: apiService, currentUser: User.template, language: language) {
+
+          let controller = DiscoveryPageViewController.configuredWith(sort: .endingSoon)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = device == .pad ? 500 : 450
+
+          controller.change(filter: starredParams)
+
+          self.scheduler.run()
+
+          controller.tableView.layoutIfNeeded()
+          controller.tableView.reloadData()
+
+          FBSnapshotVerifyView(parent.view, identifier: "state_\(state)_lang_\(language)_device_\(device)")
+        }
+    }
+  }
+
   func testView_Onboarding() {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in

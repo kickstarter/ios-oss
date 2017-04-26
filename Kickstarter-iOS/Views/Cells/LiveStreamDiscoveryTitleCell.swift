@@ -13,7 +13,7 @@ internal func == (lhs: LiveStreamDiscoveryTitleType, rhs: LiveStreamDiscoveryTit
   switch (lhs, rhs) {
   case (.liveNow, .liveNow), (.upcoming, .upcoming), (.recentlyLive, .recentlyLive):
     return true
-  default:
+  case (.liveNow, _), (.upcoming, _), (.recentlyLive, _):
     return false
   }
 }

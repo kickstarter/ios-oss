@@ -51,7 +51,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
+                                                  refTag: refTag, presentedFromProject: presentedFromProject)
     vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
 
     return vc
@@ -65,7 +66,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -328,10 +329,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
-    closeBarButtonItem.accessibilityHint = localizedString(
-      key: "Closes_the_live_stream",
-      defaultValue: "Closes the live stream."
-    )
+    closeBarButtonItem.accessibilityHint = Strings.Closes_live_stream()
 
     return closeBarButtonItem
   }()
@@ -390,7 +388,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
+  @objc private func goToProjectButtonTapped() {
+    self.viewModel.inputs.goToProjectButtonTapped()
   }
 }

@@ -263,7 +263,7 @@ AppDelegateViewModelOutputs {
       .takeWhen(self.openRemoteNotificationTappedOkProperty.signal)
 
     let pushEnvelope = Signal.merge(
-      pushEnvelopeAndIsActive.filter(negate • second),
+      pushEnvelopeAndIsActive.filter(second >>> isFalse),
       explicitlyOpenedNotification
       )
       .map(first)
@@ -278,7 +278,7 @@ AppDelegateViewModelOutputs {
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
       .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
-      .filter(isNotNil • second)
+      .filter(second >>> isNotNil)
 
     self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
 
@@ -908,7 +908,9 @@ private func liveStreamData(fromNavigation nav: Navigation)
         .demoteErrors(),
 
       AppEnvironment.current.liveStreamService
-        .fetchEvent(eventId: eventId, uid: AppEnvironment.current.currentUser?.id)
+        .fetchEvent(eventId: eventId,
+                    uid: AppEnvironment.current.currentUser?.id,
+                    liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken)
         .demoteErrors()
       )
       .map { project, liveStreamEvent -> (Project, LiveStreamEvent, RefTag?)? in

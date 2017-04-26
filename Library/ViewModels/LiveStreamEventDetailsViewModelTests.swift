@@ -12,7 +12,10 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let vm: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
 
   private let animateSubscribeButtonActivityIndicator = TestObserver<Bool, NoError>()
+  private let availableForLabelHidden = TestObserver<Bool, NoError>()
+  private let availableForText = TestObserver<String, NoError>()
   private let creatorAvatarUrl = TestObserver<String?, NoError>()
+  private let goToProjectContainerHidden = TestObserver<Bool, NoError>()
   private let liveStreamTitle = TestObserver<String, NoError>()
   private let liveStreamParagraph = TestObserver<String, NoError>()
   private let numberOfPeopleWatchingText = TestObserver<String, NoError>()
@@ -23,24 +26,29 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
   private let subscribeButtonImage = TestObserver<String?, NoError>()
   private let subscribeButtonText = TestObserver<String, NoError>()
   private let subscribeLabelText = TestObserver<String, NoError>()
+  private let subscribeLabelAlpha = TestObserver<CGFloat, NoError>()
   private let subscribeLabelHidden = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
+      self.animateSubscribeButtonActivityIndicator.observer)
+    self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
+    self.vm.outputs.availableForText.observe(self.availableForText.observer)
     self.vm.outputs.creatorAvatarUrl.map { $0?.absoluteString }.observe(self.creatorAvatarUrl.observer)
-    self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
+    self.vm.outputs.goToProjectButtonContainerHidden.observe(self.goToProjectContainerHidden.observer)
     self.vm.outputs.liveStreamTitle.observe(self.liveStreamTitle.observer)
     self.vm.outputs.liveStreamParagraph.observe(self.liveStreamParagraph.observer)
     self.vm.outputs.numberOfPeopleWatchingText.observe(self.numberOfPeopleWatchingText.observer)
     self.vm.outputs.openLoginToutViewController.observe(self.openLoginToutViewController.observer)
-    self.vm.outputs.animateSubscribeButtonActivityIndicator.observe(
-      self.animateSubscribeButtonActivityIndicator.observer)
+    self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
     self.vm.outputs.subscribeButtonAccessibilityHint.observe(self.subscribeButtonAccessibilityHint.observer)
     self.vm.outputs.subscribeButtonAccessibilityLabel.observe(self.subscribeButtonAccessibilityLabel.observer)
     self.vm.outputs.subscribeButtonText.observe(self.subscribeButtonText.observer)
     self.vm.outputs.subscribeButtonImage.observe(self.subscribeButtonImage.observer)
     self.vm.outputs.subscribeLabelText.observe(self.subscribeLabelText.observer)
+    self.vm.outputs.subscribeLabelAlpha.observe(self.subscribeLabelAlpha.observer)
     self.vm.outputs.subscribeLabelHidden.observe(self.subscribeLabelHidden.observer)
   }
 
@@ -50,7 +58,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityHint.assertValues(["Subscribes to upcoming live streams."])
@@ -71,7 +80,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.user .~ LiveStreamEvent.User(isSubscribed: false)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.subscribeButtonAccessibilityLabel.assertValues(["Subscribe"])
@@ -88,7 +98,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.creatorAvatarUrl.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.creatorAvatarUrl.assertValues(["https://www.com/creator-avatar.jpg"])
@@ -98,7 +109,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.name .~ "Test Stream"
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamTitle.assertValues(["Test Stream"])
@@ -108,14 +120,16 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.description .~ "Test LiveStreamEvent"
 
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.liveStreamParagraph.assertValues(["Test LiveStreamEvent"])
   }
 
   func testNumberOfPeopleWatchingText() {
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                 refTag: .push, presentedFromProject: false)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 300)
@@ -135,6 +149,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.subscribeLabelText.assertValueCount(0)
+    self.subscribeLabelAlpha.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.subscribeButtonImage.assertValueCount(0)
@@ -142,7 +157,8 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
     withEnvironment(liveStreamService: apiService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                   refTag: .push, presentedFromProject: false)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual([], self.trackingClient.events)
@@ -150,6 +166,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
       self.subscribeButtonImage.assertValues([nil])
@@ -158,6 +175,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil])
@@ -168,6 +186,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])
@@ -181,6 +200,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false, true,
                                                                  false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
@@ -201,6 +221,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
         false, true, false, true, false, true, false, true, false
       ])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0, 1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false, true, false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark", nil])
@@ -217,6 +238,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     self.animateSubscribeButtonActivityIndicator.assertValueCount(0)
     self.subscribeLabelText.assertValueCount(0)
+    self.subscribeLabelAlpha.assertValueCount(0)
     self.subscribeLabelHidden.assertValueCount(0)
     self.subscribeButtonText.assertValueCount(0)
     self.subscribeButtonImage.assertValueCount(0)
@@ -224,11 +246,13 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
     let apiService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
     withEnvironment(liveStreamService: apiService) {
-      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent,
+                                   refTag: .push, presentedFromProject: false)
       self.vm.inputs.viewDidLoad()
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0])
       self.subscribeLabelHidden.assertValues([false, true])
       self.subscribeButtonText.assertValues(["Subscribe"])
       self.subscribeButtonImage.assertValues([nil])
@@ -238,6 +262,7 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1])
       self.subscribeLabelHidden.assertValues([false, true, false])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe"])
       self.subscribeButtonImage.assertValues([nil, nil])
@@ -254,11 +279,78 @@ internal final class LiveStreamEventDetailsViewModelTests: TestCase {
 
       self.animateSubscribeButtonActivityIndicator.assertValues([false, true, false, true, false])
       self.subscribeLabelText.assertValues(["Keep up with future live streams"])
+      self.subscribeLabelAlpha.assertValues([1, 0, 1, 0])
       self.subscribeLabelHidden.assertValues([false, true, false, true])
       self.subscribeButtonText.assertValues(["Subscribe", "Subscribe", "Subscribed"])
       self.subscribeButtonImage.assertValues([nil, nil, "postcard-checkmark"])
       self.openLoginToutViewController.assertValueCount(1)
     }
+  }
+
+  func testGoToProjectButtonContainerHidden_PresentedFromProject() {
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                 refTag: .projectPage, presentedFromProject: true)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToProjectContainerHidden.assertValues([true])
+  }
+
+  func testGoToProjectButtonContainerHidden_NotPresentedFromProject() {
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template,
+                                 refTag: .push, presentedFromProject: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToProjectContainerHidden.assertValues([false])
+  }
+
+  func testAvailableForText() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date
+
+    self.availableForText.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForText.assertValues(["Available to watch for 2 more days"])
+  }
+
+  func testAvailableForLabel_Hidden() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date.addingTimeInterval(-60).date
+      |> LiveStreamEvent.lens.liveNow .~ true
+
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForLabelHidden.assertValues([true])
+  }
+
+  func testAvailableForLabel_Shown() {
+    let project = Project.template
+    let liveStreamEvent = LiveStreamEvent.template
+      |> LiveStreamEvent.lens.startDate .~ MockDate().date.addingTimeInterval(-60).date
+      |> LiveStreamEvent.lens.liveNow .~ false
+
+    self.availableForLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(project: project,
+                                 liveStreamEvent: liveStreamEvent,
+                                 refTag: .projectPage,
+                                 presentedFromProject: true)
+
+    self.availableForLabelHidden.assertValues([false])
   }
 }
 

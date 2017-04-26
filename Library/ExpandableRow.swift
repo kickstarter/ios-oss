@@ -26,18 +26,18 @@ public struct ExpandableRow {
   // swiftlint:enable type_name
 }
 
-public extension LensType where Whole == ExpandableRow, Part == DiscoveryParams {
+public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {
   public var social: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params • DiscoveryParams.lens.social
+    return ExpandableRow.lens.params..DiscoveryParams.lens.social
   }
   public var staffPicks: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params • DiscoveryParams.lens.staffPicks
+    return ExpandableRow.lens.params..DiscoveryParams.lens.staffPicks
   }
   public var starred: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params • DiscoveryParams.lens.starred
+    return ExpandableRow.lens.params..DiscoveryParams.lens.starred
   }
   public var category: Lens<ExpandableRow, KsApi.Category?> {
-    return ExpandableRow.lens.params • DiscoveryParams.lens.category
+    return ExpandableRow.lens.params..DiscoveryParams.lens.category
   }
 }
 
