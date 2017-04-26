@@ -369,7 +369,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.vm.inputs.textDidChange(toText: "Test message")
 
       XCTAssertEqual([], self.trackingClient.events)
-      
+
       self.vm.inputs.sendButtonTapped()
 
       self.scheduler.advance()
