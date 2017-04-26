@@ -177,11 +177,12 @@ LiveStreamChatViewModelOutputs {
       .takePairWhen(newChatMessage)
       .flatMap { path, message in
         AppEnvironment.current.liveStreamService.sendChatMessage(withPath: path, chatMessage: message)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
     Signal.combineLatest(project, liveStreamEvent, newChatMessage)
-      .takeWhen(Signal.zip(newChatMessage, sentChatMessageEvent.values()))
+      .takeWhen(sentChatMessageEvent.values())
       .observeValues { project, liveStreamEvent, newChatMessage in
         AppEnvironment.current.koala.trackLiveStreamChatSentMessage(project: project,
                                                                     liveStreamEvent: liveStreamEvent,
