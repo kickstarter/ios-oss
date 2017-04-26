@@ -264,6 +264,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.vm.inputs.textDidChange(toText: "Test message")
       self.vm.inputs.sendButtonTapped()
 
+      self.scheduler.advance()
+
       self.showErrorAlert.assertValueCount(0)
     }
   }
@@ -289,6 +291,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
       self.vm.inputs.textDidChange(toText: "Test message")
       self.vm.inputs.sendButtonTapped()
+
+      self.scheduler.advance()
 
       self.showErrorAlert.assertValues(["Your chat message wasn't sent successfully."])
     }
