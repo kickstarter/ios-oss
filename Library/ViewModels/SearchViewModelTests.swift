@@ -47,7 +47,6 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
     self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
 
-
     self.vm.outputs.projects
       .map { $0.count }
       .combinePrevious(0)
@@ -114,7 +113,8 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.searchTextChanged("robots")
 
         self.scheduler.advance()
-        self.hasProjects.assertValues([true, false, true], "Projects emitted immediately upon view appearing.")
+        self.hasProjects.assertValues([true, false, true],
+                                      "Projects emitted immediately upon view appearing.")
 
         self.vm.inputs.tapped(project: projects2[0])
 
@@ -144,7 +144,8 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.searchTextChanged("robots")
 
         self.scheduler.advance()
-        self.hasProjects.assertValues([true, false, true], "Projects emitted immediately upon view appearing.")
+        self.hasProjects.assertValues([true, false, true],
+                                      "Projects emitted immediately upon view appearing.")
 
         self.vm.inputs.tapped(project: projects2[2])
 

@@ -291,11 +291,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 /// Calculates a ref tag from the search query, the list of displayed projects, and the project
 /// tapped.
 private func refTag(query: String, projects: [Project], project: Project) -> RefTag {
-  if project == projects.first && query.characters.count == 0 {
+  if project == projects.first && query.characters.isEmpty {
     return RefTag.searchPopularFeatured
-  } else if project == projects.first && query.characters.count > 0 {
+  } else if project == projects.first && !query.characters.isEmpty {
     return RefTag.searchFeatured
-  } else if query.characters.count == 0 {
+  } else if query.characters.isEmpty {
     return RefTag.searchPopular
   } else {
     return RefTag.search
