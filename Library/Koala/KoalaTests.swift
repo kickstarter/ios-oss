@@ -571,4 +571,26 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
     XCTAssertEqual([startDate], client.properties(forKey: "live_stream_start_date", as: Double.self))
   }
+
+  func testTrackSentChatMessage() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.id .~ 42
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.name .~ "Cool Live Stream"
+      |> LiveStreamEvent.lens.startDate .~ MockDate(timeIntervalSince1970: 1234567).date
+
+    koala.trackLiveStreamChatSentMessage(
+      project: .template,
+      liveStreamEvent: liveStreamEvent,
+      message: "Test Chat Message"
+    )
+
+    XCTAssertEqual([42], client.properties(forKey: "live_stream_id", as: Int.self))
+    XCTAssertEqual([true], client.properties(forKey: "live_stream_is_live_now", as: Bool.self))
+    XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
+    XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
+    XCTAssertEqual(["Test Chat Message"], client.properties(forKey: "edited_message", as: String.self))
+  }
 }

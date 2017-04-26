@@ -344,4 +344,39 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
     self.clearTextFieldAndResignFirstResponder.assertValueCount(1)
   }
+
+  func testTrackSentChatMessage() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      sendChatMessageResult: Result([()])
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.textDidChange(toText: "Test message")
+
+      XCTAssertEqual([], self.trackingClient.events)
+      
+      self.vm.inputs.sendButtonTapped()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Sent Live Stream Message"], self.trackingClient.events)
+      XCTAssertEqual(["Test message"], self.trackingClient.properties(forKey: "edited_message",
+                                                                      as: String.self))
+    }
+  }
 }

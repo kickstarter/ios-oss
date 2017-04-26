@@ -68,6 +68,7 @@ LiveStreamChatViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
+    let project = configData.map(first)
     let initialLiveStreamEvent = configData.map(second)
 
     let liveStreamEventFetch = Signal.merge(
@@ -177,6 +178,14 @@ LiveStreamChatViewModelOutputs {
       .flatMap { path, message in
         AppEnvironment.current.liveStreamService.sendChatMessage(withPath: path, chatMessage: message)
           .materialize()
+    }
+
+    Signal.combineLatest(project, liveStreamEvent, newChatMessage)
+      .takeWhen(Signal.zip(newChatMessage, sentChatMessageEvent.values()))
+      .observeValues { project, liveStreamEvent, newChatMessage in
+        AppEnvironment.current.koala.trackLiveStreamChatSentMessage(project: project,
+                                                                    liveStreamEvent: liveStreamEvent,
+                                                                    message: newChatMessage.message)
     }
 
     self.chatInputViewPlaceholderText = self.viewDidLoadProperty.signal
