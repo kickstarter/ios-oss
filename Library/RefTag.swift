@@ -193,7 +193,7 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery), (.discoveryPotd, .discoveryPotd),
     (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
     (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread),
-    (.profileBacked, .profileBacked),(.profileSaved, .profileSaved), (.projectPage, .projectPage),
+    (.profileBacked, .profileBacked), (.profileSaved, .profileSaved), (.projectPage, .projectPage),
     (.push, .push), (.recommended, .recommended), (.search, .search), (.searchFeatured, .searchFeatured),
     (.searchPopular, .searchPopular), (.searchPopularFeatured, .searchPopularFeatured), (.social, .social),
     (.thanks, .thanks), (.update, .update):
