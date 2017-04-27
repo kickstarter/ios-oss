@@ -210,7 +210,6 @@ LiveStreamChatViewModelOutputs {
         case .snapshotDecodingFailed,
              .chatMessageDecodingFailed,
              .genericFailure,
-             .timedOut,
              .invalidJson,
              .invalidRequest:
           return Strings.Something_went_wrong_please_try_again()
