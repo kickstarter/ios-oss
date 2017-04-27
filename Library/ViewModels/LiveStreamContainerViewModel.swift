@@ -193,7 +193,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .take(until: numberOfPeopleWatchingEvent.values().ignoreValues())
 
     self.numberOfPeopleWatching = Signal.merge(
-      numberOfPeopleWatchingEvent.values(),
+      numberOfPeopleWatchingEvent.values().throttle(5, on: AppEnvironment.current.scheduler),
       numberOfPeopleWatchingEvent.errors().mapConst(0)
     )
 
