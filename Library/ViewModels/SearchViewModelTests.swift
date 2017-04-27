@@ -55,101 +55,69 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPopularFeatured_RefTag() {
-    let refTag = RefTag.searchPopularFeatured
-
     let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: false)
-
       self.scheduler.advance()
-
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-
       self.vm.inputs.tapped(project: projects[0])
 
-      self.goToRefTag.assertValues([refTag])
+      self.goToRefTag.assertValues([RefTag.searchPopularFeatured])
     }
   }
 
   func testSearchPopular_RefTag() {
-    let refTag = RefTag.searchPopular
-
     let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: false)
-
       self.scheduler.advance()
-
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-
       self.vm.inputs.tapped(project: projects[8])
 
-      self.goToRefTag.assertValues([refTag])
+      self.goToRefTag.assertValues([RefTag.searchPopular])
     }
   }
 
   func testSearchFeatured_RefTag() {
-    let refTag = RefTag.searchFeatured
-
     let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let projects2 = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response2 = .template |> DiscoveryEnvelope.lens.projects .~ projects2
+    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: false)
-
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: response2)) {
-
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
-
         self.scheduler.advance()
-        self.hasProjects.assertValues([true, false, true],
-                                      "Projects emitted immediately upon view appearing.")
+        self.vm.inputs.tapped(project: searchProjects[0])
 
-        self.vm.inputs.tapped(project: projects2[0])
-
-        self.goToRefTag.assertValues([refTag])
+        self.goToRefTag.assertValues([RefTag.searchFeatured])
       }
     }
   }
 
   func testSearch_RefTag() {
-    let refTag = RefTag.search
-
     let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let projects2 = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let response2 = .template |> DiscoveryEnvelope.lens.projects .~ projects2
+    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.vm.inputs.viewWillAppear(animated: false)
-
       self.scheduler.advance()
 
-      self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
-
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: response2)) {
-
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
         self.vm.inputs.searchFieldDidBeginEditing()
         self.vm.inputs.searchTextChanged("robots")
-
         self.scheduler.advance()
-        self.hasProjects.assertValues([true, false, true],
-                                      "Projects emitted immediately upon view appearing.")
+        self.vm.inputs.tapped(project: searchProjects[2])
 
-        self.vm.inputs.tapped(project: projects2[2])
-
-        self.goToRefTag.assertValues([refTag])
+        self.goToRefTag.assertValues([RefTag.search])
       }
     }
   }
