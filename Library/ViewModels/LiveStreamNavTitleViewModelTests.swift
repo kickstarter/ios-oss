@@ -8,7 +8,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamNavTitleViewModelTests: TestCase {
-  let vm: LiveStreamNavTitleViewModelType = LiveStreamNavTitleViewModel()
+  var vm: LiveStreamNavTitleViewModelType!
 
   private let playbackStateLabelText = TestObserver<String, NoError>()
   private let playbackStateContainerBackgroundColor = TestObserver<UIColor, NoError>()
@@ -17,6 +17,8 @@ internal final class LiveStreamNavTitleViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+
+    self.vm = LiveStreamNavTitleViewModel()
 
     self.vm.outputs.playbackStateLabelText.observe(self.playbackStateLabelText.observer)
     self.vm.outputs.playbackStateContainerBackgroundColor.observe(
@@ -105,9 +107,26 @@ internal final class LiveStreamNavTitleViewModelTests: TestCase {
       |> LiveStreamEvent.lens.liveNow .~ true
 
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
-    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2500)
 
-    self.numberOfPeopleWatchingLabelText.assertValues(["0", "2,500"])
+    self.numberOfPeopleWatchingLabelText.assertValues(["0"])
+
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2500)
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2502)
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2503)
+
+    self.scheduler.advance()
+
+    self.numberOfPeopleWatchingLabelText.assertValues(["0", "2,503"])
+
+    self.vm.inputs.setNumberOfPeopleWatching(numberOfPeople: 2504)
+
+    self.scheduler.advance(by: .seconds(4))
+
+    self.numberOfPeopleWatchingLabelText.assertValues(["0", "2,503"])
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.numberOfPeopleWatchingLabelText.assertValues(["0", "2,503", "2,504"])
   }
 
 }

@@ -54,7 +54,8 @@ LiveStreamNavTitleViewModelInputs, LiveStreamNavTitleViewModelOutputs {
       .skipRepeats()
 
     self.numberOfPeopleWatchingLabelText = Signal.merge(
-      self.numberOfPeopleWatchingProperty.signal.skipNil(),
+      self.numberOfPeopleWatchingProperty.signal.skipNil()
+        .throttle(5, on: AppEnvironment.current.scheduler),
       self.liveStreamEventProperty.signal.mapConst(0)
       )
       .map { Format.wholeNumber($0) }
