@@ -101,6 +101,17 @@ public let navyButtonStyle =
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_900.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
 
+public let saveButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_500
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
+  <> UIButton.lens.titleColor(forState: .disabled) .~ .init(white: 1.0, alpha: 0.5)
+  <> UIButton.lens.backgroundColor(forState: .disabled) .~ .ksr_navy_900
+  <> UIButton.lens.tintColor .~ .ksr_navy_500
+  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: Styles.grid(2), bottom: 0, right: 0)
+  <> UIButton.lens.image(forState: .normal) %~ { _ in image(named: "star-discovery") }
+
 public let textOnlyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_900
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear

@@ -31,6 +31,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
+  @IBOutlet fileprivate weak var starButton: UIButton!
+  @IBOutlet weak var starStackView: UIStackView!
 
   // swiftlint:disable function_body_length
   internal override func bindStyles() {
@@ -120,6 +122,22 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
+
+    _ = self.starButton
+      |> saveButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_body(size: 13)
+      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(2),
+                                                  left: Styles.grid(2),
+                                                  bottom: Styles.grid(2),
+                                                  right: Styles.grid(2))
+      |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(4))
+      |> UIButton.lens.title(forState: .normal) %~ { _ in "Save" }
+
+    _ = self.starStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(0)
+      |> UIStackView.lens.layoutMargins
+      .~ .init(top: Styles.gridHalf(0), left: Styles.grid(0), bottom: Styles.grid(0), right: Styles.grid(0))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
     _ = self.socialStackView
       |> UIStackView.lens.alignment .~ .center

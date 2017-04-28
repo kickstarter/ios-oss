@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -290,15 +290,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R0g-tb-Pfo" userLabel="Card View">
-                                            <rect key="frame" x="18" y="18" width="364" height="433"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R0g-tb-Pfo" userLabel="Card View">
+                                            <rect key="frame" x="18" y="18" width="364" height="464"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hnN-BJ-FXy" userLabel="Project And Social Stack View">
                                             <rect key="frame" x="18" y="18" width="364" height="514"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="x7P-p0-T4F" userLabel="Project Stack View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="431.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="465.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="vUL-dU-47D">
                                                             <rect key="frame" x="0.0" y="0.0" width="364" height="205"/>
@@ -408,20 +408,38 @@
                                                             </subviews>
                                                             <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
                                                         </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="8wl-ep-ble">
+                                                            <rect key="frame" x="0.0" y="431.5" width="364" height="34"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jd7-kG-aiS">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="1"/>
+                                                                    <color key="backgroundColor" red="0.92941176470588238" green="0.92941176470588238" blue="0.92941176470588238" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="1" id="hcw-Dj-soe"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOE-zG-Jrl">
+                                                                    <rect key="frame" x="0.0" y="12" width="364" height="22"/>
+                                                                    <state key="normal" title="Save" image="star-filled-icon">
+                                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </state>
+                                                                </button>
+                                                            </subviews>
+                                                        </stackView>
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="cQc-Xu-HYZ">
-                                                    <rect key="frame" x="0.0" y="431.5" width="364" height="82.5"/>
+                                                    <rect key="frame" x="0.0" y="465.5" width="364" height="48.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="KiT-j5-BB7" customClass="CircleAvatarImageView" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="26.5" width="30" height="30"/>
+                                                            <rect key="frame" x="0.0" y="9.5" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="KiT-j5-BB7" secondAttribute="height" multiplier="1:1" id="26Q-TJ-Uuw"/>
                                                                 <constraint firstAttribute="height" constant="30" id="L4t-U1-hSI" userLabel="42"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ghandi is a backer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCZ-kN-QmM">
-                                                            <rect key="frame" x="31" y="31" width="333" height="20.5"/>
+                                                            <rect key="frame" x="31" y="14" width="333" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -467,7 +485,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="leadingMargin" secondItem="hnN-BJ-FXy" secondAttribute="leading" id="Axh-gN-jM9"/>
-                                        <constraint firstItem="R0g-tb-Pfo" firstAttribute="bottom" secondItem="x7P-p0-T4F" secondAttribute="bottom" id="Bx7-Iz-HSU"/>
+                                        <constraint firstItem="R0g-tb-Pfo" firstAttribute="bottom" secondItem="x7P-p0-T4F" secondAttribute="bottom" constant="-1.5" id="Bx7-Iz-HSU"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnN-BJ-FXy" secondAttribute="bottom" id="P0n-Bg-KYh"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="centerY" secondItem="R0g-tb-Pfo" secondAttribute="top" id="buC-U9-470"/>
@@ -505,6 +523,8 @@
                                     <outlet property="socialAvatarImageView" destination="KiT-j5-BB7" id="b0m-Ja-k5T"/>
                                     <outlet property="socialLabel" destination="cCZ-kN-QmM" id="hRv-P9-bzK"/>
                                     <outlet property="socialStackView" destination="cQc-Xu-HYZ" id="1St-Ll-GeT"/>
+                                    <outlet property="starButton" destination="uOE-zG-Jrl" id="OxS-tn-KXL"/>
+                                    <outlet property="starStackView" destination="8wl-ep-ble" id="zPy-Jo-NDW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -518,13 +538,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJw-uw-eMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="680" y="200"/>
+            <point key="canvasLocation" x="680" y="199.70014992503749"/>
         </scene>
     </scenes>
     <resources>
         <image name="cosmic-surgery" width="800" height="600"/>
         <image name="kickstarter-logo" width="149" height="29"/>
         <image name="metadata-potd" width="14" height="12"/>
+        <image name="star-filled-icon" width="22" height="22"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>
