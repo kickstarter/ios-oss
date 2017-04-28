@@ -181,12 +181,11 @@ LiveStreamChatViewModelOutputs {
           .materialize()
     }
 
-    Signal.combineLatest(project, liveStreamEvent, newChatMessage)
+    Signal.combineLatest(project, liveStreamEvent)
       .takeWhen(sentChatMessageEvent.values())
-      .observeValues { project, liveStreamEvent, newChatMessage in
+      .observeValues { project, liveStreamEvent in
         AppEnvironment.current.koala.trackLiveStreamChatSentMessage(project: project,
-                                                                    liveStreamEvent: liveStreamEvent,
-                                                                    message: newChatMessage.message)
+                                                                    liveStreamEvent: liveStreamEvent)
     }
 
     self.chatInputViewPlaceholderText = self.viewDidLoadProperty.signal

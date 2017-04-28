@@ -379,8 +379,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(["Sent Live Stream Message"], self.trackingClient.events)
-      XCTAssertEqual(["Test message"], self.trackingClient.properties(forKey: "edited_message",
-                                                                      as: String.self))
     }
   }
 }

@@ -1658,11 +1658,9 @@ public final class Koala {
   }
 
   public func trackLiveStreamChatSentMessage(project: Project,
-                                             liveStreamEvent: LiveStreamEvent,
-                                             message: String) {
+                                             liveStreamEvent: LiveStreamEvent) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
-      .withAllValuesFrom(["edited_message": message])
 
     self.track(event: "Sent Live Stream Message", properties: props)
   }
