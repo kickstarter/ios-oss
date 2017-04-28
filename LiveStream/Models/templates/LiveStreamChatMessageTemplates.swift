@@ -8,6 +8,6 @@ extension LiveStreamChatMessage {
     message: "Test message",
     name: "Test Name",
     profilePictureUrl: "http://www.kickstarter.com",
-    userId: 1324123434
+    userId: "id_12345"
   )
 }
