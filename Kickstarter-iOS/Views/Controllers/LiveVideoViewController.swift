@@ -173,12 +173,13 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func addAndConfigureSubscriber(stream: OTStream) {
-    let subscriber = OTSubscriber(stream: stream, delegate: nil)
+    guard let subscriber = OTSubscriber(stream: stream, delegate: nil) else { return }
+    guard let subscriberView = subscriber.view else { return }
 
     self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)
 
-    self.addVideoView(view: subscriber.view)
+    self.addVideoView(view: subscriberView)
   }
 
   private func addVideoView(view: UIView) {
@@ -196,7 +197,7 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func removeSubscriber(subscriber: OTSubscriber) {
-    self.removeVideoView(view: subscriber.view)
+    subscriber.view.doIfSome { self.removeVideoView(view: $0) }
     self.session?.unsubscribe(subscriber, error: nil)
     self.subscribers.index(of: subscriber).doIfSome { self.subscribers.remove(at: $0) }
   }
