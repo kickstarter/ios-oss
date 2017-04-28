@@ -176,11 +176,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let greenRoomOffStatus = greenRoomStatusEvent.values()
 
     let startNumberOfPeopleWatchingProducer = Signal.zip(
-      updatedEventFetch.values().map { $0.isScale }.skipNil(),
+      updatedEventFetch.values(),
       firebase
     )
 
     let numberOfPeopleWatchingEvent = startNumberOfPeopleWatchingProducer
+      .filter { liveStreamEvent, _ in liveStreamEvent.liveNow }
+      .map { liveStreamEvent, firebase in
+        (liveStreamEvent.isScale.coalesceWith(false), firebase)
+      }
       .flatMap { isScale, firebase in
         numberOfPeopleWatchingProducer(withFirebase: firebase, isScale: isScale)
           .materialize()
@@ -193,7 +197,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .take(until: numberOfPeopleWatchingEvent.values().ignoreValues())
 
     self.numberOfPeopleWatching = Signal.merge(
-      numberOfPeopleWatchingEvent.values().throttle(5, on: AppEnvironment.current.scheduler),
+      numberOfPeopleWatchingEvent.values(),
       numberOfPeopleWatchingEvent.errors().mapConst(0)
     )
 
