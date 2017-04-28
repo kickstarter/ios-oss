@@ -175,23 +175,30 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let greenRoomOffStatus = greenRoomStatusEvent.values()
 
-    let numberOfPeopleWatchingEvent = Signal.zip(
-      updatedEventFetch.values().map { $0.isScale }.skipNil(),
+    let startNumberOfPeopleWatchingProducer = Signal.zip(
+      updatedEventFetch.values(),
       firebase
-      )
+    )
+
+    let numberOfPeopleWatchingEvent = startNumberOfPeopleWatchingProducer
+      .filter { liveStreamEvent, _ in liveStreamEvent.liveNow }
+      .map { liveStreamEvent, firebase in
+        (liveStreamEvent.isScale.coalesceWith(false), firebase)
+      }
       .flatMap { isScale, firebase in
         numberOfPeopleWatchingProducer(withFirebase: firebase, isScale: isScale)
-          .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    let numberPeopleWatchingTimedOutError = numberOfPeopleWatchingEvent.errors().filter { $0 == .timedOut }
-    let numberPeopleWatchingErrorsExceptTimedOut = numberOfPeopleWatchingEvent.errors()
-      .filter { $0 != .timedOut }
+    let numberOfPeopleWatchingTimeOutSignal = startNumberOfPeopleWatchingProducer
+      .flatMap { _ in
+        timer(interval: .seconds(10), on: AppEnvironment.current.scheduler)
+      }
+      .take(until: numberOfPeopleWatchingEvent.values().ignoreValues())
 
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
-      numberPeopleWatchingErrorsExceptTimedOut.mapConst(0)
+      numberOfPeopleWatchingEvent.errors().mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -227,7 +234,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       updatedEventFetch.values()
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue),
-      numberPeopleWatchingTimedOutError.mapConst(true)
+      numberOfPeopleWatchingTimeOutSignal.mapConst(true)
       )
       .take(first: 1)
 

@@ -25,7 +25,7 @@ public struct LiveStreamChatMessage {
   public fileprivate(set) var message: String
   public fileprivate(set) var name: String
   public fileprivate(set) var profilePictureUrl: String
-  public fileprivate(set) var userId: Int
+  public fileprivate(set) var userId: String
 
   static internal func decode(_ snapshot: FirebaseDataSnapshotType) -> Decoded<LiveStreamChatMessage> {
       return (snapshot.value as? [String:Any])
@@ -49,7 +49,7 @@ extension LiveStreamChatMessage: Decodable {
     let tmp2 = tmp1
       <*> json <| "name"
       <*> json <| "profilePic"
-      <*> ((json <| "userId") >>- convertId)
+      <*> json <| "userId"
 
     return tmp2
   }
@@ -58,22 +58,6 @@ extension LiveStreamChatMessage: Decodable {
 extension LiveStreamChatMessage: Equatable {
   static public func == (lhs: LiveStreamChatMessage, rhs: LiveStreamChatMessage) -> Bool {
     return lhs.id == rhs.id
-  }
-}
-
-// Currently chat user ID's are prefixed with "id_" and are strings, doing this until that changes
-private func convertId(fromJson json: JSON) -> Decoded<Int> {
-  switch json {
-  case .string(let string):
-
-    return (Int(string) ?? Int(string.replacingOccurrences(of: "id_", with: "")))
-      .map(Decoded.success)
-      .coalesceWith(.failure(.custom("Couldn't decoded \"\(string)\" into an Int.")))
-
-  case .number(let number):
-    return .success(number.intValue)
-  default:
-    return .failure(.custom("Couldn't decoded \(json) into an Int."))
   }
 }
 
@@ -103,7 +87,7 @@ extension LiveStreamChatMessage {
       view: { $0.date },
       set: { var new = $1; new.date = $0; return new }
     )
-    public static let userId = Lens<LiveStreamChatMessage, Int>(
+    public static let userId = Lens<LiveStreamChatMessage, String>(
       view: { $0.userId },
       set: { var new = $1; new.userId = $0; return new }
     )

@@ -153,6 +153,7 @@ LiveStreamChatViewModelOutputs {
     let wantsToSendChat = self.textProperty.signal.skipNil()
       .filter { !isWhitespacesAndNewlines($0) }
       .takeWhen(self.sendButtonTappedProperty.signal)
+      .map { $0.trimmed() }
 
     let newChatMessage = firebase
       .takePairWhen(wantsToSendChat)
@@ -219,7 +220,6 @@ LiveStreamChatViewModelOutputs {
         case .snapshotDecodingFailed,
              .chatMessageDecodingFailed,
              .genericFailure,
-             .timedOut,
              .invalidJson,
              .invalidRequest:
           return Strings.Something_went_wrong_please_try_again()

@@ -11,8 +11,6 @@ import XCTest
 
 internal final class LiveStreamNavTitleViewTests: TestCase {
 
-  fileprivate let vm: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -84,6 +82,8 @@ internal final class LiveStreamNavTitleViewTests: TestCase {
     view.bindStyles()
     view.configureWith(liveStreamEvent: liveStreamEvent, delegate: nil)
     view.set(numberOfPeopleWatching: 2_500)
+
+    self.scheduler.run()
 
     let size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
     view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
