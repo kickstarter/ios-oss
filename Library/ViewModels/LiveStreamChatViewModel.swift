@@ -152,6 +152,7 @@ LiveStreamChatViewModelOutputs {
     let wantsToSendChat = self.textProperty.signal.skipNil()
       .filter { !isWhitespacesAndNewlines($0) }
       .takeWhen(self.sendButtonTappedProperty.signal)
+      .map { $0.trimmed() }
 
     let newChatMessage = firebase
       .takePairWhen(wantsToSendChat)
