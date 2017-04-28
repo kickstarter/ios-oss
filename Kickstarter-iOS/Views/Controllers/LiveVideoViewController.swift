@@ -173,8 +173,9 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func addAndConfigureSubscriber(stream: OTStream) {
-    guard let subscriber = OTSubscriber(stream: stream, delegate: nil) else { return }
-    guard let subscriberView = subscriber.view else { return }
+    guard let subscriber = OTSubscriber(stream: stream, delegate: nil),
+      let subscriberView = subscriber.view
+      else { return }
 
     self.session?.subscribe(subscriber, error: nil)
     self.subscribers.append(subscriber)
