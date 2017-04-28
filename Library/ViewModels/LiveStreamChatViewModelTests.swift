@@ -264,6 +264,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       self.vm.inputs.textDidChange(toText: "Test message")
       self.vm.inputs.sendButtonTapped()
 
+      self.scheduler.advance()
+
       self.showErrorAlert.assertValueCount(0)
     }
   }
@@ -289,6 +291,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
       self.vm.inputs.textDidChange(toText: "Test message")
       self.vm.inputs.sendButtonTapped()
+
+      self.scheduler.advance()
 
       self.showErrorAlert.assertValues(["Your chat message wasn't sent successfully."])
     }
@@ -343,5 +347,38 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.sendButtonTapped()
 
     self.clearTextFieldAndResignFirstResponder.assertValueCount(1)
+  }
+
+  func testTrackSentChatMessage() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    let initialLiveStreamEvent = .template
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamEvent = LiveStreamEvent.template
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent),
+      sendChatMessageResult: Result([()])
+    )
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template, liveStreamEvent: initialLiveStreamEvent)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.textDidChange(toText: "Test message")
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.sendButtonTapped()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Sent Live Stream Message"], self.trackingClient.events)
+    }
   }
 }
