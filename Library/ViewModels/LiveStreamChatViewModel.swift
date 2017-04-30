@@ -4,6 +4,8 @@ import Prelude
 import ReactiveSwift
 import Result
 
+private let maxMessageLength = 140
+
 public protocol LiveStreamChatViewModelType {
   var inputs: LiveStreamChatViewModelInputs { get }
   var outputs: LiveStreamChatViewModelOutputs { get }
@@ -45,6 +47,12 @@ public protocol LiveStreamChatViewModelOutputs {
 
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
+
+  /// Emits when the message length count label should be hidden.
+  var chatInputViewMessageLengthCountLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the remaining message length of the chat input text field.
+  var chatInputViewMessageLengthCountLabelText: Signal<String, NoError> { get }
 
   /// Emits the placeholder text
   var chatInputViewPlaceholderText: Signal<NSAttributedString, NoError> { get }
@@ -211,7 +219,7 @@ LiveStreamChatViewModelOutputs {
     self.textFieldShouldChangeCharactersInRangeReturnProperty <~
       textFieldShouldChangeCharactersInRangeProperty.signal.skipNil().map { currentString, range, string in
         return (currentString as NSString)
-          .replacingCharacters(in: range, with: string).characters.count <= 140
+          .replacingCharacters(in: range, with: string).characters.count <= maxMessageLength
     }
 
     self.showErrorAlert = Signal.merge(
@@ -235,6 +243,18 @@ LiveStreamChatViewModelOutputs {
           return Strings.Something_went_wrong_please_try_again()
         }
     }
+
+    self.chatInputViewMessageLengthCountLabelText = Signal.merge(
+      self.textProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst("")
+      )
+      .map { $0.coalesceWith("") }
+      .map { "\($0.characters.count)/\(maxMessageLength)" }
+
+    self.chatInputViewMessageLengthCountLabelHidden = Signal.merge(
+      textIsEmpty,
+      self.viewDidLoadProperty.signal.mapConst(true)
+    )
   }
 
   private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
@@ -286,6 +306,8 @@ LiveStreamChatViewModelOutputs {
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
+  public let chatInputViewMessageLengthCountLabelHidden: Signal<Bool, NoError>
+  public let chatInputViewMessageLengthCountLabelText: Signal<String, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>

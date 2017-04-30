@@ -11,6 +11,8 @@ internal final class LiveStreamChatViewController: UIViewController {
   @IBOutlet private weak var chatInputView: UIView!
   @IBOutlet private weak var chatInputViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var chatInputViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var chatInputViewMessageLengthCountLabelStackView: UIStackView!
+  @IBOutlet private weak var chatInputViewMessageLengthCountLabel: UILabel!
   @IBOutlet private weak var chatInputViewStackView: UIStackView!
   @IBOutlet private weak var sendButton: UIButton!
   @IBOutlet private weak var separatorView: UIView!
@@ -77,10 +79,18 @@ internal final class LiveStreamChatViewController: UIViewController {
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
 
+    _ = self.chatInputViewMessageLengthCountLabel
+      |> UILabel.lens.textColor .~ UIColor.white.withAlphaComponent(0.8)
+      |> UILabel.lens.font .~ .ksr_body(size: 10)
+
+    _ = self.chatInputViewMessageLengthCountLabelStackView
+      |> UIStackView.lens.layoutMargins .~ .init(top: Styles.gridHalf(1))
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
     _ = self.chatInputViewStackView
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.textField
       |> UITextField.lens.backgroundColor .~ .ksr_navy_700
@@ -159,6 +169,12 @@ internal final class LiveStreamChatViewController: UIViewController {
     }
 
     self.textField.rac.attributedPlaceholder = self.viewModel.outputs.chatInputViewPlaceholderText
+
+    self.chatInputViewMessageLengthCountLabel.rac.text =
+      self.viewModel.outputs.chatInputViewMessageLengthCountLabelText
+
+    self.chatInputViewMessageLengthCountLabel.rac.hidden =
+      self.viewModel.outputs.chatInputViewMessageLengthCountLabelHidden
   }
 
   // MARK: Actions

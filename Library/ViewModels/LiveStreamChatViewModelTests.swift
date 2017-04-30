@@ -11,6 +11,8 @@ import XCTest
 internal final class LiveStreamChatViewModelTests: TestCase {
   private let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
+  private let chatInputViewMessageLengthCountLabelHidden = TestObserver<Bool, NoError>()
+  private let chatInputViewMessageLengthCountLabelText = TestObserver<String, NoError>()
   private let chatInputViewPlaceholderText = TestObserver<String, NoError>()
   private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
   private let collapseChatInputView = TestObserver<Bool, NoError>()
@@ -24,6 +26,10 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.chatInputViewMessageLengthCountLabelHidden
+      .observe(self.chatInputViewMessageLengthCountLabelHidden.observer)
+    self.vm.outputs.chatInputViewMessageLengthCountLabelText
+      .observe(self.chatInputViewMessageLengthCountLabelText.observer)
     self.vm.outputs.chatInputViewPlaceholderText.map { $0.string }
       .observe(self.chatInputViewPlaceholderText.observer)
     self.vm.outputs.clearTextFieldAndResignFirstResponder
@@ -412,5 +418,39 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     XCTAssertTrue(oneFortyChar)
     XCTAssertFalse(oneFortyOneChar)
     XCTAssertFalse(twoHundredChar)
+  }
+
+  func testMessageLengthCountLabelHidden() {
+    self.chatInputViewMessageLengthCountLabelHidden.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true])
+
+    self.vm.inputs.textDidChange(toText: "Typing")
+
+    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true, false])
+
+    self.vm.inputs.textDidChange(toText: "")
+
+    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true, false, true])
+  }
+
+  func testMessageLengthCountLabelText() {
+    self.chatInputViewMessageLengthCountLabelText.assertValueCount(0)
+
+    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140"])
+
+    self.vm.inputs.textDidChange(toText: "Typing")
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140", "6/140"])
+
+    self.vm.inputs.textDidChange(toText: "")
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140", "6/140", "0/140"])
   }
 }
