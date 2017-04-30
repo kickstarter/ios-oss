@@ -22,6 +22,10 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call when the text field should begin editing
   func textFieldShouldBeginEditing() -> Bool
 
+  /// Call to test whether the textField should change characters
+  func textField(currentText text: String, shouldChangeCharactersIn range: NSRange,
+                 replacementString string: String) -> Bool
+
   /// Call with new value from the input field
   func textDidChange(toText text: String?)
 
@@ -204,6 +208,12 @@ LiveStreamChatViewModelOutputs {
       return AppEnvironment.current.currentUser != nil
     }
 
+    self.textFieldShouldChangeCharactersInRangeReturnProperty <~
+      textFieldShouldChangeCharactersInRangeProperty.signal.skipNil().map { currentString, range, string in
+        return (currentString as NSString)
+          .replacingCharacters(in: range, with: string).characters.count <= 140
+    }
+
     self.showErrorAlert = Signal.merge(
       initialChatMessages.errors(),
       sentChatMessageEvent.errors(),
@@ -247,6 +257,15 @@ LiveStreamChatViewModelOutputs {
   public func textFieldShouldBeginEditing() -> Bool {
     self.textFieldShouldBeginEditingProperty.value = ()
     return self.textFieldShouldBeginEditingReturnValueProperty.value
+  }
+
+  private let textFieldShouldChangeCharactersInRangeProperty =
+    MutableProperty<(String, NSRange, String)?>(nil)
+  private let textFieldShouldChangeCharactersInRangeReturnProperty = MutableProperty<Bool>(false)
+  public func textField(currentText text: String, shouldChangeCharactersIn range: NSRange,
+                        replacementString string: String) -> Bool {
+    self.textFieldShouldChangeCharactersInRangeProperty.value = (text, range, string)
+    return self.textFieldShouldChangeCharactersInRangeReturnProperty.value
   }
 
   private let textProperty = MutableProperty<String?>(nil)

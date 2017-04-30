@@ -227,4 +227,11 @@ extension LiveStreamChatViewController: UITextFieldDelegate {
 
     return true
   }
+
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                 replacementString string: String) -> Bool {
+    return self.viewModel.inputs.textField(currentText: textField.text.coalesceWith(""),
+                                           shouldChangeCharactersIn: range,
+                                           replacementString: string)
+  }
 }

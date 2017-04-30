@@ -381,4 +381,36 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       XCTAssertEqual(["Sent Live Stream Message"], self.trackingClient.events)
     }
   }
+
+  func testLimitMessageLength() {
+    let fiftyCharString = (0...49).map { _ in "x" }.reduce("", +)
+    let oneFortyCharString = (0...139).map { _ in "x" }.reduce("", +)
+    let oneFortyOneCharString = (0...140).map { _ in "x" }.reduce("", +)
+    let twoHundredCharString = (0...199).map { _ in "x" }.reduce("", +)
+
+    let fiftyChar = self.vm.inputs
+      .textField(currentText: "",
+                 shouldChangeCharactersIn: NSRange(),
+                 replacementString: fiftyCharString)
+
+    let oneFortyChar = self.vm.inputs
+      .textField(currentText: "",
+                 shouldChangeCharactersIn: NSRange(),
+                 replacementString: oneFortyCharString)
+
+    let oneFortyOneChar = self.vm.inputs
+      .textField(currentText: "",
+                 shouldChangeCharactersIn: NSRange(),
+                 replacementString: oneFortyOneCharString)
+
+    let twoHundredChar = self.vm.inputs
+      .textField(currentText: "",
+                 shouldChangeCharactersIn: NSRange(),
+                 replacementString: twoHundredCharString)
+
+    XCTAssertTrue(fiftyChar)
+    XCTAssertTrue(oneFortyChar)
+    XCTAssertFalse(oneFortyOneChar)
+    XCTAssertFalse(twoHundredChar)
+  }
 }
