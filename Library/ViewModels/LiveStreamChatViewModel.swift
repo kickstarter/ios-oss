@@ -49,7 +49,7 @@ public protocol LiveStreamChatViewModelOutputs {
   var dismissKeyboard: Signal<(), NoError> { get }
 
   /// Emits when the message length count label should be hidden.
-  var chatInputViewMessageLengthCountLabelHidden: Signal<Bool, NoError> { get }
+  var chatInputViewMessageLengthCountLabelStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits the remaining message length of the chat input text field.
   var chatInputViewMessageLengthCountLabelText: Signal<String, NoError> { get }
@@ -251,7 +251,7 @@ LiveStreamChatViewModelOutputs {
       .map { $0.coalesceWith("") }
       .map { "\($0.characters.count)/\(maxMessageLength)" }
 
-    self.chatInputViewMessageLengthCountLabelHidden = Signal.merge(
+    self.chatInputViewMessageLengthCountLabelStackViewHidden = Signal.merge(
       textIsEmpty,
       self.viewDidLoadProperty.signal.mapConst(true)
     )
@@ -306,7 +306,7 @@ LiveStreamChatViewModelOutputs {
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
-  public let chatInputViewMessageLengthCountLabelHidden: Signal<Bool, NoError>
+  public let chatInputViewMessageLengthCountLabelStackViewHidden: Signal<Bool, NoError>
   public let chatInputViewMessageLengthCountLabelText: Signal<String, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>

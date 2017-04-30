@@ -11,7 +11,7 @@ import XCTest
 internal final class LiveStreamChatViewModelTests: TestCase {
   private let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
-  private let chatInputViewMessageLengthCountLabelHidden = TestObserver<Bool, NoError>()
+  private let chatInputViewMessageLengthCountLabelStackViewHidden = TestObserver<Bool, NoError>()
   private let chatInputViewMessageLengthCountLabelText = TestObserver<String, NoError>()
   private let chatInputViewPlaceholderText = TestObserver<String, NoError>()
   private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
@@ -26,8 +26,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.chatInputViewMessageLengthCountLabelHidden
-      .observe(self.chatInputViewMessageLengthCountLabelHidden.observer)
+    self.vm.outputs.chatInputViewMessageLengthCountLabelStackViewHidden
+      .observe(self.chatInputViewMessageLengthCountLabelStackViewHidden.observer)
     self.vm.outputs.chatInputViewMessageLengthCountLabelText
       .observe(self.chatInputViewMessageLengthCountLabelText.observer)
     self.vm.outputs.chatInputViewPlaceholderText.map { $0.string }
@@ -420,21 +420,21 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     XCTAssertFalse(twoHundredChar)
   }
 
-  func testMessageLengthCountLabelHidden() {
-    self.chatInputViewMessageLengthCountLabelHidden.assertValueCount(0)
+  func testMessageLengthCountLabelStackViewHidden() {
+    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true])
+    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true])
 
     self.vm.inputs.textDidChange(toText: "Typing")
 
-    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true, false])
+    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.textDidChange(toText: "")
 
-    self.chatInputViewMessageLengthCountLabelHidden.assertValues([true, false, true])
+    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true, false, true])
   }
 
   func testMessageLengthCountLabelText() {

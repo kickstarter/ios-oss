@@ -173,8 +173,8 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.chatInputViewMessageLengthCountLabel.rac.text =
       self.viewModel.outputs.chatInputViewMessageLengthCountLabelText
 
-    self.chatInputViewMessageLengthCountLabel.rac.hidden =
-      self.viewModel.outputs.chatInputViewMessageLengthCountLabelHidden
+    self.chatInputViewMessageLengthCountLabelStackView.rac.hidden =
+      self.viewModel.outputs.chatInputViewMessageLengthCountLabelStackViewHidden
   }
 
   // MARK: Actions
