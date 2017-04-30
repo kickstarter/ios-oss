@@ -81,7 +81,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.chatInputViewMessageLengthCountLabel
       |> UILabel.lens.textColor .~ UIColor.white.withAlphaComponent(0.8)
-      |> UILabel.lens.font .~ .ksr_body(size: 10)
+      |> UILabel.lens.font .~ UIFont.ksr_body(size: 10).monospaced
 
     _ = self.chatInputViewMessageLengthCountLabelStackView
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.gridHalf(1))

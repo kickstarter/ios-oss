@@ -89,6 +89,23 @@ extension UIFont {
     return .preferredFont(style: .title3, size: size)
   }
 
+  /// Returns a monospaced font for numeric use.
+  public var monospaced: UIFont {
+    let monospacedDescriptor = self.fontDescriptor
+      .addingAttributes(
+        [
+          UIFontDescriptorFeatureSettingsAttribute: [
+            [
+              UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
+              UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+            ]
+          ]
+        ]
+    )
+
+    return UIFont(descriptor: monospacedDescriptor, size: 0.0)
+  }
+
   // swiftlint:disable cyclomatic_complexity
   fileprivate static func preferredFont(style: UIFontTextStyle, size: CGFloat? = nil) -> UIFont {
 
