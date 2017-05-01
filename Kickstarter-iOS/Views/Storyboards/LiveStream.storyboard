@@ -774,7 +774,7 @@ Mikke Snow</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x5K-3L-n6w">
-                                                <rect key="frame" x="0.0" y="0.0" width="329" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="287" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -782,6 +782,17 @@ Mikke Snow</string>
                                                     <outlet property="delegate" destination="jpa-EL-Un6" id="yEh-dG-Qu1"/>
                                                 </connections>
                                             </textField>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0EA-dD-oQr">
+                                                <rect key="frame" x="287" y="0.0" width="42" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mG9-2R-0uT">
+                                                        <rect key="frame" x="0.0" y="0.0" width="42" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SXR-EY-eHY">
                                                 <rect key="frame" x="329" y="0.0" width="46" height="30"/>
                                                 <state key="normal" title="Button"/>
@@ -824,6 +835,8 @@ Mikke Snow</string>
                         <outlet property="chatInputView" destination="qyB-pr-9pD" id="9EG-hl-Bft"/>
                         <outlet property="chatInputViewBottomConstraint" destination="yqp-80-NM0" id="RWk-ez-NeN"/>
                         <outlet property="chatInputViewHeightConstraint" destination="HaZ-w4-Cdj" id="HY4-bl-p1a"/>
+                        <outlet property="chatInputViewMessageLengthCountLabel" destination="mG9-2R-0uT" id="7Jm-oN-Amk"/>
+                        <outlet property="chatInputViewMessageLengthCountLabelStackView" destination="0EA-dD-oQr" id="cYl-RK-toc"/>
                         <outlet property="chatInputViewStackView" destination="1Il-v1-C6g" id="ZY3-h0-xaq"/>
                         <outlet property="sendButton" destination="SXR-EY-eHY" id="yxV-0p-OeG"/>
                         <outlet property="separatorView" destination="ipj-wh-1gG" id="JoV-Ej-mnJ"/>
