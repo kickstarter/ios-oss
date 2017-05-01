@@ -23,6 +23,12 @@ public protocol LiveVideoViewModelInputs {
   /// Call when the OpenTok session is destroy.
   func sessionStreamDestroyed(stream: OTStreamType)
 
+  /// Call when the subscriber's video is disabled with the reason.
+  func subscriberVideoDisabled(reason: OTSubscriberVideoEventReasonType)
+
+  /// Call when the subscriber's video is enabled with the reason.
+  func subscriberVideoEnabled(reason: OTSubscriberVideoEventReasonType)
+
   /// Call when the view disappears.
   func viewDidDisappear()
 
@@ -67,6 +73,7 @@ public protocol LiveVideoViewModelType {
 public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewModelInputs,
   LiveVideoViewModelOutputs {
 
+  //swiftlint:disable:next function_body_length
   public init() {
     let liveStreamType = Signal.combineLatest(
       self.liveStreamTypeProperty.signal.skipNil(),
@@ -87,6 +94,15 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     self.addAndConfigureSubscriber = self.sessionStreamCreatedProperty.signal.skipNil()
     self.removeSubscriber = self.sessionStreamDestroyedProperty.signal.skipNil()
 
+    let subscriberVideoEnabledState = Signal<LiveVideoPlaybackState, NoError>.merge(
+      self.subscriberVideoEnabledProperty.signal.skipNil()
+        .filter { $0.isQualityChangedReason }
+        .mapConst(.videoEnabled),
+      self.subscriberVideoDisabledProperty.signal.skipNil()
+        .filter { $0.isQualityChangedReason }
+        .mapConst(.videoDisabled)
+    )
+
     self.notifyDelegateOfPlaybackStateChange = Signal.merge(
       self.hlsPlayerStateChangedProperty.signal.skipNil()
         .map(playbackState(fromHlsPlayState:)),
@@ -98,7 +114,9 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
       self.sessionDidConnectProperty.signal.mapConst(.playing),
 
       self.sessionDidFailWithErrorProperty.signal.skipNil()
-        .mapConst(.error(error: .sessionInterrupted))
+        .mapConst(.error(error: .sessionInterrupted)),
+
+      subscriberVideoEnabledState
     )
 
     let viewReappeared = self.viewWillAppearProperty.signal.skip(first: 1)
@@ -150,6 +168,16 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
   private let sessionStreamDestroyedProperty = MutableProperty<OTStreamType?>(nil)
   public func sessionStreamDestroyed(stream: OTStreamType) {
     self.sessionStreamDestroyedProperty.value = stream
+  }
+
+  private let subscriberVideoDisabledProperty = MutableProperty<OTSubscriberVideoEventReasonType?>(nil)
+  public func subscriberVideoDisabled(reason: OTSubscriberVideoEventReasonType) {
+    self.subscriberVideoDisabledProperty.value = reason
+  }
+
+  private let subscriberVideoEnabledProperty = MutableProperty<OTSubscriberVideoEventReasonType?>(nil)
+  public func subscriberVideoEnabled(reason: OTSubscriberVideoEventReasonType) {
+    self.subscriberVideoEnabledProperty.value = reason
   }
 
   private let viewDidDisappearProperty = MutableProperty()

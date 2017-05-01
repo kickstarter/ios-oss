@@ -298,6 +298,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let liveState = updatedEventFetch.values()
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
+      .filter { _, playbackState in playbackState == .loading || playbackState == .playing }
       .filter { event, playbackState in
         event.liveNow && !playbackState.isError
       }
@@ -333,10 +334,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let isPlaying = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { state -> Bool in
         switch state {
-        case .playing:
+        case .playing,
+             .videoEnabled:
           return true
         case .error,
-             .loading:
+             .loading,
+             .videoDisabled:
           return false
         }
     }
@@ -347,14 +350,21 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         case .loading:
           return true
         case .playing,
-             .error:
+             .error,
+             .videoDisabled,
+             .videoEnabled:
           return false
         }
     }
 
+    let videoEnabled = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .filter { $0 == .videoEnabled || $0 == .videoDisabled }
+      .map { $0 == .videoEnabled }
+
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      isPlaying.filter(isTrue).take(first: 1)
+      isPlaying.filter(isTrue).take(first: 1),
+      videoEnabled
     )
 
     self.projectImageUrl = project.flatMap { project in
@@ -378,7 +388,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     self.videoViewControllerHidden = Signal.merge(
       isPlaying.map(negate),
-      isLoading
+      isLoading,
+      videoEnabled.map(negate)
     ).skipRepeats()
 
     let playbackError = self.videoPlaybackStateChangedProperty.signal.skipNil()
@@ -416,7 +427,11 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       replayState.mapConst(Strings.The_replay_will_start_soon()),
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
-      self.showErrorAlert
+      self.showErrorAlert,
+      videoEnabled.filter { !$0 }.mapConst(localizedString(
+        key: "The_live_stream_will_resume_when_the_connection_improves",
+        defaultValue: "The live stream will resume when the connection improves")
+      )
     )
 
     self.loaderActivityIndicatorAnimating = Signal.merge(

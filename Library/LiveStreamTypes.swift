@@ -34,6 +34,8 @@ public enum LiveVideoPlaybackState {
   case error(error: LiveVideoPlaybackError)
   case loading
   case playing
+  case videoDisabled
+  case videoEnabled
 
   public var isError: Bool {
     if case .error = self {
@@ -55,7 +57,9 @@ extension LiveVideoPlaybackState: Equatable {
     case (.playing, .playing): return true
     case (.error(let lhsError), .error(let rhsError)):
       return lhsError == rhsError
-    case (.loading, _), (.playing, _), (.error, _):
+    case (.videoDisabled, .videoDisabled): return true
+    case (.videoEnabled, .videoEnabled): return true
+    case (.loading, _), (.playing, _), (.error, _), (.videoDisabled, _), (.videoEnabled, _):
       return false
     }
   }
@@ -117,3 +121,7 @@ public protocol OTStreamType {
   var streamId: String { get }
 }
 public protocol OTErrorType {}
+
+public protocol OTSubscriberVideoEventReasonType {
+  var isQualityChangedReason: Bool { get }
+}

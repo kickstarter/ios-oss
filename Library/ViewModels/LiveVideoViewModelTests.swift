@@ -10,6 +10,13 @@ private struct TestOTStreamType: OTStreamType {
   fileprivate let streamId: String
 }
 private class TestOTErrorType: NSError, OTErrorType {}
+private struct TestOTSubscriberVideoEventReasonType: OTSubscriberVideoEventReasonType {
+  let isQualityChangedReason: Bool
+
+  public init(_ isQualityChangedReason: Bool = true) {
+    self.isQualityChangedReason = isQualityChangedReason
+  }
+}
 
 internal final class LiveVideoViewModelTests: TestCase {
   private let vm: LiveVideoViewModelType = LiveVideoViewModel()
@@ -166,5 +173,31 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
     self.shouldPauseHlsPlayer.assertValues([true, false])
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
+  }
+
+  func testPlaybackStateChange_SubscribeVideoEnabledDisabled() {
+    let sessionConfig = OpenTokSessionConfig(apiKey: "123", sessionId: "123", token: "123")
+
+    self.notifyDelegateOfPlaybackStateChange.assertValueCount(0)
+
+    self.vm.inputs.configureWith(liveStreamType: .openTok(sessionConfig: sessionConfig))
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
+
+    let testReason = TestOTSubscriberVideoEventReasonType()
+    let ignoredReason = TestOTSubscriberVideoEventReasonType(false)
+
+    self.vm.inputs.subscriberVideoDisabled(reason: testReason)
+
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled])
+
+    self.vm.inputs.subscriberVideoEnabled(reason: testReason)
+
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled, .videoEnabled])
+
+    self.vm.inputs.subscriberVideoDisabled(reason: ignoredReason)
+
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled, .videoEnabled])
   }
 }

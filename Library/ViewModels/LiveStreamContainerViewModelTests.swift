@@ -1029,4 +1029,63 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.createVideoViewController.assertValueCount(0)
     }
   }
+
+  func testVideoEnabledDisabled() {
+    self.loaderText.assertValueCount(0)
+    self.loaderStackViewHidden.assertValueCount(0)
+    self.videoViewControllerHidden.assertValueCount(0)
+
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.showErrorAlert.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.loaderText.assertValues(["Loading"])
+      self.loaderStackViewHidden.assertValues([false])
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+
+      self.loaderText.assertValues(["Loading", "Joining the live stream"])
+      self.loaderStackViewHidden.assertValues([false, true])
+      self.videoViewControllerHidden.assertValues([false])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .videoDisabled)
+
+      self.loaderText.assertValues([
+        "Loading",
+        "Joining the live stream",
+        "The live stream will resume when the connection improves"])
+
+      self.loaderStackViewHidden.assertValues([false, true, false])
+      self.videoViewControllerHidden.assertValues([false, true, false, true])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .videoEnabled)
+
+      self.loaderText.assertValues([
+        "Loading",
+        "Joining the live stream",
+        "The live stream will resume when the connection improves"])
+
+      self.loaderStackViewHidden.assertValues([false, true, false, true])
+      self.videoViewControllerHidden.assertValues([false, true, false, true, false])
+    }
+  }
 }
