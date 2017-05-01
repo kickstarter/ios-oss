@@ -324,19 +324,19 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
     self.vm.inputs.textDidChange(toText: "")
 
-    self.sendButtonEnabled.assertValues([false, true, false, false])
+    self.sendButtonEnabled.assertValues([false, true, false])
 
     self.vm.inputs.textDidChange(toText: "Typing")
 
-    self.sendButtonEnabled.assertValues([false, true, false, false, true])
+    self.sendButtonEnabled.assertValues([false, true, false, true])
 
     self.vm.inputs.sendButtonTapped()
 
-    self.sendButtonEnabled.assertValues([false, true, false, false, true, false])
+    self.sendButtonEnabled.assertValues([false, true, false, true, false])
 
     self.vm.inputs.textDidChange(toText: nil)
 
-    self.sendButtonEnabled.assertValues([false, true, false, false, true, false, false])
+    self.sendButtonEnabled.assertValues([false, true, false, true, false])
   }
 
   func testPlaceholderText() {
