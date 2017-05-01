@@ -13,6 +13,7 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
   private let chatInputViewMessageLengthCountLabelStackViewHidden = TestObserver<Bool, NoError>()
   private let chatInputViewMessageLengthCountLabelText = TestObserver<String, NoError>()
+  private let chatInputViewMessageLengthCountLabelTextColor = TestObserver<UIColor, NoError>()
   private let chatInputViewPlaceholderText = TestObserver<String, NoError>()
   private let clearTextFieldAndResignFirstResponder = TestObserver<(), NoError>()
   private let collapseChatInputView = TestObserver<Bool, NoError>()
@@ -30,6 +31,8 @@ internal final class LiveStreamChatViewModelTests: TestCase {
       .observe(self.chatInputViewMessageLengthCountLabelStackViewHidden.observer)
     self.vm.outputs.chatInputViewMessageLengthCountLabelText
       .observe(self.chatInputViewMessageLengthCountLabelText.observer)
+    self.vm.outputs.chatInputViewMessageLengthCountLabelTextColor
+      .observe(self.chatInputViewMessageLengthCountLabelTextColor.observer)
     self.vm.outputs.chatInputViewPlaceholderText.map { $0.string }
       .observe(self.chatInputViewPlaceholderText.observer)
     self.vm.outputs.clearTextFieldAndResignFirstResponder
@@ -388,38 +391,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     }
   }
 
-  func testLimitMessageLength() {
-    let fiftyCharString = (0...49).map { _ in "x" }.reduce("", +)
-    let oneFortyCharString = (0...139).map { _ in "x" }.reduce("", +)
-    let oneFortyOneCharString = (0...140).map { _ in "x" }.reduce("", +)
-    let twoHundredCharString = (0...199).map { _ in "x" }.reduce("", +)
-
-    let fiftyChar = self.vm.inputs
-      .textField(currentText: "",
-                 shouldChangeCharactersIn: NSRange(),
-                 replacementString: fiftyCharString)
-
-    let oneFortyChar = self.vm.inputs
-      .textField(currentText: "",
-                 shouldChangeCharactersIn: NSRange(),
-                 replacementString: oneFortyCharString)
-
-    let oneFortyOneChar = self.vm.inputs
-      .textField(currentText: "",
-                 shouldChangeCharactersIn: NSRange(),
-                 replacementString: oneFortyOneCharString)
-
-    let twoHundredChar = self.vm.inputs
-      .textField(currentText: "",
-                 shouldChangeCharactersIn: NSRange(),
-                 replacementString: twoHundredCharString)
-
-    XCTAssertTrue(fiftyChar)
-    XCTAssertTrue(oneFortyChar)
-    XCTAssertFalse(oneFortyOneChar)
-    XCTAssertFalse(twoHundredChar)
-  }
-
   func testMessageLengthCountLabelStackViewHidden() {
     self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValueCount(0)
 
@@ -437,20 +408,54 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true, false, true])
   }
 
-  func testMessageLengthCountLabelText() {
+  func testMessageLengthCountLabelTextAndColor() {
+    let fiftyCharString = (0...49).map { _ in "x" }.reduce("", +)
+    let oneFortyCharString = (0...139).map { _ in "x" }.reduce("", +)
+    let oneFortyOneCharString = (0...140).map { _ in "x" }.reduce("", +)
+    let twoHundredCharString = (0...199).map { _ in "x" }.reduce("", +)
+
     self.chatInputViewMessageLengthCountLabelText.assertValueCount(0)
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValueCount(0)
+    self.sendButtonEnabled.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140"])
+    let normalColor = UIColor.white.withAlphaComponent(0.8)
+    let exceededColor = UIColor.ksr_red_400
 
-    self.vm.inputs.textDidChange(toText: "Typing")
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor])
+    self.sendButtonEnabled.assertValues([false])
 
-    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140", "6/140"])
+    self.vm.inputs.textDidChange(toText: fiftyCharString)
 
-    self.vm.inputs.textDidChange(toText: "")
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140", "90"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor])
+    self.sendButtonEnabled.assertValues([false, true])
 
-    self.chatInputViewMessageLengthCountLabelText.assertValues(["0/140", "6/140", "0/140"])
+    self.vm.inputs.textDidChange(toText: oneFortyCharString)
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140", "90", "0"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor])
+    self.sendButtonEnabled.assertValues([false, true])
+
+    self.vm.inputs.textDidChange(toText: oneFortyOneCharString)
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140", "90", "0", "-1"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor, exceededColor])
+    self.sendButtonEnabled.assertValues([false, true, false])
+
+    self.vm.inputs.textDidChange(toText: twoHundredCharString)
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140", "90", "0", "-1", "-60"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor, exceededColor])
+    self.sendButtonEnabled.assertValues([false, true, false])
+
+    self.vm.inputs.textDidChange(toText: fiftyCharString)
+
+    self.chatInputViewMessageLengthCountLabelText.assertValues(["140", "90", "0", "-1", "-60", "90"])
+    self.chatInputViewMessageLengthCountLabelTextColor.assertValues([normalColor, exceededColor, normalColor])
+    self.sendButtonEnabled.assertValues([false, true, false, true])
   }
 }

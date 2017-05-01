@@ -80,7 +80,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
 
     _ = self.chatInputViewMessageLengthCountLabel
-      |> UILabel.lens.textColor .~ UIColor.white.withAlphaComponent(0.8)
       |> UILabel.lens.font .~ UIFont.ksr_body(size: 10).monospaced
 
     _ = self.chatInputViewMessageLengthCountLabelStackView
@@ -173,6 +172,9 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.chatInputViewMessageLengthCountLabel.rac.text =
       self.viewModel.outputs.chatInputViewMessageLengthCountLabelText
 
+    self.chatInputViewMessageLengthCountLabel.rac.textColor =
+      self.viewModel.outputs.chatInputViewMessageLengthCountLabelTextColor
+
     self.chatInputViewMessageLengthCountLabelStackView.rac.hidden =
       self.viewModel.outputs.chatInputViewMessageLengthCountLabelStackViewHidden
   }
@@ -242,12 +244,5 @@ extension LiveStreamChatViewController: UITextFieldDelegate {
     textField.resignFirstResponder()
 
     return true
-  }
-
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-                 replacementString string: String) -> Bool {
-    return self.viewModel.inputs.textField(currentText: textField.text.coalesceWith(""),
-                                           shouldChangeCharactersIn: range,
-                                           replacementString: string)
   }
 }

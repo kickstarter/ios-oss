@@ -24,10 +24,6 @@ public protocol LiveStreamChatViewModelInputs {
   /// Call when the text field should begin editing
   func textFieldShouldBeginEditing() -> Bool
 
-  /// Call to test whether the textField should change characters
-  func textField(currentText text: String, shouldChangeCharactersIn range: NSRange,
-                 replacementString string: String) -> Bool
-
   /// Call with new value from the input field
   func textDidChange(toText text: String?)
 
@@ -53,6 +49,9 @@ public protocol LiveStreamChatViewModelOutputs {
 
   /// Emits the remaining message length of the chat input text field.
   var chatInputViewMessageLengthCountLabelText: Signal<String, NoError> { get }
+
+  /// Emits the text color for the message length count label.
+  var chatInputViewMessageLengthCountLabelTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits the placeholder text
   var chatInputViewPlaceholderText: Signal<NSAttributedString, NoError> { get }
@@ -153,11 +152,6 @@ LiveStreamChatViewModelOutputs {
       self.sendButtonTappedProperty.signal.mapConst(true)
     )
 
-    self.sendButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      textIsEmpty.map(negate)
-    )
-
     self.clearTextFieldAndResignFirstResponder = self.textProperty.signal.skipNil()
       .takeWhen(self.sendButtonTappedProperty.signal)
       .ignoreValues()
@@ -216,12 +210,6 @@ LiveStreamChatViewModelOutputs {
       return AppEnvironment.current.currentUser != nil
     }
 
-    self.textFieldShouldChangeCharactersInRangeReturnProperty <~
-      textFieldShouldChangeCharactersInRangeProperty.signal.skipNil().map { currentString, range, string in
-        return (currentString as NSString)
-          .replacingCharacters(in: range, with: string).characters.count <= maxMessageLength
-    }
-
     self.showErrorAlert = Signal.merge(
       initialChatMessages.errors(),
       sentChatMessageEvent.errors(),
@@ -244,17 +232,31 @@ LiveStreamChatViewModelOutputs {
         }
     }
 
-    self.chatInputViewMessageLengthCountLabelText = Signal.merge(
+    let text = Signal.merge(
       self.textProperty.signal,
       self.viewDidLoadProperty.signal.mapConst("")
       )
       .map { $0.coalesceWith("") }
-      .map { "\($0.characters.count)/\(maxMessageLength)" }
+
+    let maxLengthExceeded = text.map { $0.characters.count > maxMessageLength }
+
+    self.chatInputViewMessageLengthCountLabelText = text
+      .map { "\(maxMessageLength - $0.characters.count)" }
 
     self.chatInputViewMessageLengthCountLabelStackViewHidden = Signal.merge(
       textIsEmpty,
       self.viewDidLoadProperty.signal.mapConst(true)
     )
+
+    self.sendButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      Signal.combineLatest(textIsEmpty.map(negate), maxLengthExceeded.map(negate)).map { $0 && $1 }
+    ).skipRepeats()
+
+    self.chatInputViewMessageLengthCountLabelTextColor = maxLengthExceeded
+      .map {
+        $0 ? .ksr_red_400 : UIColor.white.withAlphaComponent(0.8)
+    }.skipRepeats()
   }
 
   private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
@@ -279,15 +281,6 @@ LiveStreamChatViewModelOutputs {
     return self.textFieldShouldBeginEditingReturnValueProperty.value
   }
 
-  private let textFieldShouldChangeCharactersInRangeProperty =
-    MutableProperty<(String, NSRange, String)?>(nil)
-  private let textFieldShouldChangeCharactersInRangeReturnProperty = MutableProperty<Bool>(false)
-  public func textField(currentText text: String, shouldChangeCharactersIn range: NSRange,
-                        replacementString string: String) -> Bool {
-    self.textFieldShouldChangeCharactersInRangeProperty.value = (text, range, string)
-    return self.textFieldShouldChangeCharactersInRangeReturnProperty.value
-  }
-
   private let textProperty = MutableProperty<String?>(nil)
   public func textDidChange(toText text: String?) {
     self.textProperty.value = text
@@ -308,6 +301,7 @@ LiveStreamChatViewModelOutputs {
   public let dismissKeyboard: Signal<(), NoError>
   public let chatInputViewMessageLengthCountLabelStackViewHidden: Signal<Bool, NoError>
   public let chatInputViewMessageLengthCountLabelText: Signal<String, NoError>
+  public let chatInputViewMessageLengthCountLabelTextColor: Signal<UIColor, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>
