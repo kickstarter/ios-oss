@@ -44,9 +44,6 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
 
-  /// Emits when the message length count label should be hidden.
-  var chatInputViewMessageLengthCountLabelStackViewHidden: Signal<Bool, NoError> { get }
-
   /// Emits the remaining message length of the chat input text field.
   var chatInputViewMessageLengthCountLabelText: Signal<String, NoError> { get }
 
@@ -243,11 +240,6 @@ LiveStreamChatViewModelOutputs {
     self.chatInputViewMessageLengthCountLabelText = text
       .map { "\(maxMessageLength - $0.characters.count)" }
 
-    self.chatInputViewMessageLengthCountLabelStackViewHidden = Signal.merge(
-      textIsEmpty,
-      self.viewDidLoadProperty.signal.mapConst(true)
-    )
-
     self.sendButtonEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       Signal.combineLatest(textIsEmpty.map(negate), maxLengthExceeded.map(negate)).map { $0 && $1 }
@@ -299,7 +291,6 @@ LiveStreamChatViewModelOutputs {
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
-  public let chatInputViewMessageLengthCountLabelStackViewHidden: Signal<Bool, NoError>
   public let chatInputViewMessageLengthCountLabelText: Signal<String, NoError>
   public let chatInputViewMessageLengthCountLabelTextColor: Signal<UIColor, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>

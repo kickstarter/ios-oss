@@ -11,7 +11,6 @@ import XCTest
 internal final class LiveStreamChatViewModelTests: TestCase {
   private let vm: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
-  private let chatInputViewMessageLengthCountLabelStackViewHidden = TestObserver<Bool, NoError>()
   private let chatInputViewMessageLengthCountLabelText = TestObserver<String, NoError>()
   private let chatInputViewMessageLengthCountLabelTextColor = TestObserver<UIColor, NoError>()
   private let chatInputViewPlaceholderText = TestObserver<String, NoError>()
@@ -27,8 +26,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.chatInputViewMessageLengthCountLabelStackViewHidden
-      .observe(self.chatInputViewMessageLengthCountLabelStackViewHidden.observer)
     self.vm.outputs.chatInputViewMessageLengthCountLabelText
       .observe(self.chatInputViewMessageLengthCountLabelText.observer)
     self.vm.outputs.chatInputViewMessageLengthCountLabelTextColor
@@ -389,23 +386,6 @@ internal final class LiveStreamChatViewModelTests: TestCase {
 
       XCTAssertEqual(["Sent Live Stream Message"], self.trackingClient.events)
     }
-  }
-
-  func testMessageLengthCountLabelStackViewHidden() {
-    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: .template, liveStreamEvent: .template)
-    self.vm.inputs.viewDidLoad()
-
-    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true])
-
-    self.vm.inputs.textDidChange(toText: "Typing")
-
-    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true, false])
-
-    self.vm.inputs.textDidChange(toText: "")
-
-    self.chatInputViewMessageLengthCountLabelStackViewHidden.assertValues([true, false, true])
   }
 
   func testMessageLengthCountLabelTextAndColor() {
