@@ -65,11 +65,11 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
 
     self.vm.inputs.hlsPlayerStateChanged(state: .readyToPlay)
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing(videoEnabled: true)])
 
     self.vm.inputs.hlsPlayerStateChanged(state: .failed)
     self.notifyDelegateOfPlaybackStateChange.assertValues([
-      .loading, .playing, .error(error: .failedToConnect)
+      .loading, .playing(videoEnabled: true), .error(error: .failedToConnect)
     ])
   }
 
@@ -85,7 +85,7 @@ internal final class LiveVideoViewModelTests: TestCase {
 
     // Step 2: Connect the session, playback state should change to playing
     self.vm.inputs.sessionDidConnect()
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .playing(videoEnabled: true)])
 
     // Step 3: A stream is created and a subscriber view should be configured
     let testStream1 = TestOTStreamType(streamId: "1")
@@ -108,7 +108,7 @@ internal final class LiveVideoViewModelTests: TestCase {
     // Step 7: The stream encounters an error, all video views should be removed
     self.vm.inputs.sessionDidFailWithError(error: TestOTErrorType(domain: "", code: 0, userInfo: nil))
     self.notifyDelegateOfPlaybackStateChange.assertValues(
-      [.loading, .playing, .error(error: .sessionInterrupted)]
+      [.loading, .playing(videoEnabled: true), .error(error: .sessionInterrupted)]
     )
 
     self.addAndConfigureSubscriberStreamId.assertValues(["1", "2"])
@@ -175,7 +175,7 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
   }
 
-  func testPlaybackStateChange_SubscribeVideoEnabledDisabled() {
+  func testPlaybackStateChange_VideoEnabledDisabled() {
     let sessionConfig = OpenTokSessionConfig(apiKey: "123", sessionId: "123", token: "123")
 
     self.notifyDelegateOfPlaybackStateChange.assertValueCount(0)
@@ -188,16 +188,21 @@ internal final class LiveVideoViewModelTests: TestCase {
     let testReason = TestOTSubscriberVideoEventReasonType()
     let ignoredReason = TestOTSubscriberVideoEventReasonType(false)
 
+    let playingVideoEnabled = LiveVideoPlaybackState.playing(videoEnabled: true)
+    let playingVideoDisabled = LiveVideoPlaybackState.playing(videoEnabled: false)
+
     self.vm.inputs.subscriberVideoDisabled(reason: testReason)
 
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, playingVideoDisabled])
 
     self.vm.inputs.subscriberVideoEnabled(reason: testReason)
 
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled, .videoEnabled])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, playingVideoDisabled,
+                                                           playingVideoEnabled])
 
     self.vm.inputs.subscriberVideoDisabled(reason: ignoredReason)
 
-    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, .videoDisabled, .videoEnabled])
+    self.notifyDelegateOfPlaybackStateChange.assertValues([.loading, playingVideoDisabled,
+                                                           playingVideoEnabled])
   }
 }

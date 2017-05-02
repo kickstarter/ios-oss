@@ -190,7 +190,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     let playbackStates: [LiveVideoPlaybackState] = [
       .loading,
-      .playing
+      .playing(videoEnabled: true)
     ]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -207,7 +207,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
         vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
 
-        let stateIdentifier = state == .playing ? "playing" : "loading"
+        let stateIdentifier = state == .playing(videoEnabled: true) ? "playing" : "loading"
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"

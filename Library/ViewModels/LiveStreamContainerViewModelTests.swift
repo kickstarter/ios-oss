@@ -151,7 +151,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.loaderStackViewHidden.assertValues([false])
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
       self.loaderStackViewHidden.assertValues([false, true])
     }
@@ -454,7 +454,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.videoViewControllerHidden.assertValues([true])
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
       self.videoViewControllerHidden.assertValues([true, false])
     }
@@ -491,7 +491,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.videoViewControllerHidden.assertValues([true])
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
       self.videoViewControllerHidden.assertValues([true, false])
     }
@@ -629,7 +629,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -672,7 +672,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -1061,13 +1061,13 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.loaderStackViewHidden.assertValues([false])
       self.videoViewControllerHidden.assertValueCount(0)
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .playing)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
       self.loaderText.assertValues(["Loading", "Joining the live stream"])
       self.loaderStackViewHidden.assertValues([false, true])
       self.videoViewControllerHidden.assertValues([false])
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .videoDisabled)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: false))
 
       self.loaderText.assertValues([
         "Loading",
@@ -1075,17 +1075,18 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
         "The live stream will resume when the connection improves"])
 
       self.loaderStackViewHidden.assertValues([false, true, false])
-      self.videoViewControllerHidden.assertValues([false, true, false, true])
+      self.videoViewControllerHidden.assertValues([false, true])
 
-      self.vm.inputs.videoPlaybackStateChanged(state: .videoEnabled)
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
       self.loaderText.assertValues([
         "Loading",
         "Joining the live stream",
-        "The live stream will resume when the connection improves"])
+        "The live stream will resume when the connection improves",
+        "Joining the live stream"])
 
       self.loaderStackViewHidden.assertValues([false, true, false, true])
-      self.videoViewControllerHidden.assertValues([false, true, false, true, false])
+      self.videoViewControllerHidden.assertValues([false, true, false])
     }
   }
 }

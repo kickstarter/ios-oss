@@ -298,7 +298,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let liveState = updatedEventFetch.values()
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
-      .filter { _, playbackState in playbackState == .loading || playbackState == .playing }
+      .filter { _, playbackState in
+        switch playbackState {
+        case .loading,
+             .playing:
+          return true
+        case .error:
+          return false
+        }
+      }
       .filter { event, playbackState in
         event.liveNow && !playbackState.isError
       }
@@ -334,12 +342,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     let isPlaying = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { state -> Bool in
         switch state {
-        case .playing,
-             .videoEnabled:
+        case .playing:
           return true
         case .error,
-             .loading,
-             .videoDisabled:
+             .loading:
           return false
         }
     }
@@ -350,20 +356,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         case .loading:
           return true
         case .playing,
-             .error,
-             .videoDisabled,
-             .videoEnabled:
+             .error:
           return false
         }
     }
 
     let videoEnabled = self.videoPlaybackStateChangedProperty.signal.skipNil()
-      .filter { $0 == .videoEnabled || $0 == .videoDisabled }
-      .map { $0 == .videoEnabled }
+      .filter { $0.isPlaying }
+      .map { state -> Bool in
+        if case let .playing(videoEnabled) = state { return videoEnabled }
+        return false
+    }
 
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      isPlaying.filter(isTrue).take(first: 1),
       videoEnabled
     )
 
@@ -387,10 +393,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .mapConst(1)
 
     self.videoViewControllerHidden = Signal.merge(
-      isPlaying.map(negate),
-      isLoading,
-      videoEnabled.map(negate)
-    ).skipRepeats()
+      videoEnabled.map(negate),
+      isLoading
+      )
+      .skipRepeats()
 
     let playbackError = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { $0.error }
@@ -430,15 +436,17 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.showErrorAlert,
       videoEnabled.filter { !$0 }.mapConst(localizedString(
         key: "The_live_stream_will_resume_when_the_connection_improves",
-        defaultValue: "The live stream will resume when the connection improves")
+        defaultValue: "The live stream will resume when the connection improves"))
       )
-    )
+      .skipRepeats()
 
     self.loaderActivityIndicatorAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       nonStarterState.map(negate),
-      self.showErrorAlert.mapConst(false)
-    )
+      self.showErrorAlert.mapConst(false),
+      isPlaying.map(negate)
+      )
+      .skipRepeats()
 
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)

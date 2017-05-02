@@ -33,12 +33,17 @@ public enum LiveVideoPlaybackError {
 public enum LiveVideoPlaybackState {
   case error(error: LiveVideoPlaybackError)
   case loading
-  case playing
-  case videoDisabled
-  case videoEnabled
+  case playing(videoEnabled: Bool)
 
   public var isError: Bool {
     if case .error = self {
+      return true
+    }
+    return false
+  }
+
+  public var isPlaying: Bool {
+    if case .playing = self {
       return true
     }
     return false
@@ -54,12 +59,11 @@ extension LiveVideoPlaybackState: Equatable {
   public static func == (lhs: LiveVideoPlaybackState, rhs: LiveVideoPlaybackState) -> Bool {
     switch (lhs, rhs) {
     case (.loading, .loading): return true
-    case (.playing, .playing): return true
+    case (.playing(let lhsVideoEnabled), .playing(let rhsVideoEnabled)):
+      return lhsVideoEnabled == rhsVideoEnabled
     case (.error(let lhsError), .error(let rhsError)):
       return lhsError == rhsError
-    case (.videoDisabled, .videoDisabled): return true
-    case (.videoEnabled, .videoEnabled): return true
-    case (.loading, _), (.playing, _), (.error, _), (.videoDisabled, _), (.videoEnabled, _):
+    case (.loading, _), (.playing, _), (.error, _):
       return false
     }
   }

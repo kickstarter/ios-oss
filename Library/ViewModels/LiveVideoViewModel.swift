@@ -97,10 +97,10 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     let subscriberVideoEnabledState = Signal<LiveVideoPlaybackState, NoError>.merge(
       self.subscriberVideoEnabledProperty.signal.skipNil()
         .filter { $0.isQualityChangedReason }
-        .mapConst(.videoEnabled),
+        .mapConst(.playing(videoEnabled: true)),
       self.subscriberVideoDisabledProperty.signal.skipNil()
         .filter { $0.isQualityChangedReason }
-        .mapConst(.videoDisabled)
+        .mapConst(.playing(videoEnabled: false))
     )
 
     self.notifyDelegateOfPlaybackStateChange = Signal.merge(
@@ -111,7 +111,7 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
 
       openTokSessionConfig.mapConst(.loading),
 
-      self.sessionDidConnectProperty.signal.mapConst(.playing),
+      self.sessionDidConnectProperty.signal.mapConst(.playing(videoEnabled: true)),
 
       self.sessionDidFailWithErrorProperty.signal.skipNil()
         .mapConst(.error(error: .sessionInterrupted)),
@@ -212,6 +212,6 @@ private func playbackState(fromHlsPlayState state: AVPlayerItemStatus) -> LiveVi
   switch state {
   case .failed: return .error(error: .failedToConnect)
   case .unknown: return .loading
-  case .readyToPlay: return .playing
+  case .readyToPlay: return .playing(videoEnabled: true)
   }
 }
