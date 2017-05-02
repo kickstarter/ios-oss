@@ -1070,8 +1070,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: false))
 
       self.loaderText.assertValues([
-        "Loading",
-        "Joining the live stream",
+        "Loading", "Joining the live stream",
         "The live stream will resume when the connection improves"])
 
       self.loaderStackViewHidden.assertValues([false, true, false])
