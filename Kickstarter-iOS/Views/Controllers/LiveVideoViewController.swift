@@ -173,7 +173,7 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func addAndConfigureSubscriber(stream: OTStream) {
-    guard let subscriber = OTSubscriber(stream: stream, delegate: nil),
+    guard let subscriber = OTSubscriber(stream: stream, delegate: self),
       let subscriberView = subscriber.view
       else { return }
 
@@ -211,6 +211,17 @@ public final class LiveVideoViewController: UIViewController {
 
 extension OTStream: OTStreamType {}
 extension OTError: OTErrorType {}
+extension OTSubscriberVideoEventReason: OTSubscriberVideoEventReasonType {
+  public var isQualityChangedReason: Bool {
+    switch self {
+    case .qualityChanged:
+      return true
+    case .publisherPropertyChanged,
+         .subscriberPropertyChanged:
+      return false
+    }
+  }
+}
 
 extension LiveVideoViewController: OTSessionDelegate {
   public func sessionDidConnect(_ session: OTSession) {
@@ -230,4 +241,20 @@ extension LiveVideoViewController: OTSessionDelegate {
   public func session(_ session: OTSession, didFailWithError error: OTError) {
     self.viewModel.inputs.sessionDidFailWithError(error: error)
   }
+}
+
+extension LiveVideoViewController: OTSubscriberDelegate {
+  public func subscriberDidConnect(toStream subscriber: OTSubscriberKit) {}
+
+  public func subscriber(_ subscriber: OTSubscriberKit, didFailWithError error: OTError) {}
+
+  public func subscriberVideoDisabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
+    self.viewModel.inputs.subscriberVideoDisabled(reason: reason)
+  }
+
+  public func subscriberVideoEnabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
+    self.viewModel.inputs.subscriberVideoEnabled(reason: reason)
+  }
+
+  public func subscriberVideoDataReceived(_ subscriber: OTSubscriber) {}
 }
