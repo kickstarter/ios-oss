@@ -435,8 +435,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
       self.showErrorAlert,
       videoEnabled.filter(isFalse).mapConst(localizedString(
-        key: "The_live_stream_will_resume_when_the_connection_improves",
-        defaultValue: "The live stream will resume when the connection improves"))
+        key: "Video_disabled_until_the_internet_connection_improves",
+        defaultValue: "Video disabled until the internet connection improves"))
       )
       .skipRepeats()
 

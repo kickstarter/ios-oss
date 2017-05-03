@@ -1071,7 +1071,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
 
       self.loaderText.assertValues([
         "Loading", "Joining the live stream",
-        "The live stream will resume when the connection improves"])
+        "Video disabled until the internet connection improves"])
 
       self.loaderStackViewHidden.assertValues([false, true, false])
       self.videoViewControllerHidden.assertValues([false, true])
@@ -1081,7 +1081,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
       self.loaderText.assertValues([
         "Loading",
         "Joining the live stream",
-        "The live stream will resume when the connection improves",
+        "Video disabled until the internet connection improves",
         "Joining the live stream"])
 
       self.loaderStackViewHidden.assertValues([false, true, false, true])
