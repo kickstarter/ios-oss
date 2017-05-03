@@ -93,6 +93,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     _  = self.loaderLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textAlignment .~ .center
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ .white
