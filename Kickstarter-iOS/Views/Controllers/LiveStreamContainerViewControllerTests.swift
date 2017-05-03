@@ -180,6 +180,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     }
   }
 
+  //swiftlint:disable:next function_body_length
   func testPlaybackStates() {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date
@@ -190,7 +191,8 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
 
     let playbackStates: [LiveVideoPlaybackState] = [
       .loading,
-      .playing
+      .playing(videoEnabled: true),
+      .playing(videoEnabled: false)
     ]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -205,9 +207,15 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         self.scheduler.advance(by: .seconds(3))
 
-        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: .loading)
+        let stateIdentifier: String
+        switch state {
+        case .playing(let videoEnabled):
+          stateIdentifier = "playing_\(videoEnabled ? "videoEnabled" : "videoDisabled")"
+        default:
+          stateIdentifier = "loading"
+        }
 
-        let stateIdentifier = state == .playing ? "playing" : "loading"
+        vc.liveVideoViewControllerPlaybackStateChanged(controller: nil, state: state)
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(lang)_state_\(stateIdentifier)"

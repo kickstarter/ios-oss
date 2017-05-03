@@ -298,6 +298,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let liveState = updatedEventFetch.values()
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
+      .filter { _, playbackState in
+        switch playbackState {
+        case .loading,
+             .playing:
+          return true
+        case .error:
+          return false
+        }
+      }
       .filter { event, playbackState in
         event.liveNow && !playbackState.isError
       }
@@ -352,9 +361,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
     }
 
+    let videoEnabled = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .filter { $0.isPlaying }
+      .map { state -> Bool in
+        if case let .playing(videoEnabled) = state { return videoEnabled }
+        return false
+    }
+
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      isPlaying.filter(isTrue).take(first: 1)
+      videoEnabled
     )
 
     self.projectImageUrl = project.flatMap { project in
@@ -377,9 +393,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .mapConst(1)
 
     self.videoViewControllerHidden = Signal.merge(
-      isPlaying.map(negate),
+      videoEnabled.map(negate),
       isLoading
-    ).skipRepeats()
+      )
+      .skipRepeats()
 
     let playbackError = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { $0.error }
@@ -416,14 +433,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       replayState.mapConst(Strings.The_replay_will_start_soon()),
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
-      self.showErrorAlert
-    )
+      self.showErrorAlert,
+      videoEnabled.filter(isFalse).mapConst(localizedString(
+        key: "Video_disabled_until_the_internet_connection_improves",
+        defaultValue: "Video disabled until the internet connection improves"))
+      )
+      .skipRepeats()
 
     self.loaderActivityIndicatorAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       nonStarterState.map(negate),
-      self.showErrorAlert.mapConst(false)
-    )
+      self.showErrorAlert.mapConst(false),
+      isPlaying.map(negate)
+      )
+      .skipRepeats()
 
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)
