@@ -125,6 +125,7 @@
 "Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
+"Joining_the_live_stream" = "Verbindung zum Live-Stream wird aufgebaut";
 "Just_for_you" = "Nur für dich.";
 "Keep_reading" = "Mehr lesen";
 "Keep_up_with_future_live_streams" = "Zeitnahe Info zu zukünftigen Live-Streams";
@@ -180,6 +181,7 @@
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Um dieses Projekt zu unterstützen, musst du dich bitte anmelden oder registrieren.";
 "Please_log_in_or_sign_up_to_message_this_creator" = "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren.";
+"Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
 "Pledge" = "Beitrag:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
@@ -678,7 +680,12 @@
 "dates.time_seconds_ago_abbreviated.two" = "vor 2 Sekunden";
 "dates.time_seconds_ago_abbreviated.zero" = "vor 0 Sekunden";
 "dates.yesterday" = "Gestern";
-"days" = "Tage";
+"days.few" = "Tg";
+"days.many" = "Tg";
+"days.one" = "Tag";
+"days.two" = "Tg";
+"days.zero" = "Tg";
+"days_plural" = "Tg";
 "discovery.accessibility.buttons.sort_hint" = "Sortiert Änderungen.";
 "discovery.accessibility.buttons.sort_label" = "Sortiert nach %{sort}";
 "discovery.accessibility.live_project_count" = "Live-Projekte";
@@ -830,7 +837,12 @@
 "general.social.buttons.connect_with_twitter" = "MIt Twitter verknüpfen";
 "general.switch_toggle_off" = "NEIN";
 "general.switch_toggle_on" = "JA";
-"hours" = "Stunden";
+"hours.few" = "Std";
+"hours.many" = "Std";
+"hours.one" = "Std";
+"hours.two" = "Std";
+"hours.zero" = "Std";
+"hours_plural" = "Std";
 "invalid_api_client_alert.cancel" = "Abbrechen";
 "invalid_api_client_alert.message" = "Du scheinst eine sehr alte Version der App zu benutzen. Um fortzufahren, installiere bitte die neueste Version aus dem App Store.";
 "invalid_api_client_alert.title" = "Bitte aktualisieren";
@@ -906,7 +918,12 @@
 "messages.navigation.sent" = "Gesendet";
 "messages.search.placeholder_search_messages" = "Nachrichten suchen";
 "messages.sent_date" = "gesendet %{sent_date}";
-"minutes" = "Min";
+"minutes.few" = "Min";
+"minutes.many" = "Min";
+"minutes.one" = "Min";
+"minutes.two" = "Min";
+"minutes.zero" = "Min";
+"minutes_plural" = "Min";
 "percentage_funded" = "%{percentage} finanziert";
 "plus_shipping_cost" = "+%{shipping_cost}";
 "profile.buttons.messages" = "Nachrichten";
