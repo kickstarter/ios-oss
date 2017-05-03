@@ -434,7 +434,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
       self.showErrorAlert,
-      videoEnabled.filter { !$0 }.mapConst(localizedString(
+      videoEnabled.filter(isFalse).mapConst(localizedString(
         key: "The_live_stream_will_resume_when_the_connection_improves",
         defaultValue: "The live stream will resume when the connection improves"))
       )
