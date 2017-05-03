@@ -98,6 +98,7 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UITextField.lens.font .~ .ksr_body(size: 14)
       |> UITextField.lens.borderStyle .~ .none
       |> UITextField.lens.returnKeyType .~ .done
+      |> UITextField.lens.autocapitalizationType .~ .sentences
 
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
