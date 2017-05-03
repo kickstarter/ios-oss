@@ -132,13 +132,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.days() }
+      |> UILabel.lens.text %~ { _ in Strings.days_plural() }
 
     _ = self.hoursSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.hours() }
+      |> UILabel.lens.text %~ { _ in Strings.hours_plural() }
 
     _ = self.minutesSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.minutes() }
+      |> UILabel.lens.text %~ { _ in Strings.minutes_plural() }
 
     _ = self.secondsSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.seconds() }
