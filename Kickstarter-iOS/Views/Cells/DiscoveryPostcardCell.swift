@@ -4,7 +4,16 @@ import Library
 import Prelude
 import UIKit
 
+internal protocol DiscoveryPostcardCellDelegate: class {
+  func discoveryPostcardTappedShared(shareContext: ShareContext)
+}
+
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
+  internal weak var delegate: DiscoveryPostcardCellDelegate? {
+    didSet {
+      self.viewModel.inputs.delegateDidSet()
+    }
+  }
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
@@ -28,13 +37,22 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
+  @IBOutlet fileprivate weak var shareButton: UIButton!
   @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
   @IBOutlet fileprivate weak var starButton: UIButton!
-  @IBOutlet weak var starStackView: UIStackView!
 
   // swiftlint:disable function_body_length
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.starButton.addTarget(self, action: #selector(starButtonTapped),
+                                     for: .touchUpInside)
+
+    self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -123,28 +141,19 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
 
-    _ = self.starButton
-      |> saveButtonStyle
-      |> UIButton.lens.titleLabel.font .~ .ksr_body(size: 13)
-      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(2),
-                                                  left: Styles.grid(2),
-                                                  bottom: Styles.grid(2),
-                                                  right: Styles.grid(2))
-      |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(4))
-      |> UIButton.lens.title(forState: .normal) %~ { _ in "Save" }
-
-    _ = self.starStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(0)
-      |> UIStackView.lens.layoutMargins
-      .~ .init(top: Styles.gridHalf(0), left: Styles.grid(0), bottom: Styles.grid(0), right: Styles.grid(0))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-
     _ = self.socialStackView
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+    _ = self.starButton
+      |> saveButtonStyle
+      //|> UIButton.lens.hidden .~ true
+
+    _ = self.shareButton
+      |> shareButtonStyle
   }
   // swiftlint:enable function_body_length
 
@@ -170,6 +179,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
+    self.starButton.rac.selected = self.viewModel.outputs.starButtonSelected
 
     self.viewModel.outputs.metadataData
       .observeForUI()
@@ -209,6 +219,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] url in
         self?.socialAvatarImageView.ksr_setImageWithURL(url)
     }
+
+    self.viewModel.outputs.notifyDelegateShareButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] context in
+        self?.delegate?.discoveryPostcardTappedShared(shareContext: context)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -225,4 +241,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         UIBezierPath.init(rect: self.metadataBackgroundView.bounds).cgPath
     }
   }
+
+  @objc fileprivate func starButtonTapped() {
+    self.viewModel.inputs.starButtonTapped()
+  }
+
+  @objc fileprivate func shareButtonTapped() {
+    self.viewModel.inputs.shareButtonTapped()
+  }
+
 }

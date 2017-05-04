@@ -43,6 +43,12 @@ private enum PostcardMetadataType {
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
+
+  func delegateDidSet()
+
+  func shareButtonTapped()
+
+  func starButtonTapped()
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -75,6 +81,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when we notify the delegate that the share button was tapped.
+  var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -111,6 +120,8 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits the text for the social label.
   var socialLabelText: Signal<String, NoError> { get }
+
+  var starButtonSelected: Signal<Bool, NoError> { get }
 
   /// Emits a boolean that determines if the social view should be hidden.
   var socialStackViewHidden: Signal<Bool, NoError> { get }
@@ -203,11 +214,19 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.personalization.friends == nil || $0.personalization.friends?.count ?? 0 == 0 }
       .skipRepeats()
 
+    self.starButtonSelected = project
+      .map {$0.personalization.isStarred == true }
+      .skipRepeats()
+
     self.fundingProgressContainerViewHidden = project
       .map { $0.state == .canceled || $0.state == .suspended }
 
     self.fundingProgressBarViewHidden = project
       .map { $0.state == .failed }
+
+    self.notifyDelegateShareButtonTapped = project
+      .map(ShareContext.discovery)
+      .takeWhen(self.shareButtonTappedProperty.signal)
 
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
@@ -217,9 +236,24 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   }
   // swiftlint:enable function_body_length
 
+  fileprivate let delegateDidSetProperty = MutableProperty()
+  public func delegateDidSet() {
+    self.delegateDidSetProperty.value = ()
+  }
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
+  }
+
+  fileprivate let shareButtonTappedProperty = MutableProperty()
+  public func shareButtonTapped() {
+    self.shareButtonTappedProperty.value = ()
+  }
+
+  fileprivate let starButtonTappedProperty = MutableProperty()
+  public func starButtonTapped() {
+    self.starButtonTappedProperty.value = ()
   }
 
   public let backersTitleLabelText: Signal<String, NoError>
@@ -232,6 +266,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
+  public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
@@ -245,6 +280,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
+  public let starButtonSelected: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }

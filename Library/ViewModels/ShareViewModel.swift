@@ -78,7 +78,8 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       self.twitterButtonTappedProperty.signal.mapConst(SLServiceTypeTwitter)
       )
 
-    self.showShareCompose = Signal.combineLatest(shareContext, directShareService)
+    self.showShareCompose = shareContext
+      .takePairWhen(directShareService)
       .map(shareComposeController(forShareContext:serviceType:))
       .skipNil()
 
@@ -189,6 +190,8 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
   switch shareContext {
   case let .creatorDashboard(project):
     return ProjectActivityItemProvider(project: project)
+  case let .discovery(project):
+    return ProjectActivityItemProvider(project: project)
   case let .liveStream(_, liveStreamEvent):
     return LiveStreamActivityItemProvider(liveStreamEvent: liveStreamEvent)
   case let .project(project):
@@ -204,6 +207,8 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
 
   switch shareContext {
   case let .creatorDashboard(project):
+    return URL(string: project.urls.web.project)
+  case let .discovery(project):
     return URL(string: project.urls.web.project)
   case let .project(project):
     return URL(string: project.urls.web.project)
@@ -243,6 +248,8 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
 
   switch shareContext {
   case let .creatorDashboard(project):
+    return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
+  case let .discovery(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .liveStream(_, liveStreamEvent):
     return twitterInitialText(forLiveStreamEvent: liveStreamEvent)

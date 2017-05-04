@@ -291,14 +291,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R0g-tb-Pfo" userLabel="Card View">
-                                            <rect key="frame" x="18" y="18" width="364" height="464"/>
+                                            <rect key="frame" x="18" y="18" width="364" height="429.5"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hnN-BJ-FXy" userLabel="Project And Social Stack View">
                                             <rect key="frame" x="18" y="18" width="364" height="514"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="x7P-p0-T4F" userLabel="Project Stack View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="465.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="431.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cosmic-surgery" translatesAutoresizingMaskIntoConstraints="NO" id="vUL-dU-47D">
                                                             <rect key="frame" x="0.0" y="0.0" width="364" height="205"/>
@@ -408,38 +408,20 @@
                                                             </subviews>
                                                             <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
                                                         </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="8wl-ep-ble">
-                                                            <rect key="frame" x="0.0" y="431.5" width="364" height="34"/>
-                                                            <subviews>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jd7-kG-aiS">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="364" height="1"/>
-                                                                    <color key="backgroundColor" red="0.92941176470588238" green="0.92941176470588238" blue="0.92941176470588238" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="1" id="hcw-Dj-soe"/>
-                                                                    </constraints>
-                                                                </view>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOE-zG-Jrl">
-                                                                    <rect key="frame" x="0.0" y="12" width="364" height="22"/>
-                                                                    <state key="normal" title="Save" image="star-filled-icon">
-                                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    </state>
-                                                                </button>
-                                                            </subviews>
-                                                        </stackView>
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="cQc-Xu-HYZ">
-                                                    <rect key="frame" x="0.0" y="465.5" width="364" height="48.5"/>
+                                                    <rect key="frame" x="0.0" y="431.5" width="364" height="82.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zack-sears" translatesAutoresizingMaskIntoConstraints="NO" id="KiT-j5-BB7" customClass="CircleAvatarImageView" customModule="Library">
-                                                            <rect key="frame" x="0.0" y="9.5" width="30" height="30"/>
+                                                            <rect key="frame" x="0.0" y="26.5" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="KiT-j5-BB7" secondAttribute="height" multiplier="1:1" id="26Q-TJ-Uuw"/>
                                                                 <constraint firstAttribute="height" constant="30" id="L4t-U1-hSI" userLabel="42"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ghandi is a backer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCZ-kN-QmM">
-                                                            <rect key="frame" x="31" y="14" width="333" height="20.5"/>
+                                                            <rect key="frame" x="31" y="31" width="333" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -449,7 +431,7 @@
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNM-IW-eI1">
-                                            <rect key="frame" x="30" y="7.5" width="149.5" height="20.5"/>
+                                            <rect key="frame" x="30" y="8" width="149.5" height="20.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8v0-Ix-KPn">
                                                     <rect key="frame" x="0.0" y="0.0" width="149.5" height="20.5"/>
@@ -482,8 +464,27 @@
                                                 <constraint firstItem="8v0-Ix-KPn" firstAttribute="top" secondItem="KNM-IW-eI1" secondAttribute="top" id="y2a-7i-7kw"/>
                                             </constraints>
                                         </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="OqX-qg-UeE">
+                                            <rect key="frame" x="303" y="28" width="69" height="30"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeZ-dl-EIR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                    <state key="normal" title="X">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-o3-RmP">
+                                                    <rect key="frame" x="39" y="0.0" width="30" height="30"/>
+                                                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                                    <state key="normal" title="X">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="OqX-qg-UeE" secondAttribute="trailing" constant="10" id="5RF-E2-1AF"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="hnN-BJ-FXy" secondAttribute="leading" id="Axh-gN-jM9"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="bottom" secondItem="x7P-p0-T4F" secondAttribute="bottom" constant="-1.5" id="Bx7-Iz-HSU"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
@@ -494,6 +495,7 @@
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="leading" secondItem="x7P-p0-T4F" secondAttribute="leading" id="lVJ-hm-ql7"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnN-BJ-FXy" secondAttribute="top" id="mFo-CL-QQM"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnN-BJ-FXy" secondAttribute="trailing" id="wwI-U6-fYG"/>
+                                        <constraint firstItem="OqX-qg-UeE" firstAttribute="top" secondItem="vUL-dU-47D" secondAttribute="top" constant="10" id="zJl-7S-Kub"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
                                 </tableViewCellContentView>
@@ -520,11 +522,11 @@
                                     <outlet property="projectStateSubtitleLabel" destination="Ns6-N4-QxS" id="mLK-N6-YYU"/>
                                     <outlet property="projectStateTitleLabel" destination="X4W-KP-C0k" id="BjS-Pk-6no"/>
                                     <outlet property="projectStatsStackView" destination="5bC-Ts-lge" id="5ai-0c-eEB"/>
+                                    <outlet property="shareButton" destination="NeZ-dl-EIR" id="yRT-Wv-bTE"/>
                                     <outlet property="socialAvatarImageView" destination="KiT-j5-BB7" id="b0m-Ja-k5T"/>
                                     <outlet property="socialLabel" destination="cCZ-kN-QmM" id="hRv-P9-bzK"/>
                                     <outlet property="socialStackView" destination="cQc-Xu-HYZ" id="1St-Ll-GeT"/>
-                                    <outlet property="starButton" destination="uOE-zG-Jrl" id="OxS-tn-KXL"/>
-                                    <outlet property="starStackView" destination="8wl-ep-ble" id="zPy-Jo-NDW"/>
+                                    <outlet property="starButton" destination="5Ss-o3-RmP" id="WUW-un-3Hf"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -545,7 +547,6 @@
         <image name="cosmic-surgery" width="800" height="600"/>
         <image name="kickstarter-logo" width="149" height="29"/>
         <image name="metadata-potd" width="14" height="12"/>
-        <image name="star-filled-icon" width="22" height="22"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

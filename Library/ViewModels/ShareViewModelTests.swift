@@ -23,6 +23,13 @@ internal final class ShareViewModelTests: TestCase {
     self.vm.outputs.showShareSheet.observe(self.showShareSheet.observer)
   }
 
+  func testShowShareSheet_Discovery() {
+    self.vm.inputs.configureWith(shareContext: .discovery(.template))
+    self.vm.inputs.shareButtonTapped()
+
+    self.showShareSheet.assertValueCount(1)
+  }
+
   func testShowShareSheet_Project() {
     self.vm.inputs.configureWith(shareContext: .project(.template))
     self.vm.inputs.shareButtonTapped()
