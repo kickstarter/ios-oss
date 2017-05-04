@@ -424,7 +424,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { refTag -> String in
         if refTag == .liveStreamCountdown { return Strings.The_live_stream_will_start_soon() }
 
-        return localizedString(key: "Joining_the_live_stream", defaultValue: "Joining the live stream")
+        return Strings.Joining_the_live_stream()
     }
 
     self.loaderText = Signal.merge(

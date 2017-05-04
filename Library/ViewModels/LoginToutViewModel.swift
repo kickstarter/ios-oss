@@ -241,8 +241,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   case .backProject:
     return Strings.Please_log_in_or_sign_up_to_back_this_project()
   case .liveStreamChat:
-    return localizedString(key: "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat",
-                           defaultValue: "Please log in or sign up to participate in this live stream chat.")
+    return Strings.Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat()
   case .liveStreamSubscribe:
     return Strings.Please_log_in_or_sign_up_to_subscribe_to_this_live_stream()
   case .messageCreator:
