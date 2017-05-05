@@ -24,8 +24,12 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testShowShareSheet_Discovery() {
-    self.vm.inputs.configureWith(shareContext: .discovery(.template))
+    let project = .template |> Project.lens.id .~ 30
+    let newProject = .template |> Project.lens.id .~ 55
+
+    self.vm.inputs.configureWith(shareContext: .discovery(project))
     self.vm.inputs.shareButtonTapped()
+    self.vm.inputs.configureWith(shareContext: .discovery(newProject))
 
     self.showShareSheet.assertValueCount(1)
   }

@@ -37,11 +37,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
+  @IBOutlet fileprivate weak var shareAndStarStackView: UIStackView!
   @IBOutlet fileprivate weak var shareButton: UIButton!
   @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
   @IBOutlet fileprivate weak var starButton: UIButton!
+  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
 
   // swiftlint:disable function_body_length
   internal override func awakeFromNib() {
@@ -55,6 +57,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    self.backgroundGradientView.startPoint = .zero
+    self.backgroundGradientView.endPoint = CGPoint(x: 0, y: 1)
+    self.backgroundGradientView.setGradient([
+      (UIColor(white: 0, alpha: 0.5), 0),
+      (UIColor(white: 0, alpha: 0), 1)
+      ])
 
     _ = self
       |> baseTableViewCellStyle()
@@ -133,6 +142,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
+    _ = self.shareAndStarStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
+
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
 
@@ -150,7 +162,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.starButton
       |> saveButtonStyle
-      //|> UIButton.lens.hidden .~ true
+      |> UIButton.lens.hidden .~ true
 
     _ = self.shareButton
       |> shareButtonStyle

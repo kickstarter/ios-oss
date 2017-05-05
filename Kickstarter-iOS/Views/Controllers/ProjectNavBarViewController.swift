@@ -186,10 +186,6 @@ public final class ProjectNavBarViewController: UIViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet($0) }
-
-    self.shareViewModel.outputs.showShareCompose
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareCompose($0) }
   }
   // swiftlint:enable function_body_length
 
@@ -224,13 +220,6 @@ public final class ProjectNavBarViewController: UIViewController {
       popover?.sourceView = self.shareButton
     }
 
-    self.present(controller, animated: true, completion: nil)
-  }
-
-  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
-    controller.completionHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
-    }
     self.present(controller, animated: true, completion: nil)
   }
 
