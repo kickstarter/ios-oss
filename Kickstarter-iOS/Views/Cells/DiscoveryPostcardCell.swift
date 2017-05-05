@@ -191,7 +191,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
-    self.starButton.rac.selected = self.viewModel.outputs.starButtonSelected
 
     self.viewModel.outputs.metadataData
       .observeForUI()

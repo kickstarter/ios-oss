@@ -121,8 +121,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the text for the social label.
   var socialLabelText: Signal<String, NoError> { get }
 
-  var starButtonSelected: Signal<Bool, NoError> { get }
-
   /// Emits a boolean that determines if the social view should be hidden.
   var socialStackViewHidden: Signal<Bool, NoError> { get }
 }
@@ -214,10 +212,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.personalization.friends == nil || $0.personalization.friends?.count ?? 0 == 0 }
       .skipRepeats()
 
-    self.starButtonSelected = project
-      .map {$0.personalization.isStarred == true }
-      .skipRepeats()
-
     self.fundingProgressContainerViewHidden = project
       .map { $0.state == .canceled || $0.state == .suspended }
 
@@ -280,7 +274,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
-  public let starButtonSelected: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }

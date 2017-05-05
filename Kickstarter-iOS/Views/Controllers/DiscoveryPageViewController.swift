@@ -156,10 +156,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet($0) }
 
-    self.shareViewModel.outputs.showShareCompose
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareCompose($0) }
-
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] emptyState in
@@ -228,14 +224,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 //      popover?.sourceView = self.shareButton
 //    }
 
-    self.present(controller, animated: true, completion: nil)
-  }
-
-  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
-
-    controller.completionHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
-    }
     self.present(controller, animated: true, completion: nil)
   }
 
