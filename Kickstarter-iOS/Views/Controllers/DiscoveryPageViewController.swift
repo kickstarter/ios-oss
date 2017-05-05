@@ -207,7 +207,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
 
-
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
       self?.shareViewModel.inputs.shareActivityCompletion(
@@ -300,7 +299,7 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
-  internal func discoveryPostcardTappedShared(shareContext: ShareContext){
+  internal func discoveryPostcardTappedShared(shareContext: ShareContext) {
     self.shareViewModel.inputs.configureWith(shareContext: shareContext)
     self.shareViewModel.inputs.shareButtonTapped()
   }
