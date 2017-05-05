@@ -104,7 +104,7 @@ secrets:
 		|| true; \
 	fi
 
-OPENTOK_VERSION = 2.10.0
+OPENTOK_VERSION = 2.10.2
 VERSION_FILE = Frameworks/OpenTok/version
 CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
 ifeq ($(CURRENT_OPENTOK_VERSION),)

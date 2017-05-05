@@ -1921,6 +1921,22 @@ with friends."
     )
   }
   /**
+   "Joining the live stream"
+
+   - **es**: "Joining the live stream"
+   - **de**: "Verbindung zum Live-Stream wird aufgebaut"
+   - **fr**: "Joining the live stream"
+   - **en**: "Joining the live stream"
+  */
+  public static func Joining_the_live_stream() -> String {
+    return localizedString(
+      key: "Joining_the_live_stream",
+      defaultValue: "Joining the live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Just for you."
 
    - **es**: "Sólo para ti."
@@ -2369,20 +2385,20 @@ with friends."
     )
   }
   /**
-   "No pledges 
+   "No pledges
 from friends yet."
 
    - **es**: "Todavía no hay contribuciones de amigos."
    - **de**: "Es gibt noch keine Beiträge von Freunden."
    - **fr**: "Mes amis 
 n'ont rien soutenu."
-   - **en**: "No pledges 
+   - **en**: "No pledges
 from friends yet."
   */
   public static func No_pledges_from_friends_yet() -> String {
     return localizedString(
       key: "No_pledges_from_friends_yet",
-      defaultValue: "No pledges \nfrom friends yet.",
+      defaultValue: "No pledges\nfrom friends yet.",
       count: nil,
       substitutions: [:]
     )
@@ -2735,6 +2751,22 @@ from friends yet."
     return localizedString(
       key: "Please_log_in_or_sign_up_to_message_this_creator",
       defaultValue: "Please log in or sign up to message this creator.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Please log in or sign up to participate in this live stream chat."
+
+   - **es**: "Please log in or sign up to participate in this live stream chat."
+   - **de**: "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen."
+   - **fr**: "Please log in or sign up to participate in this live stream chat."
+   - **en**: "Please log in or sign up to participate in this live stream chat."
+  */
+  public static func Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat() -> String {
+    return localizedString(
+      key: "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat",
+      defaultValue: "Please log in or sign up to participate in this live stream chat.",
       count: nil,
       substitutions: [:]
     )
@@ -3574,19 +3606,19 @@ daring ideas."
     )
   }
   /**
-   "Something 
+   "Something
 catch your eye?"
 
    - **es**: "¿Algo que te haya llamado la atención?"
    - **de**: "Etwas interessantes gefunden?"
    - **fr**: "Quelque chose a retenu votre attention ?"
-   - **en**: "Something 
+   - **en**: "Something
 catch your eye?"
   */
   public static func Something_catch_your_eye() -> String {
     return localizedString(
       key: "Something_catch_your_eye",
-      defaultValue: "Something \ncatch your eye?",
+      defaultValue: "Something\ncatch your eye?",
       count: nil,
       substitutions: [:]
     )
@@ -8672,13 +8704,13 @@ Please try again later."
    "days"
 
    - **es**: "días"
-   - **de**: "Tage"
+   - **de**: "Tg"
    - **fr**: "jours"
    - **en**: "days"
   */
-  public static func days() -> String {
+  public static func days_plural() -> String {
     return localizedString(
-      key: "days",
+      key: "days_plural",
       defaultValue: "days",
       count: nil,
       substitutions: [:]
@@ -10848,13 +10880,13 @@ Please try again later."
    "hours"
 
    - **es**: "horas"
-   - **de**: "Stunden"
+   - **de**: "Std"
    - **fr**: "heures"
    - **en**: "hours"
   */
-  public static func hours() -> String {
+  public static func hours_plural() -> String {
     return localizedString(
-      key: "hours",
+      key: "hours_plural",
       defaultValue: "hours",
       count: nil,
       substitutions: [:]
@@ -12078,9 +12110,9 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **fr**: "minutes"
    - **en**: "minutes"
   */
-  public static func minutes() -> String {
+  public static func minutes_plural() -> String {
     return localizedString(
-      key: "minutes",
+      key: "minutes_plural",
       defaultValue: "minutes",
       count: nil,
       substitutions: [:]

@@ -92,25 +92,29 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
                                                 refTag: .projectPage, presentedFromProject: true)
     let chatPage = LiveStreamContainerPage.chat(project: .template, liveStreamEvent: .template)
 
-    self.chatButtonTitleFontName.assertValues([".SFUIText"])
+    self.chatButtonTitleFontName.assertValues([UIFont.ksr_body().fontName])
     self.chatButtonTitleFontSize.assertValues([14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold"])
+    self.infoButtonTitleFontName.assertValues([UIFont.ksr_headline().fontName])
     self.infoButtonTitleFontSize.assertValues([14])
 
     self.vm.inputs.willTransition(toPage: chatPage)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold"])
+    self.chatButtonTitleFontName.assertValues([UIFont.ksr_body().fontName, UIFont.ksr_headline().fontName])
     self.chatButtonTitleFontSize.assertValues([14, 14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText"])
+    self.infoButtonTitleFontName.assertValues([UIFont.ksr_headline().fontName, UIFont.ksr_body().fontName])
     self.infoButtonTitleFontSize.assertValues([14, 14])
 
     self.vm.inputs.willTransition(toPage: infoPage)
     self.vm.inputs.pageTransition(completed: true)
 
-    self.chatButtonTitleFontName.assertValues([".SFUIText", ".SFUIText-Semibold", ".SFUIText"])
+    self.chatButtonTitleFontName.assertValues([
+      UIFont.ksr_body().fontName, UIFont.ksr_headline().fontName, UIFont.ksr_body().fontName
+      ])
     self.chatButtonTitleFontSize.assertValues([14, 14, 14])
-    self.infoButtonTitleFontName.assertValues([".SFUIText-Semibold", ".SFUIText", ".SFUIText-Semibold"])
+    self.infoButtonTitleFontName.assertValues([
+      UIFont.ksr_headline().fontName, UIFont.ksr_body().fontName, UIFont.ksr_headline().fontName
+      ])
     self.infoButtonTitleFontSize.assertValues([14, 14, 14])
   }
 

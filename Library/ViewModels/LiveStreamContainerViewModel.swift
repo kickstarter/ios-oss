@@ -175,23 +175,30 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let greenRoomOffStatus = greenRoomStatusEvent.values()
 
-    let numberOfPeopleWatchingEvent = Signal.zip(
-      updatedEventFetch.values().map { $0.isScale }.skipNil(),
+    let startNumberOfPeopleWatchingProducer = Signal.zip(
+      updatedEventFetch.values(),
       firebase
-      )
+    )
+
+    let numberOfPeopleWatchingEvent = startNumberOfPeopleWatchingProducer
+      .filter { liveStreamEvent, _ in liveStreamEvent.liveNow }
+      .map { liveStreamEvent, firebase in
+        (liveStreamEvent.isScale.coalesceWith(false), firebase)
+      }
       .flatMap { isScale, firebase in
         numberOfPeopleWatchingProducer(withFirebase: firebase, isScale: isScale)
-          .timeout(after: 10, raising: .timedOut, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    let numberPeopleWatchingTimedOutError = numberOfPeopleWatchingEvent.errors().filter { $0 == .timedOut }
-    let numberPeopleWatchingErrorsExceptTimedOut = numberOfPeopleWatchingEvent.errors()
-      .filter { $0 != .timedOut }
+    let numberOfPeopleWatchingTimeOutSignal = startNumberOfPeopleWatchingProducer
+      .flatMap { _ in
+        timer(interval: .seconds(10), on: AppEnvironment.current.scheduler)
+      }
+      .take(until: numberOfPeopleWatchingEvent.values().ignoreValues())
 
     self.numberOfPeopleWatching = Signal.merge(
       numberOfPeopleWatchingEvent.values(),
-      numberPeopleWatchingErrorsExceptTimedOut.mapConst(0)
+      numberOfPeopleWatchingEvent.errors().mapConst(0)
     )
 
     let maxOpenTokViewers = updatedEventFetch.values()
@@ -227,7 +234,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       updatedEventFetch.values()
         .map { event in event.isRtmp == .some(true) || didEndNormally(event: event) }
         .filter(isTrue),
-      numberPeopleWatchingTimedOutError.mapConst(true)
+      numberOfPeopleWatchingTimeOutSignal.mapConst(true)
       )
       .take(first: 1)
 
@@ -291,6 +298,15 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let liveState = updatedEventFetch.values()
       .takePairWhen(self.videoPlaybackStateChangedProperty.signal.skipNil())
+      .filter { _, playbackState in
+        switch playbackState {
+        case .loading,
+             .playing:
+          return true
+        case .error:
+          return false
+        }
+      }
       .filter { event, playbackState in
         event.liveNow && !playbackState.isError
       }
@@ -345,9 +361,16 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
         }
     }
 
+    let videoEnabled = self.videoPlaybackStateChangedProperty.signal.skipNil()
+      .filter { $0.isPlaying }
+      .map { state -> Bool in
+        if case let .playing(videoEnabled) = state { return videoEnabled }
+        return false
+    }
+
     self.loaderStackViewHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      isPlaying.filter(isTrue).take(first: 1)
+      videoEnabled
     )
 
     self.projectImageUrl = project.flatMap { project in
@@ -370,9 +393,10 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .mapConst(1)
 
     self.videoViewControllerHidden = Signal.merge(
-      isPlaying.map(negate),
+      videoEnabled.map(negate),
       isLoading
-    ).skipRepeats()
+      )
+      .skipRepeats()
 
     let playbackError = self.videoPlaybackStateChangedProperty.signal.skipNil()
       .map { $0.error }
@@ -400,7 +424,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       .map { refTag -> String in
         if refTag == .liveStreamCountdown { return Strings.The_live_stream_will_start_soon() }
 
-        return localizedString(key: "Joining_the_live_stream", defaultValue: "Joining the live stream")
+        return Strings.Joining_the_live_stream()
     }
 
     self.loaderText = Signal.merge(
@@ -409,14 +433,20 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
       replayState.mapConst(Strings.The_replay_will_start_soon()),
       nonStarterState.mapConst(Strings.No_replay_is_available_for_this_live_stream()),
       self.viewDidLoadProperty.signal.mapConst(Strings.Loading()),
-      self.showErrorAlert
-    )
+      self.showErrorAlert,
+      videoEnabled.filter(isFalse).mapConst(localizedString(
+        key: "Video_disabled_until_the_internet_connection_improves",
+        defaultValue: "Video disabled until the internet connection improves"))
+      )
+      .skipRepeats()
 
     self.loaderActivityIndicatorAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       nonStarterState.map(negate),
-      self.showErrorAlert.mapConst(false)
-    )
+      self.showErrorAlert.mapConst(false),
+      isPlaying.map(negate)
+      )
+      .skipRepeats()
 
     Signal.combineLatest(configData, startEndTimes)
       .takeWhen(self.closeButtonTappedProperty.signal)

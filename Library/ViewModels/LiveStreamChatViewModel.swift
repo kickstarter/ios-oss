@@ -4,6 +4,8 @@ import Prelude
 import ReactiveSwift
 import Result
 
+private let maxMessageLength = 140
+
 public protocol LiveStreamChatViewModelType {
   var inputs: LiveStreamChatViewModelInputs { get }
   var outputs: LiveStreamChatViewModelOutputs { get }
@@ -42,6 +44,12 @@ public protocol LiveStreamChatViewModelOutputs {
   /// Emits when the keyboard should dismiss on rotate.
   var dismissKeyboard: Signal<(), NoError> { get }
 
+  /// Emits the remaining message length of the chat input text field.
+  var chatInputViewMessageLengthCountLabelText: Signal<String, NoError> { get }
+
+  /// Emits the text color for the message length count label.
+  var chatInputViewMessageLengthCountLabelTextColor: Signal<UIColor, NoError> { get }
+
   /// Emits the placeholder text
   var chatInputViewPlaceholderText: Signal<NSAttributedString, NoError> { get }
 
@@ -68,6 +76,7 @@ LiveStreamChatViewModelOutputs {
       self.viewDidLoadProperty.signal
     ).map(first)
 
+    let project = configData.map(first)
     let initialLiveStreamEvent = configData.map(second)
 
     let liveStreamEventFetch = Signal.merge(
@@ -140,11 +149,6 @@ LiveStreamChatViewModelOutputs {
       self.sendButtonTappedProperty.signal.mapConst(true)
     )
 
-    self.sendButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      textIsEmpty.map(negate)
-    )
-
     self.clearTextFieldAndResignFirstResponder = self.textProperty.signal.skipNil()
       .takeWhen(self.sendButtonTappedProperty.signal)
       .ignoreValues()
@@ -152,6 +156,7 @@ LiveStreamChatViewModelOutputs {
     let wantsToSendChat = self.textProperty.signal.skipNil()
       .filter { !isWhitespacesAndNewlines($0) }
       .takeWhen(self.sendButtonTappedProperty.signal)
+      .map { $0.trimmed() }
 
     let newChatMessage = firebase
       .takePairWhen(wantsToSendChat)
@@ -176,7 +181,15 @@ LiveStreamChatViewModelOutputs {
       .takePairWhen(newChatMessage)
       .flatMap { path, message in
         AppEnvironment.current.liveStreamService.sendChatMessage(withPath: path, chatMessage: message)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
+    }
+
+    Signal.combineLatest(project, liveStreamEvent)
+      .takeWhen(sentChatMessageEvent.values())
+      .observeValues { project, liveStreamEvent in
+        AppEnvironment.current.koala.trackLiveStreamChatSentMessage(project: project,
+                                                                    liveStreamEvent: liveStreamEvent)
     }
 
     self.chatInputViewPlaceholderText = self.viewDidLoadProperty.signal
@@ -210,12 +223,32 @@ LiveStreamChatViewModelOutputs {
         case .snapshotDecodingFailed,
              .chatMessageDecodingFailed,
              .genericFailure,
-             .timedOut,
              .invalidJson,
              .invalidRequest:
           return Strings.Something_went_wrong_please_try_again()
         }
     }
+
+    let text = Signal.merge(
+      self.textProperty.signal,
+      self.viewDidLoadProperty.signal.mapConst("")
+      )
+      .map { $0.coalesceWith("") }
+
+    let maxLengthExceeded = text.map { $0.characters.count > maxMessageLength }
+
+    self.chatInputViewMessageLengthCountLabelText = text
+      .map { "\(maxMessageLength - $0.characters.count)" }
+
+    self.sendButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      Signal.combineLatest(textIsEmpty.map(negate), maxLengthExceeded.map(negate)).map { $0 && $1 }
+    ).skipRepeats()
+
+    self.chatInputViewMessageLengthCountLabelTextColor = maxLengthExceeded
+      .map {
+        $0 ? .ksr_red_400 : UIColor.white.withAlphaComponent(0.8)
+    }.skipRepeats()
   }
 
   private let configData = MutableProperty<(Project, LiveStreamEvent)?>(nil)
@@ -258,6 +291,8 @@ LiveStreamChatViewModelOutputs {
   public let clearTextFieldAndResignFirstResponder: Signal<(), NoError>
   public let collapseChatInputView: Signal<Bool, NoError>
   public let dismissKeyboard: Signal<(), NoError>
+  public let chatInputViewMessageLengthCountLabelText: Signal<String, NoError>
+  public let chatInputViewMessageLengthCountLabelTextColor: Signal<UIColor, NoError>
   public let chatInputViewPlaceholderText: Signal<NSAttributedString, NoError>
   public let prependChatMessagesToDataSourceAndReload: Signal<([LiveStreamChatMessage], Bool), NoError>
   public let presentLoginToutViewController: Signal<LoginIntent, NoError>

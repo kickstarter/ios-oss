@@ -282,12 +282,13 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         )
 
         query.observe(.childAdded, with: { snapshot in
-          let chatMessage = (snapshot as FIRDataSnapshot?)
+          let tryChatMessage = (snapshot as FIRDataSnapshot?)
             .flatMap { $0 }
             .map(LiveStreamChatMessage.decode)
             .flatMap { $0.value }
             .map(Event<LiveStreamChatMessage, LiveApiError>.value)
-            .coalesceWith(.failed(.chatMessageDecodingFailed))
+
+          guard let chatMessage = tryChatMessage else { return }
 
           observer.action(chatMessage)
         })

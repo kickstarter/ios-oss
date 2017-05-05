@@ -125,6 +125,7 @@
 "Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
+"Joining_the_live_stream" = "Joining the live stream";
 "Just_for_you" = "Just for you.";
 "Keep_reading" = "Keep reading";
 "Keep_up_with_future_live_streams" = "Keep up with future live streams";
@@ -157,7 +158,7 @@
 "No_Results" = "No Results";
 "No_comments_yet" = "No comments yet.";
 "No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
-"No_pledges_from_friends_yet" = "No pledges \nfrom friends yet.";
+"No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
@@ -180,6 +181,7 @@
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Please log in or sign up to back this project.";
 "Please_log_in_or_sign_up_to_message_this_creator" = "Please log in or sign up to message this creator.";
+"Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Please log in or sign up to participate in this live stream chat.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Please log in or sign up to subscribe to this live stream.";
 "Pledge" = "Pledge:";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
@@ -244,7 +246,7 @@
 "Ships_to" = "Ships to:";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
-"Something_catch_your_eye" = "Something \ncatch your eye?";
+"Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Starting_soon" = "Starting soon";
 "Status" = "Status:";
@@ -678,7 +680,12 @@
 "dates.time_seconds_ago_abbreviated.two" = "2 seconds ago";
 "dates.time_seconds_ago_abbreviated.zero" = "0 seconds ago";
 "dates.yesterday" = "yesterday";
-"days" = "days";
+"days.few" = "days";
+"days.many" = "days";
+"days.one" = "day";
+"days.two" = "days";
+"days.zero" = "days";
+"days_plural" = "days";
 "discovery.accessibility.buttons.sort_hint" = "Changes sort.";
 "discovery.accessibility.buttons.sort_label" = "Sort by %{sort}";
 "discovery.accessibility.live_project_count" = "Live projects";
@@ -830,7 +837,12 @@
 "general.social.buttons.connect_with_twitter" = "Connect with Twitter";
 "general.switch_toggle_off" = "OFF";
 "general.switch_toggle_on" = "ON";
-"hours" = "hours";
+"hours.few" = "hours";
+"hours.many" = "hours";
+"hours.one" = "hour";
+"hours.two" = "hours";
+"hours.zero" = "hours";
+"hours_plural" = "hours";
 "invalid_api_client_alert.cancel" = "Cancel";
 "invalid_api_client_alert.message" = "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using.";
 "invalid_api_client_alert.title" = "Please Upgrade";
@@ -906,7 +918,12 @@
 "messages.navigation.sent" = "Sent";
 "messages.search.placeholder_search_messages" = "Search messages";
 "messages.sent_date" = "sent %{sent_date}";
-"minutes" = "minutes";
+"minutes.few" = "minutes";
+"minutes.many" = "minutes";
+"minutes.one" = "minute";
+"minutes.two" = "minutes";
+"minutes.zero" = "minutes";
+"minutes_plural" = "minutes";
 "percentage_funded" = "%{percentage} funded";
 "plus_shipping_cost" = "+%{shipping_cost}";
 "profile.buttons.messages" = "Messages";
