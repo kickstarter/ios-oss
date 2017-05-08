@@ -26,32 +26,17 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.vm.outputs.loadWebViewRequest.observe(self.loadWebViewRequest.observer)
   }
 
-  func testGoToLoginTout() {
+  func testGoToLoginTout_LoggedOut() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
     self.goToLoginTout.assertValueCount(0)
 
-    let creatorBioRequest = URLRequest(
-      url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!
-    )
-    var policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: WKNavigationActionData(
-        navigationType: .other,
-        request: creatorBioRequest,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest)
-      )
-    )
-    XCTAssertEqual(.allow, policy)
-
-    self.goToLoginTout.assertValueCount(0)
-
     let messagesRequest = URLRequest(
       url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
     )
-    policy = self.vm.inputs.decidePolicy(
+    let policy = self.vm.inputs.decidePolicy(
       forNavigationAction: WKNavigationActionData(
         navigationType: .linkActivated,
         request: messagesRequest,
@@ -64,8 +49,34 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToLoginTout.assertValues([.messageCreator])
   }
 
+  func testGoToLoginTout_LoggedIn() {
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToLoginTout.assertValueCount(0)
+
+    let messagesRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
+    )
+    let policy = self.vm.inputs.decidePolicy(
+      forNavigationAction: WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: messagesRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest)
+      )
+    )
+    XCTAssertEqual(.cancel, policy)
+
+    self.goToLoginTout.assertValueCount(0)
+  }
+
   func testGoToMessageDialog_LoggedIn() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
