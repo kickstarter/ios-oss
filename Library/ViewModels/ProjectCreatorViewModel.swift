@@ -17,6 +17,9 @@ public protocol ProjectCreatorViewModelInputs {
 }
 
 public protocol ProjectCreatorViewModelOutputs {
+  /// Emits when the LoginToutViewController should be presented.
+  var goToLoginTout: Signal<LoginIntent, NoError> { get }
+
   /// Emits when we should navigate to the message dialog.
   var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
@@ -54,9 +57,14 @@ ProjectCreatorViewModelOutputs {
     self.decidedPolicy <~ navigationAction
       .map { $0.navigationType == .other ? .allow : .cancel }
 
+    self.goToLoginTout = messageCreatorRequest.ignoreValues()
+      .filter { AppEnvironment.current.currentUser == nil }
+      .map { .messageCreator }
+
     self.goToMessageDialog = project
       .takeWhen(messageCreatorRequest)
       .map { (MessageSubject.project($0), .projectPage) }
+      .filter { _ in AppEnvironment.current.currentUser != nil }
 
     self.goToSafariBrowser = navigationAction
       .filter { $0.navigationType == .linkActivated }
@@ -88,6 +96,7 @@ ProjectCreatorViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let goToLoginTout: Signal<LoginIntent, NoError>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToSafariBrowser: Signal<URL, NoError>
   public let loadWebViewRequest: Signal<URLRequest, NoError>
