@@ -76,7 +76,7 @@ final class ProjectCreatorViewModelTests: TestCase {
 
   func testGoToMessageDialog_LoggedIn() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    
+
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
