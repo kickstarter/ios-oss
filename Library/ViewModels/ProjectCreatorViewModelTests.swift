@@ -10,6 +10,7 @@ import XCTest
 final class ProjectCreatorViewModelTests: TestCase {
   fileprivate let vm: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
+  fileprivate let goToLoginTout = TestObserver<LoginIntent, NoError>()
   fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, NoError>()
   fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, NoError>()
   fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
@@ -18,13 +19,68 @@ final class ProjectCreatorViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.goToMessageDialog.map(second).observe(self.goToMessageDialogContext.observer)
     self.vm.outputs.goToMessageDialog.map(first).observe(self.goToMessageDialogSubject.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.loadWebViewRequest.observe(self.loadWebViewRequest.observer)
   }
 
+  func testGoToLoginTout_LoggedOut() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToMessageDialogContext.assertValueCount(0)
+    self.goToMessageDialogSubject.assertValueCount(0)
+    self.goToLoginTout.assertValueCount(0)
+
+    let messagesRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
+    )
+    let policy = self.vm.inputs.decidePolicy(
+      forNavigationAction: WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: messagesRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest)
+      )
+    )
+    XCTAssertEqual(.cancel, policy)
+
+    self.goToMessageDialogContext.assertValues([])
+    self.goToMessageDialogSubject.assertValues([])
+    self.goToLoginTout.assertValues([.messageCreator])
+  }
+
+  func testGoToLoginTout_LoggedIn() {
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToLoginTout.assertValueCount(0)
+
+    let messagesRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
+    )
+    let policy = self.vm.inputs.decidePolicy(
+      forNavigationAction: WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: messagesRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest)
+      )
+    )
+    XCTAssertEqual(.cancel, policy)
+
+    self.goToLoginTout.assertValueCount(0)
+  }
+
   func testGoToMessageDialog() {
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
