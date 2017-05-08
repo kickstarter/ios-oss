@@ -198,6 +198,7 @@ public final class LiveVideoViewController: UIViewController {
   }
 
   private func removeSubscriber(subscriber: OTSubscriber) {
+    subscriber.delegate = nil
     subscriber.view.doIfSome { self.removeVideoView(view: $0) }
     self.session?.unsubscribe(subscriber, error: nil)
     self.subscribers.index(of: subscriber).doIfSome { self.subscribers.remove(at: $0) }
