@@ -63,8 +63,8 @@ ProjectCreatorViewModelOutputs {
 
     self.goToMessageDialog = project
       .takeWhen(messageCreatorRequest)
-      .map { (MessageSubject.project($0), .projectPage) }
       .filter { _ in AppEnvironment.current.currentUser != nil }
+      .map { (MessageSubject.project($0), .projectPage) }
 
     self.goToSafariBrowser = navigationAction
       .filter { $0.navigationType == .linkActivated }

@@ -31,6 +31,8 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
+    self.goToMessageDialogContext.assertValueCount(0)
+    self.goToMessageDialogSubject.assertValueCount(0)
     self.goToLoginTout.assertValueCount(0)
 
     let messagesRequest = URLRequest(
@@ -46,6 +48,8 @@ final class ProjectCreatorViewModelTests: TestCase {
     )
     XCTAssertEqual(.cancel, policy)
 
+    self.goToMessageDialogContext.assertValues([])
+    self.goToMessageDialogSubject.assertValues([])
     self.goToLoginTout.assertValues([.messageCreator])
   }
 
@@ -74,7 +78,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToLoginTout.assertValueCount(0)
   }
 
-  func testGoToMessageDialog_LoggedIn() {
+  func testGoToMessageDialog() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     let project = Project.template
@@ -115,47 +119,6 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goToMessageDialogContext.assertValues([.projectPage])
     self.goToMessageDialogSubject.assertValues([.project(project)])
-  }
-
-  func testGoToMessageDialog_LoggedOut() {
-    let project = Project.template
-    self.vm.inputs.configureWith(project: project)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToMessageDialogContext.assertValues([])
-    self.goToMessageDialogSubject.assertValues([])
-
-    let creatorBioRequest = URLRequest(
-      url: URL(string: "https://www.kickstarter.com/projects/a/b/creator_bio")!
-    )
-    var policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: WKNavigationActionData(
-        navigationType: .other,
-        request: creatorBioRequest,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: creatorBioRequest)
-      )
-    )
-    XCTAssertEqual(.allow, policy)
-
-    self.goToMessageDialogContext.assertValues([])
-    self.goToMessageDialogSubject.assertValues([])
-
-    let messagesRequest = URLRequest(
-      url: URL(string: "https://www.kickstarter.com/projects/a/b/messages/new")!
-    )
-    policy = self.vm.inputs.decidePolicy(
-      forNavigationAction: WKNavigationActionData(
-        navigationType: .linkActivated,
-        request: messagesRequest,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: messagesRequest)
-      )
-    )
-    XCTAssertEqual(.cancel, policy)
-
-    self.goToMessageDialogContext.assertValues([])
-    self.goToMessageDialogSubject.assertValues([])
   }
 
   func testGoToSafariBrowser() {
