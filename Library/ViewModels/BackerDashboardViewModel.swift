@@ -14,6 +14,10 @@ public protocol BackerDashboardViewModelInputs {
   /// Call when backed projects button is tapped.
   func backedProjectsButtonTapped()
 
+  /// Call when the pan gesture begins with header top constraint constant and scroll view y offset values
+  /// to calculate the starting point constant for the pan gesture.
+  func beganPanGestureWith(headerTopConstant: CGFloat, scrollViewYOffset: CGFloat)
+
   /// Call when messages button is tapped.
   func messagesButtonTapped()
 
@@ -46,6 +50,9 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits the initial BackerDashboardTab and a default Sort to configure the page view controller.
   var configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError> { get }
 
+  /// The currently selected tab.
+  var currentSelectedTab: BackerDashboardTab { get }
+
   /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
   var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
 
@@ -54,6 +61,9 @@ public protocol BackerDashboardViewModelOutputs {
 
   /// Emits when to navigate to Settings.
   var goToSettings: Signal<(), NoError> { get }
+
+  /// The starting value of the header top constraint that is needed to calculate the distance panned.
+  var initialTopConstant: CGFloat { get }
 
   /// Emits a BackerDashboardTab to navigate to.
   var navigateToTab: Signal<BackerDashboardTab, NoError> { get }
@@ -111,6 +121,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.savedProjectsButtonTappedProperty.signal.mapConst(.saved)
     )
 
+    self.currentSelectedTabProperty <~ self.navigateToTab
+
     self.setSelectedButton = Signal.merge(
       self.backedButtonTitleText.skip(first: 1).mapConst(.backed),
       self.navigateToTab
@@ -130,6 +142,14 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.embeddedViewTopConstraintConstant = self.sortBarIsHidden
       .map { $0 ? 0.0 : Styles.grid(2) }
 
+    self.initialTopConstantProperty <~ self.beganPanGestureProperty.signal
+      .skipNil()
+      // n.b. This min value accounts for when the header is collapsed by panning the header view 
+      // instead of the tableView.
+      .map { headerTopConstant, scrollViewYOffset in
+        min(headerTopConstant, -scrollViewYOffset)
+      }
+
     self.viewWillAppearProperty.signal.filter(isFalse)
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
@@ -137,6 +157,21 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   private let backedProjectsButtonTappedProperty = MutableProperty()
   public func backedProjectsButtonTapped() {
     self.backedProjectsButtonTappedProperty.value = ()
+  }
+
+  private let beganPanGestureProperty = MutableProperty<(CGFloat, CGFloat)?>(nil)
+  public func beganPanGestureWith(headerTopConstant: CGFloat, scrollViewYOffset: CGFloat) {
+    self.beganPanGestureProperty.value = (headerTopConstant, scrollViewYOffset)
+  }
+
+  private let currentSelectedTabProperty = MutableProperty<BackerDashboardTab>(.backed)
+  public var currentSelectedTab: BackerDashboardTab {
+    return self.currentSelectedTabProperty.value
+  }
+
+  private let initialTopConstantProperty = MutableProperty<CGFloat>(0.0)
+  public var initialTopConstant: CGFloat {
+    return self.initialTopConstantProperty.value
   }
 
   private let messagesButtonTappedProperty = MutableProperty()

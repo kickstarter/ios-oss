@@ -31,8 +31,6 @@ internal final class BackerDashboardViewController: UIViewController {
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
 
   private var panGesture = UIPanGestureRecognizer()
-  private var initialTopConstant: CGFloat = 0.0
-  private var shouldCollapse = false
 
   internal static func instantiate() -> BackerDashboardViewController {
     return Storyboard.BackerDashboard.instantiate(BackerDashboardViewController.self)
@@ -269,39 +267,32 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   @objc private func handlePan(gesture: UIPanGestureRecognizer) {
-    // this controller stuff is just for testing
-    guard let controller = self.pagesDataSource.controllerFor(tab: .backed) as?
+    let selectedTab = self.viewModel.outputs.currentSelectedTab
+    guard let controller = self.pagesDataSource.controllerFor(tab: selectedTab) as?
       BackerDashboardProjectsViewController else { return }
 
-    // todo: put this value in view model. it changes when sort bar is hidden.
     let minHeaderHeight = self.topBackgroundView.frame.size.height
       - self.menuButtonsStackView.frame.size.height - Styles.grid(3)
 
     switch gesture.state {
     case .began:
-      self.initialTopConstant = self.headerViewTopConstraint.constant
+      self.viewModel.inputs.beganPanGestureWith(headerTopConstant: self.headerViewTopConstraint.constant,
+                                                scrollViewYOffset: controller.tableView.contentOffset.y)
     case.changed:
       let translation = gesture.translation(in: self.view)
-      //print("contant = \(self.headerViewTopConstraint.constant)")
-      //print("translation = \(translation.y)")
-      let newConstant = min(0.0, self.initialTopConstant + translation.y)
+      let newConstant = min(0.0, self.viewModel.outputs.initialTopConstant + translation.y)
 //      print("newConstant = \(newConstant)")
 //      print("-minHeader = \(-minHeaderHeight)")
 //      print("offset = \(controller.tableView.contentOffset.y)")
-//
-//      print("controller offset = \(controller.tableView.contentOffset.y)")
 
-      // notes for brandon:
-      // we don't want the header to move down until the scrollview is back at 0
-      // i was playing with what this would look like, something like:
-      // && (controller.tableView.contentOffset.y <= minHeaderHeight
-      // but, it will cause abrupt movement once the scrollview is back to 0, so that needs to be calculated
-      if (newConstant >= -minHeaderHeight) {
+      if newConstant >= -minHeaderHeight {
         self.headerViewTopConstraint.constant = newConstant
       }
-      self.shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
+      
     case .ended:
-      if self.shouldCollapse {
+      let shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
+
+      if shouldCollapse {
         UIView.animate(
           withDuration: 0.3,
           delay: 0.0,
@@ -337,10 +328,10 @@ extension BackerDashboardViewController: UIGestureRecognizerDelegate {
     if translation.x != 0 { // only respond to horizontal movement.
       return false
     }
-    
+
     return true
   }
-  
+
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                          shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
     -> Bool {
