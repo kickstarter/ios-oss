@@ -67,7 +67,7 @@ CommentsViewModelOutputs {
       )
       .map(first)
       .flatMap { project, update in
-        return SignalProducer(value: update.map(Either.right) ?? project.map(Either.left))
+        return SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
           .skipNil()
     }
 

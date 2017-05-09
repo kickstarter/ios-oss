@@ -184,10 +184,9 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testPaginationAndRefresh_Update() {
     let update = Update.template
-    let project = Project.template
 
     withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
-      self.vm.inputs.configureWith(project: project, update: update)
+      self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
       self.commentsAreLoading.assertValues([true])

@@ -465,9 +465,9 @@ AppDelegateViewModelOutputs {
 
     let updateCommentsLink = updateLink
       .observeForUI()
-      .map { project, update, subpage, vcs -> [UIViewController]? in
+      .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [CommentsViewController.configuredWith(project: project, update: update)]
+        return vcs + [CommentsViewController.configuredWith(update: update)]
       }
       .skipNil()
 
