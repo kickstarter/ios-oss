@@ -4,19 +4,17 @@ import Library
 import Prelude
 import UIKit
 
+
 internal protocol DiscoveryPostcardCellDelegate: class {
   func discoveryPostcardTappedShared(shareContext: ShareContext)
 }
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
-  internal weak var delegate: DiscoveryPostcardCellDelegate? {
-    didSet {
-      self.viewModel.inputs.delegateDidSet()
-    }
-  }
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
+  internal weak var delegate: DiscoveryPostcardCellDelegate?
 
   @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
@@ -25,11 +23,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
   @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var metadataView: UIView!
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
   @IBOutlet fileprivate weak var metadataLabel: UILabel!
   @IBOutlet fileprivate weak var metadataStackView: UIStackView!
-  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var metadataView: UIView!
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
   @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
   @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
@@ -43,15 +41,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
   @IBOutlet fileprivate weak var starButton: UIButton!
-  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
 
   // swiftlint:disable function_body_length
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.starButton.addTarget(self, action: #selector(starButtonTapped),
-                                     for: .touchUpInside)
-
+    self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
   }
 

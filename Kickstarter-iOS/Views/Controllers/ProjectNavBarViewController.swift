@@ -108,19 +108,10 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.userInteractionEnabled .~ true
 
     _ = self.shareButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+      |> shareButtonStyle
 
     _ = self.starButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "star-icon")
-      |> UIButton.lens.image(forState: .highlighted) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.image(forState: .selected) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project()}
-
+      |> saveButtonStyle
   }
   // swiftlint:enable function_body_length
 

@@ -67,23 +67,22 @@ public enum ShareContext {
 }
 
 extension ShareContext: Equatable {
-}
-
-public func == (lhs: ShareContext, rhs: ShareContext) -> Bool {
-  switch (lhs, rhs) {
-  case let (.creatorDashboard(lhs), .creatorDashboard(rhs)):
-    return lhs == rhs
-  case let (.discovery(lhs), .discovery(rhs)):
-    return lhs == rhs
-  case let (.liveStream(lhs), .liveStream(rhs)):
-    return lhs == rhs
-  case let (.project(lhs), .project(rhs)):
-    return lhs == rhs
-  case let (.thanks(lhs), .thanks(rhs)):
-    return lhs == rhs
-  case let (.update(lhs), .update(rhs)):
-    return lhs == rhs
-  default:
-    return false
+  public static func == (lhs: ShareContext, rhs: ShareContext) -> Bool {
+    switch (lhs, rhs) {
+    case let (.creatorDashboard(lhs), .creatorDashboard(rhs)):
+      return lhs == rhs
+    case let (.discovery(lhs), .discovery(rhs)):
+      return lhs == rhs
+    case let (.liveStream(lhs), .liveStream(rhs)):
+      return lhs == rhs
+    case let (.project(lhs), .project(rhs)):
+      return lhs == rhs
+    case let (.thanks(lhs), .thanks(rhs)):
+      return lhs == rhs
+    case let (.update(lhs), .update(rhs)):
+      return lhs == rhs
+    case (.creatorDashboard, _), (.discovery, _), (.liveStream, _), (.project, _), (.thanks, _), (.update, _):
+      return false
+    }
   }
 }

@@ -44,10 +44,10 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
-  func delegateDidSet()
-
+  /// Call when share button is tapped.
   func shareButtonTapped()
 
+  /// Call when star button is tapped.
   func starButtonTapped()
 }
 
@@ -82,7 +82,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits when we notify the delegate that the share button was tapped.
+  /// Emits when we should notify the delegate that the share button was tapped.
   var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits the text for the pledged title label.
@@ -229,11 +229,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
   // swiftlint:enable function_body_length
-
-  fileprivate let delegateDidSetProperty = MutableProperty()
-  public func delegateDidSet() {
-    self.delegateDidSetProperty.value = ()
-  }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {

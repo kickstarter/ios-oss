@@ -217,12 +217,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       )
     }
 
-//    if UIDevice.current.userInterfaceIdiom == .pad {
-//      controller.modalPresentationStyle = .popover
-//      let popover = controller.popoverPresentationController
-//      popover?.sourceView = self.shareButton
-//    }
-
     self.present(controller, animated: true, completion: nil)
   }
 
@@ -259,7 +253,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
   }
 
-   private func updateProjectPlaylist(_ playlist: [Project]) {
+  private func updateProjectPlaylist(_ playlist: [Project]) {
     guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
     navigator.updatePlaylist(playlist)
   }
