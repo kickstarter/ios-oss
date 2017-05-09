@@ -4,6 +4,7 @@ import Library
 import Prelude
 import UIKit
 
+// Called when the share button is tapped
 internal protocol DiscoveryPostcardCellDelegate: class {
   func discoveryPostcardTappedShared(shareContext: ShareContext)
 }
@@ -156,7 +157,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.starButton
       |> saveButtonStyle
-      |> UIButton.lens.hidden .~ true
+      //|> UIButton.lens.hidden .~ true
 
     _ = self.shareButton
       |> shareButtonStyle
