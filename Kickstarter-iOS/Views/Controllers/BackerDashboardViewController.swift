@@ -288,7 +288,7 @@ internal final class BackerDashboardViewController: UIViewController {
       if newConstant >= -minHeaderHeight {
         self.headerViewTopConstraint.constant = newConstant
       }
-      
+
     case .ended:
       let shouldCollapse = self.headerViewTopConstraint.constant < (-minHeaderHeight / 2.0)
 
