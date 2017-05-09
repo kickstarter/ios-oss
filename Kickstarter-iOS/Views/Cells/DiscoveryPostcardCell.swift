@@ -4,7 +4,6 @@ import Library
 import Prelude
 import UIKit
 
-
 internal protocol DiscoveryPostcardCellDelegate: class {
   func discoveryPostcardTappedShared(shareContext: ShareContext)
 }
