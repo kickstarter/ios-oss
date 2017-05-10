@@ -8,6 +8,9 @@ public protocol LiveVideoViewModelInputs {
   /// Call with the live stream given to the view.
   func configureWith(liveStreamType: LiveStreamType)
 
+  /// Call when the app transitions to background.
+  func didEnterBackground()
+
   /// Call when the HLS player's state changes.
   func hlsPlayerStateChanged(state: AVPlayerItemStatus)
 
@@ -37,6 +40,9 @@ public protocol LiveVideoViewModelInputs {
 
   /// Call when the view will appear.
   func viewWillAppear()
+
+  /// Call when the app transitions to foreground.
+  func willEnterForeground()
 }
 
 public protocol LiveVideoViewModelOutputs {
@@ -119,18 +125,26 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
       subscriberVideoEnabledState
     )
 
-    let viewReappeared = self.viewWillAppearProperty.signal.skip(first: 1)
+    let viewDisappeared = Signal.merge(
+      self.viewDidDisappearProperty.signal,
+      self.didEnterBackgroundProperty.signal
+    )
+
+    let viewReappeared = Signal.merge(
+      self.viewWillAppearProperty.signal.skip(first: 1),
+      self.willEnterForegroundProperty.signal
+    )
 
     self.shouldPauseHlsPlayer = Signal.combineLatest(
       Signal.merge(
-        self.viewDidDisappearProperty.signal.mapConst(true),
+        viewDisappeared.mapConst(true),
         viewReappeared.mapConst(false)
       ),
       self.addAndConfigureHLSPlayerWithStreamUrl.signal
     ).map(first)
 
     self.unsubscribeAllSubscribersFromSession = Signal.combineLatest(
-      self.viewDidDisappearProperty.signal,
+      viewDisappeared,
       createAndConfigureSessionWithConfig
     ).ignoreValues()
 
@@ -143,6 +157,11 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
   private let liveStreamTypeProperty = MutableProperty<LiveStreamType?>(nil)
   public func configureWith(liveStreamType: LiveStreamType) {
     self.liveStreamTypeProperty.value = liveStreamType
+  }
+
+  private let didEnterBackgroundProperty = MutableProperty()
+  public func didEnterBackground() {
+    self.didEnterBackgroundProperty.value = ()
   }
 
   private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItemStatus?>(nil)
@@ -193,6 +212,11 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
   private let viewWillAppearProperty = MutableProperty()
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
+  }
+
+  private let willEnterForegroundProperty = MutableProperty()
+  public func willEnterForeground() {
+    self.willEnterForegroundProperty.value = ()
   }
 
   public let addAndConfigureHLSPlayerWithStreamUrl: Signal<String, NoError>
