@@ -66,7 +66,9 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testShowShareSheet_BackerOnlyUpdate() {
-    self.vm.inputs.configureWith(shareContext: .update(.template, .template |> Update.lens.isPublic .~ false), shareContextView: nil)
+    self.vm.inputs.configureWith(shareContext: .update(.template,
+                                                       .template |> Update.lens.isPublic .~ false),
+                                 shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
