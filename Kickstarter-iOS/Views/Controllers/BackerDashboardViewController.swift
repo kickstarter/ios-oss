@@ -234,7 +234,7 @@ internal final class BackerDashboardViewController: UIViewController {
         self.selectedButtonIndicatorLeadingConstraint.constant = leadingConstant
         self.selectedButtonIndicatorWidthConstraint.constant = widthConstant
         self.headerView.layoutIfNeeded()
-    },
+      },
       completion: nil)
   }
 
@@ -281,9 +281,6 @@ internal final class BackerDashboardViewController: UIViewController {
     case.changed:
       let translation = gesture.translation(in: self.view)
       let newConstant = min(0.0, self.viewModel.outputs.initialTopConstant + translation.y)
-//      print("newConstant = \(newConstant)")
-//      print("-minHeader = \(-minHeaderHeight)")
-//      print("offset = \(controller.tableView.contentOffset.y)")
 
       if newConstant >= -minHeaderHeight {
         self.headerViewTopConstraint.constant = newConstant
