@@ -28,7 +28,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamChatViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
-      vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
+      vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent), shareContextView: nil)
 
       return vc
   }
@@ -139,7 +139,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller: controller) }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForUI()

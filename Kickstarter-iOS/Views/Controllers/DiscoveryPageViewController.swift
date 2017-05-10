@@ -154,7 +154,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] in self?.showShareSheet($0, shareContextView: $1) }
 
     self.viewModel.outputs.showEmptyState
       .observeForUI()
@@ -205,7 +205,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
   }
 
-  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
+  fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
 
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
@@ -215,6 +215,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
                     returnedItems: returnedItems,
                     activityError: error)
       )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = shareContextView
     }
 
     self.present(controller, animated: true, completion: nil)
@@ -293,8 +299,8 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
-  internal func discoveryPostcardTappedShared(shareContext: ShareContext) {
-    self.shareViewModel.inputs.configureWith(shareContext: shareContext)
+  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext, fromSourceView: UIView) {
+    self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: fromSourceView)
     self.shareViewModel.inputs.shareButtonTapped()
   }
 }

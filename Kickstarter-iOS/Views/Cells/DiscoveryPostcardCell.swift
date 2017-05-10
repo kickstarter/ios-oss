@@ -6,7 +6,7 @@ import UIKit
 
 // Called when the share button is tapped
 internal protocol DiscoveryPostcardCellDelegate: class {
-  func discoveryPostcardTappedShared(shareContext: ShareContext)
+  func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext, fromSourceView: UIView)
 }
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
@@ -157,7 +157,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.starButton
       |> saveButtonStyle
-      //|> UIButton.lens.hidden .~ true
+      |> UIButton.lens.hidden .~ true
 
     _ = self.shareButton
       |> shareButtonStyle
@@ -229,7 +229,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.notifyDelegateShareButtonTapped
       .observeForUI()
       .observeValues { [weak self] context in
-        self?.delegate?.discoveryPostcardTappedShared(shareContext: context)
+        guard let _self = self else  { return }
+        _self.delegate?.discoveryPostcard(cell: _self, tappedShare: context, fromSourceView: _self.shareButton)
     }
   }
   // swiftlint:enable function_body_length

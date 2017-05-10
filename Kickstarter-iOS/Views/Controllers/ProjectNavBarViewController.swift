@@ -23,7 +23,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
-    self.shareViewModel.inputs.configureWith(shareContext: .project(project))
+    self.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
   }
 
   internal func setProjectImageIsVisible(_ visible: Bool) {
@@ -176,7 +176,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 

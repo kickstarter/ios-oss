@@ -64,7 +64,7 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
 
         // NB: this is just temporary for now
-        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project))
+        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project), shareContextView: nil)
     }
 
     self.viewModel.outputs.referrerData
@@ -128,7 +128,7 @@ internal final class DashboardViewController: UITableViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 
