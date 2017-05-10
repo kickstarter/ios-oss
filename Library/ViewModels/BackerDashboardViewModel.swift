@@ -135,12 +135,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.currentSelectedTabProperty <~ self.navigateToTab
 
     self.setSelectedButton = Signal.merge(
-      self.backedButtonTitleText.skip(first: 1).mapConst(.backed).take(last: 1),
+      self.backedButtonTitleText.skip(first: 1).mapConst(.backed).take(first: 1),
       self.navigateToTab
     )
 
     self.pinSelectedIndicatorToTab = Signal.merge(
-      self.backedButtonTitleText.skip(first: 1).mapConst((.backed, false)).take(last: 1),
+      self.backedButtonTitleText.skip(first: 1).mapConst((.backed, false)).take(first: 1),
       self.navigateToTab.map { ($0, true) }.skipRepeats(==)
     )
 

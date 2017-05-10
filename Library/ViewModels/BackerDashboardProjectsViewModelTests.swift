@@ -55,8 +55,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateProjectsType.assertValues([.backed])
       self.isRefreshing.assertValues([true, false])
 
-      self.vm.inputs.viewWillAppear(false)
-      self.isRefreshing.assertValues([true, false, true])
+      self.vm.inputs.viewWillAppear(true)
+      self.isRefreshing.assertValues([true, false, true], "Projects refresh after swipe animation.")
 
       self.scheduler.advance()
 

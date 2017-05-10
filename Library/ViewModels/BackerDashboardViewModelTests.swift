@@ -113,6 +113,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.setSelectedButton.assertValueCount(0)
       self.pinSelectedIndicatorToTab.assertValueCount(0)
       self.pinSelectedIndicatorToTabAnimated.assertValueCount(0)
+      XCTAssertEqual(.backed, self.vm.outputs.currentSelectedTab)
 
       self.scheduler.advance()
 
@@ -120,6 +121,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.setSelectedButton.assertValues([.backed])
       self.pinSelectedIndicatorToTab.assertValues([.backed])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false])
+      XCTAssertEqual(.backed, self.vm.outputs.currentSelectedTab)
 
       self.vm.inputs.savedProjectsButtonTapped()
 
@@ -127,6 +129,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.setSelectedButton.assertValues([.backed, .saved])
       self.pinSelectedIndicatorToTab.assertValues([.backed, .saved])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false, true])
+      XCTAssertEqual(.saved, self.vm.outputs.currentSelectedTab)
 
       self.vm.inputs.backedProjectsButtonTapped()
 
@@ -134,6 +137,25 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.setSelectedButton.assertValues([.backed, .saved, .backed])
       self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false, true, true])
+      XCTAssertEqual(.backed, self.vm.outputs.currentSelectedTab)
+
+      // Swiping.
+      self.vm.inputs.willTransition(toPage: 1)
+      self.vm.inputs.pageTransition(completed: false)
+
+      self.navigateToTab.assertValues([.saved, .backed], "Tab switch does not complete.")
+      self.setSelectedButton.assertValues([.backed, .saved, .backed], "Selection does not emit.")
+      self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed], "Selection does not emit.")
+      XCTAssertEqual(.backed, self.vm.outputs.currentSelectedTab)
+
+      self.vm.inputs.willTransition(toPage: 1)
+      self.vm.inputs.pageTransition(completed: true)
+
+      self.navigateToTab.assertValues([.saved, .backed, .saved])
+      self.setSelectedButton.assertValues([.backed, .saved, .backed, .saved])
+      self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed, .saved])
+      self.pinSelectedIndicatorToTabAnimated.assertValues([false, true, true, true])
+      XCTAssertEqual(.saved, self.vm.outputs.currentSelectedTab)
     }
   }
 
@@ -163,5 +185,20 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     XCTAssertEqual(["Profile View My", "Viewed Profile"], self.trackingClient.events,
                    "Tracking does not emit")
+  }
+
+  func testHeaderPanning() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(false)
+
+    // Panning on the header view.
+    self.vm.inputs.beganPanGestureWith(headerTopConstant: -101.0, scrollViewYOffset: 0.0)
+
+    XCTAssertEqual(-101.0, self.vm.outputs.initialTopConstant)
+
+    // Panning on the projects table view.
+    self.vm.inputs.beganPanGestureWith(headerTopConstant: -101.0, scrollViewYOffset: 500.0)
+
+    XCTAssertEqual(-500, self.vm.outputs.initialTopConstant)
   }
 }
