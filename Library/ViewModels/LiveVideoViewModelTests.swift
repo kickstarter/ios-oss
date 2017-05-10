@@ -143,6 +143,18 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.resubscribeAllSubscribersToSession.assertValueCount(1)
     self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(1)
+
+    self.vm.inputs.didEnterBackground()
+
+    self.resubscribeAllSubscribersToSession.assertValueCount(1)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
+    self.unsubscribeAllSubscribersFromSession.assertValueCount(2)
+
+    self.vm.inputs.willEnterForeground()
+
+    self.resubscribeAllSubscribersToSession.assertValueCount(2)
+    self.shouldPauseHlsPlayer.assertValueCount(0)
+    self.unsubscribeAllSubscribersFromSession.assertValueCount(2)
   }
 
   func testHls_TogglePause() {
@@ -172,6 +184,18 @@ internal final class LiveVideoViewModelTests: TestCase {
 
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
     self.shouldPauseHlsPlayer.assertValues([true, false])
+    self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
+
+    self.vm.inputs.didEnterBackground()
+
+    self.resubscribeAllSubscribersToSession.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValues([true, false, true])
+    self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
+
+    self.vm.inputs.willEnterForeground()
+
+    self.resubscribeAllSubscribersToSession.assertValueCount(0)
+    self.shouldPauseHlsPlayer.assertValues([true, false, true, false])
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
   }
 
