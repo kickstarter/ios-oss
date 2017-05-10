@@ -72,7 +72,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
-        self.viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
+        self.viewWillAppearProperty.signal.ignoreValues(),
         self.refreshProperty.signal
         )
       )

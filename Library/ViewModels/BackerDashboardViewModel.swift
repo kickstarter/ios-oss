@@ -21,6 +21,9 @@ public protocol BackerDashboardViewModelInputs {
   /// Call when messages button is tapped.
   func messagesButtonTapped()
 
+  /// Call when the UIPageViewController finishes transitioning.
+  func pageTransition(completed: Bool)
+
   /// Call when saved projects button is tapped.
   func savedProjectsButtonTapped()
 
@@ -32,6 +35,9 @@ public protocol BackerDashboardViewModelInputs {
 
   /// Call when the view will appear.
   func viewWillAppear(_ animated: Bool)
+
+  /// Call when the UIPageViewController begins a transition sequence.
+  func willTransition(toPage nextPage: Int)
 }
 
 public protocol BackerDashboardViewModelOutputs {
@@ -116,7 +122,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       Strings.projects_count_newline_saved(projects_count: user.stats.starredProjectsCount ?? 0)
     }
 
+    let swipedToTab = self.willTransitionToPageProperty.signal
+      .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
+      .map { BackerDashboardTab.allTabs[$0] }
+
     self.navigateToTab = Signal.merge(
+      swipedToTab,
       self.backedProjectsButtonTappedProperty.signal.mapConst(.backed),
       self.savedProjectsButtonTappedProperty.signal.mapConst(.saved)
     )
@@ -124,12 +135,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.currentSelectedTabProperty <~ self.navigateToTab
 
     self.setSelectedButton = Signal.merge(
-      self.backedButtonTitleText.skip(first: 1).mapConst(.backed),
+      self.backedButtonTitleText.skip(first: 1).mapConst(.backed).take(last: 1),
       self.navigateToTab
     )
 
     self.pinSelectedIndicatorToTab = Signal.merge(
-      self.backedButtonTitleText.skip(first: 1).mapConst((.backed, false)),
+      self.backedButtonTitleText.skip(first: 1).mapConst((.backed, false)).take(last: 1),
       self.navigateToTab.map { ($0, true) }.skipRepeats(==)
     )
 
@@ -179,6 +190,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.messagesButtonTappedProperty.value = ()
   }
 
+  private let pageTransitionCompletedProperty = MutableProperty(false)
+  public func pageTransition(completed: Bool) {
+    self.pageTransitionCompletedProperty.value = completed
+  }
+
   private let savedProjectsButtonTappedProperty = MutableProperty()
   public func savedProjectsButtonTapped() {
     self.savedProjectsButtonTappedProperty.value = ()
@@ -197,6 +213,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   private let viewWillAppearProperty = MutableProperty(false)
   public func viewWillAppear(_ animated: Bool) {
     self.viewWillAppearProperty.value = animated
+  }
+
+  private let willTransitionToPageProperty = MutableProperty<Int>(0)
+  public func willTransition(toPage nextPage: Int) {
+    self.willTransitionToPageProperty.value = nextPage
   }
 
   public let avatarURL: Signal<URL?, NoError>

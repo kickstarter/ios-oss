@@ -318,7 +318,26 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 }
 
-extension BackerDashboardViewController: UIPageViewControllerDelegate {}
+extension BackerDashboardViewController: UIPageViewControllerDelegate {
+  internal func pageViewController(_ pageViewController: UIPageViewController,
+                                   didFinishAnimating finished: Bool,
+                                   previousViewControllers: [UIViewController],
+                                   transitionCompleted completed: Bool) {
+
+    self.viewModel.inputs.pageTransition(completed: completed)
+  }
+
+  internal func pageViewController(
+    _ pageViewController: UIPageViewController,
+    willTransitionTo pendingViewControllers: [UIViewController]) {
+
+    guard let idx = pendingViewControllers.first.flatMap(self.pagesDataSource.indexFor(controller:)) else {
+      return
+    }
+
+    self.viewModel.inputs.willTransition(toPage: idx)
+  }
+}
 
 extension BackerDashboardViewController: UIGestureRecognizerDelegate {
   func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {

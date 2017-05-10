@@ -25,6 +25,10 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
     return self.viewControllers[index]
   }
 
+  internal func indexFor(controller: UIViewController) -> Int? {
+    return self.viewControllers.index(of: controller)
+  }
+
   internal func indexFor(tab: BackerDashboardTab) -> Int? {
     return BackerDashboardTab.allTabs.index(of: tab)
   }
@@ -33,14 +37,32 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
     _ pageViewController: UIPageViewController,
     viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-    return nil
+    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+      fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
+    }
+
+    let nextPageIdx = pageIdx + 1
+    guard nextPageIdx < self.viewControllers.count else {
+      return nil
+    }
+
+    return self.viewControllers[nextPageIdx]
   }
 
   internal func pageViewController(
     _ pageViewController: UIPageViewController,
     viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
-    return nil
+    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+      fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
+    }
+
+    let previousPageIdx = pageIdx - 1
+    guard previousPageIdx >= 0 else {
+      return nil
+    }
+
+    return self.viewControllers[previousPageIdx]
   }
 
   private func tabFor(controller: UIViewController) -> BackerDashboardTab? {
