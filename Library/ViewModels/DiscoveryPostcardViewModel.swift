@@ -43,6 +43,12 @@ private enum PostcardMetadataType {
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
+
+  /// Call when share button is tapped.
+  func shareButtonTapped()
+
+  /// Call when star button is tapped.
+  func starButtonTapped()
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -75,6 +81,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits when we should notify the delegate that the share button was tapped.
+  var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -209,6 +218,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.fundingProgressBarViewHidden = project
       .map { $0.state == .failed }
 
+    self.notifyDelegateShareButtonTapped = project
+      .map(ShareContext.discovery)
+      .takeWhen(self.shareButtonTappedProperty.signal)
+
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
@@ -222,6 +235,16 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectProperty.value = project
   }
 
+  fileprivate let shareButtonTappedProperty = MutableProperty()
+  public func shareButtonTapped() {
+    self.shareButtonTappedProperty.value = ()
+  }
+
+  fileprivate let starButtonTappedProperty = MutableProperty()
+  public func starButtonTapped() {
+    self.starButtonTappedProperty.value = ()
+  }
+
   public let backersTitleLabelText: Signal<String, NoError>
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
@@ -232,6 +255,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
+  public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>

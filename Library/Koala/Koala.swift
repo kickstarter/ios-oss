@@ -1947,6 +1947,9 @@ private func properties(shareContext: ShareContext,
   case let .creatorDashboard(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "creator_dashboard"
+  case let .discovery(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "discovery"
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"

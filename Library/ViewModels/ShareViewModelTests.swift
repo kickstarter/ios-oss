@@ -14,7 +14,7 @@ internal final class ShareViewModelTests: TestCase {
   internal let vm: ShareViewModelType = ShareViewModel()
 
   fileprivate let showShareCompose = TestObserver<SLComposeViewController, NoError>()
-  fileprivate let showShareSheet = TestObserver<UIActivityViewController, NoError>()
+  fileprivate let showShareSheet = TestObserver<(UIActivityViewController, UIView?), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -23,36 +23,52 @@ internal final class ShareViewModelTests: TestCase {
     self.vm.outputs.showShareSheet.observe(self.showShareSheet.observer)
   }
 
+  func testShowShareSheet_Discovery() {
+    let project = .template |> Project.lens.id .~ 30
+    let newProject = .template |> Project.lens.id .~ 55
+    let view = UIView()
+
+    self.vm.inputs.configureWith(shareContext: .discovery(project), shareContextView: view)
+    self.vm.inputs.shareButtonTapped()
+    self.vm.inputs.configureWith(shareContext: .discovery(newProject), shareContextView: view)
+
+    self.showShareSheet.assertValueCount(1)
+    XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
+
+  }
+
   func testShowShareSheet_Project() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
   }
 
   func testShowShareSheet_Thanks() {
-    self.vm.inputs.configureWith(shareContext: .thanks(.template))
+    self.vm.inputs.configureWith(shareContext: .thanks(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
   }
 
   func testShowShareSheet_CreatorDashboard() {
-    self.vm.inputs.configureWith(shareContext: .creatorDashboard(.template))
+    self.vm.inputs.configureWith(shareContext: .creatorDashboard(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
   }
 
   func testShowShareSheet_Update() {
-    self.vm.inputs.configureWith(shareContext: .update(.template, .template))
+    self.vm.inputs.configureWith(shareContext: .update(.template, .template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
   }
 
   func testShowShareSheet_BackerOnlyUpdate() {
-    self.vm.inputs.configureWith(shareContext: .update(.template, .template |> Update.lens.isPublic .~ false))
+    self.vm.inputs.configureWith(shareContext: .update(.template,
+                                                       .template |> Update.lens.isPublic .~ false),
+                                 shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
@@ -67,7 +83,7 @@ internal final class ShareViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
 
-    self.vm.inputs.configureWith(shareContext: .liveStream(project, event))
+    self.vm.inputs.configureWith(shareContext: .liveStream(project, event), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
@@ -76,7 +92,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_CancelShareSheet() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -98,7 +114,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_CancelThirdPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -126,7 +142,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_CancelFirstPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -156,7 +172,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_ThirdPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -183,7 +199,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_FirstPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -213,7 +229,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_Update_ThirdPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .update(.template, .template))
+    self.vm.inputs.configureWith(shareContext: .update(.template, .template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Update Show Share Sheet"], self.trackingClient.events)
@@ -240,7 +256,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_CreatorDashboard_ThirdPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .creatorDashboard(.template))
+    self.vm.inputs.configureWith(shareContext: .creatorDashboard(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Project Show Share Sheet"], self.trackingClient.events)
@@ -267,7 +283,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_Thanks_ThirdPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .thanks(.template))
+    self.vm.inputs.configureWith(shareContext: .thanks(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet"], self.trackingClient.events)
@@ -294,7 +310,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testTracking_Thanks_FirstPartyShare() {
-    self.vm.inputs.configureWith(shareContext: .thanks(.template))
+    self.vm.inputs.configureWith(shareContext: .thanks(.template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()
 
     XCTAssertEqual(["Showed Share Sheet", "Checkout Show Share Sheet"], self.trackingClient.events)
@@ -323,7 +339,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testDirectFacebookShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.facebookButtonTapped()
     self.vm.inputs.shareComposeCompletion(result: .done)
 
@@ -345,7 +361,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testDirectFacebookShareCanceled() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.facebookButtonTapped()
     self.vm.inputs.shareComposeCompletion(result: .cancelled)
 
@@ -367,7 +383,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testDirectTwitterShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.twitterButtonTapped()
     self.vm.inputs.shareComposeCompletion(result: .done)
 
@@ -389,7 +405,7 @@ internal final class ShareViewModelTests: TestCase {
   }
 
   func testDirectTwitterShareCanceled() {
-    self.vm.inputs.configureWith(shareContext: .project(.template))
+    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
     self.vm.inputs.twitterButtonTapped()
     self.vm.inputs.shareComposeCompletion(result: .cancelled)
 
