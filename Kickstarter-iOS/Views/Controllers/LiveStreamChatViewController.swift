@@ -28,7 +28,8 @@ internal final class LiveStreamChatViewController: UIViewController {
 
       let vc = Storyboard.LiveStream.instantiate(LiveStreamChatViewController.self)
       vc.viewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
-      vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent), shareContextView: nil)
+      vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent),
+                                             shareContextView: nil)
 
       return vc
   }

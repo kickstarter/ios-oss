@@ -64,7 +64,8 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
 
         // NB: this is just temporary for now
-        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project), shareContextView: nil)
+        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project),
+                                                  shareContextView: nil)
     }
 
     self.viewModel.outputs.referrerData

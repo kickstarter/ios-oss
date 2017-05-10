@@ -38,7 +38,8 @@ public final class LiveStreamContainerViewController: UIViewController {
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
 
-    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent), shareContextView: nil)
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent),
+                                           shareContextView: nil)
 
     return vc
   }

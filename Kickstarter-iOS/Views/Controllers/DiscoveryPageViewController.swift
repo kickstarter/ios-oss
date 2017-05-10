@@ -299,7 +299,8 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
-  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext, fromSourceView: UIView) {
+  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
+                                  fromSourceView: UIView) {
     self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: fromSourceView)
     self.shareViewModel.inputs.shareButtonTapped()
   }
