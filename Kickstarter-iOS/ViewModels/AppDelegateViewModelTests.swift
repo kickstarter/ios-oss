@@ -1370,8 +1370,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.presentViewController.assertValues([])
 
-    let projectUrl = "https://www.kickstarter.com"
-      + "/users/tequila/surveys/123"
+    let projectUrl = "https://www.kickstarter.com/users/tequila/surveys/123"
     let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
                                                    url: URL(string: projectUrl)!,
                                                    sourceApplication: nil,
