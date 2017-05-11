@@ -66,10 +66,14 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
              inSection: Section.categoriesLoader.rawValue)
   }
 
-  internal func deleteCategoriesLoaderRow() -> [IndexPath] {
-    self.clearValues(section: Section.categoriesLoader.rawValue)
+  internal func deleteCategoriesLoaderRow() -> [IndexPath]? {
+    if self[section: Section.categoriesLoader.rawValue].count > 0 {
+      self.clearValues(section: Section.categoriesLoader.rawValue)
 
-    return [IndexPath(row: 0, section: Section.categoriesLoader.rawValue)]
+      return [IndexPath(row: 0, section: Section.categoriesLoader.rawValue)]
+    }
+
+    return nil
   }
 
   internal func selectableRow(indexPath: IndexPath) -> SelectableRow? {

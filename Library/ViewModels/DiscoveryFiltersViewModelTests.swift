@@ -308,8 +308,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadingIndicatorisVisible.assertValues([true])
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)

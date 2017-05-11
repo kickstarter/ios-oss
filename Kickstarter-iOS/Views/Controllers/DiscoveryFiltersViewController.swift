@@ -60,6 +60,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       .observeValues { [weak self] isVisible in
         if isVisible {
           self?.dataSource.loadCategoriesLoaderRow()
+          self?.filtersTableView.reloadData()
         } else {
           self?.deleteCategoriesLoaderRow()
         }
@@ -200,10 +201,11 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   }
 
   private func deleteCategoriesLoaderRow() {
+    guard let deleteCategoriesLoaderRow = self.dataSource.deleteCategoriesLoaderRow() else { return }
+
     self.filtersTableView.beginUpdates()
+    defer { self.filtersTableView.endUpdates() }
 
-    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .fade)
-
-    self.filtersTableView.endUpdates()
+    self.filtersTableView.deleteRows(at: deleteCategoriesLoaderRow, with: .fade)
   }
 }

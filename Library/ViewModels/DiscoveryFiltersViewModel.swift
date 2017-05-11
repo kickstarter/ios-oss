@@ -83,25 +83,19 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
 
+    let loaderIsVisible = MutableProperty(false)
+    self.loadingIndicatorIsVisible = loaderIsVisible.signal
+
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(starting: { loaderIsVisible.value = true },
+              terminated: { loaderIsVisible.value = false })
           .map { $0.categories }
           .materialize()
       }
-
-    let showLoaderIndicator = categoriesEvent.filter { !$0.isTerminating }
-    let hideLoaderIndicator = Signal.zip(
-      showLoaderIndicator,
-      categoriesEvent.filter { $0.isTerminating }
-    )
-
-    self.loadingIndicatorIsVisible = Signal.merge(
-      showLoaderIndicator.mapConst(true),
-      hideLoaderIndicator.mapConst(false)
-    )
 
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
