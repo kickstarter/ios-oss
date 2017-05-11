@@ -141,7 +141,9 @@ LiveStreamChatViewModelOutputs {
     }
 
     self.collapseChatInputView = liveStreamEvent.map { !$0.liveNow }.skipRepeats()
-    self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.ignoreValues()
+    self.dismissKeyboard = self.deviceOrientationDidChangeProperty.signal.skipNil()
+      .filter { $0.isLandscape }
+      .ignoreValues()
 
     let textIsEmpty = Signal.merge(
       self.textProperty.signal.filter { $0 == nil }.mapConst(true),
