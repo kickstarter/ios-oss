@@ -420,8 +420,9 @@ AppDelegateViewModelOutputs {
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
-        guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
-        return surveyResponseId
+        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
+        if case let .project(_, .survey(surveyResponseId), _) = link { return surveyResponseId }
+        return nil
       }
       .skipNil()
       .switchMap { surveyResponseId in
