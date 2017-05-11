@@ -80,11 +80,11 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
       .map { $0.params.category?.rootId }
 
-    let cachedCats = self.viewDidLoadProperty.signal
-      .map(cachedCategories)
-
     let loaderIsVisible = MutableProperty(false)
     self.loadingIndicatorIsVisible = loaderIsVisible.signal
+
+    let cachedCats = self.viewDidLoadProperty.signal
+      .map(cachedCategories)
 
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
