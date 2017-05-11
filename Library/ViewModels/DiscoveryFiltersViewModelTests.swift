@@ -371,31 +371,26 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           |> SelectableRow.lens.params.category .~ .illustration
     ]
 
-    withEnvironment(apiService: MockService(
-      fetchCategoriesResponse: categoriesResponse), apiDelayInterval: .seconds(3)) {
-      self.vm.inputs.configureWith(selectedRow: artSelectableRow)
+    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
-      self.loadCategoryRows.assertValueCount(0)
+    self.loadCategoryRows.assertValueCount(0)
 
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+    self.loadingIndicatorisVisible.assertValues([true])
 
-      self.loadingIndicatorisVisible.assertValues([true])
+    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+    self.loadingIndicatorisVisible.assertValues([true, false])
 
-      self.loadingIndicatorisVisible.assertValues([true, false])
-
-      self.loadCategoryRows.assertValues(
-        [
-          [artSelectedExpandedRow, filmExpandableRow]
-        ],
-        "The art category expands."
-      )
-      self.loadCategoryRowsInitialId.assertValues([1])
-      self.loadCategoryRowsSelectedId.assertValues([1])
-    }
+    self.loadCategoryRows.assertValues(
+      [
+        [artSelectedExpandedRow, filmExpandableRow]
+      ],
+      "The art category expands."
+    )
+    self.loadCategoryRowsInitialId.assertValues([1])
+    self.loadCategoryRowsSelectedId.assertValues([1])
   }
 
   func testTappingSelectableRow() {
