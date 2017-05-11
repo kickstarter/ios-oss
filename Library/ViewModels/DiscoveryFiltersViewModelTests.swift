@@ -44,7 +44,7 @@ private let filmExpandableRow = expandableRowTemplate
 private let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
-  private let vm = DiscoveryFiltersViewModel()
+  private var vm: DiscoveryFiltersViewModelType!
 
   private let animateInView = TestObserver<Int?, NoError>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
@@ -62,6 +62,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm = DiscoveryFiltersViewModel()
+
     self.vm.outputs.animateInView.observe(self.animateInView.observer)
     self.vm.outputs.loadingIndicatorIsVisible.observe(self.loadingIndicatorisVisible.observer)
     self.vm.outputs.loadCategoryRows.map(first).observe(self.loadCategoryRows.observer)
@@ -75,7 +77,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Default() {
-    self.vm.configureWith(selectedRow: allProjectsRow)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -88,7 +90,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Category() {
-    self.vm.configureWith(selectedRow: artSelectableRow)
+    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -101,7 +103,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Subcategory() {
-    self.vm.configureWith(selectedRow: documentarySelectableRow)
+    self.vm.inputs.configureWith(selectedRow: documentarySelectableRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -114,7 +116,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testKoalaEventsTrack() {
-    self.vm.configureWith(selectedRow: allProjectsRow)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -306,6 +308,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.loadingIndicatorisVisible.assertValues([true])
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -371,26 +375,31 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           |> SelectableRow.lens.params.category .~ .illustration
     ]
 
-    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
+    withEnvironment(apiService: MockService(
+      fetchCategoriesResponse: categoriesResponse), apiDelayInterval: .seconds(3)) {
+      self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
-    self.loadCategoryRows.assertValueCount(0)
+      self.loadCategoryRows.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
 
-    self.loadingIndicatorisVisible.assertValues([true])
+      self.scheduler.advance()
 
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+      self.loadingIndicatorisVisible.assertValues([true])
 
-    self.loadingIndicatorisVisible.assertValues([true, false])
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.loadCategoryRows.assertValues(
-      [
-        [artSelectedExpandedRow, filmExpandableRow]
-      ],
-      "The art category expands."
-    )
-    self.loadCategoryRowsInitialId.assertValues([1])
-    self.loadCategoryRowsSelectedId.assertValues([1])
+      self.loadingIndicatorisVisible.assertValues([true, false])
+
+      self.loadCategoryRows.assertValues(
+        [
+          [artSelectedExpandedRow, filmExpandableRow]
+        ],
+        "The art category expands."
+      )
+      self.loadCategoryRowsInitialId.assertValues([1])
+      self.loadCategoryRowsSelectedId.assertValues([1])
+    }
   }
 
   func testTappingSelectableRow() {
