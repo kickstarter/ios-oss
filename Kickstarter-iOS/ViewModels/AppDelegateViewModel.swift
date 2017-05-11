@@ -277,7 +277,7 @@ AppDelegateViewModelOutputs {
 
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
-      .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
+      .map { activity in (activity, activity.webpageURL.flatMap(Navigation.deepLinkMatch)) }
       .filter(second >>> isNotNil)
 
     self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
@@ -294,7 +294,7 @@ AppDelegateViewModelOutputs {
           .skipNil()
     )
 
-    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
+    let deepLinkFromUrl = deepLinkUrl.map(Navigation.deepLinkMatch)
 
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
@@ -318,7 +318,7 @@ AppDelegateViewModelOutputs {
 
     self.findRedirectUrl = deepLinkUrl
       .filter {
-        switch Navigation.match($0) {
+        switch Navigation.deepLinkMatch($0) {
         case .some(.emailClick(_)), .some(.emailLink):  return true
         default:                                        return false
         }
@@ -379,7 +379,7 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
-      .filter { Navigation.match($0) == nil }
+      .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
