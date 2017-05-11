@@ -67,7 +67,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func deleteCategoriesLoaderRow() -> [IndexPath]? {
-    if self[section: Section.categoriesLoader.rawValue].count > 0 {
+    if !self[section: Section.categoriesLoader.rawValue].isEmpty {
       self.clearValues(section: Section.categoriesLoader.rawValue)
 
       return [IndexPath(row: 0, section: Section.categoriesLoader.rawValue)]
