@@ -8,6 +8,10 @@ import UIKit
 internal protocol DiscoveryPostcardCellDelegate: class {
   func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
                          fromSourceView: UIView)
+
+  func discoveryPostcard(cell: DiscoveryPostcardCell, tappedStar message: String)
+
+  func discoveryPostcardCellGoToLoginTout()
 }
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
@@ -158,7 +162,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.starButton
       |> saveButtonStyle
-      |> UIButton.lens.hidden .~ true
 
     _ = self.shareButton
       |> shareButtonStyle
@@ -187,6 +190,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
+    self.starButton.rac.selected = self.viewModel.outputs.starButtonSelected
 
     self.viewModel.outputs.metadataData
       .observeForUI()
@@ -234,6 +238,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         _self.delegate?.discoveryPostcard(cell: _self, tappedShare: context,
                                           fromSourceView: _self.shareButton)
     }
+
+    self.viewModel.outputs.notifyDelegateStarButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] message in
+        guard let _self = self else { return }
+        _self.delegate?.discoveryPostcard(cell: _self, tappedStar: message)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -252,6 +263,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func starButtonTapped() {
+    self.delegate?.discoveryPostcardCellGoToLoginTout()
     self.viewModel.inputs.starButtonTapped()
   }
 

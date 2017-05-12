@@ -85,6 +85,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits when we should notify the delegate that the share button was tapped.
   var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
+  /// Emits when we should notify the delegate that the star button was tapped.
+  var notifyDelegateStarButtonTapped: Signal<String, NoError> { get }
+
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
 
@@ -123,6 +126,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean that determines if the social view should be hidden.
   var socialStackViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolead that determines if the star button should be selected.
+  var starButtonSelected: Signal<Bool, NoError> { get }
 }
 
 public protocol DiscoveryPostcardViewModelType {
@@ -136,6 +142,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   // swiftlint:disable function_body_length
   public init() {
     let project = self.projectProperty.signal.skipNil()
+      .map(cached(project:))
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -222,6 +229,36 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(ShareContext.discovery)
       .takeWhen(self.shareButtonTappedProperty.signal)
 
+    let starProjectEvent = project
+      .takeWhen(self.starButtonTappedProperty.signal)
+      .switchMap { project in
+        AppEnvironment.current.apiService.toggleStar(project)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    let projectStarred = starProjectEvent.values()
+      .map { $0.project }
+      .on(value: { cache(project: $0) })
+
+    self.starButtonSelected = Signal.merge(project, projectStarred)
+      .map { $0.personalization.isStarred == true }
+      .skipRepeats()
+
+    self.notifyDelegateStarButtonTapped = projectStarred
+      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
+        today: AppEnvironment.current.dateType.init().date)  }
+      .filter { _ in
+        !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
+          !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
+      }
+      .on(value: { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
+        AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
+      })
+      .map { _ in Strings.project_star_confirmation() }
+
+
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
@@ -256,6 +293,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
+  public let notifyDelegateStarButtonTapped: Signal<String, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
@@ -269,9 +307,28 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
+  public let starButtonSelected: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }
+}
+
+private func cached(project: Project) -> Project {
+  if let projectCache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int:Bool] {
+    let isStarred = projectCache[project.id] ?? project.personalization.isStarred
+    return project |> Project.lens.personalization.isStarred .~ isStarred
+  } else {
+    return project
+  }
+}
+
+private func cache(project: Project) {
+  AppEnvironment.current.cache[KSCache.ksr_projectStarred] = AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int:Bool]()
+
+  var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int:Bool]
+  cache?[project.id] = project.personalization.isStarred
+
+  AppEnvironment.current.cache[KSCache.ksr_projectStarred] = cache
 }
 
 private func socialText(forFriends friends: [User]) -> String? {

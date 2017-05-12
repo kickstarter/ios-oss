@@ -18,6 +18,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
+  internal let notifyDelegateStarButtonTapped = TestObserver<String, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
@@ -31,6 +32,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
+  internal let starButtonSelected = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -45,6 +47,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
+    self.vm.notifyDelegateStarButtonTapped.observe(self.notifyDelegateStarButtonTapped.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
@@ -59,6 +62,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
+    self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
   }
 
   func testCellAccessibility() {
@@ -89,6 +93,22 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.shareButtonTapped()
     self.notifyDelegateShareButtonTapped.assertValues([discoveryContext])
+  }
+
+  func testTappedStarButton() {
+    let project = Project.template
+    let toggleStarResponse = .template
+      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
+
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+      self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
+
+      self.vm.inputs.configureWith(project: project)
+
+      self.vm.inputs.starButtonTapped()
+
+      self.notifyDelegateStarButtonTapped.assertValues([Strings.project_star_confirmation()])
+    }
   }
 
   func testMetadata() {
