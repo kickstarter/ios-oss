@@ -267,8 +267,8 @@ private let allRoutes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
 
-private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allRoutes.allValues(
-  from: [
+private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
+  keys: [
     "/",
     "/mpss/:a/:b/:c/:d/:e/:f/:g",
     "/activity",
@@ -606,7 +606,7 @@ private func stringToInt(_ string: String) -> Decoded<Int> {
 }
 
 extension Dictionary {
-  fileprivate func allValues(from keys: [Key]) -> Dictionary {
+  fileprivate func restrict(keys: Set<Key>) -> Dictionary {
     var result = Dictionary()
     self.forEach { key, value in
       if keys.contains(key) {
