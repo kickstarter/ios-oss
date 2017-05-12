@@ -515,6 +515,21 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([params])
   }
 
+  func testGoToLogin() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.goToLogin.assertValueCount(0)
+
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: "https://www.kickstarter.com/authorize")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.goToLogin.assertValueCount(1)
+  }
+
   func testGoToProfile() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
