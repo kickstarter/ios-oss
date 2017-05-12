@@ -158,7 +158,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.goToLoginTout()
     }
 
-
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet($0, shareContextView: $1) }

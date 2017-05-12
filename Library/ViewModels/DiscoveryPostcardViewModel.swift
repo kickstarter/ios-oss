@@ -258,7 +258,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       })
       .map { _ in Strings.project_star_confirmation() }
 
-
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
@@ -323,7 +322,8 @@ private func cached(project: Project) -> Project {
 }
 
 private func cache(project: Project) {
-  AppEnvironment.current.cache[KSCache.ksr_projectStarred] = AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int:Bool]()
+  AppEnvironment.current.cache[KSCache.ksr_projectStarred] =
+    AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int:Bool]()
 
   var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int:Bool]
   cache?[project.id] = project.personalization.isStarred
