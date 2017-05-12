@@ -313,7 +313,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 }
 
 private func cached(project: Project) -> Project {
-  if let projectCache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int:Bool] {
+  if let projectCache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int: Bool] {
     let isStarred = projectCache[project.id] ?? project.personalization.isStarred
     return project |> Project.lens.personalization.isStarred .~ isStarred
   } else {
@@ -323,9 +323,9 @@ private func cached(project: Project) -> Project {
 
 private func cache(project: Project) {
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] =
-    AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int:Bool]()
+    AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int: Bool]()
 
-  var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int:Bool]
+  var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int: Bool]
   cache?[project.id] = project.personalization.isStarred
 
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] = cache
