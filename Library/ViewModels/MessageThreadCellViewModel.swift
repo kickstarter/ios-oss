@@ -1,10 +1,12 @@
 import KsApi
-import ReactiveSwift
+import Prelude
 import ReactiveExtensions
+import ReactiveSwift
 import Result
 
 public protocol MessageThreadCellViewModelInputs {
   func configureWith(messageThread: MessageThread)
+  func setSelected(_ selected: Bool)
 }
 
 public protocol MessageThreadCellViewModelOutputs {
@@ -16,6 +18,7 @@ public protocol MessageThreadCellViewModelOutputs {
   var projectName: Signal<String, NoError> { get }
   var replyIndicatorHidden: Signal<Bool, NoError> { get }
   var unreadIndicatorHidden: Signal<Bool, NoError> { get }
+
 }
 
 public protocol MessageThreadCellViewModelType {
@@ -28,7 +31,6 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
 
   public init() {
     let messageThread = self.messageThreadProperty.signal.skipNil()
-
     self.date = messageThread.map {
       Format.date(secondsInUTC: $0.lastMessage.createdAt, dateStyle: .short, timeStyle: .none)
     }
@@ -57,12 +59,24 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
     self.replyIndicatorHidden = messageThread.map {
       $0.lastMessage.sender.id != AppEnvironment.current.currentUser?.id
     }
-    self.unreadIndicatorHidden = messageThread.map { $0.unreadMessagesCount == 0 }
+
+    messageThread
+      .takeWhen(self.setSelectedProperty.signal.filter(isTrue))
+      .observeValues(markedAsRead)
+
+    self.unreadIndicatorHidden = Signal.merge(
+      self.setSelectedProperty.signal.filter(isTrue).mapConst(true),
+      messageThread.map { !hasUnreadMessages(for: $0) }
+    )
   }
 
   fileprivate let messageThreadProperty = MutableProperty<MessageThread?>(nil)
   public func configureWith(messageThread: MessageThread) {
     self.messageThreadProperty.value = messageThread
+  }
+  fileprivate let setSelectedProperty = MutableProperty<Bool>(false)
+  public func setSelected(_ selected: Bool) {
+    self.setSelectedProperty.value = selected
   }
 
   public let date: Signal<String, NoError>
@@ -76,4 +90,17 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
 
   public var inputs: MessageThreadCellViewModelInputs { return self }
   public var outputs: MessageThreadCellViewModelOutputs { return self }
+}
+
+private func hasUnreadMessages(for messageThread: MessageThread) -> Bool {
+  return (AppEnvironment.current.cache[cacheKey(for: messageThread)] as? Bool)
+    ?? (messageThread.unreadMessagesCount > 0)
+}
+
+private func cacheKey(for messageThread: MessageThread) -> String {
+  return "\(KSCache.ksr_messageThreadHasUnreadMessages)_\(messageThread.id)"
+}
+
+private func markedAsRead(for messageThread: MessageThread) {
+  AppEnvironment.current.cache[cacheKey(for: messageThread)] = false
 }

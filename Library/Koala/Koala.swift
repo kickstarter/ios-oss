@@ -281,6 +281,36 @@ public final class Koala {
     }
   }
 
+  /**
+   Determines the place from which the update was presented.
+
+   - activity:        The activity feed.
+   - activitySample:  The activity sample in Discovery.
+   - creatorActivity: The creator's activity feed.
+   - deepLink:        A deep link, including push notification.
+   - draftPreview:    The update draft editor.
+   - updates:         The updates index.
+   */
+  public enum UpdateContext {
+    case activity
+    case activitySample
+    case creatorActivity
+    case deepLink
+    case draftPreview
+    case updates
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .activity:         return "activity"
+      case .activitySample:   return "activity_sample"
+      case .creatorActivity:  return "creator_activity"
+      case .deepLink:         return "deep_link"
+      case .draftPreview:     return "draft_preview"
+      case .updates:          return "updates"
+      }
+    }
+  }
+
   public init(bundle: NSBundleType = Bundle.main,
               client: TrackingClientType,
               config: Config? = nil,
@@ -1186,6 +1216,10 @@ public final class Koala {
     self.track(event: "Viewed Profile")
   }
 
+  public func trackViewedProfileTab(projectsType: ProfileProjectsType) {
+    self.track(event: "Viewed Profile Tab", properties: ["type": projectsType.trackingString])
+  }
+
   // MARK: Settings Events
   public func trackAppStoreRatingOpen() {
     // deprecated
@@ -1623,6 +1657,14 @@ public final class Koala {
     self.track(event: "Closed Live Stream", properties: props)
   }
 
+  public func trackLiveStreamChatSentMessage(project: Project,
+                                             liveStreamEvent: LiveStreamEvent) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(liveStreamEvent: liveStreamEvent))
+
+    self.track(event: "Sent Live Stream Message", properties: props)
+  }
+
   public func trackLiveStreamToggleSubscription(project: Project,
                                                 liveStreamEvent: LiveStreamEvent,
                                                 subscribed: Bool) {
@@ -1905,6 +1947,9 @@ private func properties(shareContext: ShareContext,
   case let .creatorDashboard(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "creator_dashboard"
+  case let .discovery(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "discovery"
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"

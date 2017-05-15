@@ -14,12 +14,17 @@ extension LiveStreamEvent {
     description: "Test LiveStreamEvent",
     firebase: Firebase(
       apiKey: "deadbeef",
+      chatAvatarUrl: "http://www.kickstarter.com/avatar.jpg",
       chatPath: "/chat",
+      chatPostPath: "/chatPost",
+      chatUserId: "id_1234",
+      chatUserName: "Chat User Name",
       greenRoomPath: "/green-room",
       hlsUrlPath: "/hls",
       numberPeopleWatchingPath: "/watching",
       project: "beefcafe",
-      scaleNumberPeopleWatchingPath: "/scale-watching"
+      scaleNumberPeopleWatchingPath: "/scale-watching",
+      token: "chat_auth_token"
     ),
     hasReplay: false,
     hlsUrl: "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8",

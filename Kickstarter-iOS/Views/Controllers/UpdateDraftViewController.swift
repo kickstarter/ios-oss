@@ -38,9 +38,8 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self
+      |> baseControllerStyle()
 
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
@@ -177,11 +176,6 @@ internal final class UpdateDraftViewController: UIViewController {
                                   for: .editingChanged)
     self.titleTextField.addTarget(self, action: #selector(titleTextFieldDoneEditing),
                                   for: .editingDidEndOnExit)
-
-    if let navBar = self.navigationController?.navigationBar {
-      let navBorder = baseNavigationBorder(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
 
     self.viewModel.inputs.viewDidLoad()
   }

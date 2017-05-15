@@ -31,7 +31,7 @@ public let borderButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_navy_900
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_grey_500
   <> UIButton.lens.titleColor(forState: .disabled) .~ .ksr_grey_500
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_600.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
 public let greenBorderButtonStyle = baseButtonStyle
@@ -93,13 +93,27 @@ public let lightNavyButtonStyle =
 public let navyButtonStyle =
   baseButtonStyle
     <> UIButton.lens.titleColor(forState: .normal) .~ .white
-    <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_navy_700
+    <> UIButton.lens.backgroundColor(forState: .normal) .~ .black
     <> UIButton.lens.titleColor(forState: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
     <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_600
     <> UIButton.lens.titleColor(forState: .disabled) .~ .init(white: 0.0, alpha: 0.4)
     <> UIButton.lens.backgroundColor(forState: .disabled) .~ .ksr_navy_600
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_900.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
+
+public let saveButtonStyle =
+  UIButton.lens.title(forState: .normal) .~ nil
+  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.image(forState: .normal) .~ image(named: "star-icon")
+  <> UIButton.lens.image(forState: .highlighted) .~ image(named: "star-filled-icon")
+  <> UIButton.lens.image(forState: .selected) .~ image(named: "star-filled-icon")
+  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+
+public let shareButtonStyle =
+  UIButton.lens.title(forState: .normal) .~ nil
+  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
+  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
 public let textOnlyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_navy_900

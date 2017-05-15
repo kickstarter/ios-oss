@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import SafariServices
 
 internal final class ProjectUpdatesViewController: WebViewController {
@@ -13,6 +14,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -23,6 +25,8 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    _ = self |> baseControllerStyle()
 
     self.navigationItem.title = Strings.project_menu_buttons_updates()
   }
@@ -65,7 +69,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
   }
 
   fileprivate func goToUpdate(forProject project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .updates)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

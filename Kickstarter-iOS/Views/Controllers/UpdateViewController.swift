@@ -12,10 +12,13 @@ internal final class UpdateViewController: WebViewController {
 
   @IBOutlet fileprivate weak var shareButton: UIBarButtonItem!
 
-  internal static func configuredWith(project: Project, update: Update) -> UpdateViewController {
+  internal static func configuredWith(project: Project, update: Update, context: Koala.UpdateContext)
+    -> UpdateViewController {
+
     let vc = Storyboard.Update.instantiate(UpdateViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update)
-    vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update))
+    vc.shareViewModel.inputs.configureWith(shareContext: .update(project, update), shareContextView: nil)
+
     return vc
   }
 
@@ -64,7 +67,7 @@ internal final class UpdateViewController: WebViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()

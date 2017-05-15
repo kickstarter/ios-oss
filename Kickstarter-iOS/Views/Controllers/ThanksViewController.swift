@@ -24,7 +24,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   internal static func configuredWith(project: Project) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
     vc.viewModel.inputs.project(project)
-    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
+    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project), shareContextView: nil)
     return vc
   }
 
@@ -156,7 +156,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
 
     self.shareViewModel.outputs.showShareCompose
       .observeForControllerAction()
@@ -188,11 +188,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   fileprivate func showRatingAlert() {
     self.present(
       UIAlertController.rating(
-        yesHandler: { [weak self] action in
+        yesHandler: { [weak self] _ in
           self?.viewModel.inputs.rateNowButtonTapped()
-        }, remindHandler: { [weak self] action in
+        }, remindHandler: { [weak self] _ in
           self?.viewModel.inputs.rateRemindLaterButtonTapped()
-        }, noHandler: { [weak self] action in
+        }, noHandler: { [weak self] _ in
           self?.viewModel.inputs.rateNoThanksButtonTapped()
       }),
       animated: true,

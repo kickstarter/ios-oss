@@ -23,7 +23,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
-    self.shareViewModel.inputs.configureWith(shareContext: .project(project))
+    self.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
   }
 
   internal func setProjectImageIsVisible(_ visible: Bool) {
@@ -82,7 +82,7 @@ public final class ProjectNavBarViewController: UIViewController {
         .~ .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(1), right: Styles.grid(3))
       |> UIButton.lens.image(forState: .normal) .~ image(named: "category-icon")
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> (UIButton.lens.titleLabel • UILabel.lens.lineBreakMode) .~ .byTruncatingTail
+      |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byTruncatingTail
       |> UIButton.lens.backgroundColor(forState: .highlighted) .~ .init(white: 0, alpha: 0.1)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
@@ -108,19 +108,10 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.userInteractionEnabled .~ true
 
     _ = self.shareButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+      |> shareButtonStyle
 
     _ = self.starButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "star-icon")
-      |> UIButton.lens.image(forState: .highlighted) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.image(forState: .selected) .~ image(named: "star-filled-icon")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project()}
-
+      |> saveButtonStyle
   }
   // swiftlint:enable function_body_length
 
@@ -185,11 +176,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
-
-    self.shareViewModel.outputs.showShareCompose
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareCompose($0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 
@@ -224,13 +211,6 @@ public final class ProjectNavBarViewController: UIViewController {
       popover?.sourceView = self.shareButton
     }
 
-    self.present(controller, animated: true, completion: nil)
-  }
-
-  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
-    controller.completionHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
-    }
     self.present(controller, animated: true, completion: nil)
   }
 

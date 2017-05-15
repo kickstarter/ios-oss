@@ -13,7 +13,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 
 ## Getting Started
 
-1. [Download](https://developer.apple.com/xcode/download/) the Xcode 8.2 release.
+1. [Download](https://developer.apple.com/xcode/download/) the Xcode 8.3 release.
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.
@@ -39,7 +39,7 @@ playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarte
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
 write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
-as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/Tests/ViewModels)
+as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
 them heavily, including tests for localization, accessibility and event
 tracking.
 
@@ -73,7 +73,7 @@ A collection of operators we like to add to ReactiveCocoa.
 * [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
 * [Argo](https://github.com/thoughtbot/Argo)
 * [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
-* [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+* [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
 
 ## Contributing
 
@@ -102,7 +102,7 @@ We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)
 ## License
 
 ```
-Copyright 2016 Kickstarter, PBC.
+Copyright 2017 Kickstarter, PBC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

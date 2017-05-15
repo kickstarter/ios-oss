@@ -15,12 +15,19 @@ public enum Styles {
 }
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_grey_200
+  return VC.lens.view.backgroundColor .~ .white
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
+}
+
+public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
+  return VC.lens.view.backgroundColor .~ .black
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
+    <> TVC.lens.view.backgroundColor .~ .ksr_grey_300
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
@@ -29,27 +36,6 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   #else
     return style
   #endif
-}
-
-public let baseNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
-    NSFontAttributeName: UIFont.ksr_callout()
-  ]
-  <> UINavigationBar.lens.translucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .white
-  <> UINavigationBar.lens.shadowImage .~ UIImage()
-  <> UINavigationBar.lens.backgroundImage(forBarMetrics: .default) .~ UIImage()
-
-public func baseNavigationBorder(navBar: UINavigationBar) -> UIView {
-  let border = UIView(frame: CGRect(x: 0.0,
-                                    y: navBar.frame.size.height,
-                                    width: navBar.frame.size.width,
-                                    height: 1.0)
-  )
-  return border
-    |> discoveryBorderLineStyle
-    |> UIView.lens.backgroundColor .~ .ksr_navy_700
 }
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
@@ -62,7 +48,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
       <> TVC.lens.backgroundColor .~ .clear
-      <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
+      <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
       <> TVC.lens.selectionStyle .~ .none
@@ -114,7 +100,7 @@ public let formFieldStyle =
 
 public let separatorStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_400
-  <> UIView.lens.accessibilityElementsHidden .~ true
+    <> UIView.lens.accessibilityElementsHidden .~ true
 
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.
@@ -126,3 +112,25 @@ public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.c
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
 }
+
+// Just a lil helper lens for getting inside a nav controller's nav bar.
+private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
+  view: { $0?.navigationBar },
+  set: { _, whole in whole }
+)
+
+private let baseNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.black,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ false
+    <> UINavigationBar.lens.barTintColor .~ .white
+
+private let clearNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.white,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ true
+    <> UINavigationBar.lens.shadowImage .~ UIImage()

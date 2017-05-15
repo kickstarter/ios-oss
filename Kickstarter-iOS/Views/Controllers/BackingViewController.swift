@@ -16,21 +16,15 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var backerShippingAmountLabel: UILabel!
   @IBOutlet fileprivate weak var contentView: UIView!
   @IBOutlet fileprivate weak var dividerView: UIView!
-  @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliveryStackView: UIStackView!
   @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
-  @IBOutlet fileprivate weak var pledgeCardView: UIView!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardCardView: UIView!
+  @IBOutlet private weak var pledgeTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
-  @IBOutlet fileprivate weak var rewardAmountLabel: UILabel!
   @IBOutlet fileprivate weak var rewardLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var statusTitleLabel: UILabel!
@@ -82,15 +76,13 @@ internal final class BackingViewController: UIViewController {
     self.statusSubtitleLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
     self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.backerRewardDescription
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.backerRewardTitle
-    self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.backerRewardTitleIsHidden
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
     self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
-    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
-    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
+
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-    self.rewardAmountLabel.rac.text = self.viewModel.outputs.backerRewardAmount
-    self.shippingStackView.rac.hidden = self.viewModel.outputs.shippingStackViewIsHidden
+//    self.rewardAmountLabel.rac.text = self.viewModel.outputs.backerRewardAmount
+//    self.shippingStackView.rac.hidden = self.viewModel.outputs.shippingStackViewIsHidden
     self.statusDescriptionLabel.rac.text = self.viewModel.outputs.statusDescription
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
 
@@ -117,20 +109,20 @@ internal final class BackingViewController: UIViewController {
         self?.goToMessageCreator(messageSubject: messageSubject, context: context)
     }
 
-    self.viewModel.outputs.opacityForContainers
-      .observeForUI()
-      .observeValues { [weak self] alpha in
-        guard let _self = self else { return }
-        UIView.animate(
-          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
-          delay: 0.0,
-          options: .curveEaseOut,
-          animations: {
-            _self.pledgeContainerView.alpha = alpha
-            _self.rewardContainerView.alpha = alpha
-          },
-          completion: nil)
-    }
+//    self.viewModel.outputs.opacityForContainers
+//      .observeForUI()
+//      .observeValues { [weak self] alpha in
+//        guard let _self = self else { return }
+//        UIView.animate(
+//          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
+//          delay: 0.0,
+//          options: .curveEaseOut,
+//          animations: {
+//            _self.pledgeContainerView.alpha = alpha
+//            _self.rewardContainerView.alpha = alpha
+//          },
+//          completion: nil)
+  //}
   }
 
   // swiftlint:disable:next function_body_length
@@ -139,6 +131,7 @@ internal final class BackingViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_300
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
     _ = self.contentView
@@ -158,60 +151,63 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.messageCreatorButton
       |> navyButtonStyle
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 14)
+      |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
     _ = self.viewMessagesButton
       |> borderButtonStyle
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
+      |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
 
-    _ = self.dividerView |> separatorStyle
-
-    _ = [self.pledgeCardView, self.rewardCardView]
-      ||> dropShadowStyle()
+    _ = self.dividerView
+      |> UIView.lens.backgroundColor .~ .ksr_grey_500
 
     _ = [self.pledgeContainerView, self.rewardContainerView]
+      ||> cardStyle(cornerRadius: 2.0)
+      ||> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       ||> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.gridHalf(5), left: Styles.gridHalf(5),
                                                     bottom: Styles.gridHalf(5), right: Styles.grid(2))
 
     _ = self.totalPledgedLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 17)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
+      |> UILabel.lens.textColor .~ .black
       |> UILabel.lens.text %~ { _ in Strings.Total_pledged() }
 
     _ = self.totalPledgedAmountLabel
-      |> UILabel.lens.font .~ .ksr_title2()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_headline(size: 15)
+      |> UILabel.lens.textColor .~ .black
 
     _ = self.pledgeLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
-      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Pledge:") }
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text %~ { _ in Strings.Pledge() }
 
     _ = self.backerPledgeAmountAndDateLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.shippingLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
-      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Shipping:") }
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text %~ { _ in Strings.Shipping() }
 
     _ = self.backerShippingAmountLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.statusTitleLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
-      |> UILabel.lens.text %~ { _ in localizedString(key: "todo", defaultValue: "Status:") }
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text %~ { _ in Strings.Status() }
 
     _ = self.statusSubtitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.statusDescriptionLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.font .~ .ksr_caption1(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
 
     _ = self.loadingIndicatorView
@@ -224,26 +220,13 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
       |> UILabel.lens.text %~ { _ in Strings.Reward_selected() }
 
-    _ = self.rewardAmountLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title2()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
-
     _ = self.rewardTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
+      |> UILabel.lens.textColor .~ .black
 
     _ = self.backerRewardDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
-
-    _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
-      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
-
-    _ = self.estimatedDeliveryDateLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.statusDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)

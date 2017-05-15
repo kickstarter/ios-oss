@@ -32,11 +32,6 @@ internal final class DashboardViewController: UITableViewController {
     self.navigationItem.rightBarButtonItem = shareButton
 
     self.titleView.delegate = self
-
-    if let navBar = self.navigationController?.navigationBar {
-      let navBorder = baseNavigationBorder(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -46,10 +41,9 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   override func bindStyles() {
-    _ = self |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
+    _ = self
+      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+      |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
   // swiftlint:disable function_body_length
@@ -70,7 +64,8 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
 
         // NB: this is just temporary for now
-        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project))
+        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project),
+                                                  shareContextView: nil)
     }
 
     self.viewModel.outputs.referrerData
@@ -134,7 +129,7 @@ internal final class DashboardViewController: UITableViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 
@@ -159,7 +154,7 @@ internal final class DashboardViewController: UITableViewController {
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let cell = tableView.cellForRow(at: indexPath)
-    if let _ = cell as? DashboardContextCell {
+    if cell as? DashboardContextCell != nil {
       self.viewModel.inputs.projectContextCellTapped()
     }
   }

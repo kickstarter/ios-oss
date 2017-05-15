@@ -28,7 +28,7 @@ public func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
   let group = CategoryGroup(categoryId: id)
   switch group {
   case .none:
-    return .ksr_navy_700
+    return .black
   case .culture:
     return .ksr_red_400
   case .entertainment:
@@ -192,13 +192,16 @@ public let postcardSocialStackViewStyle =
 public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in
       label.traitCollection.isRegularRegular
-        ? .ksr_caption1(size: 14)
-        : .ksr_caption1(size: 12)
+        ? .ksr_body(size: 14)
+        : .ksr_body(size: 12)
     }
-    <> UILabel.lens.textColor .~ .ksr_text_navy_500
 
 public let postcardStatsTitleStyle =
-  UILabel.lens.font .~ .ksr_headline(size: 14)
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? .ksr_headline(size: 17)
+      : .ksr_headline(size: 15)
+  }
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 

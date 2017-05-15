@@ -16,9 +16,9 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.viewModel.inputs.viewDidLoad()
-
     self.tableView.dataSource = dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func bindViewModel() {
@@ -134,7 +134,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToUpdate(project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .creatorActivity)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

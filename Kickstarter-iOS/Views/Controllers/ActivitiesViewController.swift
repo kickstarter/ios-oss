@@ -29,6 +29,8 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   internal override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
     self.emptyStatesController?.view.frame = self.view.bounds
   }
 
@@ -45,11 +47,6 @@ internal final class ActivitiesViewController: UITableViewController {
     self.addChildViewController(emptyVC)
     self.view.addSubview(emptyVC.view)
     emptyVC.didMove(toParentViewController: self)
-
-    if let navBar = self.navigationController?.navigationBar {
-      let navBorder = baseNavigationBorder(navBar: navBar)
-      navBar.addSubview(navBorder)
-    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -68,9 +65,6 @@ internal final class ActivitiesViewController: UITableViewController {
 
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
   // swiftlint:disable function_body_length
@@ -224,7 +218,7 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   fileprivate func goToUpdate(project: Project, update: Update) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .activity)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

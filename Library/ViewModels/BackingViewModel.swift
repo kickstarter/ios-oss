@@ -234,8 +234,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, _ in
         project.creator == AppEnvironment.current.currentUser
+          // todo: is this something we are doing or just hiding the button?
           ? localizedString(key: "todo", defaultValue: "Contact backer")
-          : localizedString(key: "todo", defaultValue: "Contact creator")
+          : Strings.Contact_creator()
     }
 
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser

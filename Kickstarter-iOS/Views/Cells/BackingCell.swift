@@ -75,7 +75,6 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     self.pledgedLabel.rac.text = self.viewModel.outputs.pledged
     self.rewardLabel.rac.text = self.viewModel.outputs.reward
     self.deliveryLabel.rac.text = self.viewModel.outputs.delivery
-    self.deliveryLabel.rac.accessibilityLabel = self.viewModel.outputs.deliveryAccessibilityLabel
     self.rootStackView.rac.alignment = self.viewModel.outputs.rootStackViewAlignment
   }
 

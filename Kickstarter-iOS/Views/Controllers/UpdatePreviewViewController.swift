@@ -91,7 +91,7 @@ internal final class UpdatePreviewViewController: WebViewController {
   }
 
   fileprivate func goTo(update: Update, forProject project: Project) {
-    let vc = UpdateViewController.configuredWith(project: project, update: update)
+    let vc = UpdateViewController.configuredWith(project: project, update: update, context: .draftPreview)
     self.navigationController?.setViewControllers([vc], animated: true)
   }
 }

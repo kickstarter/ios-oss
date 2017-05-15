@@ -6,6 +6,7 @@ public final class KSCache {
   public static let ksr_activityFriendsFollowing = "activity_friend_follow_view_model"
   public static let ksr_discoveryFiltersCategories = "discovery_filters_view_model_categories"
   public static let ksr_findFriendsFollowing = "find_friends_follow_view_model"
+  public static let ksr_messageThreadHasUnreadMessages = "message_thread_has_unread_messages"
 
   public init() {
   }
