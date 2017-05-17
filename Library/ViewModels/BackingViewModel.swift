@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -25,35 +26,8 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer name to be displayed.
   var backerName: Signal<String, NoError> { get }
 
-  /// Emits the backer's pledge amount and date.
-  var backerPledgeAmountAndDate: Signal<String, NoError> { get }
-
-  /// Emits the backer's pledge status.
-  var backerPledgeStatus: Signal<String, NoError> { get }
-
-  /// Emits the backer reward amount to display.
-  var backerRewardAmount: Signal<String, NoError> { get }
-
-  /// Emits the backer reward description to display.
-  var backerRewardDescription: Signal<String, NoError> { get }
-
-  /// Emits the backer reward title to display.
-  var backerRewardTitle: Signal<String, NoError> { get }
-
-  /// Emits a bool whether to hide the reward title if it's empty.
-  var backerRewardTitleIsHidden: Signal<Bool, NoError> { get }
-
   /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
-
-  /// Emits the backer's shipping amount.
-  var backerShippingAmount: Signal<String, NoError> { get }
-
-  /// Emits the estimated delivery date.
-  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
-
-  /// Emits a boolean that determines if estimated deliver should be hidden.
-  var estimatedDeliveryStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits with the project when should go to message creator screen.
   var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
@@ -73,8 +47,32 @@ public protocol BackingViewModelOutputs {
   /// Emits an alpha value for the reward and pledge containers to animate in.
   var opacityForContainers: Signal<CGFloat, NoError> { get }
 
+  /// Emits the backer's pledge amount.
+  var pledgeAmount: Signal<String, NoError> { get }
+
+  /// Emits a NSAttributedString for the pledge title label.
+  var pledgeSectionTitle: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits the backer's pledge status.
+  var pledgeStatus: Signal<String, NoError> { get }
+
+  /// Emits the backer reward description to display.
+  var rewardDescription: Signal<String, NoError> { get }
+
+  /// Emits a bool whether to hide the reward section if it's No Reward.
+  var rewardSectionIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the backer reward title to display.
+  var rewardSectionTitle: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits the backer reward title and amount to display.
+  var rewardTitleWithAmount: Signal<String, NoError> { get }
+
   /// Emits the axis of the stackview.
   var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
+
+  /// Emits the backer's shipping amount.
+  var shippingAmount: Signal<String, NoError> { get }
 
   /// Emits a bool whether shipping stack view should be hidden.
   var shippingStackViewIsHidden: Signal<Bool, NoError> { get }
@@ -143,7 +141,39 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.backerAvatarURL = basicBacker.map { URL(string: $0.avatar.small) }
 
-    self.backerPledgeStatus = Signal.merge(
+    self.pledgeSectionTitle = Signal.merge(
+      emptyStringOnLoad.map { NSAttributedString(string: $0) },
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, backerIsCurrentUser in
+        pledgeTitle(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
+      }
+    )
+
+    self.pledgeAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+        let basicPledge = backing.amount - (backing.shippingAmount ?? 0)
+        return Format.currency(basicPledge, country: project.country)
+      }
+    )
+
+    self.shippingAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser
+        .map { project, backing, _ in
+          "+ " + Format.currency(backing.shippingAmount ?? 0, country: project.country)
+      }
+    )
+
+    self.shippingStackViewIsHidden = backing.map { $0.shippingAmount == .some(0) }
+
+    self.totalPledgeAmount = Signal.merge(
+      emptyStringOnLoad,
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+        Format.currency(backing.amount, country: project.country)
+      }
+    )
+
+    self.pledgeStatus = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
         statusString(for: backing.status, project: project)
@@ -154,70 +184,37 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, backerIsCurrentUser in
-        let isCreator = !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
-        return description(for: backing.status, project: project, isCreator: isCreator)
+        return description(for: backing.status, project: project, backerIsCurrentUser: backerIsCurrentUser)
       }
     )
 
-    self.backerPledgeAmountAndDate = Signal.merge(
-      emptyStringOnLoad,
-      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        let basicPledge = backing.amount - (backing.shippingAmount ?? 0)
-        return Strings.backer_modal_pledge_amount_on_pledge_date(
-          pledge_amount: Format.currency(basicPledge, country: project.country),
-          pledge_date: Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
-        )
+    self.rewardSectionTitle = Signal.merge(
+      emptyStringOnLoad.map { NSAttributedString(string: $0) },
+      projectAndBackingAndBackerIsCurrentUser
+        .map { project, backing, backerIsCurrentUser in
+          rewardTitle(for: backing.reward, project: project, backerIsCurrentUser: backerIsCurrentUser)
       }
     )
 
-    self.totalPledgeAmount = Signal.merge(
-      emptyStringOnLoad,
-      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        Format.currency(backing.amount, country: project.country)
-      }
-    )
-
-    self.backerRewardAmount = Signal.merge(
+    self.rewardTitleWithAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser
         .map { project, backing, _ in
-        Format.currency(backing.reward?.minimum ?? 0, country: project.country)
+          let currency = Format.currency(backing.reward?.minimum ?? 0, country: project.country)
+          if let rewardTitle = backing.reward?.title {
+            return currency + " - " + rewardTitle
+          } else {
+            return currency
+          }
       }
     )
 
-    self.backerRewardDescription = Signal.merge(
+    self.rewardDescription = Signal.merge(
       emptyStringOnLoad,
       reward.map { $0.description }
     )
 
-    self.backerRewardTitle = Signal.merge(
-      emptyStringOnLoad,
-      reward.map { $0.title ?? "" }
-    )
-
-    self.backerRewardTitleIsHidden = self.backerRewardTitle.map { $0.isEmpty }
-
-    self.backerShippingAmount = Signal.merge(
-      emptyStringOnLoad,
-      projectAndBackingAndBackerIsCurrentUser
-        .map { project, backing, _ in
-          Format.currency(backing.shippingAmount ?? 0, country: project.country)
-      }
-    )
-
-    self.shippingStackViewIsHidden = backing.map { $0.shippingAmount == .some(0) }
-
-    self.estimatedDeliveryDateLabelText = Signal.merge(
-      emptyStringOnLoad,
-      reward.map {
-        $0.estimatedDeliveryOn.map {
-          Format.date(secondsInUTC: $0, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone)
-        }
-      }.skipNil()
-    )
-
-    self.estimatedDeliveryStackViewHidden = reward
-      .map { $0.estimatedDeliveryOn == nil }
+    self.rewardSectionIsHidden = backing.map { $0.reward?.title == nil }
 
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
@@ -241,7 +238,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, backerIsCurrentUser in
-        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+        userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
     }
 
     self.opacityForContainers = Signal.merge(
@@ -278,23 +275,22 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
   public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
-  public let backerPledgeAmountAndDate: Signal<String, NoError>
-  public let backerPledgeStatus: Signal<String, NoError>
-  public let backerRewardAmount: Signal<String, NoError>
-  public let backerRewardDescription: Signal<String, NoError>
-  public let backerRewardTitle: Signal<String, NoError>
-  public let backerRewardTitleIsHidden: Signal<Bool, NoError>
   public let backerSequence: Signal<String, NoError>
-  public let backerShippingAmount: Signal<String, NoError>
-  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let estimatedDeliveryStackViewHidden: Signal<Bool, NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
   public let opacityForContainers: Signal<CGFloat, NoError>
+  public let pledgeAmount: Signal<String, NoError>
+  public let pledgeSectionTitle: Signal<NSAttributedString, NoError>
+  public let pledgeStatus: Signal<String, NoError>
+  public let rewardDescription: Signal<String, NoError>
+  public let rewardSectionIsHidden: Signal<Bool, NoError>
+  public var rewardTitleWithAmount: Signal<String, NoError>
+  public var rewardSectionTitle: Signal<NSAttributedString, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
+  public let shippingAmount: Signal<String, NoError>
   public let shippingStackViewIsHidden: Signal<Bool, NoError>
   public let statusDescription: Signal<String, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
@@ -322,7 +318,9 @@ private func statusString(for status: Backing.Status, project: Project) -> Strin
   }
 }
 
-private func description(for status: Backing.Status, project: Project, isCreator: Bool) -> String {
+private func description(for status: Backing.Status, project: Project, backerIsCurrentUser: Bool) -> String {
+  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
+
   switch status {
   case .canceled:
     return isCreator
@@ -353,3 +351,66 @@ private func description(for status: Backing.Status, project: Project, isCreator
     fatalError()
   }
 }
+
+private func pledgeTitle(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
+  -> NSAttributedString {
+
+  let date = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
+  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
+
+  let titleString = isCreator
+    ? localizedString(key: "Pledged_on_date",
+                      defaultValue: "<b>Pledged</b> on %{pledge_date}",
+                      substitutions: ["pledge_date": date])
+    : localizedString(key: "You_pledged_on_date",
+                      defaultValue: "<b>You pledged</b> on %{pledge_date}",
+                      substitutions: ["pledge_date": date])
+
+  return titleString.simpleHtmlAttributedString(
+    base: [
+      NSFontAttributeName: UIFont.ksr_subhead(size: 13),
+      NSForegroundColorAttributeName: UIColor.black
+    ],
+    bold: [
+      NSFontAttributeName: UIFont.ksr_headline(size: 15),
+      NSForegroundColorAttributeName: UIColor.black
+    ])
+    ?? NSAttributedString(string: "")
+}
+
+private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentUser: Bool)
+  -> NSAttributedString {
+
+  guard let reward = reward else { return NSAttributedString(string: "") }
+  guard let estimatedDate = reward.estimatedDeliveryOn else { return NSAttributedString(string: "") }
+
+  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
+  let date = Format.date(secondsInUTC: estimatedDate,
+                         dateStyle: .short,
+                         timeStyle: .none,
+                         timeZone: UTCTimeZone)
+
+  let titleString = isCreator
+    ? localizedString(key: "Reward_estimated_for_delivery_on_date",
+                      defaultValue: "<b>Reward</b> estimated for delivery on %{delivery_date}",
+                      substitutions: ["delivery_date": date])
+    : localizedString(key: "Your_reward_estimated_for_delivery_on_date",
+                      defaultValue: "<b>Your reward</b> estimated for delivery on %{delivery_date}",
+                      substitutions: ["delivery_date": date])
+
+  return titleString.simpleHtmlAttributedString(
+    base: [
+      NSFontAttributeName: UIFont.ksr_subhead(size: 13),
+      NSForegroundColorAttributeName: UIColor.black
+    ],
+    bold: [
+      NSFontAttributeName: UIFont.ksr_headline(size: 15),
+      NSForegroundColorAttributeName: UIColor.black
+    ])
+    ?? NSAttributedString(string: "")
+}
+
+private func userIsCreator(for project: Project, backerIsCurrentUser: Bool) -> Bool {
+  return !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+}
+// swiftlint:enable file_length

@@ -162,16 +162,16 @@
                                                                                 <rect key="frame" x="128.5" y="0.0" width="214.5" height="130"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="9Vn-SW-slz">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="168.5" height="47"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="60.5" height="47"/>
                                                                                         <subviews>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$4.00 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXD-Cm-JMu">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="168.5" height="20.5"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXD-Cm-JMu">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="60.5" height="20.5"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <nil key="textColor"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ $4.00 United States" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faK-LU-nlf">
-                                                                                                <rect key="frame" x="0.0" y="26.5" width="168.5" height="20.5"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ $0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faK-LU-nlf">
+                                                                                                <rect key="frame" x="0.0" y="26.5" width="60.5" height="20.5"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -334,7 +334,7 @@
                         <outlet property="actionsStackView" destination="JtV-lg-s1j" id="Oox-3B-k4E"/>
                         <outlet property="backerAvatarImageView" destination="gbI-dC-glA" id="z5v-m1-bCf"/>
                         <outlet property="backerNameLabel" destination="Omd-BE-Zt5" id="V4s-JH-MRL"/>
-                        <outlet property="backerPledgeAmountAndDateLabel" destination="vXD-Cm-JMu" id="Df5-Uj-Vfh"/>
+                        <outlet property="backerPledgeAmountLabel" destination="vXD-Cm-JMu" id="hnj-7e-hXN"/>
                         <outlet property="backerRewardDescriptionLabel" destination="LAw-oo-SKP" id="6v9-3A-KUm"/>
                         <outlet property="backerSequenceLabel" destination="T5r-H4-NU0" id="cGr-7A-qu2"/>
                         <outlet property="backerShippingAmountLabel" destination="faK-LU-nlf" id="WpP-9N-F2Q"/>
@@ -344,10 +344,10 @@
                         <outlet property="messageCreatorButton" destination="vbw-cC-EqL" id="LJl-9f-9FJ"/>
                         <outlet property="pledgeContainerView" destination="oeL-lC-IYS" id="zES-Px-YhP"/>
                         <outlet property="pledgeLabel" destination="hpl-bx-1z7" id="phi-SD-5zC"/>
-                        <outlet property="pledgeTitleLabel" destination="53f-su-ibl" id="H7I-zc-Ac1"/>
+                        <outlet property="pledgeSectionTitleLabel" destination="53f-su-ibl" id="buP-ag-tYm"/>
                         <outlet property="rewardContainerView" destination="5iw-4a-3XE" id="wL0-T5-8Fc"/>
-                        <outlet property="rewardLabel" destination="TN7-kO-VJJ" id="gDK-G4-jYX"/>
-                        <outlet property="rewardTitleLabel" destination="VxD-FX-ImT" id="hOz-Wq-iLk"/>
+                        <outlet property="rewardSectionTitleLabel" destination="TN7-kO-VJJ" id="LAJ-2o-l2f"/>
+                        <outlet property="rewardTitleWithAmountLabel" destination="VxD-FX-ImT" id="BDS-jv-W61"/>
                         <outlet property="shippingLabel" destination="LOo-wm-Oqf" id="rv7-HN-8Yv"/>
                         <outlet property="statusDescriptionLabel" destination="Git-ao-PPA" id="5Is-iJ-cVC"/>
                         <outlet property="statusSubtitleLabel" destination="m1z-I7-STO" id="apl-8N-GLU"/>

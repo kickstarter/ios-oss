@@ -10,7 +10,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var actionsStackView: UIStackView!
   @IBOutlet fileprivate weak var backerAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var backerNameLabel: UILabel!
-  @IBOutlet fileprivate weak var backerPledgeAmountAndDateLabel: UILabel!
+  @IBOutlet fileprivate weak var backerPledgeAmountLabel: UILabel!
   @IBOutlet fileprivate weak var backerRewardDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var backerSequenceLabel: UILabel!
   @IBOutlet fileprivate weak var backerShippingAmountLabel: UILabel!
@@ -20,10 +20,10 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeLabel: UILabel!
-  @IBOutlet private weak var pledgeTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
-  @IBOutlet fileprivate weak var rewardLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
@@ -32,7 +32,6 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
-  private var navBarBorder = UIView()
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
   internal static func configuredWith(project: Project, backer: User?) -> BackingViewController {
@@ -43,10 +42,6 @@ internal final class BackingViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-
-    _ = self.navigationController?.navigationBar
-      ?|> UINavigationBar.lens.translucent .~ false
-      ?|> UINavigationBar.lens.barTintColor .~ .white
 
     _ = self.messageCreatorButton
       |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
@@ -72,17 +67,17 @@ internal final class BackingViewController: UIViewController {
     self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
     self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
-    self.backerPledgeAmountAndDateLabel.rac.text = self.viewModel.outputs.backerPledgeAmountAndDate
-    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.backerPledgeStatus
-    self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.backerRewardDescription
-    self.rewardTitleLabel.rac.text = self.viewModel.outputs.backerRewardTitle
+    self.backerPledgeAmountLabel.rac.text = self.viewModel.outputs.pledgeAmount
+    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.pledgeStatus
+    self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.rewardDescription
+    self.pledgeSectionTitleLabel.rac.attributedText = self.viewModel.outputs.pledgeSectionTitle
+    self.rewardSectionTitleLabel.rac.attributedText = self.viewModel.outputs.rewardSectionTitle
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
-    self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.backerShippingAmount
-
+    self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmount
+    self.rewardContainerView.rac.hidden = self.viewModel.outputs.rewardSectionIsHidden
+    self.rewardTitleWithAmountLabel.rac.text = self.viewModel.outputs.rewardTitleWithAmount
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-//    self.rewardAmountLabel.rac.text = self.viewModel.outputs.backerRewardAmount
-//    self.shippingStackView.rac.hidden = self.viewModel.outputs.shippingStackViewIsHidden
     self.statusDescriptionLabel.rac.text = self.viewModel.outputs.statusDescription
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
 
@@ -109,20 +104,20 @@ internal final class BackingViewController: UIViewController {
         self?.goToMessageCreator(messageSubject: messageSubject, context: context)
     }
 
-//    self.viewModel.outputs.opacityForContainers
-//      .observeForUI()
-//      .observeValues { [weak self] alpha in
-//        guard let _self = self else { return }
-//        UIView.animate(
-//          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
-//          delay: 0.0,
-//          options: .curveEaseOut,
-//          animations: {
-//            _self.pledgeContainerView.alpha = alpha
-//            _self.rewardContainerView.alpha = alpha
-//          },
-//          completion: nil)
-  //}
+    self.viewModel.outputs.opacityForContainers
+      .observeForUI()
+      .observeValues { [weak self] alpha in
+        guard let _self = self else { return }
+        UIView.animate(
+          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
+          delay: 0.0,
+          options: .curveEaseOut,
+          animations: {
+            _self.pledgeContainerView.alpha = alpha
+            _self.rewardContainerView.alpha = alpha
+          },
+          completion: nil)
+  }
   }
 
   // swiftlint:disable:next function_body_length
@@ -135,7 +130,7 @@ internal final class BackingViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
     _ = self.contentView
-      |> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(2),
+      |> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(5), left: Styles.grid(2),
                                                    bottom: Styles.grid(4), right: Styles.grid(2))
 
     _ = self.backerAvatarImageView
@@ -184,7 +179,7 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Pledge() }
 
-    _ = self.backerPledgeAmountAndDateLabel
+    _ = self.backerPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
@@ -215,12 +210,7 @@ internal final class BackingViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
-    _ = self.rewardLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 17)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
-      |> UILabel.lens.text %~ { _ in Strings.Reward_selected() }
-
-    _ = self.rewardTitleLabel
+    _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .black
 
