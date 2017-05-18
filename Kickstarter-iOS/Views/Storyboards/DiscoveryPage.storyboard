@@ -431,7 +431,7 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
-                                        <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eC3-Kj-zPc">
+                                        <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eC3-Kj-zPc" userLabel="Project image overlay">
                                             <rect key="frame" x="18" y="18" width="364" height="205"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
@@ -493,18 +493,18 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="top" secondItem="vUL-dU-47D" secondAttribute="top" id="2wC-OD-Vco"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="OqX-qg-UeE" secondAttribute="trailing" constant="10" id="5RF-E2-1AF"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="6by-7F-gOy"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="hnN-BJ-FXy" secondAttribute="leading" id="Axh-gN-jM9"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="bottom" secondItem="x7P-p0-T4F" secondAttribute="bottom" constant="-1.5" id="Bx7-Iz-HSU"/>
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="height" secondItem="eC3-Kj-zPc" secondAttribute="height" multiplier="1:4" id="Ief-cj-080"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnN-BJ-FXy" secondAttribute="bottom" id="P0n-Bg-KYh"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" id="RYY-JC-VCM"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="trailing" secondItem="vUL-dU-47D" secondAttribute="trailing" id="b9M-PY-nW0"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="centerY" secondItem="R0g-tb-Pfo" secondAttribute="top" id="buC-U9-470"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="trailing" secondItem="x7P-p0-T4F" secondAttribute="trailing" id="ePj-Ey-Kun"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="leading" secondItem="R0g-tb-Pfo" secondAttribute="leading" constant="12" id="fFf-79-3QU"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="leading" secondItem="f91-JL-fui" secondAttribute="leadingMargin" id="fq1-hp-7sp"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="leading" secondItem="vUL-dU-47D" secondAttribute="leading" id="fpo-c0-uL0"/>
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="top" secondItem="eC3-Kj-zPc" secondAttribute="top" id="hiE-fV-Nln"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="leading" secondItem="x7P-p0-T4F" secondAttribute="leading" id="lVJ-hm-ql7"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnN-BJ-FXy" secondAttribute="top" id="mFo-CL-QQM"/>
