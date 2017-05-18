@@ -379,7 +379,7 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
-      .filter { Navigation.match($0) == nil }
+      .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in

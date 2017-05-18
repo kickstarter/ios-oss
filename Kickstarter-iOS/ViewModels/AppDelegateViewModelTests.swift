@@ -522,9 +522,9 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToLogin.assertValueCount(0)
 
     let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                      url: URL(string: "https://www.kickstarter.com/authorize")!,
-                                      sourceApplication: nil,
-                                      annotation: 1)
+                                                   url: URL(string: "https://www.kickstarter.com/authorize")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
     XCTAssertFalse(result)
 
     self.goToLogin.assertValueCount(1)
