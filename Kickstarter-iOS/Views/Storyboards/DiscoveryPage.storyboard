@@ -436,11 +436,11 @@
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ylR-Sv-CeG" customClass="GradientView" customModule="Library">
-                                            <rect key="frame" x="18" y="18" width="364" height="51.5"/>
+                                            <rect key="frame" x="18" y="18" width="364" height="52"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNM-IW-eI1">
-                                            <rect key="frame" x="30" y="8.5" width="149.5" height="20.5"/>
+                                            <rect key="frame" x="30" y="8" width="149.5" height="20.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8v0-Ix-KPn">
                                                     <rect key="frame" x="0.0" y="0.0" width="149.5" height="20.5"/>
@@ -493,25 +493,25 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="OqX-qg-UeE" secondAttribute="trailing" constant="10" id="5RF-E2-1AF"/>
-                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="9Z7-uI-sIf"/>
-                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="leading" secondItem="eC3-Kj-zPc" secondAttribute="leading" id="9jo-Jv-MO3"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="hnN-BJ-FXy" secondAttribute="leading" id="Axh-gN-jM9"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="bottom" secondItem="x7P-p0-T4F" secondAttribute="bottom" constant="-1.5" id="Bx7-Iz-HSU"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
-                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="width" secondItem="eC3-Kj-zPc" secondAttribute="width" id="OMQ-iT-mrQ"/>
+                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="leading" secondItem="eC3-Kj-zPc" secondAttribute="leading" id="MCI-hd-kzD"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnN-BJ-FXy" secondAttribute="bottom" id="P0n-Bg-KYh"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="leading" secondItem="R0g-tb-Pfo" secondAttribute="leading" id="Wbj-Gu-dY2"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="width" secondItem="vUL-dU-47D" secondAttribute="width" id="bMV-Xm-m82"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" id="QB0-dr-lF5"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="bottom" secondItem="vUL-dU-47D" secondAttribute="bottom" id="W5v-k1-KKe"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="leading" secondItem="f91-JL-fui" secondAttribute="leadingMargin" id="bYJ-6N-v5m"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="centerY" secondItem="R0g-tb-Pfo" secondAttribute="top" id="buC-U9-470"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="eBK-eh-s0w"/>
+                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="height" secondItem="eC3-Kj-zPc" secondAttribute="height" multiplier="1:4" id="cUV-Nj-fTY"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="trailing" secondItem="x7P-p0-T4F" secondAttribute="trailing" id="ePj-Ey-Kun"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="leading" secondItem="R0g-tb-Pfo" secondAttribute="leading" constant="12" id="fFf-79-3QU"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="leading" secondItem="x7P-p0-T4F" secondAttribute="leading" id="lVJ-hm-ql7"/>
-                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="bottom" secondItem="vUL-dU-47D" secondAttribute="bottom" id="lvQ-4Z-DH8"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnN-BJ-FXy" secondAttribute="top" id="mFo-CL-QQM"/>
-                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="height" secondItem="eC3-Kj-zPc" secondAttribute="height" multiplier="1:4" id="v1R-gP-ASB"/>
+                                        <constraint firstItem="eC3-Kj-zPc" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="oHl-dk-lXx"/>
+                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="trailing" secondItem="eC3-Kj-zPc" secondAttribute="trailing" id="qoF-NI-1JJ"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnN-BJ-FXy" secondAttribute="trailing" id="wwI-U6-fYG"/>
                                         <constraint firstItem="OqX-qg-UeE" firstAttribute="top" secondItem="vUL-dU-47D" secondAttribute="top" constant="10" id="zJl-7S-Kub"/>
+                                        <constraint firstItem="ylR-Sv-CeG" firstAttribute="top" secondItem="eC3-Kj-zPc" secondAttribute="top" id="zdg-Te-kS3"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
                                 </tableViewCellContentView>

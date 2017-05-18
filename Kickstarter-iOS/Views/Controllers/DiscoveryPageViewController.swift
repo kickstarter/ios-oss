@@ -323,9 +323,20 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedStar message: String) {
-    let alert = UIAlertController.alert(nil, message: message, handler: nil)
-    self.present(alert, animated: true, completion: nil)
+  internal func discoveryPostcardCellProjectSaveAlert() {
+    let alertController = UIAlertController(
+      title: "Project saved.",
+      message: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.",
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.discovery_favorite_categories_alert_buttons_got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
   }
 
   func discoveryPostcardCellGoToLoginTout() {

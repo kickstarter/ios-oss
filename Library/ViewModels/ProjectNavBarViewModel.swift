@@ -100,7 +100,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .ignoreValues()
       .take(first: 1)
 
-    let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
+    let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) } // ?
 
     let projectOnStarToggle = configuredProject
       .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))

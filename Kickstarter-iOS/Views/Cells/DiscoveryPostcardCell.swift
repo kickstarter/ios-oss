@@ -9,7 +9,7 @@ internal protocol DiscoveryPostcardCellDelegate: class {
   func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
                          fromSourceView: UIView)
 
-  func discoveryPostcard(cell: DiscoveryPostcardCell, tappedStar message: String)
+  func discoveryPostcardCellProjectSaveAlert()
 
   func discoveryPostcardCellGoToLoginTout()
 }
@@ -243,7 +243,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] message in
         guard let _self = self else { return }
-        _self.delegate?.discoveryPostcard(cell: _self, tappedStar: message)
+        _self.delegate?.discoveryPostcardCellProjectSaveAlert()
     }
   }
   // swiftlint:enable function_body_length

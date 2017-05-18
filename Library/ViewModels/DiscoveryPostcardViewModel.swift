@@ -86,7 +86,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits when we should notify the delegate that the star button was tapped.
-  var notifyDelegateStarButtonTapped: Signal<String, NoError> { get }
+  var notifyDelegateStarButtonTapped: Signal<Void, NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -229,6 +229,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(ShareContext.discovery)
       .takeWhen(self.shareButtonTappedProperty.signal)
 
+    let loggedOutUserTappedStar = self.starButtonTappedProperty.signal
+      .map { AppEnvironment.current.currentUser }
+      .filter(isNil)
+      .ignoreValues()
+
+    //let userLoginAfterTappingStar =
+
     let starProjectEvent = project
       .takeWhen(self.starButtonTappedProperty.signal)
       .switchMap { project in
@@ -250,13 +257,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         today: AppEnvironment.current.dateType.init().date)  }
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
-          !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
+        !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
       }
       .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
         AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
       })
-      .map { _ in Strings.project_star_confirmation() }
+      .ignoreValues()
 
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
@@ -292,7 +299,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
-  public let notifyDelegateStarButtonTapped: Signal<String, NoError>
+  public let notifyDelegateStarButtonTapped: Signal<Void, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
