@@ -16,12 +16,12 @@ public enum Styles {
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
-    <> (VC.lens.navigationController • navBarLens) %~ { $0.map(baseNavigationBarStyle) }
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
 public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .black
-    <> (VC.lens.navigationController • navBarLens) %~ { $0.map(clearNavigationBarStyle) }
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
@@ -48,7 +48,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
       <> TVC.lens.backgroundColor .~ .clear
-      <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
+      <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
       <> TVC.lens.selectionStyle .~ .none

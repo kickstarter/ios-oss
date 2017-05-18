@@ -51,7 +51,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testGoToUpdate() {
     let project = Project.template
-      |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/milk/duds/posts"
 
     let updateId = 11235
@@ -75,7 +75,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testGoToUpdateComments() {
     let project = Project.template
-      |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/smh/lol/posts"
 
     let updateId = 123456
@@ -99,7 +99,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testWebViewLoadRequests() {
     let project = Project.template
-      |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
@@ -114,7 +114,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testIFrameRequest() {
     let project = Project.template
-      |> (Project.lens.urls.web • Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(

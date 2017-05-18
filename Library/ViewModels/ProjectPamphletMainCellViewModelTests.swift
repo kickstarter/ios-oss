@@ -135,7 +135,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testCreatorImageUrl() {
     let project = .template
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ "hello.jpg"
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ "hello.jpg"
     self.vm.inputs.configureWith(project: project)
     self.creatorImageUrl.assertValues(["hello.jpg"])
   }

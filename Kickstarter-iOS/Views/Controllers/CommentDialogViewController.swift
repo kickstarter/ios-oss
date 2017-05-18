@@ -57,6 +57,10 @@ internal final class CommentDialogViewController: UIViewController {
       |> UIBarButtonItem.lens.title %~ { _ in
         Strings.dashboard_post_update_compose_attachment_buttons_cancel()
     }
+
+    _ = self.bodyTextView
+      |> UITextView.lens.textColor .~ .black
+      |> UITextView.lens.font .~ .ksr_body()
   }
 
   internal override func bindViewModel() {

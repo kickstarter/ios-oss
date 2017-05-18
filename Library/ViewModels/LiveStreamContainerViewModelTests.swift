@@ -10,83 +10,60 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamContainerViewModelTests: TestCase {
-  private let vm: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
+  private var vm: LiveStreamContainerViewModelType!
 
-  private let availableForLabelHidden = TestObserver<Bool, NoError>()
-  private let availableForText = TestObserver<String, NoError>()
-  private let configureLiveStreamViewControllerProject =
-    TestObserver<Project, NoError>()
-  private let configureLiveStreamViewControllerUserId =
-    TestObserver<Int?, NoError>()
-  private let configureLiveStreamViewControllerLiveStreamEvent =
-    TestObserver<LiveStreamEvent, NoError>()
-  private let creatorAvatarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
-  private let creatorIntroText = TestObserver<String, NoError>()
+  private let configurePageViewControllerProject = TestObserver<Project, NoError>()
+  private let configurePageViewControllerLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
+  private let configurePageViewControllerRefTag = TestObserver<RefTag, NoError>()
+  private let configurePageViewControllerPresentedFromProject = TestObserver<Bool, NoError>()
+  private let configureNavBarTitleView = TestObserver<LiveStreamEvent, NoError>()
+  private let createVideoViewController = TestObserver<LiveStreamType, NoError>()
   private let dismiss = TestObserver<(), NoError>()
-  private let goToProjectButtonContainerHidden = TestObserver<Bool, NoError>()
   private let loaderActivityIndicatorAnimating = TestObserver<Bool, NoError>()
   private let loaderStackViewHidden = TestObserver<Bool, NoError>()
   private let loaderText = TestObserver<String, NoError>()
   private let navBarTitleViewHidden = TestObserver<Bool, NoError>()
-  private let navBarLiveDotImageViewHidden = TestObserver<Bool, NoError>()
-  private let numberWatchingBadgeViewHidden = TestObserver<Bool, NoError>()
+  private let numberOfPeopleWatching = TestObserver<Int, NoError>()
   private let projectImageUrlString = TestObserver<String?, NoError>()
+  private let removeVideoViewController = TestObserver<(), NoError>()
   private let showErrorAlert = TestObserver<String, NoError>()
   private let videoViewControllerHidden = TestObserver<Bool, NoError>()
-  private let titleViewText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.availableForLabelHidden.observe(self.availableForLabelHidden.observer)
-    self.vm.outputs.availableForText.observe(self.availableForText.observer)
-    self.vm.outputs.configureLiveStreamViewController.map(first).observe(
-      self.configureLiveStreamViewControllerProject.observer)
-    self.vm.outputs.configureLiveStreamViewController.map(second).observe(
-      self.configureLiveStreamViewControllerUserId.observer)
-    self.vm.outputs.configureLiveStreamViewController.map(third).observe(
-      self.configureLiveStreamViewControllerLiveStreamEvent.observer)
-    self.vm.outputs.creatorAvatarLiveDotImageViewHidden
-      .observe(self.creatorAvatarLiveDotImageViewHidden.observer)
-    self.vm.outputs.creatorIntroText.observe(self.creatorIntroText.observer)
+    self.vm = LiveStreamContainerViewModel()
+
+    self.vm.outputs.configurePageViewController.map { $0.0 }
+      .observe(self.configurePageViewControllerProject.observer)
+    self.vm.outputs.configurePageViewController.map { $0.1 }
+      .observe(self.configurePageViewControllerLiveStreamEvent.observer)
+    self.vm.outputs.configurePageViewController.map { $0.2 }
+      .observe(self.configurePageViewControllerRefTag.observer)
+    self.vm.outputs.configurePageViewController.map { $0.3 }
+      .observe(self.configurePageViewControllerPresentedFromProject.observer)
+    self.vm.outputs.createVideoViewController.observe(self.createVideoViewController.observer)
+    self.vm.outputs.configureNavBarTitleView.observe(self.configureNavBarTitleView.observer)
     self.vm.outputs.dismiss.observe(self.dismiss.observer)
-    self.vm.outputs.goToProjectButtonContainerHidden.observe(self.goToProjectButtonContainerHidden.observer)
     self.vm.outputs.loaderActivityIndicatorAnimating.observe(self.loaderActivityIndicatorAnimating.observer)
     self.vm.outputs.loaderStackViewHidden.observe(self.loaderStackViewHidden.observer)
     self.vm.outputs.loaderText.observe(self.loaderText.observer)
     self.vm.outputs.navBarTitleViewHidden.observe(self.navBarTitleViewHidden.observer)
-    self.vm.outputs.navBarLiveDotImageViewHidden.observe(self.navBarLiveDotImageViewHidden.observer)
-    self.vm.outputs.numberWatchingBadgeViewHidden.observe(self.numberWatchingBadgeViewHidden.observer)
+    self.vm.outputs.numberOfPeopleWatching.observe(self.numberOfPeopleWatching.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString }.observe(self.projectImageUrlString.observer)
+    self.vm.outputs.removeVideoViewController.observe(self.removeVideoViewController.observer)
     self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
-    self.vm.outputs.titleViewText.observe(self.titleViewText.observer)
     self.vm.outputs.videoViewControllerHidden.observe(self.videoViewControllerHidden.observer)
   }
 
-  func testAvailableForText() {
+  func testConfigurePageViewController() {
     let project = Project.template
     let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.startDate .~ MockDate().date
 
-    self.availableForText.assertValueCount(0)
-
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-
-    self.availableForText.assertValues(["Replay available for 2 more days"])
-  }
-
-  func testCreatorIntroText_Live() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
-      |> LiveStreamEvent.lens.startDate .~ MockDate().date
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    self.creatorIntroText.assertValueCount(0)
+    self.configurePageViewControllerProject.assertValueCount(0)
+    self.configurePageViewControllerLiveStreamEvent.assertValueCount(0)
+    self.configurePageViewControllerRefTag.assertValueCount(0)
+    self.configurePageViewControllerPresentedFromProject.assertValueCount(0)
 
     self.vm.inputs.configureWith(project: project,
                                  liveStreamEvent: liveStreamEvent,
@@ -94,116 +71,10 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.creatorIntroText.assertValues(["Live with <b>Creator Name</b>"])
-  }
-
-  func testCreatorIntroText_Replay() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.startDate .~ MockDate().date
-
-    self.creatorIntroText.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.creatorIntroText.assertValues(["<b>Creator Name</b> was live right now"])
-  }
-
-  func testConfigureLiveStreamViewController_CurrentlyLive() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
-    }
-  }
-
-  func testConfigureLiveStreamViewController_LiveAfterFetch() {
-    let project = Project.template
-    let nonLiveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-    let liveStreamEvent = nonLiveStreamEvent
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: nonLiveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.configureLiveStreamViewControllerProject.assertValueCount(0)
-      self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-      self.scheduler.advance()
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([nonLiveStreamEvent])
-    }
-  }
-
-  func testConfigureLiveStreamViewController_LiveAfterFetchingForSomeTime() {
-    let project = Project.template
-    let nonLiveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-    let liveStreamEvent = nonLiveStreamEvent
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(nonLiveStreamEvent))) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.configureLiveStreamViewControllerProject.assertValueCount(0)
-      self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-      self.scheduler.advance(by: .seconds(5))
-
-      self.configureLiveStreamViewControllerProject.assertValueCount(0)
-      self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    }
-
-    withEnvironment(liveStreamService: MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))) {
-      self.scheduler.advance(by: .seconds(5))
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([nonLiveStreamEvent])
-
-      self.scheduler.advance(by: .seconds(5))
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([nonLiveStreamEvent])
-    }
+    self.configurePageViewControllerProject.assertValues([project])
+    self.configurePageViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+    self.configurePageViewControllerRefTag.assertValues([.projectPage])
+    self.configurePageViewControllerPresentedFromProject.assertValues([true])
   }
 
   func testDismiss() {
@@ -222,10 +93,8 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .live(playbackState: .error(error: .sessionInterrupted), startTime: 0))
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .live(playbackState: .error(error: .failedToConnect), startTime: 0))
+    self.vm.inputs.videoPlaybackStateChanged(state: .error(error: .sessionInterrupted))
+    self.vm.inputs.videoPlaybackStateChanged(state: .error(error: .failedToConnect))
 
     self.showErrorAlert.assertValues([
       "The live stream was interrupted",
@@ -256,255 +125,217 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     }
   }
 
-  func testLabelVisibilities_Live() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
+  func testLoaderStackViewHidden_Live() {
+    let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
 
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-    self.availableForLabelHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([false, true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([false, true])
-      self.numberWatchingBadgeViewHidden.assertValues([false, true])
-      self.availableForLabelHidden.assertValues([true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([false, true, false])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([false, true, false])
-      self.numberWatchingBadgeViewHidden.assertValues([false, true, false])
-      self.availableForLabelHidden.assertValues([true])
-    }
-  }
-
-  func testLabelVisibilities_Replay() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ true
-
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-    self.availableForLabelHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-      self.availableForLabelHidden.assertValues([false, true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-      self.availableForLabelHidden.assertValues([false, true, false])
-    }
-  }
-
-  func testLabelVisibilities_NonStarter() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ true
-      |> LiveStreamEvent.lens.replayUrl .~ nil
-
-    self.navBarLiveDotImageViewHidden.assertValueCount(0)
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-    self.numberWatchingBadgeViewHidden.assertValueCount(0)
-    self.availableForLabelHidden.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-      self.availableForLabelHidden.assertValues([false, true])
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-      self.availableForLabelHidden.assertValues([false, true, false])
-
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
-
-      self.navBarLiveDotImageViewHidden.assertValues([true])
-      self.creatorAvatarLiveDotImageViewHidden.assertValues([true])
-      self.numberWatchingBadgeViewHidden.assertValues([true])
-      self.availableForLabelHidden.assertValues([false, true, false, true])
-    }
-  }
-
-  func testNavBarTitleViewHidden_LiveState() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.navBarTitleViewHidden.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .live(playbackState: .playing, startTime: 123)
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
     )
-
-    self.navBarTitleViewHidden.assertValues([true, false])
-  }
-
-  func testNavBarTitleViewHidden_ReplayState() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
-
-    self.navBarTitleViewHidden.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-    self.navBarTitleViewHidden.assertValues([true])
-
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123)
-    )
-
-    self.navBarTitleViewHidden.assertValues([true, false])
-  }
-
-  func testLoaderStackViewHidden() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
 
     self.loaderStackViewHidden.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123)
-    )
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .playing, duration: 123)
-    )
+      self.loaderStackViewHidden.assertValues([false])
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123)
-    )
+      self.scheduler.advance()
 
-    self.loaderStackViewHidden.assertValues([false, true])
+      self.loaderStackViewHidden.assertValues([false])
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .greenRoom
-    )
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
-    self.loaderStackViewHidden.assertValues([false, true])
+      self.loaderStackViewHidden.assertValues([false, true])
+    }
   }
 
-  func testLoaderText() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
+  func testLoaderText_Live() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
 
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123))
+    self.loaderText.assertValueCount(0)
 
-    self.loaderText.assertValues([
-      "Loading",
-      "The live stream will start soon",
-      "Loading",
-      "The replay will start soon"
-    ])
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance()
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.loaderText.assertValues(["Loading", "Joining the live stream"])
+    }
   }
 
-  func testLoaderIndicatorViewHidden() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
+  func testLoaderText_LiveFromCountdown() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.loaderText.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .liveStreamCountdown,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance()
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.loaderText.assertValues(["Loading", "The live stream will start soon"])
+    }
+  }
+
+  func testLoaderText_Replay() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    self.loaderText.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance()
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.loaderText.assertValues(["Loading", "The replay will start soon"])
+    }
+  }
+
+  func testLoaderText_NonStarter() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    self.loaderText.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderText.assertValues(["Loading"])
+
+      self.scheduler.advance()
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
+    }
+  }
+
+  func testLoaderActivityIndicatorAnimating_NonStarter() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ nil
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
 
     self.loaderActivityIndicatorAnimating.assertValueCount(0)
 
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
 
-    self.loaderActivityIndicatorAnimating.assertValues([true])
+      self.loaderActivityIndicatorAnimating.assertValues([true])
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+      self.scheduler.advance()
 
-    self.loaderActivityIndicatorAnimating.assertValues([true, false])
+      self.loaderActivityIndicatorAnimating.assertValues([true, false])
+    }
+  }
+
+  func testLoaderActivityIndicatorAnimating_Error() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    self.loaderActivityIndicatorAnimating.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.loaderActivityIndicatorAnimating.assertValues([true])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .error(error: .failedToConnect))
+
+      self.loaderActivityIndicatorAnimating.assertValues([true, false])
+    }
   }
 
   func testProjectImageUrl() {
-    let project = Project.template
-
-    self.projectImageUrlString.assertValueCount(0)
-
-    self.vm.inputs.configureWith(project: project,
+    self.vm.inputs.configureWith(project: .template,
                                  liveStreamEvent: .template,
                                  refTag: .projectPage,
                                  presentedFromProject: true)
@@ -513,62 +344,157 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     self.projectImageUrlString.assertValues([nil, "http://www.kickstarter.com/full.jpg"])
   }
 
-  func testShowVideoView() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
+  func testNumberOfPeopleWatching_NonScaleEvent() {
+    let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.isScale .~ false
 
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
 
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
+    self.numberOfPeopleWatching.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
                                    liveStreamEvent: liveStreamEvent,
                                    refTag: .projectPage,
                                    presentedFromProject: true)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance(by: .seconds(3))
+      self.scheduler.advance()
 
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(
-        playbackState: .playing, startTime: 123))
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-      self.vm.inputs.liveStreamViewControllerStateChanged(
-        state: .replay(playbackState: .playing, duration: 123))
-
-      self.videoViewControllerHidden.assertValues([
-        true,
-        true,
-        false,
-        true,
-        false
-      ])
+      self.numberOfPeopleWatching.assertValues([10])
     }
   }
 
-  func testTitleViewText() {
-    let project = Project.template
-    let liveStreamEvent = LiveStreamEvent.template
+  func testNumberOfPeopleWatching_ScaleEvent() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.isScale .~ true
 
-    self.vm.inputs.configureWith(project: project,
-                                 liveStreamEvent: liveStreamEvent,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      scaleNumberOfPeopleWatchingResult: Result([10])
+    )
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .greenRoom)
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .loading, startTime: 123))
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-    self.vm.inputs.liveStreamViewControllerStateChanged(
-      state: .replay(playbackState: .loading, duration: 123))
+    self.numberOfPeopleWatching.assertValueCount(0)
 
-    self.titleViewText.assertValues([
-      "Loading",
-      "Starting soon",
-      "Live",
-      "Loading",
-      "Recorded Live"
-    ])
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.numberOfPeopleWatching.assertValues([10])
+    }
+  }
+
+  func testNumberOfPeopleWatching_ZeroOnErrors() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result(error: .genericFailure)
+    )
+
+    self.numberOfPeopleWatching.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.numberOfPeopleWatching.assertValues([0])
+    }
+  }
+
+  func testShowVideoView_Live() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamService = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.videoViewControllerHidden.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.videoViewControllerHidden.assertValues([true])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
+
+      self.videoViewControllerHidden.assertValues([true, false])
+    }
+  }
+
+  func testShowVideoView_Replay() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    self.videoViewControllerHidden.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .loading)
+
+      self.videoViewControllerHidden.assertValues([true])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
+
+      self.videoViewControllerHidden.assertValues([true, false])
+    }
   }
 
   func testTrackViewedLiveStream() {
@@ -703,7 +629,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .live(playbackState: .playing, startTime: 0))
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -746,7 +672,7 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(playbackState: .playing, duration: 0))
+    self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
 
     XCTAssertEqual(["Viewed Live Stream"], self.trackingClient.events)
     XCTAssertEqual(["project_page"], self.trackingClient.properties(forKey: "ref_tag", as: String.self))
@@ -774,133 +700,270 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
     XCTAssertEqual([nil, 1, 1], self.trackingClient.properties(forKey: "duration", as: Int.self))
   }
 
-  func testMakeSureSingleLiveStreamControllerIsCreated() {
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
+  func testCreateVideoViewController_LiveAfterFetchingForSomeTime() {
     let project = Project.template
-
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
-
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(
-        playbackState: .loading, duration: 0))
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .replay(
-        playbackState: .loading, duration: 0))
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .loading)
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
-    }
-  }
-
-  func testGoToProjectButtonContainerHidden_PresentedFromProject() {
-    self.vm.inputs.configureWith(project: .template,
-                                 liveStreamEvent: .template,
-                                 refTag: .projectPage,
-                                 presentedFromProject: true)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToProjectButtonContainerHidden.assertValues([true])
-  }
-
-  func testGoToProjectButtonContainerHidden_NotPresentedFromProject() {
-    self.vm.inputs.configureWith(project: .template,
-                                 liveStreamEvent: .template,
-                                 refTag: .projectPage,
-                                 presentedFromProject: false)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToProjectButtonContainerHidden.assertValues([false])
-  }
-
-  func testCreateLiveStreamViewController_Live() {
-    let liveStreamEvent = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.liveNow .~ true
-    let project = Project.template
-
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
-
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
-      self.vm.inputs.configureWith(project: project,
-                                   liveStreamEvent: liveStreamEvent,
-                                   refTag: .projectPage,
-                                   presentedFromProject: true)
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance(by: .seconds(3))
-
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
-    }
-  }
-
-  func testCreateLiveStreamViewController_Replay() {
-    let liveStreamEvent = LiveStreamEvent.template
+    let nonLiveStreamEvent = LiveStreamEvent.template
       |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60).date
-    let project = Project.template
+    let liveStreamEvent = nonLiveStreamEvent
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
 
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
+    let liveStreamServiceNonLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([false]),
+      fetchEventResult: Result(nonLiveStreamEvent)
+    )
 
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
 
-    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+    guard let openTokStreamType = liveStreamEvent.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
+        sessionConfig: .init(
+          apiKey: openTok.appId,
+          sessionId: openTok.sessionId,
+          token: openTok.token)
+      )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
+
+    withEnvironment(liveStreamService: liveStreamServiceNonLiveEvent) {
       self.vm.inputs.configureWith(project: project,
                                    liveStreamEvent: liveStreamEvent,
                                    refTag: .projectPage,
                                    presentedFromProject: true)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance(by: .seconds(3))
+      self.createVideoViewController.assertValueCount(0)
 
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValueCount(0)
+    }
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([openTokStreamType])
     }
   }
 
-  func testCreateLiveStreamViewController_DefinitelyNoReplay_DisplayError() {
-    let liveStreamEvent = LiveStreamEvent.template
+  func testCreateVideoViewController_Live_UnderMaxOpenTokViewers() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    guard let openTokStreamType = liveStreamEvent.openTok.flatMap({ openTok -> LiveStreamType in
+      LiveStreamType.openTok(
+        sessionConfig: .init(
+          apiKey: openTok.appId,
+          sessionId: openTok.sessionId,
+          token: openTok.token)
+      )
+    }) else {
+      XCTFail("OpenTok values should exist")
+      return
+    }
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([openTokStreamType])
+    }
+  }
+
+  func testCreateVideoViewController_Live_OverMaxOpenTokViewers() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([30])
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([hlsStreamType])
+    }
+  }
+
+  func testCreateVideoViewController_Live_NumberOfPeopleTimesOut() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamEventIncomplete = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+      |> LiveStreamEvent.lens.firebase .~ nil
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResultNever: true,
+      scaleNumberOfPeopleWatchingResultNever: true
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEventIncomplete,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(10))
+
+      self.createVideoViewController.assertValues([hlsStreamType])
+    }
+  }
+
+  func testCreateVideoViewController_Replay() {
+    let liveStreamEvent = .template
       |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.hasReplay .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
+      |> LiveStreamEvent.lens.replayUrl .~ "http://www.replay.mp4"
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
+
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
+
+    guard let replayUrl = liveStreamEvent.replayUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+
+    self.createVideoViewController.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.createVideoViewController.assertValues([hlsStreamType])
+    }
+  }
+
+  func testCreateVideoViewController_NonStarter_DisplayError() {
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ false
+      |> LiveStreamEvent.lens.hasReplay .~ true
       |> LiveStreamEvent.lens.replayUrl .~ nil
-      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60).date
-    let project = Project.template
+      |> LiveStreamEvent.lens.startDate .~ Date(timeIntervalSinceNow: -60 * 60)
+      |> LiveStreamEvent.lens.hlsUrl .~ "http://www.live.mp4"
 
-    self.configureLiveStreamViewControllerProject.assertValueCount(0)
-    self.configureLiveStreamViewControllerUserId.assertValueCount(0)
-    self.configureLiveStreamViewControllerLiveStreamEvent.assertValueCount(0)
-
-    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+    let liveStreamService = MockLiveStreamService(
+      fetchEventResult: Result(liveStreamEvent)
+    )
 
     self.loaderText.assertValueCount(0)
 
+    withEnvironment(liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: .template,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
+    }
+  }
+
+  func testCreateVideoViewController_Live_HlsUrlChanges() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      hlsUrlResult: Result(["http://www.url2.com"]),
+      numberOfPeopleWatchingResult: Result([30])
+    )
+
+    guard let replayUrl = liveStreamEvent.hlsUrl else { XCTAssertTrue(false); return }
+    let hlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: replayUrl)
+    let changedHlsStreamType = LiveStreamType.hlsStream(hlsStreamUrl: "http://www.url2.com")
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.createVideoViewController.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.createVideoViewController.assertValues([hlsStreamType, changedHlsStreamType])
+    }
+  }
+
+  func testConfigureNavBarTitleView() {
+    let liveStreamEvent = LiveStreamEvent.template
+    let project = Project.template
+
+    self.configureNavBarTitleView.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
     withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
       self.vm.inputs.configureWith(project: project,
                                    liveStreamEvent: liveStreamEvent,
@@ -908,17 +971,121 @@ internal final class LiveStreamContainerViewModelTests: TestCase {
                                    presentedFromProject: true)
       self.vm.inputs.viewDidLoad()
 
-      self.loaderText.assertValues(["Loading"])
+      self.scheduler.advance(by: .seconds(3))
+
+      self.configureNavBarTitleView.assertValues([liveStreamEvent])
+    }
+  }
+
+  func testNavBarTitleViewHidden() {
+    let liveStreamEvent = LiveStreamEvent.template
+    let project = Project.template
+
+    self.navBarTitleViewHidden.assertValueCount(0)
+
+    let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
+
+    withEnvironment(apiDelayInterval: .seconds(3), liveStreamService: liveStreamService) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.navBarTitleViewHidden.assertValues([true])
 
       self.scheduler.advance(by: .seconds(3))
 
-      self.configureLiveStreamViewControllerProject.assertValues([project])
-      self.configureLiveStreamViewControllerUserId.assertValues([nil])
-      self.configureLiveStreamViewControllerLiveStreamEvent.assertValues([liveStreamEvent])
+      self.navBarTitleViewHidden.assertValues([true, false])
+    }
+  }
 
-      self.vm.inputs.liveStreamViewControllerStateChanged(state: .nonStarter)
+  func testGreenRoomErrorBeforeCreatingVideoViewController() {
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
 
-      self.loaderText.assertValues(["Loading", "No replay is available for this live stream."])
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result(error: .genericFailure),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    self.showErrorAlert.assertValueCount(0)
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.showErrorAlert.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.showErrorAlert.assertValueCount(1)
+      self.createVideoViewController.assertValueCount(0)
+    }
+  }
+
+  func testVideoEnabledDisabled() {
+    self.loaderText.assertValueCount(0)
+    self.loaderStackViewHidden.assertValueCount(0)
+    self.videoViewControllerHidden.assertValueCount(0)
+
+    let project = Project.template
+    let liveStreamEvent = .template
+      |> LiveStreamEvent.lens.liveNow .~ true
+      |> LiveStreamEvent.lens.maxOpenTokViewers .~ 20
+
+    let liveStreamServiceLiveEvent = MockLiveStreamService(
+      greenRoomOffStatusResult: Result([true]),
+      fetchEventResult: Result(liveStreamEvent),
+      numberOfPeopleWatchingResult: Result([10])
+    )
+
+    withEnvironment(liveStreamService: liveStreamServiceLiveEvent) {
+      self.vm.inputs.configureWith(project: project,
+                                   liveStreamEvent: liveStreamEvent,
+                                   refTag: .projectPage,
+                                   presentedFromProject: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.showErrorAlert.assertValueCount(0)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.loaderText.assertValues(["Loading"])
+      self.loaderStackViewHidden.assertValues([false])
+      self.videoViewControllerHidden.assertValueCount(0)
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
+
+      self.loaderText.assertValues(["Loading", "Joining the live stream"])
+      self.loaderStackViewHidden.assertValues([false, true])
+      self.videoViewControllerHidden.assertValues([false])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: false))
+
+      self.loaderText.assertValues([
+        "Loading", "Joining the live stream",
+        "Video disabled until the internet connection improves"])
+
+      self.loaderStackViewHidden.assertValues([false, true, false])
+      self.videoViewControllerHidden.assertValues([false, true])
+
+      self.vm.inputs.videoPlaybackStateChanged(state: .playing(videoEnabled: true))
+
+      self.loaderText.assertValues([
+        "Loading",
+        "Joining the live stream",
+        "Video disabled until the internet connection improves",
+        "Joining the live stream"])
+
+      self.loaderStackViewHidden.assertValues([false, true, false, true])
+      self.videoViewControllerHidden.assertValues([false, true, false])
     }
   }
 }

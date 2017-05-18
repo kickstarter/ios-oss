@@ -31,7 +31,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { margins, cell in
+      |> (UITableViewCell.lens.contentView..UIView.lens.layoutMargins) %~~ { margins, cell in
         .init(top: Styles.grid(3),
               left: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.left * 2,
               bottom: Styles.grid(2),

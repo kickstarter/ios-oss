@@ -26,20 +26,20 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     let liveProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.stats.fundingProgress .~ 0.5
 
     let deadProject = Project.anomalisa
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.state .~ .successful
 
     let failed = Project.cosmicSurgery
       |> Project.lens.name .~ "A Failed Project about Mittens and Let's Just Go to the Next Line Shall We"
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.stats.fundingProgress .~ 0.45
       |> Project.lens.state .~ .failed
@@ -47,7 +47,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let saved = Project.cosmicSurgery
       |> Project.lens.name .~ "A Saved Project, Very Nice Isn't It?"
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar • User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline2
       |> Project.lens.stats.fundingProgress .~ 0.8
       |> Project.lens.personalization.isStarred .~ true

@@ -26,7 +26,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     } else if let category = value.row.params.category {
       self.filterTitleLabel.text = category.name
     } else if value.row.params.recommended == true {
-      self.filterTitleLabel.text = Strings.discovery_recommended_for_you()
+      self.filterTitleLabel.text = Strings.Recommended_For_You()
       self.filterTitleLabel.accessibilityLabel = Strings.Filter_by_projects_recommended_for_you()
     } else {
       self.filterTitleLabel.text = Strings.All_Projects()

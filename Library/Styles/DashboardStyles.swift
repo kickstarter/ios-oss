@@ -37,7 +37,7 @@ public let dashboardColumnTextLabelStyle =
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardContextCellStyle = baseTableViewCellStyle()
-  <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
+  <> (UITableViewCell.lens.contentView..UIView.lens.layoutMargins) %~ {
     .init(topBottom: 32.0, leftRight: $0.left)
 }
 

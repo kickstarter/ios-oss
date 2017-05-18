@@ -274,7 +274,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     }
 
     configData
-      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • first))
+      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(first >>> isNotNil))
       .observeValues {
         AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
           project: $0.project,
@@ -284,7 +284,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     }
 
     configData
-      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(isNotNil • second))
+      .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(second >>> isNotNil))
       .observeValues {
         AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
           project: $0.project,
