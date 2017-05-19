@@ -53,6 +53,18 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionEnded()
+    }
+
+    self.viewModel.inputs.awakeFromNib()
   }
 
   internal override func bindStyles() {
@@ -239,12 +251,20 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
                                           fromSourceView: _self.shareButton)
     }
 
-    self.viewModel.outputs.notifyDelegateStarButtonTapped
+    self.viewModel.outputs.notifyDelegateStarButtonTapped // notify delegate show save alert
       .observeForUI()
-      .observeValues { [weak self] message in
+      .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellProjectSaveAlert()
     }
+
+    self.viewModel.outputs.notifyDelegateShowLoginTout
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.delegate?.discoveryPostcardCellGoToLoginTout()
+    }
+
   }
   // swiftlint:enable function_body_length
 
@@ -263,7 +283,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func starButtonTapped() {
-    self.delegate?.discoveryPostcardCellGoToLoginTout()
     self.viewModel.inputs.starButtonTapped()
   }
 

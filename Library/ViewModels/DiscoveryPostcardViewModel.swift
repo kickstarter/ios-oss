@@ -41,6 +41,8 @@ private enum PostcardMetadataType {
 }
 
 public protocol DiscoveryPostcardViewModelInputs {
+  func awakeFromNib()
+
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
@@ -49,6 +51,12 @@ public protocol DiscoveryPostcardViewModelInputs {
 
   /// Call when star button is tapped.
   func starButtonTapped()
+
+  /// Call when the cell has received a user session ended notification.
+  func userSessionEnded()
+
+  /// Call when the cell has received a user session started notification.
+  func userSessionStarted()
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -87,6 +95,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits when we should notify the delegate that the star button was tapped.
   var notifyDelegateStarButtonTapped: Signal<Void, NoError> { get }
+
+  // var notifyDelegateShowLoginTout<LoginIntent>
+  var notifyDelegateShowLoginTout: Signal<Void, NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -143,6 +154,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public init() {
     let project = self.projectProperty.signal.skipNil()
       .map(cached(project:))
+
+    let currentUser = Signal.merge([
+      self.userSessionStartedProperty.signal,
+      self.userSessionEndedProperty.signal,
+      self.awakeFromNibProperty.signal
+      ])
+      .map { AppEnvironment.current.currentUser }
+      .skipRepeats(==)
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -229,14 +248,31 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(ShareContext.discovery)
       .takeWhen(self.shareButtonTappedProperty.signal)
 
-    let loggedOutUserTappedStar = self.starButtonTappedProperty.signal
-      .map { AppEnvironment.current.currentUser }
+    let loggedOutUserTappedStar = currentUser
+      .takeWhen(self.starButtonTappedProperty.signal)
       .filter(isNil)
       .ignoreValues()
 
-    //let userLoginAfterTappingStar =
+    let loggedInUserTappedStar = currentUser
+      .takeWhen(self.starButtonTappedProperty.signal)
+      .filter(isNotNil)
+      .ignoreValues()
 
-    let starProjectEvent = project
+    let userLoginAfterTappingStar = Signal.combineLatest(
+      self.userSessionStartedProperty.signal,
+      loggedOutUserTappedStar
+      )
+      .ignoreValues()
+      .take(first: 1)
+
+    let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
+
+    let projectOnStarToggle = project
+      .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
+      .scan(nil) { accum, project in (accum ?? project) |> toggleStarLens }
+      .skipNil()
+
+    let starProjectEvent = projectOnStarToggle
       .takeWhen(self.starButtonTappedProperty.signal)
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
@@ -246,13 +282,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let projectStarred = starProjectEvent.values()
       .map { $0.project }
-      .on(value: { cache(project: $0) })
+      .on(value: { cache(project: $0)})
 
     self.starButtonSelected = Signal.merge(project, projectStarred)
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
-    self.notifyDelegateStarButtonTapped = projectStarred
+    self.notifyDelegateStarButtonTapped = project
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date)  }
       .filter { _ in
@@ -265,6 +301,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       })
       .ignoreValues()
 
+    self.notifyDelegateShowLoginTout = loggedOutUserTappedStar
+
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
@@ -272,6 +310,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
   // swiftlint:enable function_body_length
+  private let awakeFromNibProperty = MutableProperty()
+  public func awakeFromNib() {
+    self.awakeFromNibProperty.value = ()
+  }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
@@ -288,6 +330,16 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.starButtonTappedProperty.value = ()
   }
 
+  fileprivate let userSessionStartedProperty = MutableProperty()
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
+  }
+
+  fileprivate let userSessionEndedProperty = MutableProperty()
+  public func userSessionEnded() {
+    self.userSessionEndedProperty.value = ()
+  }
+
   public let backersTitleLabelText: Signal<String, NoError>
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
@@ -299,6 +351,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataData: Signal<PostcardMetadataData, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
+  public var notifyDelegateShowLoginTout: Signal<Void, NoError>
   public let notifyDelegateStarButtonTapped: Signal<Void, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>

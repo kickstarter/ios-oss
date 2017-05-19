@@ -68,7 +68,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
-  var goToLoginTout: Signal<(), NoError> { get }
+ // var goToLoginTout: Signal<(), NoError> { get }
 
   /// Emits a list of projects that should be shown.
   var projects: Signal<[Project], NoError> { get }
@@ -134,11 +134,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
       .map(second)
 
-    let loggedOutUserTappedStar = currentUser
-      .takeWhen(self.starButtonTappedProperty.signal)
-      .filter(isNil)
-      .ignoreValues()
-
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
     (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
@@ -152,7 +147,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
 
-    self.goToLoginTout = loggedOutUserTappedStar
+    //self.goToLoginTout = loggedOutUserTappedStar
 
     self.projects = Signal.merge(
       paginatedProjects,
@@ -305,7 +300,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public var asyncReloadData: Signal<Void, NoError>
   public let hideEmptyState: Signal<(), NoError>
   public var goToActivityProject: Signal<(Project, RefTag), NoError>
-  public let goToLoginTout: Signal<(), NoError>
+  //public let goToLoginTout: Signal<(), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>

@@ -152,12 +152,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
                                     animated: false)
     }
 
-    self.viewModel.outputs.goToLoginTout
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToLoginTout()
-    }
-
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareSheet($0, shareContextView: $1) }
@@ -209,14 +203,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
-  }
-
-  fileprivate func goToLoginTout() {
-    let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
-
-    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -339,10 +325,13 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
     self.present(alertController, animated: true, completion: nil)
   }
 
-  func discoveryPostcardCellGoToLoginTout() {
-    self.viewModel.inputs.starButtonTapped()
-  }
+  internal func discoveryPostcardCellGoToLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
 
+    self.present(nav, animated: true, completion: nil)
+  }
  }
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
