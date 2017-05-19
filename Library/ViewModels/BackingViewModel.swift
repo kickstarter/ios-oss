@@ -41,9 +41,6 @@ public protocol BackingViewModelOutputs {
   /// Emits a bool to animate the loader.
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
-  /// Emits the button title for messaging a backer or creator.
-  var messageButtonTitleText: Signal<String, NoError> { get }
-
   /// Emits an alpha value for the reward and pledge containers to animate in.
   var opacityForContainers: Signal<CGFloat, NoError> { get }
 
@@ -160,7 +157,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser
         .map { project, backing, _ in
-          "+ " + Format.currency(backing.shippingAmount ?? 0, country: project.country)
+          Format.currency(backing.shippingAmount ?? 0, country: project.country)
       }
     )
 
@@ -228,14 +225,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           : (MessageSubject.backing(backing), .backerModal)
     }
 
-    self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
-      .map { project, _, _ in
-        project.creator == AppEnvironment.current.currentUser
-          // todo: is this something we are doing or just hiding the button?
-          ? localizedString(key: "todo", defaultValue: "Contact backer")
-          : Strings.Contact_creator()
-    }
-
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, backerIsCurrentUser in
         !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
@@ -280,7 +269,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
-  public let messageButtonTitleText: Signal<String, NoError>
   public let opacityForContainers: Signal<CGFloat, NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeSectionTitle: Signal<NSAttributedString, NoError>

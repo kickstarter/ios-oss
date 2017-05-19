@@ -24,6 +24,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
   @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingPlusLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
@@ -77,7 +78,6 @@ internal final class BackingViewController: UIViewController {
     self.rewardContainerView.rac.hidden = self.viewModel.outputs.rewardSectionIsHidden
     self.rewardTitleWithAmountLabel.rac.text = self.viewModel.outputs.rewardTitleWithAmount
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
-    self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
     self.statusDescriptionLabel.rac.text = self.viewModel.outputs.statusDescription
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
 
@@ -148,6 +148,7 @@ internal final class BackingViewController: UIViewController {
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 14)
       |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Contact_creator() }
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
     _ = self.viewMessagesButton
@@ -187,6 +188,11 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
       |> UILabel.lens.text %~ { _ in Strings.Shipping() }
+
+    _ = self.shippingPlusLabel
+      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.text .~ "+"
 
     _ = self.backerShippingAmountLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
