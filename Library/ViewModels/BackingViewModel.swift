@@ -214,7 +214,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       reward.map { $0.description }
     )
 
-    self.rewardSectionIsHidden = backing.map { $0.reward?.title == nil }
+    self.rewardSectionIsHidden = backing.map { $0.reward?.isNoReward == .some(true) }
 
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
@@ -238,7 +238,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
       .map { project, _, backerIsCurrentUser in
-        userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
+        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
     }
 
     self.opacityForContainers = Signal.merge(
@@ -319,33 +319,31 @@ private func statusString(for status: Backing.Status, project: Project) -> Strin
 }
 
 private func description(for status: Backing.Status, project: Project, backerIsCurrentUser: Bool) -> String {
-  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
-
   switch status {
   case .canceled:
-    return isCreator
-      ? Strings.Either_the_pledge_or_the_project_was_canceled()
-      : Strings.Your_pledge_was_canceled_or_the_creator_canceled()
+    return backerIsCurrentUser
+      ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
+      : Strings.Either_the_pledge_or_the_project_was_canceled()
   case .collected:
-    return isCreator
-      ? Strings.Payment_method_was_successfully_charged()
-      : Strings.Your_payment_method_was_successfully_charged()
+    return backerIsCurrentUser
+      ? Strings.Your_payment_method_was_successfully_charged()
+      : Strings.Payment_method_was_successfully_charged()
   case .dropped:
-    return isCreator
-      ? Strings.Pledge_was_dropped()
-      : Strings.Your_pledge_was_dropped()
+    return backerIsCurrentUser
+      ? Strings.Your_pledge_was_dropped()
+      : Strings.Pledge_was_dropped()
   case .errored:
-    return localizedString(key: "todo", defaultValue: "There was a problem with this payment.")
+    return Strings.There_was_a_problem_with_this_payment()
   case .pledged:
     let isCanceledOrFailed = (project.state == .canceled || project.state == .failed)
-    return isCreator
+    return backerIsCurrentUser
       ? (isCanceledOrFailed
-          ? Strings.Either_the_pledge_or_the_project_was_canceled()
-          : Strings.Backer_has_pledged_to_this_project()
-        )
-      : (isCanceledOrFailed
           ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
           : Strings.Youve_pledged_to_support_this_project()
+        )
+      : (isCanceledOrFailed
+          ? Strings.Either_the_pledge_or_the_project_was_canceled()
+          : Strings.Backer_has_pledged_to_this_project()
         )
   case .preauth:
     fatalError()
@@ -356,15 +354,14 @@ private func pledgeTitle(for backing: Backing, project: Project, backerIsCurrent
   -> NSAttributedString {
 
   let date = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
-  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
 
-  let titleString = isCreator
-    ? localizedString(key: "Pledged_on_date",
-                      defaultValue: "<b>Pledged</b> on %{pledge_date}",
-                      substitutions: ["pledge_date": date])
-    : localizedString(key: "You_pledged_on_date",
+  let titleString = backerIsCurrentUser
+    ? localizedString(key: "You_pledged_on_date",
                       defaultValue: "<b>You pledged</b> on %{pledge_date}",
                       substitutions: ["pledge_date": date])
+    : localizedString(key: "Pledged_on_date",
+    defaultValue: "<b>Pledged</b> on %{pledge_date}",
+    substitutions: ["pledge_date": date])
 
   return titleString.simpleHtmlAttributedString(
     base: [
@@ -384,19 +381,17 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
   guard let reward = reward else { return NSAttributedString(string: "") }
   guard let estimatedDate = reward.estimatedDeliveryOn else { return NSAttributedString(string: "") }
 
-  let isCreator = userIsCreator(for: project, backerIsCurrentUser: backerIsCurrentUser)
   let date = Format.date(secondsInUTC: estimatedDate,
-                         dateStyle: .short,
-                         timeStyle: .none,
+                         dateFormat: "MMM YYYY",
                          timeZone: UTCTimeZone)
 
-  let titleString = isCreator
-    ? localizedString(key: "Reward_estimated_for_delivery_on_date",
-                      defaultValue: "<b>Reward</b> estimated for delivery on %{delivery_date}",
+  let titleString = backerIsCurrentUser
+    ? localizedString(key: "Your_reward_estimated_for_delivery_in_date",
+                      defaultValue: "<b>Your reward</b> estimated for delivery in %{delivery_date}",
                       substitutions: ["delivery_date": date])
-    : localizedString(key: "Your_reward_estimated_for_delivery_on_date",
-                      defaultValue: "<b>Your reward</b> estimated for delivery on %{delivery_date}",
-                      substitutions: ["delivery_date": date])
+    : localizedString(key: "Reward_estimated_for_delivery_in_date",
+    defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
+    substitutions: ["delivery_date": date])
 
   return titleString.simpleHtmlAttributedString(
     base: [
@@ -408,9 +403,5 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
       NSForegroundColorAttributeName: UIColor.black
     ])
     ?? NSAttributedString(string: "")
-}
-
-private func userIsCreator(for project: Project, backerIsCurrentUser: Bool) -> Bool {
-  return !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
 }
 // swiftlint:enable file_length
