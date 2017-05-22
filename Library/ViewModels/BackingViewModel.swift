@@ -57,7 +57,7 @@ public protocol BackingViewModelOutputs {
   var rewardDescription: Signal<String, NoError> { get }
 
   /// Emits a bool whether to hide the reward section if it's No Reward.
-  var rewardSectionIsHidden: Signal<Bool, NoError> { get }
+  var rewardSectionAndShippingIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits the backer reward title to display.
   var rewardSectionTitle: Signal<NSAttributedString, NoError> { get }
@@ -71,11 +71,8 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer's shipping amount.
   var shippingAmount: Signal<String, NoError> { get }
 
-  /// Emits a bool whether shipping stack view should be hidden.
-  var shippingStackViewIsHidden: Signal<Bool, NoError> { get }
-
-  /// Emits text for status description label.
-  var statusDescription: Signal<String, NoError> { get }
+  /// Emits a NSAttributedString for the status description label.
+  var statusDescription: Signal<NSAttributedString, NoError> { get }
 
   /// Emits text for total pledge amount label.
   var totalPledgeAmount: Signal<String, NoError> { get }
@@ -161,8 +158,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       }
     )
 
-    self.shippingStackViewIsHidden = backing.map { $0.shippingAmount == .some(0) }
-
     self.totalPledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
@@ -178,10 +173,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     )
 
     self.statusDescription = Signal.merge(
-      emptyStringOnLoad,
+      emptyStringOnLoad.mapConst(NSAttributedString(string: "")),
       projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, backerIsCurrentUser in
-        return description(for: backing.status, project: project, backerIsCurrentUser: backerIsCurrentUser)
+        return statusDescString(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
       }
     )
 
@@ -211,7 +206,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       reward.map { $0.description }
     )
 
-    self.rewardSectionIsHidden = backing.map { $0.reward?.isNoReward == .some(true) }
+    self.rewardSectionAndShippingIsHidden = backing.map { $0.reward?.isNoReward == .some(true) }
 
     self.goToMessages = projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, _ in (project, backing) }
@@ -274,13 +269,12 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let pledgeSectionTitle: Signal<NSAttributedString, NoError>
   public let pledgeStatus: Signal<String, NoError>
   public let rewardDescription: Signal<String, NoError>
-  public let rewardSectionIsHidden: Signal<Bool, NoError>
+  public let rewardSectionAndShippingIsHidden: Signal<Bool, NoError>
   public var rewardTitleWithAmount: Signal<String, NoError>
   public var rewardSectionTitle: Signal<NSAttributedString, NoError>
   public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
   public let shippingAmount: Signal<String, NoError>
-  public let shippingStackViewIsHidden: Signal<Bool, NoError>
-  public let statusDescription: Signal<String, NoError>
+  public let statusDescription: Signal<NSAttributedString, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
@@ -306,25 +300,28 @@ private func statusString(for status: Backing.Status, project: Project) -> Strin
   }
 }
 
-private func description(for status: Backing.Status, project: Project, backerIsCurrentUser: Bool) -> String {
-  switch status {
+private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
+  -> NSAttributedString {
+
+  var string = ""
+  switch backing.status {
   case .canceled:
-    return backerIsCurrentUser
+    string = backerIsCurrentUser
       ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
       : Strings.Either_the_pledge_or_the_project_was_canceled()
   case .collected:
-    return backerIsCurrentUser
+    string = backerIsCurrentUser
       ? Strings.Your_payment_method_was_successfully_charged()
       : Strings.Payment_method_was_successfully_charged()
   case .dropped:
-    return backerIsCurrentUser
+    string = backerIsCurrentUser
       ? Strings.Your_pledge_was_dropped()
       : Strings.Pledge_was_dropped()
   case .errored:
-    return Strings.There_was_a_problem_with_this_payment()
+    string = Strings.There_was_a_problem_with_this_payment()
   case .pledged:
     let isCanceledOrFailed = (project.state == .canceled || project.state == .failed)
-    return backerIsCurrentUser
+    string = backerIsCurrentUser
       ? (isCanceledOrFailed
           ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
           : Strings.Youve_pledged_to_support_this_project()
@@ -335,6 +332,18 @@ private func description(for status: Backing.Status, project: Project, backerIsC
         )
   case .preauth:
     fatalError()
+  }
+
+  if backing.status == .collected {
+    return NSAttributedString(string: string, attributes: [
+      NSFontAttributeName: UIFont.ksr_headline(size: 13),
+      NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+    ])
+  } else {
+    return NSAttributedString(string: string, attributes: [
+      NSFontAttributeName: UIFont.ksr_subhead(size: 13),
+      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+    ])
   }
 }
 
