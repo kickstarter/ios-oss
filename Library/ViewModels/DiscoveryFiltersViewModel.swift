@@ -90,7 +90,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { loaderIsVisible.value = true } )
+          .on(starting: { loaderIsVisible.value = true })
           .map { $0.categories }
           .materialize()
       }
