@@ -44,7 +44,7 @@ private let filmExpandableRow = expandableRowTemplate
 private let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
-  private var vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
+  private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
   private let animateInView = TestObserver<Int?, NoError>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
