@@ -201,7 +201,11 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   }
 
   private func deleteCategoriesLoaderRow() {
-    guard let deleteCategoriesLoaderRow = self.dataSource.deleteCategoriesLoaderRow() else { return }
+    guard let
+      deleteCategoriesLoaderRow = self.dataSource.deleteCategoriesLoaderRow(),
+      !deleteCategoriesLoaderRow.isEmpty else {
+        return
+    }
 
     self.filtersTableView.beginUpdates()
     defer { self.filtersTableView.endUpdates() }
