@@ -45,7 +45,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.backingButton.rac.hidden = self.viewModel.outputs.pledgeInfoButtonIsHidden
+    self.footerStackView.rac.hidden = self.viewModel.outputs.pledgeFooterIsHidden
 
     self.viewModel.outputs.authorImageURL
       .observeForUI()
