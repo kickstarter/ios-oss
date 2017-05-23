@@ -50,9 +50,6 @@ public protocol BackingViewModelOutputs {
   /// Emits a NSAttributedString for the pledge title label.
   var pledgeSectionTitle: Signal<NSAttributedString, NoError> { get }
 
-  /// Emits the backer's pledge status.
-  var pledgeStatus: Signal<String, NoError> { get }
-
   /// Emits the backer reward description to display.
   var rewardDescription: Signal<String, NoError> { get }
 
@@ -165,13 +162,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       }
     )
 
-    self.pledgeStatus = Signal.merge(
-      emptyStringOnLoad,
-      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        statusString(for: backing.status, project: project)
-      }
-    )
-
     self.statusDescription = Signal.merge(
       emptyStringOnLoad.mapConst(NSAttributedString(string: "")),
       projectAndBackingAndBackerIsCurrentUser
@@ -267,7 +257,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let opacityForContainers: Signal<CGFloat, NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeSectionTitle: Signal<NSAttributedString, NoError>
-  public let pledgeStatus: Signal<String, NoError>
   public let rewardDescription: Signal<String, NoError>
   public let rewardSectionAndShippingIsHidden: Signal<Bool, NoError>
   public var rewardTitleWithAmount: Signal<String, NoError>
@@ -279,25 +268,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }
-}
-
-private func statusString(for status: Backing.Status, project: Project) -> String {
-    switch status {
-    case .canceled:
-      return Strings.project_view_pledge_status_canceled()
-    case .collected:
-      return Strings.profile_projects_status_successful()
-    case .dropped:
-      return Strings.project_view_pledge_status_dropped()
-    case .errored:
-      return Strings.project_view_pledge_status_errored()
-    case .pledged:
-      return (project.state == .canceled || project.state == .failed)
-        ? Strings.project_view_pledge_status_canceled()
-        : Strings.project_view_pledge_status_pledged()
-    case .preauth:
-      fatalError()
-  }
 }
 
 private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)

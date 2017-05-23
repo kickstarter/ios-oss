@@ -28,8 +28,6 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var shippingPlusLabel: UILabel!
   @IBOutlet fileprivate weak var shippingStackView: UIStackView!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var statusTitleLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedAmountLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
@@ -70,7 +68,6 @@ internal final class BackingViewController: UIViewController {
     self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerPledgeAmountLabel.rac.text = self.viewModel.outputs.pledgeAmount
-    self.statusSubtitleLabel.rac.text = self.viewModel.outputs.pledgeStatus
     self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.rewardDescription
     self.pledgeSectionTitleLabel.rac.attributedText = self.viewModel.outputs.pledgeSectionTitle
     self.rewardSectionTitleLabel.rac.attributedText = self.viewModel.outputs.rewardSectionTitle
@@ -198,15 +195,6 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.text .~ "+"
 
     _ = self.backerShippingAmountLabel
-      |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
-
-    _ = self.statusTitleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
-      |> UILabel.lens.text %~ { _ in Strings.Status() }
-
-    _ = self.statusSubtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
