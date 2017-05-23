@@ -2788,17 +2788,17 @@ from friends yet."
     )
   }
   /**
-   "Pledge:"
+   "Pledge"
 
    - **es**: "Contribución:"
    - **de**: "Beitrag:"
    - **fr**: "Engagement :"
-   - **en**: "Pledge:"
+   - **en**: "Pledge"
   */
   public static func Pledge() -> String {
     return localizedString(
       key: "Pledge",
-      defaultValue: "Pledge:",
+      defaultValue: "Pledge",
       count: nil,
       substitutions: [:]
     )
@@ -2884,6 +2884,22 @@ from friends yet."
     )
   }
   /**
+   "<b>Pledged</b> on %{pledge_date}"
+
+   - **es**: "<b>Pledged</b> on %{pledge_date}"
+   - **de**: "<b>Pledged</b> on %{pledge_date}"
+   - **fr**: "<b>Pledged</b> on %{pledge_date}"
+   - **en**: "<b>Pledged</b> on %{pledge_date}"
+  */
+  public static func Pledged_on_date(pledge_date: String) -> String {
+    return localizedString(
+      key: "Pledged_on_date",
+      defaultValue: "<b>Pledged</b> on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_date": pledge_date]
+    )
+  }
+  /**
    "Popular"
 
    - **es**: "Popular"
@@ -2959,6 +2975,22 @@ from friends yet."
     return localizedString(
       key: "Project_cancelled",
       defaultValue: "Project cancelled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project saved."
+
+   - **es**: "Proyecto guardado."
+   - **de**: "Projekt gespeichert."
+   - **fr**: "Projet enregistré."
+   - **en**: "Project saved."
+  */
+  public static func Project_saved() -> String {
+    return localizedString(
+      key: "Project_saved",
+      defaultValue: "Project saved.",
       count: nil,
       substitutions: [:]
     )
@@ -3235,6 +3267,22 @@ daring ideas."
       defaultValue: "%{reward_survey_count} Reward Surveys",
       count: reward_survey_count,
       substitutions: ["reward_survey_count": Format.wholeNumber(reward_survey_count)]
+    )
+  }
+  /**
+   "<b>Reward</b> estimated for delivery in %{delivery_date}"
+
+   - **es**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+   - **de**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+   - **fr**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+   - **en**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+  */
+  public static func Reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
+    return localizedString(
+      key: "Reward_estimated_for_delivery_in_date",
+      defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
+      count: nil,
+      substitutions: ["delivery_date": delivery_date]
     )
   }
   /**
@@ -3542,22 +3590,6 @@ daring ideas."
     )
   }
   /**
-   "Shipping:"
-
-   - **es**: "Envío:"
-   - **de**: "Versand:"
-   - **fr**: "Livraison :"
-   - **en**: "Shipping:"
-  */
-  public static func Shipping_colon() -> String {
-    return localizedString(
-      key: "Shipping_colon",
-      defaultValue: "Shipping:",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Ships to:"
 
    - **es**: "Envío a:"
@@ -3656,17 +3688,17 @@ catch your eye?"
     )
   }
   /**
-   "Status:"
+   "Status"
 
    - **es**: "Estado:"
    - **de**: "Status:"
    - **fr**: "État :"
-   - **en**: "Status:"
+   - **en**: "Status"
   */
   public static func Status() -> String {
     return localizedString(
       key: "Status",
-      defaultValue: "Status:",
+      defaultValue: "Status",
       count: nil,
       substitutions: [:]
     )
@@ -4122,8 +4154,8 @@ catch your eye?"
   /**
    "Video disabled until the internet connection improves"
 
-   - **es**: "Video disabled until the internet connection improves"
-   - **de**: "Video disabled until the internet connection improves"
+   - **es**: "Video desactivado hasta se reestablezca la conexión de internet"
+   - **de**: "Video bis zur Wiederherstellung der Internetverbindung deaktiviert"
    - **fr**: "Vidéo désactivée en attente d'une meilleure connexion Internet"
    - **en**: "Video disabled until the internet connection improves"
   */
@@ -4253,6 +4285,22 @@ Please try again later."
     )
   }
   /**
+   "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
+
+   - **es**: "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil."
+   - **de**: "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite."
+   - **fr**: "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil."
+   - **en**: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
+  */
+  public static func Well_remind_you_forty_eight_hours_before_this_project_ends() -> String {
+    return localizedString(
+      key: "Well_remind_you_forty_eight_hours_before_this_project_ends",
+      defaultValue: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "When you save a project we’ll send you a reminder 48 hours before it ends"
 
    - **es**: "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice"
@@ -4298,6 +4346,22 @@ Please try again later."
       defaultValue: "You backed this project.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "<b>You pledged</b> on %{pledge_date}"
+
+   - **es**: "<b>You pledged</b> on %{pledge_date}"
+   - **de**: "<b>You pledged</b> on %{pledge_date}"
+   - **fr**: "<b>You pledged</b> on %{pledge_date}"
+   - **en**: "<b>You pledged</b> on %{pledge_date}"
+  */
+  public static func You_pledged_on_date(pledge_date: String) -> String {
+    return localizedString(
+      key: "You_pledged_on_date",
+      defaultValue: "<b>You pledged</b> on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_date": pledge_date]
     )
   }
   /**
@@ -4442,6 +4506,22 @@ Please try again later."
       defaultValue: "Your reward",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+
+   - **es**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+   - **de**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+   - **fr**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+   - **en**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+  */
+  public static func Your_reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
+    return localizedString(
+      key: "Your_reward_estimated_for_delivery_in_date",
+      defaultValue: "<b>Your reward</b> estimated for delivery in %{delivery_date}",
+      count: nil,
+      substitutions: ["delivery_date": delivery_date]
     )
   }
   /**
