@@ -24,8 +24,9 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
   @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingPlusLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingPlusLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var statusSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var statusTitleLabel: UILabel!
@@ -75,25 +76,13 @@ internal final class BackingViewController: UIViewController {
     self.rewardSectionTitleLabel.rac.attributedText = self.viewModel.outputs.rewardSectionTitle
     self.backerSequenceLabel.rac.text = self.viewModel.outputs.backerSequence
     self.backerShippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmount
-    //self.backerShippingAmountLabel.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
+    self.backerShippingAmountLabel.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.rewardContainerView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.rewardTitleWithAmountLabel.rac.text = self.viewModel.outputs.rewardTitleWithAmount
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
     self.statusDescriptionLabel.rac.attributedText = self.viewModel.outputs.statusDescription
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
-    //self.shippingLabel.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
-    //self.shippingPlusLabel.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
-
-//    self.viewModel.outputs.rewardSectionAndShippingIsHidden
-//      .observeForUI()
-//      .observeValues { [weak self] isHidden in
-//        if isHidden {
-//          self?.shippingLabel ?|> UILabel.lens.textColor .~ .ksr_grey_500
-//          self?.shippingPlusLabel ?|> UILabel.lens.textColor .~ .ksr_grey_500
-//          self?.backerShippingAmountLabel ?|> UILabel.lens.textColor .~ .ksr_grey_500
-//        }
-//    }
-
+    self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()

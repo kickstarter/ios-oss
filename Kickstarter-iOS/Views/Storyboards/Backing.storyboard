@@ -353,6 +353,7 @@
                         <outlet property="rewardTitleWithAmountLabel" destination="VxD-FX-ImT" id="BDS-jv-W61"/>
                         <outlet property="shippingLabel" destination="LOo-wm-Oqf" id="rv7-HN-8Yv"/>
                         <outlet property="shippingPlusLabel" destination="193-2r-zBs" id="lit-Ke-o4Y"/>
+                        <outlet property="shippingStackView" destination="dAS-M6-StR" id="cst-gU-NL0"/>
                         <outlet property="statusDescriptionLabel" destination="Git-ao-PPA" id="5Is-iJ-cVC"/>
                         <outlet property="statusSubtitleLabel" destination="m1z-I7-STO" id="apl-8N-GLU"/>
                         <outlet property="statusTitleLabel" destination="ap6-Hp-tHy" id="FNS-Kh-cxK"/>

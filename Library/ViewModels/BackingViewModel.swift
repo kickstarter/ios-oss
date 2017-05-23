@@ -353,12 +353,8 @@ private func pledgeTitle(for backing: Backing, project: Project, backerIsCurrent
   let date = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
 
   let titleString = backerIsCurrentUser
-    ? localizedString(key: "You_pledged_on_date",
-                      defaultValue: "<b>You pledged</b> on %{pledge_date}",
-                      substitutions: ["pledge_date": date])
-    : localizedString(key: "Pledged_on_date",
-    defaultValue: "<b>Pledged</b> on %{pledge_date}",
-    substitutions: ["pledge_date": date])
+    ? Strings.You_pledged_on_date(pledge_date: date)
+    : Strings.Pledged_on_date(pledge_date: date)
 
   return titleString.simpleHtmlAttributedString(
     base: [
@@ -383,12 +379,8 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
                          timeZone: UTCTimeZone)
 
   let titleString = backerIsCurrentUser
-    ? localizedString(key: "Your_reward_estimated_for_delivery_in_date",
-                      defaultValue: "<b>Your reward</b> estimated for delivery in %{delivery_date}",
-                      substitutions: ["delivery_date": date])
-    : localizedString(key: "Reward_estimated_for_delivery_in_date",
-    defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
-    substitutions: ["delivery_date": date])
+    ? Strings.Your_reward_estimated_for_delivery_in_date(delivery_date: date)
+    : Strings.Reward_estimated_for_delivery_in_date(delivery_date: date)
 
   return titleString.simpleHtmlAttributedString(
     base: [
