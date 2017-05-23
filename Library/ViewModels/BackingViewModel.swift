@@ -41,6 +41,9 @@ public protocol BackingViewModelOutputs {
   /// Emits a bool to animate the loader.
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
+  /// Emits the button title for messaging a backer or creator.
+  var messageButtonTitleText: Signal<String, NoError> { get }
+
   /// Emits an alpha value for the reward and pledge containers to animate in.
   var opacityForContainers: Signal<CGFloat, NoError> { get }
 
@@ -210,10 +213,18 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           : (MessageSubject.backing(backing), .backerModal)
     }
 
-    self.hideActionsStackView = projectAndBackerAndBackerIsCurrentUser
-      .map { project, _, backerIsCurrentUser in
-        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
-    }
+    self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
+      .map { _, _, backerIsCurrentUser in
+        backerIsCurrentUser
+          ? Strings.Contact_creator()
+          : localizedString(key: "Contact_backer", defaultValue: "Contact backer")
+      }
+
+    self.hideActionsStackView = .empty
+    //projectAndBackerAndBackerIsCurrentUser
+//      .map { project, _, backerIsCurrentUser in
+//        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
+//    }
 
     self.opacityForContainers = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(0.0),
@@ -254,6 +265,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let hideActionsStackView: Signal<Bool, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
+  public let messageButtonTitleText: Signal<String, NoError>
   public let opacityForContainers: Signal<CGFloat, NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeSectionTitle: Signal<NSAttributedString, NoError>

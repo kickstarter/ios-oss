@@ -80,6 +80,7 @@ internal final class BackingViewController: UIViewController {
     self.statusDescriptionLabel.rac.attributedText = self.viewModel.outputs.statusDescription
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
+    self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
 
     self.viewModel.outputs.backerAvatarURL
       .observeForControllerAction()
@@ -148,7 +149,6 @@ internal final class BackingViewController: UIViewController {
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 14)
       |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Contact_creator() }
       |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
 
     _ = self.viewMessagesButton
