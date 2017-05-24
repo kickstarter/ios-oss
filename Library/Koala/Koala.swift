@@ -166,7 +166,7 @@ public final class Koala {
     }
   }
 
-  /// Determines which gesture was used.
+  /// Determines the place where project was saved.
   public enum SaveContext: String {
     case discovery
     case project
@@ -1215,7 +1215,8 @@ public final class Koala {
   public func trackProjectStar(_ project: Project, context: SaveContext) {
     guard let isStarred = project.personalization.isStarred else { return }
 
-    let props = properties(project: project, loggedInUser: self.loggedInUser).withAllValuesFrom(["context": context.trackingString])
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.trackingString])
 
     // Deprecated event
     self.track(event: isStarred ? "Project Star" : "Project Unstar",
