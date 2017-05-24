@@ -63,8 +63,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
-
-    self.viewModel.inputs.awakeFromNib()
   }
 
   internal override func bindStyles() {
@@ -251,7 +249,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
                                           fromSourceView: _self.shareButton)
     }
 
-    self.viewModel.outputs.notifyDelegateStarButtonTapped // notify delegate show save alert
+    self.viewModel.outputs.notifyDelegateShowSaveAlert
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }

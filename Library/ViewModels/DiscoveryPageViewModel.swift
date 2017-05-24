@@ -17,9 +17,6 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user taps on a project.
   func tapped(project: Project)
 
-  /// Call when user taps star button.
-  func starButtonTapped()
-
   /// Call when the project navigator has transitioned to a new project with its index.
   func transitionedToProject(at row: Int, outOf totalRows: Int)
 
@@ -147,8 +144,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
 
-    //self.goToLoginTout = loggedOutUserTappedStar
-
     self.projects = Signal.merge(
       paginatedProjects,
       self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
@@ -255,10 +250,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func selectedFilter(_ params: DiscoveryParams) {
     self.selectedFilterProperty.value = params
   }
-  fileprivate let starButtonTappedProperty = MutableProperty()
-  public func starButtonTapped() {
-    self.starButtonTappedProperty.value = ()
-  }
   fileprivate let tappedActivity = MutableProperty<Activity?>(nil)
   public func tapped(activity: Activity) {
     self.tappedActivity.value = activity
@@ -300,7 +291,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public var asyncReloadData: Signal<Void, NoError>
   public let hideEmptyState: Signal<(), NoError>
   public var goToActivityProject: Signal<(Project, RefTag), NoError>
-  //public let goToLoginTout: Signal<(), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projects: Signal<[Project], NoError>

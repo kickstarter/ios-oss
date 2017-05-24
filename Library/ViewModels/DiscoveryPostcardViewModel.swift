@@ -13,7 +13,6 @@ private enum PostcardMetadataType {
   case backing
   case featured
   case potd
-  case starred
 
   fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
@@ -32,17 +31,11 @@ private enum PostcardMetadataType {
       return PostcardMetadataData(iconImage: image(named: "metadata-potd"),
                                   labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
                                   iconAndTextColor: .ksr_text_navy_700)
-    case .starred:
-      return PostcardMetadataData(iconImage: image(named: "metadata-starred"),
-                                  labelText: Strings.You_saved_this_project(),
-                                  iconAndTextColor: .ksr_text_navy_700)
     }
   }
 }
 
 public protocol DiscoveryPostcardViewModelInputs {
-  func awakeFromNib()
-
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
@@ -94,7 +87,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits when we should notify the delegate that the star button was tapped.
-  var notifyDelegateStarButtonTapped: Signal<Void, NoError> { get }
+  var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
 
   // var notifyDelegateShowLoginTout<LoginIntent>
   var notifyDelegateShowLoginTout: Signal<Void, NoError> { get }
@@ -158,7 +151,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let currentUser = Signal.merge([
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
-      self.awakeFromNibProperty.signal
+      project.ignoreValues()
       ])
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
@@ -181,17 +174,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
-
-    self.metadataViewHidden = project
-      .map { p in
-        let today = AppEnvironment.current.dateType.init().date
-        let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
-                         (p.personalization.isStarred == nil || p.personalization.isStarred == false) &&
-          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
-
-        return noMetadata
-      }
-      .skipRepeats()
 
     self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 
@@ -273,7 +255,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .skipNil()
 
     let starProjectEvent = projectOnStarToggle
-      .takeWhen(self.starButtonTappedProperty.signal)
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -284,11 +265,22 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.project }
       .on(value: { cache(project: $0)})
 
-    self.starButtonSelected = Signal.merge(project, projectStarred)
+    self.starButtonSelected = Signal.merge(project, projectOnStarToggle, projectStarred) //revertToggle
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
-    self.notifyDelegateStarButtonTapped = project
+    self.metadataViewHidden = project
+      .map { p in
+        let today = AppEnvironment.current.dateType.init().date
+        let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
+          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
+
+        return noMetadata
+      }
+      .skipRepeats()
+
+    self.notifyDelegateShowSaveAlert = project
+      .takeWhen(self.starButtonTappedProperty.signal)
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date)  }
       .filter { _ in
@@ -303,6 +295,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.notifyDelegateShowLoginTout = loggedOutUserTappedStar
 
+    projectStarred
+      .observeValues { AppEnvironment.current.koala.trackProjectStar($0, context: .discovery) }
+
     // a11y
     self.cellAccessibilityLabel = project.map(Project.lens.name.view)
 
@@ -310,11 +305,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
   // swiftlint:enable function_body_length
-  private let awakeFromNibProperty = MutableProperty()
-  public func awakeFromNib() {
-    self.awakeFromNibProperty.value = ()
-  }
-
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
@@ -352,7 +342,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public var notifyDelegateShowLoginTout: Signal<Void, NoError>
-  public let notifyDelegateStarButtonTapped: Signal<Void, NoError>
+  public let notifyDelegateShowSaveAlert: Signal<Void, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
@@ -366,7 +356,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
-  public let starButtonSelected: Signal<Bool, NoError>
+  public let starButtonSelected: Signal<Bool, NoError> // save or star?
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }
@@ -389,6 +379,11 @@ private func cache(project: Project) {
   cache?[project.id] = project.personalization.isStarred
 
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] = cache
+}
+
+// todo:
+private func removeProject(project: Project) {
+
 }
 
 private func socialText(forFriends friends: [User]) -> String? {
@@ -428,8 +423,6 @@ private func postcardMetadata(forProject project: Project) -> PostcardMetadataDa
 
   if project.personalization.isBacking == true {
     return PostcardMetadataType.backing.data(forProject: project)
-  } else if project.personalization.isStarred == true {
-    return PostcardMetadataType.starred.data(forProject: project)
   } else if project.isPotdToday(today: today) {
     return PostcardMetadataType.potd.data(forProject: project)
   } else if project.isFeaturedToday(today: today) {

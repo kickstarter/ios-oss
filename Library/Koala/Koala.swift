@@ -78,6 +78,11 @@ public final class Koala {
     case projectPage = "project_page"
   }
 
+  public enum SaveProjectContext: String, Equatable {
+    case discovery = "discovery"
+    case project = "project"
+  }
+
   /**
    Determines the place from which the comments dialog was presented.
 
@@ -157,6 +162,19 @@ public final class Koala {
       switch self {
       case .next:     return "next"
       case .previous: return "previous"
+      }
+    }
+  }
+
+  /// Determines which gesture was used.
+  public enum SaveContext: String {
+    case discovery
+    case project
+
+    fileprivate var trackingString: String {
+      switch self {
+      case .discovery:  return "discovery"
+      case .project:    return "project"
       }
     }
   }
@@ -493,6 +511,12 @@ public final class Koala {
     self.track(event: "Selected Discovery Sort", properties: [
       "discover_sort": sort.rawValue,
       "gesture_type": gesture.trackingString
+      ])
+  }
+
+  public func trackSaveProject(context: SaveContext) {
+    self.track(event: "Star", properties: [
+      "context": context.trackingString
       ])
   }
 
@@ -1188,10 +1212,10 @@ public final class Koala {
     self.track(event: "Closed Project Page", properties: props)
   }
 
-  public func trackProjectStar(_ project: Project) {
+  public func trackProjectStar(_ project: Project, context: SaveContext) {
     guard let isStarred = project.personalization.isStarred else { return }
 
-    let props = properties(project: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser).withAllValuesFrom(["context": context.trackingString])
 
     // Deprecated event
     self.track(event: isStarred ? "Project Star" : "Project Unstar",

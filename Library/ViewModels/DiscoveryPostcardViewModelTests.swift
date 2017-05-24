@@ -18,7 +18,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
-  internal let notifyDelegateStarButtonTapped = TestObserver<String, NoError>()
+  internal let notifyDelegateShowSaveAlert = TestObserver<Void, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
@@ -47,7 +47,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
-    self.vm.notifyDelegateStarButtonTapped.observe(self.notifyDelegateStarButtonTapped.observer)
+    self.vm.notifyDelegateShowSaveAlert.observe(self.notifyDelegateShowSaveAlert.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
@@ -107,7 +107,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.vm.inputs.starButtonTapped()
 
-      self.notifyDelegateStarButtonTapped.assertValues([Strings.project_star_confirmation()])
+      self.notifyDelegateShowSaveAlert.assertValueCount(1)
+
+      self.vm.inputs.starButtonTapped()
+
+      self.notifyDelegateShowSaveAlert.assertValueCount(1)
     }
   }
 
@@ -152,14 +156,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project()
+          Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Starred metadata takes precedence.")
 
       self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
 
@@ -167,7 +171,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
@@ -178,7 +182,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
