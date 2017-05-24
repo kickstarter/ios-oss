@@ -266,7 +266,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.project }
       .on(value: { cache(project: $0)})
 
-    self.starButtonSelected = Signal.merge(project, projectOnStarToggle, projectStarred) //revertToggle
+    let projects = Signal.merge(project, projectOnStarToggle, projectStarred) //revertToggle
+
+    self.starButtonSelected = projects
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
@@ -280,7 +282,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.notifyDelegateShowSaveAlert = project
+    self.notifyDelegateShowSaveAlert = projects
       .takeWhen(self.starButtonTappedProperty.signal)
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date)  }
