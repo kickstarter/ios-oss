@@ -311,8 +311,8 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 
   internal func discoveryPostcardCellProjectSaveAlert() {
     let alertController = UIAlertController(
-      title: "Project saved.",
-      message: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.",
+      title: Strings.Project_saved(),
+      message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
       preferredStyle: .alert)
     alertController.addAction(
       UIAlertAction(
