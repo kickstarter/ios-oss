@@ -78,12 +78,7 @@ public final class Koala {
     case projectPage = "project_page"
   }
 
-  public enum SaveProjectContext: String, Equatable {
-    case discovery = "discovery"
-    case project = "project"
-  }
-
-  /**
+   /**
    Determines the place from which the comments dialog was presented.
 
    - projectActivity: The creator's project activity screen.
@@ -166,7 +161,7 @@ public final class Koala {
     }
   }
 
-  /// Determines the place where project was saved.
+  /// Determines the place from which the project was saved.
   public enum SaveContext: String {
     case discovery
     case project
