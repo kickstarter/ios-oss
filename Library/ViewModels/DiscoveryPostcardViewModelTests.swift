@@ -191,7 +191,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.progressPercentage.assertValues([project.stats.fundingProgress])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectNameAndBlurbLabelText.assertValues(
-      ["\(project.name). \(project.blurb)"]
+      ["\(project.name): \(project.blurb)"]
     )
   }
 
