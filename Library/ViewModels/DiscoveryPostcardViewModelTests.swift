@@ -100,18 +100,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let toggleStarResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
+      withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
 
-      self.vm.inputs.configureWith(project: project)
+        self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
 
-      self.vm.inputs.starButtonTapped()
+        self.vm.inputs.configureWith(project: project)
 
-      self.notifyDelegateShowSaveAlert.assertValueCount(1)
+        self.vm.inputs.userSessionStarted()
 
-      self.vm.inputs.starButtonTapped()
+        self.vm.inputs.starButtonTapped()
 
-      self.notifyDelegateShowSaveAlert.assertValueCount(1)
+        self.notifyDelegateShowSaveAlert.assertValueCount(1)
     }
   }
 

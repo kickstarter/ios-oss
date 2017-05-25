@@ -153,7 +153,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.shareAndStarStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(5)
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
