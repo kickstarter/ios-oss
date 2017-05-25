@@ -276,6 +276,7 @@ private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allR
     "/discover/advanced",
     "/discover/categories/:category_id",
     "/discover/categories/:parent_category_id/:category_id",
+    "/messages/:message_thread_id",
     "/projects/:creator_param/:project_param",
     "/projects/:creator_param/:project_param/comments",
     "/projects/:creator_param/:project_param/dashboard",
