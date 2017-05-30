@@ -12,7 +12,8 @@ import Prelude
 internal final class MessagesViewModelTests: TestCase {
   fileprivate let vm: MessagesViewModelType = MessagesViewModel()
 
-  fileprivate let backingAndProject = TestObserver<(Backing, Project), NoError>()
+  fileprivate let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), NoError>()
+  fileprivate let emptyStateIsVisibleAndMessageToUser = TestObserver<(Bool, String), NoError>()
   fileprivate let goToBackingProject = TestObserver<Project, NoError>()
   fileprivate let goToBackingUser = TestObserver<User, NoError>()
   fileprivate let goToProject = TestObserver<Project, NoError>()
@@ -20,12 +21,13 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let messages = TestObserver<[Message], NoError>()
   fileprivate let presentMessageDialog = TestObserver<MessageThread, NoError>()
   fileprivate let project = TestObserver<Project, NoError>()
+  fileprivate let replyButtonIsEnabled = TestObserver<Bool, NoError>()
   fileprivate let successfullyMarkedAsRead = TestObserver<(), NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.backingAndProject.observe(self.backingAndProject.observer)
+    self.vm.outputs.backingAndProjectAndIsFromBacking.observe(self.backingAndProjectAndIsFromBacking.observer)
     self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProject.observer)
     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingUser.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -45,7 +47,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.project.assertValues([messageThread.project])
-    self.backingAndProject.assertValueCount(1)
+    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
 
     XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
@@ -60,7 +62,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.project.assertValues([messageThread.project])
-    self.backingAndProject.assertValueCount(1)
+    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
 
     XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
@@ -74,7 +76,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.project.assertValues([project])
-    self.backingAndProject.assertValueCount(1)
+    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
 
     XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
@@ -88,7 +90,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.project.assertValues([project])
-    self.backingAndProject.assertValueCount(1)
+    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
 
     XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
