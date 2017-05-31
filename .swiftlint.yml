@@ -7,10 +7,10 @@ disabled_rules:
   - identifier_name
   - large_tuple
   - nesting
-  - weak_delegate
   - type_body_length
   - type_name
   - trailing_comma
+  - weak_delegate
 opt_in_rules:
   - empty_count
   - force_unwrapping
