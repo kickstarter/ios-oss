@@ -73,24 +73,19 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)
 
-    let userUpdatedProjectsCount = Signal.combineLatest(
-      projectsType,
-      Signal.merge(self.viewWillAppearProperty.signal.ignoreValues(), self.currentUserUpdatedProperty.signal)
+    let userUpdatedProjectsCount = Signal.merge(
+      self.viewWillAppearProperty.signal.ignoreValues(),
+      self.currentUserUpdatedProperty.signal
       )
-      .map { type, _ -> Int? in
-        switch type {
-        case .backed:
-          return AppEnvironment.current.currentUser?.stats.backedProjectsCount
-        case .saved:
-          return AppEnvironment.current.currentUser?.stats.starredProjectsCount
-        }
+      .map { _ -> (Int, Int) in
+        (AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0,
+         AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0)
       }
-      .skipRepeats(==)
-      .ignoreValues()
+      .skipRepeats { $0 == $1 }
 
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
-        userUpdatedProjectsCount,
+        userUpdatedProjectsCount.ignoreValues(),
         self.refreshProperty.signal
         )
       )
@@ -123,6 +118,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
+      skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
