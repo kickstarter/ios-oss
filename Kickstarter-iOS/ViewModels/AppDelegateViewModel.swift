@@ -319,8 +319,8 @@ AppDelegateViewModelOutputs {
     self.findRedirectUrl = deepLinkUrl
       .filter {
         switch Navigation.match($0) {
-        case .some(.emailClick(_)), .some(.emailLink):  return true
-        default:                                        return false
+        case .some(.emailClick), .some(.emailLink): return true
+        default:                                    return false
         }
     }
 
@@ -379,7 +379,7 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
-      .filter { Navigation.match($0) == nil }
+      .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
@@ -420,8 +420,9 @@ AppDelegateViewModelOutputs {
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
-        guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
-        return surveyResponseId
+        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
+        if case let .project(_, .survey(surveyResponseId), _) = link { return surveyResponseId }
+        return nil
       }
       .skipNil()
       .switchMap { surveyResponseId in

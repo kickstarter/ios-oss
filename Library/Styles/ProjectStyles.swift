@@ -9,7 +9,7 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
     .map(CharacterSet.punctuationCharacters.contains)
     .coalesceWith(false)
 
-  let projectName = isProjectNamePunctuated ? project.name : "\(project.name)."
+  let projectName = isProjectNamePunctuated ? project.name : "\(project.name):"
 
   let baseNameAttributedString = NSMutableAttributedString(
     string: "\(projectName) ",

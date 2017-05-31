@@ -607,11 +607,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    let stack = self.navigationController?.viewControllers
-    guard let root = stack?.first else {
-      fatalError("Unable to find root view controller!")
-    }
-    self.navigationController?.setViewControllers([root, thanksVC], animated: true)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   fileprivate func load(items: [String]) {
