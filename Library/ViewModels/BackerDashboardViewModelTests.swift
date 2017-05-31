@@ -23,9 +23,11 @@ internal final class BackerDashboardViewModelTests: TestCase {
   private let navigateToTab = TestObserver<BackerDashboardTab, NoError>()
   private let pinSelectedIndicatorToTab = TestObserver<BackerDashboardTab, NoError>()
   private let pinSelectedIndicatorToTabAnimated = TestObserver<Bool, NoError>()
+  private let postNotification = TestObserver<Notification, NoError>()
   private let savedButtonTitleText = TestObserver<String, NoError>()
   private let setSelectedButton = TestObserver<BackerDashboardTab, NoError>()
   private let sortBarIsHidden = TestObserver<Bool, NoError>()
+  private let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -46,6 +48,8 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.outputs.savedButtonTitleText.observe(self.savedButtonTitleText.observer)
     self.vm.outputs.setSelectedButton.observe(self.setSelectedButton.observer)
     self.vm.outputs.sortBarIsHidden.observe(self.sortBarIsHidden.observer)
+    self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
+    self.vm.outputs.postNotification.observe(self.postNotification.observer)
   }
 
   func testUserAndHeaderDisplayData() {
@@ -71,6 +75,8 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.savedButtonTitleText.assertValueCount(0)
       self.setSelectedButton.assertValueCount(0)
       self.sortBarIsHidden.assertValueCount(0)
+      self.postNotification.assertValueCount(0)
+      self.updateCurrentUserInEnvironment.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(false)
@@ -86,6 +92,12 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.setSelectedButton.assertValues([.backed])
       self.sortBarIsHidden.assertValues([true])
       self.embeddedViewTopConstraintConstant.assertValues([0.0])
+      self.postNotification.assertValueCount(0)
+      self.updateCurrentUserInEnvironment.assertValues([user])
+
+      self.vm.inputs.currentUserUpdatedInEnvironment()
+
+      self.postNotification.assertValueCount(1)
 
       // Signals that emit just once because they rely on the datasource tab index to exist first.
       self.pinSelectedIndicatorToTab.assertValues([.backed])

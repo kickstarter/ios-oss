@@ -21,6 +21,9 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the ProfileProjectsType to display and the default sort.
   func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
 
+  /// Call when the user has updated.
+  func currentUserUpdated()
+
   /// Call when a project cell is tapped.
   func projectTapped(_ project: Project)
 
@@ -70,9 +73,24 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)
 
+    let userUpdatedProjectsCount = Signal.combineLatest(
+      projectsType,
+      Signal.merge(self.viewWillAppearProperty.signal.ignoreValues(), self.currentUserUpdatedProperty.signal)
+      )
+      .map { type, _ -> Int? in
+        switch type {
+        case .backed:
+          return AppEnvironment.current.currentUser?.stats.backedProjectsCount
+        case .saved:
+          return AppEnvironment.current.currentUser?.stats.starredProjectsCount
+        }
+      }
+      .skipRepeats(==)
+      .ignoreValues()
+
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
-        self.viewWillAppearProperty.signal.ignoreValues(),
+        userUpdatedProjectsCount,
         self.refreshProperty.signal
         )
       )
@@ -138,6 +156,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     MutableProperty<(ProfileProjectsType, DiscoveryParams.Sort)?>(nil)
   public func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
     self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
+  }
+
+  private let currentUserUpdatedProperty = MutableProperty()
+  public func currentUserUpdated() {
+    self.currentUserUpdatedProperty.value = ()
   }
 
   private let projectTappedProperty = MutableProperty<Project?>(nil)

@@ -18,6 +18,9 @@ public protocol BackerDashboardViewModelInputs {
   /// to calculate the starting point constant for the pan gesture.
   func beganPanGestureWith(headerTopConstant: CGFloat, scrollViewYOffset: CGFloat)
 
+  /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
+  func currentUserUpdatedInEnvironment()
+
   /// Call when messages button is tapped.
   func messagesButtonTapped()
 
@@ -77,6 +80,9 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a BackerDashboardTab to pin the indicator view to with or without animation.
   var pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError> { get }
 
+  /// Emits an Notification that should be immediately posted.
+  var postNotification: Signal<Notification, NoError> { get }
+
   /// Emits a string for the saved button title label.
   var savedButtonTitleText: Signal<String, NoError> { get }
 
@@ -85,6 +91,10 @@ public protocol BackerDashboardViewModelOutputs {
 
   /// Emits a boolean whether the sort bar is hidden or not.
   var sortBarIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a fresh user to be updated in the app environment.
+  var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
+
 }
 
 public protocol BackerDashboardViewModelType {
@@ -100,13 +110,20 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
       .map { (.backed, DiscoveryParams.Sort.endingSoon) }
 
-    let user = self.viewWillAppearProperty.signal.filter(isFalse).ignoreValues()
+    let fetchedUserEvent = self.viewWillAppearProperty.signal.ignoreValues()
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-          .demoteErrors()
+          .materialize()
     }
+
+    let user = fetchedUserEvent.values()
+
+    self.updateCurrentUserInEnvironment = user.skip(first: 1)
+
+    self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
+      .mapConst(Notification(name: .ksr_userUpdated, object: nil))
 
     self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
 
@@ -180,6 +197,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     return self.currentSelectedTabProperty.value
   }
 
+  private let currentUserUpdatedInEnvironmentProperty = MutableProperty()
+  public func currentUserUpdatedInEnvironment() {
+    self.currentUserUpdatedInEnvironmentProperty.value = ()
+  }
+
   private let initialTopConstantProperty = MutableProperty<CGFloat>(0.0)
   public var initialTopConstant: CGFloat {
     return self.initialTopConstantProperty.value
@@ -230,9 +252,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let goToSettings: Signal<(), NoError>
   public let navigateToTab: Signal<BackerDashboardTab, NoError>
   public let pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError>
+  public let postNotification: Signal<Notification, NoError>
   public let savedButtonTitleText: Signal<String, NoError>
   public let setSelectedButton: Signal<BackerDashboardTab, NoError>
   public let sortBarIsHidden: Signal<Bool, NoError>
+  public let updateCurrentUserInEnvironment: Signal<User, NoError>
 
   public var inputs: BackerDashboardViewModelInputs { return self }
   public var outputs: BackerDashboardViewModelOutputs { return self }

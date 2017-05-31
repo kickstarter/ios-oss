@@ -134,10 +134,21 @@ internal final class BackerDashboardViewController: UIViewController {
         self?.pinSelectedIndicator(to: tab, animated: animated)
     }
 
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues(NotificationCenter.default.post)
+
     self.viewModel.outputs.setSelectedButton
       .observeForUI()
       .observeValues { [weak self] in
         self?.selectButton(atTab: $0)
+    }
+
+    self.viewModel.outputs.updateCurrentUserInEnvironment
+      .observeForUI()
+      .observeValues { [weak self] user in
+        AppEnvironment.updateCurrentUser(user)
+        self?.viewModel.inputs.currentUserUpdatedInEnvironment()
     }
   }
 
