@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import LiveStream
 import Prelude
 import ReactiveSwift

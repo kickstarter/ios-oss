@@ -2021,7 +2021,6 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #endif
 }
 
-// swiftlint:disable type_name
 extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(

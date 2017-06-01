@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 // swiftlint:disable force_unwrapping
 import Prelude
 import Result

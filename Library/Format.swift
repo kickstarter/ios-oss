@@ -383,7 +383,6 @@ fileprivate func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> 
       && lhs.currencySymbol == rhs.currencySymbol
 }
 
-// swiftlint:disable type_name
 extension NumberFormatterConfig {
   fileprivate enum lens {
     fileprivate static let numberStyle = Lens<NumberFormatterConfig, NumberFormatter.Style>(

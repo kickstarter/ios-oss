@@ -5,7 +5,6 @@ import XCTest
 import Prelude
 import Result
 
-// swiftlint:disable type_name
 internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityNegativeStateChangeCellViewModel =
     ProjectActivityNegativeStateChangeCellViewModel()
@@ -81,4 +80,3 @@ internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestC
     self.title.assertValues([expected], "Emits title indicating the project was suspended")
   }
 }
-// swiftlint:disable type_name

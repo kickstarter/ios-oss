@@ -6,8 +6,7 @@ public struct ProjectActivityData {
   public let project: Project
   public let groupedDates: Bool
 
-  // swiftlint:disable type_name
-  public enum lens {
+    public enum lens {
     public static let activities = Lens<ProjectActivityData, [Activity]>(
       view: { $0.activities },
       set: { ProjectActivityData(activities: $0, project: $1.project, groupedDates: $1.groupedDates) }
