@@ -5,7 +5,6 @@ import Prelude
 import SafariServices
 import UIKit
 
-// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()

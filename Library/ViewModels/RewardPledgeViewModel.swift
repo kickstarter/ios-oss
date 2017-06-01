@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import PassKit
 import Prelude

@@ -1,5 +1,4 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 import XCTest
 import Result

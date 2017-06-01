@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library

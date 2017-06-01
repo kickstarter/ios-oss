@@ -5,7 +5,6 @@ import ReactiveSwift
 import ReactiveExtensions
 import Result
 
-// swiftlint:disable file_length
 public protocol SettingsViewModelInputs {
   func backingsTapped(selected: Bool)
   func betaFeedbackButtonTapped()

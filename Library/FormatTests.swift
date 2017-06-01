@@ -1,5 +1,4 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable file_length
 import XCTest
 import KsApi
 @testable import Library
