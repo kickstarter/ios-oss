@@ -6,7 +6,6 @@
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
-// swiftlint:disable type_body_length
 public enum Strings {
   /**
    "About %{reward_amount}"

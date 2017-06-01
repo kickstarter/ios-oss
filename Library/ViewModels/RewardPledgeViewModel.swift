@@ -206,7 +206,6 @@ public protocol RewardPledgeViewModelType {
   var outputs: RewardPledgeViewModelOutputs { get }
 }
 
-// swiftlint:disable type_body_length
 public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
 RewardPledgeViewModelOutputs {
 

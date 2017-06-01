@@ -1,4 +1,3 @@
-// swiftlint:disable type_body_length
 // swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift

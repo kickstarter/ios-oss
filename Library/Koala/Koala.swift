@@ -1,4 +1,3 @@
-// swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
 import LiveStream

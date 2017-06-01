@@ -1,4 +1,3 @@
-// swiftlint:disable type_body_length
 import XCTest
 import ReactiveSwift
 import UIKit

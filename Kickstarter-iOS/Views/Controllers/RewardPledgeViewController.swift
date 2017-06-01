@@ -4,7 +4,6 @@ import Prelude
 import Stripe
 import UIKit
 
-// swiftlint:disable type_body_length
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 

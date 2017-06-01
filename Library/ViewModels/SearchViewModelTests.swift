@@ -1,5 +1,4 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable type_body_length
 import Foundation
 import XCTest
 @testable import KsApi

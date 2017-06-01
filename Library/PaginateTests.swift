@@ -1,6 +1,5 @@
 // swiftlint:disable force_unwrapping
 // swiftlint:disable function_body_length
-// swiftlint:disable type_body_length
 import XCTest
 @testable import Library
 import Prelude
