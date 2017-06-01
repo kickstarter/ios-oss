@@ -11,7 +11,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
   @IBOutlet fileprivate weak var projectImageWidthConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var projectLabel: UILabel!
-  @IBOutlet fileprivate weak var projectNameContainerView: UIView!
+  @IBOutlet fileprivate weak var projectNameContainerView: UIStackView!
   @IBOutlet fileprivate weak var separateView: UIView!
   @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
@@ -40,6 +40,8 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
+      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
 
     _ =  self.deadlineTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
@@ -72,8 +74,9 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self.projectNameContainerView
-      |> UIView.lens.layoutMargins .~ .init(top: Styles.grid(1), left: 0, bottom: 0, right: 0)
-      |> UIView.lens.backgroundColor .~ .clear
+      |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(1), left: 0, bottom: 0, right: 0)
+      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.separateView |> separatorStyle
 
