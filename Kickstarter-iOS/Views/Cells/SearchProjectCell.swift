@@ -23,6 +23,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(project: project)
   }
 
+  // swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
