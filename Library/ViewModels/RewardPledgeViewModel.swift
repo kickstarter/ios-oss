@@ -211,8 +211,7 @@ RewardPledgeViewModelOutputs {
 
   fileprivate let rewardViewModel: RewardCellViewModelType = RewardCellViewModel()
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projectAndRewardAndApplePayCapable = Signal.combineLatest(
       self.projectAndRewardAndApplePayCapableProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal

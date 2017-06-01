@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers

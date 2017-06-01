@@ -92,8 +92,7 @@ public protocol ThanksViewModelType {
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let project = self.projectProperty.signal.skipNil()
 
     self.backedProjectText = project.map {

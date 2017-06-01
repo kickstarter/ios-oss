@@ -8,8 +8,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self

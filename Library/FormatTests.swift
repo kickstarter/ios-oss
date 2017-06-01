@@ -3,7 +3,6 @@ import XCTest
 import KsApi
 @testable import Library
 
-// swiftlint:disable function_body_length
 final class FormatTests: TestCase {
 
   func testWholeNumber() {

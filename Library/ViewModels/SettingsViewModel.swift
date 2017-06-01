@@ -72,8 +72,7 @@ public protocol SettingsViewModelType {
 
 public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelInputs,
   SettingsViewModelOutputs {
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let initialUser = viewDidLoadProperty.signal
       .flatMap {

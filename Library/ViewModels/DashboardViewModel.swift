@@ -87,8 +87,7 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)

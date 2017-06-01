@@ -89,8 +89,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading

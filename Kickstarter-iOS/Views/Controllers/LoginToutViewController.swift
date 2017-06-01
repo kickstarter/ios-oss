@@ -95,8 +95,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
     }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in

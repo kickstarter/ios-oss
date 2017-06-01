@@ -77,8 +77,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     // swiftlint:enable type_name
   }
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let isLoading = MutableProperty(false)
 
     let loginData = SignalProducer.combineLatest(

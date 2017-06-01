@@ -10,7 +10,6 @@ import Result
 @testable import Library
 import Prelude
 
-// swiftlint:disable function_body_length
 internal final class SearchViewModelTests: TestCase {
   fileprivate let vm: SearchViewModelType! = SearchViewModel()
 

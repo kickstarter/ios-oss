@@ -67,8 +67,7 @@ internal final class ActivitiesViewController: UITableViewController {
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.activities

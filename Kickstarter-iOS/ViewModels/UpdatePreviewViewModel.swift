@@ -46,8 +46,7 @@ internal protocol UpdatePreviewViewModelType {
 internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   UpdatePreviewViewModelOutputs, UpdatePreviewViewModelType {
 
-  // swiftlint:disable function_body_length
-  internal init() {
+    internal init() {
     let draft = self.draftProperty.signal.skipNil()
 
     let initialRequest = draft

@@ -55,8 +55,7 @@ public protocol DiscoveryFiltersViewModelType {
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
 
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(first: 1)

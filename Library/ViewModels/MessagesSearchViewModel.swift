@@ -53,8 +53,7 @@ public protocol MessagesSearchViewModelType {
 public final class MessagesSearchViewModel: MessagesSearchViewModelType, MessagesSearchViewModelInputs,
 MessagesSearchViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let isLoading = MutableProperty(false)
 
     let project = self.projectProperty.producer

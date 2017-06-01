@@ -59,8 +59,7 @@ internal final class CommentsViewController: UITableViewController {
     }
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()

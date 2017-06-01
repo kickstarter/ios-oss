@@ -211,8 +211,7 @@ public struct AppEnvironment {
   }
 
   // Returns the last saved environment from user defaults.
-  // swiftlint:disable function_body_length
-  public static func fromStorage(ubiquitousStore: KeyValueStoreType,
+    public static func fromStorage(ubiquitousStore: KeyValueStoreType,
                                  userDefaults: KeyValueStoreType) -> Environment {
 
     let data = userDefaults.dictionary(forKey: environmentStorageKey) ?? [:]

@@ -77,8 +77,7 @@ public protocol EmptyStatesViewModelType {
 public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesViewModelInputs,
   EmptyStatesViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let emptyState = Signal.combineLatest(
       self.emptyStateProperty.signal.skipNil(),
       self.viewWillAppearProperty.signal.take(first: 1)

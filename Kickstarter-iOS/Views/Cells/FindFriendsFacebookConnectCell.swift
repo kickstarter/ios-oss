@@ -35,8 +35,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     self.viewModel.inputs.configureWith(source: source)
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     self.closeButton.rac.hidden = self.viewModel.outputs.hideCloseButton
 
     self.viewModel.outputs.attemptFacebookLogin

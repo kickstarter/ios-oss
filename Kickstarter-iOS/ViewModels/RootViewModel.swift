@@ -82,8 +82,7 @@ internal protocol RootViewModelType {
 
 internal final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  internal init() {
+    internal init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal,

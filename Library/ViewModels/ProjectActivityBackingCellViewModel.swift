@@ -70,8 +70,7 @@ public protocol ProjectActivityBackingCellViewModelType {
 public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCellViewModelType,
 ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
     let title = activity.map(title(activity:))
