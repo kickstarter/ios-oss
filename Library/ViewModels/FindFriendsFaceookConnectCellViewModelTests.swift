@@ -10,8 +10,7 @@ import UIKit.UIActivity
 @testable import Library
 @testable import FBSDKLoginKit
 
-  // swiftlint:disable type_name
-final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
+  final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   // swiftlint: enable type_name
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 

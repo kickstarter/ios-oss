@@ -58,8 +58,7 @@ public protocol FindFriendsFacebookConnectCellViewModelType {
 
 public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookConnectCellViewModelType,
   FindFriendsFacebookConnectCellViewModelInputs, FindFriendsFacebookConnectCellViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
 
     let isLoading = MutableProperty(false)

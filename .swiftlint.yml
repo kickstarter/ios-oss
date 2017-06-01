@@ -1,12 +1,16 @@
 disabled_rules:
   - closure_parameter_position
   - discarded_notification_center_observer
+  - file_length
+  - function_body_length
   - function_parameter_count
   - identifier_name
   - large_tuple
   - nesting
-  - weak_delegate
+  - type_body_length
+  - type_name
   - trailing_comma
+  - weak_delegate
 opt_in_rules:
   - empty_count
   - force_unwrapping

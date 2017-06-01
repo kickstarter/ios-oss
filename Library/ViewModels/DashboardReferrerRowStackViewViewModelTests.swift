@@ -7,7 +7,6 @@ import XCTest
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
-// swiftlint:disable type_name
 internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   // swiftlint:enable type_name
   internal let vm = DashboardReferrerRowStackViewViewModel()

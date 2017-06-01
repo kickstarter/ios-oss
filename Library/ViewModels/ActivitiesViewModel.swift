@@ -107,8 +107,7 @@ public protocol ActivitiesViewModelType {
 
 public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewModelInputs,
 ActivitiesViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in total > 3 && row >= total - 2 }
       .skipRepeats()

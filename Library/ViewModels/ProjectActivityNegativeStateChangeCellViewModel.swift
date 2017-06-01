@@ -19,7 +19,6 @@ public protocol ProjectActivityNegativeStateChangeCellViewModelType {
   var outputs: ProjectActivityNegativeStateChangeCellViewModelOutputs { get }
 }
 
-// swiftlint:disable type_name
 public final class ProjectActivityNegativeStateChangeCellViewModel:
 ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStateChangeCellViewModelInputs,
 ProjectActivityNegativeStateChangeCellViewModelOutputs {

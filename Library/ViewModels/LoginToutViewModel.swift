@@ -83,8 +83,7 @@ public protocol LoginToutViewModelType {
 public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewModelInputs,
   LoginToutViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
 
     let intent = self.loginIntentProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)

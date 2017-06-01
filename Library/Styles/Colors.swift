@@ -8,8 +8,6 @@ import UIKit
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [

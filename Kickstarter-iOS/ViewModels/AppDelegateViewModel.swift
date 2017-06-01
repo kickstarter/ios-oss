@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import KsApi
 import Library
@@ -158,8 +157,7 @@ public protocol AppDelegateViewModelType {
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(

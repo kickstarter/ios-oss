@@ -1,6 +1,4 @@
-// swiftlint:disable file_length
 // swiftlint:disable force_unwrapping
-// swiftlint:disable type_body_length
 import Foundation
 import XCTest
 @testable import KsApi
@@ -12,7 +10,6 @@ import Result
 @testable import Library
 import Prelude
 
-// swiftlint:disable function_body_length
 internal final class SearchViewModelTests: TestCase {
   fileprivate let vm: SearchViewModelType! = SearchViewModel()
 

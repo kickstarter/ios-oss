@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import Runes
 import KsApi
@@ -93,8 +92,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
   fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let configData = self.configDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)

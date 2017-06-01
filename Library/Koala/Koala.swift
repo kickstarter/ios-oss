@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
 import LiveStream
@@ -2023,7 +2021,6 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #endif
 }
 
-// swiftlint:disable type_name
 extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(

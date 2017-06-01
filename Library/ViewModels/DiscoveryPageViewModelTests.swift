@@ -1,6 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
-// swiftlint:disable function_body_length
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
