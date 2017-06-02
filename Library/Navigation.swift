@@ -211,7 +211,14 @@ public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
 
 extension Navigation {
   public static func match(_ url: URL) -> Navigation? {
-    return routes.reduce(nil) { accum, templateAndRoute in
+    return allRoutes.reduce(nil) { accum, templateAndRoute in
+      let (template, route) = templateAndRoute
+      return accum ?? parsedParams(url: url, fromTemplate: template).flatMap(route)?.value
+    }
+  }
+
+  public static func deepLinkMatch(_ url: URL) -> Navigation? {
+    return deepLinkRoutes.reduce(nil) { accum, templateAndRoute in
       let (template, route) = templateAndRoute
       return accum ?? parsedParams(url: url, fromTemplate: template).flatMap(route)?.value
     }
@@ -222,7 +229,7 @@ extension Navigation {
   }
 }
 
-private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
+private let allRoutes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/": emailClick,
   "/mpss/:a/:b/:c/:d/:e/:f/:g": emailLink,
   "/activity": activity,
@@ -259,6 +266,27 @@ private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/projects/:creator_param/:project_param/surveys/:survey_param": projectSurvey,
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
+
+private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
+  keys: [
+    "/",
+    "/mpss/:a/:b/:c/:d/:e/:f/:g",
+    "/activity",
+    "/discover",
+    "/discover/advanced",
+    "/discover/categories/:category_id",
+    "/discover/categories/:parent_category_id/:category_id",
+    "/messages/:message_thread_id",
+    "/projects/:creator_param/:project_param",
+    "/projects/:creator_param/:project_param/comments",
+    "/projects/:creator_param/:project_param/dashboard",
+    "/projects/:creator_param/:project_param/posts",
+    "/projects/:creator_param/:project_param/posts/:update_param",
+    "/projects/:creator_param/:project_param/posts/:update_param/comments",
+    "/projects/:creator_param/:project_param/surveys/:survey_param",
+    "/users/:user_param/surveys/:survey_response_id"
+  ]
+)
 
 extension Navigation.Project {
   // swiftlint:disable conditional_binding_cascade
@@ -569,4 +597,16 @@ private func oneToBool(_ string: String?) -> Decoded<Bool?> {
 
 private func stringToInt(_ string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
+}
+
+extension Dictionary {
+  fileprivate func restrict(keys: Set<Key>) -> Dictionary {
+    var result = Dictionary()
+    self.forEach { key, value in
+      if keys.contains(key) {
+        result[key] = value
+      }
+    }
+    return result
+  }
 }

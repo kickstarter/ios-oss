@@ -44,7 +44,7 @@ private let filmExpandableRow = expandableRowTemplate
 private let categories = [ Category.art, .illustration, .filmAndVideo, .documentary ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
-  private let vm = DiscoveryFiltersViewModel()
+  private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
   private let animateInView = TestObserver<Int?, NoError>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
@@ -75,7 +75,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Default() {
-    self.vm.configureWith(selectedRow: allProjectsRow)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -88,7 +88,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Category() {
-    self.vm.configureWith(selectedRow: artSelectableRow)
+    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -101,7 +101,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testAnimateIn_Subcategory() {
-    self.vm.configureWith(selectedRow: documentarySelectableRow)
+    self.vm.inputs.configureWith(selectedRow: documentarySelectableRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
@@ -114,7 +114,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testKoalaEventsTrack() {
-    self.vm.configureWith(selectedRow: allProjectsRow)
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
