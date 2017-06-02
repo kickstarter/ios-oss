@@ -1,11 +1,9 @@
-// swiftlint:disable file_length
 import KsApi
 import Library
 import Prelude
 import Stripe
 import UIKit
 
-// swiftlint:disable type_body_length
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
@@ -148,8 +146,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -441,8 +438,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -607,11 +603,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    let stack = self.navigationController?.viewControllers
-    guard let root = stack?.first else {
-      fatalError("Unable to find root view controller!")
-    }
-    self.navigationController?.setViewControllers([root, thanksVC], animated: true)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   fileprivate func load(items: [String]) {

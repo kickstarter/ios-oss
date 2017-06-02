@@ -1,7 +1,4 @@
-// swiftlint:disable file_length
 // swiftlint:disable force_unwrapping
-// swiftlint:disable function_body_length
-// swiftlint:disable type_body_length
 // swiftlint:disable force_cast
 import Prelude
 import ReactiveExtensions
@@ -522,9 +519,9 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToLogin.assertValueCount(0)
 
     let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
-                                      url: URL(string: "https://www.kickstarter.com/authorize")!,
-                                      sourceApplication: nil,
-                                      annotation: 1)
+                                                   url: URL(string: "https://www.kickstarter.com/authorize")!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
     XCTAssertFalse(result)
 
     self.goToLogin.assertValueCount(1)
@@ -1345,6 +1342,39 @@ final class AppDelegateViewModelTests: TestCase {
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValueCount(1, "Present the project view controller.")
     self.goToMobileSafari.assertValues([])
+  }
+
+  func testProjectSurveyDeepLink() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.presentViewController.assertValues([])
+
+    let projectUrl = "https://www.kickstarter.com"
+      + "/projects/tequila/help-me-transform-this-pile-of-wood/surveys/123"
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: projectUrl)!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.presentViewController.assertValues([1])
+  }
+
+  func testUserSurveyDeepLink() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.presentViewController.assertValues([])
+
+    let projectUrl = "https://www.kickstarter.com/users/tequila/surveys/123"
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: URL(string: projectUrl)!,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.presentViewController.assertValues([1])
   }
 }
 

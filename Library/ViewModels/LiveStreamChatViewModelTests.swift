@@ -1,4 +1,3 @@
-//swiftlint:disable file_length
 import Prelude
 import ReactiveSwift
 import Result
@@ -160,15 +159,15 @@ internal final class LiveStreamChatViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, liveStreamEvent: liveStreamEvent)
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
 
-    self.dismissKeyboard.assertValueCount(1)
+    self.dismissKeyboard.assertValueCount(0)
 
     self.vm.inputs.deviceOrientationDidChange(orientation: .landscapeLeft)
 
-    self.dismissKeyboard.assertValueCount(2)
+    self.dismissKeyboard.assertValueCount(1)
 
     self.vm.inputs.deviceOrientationDidChange(orientation: .portrait)
 
-    self.dismissKeyboard.assertValueCount(3)
+    self.dismissKeyboard.assertValueCount(1)
   }
 
   func testConnectingToChat_LoggedIn() {

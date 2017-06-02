@@ -68,8 +68,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     )
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     _ = self |> baseTableViewCellStyle()
 
     _ = self.averagePledgeAmountSubtitleLabel

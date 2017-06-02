@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Social
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
@@ -9,6 +10,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
 
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
@@ -87,8 +89,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading
@@ -150,6 +151,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
                                     animated: false)
     }
 
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.showShareSheet($0, shareContextView: $1) }
+
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] emptyState in
@@ -173,7 +178,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
                                    willDisplay cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
 
-    if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {
+    if let cell = cell as? DiscoveryPostcardCell {
+      cell.delegate = self
+    } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleFollowCell, cell.delegate == nil {
       cell.delegate = self
@@ -195,6 +202,27 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
+  }
+
+  fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
+
+    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+
+      self?.shareViewModel.inputs.shareActivityCompletion(
+        with: .init(activityType: activityType,
+                    completed: completed,
+                    returnedItems: returnedItems,
+                    activityError: error)
+      )
+    }
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = shareContextView
+    }
+
+    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
@@ -266,6 +294,14 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewControllerGoToFriends() {
     let vc = FindFriendsViewController.configuredWith(source: .discovery)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+}
+
+extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
+  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
+                                  fromSourceView: UIView) {
+    self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: fromSourceView)
+    self.shareViewModel.inputs.shareButtonTapped()
   }
 }
 

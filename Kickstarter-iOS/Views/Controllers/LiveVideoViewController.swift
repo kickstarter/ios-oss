@@ -44,6 +44,16 @@ public final class LiveVideoViewController: UIViewController {
     self.view.backgroundColor = .black
     self.view.addSubview(self.videoGridView)
 
+    NotificationCenter.default.addObserver(forName: .UIApplicationDidEnterBackground,
+                                           object: nil, queue: nil) { [weak self] _ in
+      self?.viewModel.inputs.didEnterBackground()
+    }
+
+    NotificationCenter.default.addObserver(forName: .UIApplicationWillEnterForeground,
+                                           object: nil, queue: nil) { [weak self] _ in
+      self?.viewModel.inputs.willEnterForeground()
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 

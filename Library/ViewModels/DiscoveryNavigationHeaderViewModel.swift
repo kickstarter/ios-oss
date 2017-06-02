@@ -91,8 +91,7 @@ public protocol DiscoveryNavigationHeaderViewModelType {
 public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeaderViewModelType,
   DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }

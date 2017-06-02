@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import Library
 import LiveStream
@@ -53,7 +52,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
                                       presentedFromProject: presentedFromProject)
     vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
                                                   refTag: refTag, presentedFromProject: presentedFromProject)
-    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent),
+                                           shareContextView: nil)
 
     return vc
   }
@@ -303,7 +303,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller: controller) }
 
     self.eventDetailsViewModel.outputs.showErrorAlert
       .observeForUI()

@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import Argo
 import Curry
 import Prelude

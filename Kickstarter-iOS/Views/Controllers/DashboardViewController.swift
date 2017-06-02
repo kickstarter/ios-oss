@@ -46,8 +46,7 @@ internal final class DashboardViewController: UITableViewController {
       |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData
@@ -64,7 +63,8 @@ internal final class DashboardViewController: UITableViewController {
         self?.tableView.reloadData()
 
         // NB: this is just temporary for now
-        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project))
+        self?.shareViewModel.inputs.configureWith(shareContext: .creatorDashboard(project),
+                                                  shareContextView: nil)
     }
 
     self.viewModel.outputs.referrerData
@@ -128,7 +128,7 @@ internal final class DashboardViewController: UITableViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 

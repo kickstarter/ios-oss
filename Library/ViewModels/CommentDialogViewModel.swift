@@ -118,8 +118,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   public var outputs: CommentDialogViewModelOutputs { return self }
   public var errors: CommentDialogViewModelErrors { return self }
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let isLoading = MutableProperty(false)
 
     let configurationData = self.configurationDataProperty.signal.skipNil()

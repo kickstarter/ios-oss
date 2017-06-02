@@ -68,8 +68,7 @@ public final class VideoViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ .black
   }
 
-  // swiftlint:disable function_body_length
-  public override func bindViewModel() {
+    public override func bindViewModel() {
     super.bindViewModel()
 
     self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden

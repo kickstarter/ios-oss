@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 import Prelude
 import Result
 import XCTest
@@ -17,6 +16,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
+  internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
@@ -43,6 +43,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       .observe(self.fundingProgressContainerViewHidden.observer)
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
+    self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
@@ -78,6 +79,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
+  }
+
+  func testTappedShareButton() {
+    let project = Project.template
+    let discoveryContext = ShareContext.discovery(project)
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.shareButtonTapped()
+    self.notifyDelegateShareButtonTapped.assertValues([discoveryContext])
   }
 
   func testMetadata() {
@@ -180,7 +190,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.progressPercentage.assertValues([project.stats.fundingProgress])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectNameAndBlurbLabelText.assertValues(
-      ["\(project.name). \(project.blurb)"]
+      ["\(project.name): \(project.blurb)"]
     )
   }
 

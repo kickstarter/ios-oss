@@ -31,8 +31,7 @@ public protocol ProjectNotificationCellViewModelType {
 public final class ProjectNotificationCellViewModel: ProjectNotificationCellViewModelType,
   ProjectNotificationCellViewModelInputs, ProjectNotificationCellViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let notification = self.notificationProperty.signal.skipNil()
       .map(cached(notification:))
 

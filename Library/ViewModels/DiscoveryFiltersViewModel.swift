@@ -55,8 +55,7 @@ public protocol DiscoveryFiltersViewModelType {
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
 
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(first: 1)
@@ -81,7 +80,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { $0.params.category?.rootId }
 
     let loaderIsVisible = MutableProperty(false)
-    self.loadingIndicatorIsVisible = loaderIsVisible.signal
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
@@ -91,11 +89,15 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { loaderIsVisible.value = true },
-              terminated: { loaderIsVisible.value = false })
+          .on(starting: { loaderIsVisible.value = true })
           .map { $0.categories }
           .materialize()
       }
+
+    self.loadingIndicatorIsVisible = Signal.merge(
+      loaderIsVisible.signal,
+      categoriesEvent.values().mapConst(false)
+    )
 
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),

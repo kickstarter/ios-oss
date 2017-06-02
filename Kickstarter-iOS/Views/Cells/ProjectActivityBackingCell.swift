@@ -47,8 +47,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
                                         project: activityAndProject.1)
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel

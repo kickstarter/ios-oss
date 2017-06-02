@@ -1,10 +1,8 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable file_length
 import XCTest
 import KsApi
 @testable import Library
 
-// swiftlint:disable function_body_length
 final class FormatTests: TestCase {
 
   func testWholeNumber() {

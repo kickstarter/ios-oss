@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import KsApi
 import Library
@@ -158,8 +157,7 @@ public protocol AppDelegateViewModelType {
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -319,8 +317,8 @@ AppDelegateViewModelOutputs {
     self.findRedirectUrl = deepLinkUrl
       .filter {
         switch Navigation.match($0) {
-        case .some(.emailClick(_)), .some(.emailLink):  return true
-        default:                                        return false
+        case .some(.emailClick), .some(.emailLink): return true
+        default:                                    return false
         }
     }
 
@@ -379,7 +377,7 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
-      .filter { Navigation.match($0) == nil }
+      .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
@@ -420,8 +418,9 @@ AppDelegateViewModelOutputs {
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
-        guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
-        return surveyResponseId
+        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
+        if case let .project(_, .survey(surveyResponseId), _) = link { return surveyResponseId }
+        return nil
       }
       .skipNil()
       .switchMap { surveyResponseId in

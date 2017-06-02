@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
 import LiveStream
@@ -1947,6 +1945,9 @@ private func properties(shareContext: ShareContext,
   case let .creatorDashboard(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "creator_dashboard"
+  case let .discovery(project):
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
+    result["context"] = "discovery"
   case let .project(project):
     result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
@@ -2020,7 +2021,6 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #endif
 }
 
-// swiftlint:disable type_name
 extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(

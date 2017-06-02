@@ -64,8 +64,7 @@ public protocol HelpViewModelType {
 }
 
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let context = self.helpContextProperty.signal.skipNil()
     let canSendEmail = self.canSendEmailProperty.signal.skipNil()
     let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.skipNil()

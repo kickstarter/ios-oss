@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable function_body_length
 // swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift

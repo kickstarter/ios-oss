@@ -46,8 +46,7 @@ public protocol RewardCellViewModelType {
 public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
 RewardCellViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.skipNil()
     let project = projectAndRewardOrBacking.map(first)
     let reward = projectAndRewardOrBacking
