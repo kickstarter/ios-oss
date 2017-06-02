@@ -254,13 +254,13 @@ private let projectCommentForCreatorPushData: [String:Any] = [
 
 private let updateCommentForCreatorPushData: [String:Any] = [
   "aps": [
-    "alert": "New comment! Blob has commented on update #10."
+    "alert": "New comment! Blob has commented on update #11."
   ],
   "activity": [
     "category": "comment-post",
     "id": 1,
     "project_id": 820501933,
-    "update_id": 1393331
+    "update_id": 1731094
   ],
   "for_creator": true
 ]
