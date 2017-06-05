@@ -30,6 +30,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
   }
 
+  // swiftlint:disable function_body_length
   func testProjects() {
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
     let projectsWithNewProject = (1...4).map { .template |> Project.lens.id .~ $0 }
@@ -41,6 +42,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: env), currentUser: .template) {
       self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
       self.vm.inputs.viewWillAppear(false)
+      self.vm.inputs.currentUserUpdated()
 
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
@@ -55,42 +57,46 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateProjectsType.assertValues([.backed])
       self.isRefreshing.assertValues([true, false])
 
-      self.vm.inputs.viewWillAppear(false)
-      self.isRefreshing.assertValues([true, false, true])
+      self.vm.inputs.viewWillAppear(true)
+      self.isRefreshing.assertValues([true, false], "Projects don't refresh.")
 
       self.scheduler.advance()
 
       self.projects.assertValues([projects])
       self.emptyStateIsVisible.assertValues([false])
-      self.isRefreshing.assertValues([true, false, true, false])
+      self.isRefreshing.assertValues([true, false], "Projects don't refresh.")
+
+      let updatedUser = .template |> User.lens.stats.backedProjectsCount .~ 1
 
       // Come back after backing a project.
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env2), currentUser: .template) {
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env2), currentUser: updatedUser) {
+        self.vm.inputs.currentUserUpdated()
         self.vm.inputs.viewWillAppear(false)
 
-        self.isRefreshing.assertValues([true, false, true, false, true])
+        self.isRefreshing.assertValues([true, false, true])
 
         self.scheduler.advance()
 
         self.projects.assertValues([projects, projectsWithNewProject])
         self.emptyStateIsVisible.assertValues([false, false])
-        self.isRefreshing.assertValues([true, false, true, false, true, false])
+        self.isRefreshing.assertValues([true, false, true, false])
       }
 
       // Refresh.
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env3), currentUser: .template) {
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env3), currentUser: updatedUser) {
         self.vm.inputs.refresh()
 
-        self.isRefreshing.assertValues([true, false, true, false, true, false, true])
+        self.isRefreshing.assertValues([true, false, true, false, true])
 
         self.scheduler.advance()
 
         self.projects.assertValues([projects, projectsWithNewProject, projectsWithNewestProject])
         self.emptyStateIsVisible.assertValues([false, false, false])
-        self.isRefreshing.assertValues([true, false, true, false, true, false, true, false])
+        self.isRefreshing.assertValues([true, false, true, false, true, false])
       }
     }
   }
+  // swiftlint:enable function_body_length
 
   func testNoProjects() {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ []

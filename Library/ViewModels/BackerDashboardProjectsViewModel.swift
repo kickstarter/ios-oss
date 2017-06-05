@@ -21,6 +21,9 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the ProfileProjectsType to display and the default sort.
   func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
 
+  /// Call when the user has updated.
+  func currentUserUpdated()
+
   /// Call when a project cell is tapped.
   func projectTapped(_ project: Project)
 
@@ -70,9 +73,19 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)
 
+    let userUpdatedProjectsCount = Signal.merge(
+      self.viewWillAppearProperty.signal.ignoreValues(),
+      self.currentUserUpdatedProperty.signal
+      )
+      .map { _ -> (Int, Int) in
+        (AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0,
+         AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0)
+      }
+      .skipRepeats { $0 == $1 }
+
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
-        self.viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
+        userUpdatedProjectsCount.ignoreValues(),
         self.refreshProperty.signal
         )
       )
@@ -82,10 +95,12 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
           return DiscoveryParams.defaults
             |> DiscoveryParams.lens.backed .~ true
             |> DiscoveryParams.lens.sort .~ sort
+            |> DiscoveryParams.lens.perPage .~ 20
         case .saved:
           return DiscoveryParams.defaults
             |> DiscoveryParams.lens.starred .~ true
             |> DiscoveryParams.lens.sort .~ sort
+            |> DiscoveryParams.lens.perPage .~ 20
         }
       }
 
@@ -93,7 +108,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
       )
-      .map { row, total in total > 4 && row >= total - 3 }
+      .map { row, total in total > 5 && row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
       .ignoreValues()
@@ -103,6 +118,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
+      skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
@@ -136,6 +152,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     MutableProperty<(ProfileProjectsType, DiscoveryParams.Sort)?>(nil)
   public func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
     self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
+  }
+
+  private let currentUserUpdatedProperty = MutableProperty()
+  public func currentUserUpdated() {
+    self.currentUserUpdatedProperty.value = ()
   }
 
   private let projectTappedProperty = MutableProperty<Project?>(nil)
