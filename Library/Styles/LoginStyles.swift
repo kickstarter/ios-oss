@@ -95,9 +95,11 @@ public let resetPasswordControllerStyle = baseControllerStyle()
 public let loginRootStackViewStyle =
   UIStackView.lens.layoutMarginsRelativeArrangement .~ true
     <> UIStackView.lens.layoutMargins %~~ { _, stack in
-      stack.traitCollection.isRegularRegular
-        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+
+      let verticalMargins = stack.traitCollection.isVerticallyCompact ? Styles.grid(2) : Styles.grid(10)
+      let horizontalMargins = stack.traitCollection.isRegularRegular ? Styles.grid(20) : Styles.grid(3)
+
+      return .init(topBottom: verticalMargins, leftRight: horizontalMargins)
 }
 
 public let signupButtonStyle = greenButtonStyle
