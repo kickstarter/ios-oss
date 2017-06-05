@@ -46,8 +46,7 @@ internal final class EmptyStatesViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText

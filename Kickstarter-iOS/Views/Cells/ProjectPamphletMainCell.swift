@@ -80,8 +80,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       tx: 0, ty: translation)
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -185,8 +184,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText

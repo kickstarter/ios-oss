@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import PassKit
 import Prelude
@@ -207,14 +206,12 @@ public protocol RewardPledgeViewModelType {
   var outputs: RewardPledgeViewModelOutputs { get }
 }
 
-// swiftlint:disable type_body_length
 public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
 RewardPledgeViewModelOutputs {
 
   fileprivate let rewardViewModel: RewardCellViewModelType = RewardCellViewModel()
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projectAndRewardAndApplePayCapable = Signal.combineLatest(
       self.projectAndRewardAndApplePayCapableProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal

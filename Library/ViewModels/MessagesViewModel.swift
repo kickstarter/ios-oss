@@ -54,8 +54,7 @@ public protocol MessagesViewModelType {
 public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelInputs,
 MessagesViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let configData = self.configData.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 

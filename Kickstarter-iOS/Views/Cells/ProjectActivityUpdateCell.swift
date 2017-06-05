@@ -52,8 +52,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     self.updateTitleLabel.rac.text = self.viewModel.outputs.updateTitle
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     let statLabel =

@@ -69,8 +69,7 @@ public protocol SignupViewModelType {
 
 public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let initialText = self.viewDidLoadProperty.signal.mapConst("")
     let name = Signal.merge(
       self.nameChangedProperty.signal,

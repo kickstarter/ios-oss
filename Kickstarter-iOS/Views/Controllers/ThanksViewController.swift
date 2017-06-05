@@ -88,8 +88,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden

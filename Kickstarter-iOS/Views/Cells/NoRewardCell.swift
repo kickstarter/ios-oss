@@ -16,8 +16,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self

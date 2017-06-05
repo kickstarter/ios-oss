@@ -58,8 +58,7 @@ internal final class UpdateDraftViewController: UIViewController {
     _ = self.separatorViews ||> separatorStyle
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.addAttachmentExpandedButton.rac.hidden =

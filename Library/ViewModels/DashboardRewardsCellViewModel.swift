@@ -53,8 +53,7 @@ public protocol DashboardRewardsCellViewModelType {
 
 public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelType,
   DashboardRewardsCellViewModelInputs, DashboardRewardsCellViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let statsProject = self.statsProjectProperty.signal.skipNil()
 
     let rewards = statsProject

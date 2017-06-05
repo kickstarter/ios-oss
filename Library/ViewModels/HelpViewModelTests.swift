@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 // swiftlint:disable force_cast
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers

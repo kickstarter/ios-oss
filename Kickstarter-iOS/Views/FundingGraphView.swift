@@ -58,8 +58,7 @@ public final class FundingGraphView: UIView {
     }
   }
 
-  // swiftlint:disable function_body_length
-  public override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
     super.draw(rect)
 
     // Map the date and pledged amount to (dayNumber, pledgedAmount).

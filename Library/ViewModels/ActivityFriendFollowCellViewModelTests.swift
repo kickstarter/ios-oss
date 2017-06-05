@@ -8,7 +8,6 @@ import UIKit.UIActivity
 @testable import Library
 import Prelude
 
-// swiftlint:disable type_name
 final class ActivityFriendFollowCellViewModelTests: TestCase {
   // swiftlint:enable type_name
   let vm: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()

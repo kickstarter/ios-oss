@@ -8,8 +8,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -255,13 +254,13 @@ private let projectCommentForCreatorPushData: [String:Any] = [
 
 private let updateCommentForCreatorPushData: [String:Any] = [
   "aps": [
-    "alert": "New comment! Blob has commented on update #10."
+    "alert": "New comment! Blob has commented on update #11."
   ],
   "activity": [
     "category": "comment-post",
     "id": 1,
     "project_id": 820501933,
-    "update_id": 1393331
+    "update_id": 1731094
   ],
   "for_creator": true
 ]

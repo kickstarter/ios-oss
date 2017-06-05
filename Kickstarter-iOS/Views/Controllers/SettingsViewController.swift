@@ -5,8 +5,6 @@ import Prelude
 import SafariServices
 import UIKit
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
@@ -130,8 +128,7 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -312,8 +309,7 @@ internal final class SettingsViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.goToAppStoreRating
