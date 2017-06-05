@@ -6,7 +6,6 @@ import ReactiveSwift
 import UIKit
 
 internal final class BackingViewController: UIViewController {
-
   @IBOutlet fileprivate weak var actionsStackView: UIStackView!
   @IBOutlet fileprivate weak var backerAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var backerNameLabel: UILabel!

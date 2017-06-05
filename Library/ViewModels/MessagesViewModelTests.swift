@@ -35,6 +35,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.messages.observe(self.messages.observer)
     self.vm.outputs.presentMessageDialog.map { $0.0 }.observe(self.presentMessageDialog.observer)
     self.vm.outputs.project.observe(self.project.observer)
+    self.vm.outputs.replyButtonIsEnabled.observe(self.replyButtonIsEnabled.observer)
     self.vm.outputs.successfullyMarkedAsRead.observe(self.successfullyMarkedAsRead.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
@@ -45,6 +46,8 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(data: .left(messageThread))
     self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
 
     self.project.assertValues([messageThread.project])
     self.backingAndProjectAndIsFromBacking.assertValueCount(1)
@@ -61,6 +64,8 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.configureWith(data: .left(messageThread))
     self.vm.inputs.viewDidLoad()
 
+    self.scheduler.advance()
+
     self.project.assertValues([messageThread.project])
     self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
@@ -74,6 +79,8 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
 
     self.project.assertValues([project])
     self.backingAndProjectAndIsFromBacking.assertValueCount(1)
@@ -89,6 +96,8 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
 
+    self.scheduler.advance()
+
     self.project.assertValues([project])
     self.backingAndProjectAndIsFromBacking.assertValueCount(1)
     self.messages.assertValueCount(1)
@@ -102,6 +111,9 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
     self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
     self.vm.inputs.projectBannerTapped()
 
     self.goToProject.assertValues([project])
@@ -125,6 +137,8 @@ internal final class MessagesViewModelTests: TestCase {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
 
       self.goToBackingProject.assertDidNotEmitValue()
       self.goToBackingUser.assertDidNotEmitValue()
@@ -153,6 +167,8 @@ internal final class MessagesViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.goToBackingProject.assertDidNotEmitValue()
       self.goToBackingUser.assertDidNotEmitValue()
 
@@ -168,9 +184,18 @@ internal final class MessagesViewModelTests: TestCase {
     let backing = Backing.template
 
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+    self.replyButtonIsEnabled.assertValueCount(0)
+
     self.vm.inputs.viewDidLoad()
 
+    self.messages.assertValueCount(0)
+    self.replyButtonIsEnabled.assertValues([false])
+
+    self.scheduler.advance()
+
     self.messages.assertValueCount(1)
+    self.replyButtonIsEnabled.assertValues([false, true])
 
     self.vm.inputs.replyButtonPressed()
 
@@ -178,12 +203,16 @@ internal final class MessagesViewModelTests: TestCase {
 
     self.vm.inputs.messageSent(Message.template)
 
+    self.scheduler.advance()
+
     self.messages.assertValueCount(2)
   }
 
   func testMarkAsRead() {
     self.vm.inputs.configureWith(data: .left(MessageThread.template))
     self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
 
     self.successfullyMarkedAsRead.assertValueCount(1)
   }

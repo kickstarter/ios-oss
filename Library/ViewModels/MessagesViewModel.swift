@@ -25,7 +25,7 @@ public protocol MessagesViewModelInputs {
 
 public protocol MessagesViewModelOutputs {
   /** 
-   Emits a Backing and Project that can be used to populate the backing info header.
+   Emits a Backing and Project that can be used to populate the BackingCell.
    The boolean tells if navigation to this screen occurred from the backing info screen.
   */
   var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError> { get }
@@ -100,9 +100,11 @@ MessagesViewModelOutputs {
         switch backingOrThread {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .materialize()
         case let .right(thread):
           return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .materialize()
         }
     }
