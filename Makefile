@@ -4,13 +4,13 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
-OS ?= 10.2
+OS ?= 10.3
 RELEASE ?= beta
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 7,OS=10.2'
+	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 7,OS=10.3'
 endif
 
 XCPRETTY :=
