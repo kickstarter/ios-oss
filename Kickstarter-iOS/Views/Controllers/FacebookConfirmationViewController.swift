@@ -64,7 +64,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
     _ = self.newsletterLabel |> newsletterLabelStyle
-    _ = self.rootStackView |> loginRootStackViewStyle
+    _ = self.rootStackView |> facebookConfirmationStackViewStyle
   }
 
   // swiftlint:disable function_body_length
