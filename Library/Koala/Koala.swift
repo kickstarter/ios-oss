@@ -613,7 +613,7 @@ public final class Koala {
       ]
     )
     self.track(event: "Viewed Login",
-               properties: ["1password_extension_available": onePasswordIsAvailable])
+               properties: ["one_password_extension_available": onePasswordIsAvailable])
   }
 
   public func trackLoginSuccess(authType: AuthType) {
