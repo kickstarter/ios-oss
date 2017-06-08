@@ -166,7 +166,7 @@ RewardCellViewModelOutputs {
     }
 
     self.contentViewBackgroundColor = project
-      .map { backgroundColor(forCategoryId: $0.category.rootId) }
+      .map { _ in backgroundColor() }
 
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }

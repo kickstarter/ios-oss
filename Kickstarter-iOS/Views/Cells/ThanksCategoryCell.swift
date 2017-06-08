@@ -10,7 +10,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var liveProjectCountLabel: UILabel!
 
   func configureWith(value category: KsApi.Category) {
-    let (startColor, endColor) = discoveryGradientColors(forCategoryId: category.root?.id)
+    let (startColor, endColor) = discoveryGradientColors()
     self.bgView.setGradient([(startColor, 0.0), (endColor, 1.0)])
 
     _ = self.exploreLabel

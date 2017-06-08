@@ -111,7 +111,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
     let categoryId = paramsAndFiltersAreHidden.map(first).map { $0.category?.root?.id }
     let filtersAreHidden = paramsAndFiltersAreHidden.map(second)
-    let primaryColor = categoryId.map { discoveryPrimaryColor(forCategoryId: $0) }
+    let primaryColor = categoryId.map { _ in discoveryPrimaryColor() }
 
     self.animateArrowToDown = filtersAreHidden
 

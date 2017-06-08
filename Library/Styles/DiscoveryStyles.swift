@@ -3,67 +3,16 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum CategoryGroup {
-  case none
-  case culture
-  case entertainment
-  case story
-
-  public init(categoryId: Int?) {
-    let category = RootCategory(categoryId: categoryId ?? RootCategory.unrecognized.rawValue)
-    switch category {
-    case .art, .crafts, .design, .fashion, .theater:
-      self = .culture
-    case .dance, .food, .games, .music, .tech:
-      self = .entertainment
-    case .comics, .film, .journalism, .photography, .publishing:
-      self = .story
-    case .unrecognized:
-      self = .none
-    }
-  }
+public func discoveryPrimaryColor() -> UIColor {
+  return .black
 }
 
-public func discoveryPrimaryColor(forCategoryId id: Int?) -> UIColor {
-  let group = CategoryGroup(categoryId: id)
-  switch group {
-  case .none:
-    return .black
-  case .culture:
-    return .ksr_red_400
-  case .entertainment:
-    return .ksr_violet_500
-  case .story:
-    return .ksr_forest_700
-  }
+public func discoverySecondaryColor() -> UIColor {
+  return .ksr_green_700
 }
 
-public func discoverySecondaryColor(forCategoryId id: Int?) -> UIColor {
-  let group = CategoryGroup(categoryId: id)
-  switch group {
-  case .none:
-    return .ksr_green_700
-  case .culture:
-    return .ksr_violet_600
-  case .entertainment:
-    return .ksr_magenta_400
-  case .story:
-    return .ksr_forest_500
-  }
-}
-
-public func discoveryGradientColors(forCategoryId id: Int?) -> (UIColor, UIColor) {
-  let group = CategoryGroup(categoryId: id)
-  switch group {
-  case .none:
-    return (.white, .white)
-  case .culture:
-    return (.ksr_peachToBlushGradientStart, .ksr_peachToBlushGradientEnd)
-  case .entertainment:
-    return (.ksr_lavenderToPowderGradientStart, .ksr_lavenderToPowderGradientEnd)
-  case .story:
-    return (.ksr_sandToSageGradientStart, .ksr_sandToSageGradientEnd)
-  }
+public func discoveryGradientColors() -> (UIColor, UIColor) {
+  return (.white, .white)
 }
 
 public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
@@ -99,7 +48,7 @@ public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected: Bool)
 
 public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId: Int?, isSelected: Bool)
   -> ((L) -> L) {
-  return L.lens.textColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+  return L.lens.textColor .~ discoveryPrimaryColor()
       <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6))
 }
 
@@ -145,7 +94,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
                                                                  isRegularRegular: Bool) -> ((B) -> B) {
 
   let sortString = string(forSort: sort)
-  let titleColor = discoverySecondaryColor(forCategoryId: categoryId)
+  let titleColor = discoverySecondaryColor()
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: isRegularRegular

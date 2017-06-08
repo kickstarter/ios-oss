@@ -9,7 +9,7 @@ internal final class DiscoveryFiltersStaticRowCell: UITableViewCell, ValueCell {
     self.titleLabel.text = value.title
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
+      |> UILabel.lens.textColor .~ discoverySecondaryColor()
   }
 
   override func bindStyles() {

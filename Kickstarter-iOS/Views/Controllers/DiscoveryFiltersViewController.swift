@@ -136,7 +136,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   }
 
   private func animateIn(categoryId: Int?) {
-    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
+    let (startColor, endColor) = discoveryGradientColors()
     self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
     self.backgroundGradientView.alpha = 0
 

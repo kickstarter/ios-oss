@@ -32,28 +32,10 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
   return baseNameAttributedString
 }
 
-public func backgroundColor(forCategoryId id: Int?) -> UIColor {
-  switch CategoryGroup(categoryId: id) {
-  case .none:
-    return .ksr_grey_200
-  case .culture:
-    return UIColor.ksr_red_100.withAlphaComponent(0.65)
-  case .entertainment:
-    return UIColor.ksr_violet_200.withAlphaComponent(0.65)
-  case .story:
-    return UIColor.ksr_beige_400.withAlphaComponent(0.65)
-  }
+public func backgroundColor() -> UIColor {
+  return .ksr_grey_200
 }
 
 public func strokeColor(forCategoryId id: Int?) -> UIColor {
-  switch CategoryGroup(categoryId: id) {
-  case .none:
-    return .ksr_grey_200
-  case .culture:
-    return UIColor.ksr_red_400.withAlphaComponent(0.15)
-  case .entertainment:
-    return UIColor.ksr_violet_600.withAlphaComponent(0.15)
-  case .story:
-    return UIColor.ksr_forest_700.withAlphaComponent(0.15)
-  }
+  return .ksr_grey_200
 }

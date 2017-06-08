@@ -26,9 +26,6 @@ public protocol EmptyStatesViewModelInputs {
 }
 
 public protocol EmptyStatesViewModelOutputs {
-  /// Emits the background gradient category color.
-  var backgroundGradientColorId: Signal<Int?, NoError> { get }
-
   /// Emits the background strip view alpha.
   var backgroundStripViewAlpha: Signal<CGFloat, NoError> { get }
 
@@ -83,11 +80,6 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       self.viewWillAppearProperty.signal.take(first: 1)
     )
     .map(first)
-
-    self.backgroundGradientColorId = emptyState
-      .map { emptyState -> Int? in
-        emptyState == .activity ? RootCategory.comics.rawValue : nil
-    }
 
     self.mainButtonBackgroundColor = emptyState
       .map { emptyState -> UIColor in emptyState == .activity
@@ -163,7 +155,6 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     self.viewWillAppearProperty.value = ()
   }
 
-  public let backgroundGradientColorId: Signal<Int?, NoError>
   public let backgroundStripViewAlpha: Signal<CGFloat, NoError>
   public let backgroundStripViewColor: Signal<UIColor, NoError>
   public let bottomLayoutConstraintConstant: Signal<CGFloat, NoError>

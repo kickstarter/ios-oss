@@ -283,7 +283,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   fileprivate func setBackgroundGradient(categoryId: Int?, isFullScreen: Bool) {
 
-    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
+    let (startColor, endColor) = discoveryGradientColors()
 
     if isFullScreen {
       UIView.transition(with: self.gradientBackgroundView,

@@ -125,16 +125,16 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let project = Signal
       .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
-    self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
+    self.categoryButtonBackgroundColor = configuredProject.map { _ in
+        discoveryGradientColors().0.withAlphaComponent(0.8)
       }
       .skipRepeats()
 
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
       .skipRepeats()
 
-    self.categoryButtonTintColor = configuredProject.map {
-      discoveryPrimaryColor(forCategoryId: $0.category.rootId)
+    self.categoryButtonTintColor = configuredProject.map { _ in
+      discoveryPrimaryColor()
       }
       .skipRepeats()
 

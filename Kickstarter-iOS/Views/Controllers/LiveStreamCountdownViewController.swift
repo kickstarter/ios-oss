@@ -257,13 +257,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.openLoginTout()
     }
 
-    self.viewModel.outputs.categoryId
-      .observeForUI()
-      .observeValues { [weak self] in
-        let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
-        self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
-    }
-
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
       .observeValues { [weak self] in

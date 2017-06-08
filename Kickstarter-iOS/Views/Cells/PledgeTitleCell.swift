@@ -9,8 +9,8 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var separatorView: UIView!
 
   func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
-    self.pledgeTitleLabel.textColor = discoveryPrimaryColor(forCategoryId: project.category.rootId)
+    self.contentView.backgroundColor = Library.backgroundColor()
+    self.pledgeTitleLabel.textColor = discoveryPrimaryColor()
     self.separatorView.backgroundColor = strokeColor(forCategoryId: project.category.rootId)
 
     switch (project.personalization.isBacking, project.state) {

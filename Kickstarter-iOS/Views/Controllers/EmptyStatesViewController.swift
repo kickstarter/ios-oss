@@ -60,13 +60,6 @@ internal final class EmptyStatesViewController: UIViewController {
 
     self.mainButtonBottomLayoutConstraint.rac.constant = self.viewModel.outputs.bottomLayoutConstraintConstant
 
-    self.viewModel.outputs.backgroundGradientColorId
-      .observeForUI()
-      .observeValues { [weak self] in
-        let (endColor, startColor) = discoveryGradientColors(forCategoryId: $0)
-        self?.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
-    }
-
     self.mainButton.rac.title = self.viewModel.outputs.mainButtonText
 
     self.viewModel.outputs.mainButtonBackgroundColor

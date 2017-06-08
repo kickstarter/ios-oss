@@ -13,7 +13,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var copyStackView: UIStackView!
 
   internal func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
+    self.contentView.backgroundColor = Library.backgroundColor()
   }
 
     internal override func bindStyles() {
