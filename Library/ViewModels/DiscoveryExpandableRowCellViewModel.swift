@@ -17,7 +17,6 @@ public protocol DiscoveryExpandableRowCellOutputs {
   var projectsCountLabelAlpha: Signal<CGFloat, NoError> { get }
   var projectsCountLabelHidden: Signal<Bool, NoError> { get }
   var projectsCountLabelText: Signal<String, NoError> { get }
-  var projectsCountLabelTextColor: Signal<UIColor, NoError> { get }
 }
 
 public protocol DiscoveryExpandableRowCellViewModelType {
@@ -59,9 +58,6 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
     self.projectsCountLabelHidden = expandableRow
       .map { $0.params.category?.projectsCount == .some(0) }
 
-    self.projectsCountLabelTextColor = categoryId
-      .mapConst(discoverySecondaryColor())
-
     self.projectsCountLabelAlpha = expandableRowAndCategoryId
       .map { expandableRow, categoryId in categoryId == nil || expandableRow.isExpanded ? 1.0 : 0.4 }
 
@@ -85,7 +81,6 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
   public let projectsCountLabelAlpha: Signal<CGFloat, NoError>
   public let projectsCountLabelHidden: Signal<Bool, NoError>
   public let projectsCountLabelText: Signal<String, NoError>
-  public let projectsCountLabelTextColor: Signal<UIColor, NoError>
 
   public var inputs: DiscoveryExpandableRowCellInputs { return self }
   public var outputs: DiscoveryExpandableRowCellOutputs { return self }
