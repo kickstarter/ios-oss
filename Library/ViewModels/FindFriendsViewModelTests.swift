@@ -210,7 +210,9 @@ final class FindFriendsViewModelTests: TestCase {
 
       self.vm.inputs.declineFollowAllFriends()
 
-      XCTAssertEqual(["Find Friends View", "Viewed Find Friends", "Facebook Friend Decline Follow All"], self.trackingClient.events)
+      XCTAssertEqual(["Find Friends View", "Viewed Find Friends", "Facebook Friend Decline Follow All"],
+        self.trackingClient.events)
+
       XCTAssertEqual([nil, "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
@@ -221,10 +223,11 @@ final class FindFriendsViewModelTests: TestCase {
       self.vm.inputs.confirmFollowAllFriends()
 
       XCTAssertEqual(
-        ["Find Friends View", "Viewed Find Friends", "Facebook Friend Decline Follow All", "Facebook Friend Follow All"],
-        self.trackingClient.events
+        ["Find Friends View", "Viewed Find Friends",
+         "Facebook Friend Decline Follow All",
+         "Facebook Friend Follow All", "Followed All Facebook Friends"], self.trackingClient.events
       )
-      XCTAssertEqual([nil, "activity", "activity", "activity"],
+      XCTAssertEqual([nil, "activity", "activity", nil, "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
       // Test the 2 second "Follow all" debounce.

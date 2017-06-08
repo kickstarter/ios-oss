@@ -1300,15 +1300,24 @@ public final class Koala {
   }
 
   public func trackDeclineFriendFollowAll(source: FriendsSource) {
+    // deprecated
+//    self.track(event: "Facebook Friend Decline Follow All", properties: deprecatedProps)
+    //We are waiting for the new event name
     self.track(event: "Facebook Friend Decline Follow All", properties: ["source": source.trackingString])
   }
 
   public func trackFacebookConnect(source: FriendsSource) {
-    self.track(event: "Facebook Connect", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Connect", properties: deprecatedProps)
+
+    self.track(event: "Connected Facebook", properties: ["source": source.trackingString])
   }
 
   public func trackFacebookConnectError(source: FriendsSource) {
-    self.track(event: "Facebook Connect Error", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Connect Error", properties: deprecatedProps)
+
+    self.track(event: "Errored Facebook Connect", properties: ["source": source.trackingString])
   }
 
   public func trackFindFriendsView(source: FriendsSource) {
@@ -1319,15 +1328,24 @@ public final class Koala {
   }
 
   public func trackFriendFollow(source: FriendsSource) {
-    self.track(event: "Facebook Friend Follow", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Follow", properties: deprecatedProps)
+
+    self.track(event: "Followed Facebook Friend", properties: ["source": source.trackingString])
   }
 
   public func trackFriendFollowAll(source: FriendsSource) {
-    self.track(event: "Facebook Friend Follow All", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Follow All", properties: deprecatedProps)
+
+    self.track(event: "Followed All Facebook Friends", properties: ["source": source.trackingString])
   }
 
   public func trackFriendUnfollow(source: FriendsSource) {
-    self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Unfollow", properties: deprecatedProps)
+
+    self.track(event: "Unfollowed Facebook Friend", properties: ["source": source.trackingString])
   }
 
   // MARK: Update Draft Events

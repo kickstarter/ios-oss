@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 internal func repeated<T>(_ count: Int) -> ([T]) -> [T] {
