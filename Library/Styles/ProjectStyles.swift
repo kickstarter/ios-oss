@@ -32,10 +32,4 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
   return baseNameAttributedString
 }
 
-public func backgroundColor() -> UIColor {
-  return .ksr_grey_200
-}
-
-public func strokeColor(forCategoryId id: Int?) -> UIColor {
-  return .ksr_grey_200
-}
+public let cellBackgroundColor = UIColor.ksr_grey_200

@@ -60,7 +60,7 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .map { $0.params.category?.projectsCount == .some(0) }
 
     self.projectsCountLabelTextColor = categoryId
-      .map { _ in discoverySecondaryColor() }
+      .mapConst(discoverySecondaryColor())
 
     self.projectsCountLabelAlpha = expandableRowAndCategoryId
       .map { expandableRow, categoryId in categoryId == nil || expandableRow.isExpanded ? 1.0 : 0.4 }

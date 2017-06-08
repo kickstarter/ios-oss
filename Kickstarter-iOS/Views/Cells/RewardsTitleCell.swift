@@ -8,7 +8,7 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rewardsTitleLabel: UILabel!
 
   func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor()
+    self.contentView.backgroundColor = Library.cellBackgroundColor
     self.rewardsTitleLabel.textColor = discoveryPrimaryColor()
 
     switch (project.personalization.isBacking, project.state) {

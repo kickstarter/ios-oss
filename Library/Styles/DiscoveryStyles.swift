@@ -94,24 +94,23 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
                                                                  isRegularRegular: Bool) -> ((B) -> B) {
 
   let sortString = string(forSort: sort)
-  let titleColor = discoverySecondaryColor()
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0)
       : UIFont.ksr_subhead(size: 14.0),
-    NSForegroundColorAttributeName: titleColor.withAlphaComponent(0.6)
+    NSForegroundColorAttributeName: discoverySecondaryColor().withAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0).bolded
       : UIFont.ksr_subhead(size: 14.0).bolded,
-    NSForegroundColorAttributeName: titleColor
+    NSForegroundColorAttributeName: discoverySecondaryColor()
   ])
 
   return
-    B.lens.titleColor(forState: .highlighted) .~ titleColor
+    B.lens.titleColor(forState: .highlighted) .~ discoverySecondaryColor()
       <> B.lens.accessibilityLabel %~ { _ in
         Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
       }

@@ -133,10 +133,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
       .skipRepeats()
 
-    self.categoryButtonTintColor = configuredProject.map { _ in
-      discoveryPrimaryColor()
-      }
-      .skipRepeats()
+    self.categoryButtonTintColor = configuredProject.mapConst(discoveryPrimaryColor())
 
     self.categoryButtonTitleColor = self.categoryButtonTintColor
 
