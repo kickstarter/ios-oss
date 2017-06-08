@@ -6,7 +6,7 @@ import Result
 
 public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
-  func activityUpdateCellTappedProjectImage(activity: Activity)
+  var tappedActivityProjectImageSink: MutableProperty<Activity?> { get }
 
   /// Call when the Find Friends section is dismissed.
   func findFriendsHeaderCellDismissHeader()
@@ -309,10 +309,9 @@ ActivitiesViewModelOutputs {
   public func surveyResponseViewControllerDismissed() {
     self.surveyResponseViewControllerDismissedProperty.value = ()
   }
-  fileprivate let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
-  public func activityUpdateCellTappedProjectImage(activity: Activity) {
-    self.tappedActivityProjectImage.value = activity
-  }
+
+  public let tappedActivityProjectImageSink = MutableProperty<Activity?>(nil)
+
   fileprivate let tappedSurveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
   public func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.tappedSurveyResponseProperty.value = surveyResponse
