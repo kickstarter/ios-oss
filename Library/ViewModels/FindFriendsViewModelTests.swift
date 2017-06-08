@@ -38,30 +38,32 @@ final class FindFriendsViewModelTests: TestCase {
     vm.inputs.configureWith(source: FriendsSource.findFriends)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View"], self.trackingClient.events)
-    XCTAssertEqual(["find-friends"], self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+    XCTAssertEqual([nil, "find-friends"], self.trackingClient.properties.map { $0["source"] as! String? })
+
+    XCTAssertEqual([true, nil], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
 
     vm.inputs.configureWith(source: FriendsSource.activity)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Find Friends View"], self.trackingClient.events)
-    XCTAssertEqual(["find-friends", "activity"],
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(2), self.trackingClient.events)
+    XCTAssertEqual(["find-friends", "activity"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
 
     vm.inputs.configureWith(source: FriendsSource.discovery)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Find Friends View", "Find Friends View"],
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(3),
                    self.trackingClient.events)
-    XCTAssertEqual(["find-friends", "activity", "discovery"],
+    XCTAssertEqual(["find-friends", "activity", "discovery"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
 
     vm.inputs.configureWith(source: FriendsSource.settings)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Find Friends View", "Find Friends View", "Find Friends View"],
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(4),
                    self.trackingClient.events)
-    XCTAssertEqual(["find-friends", "activity", "discovery", "settings"],
+    XCTAssertEqual(["find-friends", "activity", "discovery", "settings"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
   }
 
@@ -199,8 +201,8 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.friends.assertValues([friendsResponse.users], "Initial friends load.")
-      XCTAssertEqual(["Find Friends View"], self.trackingClient.events)
-      XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
       self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
 
@@ -208,8 +210,8 @@ final class FindFriendsViewModelTests: TestCase {
 
       self.vm.inputs.declineFollowAllFriends()
 
-      XCTAssertEqual(["Find Friends View", "Facebook Friend Decline Follow All"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
+      XCTAssertEqual(["Find Friends View", "Viewed Find Friends", "Facebook Friend Decline Follow All"], self.trackingClient.events)
+      XCTAssertEqual([nil, "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
       self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
@@ -219,10 +221,10 @@ final class FindFriendsViewModelTests: TestCase {
       self.vm.inputs.confirmFollowAllFriends()
 
       XCTAssertEqual(
-        ["Find Friends View", "Facebook Friend Decline Follow All", "Facebook Friend Follow All"],
+        ["Find Friends View", "Viewed Find Friends", "Facebook Friend Decline Follow All", "Facebook Friend Follow All"],
         self.trackingClient.events
       )
-      XCTAssertEqual(["activity", "activity", "activity"],
+      XCTAssertEqual([nil, "activity", "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
 
       // Test the 2 second "Follow all" debounce.

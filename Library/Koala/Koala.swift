@@ -1312,7 +1312,10 @@ public final class Koala {
   }
 
   public func trackFindFriendsView(source: FriendsSource) {
-    self.track(event: "Find Friends View", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Find Friends View", properties: deprecatedProps)
+
+    self.track(event: "Viewed Find Friends", properties: ["source": source.trackingString])
   }
 
   public func trackFriendFollow(source: FriendsSource) {
