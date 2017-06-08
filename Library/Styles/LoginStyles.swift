@@ -100,6 +100,17 @@ public let loginRootStackViewStyle =
         : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
 }
 
+public let facebookConfirmationStackViewStyle =
+  UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.layoutMargins %~~ { _, stack in
+      stack.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+        : .init(
+          topBottom: stack.traitCollection.isVerticallyCompact ? Styles.grid(2) : Styles.grid(10),
+          leftRight: Styles.grid(3)
+        )
+}
+
 public let signupButtonStyle = greenButtonStyle
   <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.login_tout_default_intent_traditional_signup_button()

@@ -73,3 +73,7 @@ fastlane/screenshots
 Screenshots/FailureDiffs/*
 
 Frameworks/OpenTok/*
+
+# Ignore Jetbrains local project cash directory
+.idea/
+
