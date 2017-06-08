@@ -13,7 +13,6 @@ public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
   var cardViewBackgroundColor: Signal<UIColor, NoError> { get }
   var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
-  var contentViewBackgroundColor: Signal<UIColor, NoError> { get }
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
   var descriptionLabelHidden: Signal<Bool, NoError> { get }
@@ -165,9 +164,6 @@ RewardCellViewModelOutputs {
           || userIsBacking(reward: reward, inProject: project)
     }
 
-    self.contentViewBackgroundColor = project
-      .mapConst(cellBackgroundColor)
-
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
@@ -260,7 +256,6 @@ RewardCellViewModelOutputs {
   public let allGoneHidden: Signal<Bool, NoError>
   public let cardViewBackgroundColor: Signal<UIColor, NoError>
   public let cardViewDropShadowHidden: Signal<Bool, NoError>
-  public let contentViewBackgroundColor: Signal<UIColor, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
   public let descriptionLabelHidden: Signal<Bool, NoError>

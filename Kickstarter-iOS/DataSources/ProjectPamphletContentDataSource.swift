@@ -64,7 +64,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   private func setRewardTitleArea(project: Project) {
     if project.personalization.isBacking != true && project.state == .live {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
+      self.set(values: [()], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
     } else if let backing = project.personalization.backing {
 
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
@@ -133,8 +133,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeTitleCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as NoRewardCell, value as Project):
-      cell.configureWith(value: value)
+    case let (cell as NoRewardCell, _):
+      cell.configureWith(value: ())
     case let (cell as RewardsTitleCell, value as Project):
       cell.configureWith(value: value)
     default:
