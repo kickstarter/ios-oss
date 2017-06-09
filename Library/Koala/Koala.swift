@@ -1348,6 +1348,11 @@ public final class Koala {
     self.track(event: "Unfollowed Facebook Friend", properties: ["source": source.trackingString])
   }
 
+  public func loadedMoreFriends(source: FriendsSource, pageCount: Int) {
+    self.track(event: "Loaded More Friends",
+      properties: ["source": source.trackingString, "page_count": pageCount])
+  }
+
   // MARK: Update Draft Events
 
   public func trackViewedUpdateDraft(forProject project: Project) {

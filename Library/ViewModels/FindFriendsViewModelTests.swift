@@ -46,23 +46,30 @@ final class FindFriendsViewModelTests: TestCase {
     vm.inputs.configureWith(source: FriendsSource.activity)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(2), self.trackingClient.events)
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+
     XCTAssertEqual(["find-friends", "activity"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
 
     vm.inputs.configureWith(source: FriendsSource.discovery)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(3),
-                   self.trackingClient.events)
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+
     XCTAssertEqual(["find-friends", "activity", "discovery"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
 
     vm.inputs.configureWith(source: FriendsSource.settings)
     vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends"] |> repeated(4),
-                   self.trackingClient.events)
+    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends",
+                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+
     XCTAssertEqual(["find-friends", "activity", "discovery", "settings"].flatMap { [nil, $0] },
                    self.trackingClient.properties.map { $0["source"] as! String? })
   }
@@ -262,6 +269,41 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       showLoadingIndicatorView.assertValues([true, false])
+    }
+  }
+
+  func testLoadedMoreFriendsReporting() {
+    withEnvironment(currentUser: .template |> User.lens.facebookConnected .~ true) {
+      self.vm.inputs.configureWith(source: FriendsSource.activity)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      //This call should NOT trigger next page request and reporting
+      self.vm.inputs.willDisplayRow(5, outOf: 10)
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        ["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+
+      XCTAssertEqual([nil, "activity"],
+                     self.trackingClient.properties.map { $0["source"] as! String? })
+
+      XCTAssertEqual([nil, nil],
+                     self.trackingClient.properties.map { $0["page_count"] as! String? })
+
+      //This call should trigger next page request and reporting
+      self.vm.inputs.willDisplayRow(8, outOf: 10)
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        ["Find Friends View", "Viewed Find Friends", "Loaded More Friends"], self.trackingClient.events)
+
+      XCTAssertEqual([nil, "activity", "activity"],
+                     self.trackingClient.properties.map { $0["source"] as! String? })
+
+      XCTAssertEqual([nil, nil, 2],
+        self.trackingClient.properties.map { $0["page_count"] as! Int? })
+
     }
   }
 
