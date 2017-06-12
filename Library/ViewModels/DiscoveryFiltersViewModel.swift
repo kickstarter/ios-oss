@@ -16,13 +16,13 @@ public protocol DiscoveryFiltersViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when the view will appear.
-  func viewWillAppear()
+  /// Call when the view did appear.
+  func viewDidAppear()
 }
 
 public protocol DiscoveryFiltersViewModelOutputs {
-  /// Emits a category id to set the background gradient and animate in the view.
-  var animateInView: Signal<Int?, NoError> { get }
+  /// Emits when to animate in the view.
+  var animateInView: Signal<(), NoError> { get }
 
   /// Emits whether the categories are loading for the activity indicator view.
   var loadingIndicatorIsVisible: Signal<Bool, NoError> { get }
@@ -151,8 +151,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
         .mapConst(false)
     )
 
-    self.animateInView = categoryId
-      .takeWhen(self.viewWillAppearProperty.signal)
+    self.animateInView = self.viewDidAppearProperty.signal
 
     self.viewDidLoadProperty.signal
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModal() }
@@ -181,9 +180,9 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  fileprivate let viewDidAppearProperty = MutableProperty()
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
   }
 
   fileprivate let shouldAnimateSelectableCellProperty = MutableProperty(false)
@@ -191,7 +190,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     return self.shouldAnimateSelectableCellProperty.value
   }
 
-  public let animateInView: Signal<Int?, NoError>
+  public let animateInView: Signal<(), NoError>
   public let loadingIndicatorIsVisible: Signal<Bool, NoError>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
   NoError>

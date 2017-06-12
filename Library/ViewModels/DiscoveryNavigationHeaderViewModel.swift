@@ -25,6 +25,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to animate arrow image down or up.
   var animateArrowToDown: Signal<Bool, NoError> { get }
 
+  /// Emits a Bool to animate the border line when expanded or collapsed.
+  var animateBorderLineViewAndIsExpanded: Signal<Bool, NoError> { get }
+
   /// Emits opacity for arrow and whether to animate the change, used for launch transition.
   var arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
 
@@ -42,9 +45,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits whether the favorite container view is hidden.
   var favoriteViewIsHidden: Signal<Bool, NoError> { get }
-
-  /// Emits a category id to set gradient view color and whether the view is fullscreen.
-  var gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError> { get }
 
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
@@ -173,14 +173,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.subviewColor = categoryId.mapConst(discoveryPrimaryColor())
 
-    let isFullScreen = Signal.merge(
+    self.animateBorderLineViewAndIsExpanded = Signal.merge(
       self.paramsProperty.signal.skipNil().mapConst(false),
       self.showDiscoveryFilters.mapConst(true),
       dismissFiltersSignal.mapConst(false)
     )
-
-    self.gradientViewCategoryIdForColor = Signal.combineLatest(categoryId, isFullScreen)
-      .map { (categoryId: $0, isFullScreen: $1) }
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
       .map { $0 ? Strings.Opens_filters() : Strings.Closes_filters()
@@ -259,13 +256,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   }
 
   public let animateArrowToDown: Signal<Bool, NoError>
+  public let animateBorderLineViewAndIsExpanded: Signal<Bool, NoError>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
-  public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<Bool, NoError>
   public let primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError>

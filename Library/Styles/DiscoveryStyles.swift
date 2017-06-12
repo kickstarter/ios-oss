@@ -11,10 +11,6 @@ public func discoverySecondaryColor() -> UIColor {
   return .ksr_green_700
 }
 
-public func discoveryGradientColors() -> (UIColor, UIColor) {
-  return (.white, .white)
-}
-
 public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
 
 public let discoveryNavDividerLabelStyle =

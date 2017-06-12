@@ -5,13 +5,13 @@ import UIKit
 
 internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
 
-  @IBOutlet private weak var bgView: GradientView!
+  @IBOutlet private weak var bgView: UIView!
   @IBOutlet private weak var exploreLabel: UILabel!
   @IBOutlet private weak var liveProjectCountLabel: UILabel!
 
   func configureWith(value category: KsApi.Category) {
-    let (startColor, endColor) = discoveryGradientColors()
-    self.bgView.setGradient([(startColor, 0.0), (endColor, 1.0)])
+    _ = self.bgView
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.exploreLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
