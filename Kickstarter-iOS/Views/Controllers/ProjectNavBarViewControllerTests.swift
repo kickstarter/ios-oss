@@ -19,19 +19,16 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testCategoryGroups() {
+  func testCategory() {
 
-    [Category.art, Category.filmAndVideo, Category.games].forEach { category in
+    let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
+    navBar.configureWith(project: Project.lens.category.set(Category.art, .template), refTag: nil)
 
-      let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
-      navBar.configureWith(project: Project.lens.category.set(category, .template), refTag: nil)
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: navBar)
+    parent.view.frame.size.height = 55
 
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: navBar)
-      parent.view.frame.size.height = 55
-
-      navBar.setProjectImageIsVisible(true)
-      FBSnapshotVerifyView(parent.view, identifier: "category_\(category.name)")
-    }
+    navBar.setProjectImageIsVisible(true)
+    FBSnapshotVerifyView(parent.view, identifier: "category_Art")
   }
 
   func testWhenProjectImageIsNotVisible() {
