@@ -157,7 +157,7 @@ extension CommentsViewController: CommentDialogDelegate {
 
 extension CommentsViewController: CommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
-    _ = self.navigationController?.popViewController(animated: true)
+    _ = self.navigationController?.popToRootViewController(animated: true)
   }
 
   internal func commentEmptyStateCellGoToCommentDialog() {
