@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import KsApi
 import Library
@@ -158,8 +157,7 @@ public protocol AppDelegateViewModelType {
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -319,8 +317,8 @@ AppDelegateViewModelOutputs {
     self.findRedirectUrl = deepLinkUrl
       .filter {
         switch Navigation.match($0) {
-        case .some(.emailClick(_)), .some(.emailLink):  return true
-        default:                                        return false
+        case .some(.emailClick), .some(.emailLink): return true
+        default:                                    return false
         }
     }
 
@@ -466,9 +464,9 @@ AppDelegateViewModelOutputs {
 
     let updateCommentsLink = updateLink
       .observeForUI()
-      .map { project, update, subpage, vcs -> [UIViewController]? in
+      .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [CommentsViewController.configuredWith(project: project, update: update)]
+        return vcs + [CommentsViewController.configuredWith(update: update)]
       }
       .skipNil()
 

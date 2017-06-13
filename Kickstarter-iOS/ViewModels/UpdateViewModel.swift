@@ -46,8 +46,7 @@ internal protocol UpdateViewModelType {
 
 internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs, UpdateViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  internal init() {
+    internal init() {
     let configurationData = self.configurationDataProperty.signal.skipNil()
 
     let initialUpdate = configurationData.map { $0.update }

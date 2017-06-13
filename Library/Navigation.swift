@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import Runes
 import Curry
@@ -277,15 +276,9 @@ private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allR
     "/discover/categories/:category_id",
     "/discover/categories/:parent_category_id/:category_id",
     "/messages/:message_thread_id",
-    "/profile/:user_param",
-    "/search",
     "/projects/:creator_param/:project_param",
-    "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks",
     "/projects/:creator_param/:project_param/comments",
-    "/projects/:creator_param/:project_param/creator_bio",
     "/projects/:creator_param/:project_param/dashboard",
-    "/projects/:creator_param/:project_param/description",
-    "/projects/:creator_param/:project_param/friends",
     "/projects/:creator_param/:project_param/posts",
     "/projects/:creator_param/:project_param/posts/:update_param",
     "/projects/:creator_param/:project_param/posts/:update_param/comments",

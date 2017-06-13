@@ -63,8 +63,7 @@ public protocol ProjectNavBarViewModelType {
 public final class ProjectNavBarViewModel: ProjectNavBarViewModelType,
 ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let configuredProjectAndRefTag = Signal.combineLatest(
       self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal

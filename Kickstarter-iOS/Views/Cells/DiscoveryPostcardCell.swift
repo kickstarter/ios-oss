@@ -47,8 +47,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
   @IBOutlet fileprivate weak var starButton: UIButton!
 
-  // swiftlint:disable function_body_length
-  internal override func awakeFromNib() {
+    internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
@@ -178,8 +177,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel

@@ -105,4 +105,18 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
     XCTAssertEqual("DiscoveryExpandedSelectableRowCell",
                    self.dataSource.reusableId(item: 3, section: categories))
   }
+
+  func testLoadCategoriesLoaderRow() {
+    self.dataSource.loadCategoriesLoaderRow()
+
+    let row1 = self.dataSource.deleteCategoriesLoaderRow(self.tableView)
+
+    XCTAssertNotNil(row1)
+    XCTAssertEqual(row1?.first?.row, .some(0))
+    XCTAssertEqual(row1?.first?.section, .some(DiscoveryFiltersDataSource.Section.categoriesLoader.rawValue))
+
+    let row2 = self.dataSource.deleteCategoriesLoaderRow(self.tableView)
+
+    XCTAssertNil(row2)
+  }
 }

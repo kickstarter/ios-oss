@@ -85,8 +85,7 @@ public protocol DashboardReferrersCellViewModelType {
 public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewModelInputs,
   DashboardReferrersCellViewModelOutputs, DashboardReferrersCellViewModelType {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.skipNil()
 
     let country = cumulativeProjectStats.map { _, project, _ in project.country }

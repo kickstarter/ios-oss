@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 // swiftlint:disable force_cast
 import XCTest
 import ReactiveSwift
@@ -10,7 +9,6 @@ import UIKit.UIActivity
 @testable import Library
 import Prelude
 
-// swiftlint:disable type_name
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   // swiftlint:enable type_name
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()

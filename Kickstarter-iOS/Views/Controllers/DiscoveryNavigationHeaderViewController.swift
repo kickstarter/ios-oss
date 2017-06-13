@@ -51,8 +51,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.arrowImageView.rac.tintColor = self.viewModel.outputs.subviewColor
@@ -222,8 +221,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
      completion: nil)
   }
 
-  // swiftlint:disable function_body_length
-  fileprivate func updateFavoriteButton(selected: Bool, animated: Bool) {
+    fileprivate func updateFavoriteButton(selected: Bool, animated: Bool) {
     let duration = animated ? 0.4 : 0.0
 
     if selected {

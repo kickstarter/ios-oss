@@ -44,8 +44,7 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let initialRequest = self.surveyResponseProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { surveyResponse -> URLRequest? in

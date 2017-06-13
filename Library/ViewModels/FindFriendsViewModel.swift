@@ -70,8 +70,7 @@ public protocol FindFriendsViewModelType {
 public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsViewModelInputs,
   FindFriendsViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let source = self.configureWithProperty.signal
 
     let followAll = self.confirmFollowAllFriendsProperty.signal

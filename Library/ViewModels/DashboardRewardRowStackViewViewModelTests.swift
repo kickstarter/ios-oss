@@ -7,8 +7,7 @@ import Prelude
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
-  // swiftlint:disable type_name
-internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
+  internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
   // swiftlint:enable type_name
   let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
 

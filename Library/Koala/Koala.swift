@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
 import LiveStream
@@ -634,7 +632,7 @@ public final class Koala {
       ]
     )
     self.track(event: "Viewed Login",
-               properties: ["1password_extension_available": onePasswordIsAvailable])
+               properties: ["one_password_extension_available": onePasswordIsAvailable])
   }
 
   public func trackLoginSuccess(authType: AuthType) {
@@ -2043,7 +2041,6 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #endif
 }
 
-// swiftlint:disable type_name
 extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(

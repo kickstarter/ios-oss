@@ -111,8 +111,7 @@ public protocol ProjectPamphletMainCellViewModelType {
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
 ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let project = self.projectProperty.signal.skipNil()
 
     self.projectNameLabelText = project.map(Project.lens.name.view)

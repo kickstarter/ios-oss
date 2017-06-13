@@ -59,8 +59,7 @@ public protocol CommentsViewModelType {
 public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelInputs,
 CommentsViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal

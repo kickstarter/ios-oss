@@ -63,8 +63,7 @@ public final class ProjectNavBarViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  public override func bindStyles() {
+    public override func bindStyles() {
     super.bindStyles()
 
     self.backgroundGradientView.startPoint = .zero
@@ -115,8 +114,7 @@ public final class ProjectNavBarViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  public override func bindViewModel() {
+    public override func bindViewModel() {
     super.bindViewModel()
 
     self.categoryButton.rac.backgroundColor = self.viewModel.outputs.categoryButtonBackgroundColor
