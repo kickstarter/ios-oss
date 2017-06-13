@@ -1300,52 +1300,67 @@ public final class Koala {
   }
 
   public func trackDeclineFriendFollowAll(source: FriendsSource) {
+    let props: [String:Any] = ["source": source.trackingString]
+
     // deprecated
-//    self.track(event: "Facebook Friend Decline Follow All", properties: deprecatedProps)
-    //We are waiting for the new event name
-    self.track(event: "Facebook Friend Decline Follow All", properties: ["source": source.trackingString])
+    self.track(event: "Facebook Friend Decline Follow All",
+      properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Declined Follow All Facebook Friends", properties: props)
   }
 
   public func trackFacebookConnect(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Facebook Connect", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Connected Facebook", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Connect", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Connected Facebook", properties: props)
   }
 
   public func trackFacebookConnectError(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Facebook Connect Error", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Errored Facebook Connect", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Connect Error", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Errored Facebook Connect", properties: props)
   }
 
   public func trackFindFriendsView(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Find Friends View", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Viewed Find Friends", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Find Friends View", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Viewed Find Friends", properties: props)
   }
 
   public func trackFriendFollow(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Facebook Friend Follow", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Followed Facebook Friend", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Follow", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Followed Facebook Friend", properties: props)
   }
 
   public func trackFriendFollowAll(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Facebook Friend Follow All", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Followed All Facebook Friends", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Follow All", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Followed All Facebook Friends", properties: props)
   }
 
   public func trackFriendUnfollow(source: FriendsSource) {
-    // deprecated
-    self.track(event: "Facebook Friend Unfollow", properties: deprecatedProps)
+    let props: [String:Any] = ["source": source.trackingString]
 
-    self.track(event: "Unfollowed Facebook Friend", properties: ["source": source.trackingString])
+    // deprecated
+    self.track(event: "Facebook Friend Unfollow", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Unfollowed Facebook Friend", properties: props)
   }
 
   public func loadedMoreFriends(source: FriendsSource, pageCount: Int) {

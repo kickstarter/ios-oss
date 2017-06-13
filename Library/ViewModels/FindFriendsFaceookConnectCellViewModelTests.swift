@@ -75,7 +75,8 @@ import UIKit.UIActivity
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook Connect emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? })
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -112,7 +113,7 @@ import UIKit.UIActivity
     attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
     showErrorAlert.assertValueCount(0, "Error alert does not emit")
     XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-    XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual(["activity", "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
     vm.inputs.facebookLoginFail(error: error)
 
@@ -121,7 +122,8 @@ import UIKit.UIActivity
     updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
     XCTAssertEqual(["Facebook Connect", "Connected Facebook",
                     "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-    XCTAssertEqual([nil, "activity", nil, "activity"],
+    XCTAssertEqual(["activity", "activity",
+                    "activity", "activity"],
       self.trackingClient.properties.map { $0["source"] as! String? })
   }
 
@@ -159,7 +161,8 @@ import UIKit.UIActivity
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? })
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -172,7 +175,8 @@ import UIKit.UIActivity
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook",
                       "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity", nil, "activity"],
+      XCTAssertEqual(["activity", "activity",
+                      "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
     }
   }
@@ -211,7 +215,8 @@ import UIKit.UIActivity
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? })
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -224,7 +229,8 @@ import UIKit.UIActivity
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook",
                       "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity", nil, "activity"],
+      XCTAssertEqual(["activity", "activity",
+                      "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
     }
   }
@@ -265,7 +271,8 @@ import UIKit.UIActivity
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? })
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -278,7 +285,8 @@ import UIKit.UIActivity
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook",
                       "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity", nil, "activity"],
+      XCTAssertEqual(["activity", "activity",
+                      "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
     }
   }
@@ -317,7 +325,8 @@ import UIKit.UIActivity
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? })
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -330,7 +339,7 @@ import UIKit.UIActivity
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook",
                       "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual([nil, "activity", nil, "activity"],
+      XCTAssertEqual(["activity", "activity", "activity", "activity"],
                      self.trackingClient.properties.map { $0["source"] as! String? })
     }
   }
