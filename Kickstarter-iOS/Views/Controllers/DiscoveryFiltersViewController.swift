@@ -43,7 +43,6 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     self.viewModel.inputs.viewDidAppear()
   }
 
-
   internal override func bindViewModel() {
     super.bindViewModel()
 
