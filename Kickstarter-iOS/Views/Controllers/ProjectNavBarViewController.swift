@@ -108,9 +108,11 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     _ = self.starButton
       |> saveButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
   }
   // swiftlint:enable function_body_length
 

@@ -266,7 +266,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.project }
       .on(value: { cache(project: $0)})
 
-    let project = Signal.merge(configuredProject, projectOnStarToggle, projectStarred) //revertToggle
+    let revertStarToggle = projectOnStarToggle
+      .takeWhen(projectStarred)
+      .map(toggleStarLens) // check this
+
+    let project = Signal.merge(configuredProject, projectOnStarToggle, projectStarred, revertStarToggle)
 
     self.starButtonSelected = project
       .map { $0.personalization.isStarred == true }
