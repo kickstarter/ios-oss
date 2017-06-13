@@ -83,7 +83,6 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byTruncatingTail
       |> UIButton.lens.backgroundColor(forState: .normal) .~ .init(white: 1.0, alpha: 0.8)
-      //|> UIButton.lens.backgroundColor(forState: .highlighted) .~ .init(white: 0.0, alpha: 0.1)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
       |> UIButton.lens.userInteractionEnabled .~ false
