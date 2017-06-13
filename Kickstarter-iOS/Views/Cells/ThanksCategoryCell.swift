@@ -11,7 +11,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value category: KsApi.Category) {
     _ = self.bgView
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
     _ = self.exploreLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_700
