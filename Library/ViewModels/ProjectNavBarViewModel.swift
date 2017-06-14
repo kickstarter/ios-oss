@@ -156,7 +156,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       })
       .ignoreValues()
 
-
 //      projectOnStarToggleSuccess
 //      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
 //        today: AppEnvironment.current.dateType.init().date) }
