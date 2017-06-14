@@ -26,29 +26,11 @@ public protocol EmptyStatesViewModelInputs {
 }
 
 public protocol EmptyStatesViewModelOutputs {
-  /// Emits the background gradient category color.
-  var backgroundGradientColorId: Signal<Int?, NoError> { get }
-
-  /// Emits the background strip view alpha.
-  var backgroundStripViewAlpha: Signal<CGFloat, NoError> { get }
-
-  /// Emits the background strip view color.
-  var backgroundStripViewColor: Signal<UIColor, NoError> { get }
-
   /// Emits a constant float value for the bottom layout constraint.
   var bottomLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
 
-  /// Emits the button background color.
-  var mainButtonBackgroundColor: Signal<UIColor, NoError> { get }
-
-  /// Emits the button border color.
-  var mainButtonBorderColor: Signal<CGColor, NoError> { get }
-
   /// Emits the button text.
   var mainButtonText: Signal<String, NoError> { get }
-
-  /// Emits the button title color.
-  var mainButtonTitleColor: Signal<UIColor, NoError> { get }
 
   /// Emits to notify the delegate to go to Discovery with params.
   var notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, NoError> { get }
@@ -59,14 +41,8 @@ public protocol EmptyStatesViewModelOutputs {
   /// Emits the subtitle label text.
   var subtitleLabelText: Signal<String, NoError> { get }
 
-  /// Emits the subtitle label color.
-  var subtitleLabelColor: Signal<UIColor, NoError> { get }
-
   /// Emits the title label text.
   var titleLabelText: Signal<String, NoError> { get }
-
-  /// Emits the title label color.
-  var titleLabelColor: Signal<UIColor, NoError> { get }
 }
 
 public protocol EmptyStatesViewModelType {
@@ -84,43 +60,11 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     )
     .map(first)
 
-    self.backgroundGradientColorId = emptyState
-      .map { emptyState -> Int? in
-        emptyState == .activity ? RootCategory.comics.rawValue : nil
-    }
-
-    self.mainButtonBackgroundColor = emptyState
-      .map { emptyState -> UIColor in emptyState == .activity
-        ? UIColor.ksr_forest_500.withAlphaComponent(0.1)
-        : UIColor.ksr_green_500.withAlphaComponent(0.1)
-    }
-
-    self.mainButtonBorderColor = emptyState
-      .map { $0 == .activity
-        ? UIColor.ksr_forest_500.withAlphaComponent(0.2).cgColor
-        : UIColor.ksr_green_700.withAlphaComponent(0.2).cgColor
-    }
-
     self.mainButtonText = emptyState.map(buttonText(emptyState:))
-
-    self.mainButtonTitleColor = emptyState
-      .map { $0 == .activity ? UIColor.ksr_forest_600 : UIColor.ksr_text_green_700 }
 
     self.subtitleLabelText = emptyState.map(textForSubtitle(emptyState:))
 
-    self.subtitleLabelColor = emptyState
-      .map { $0 == .activity ? UIColor.ksr_forest_500 : UIColor.ksr_text_navy_700 }
-
     self.titleLabelText = emptyState.map(textForTitle(emptyState:))
-
-    self.titleLabelColor = emptyState
-      .map { $0 == .activity ? UIColor.ksr_forest_600 : UIColor.ksr_text_navy_700 }
-
-    self.backgroundStripViewAlpha = emptyState
-      .map { $0 == .activity ? 0.45 : 1.0 }
-
-    self.backgroundStripViewColor = emptyState
-      .map { $0 == .activity ? UIColor.white : UIColor.ksr_grey_100 }
 
     self.notifyDelegateToGoToDiscovery = emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
@@ -163,20 +107,12 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     self.viewWillAppearProperty.value = ()
   }
 
-  public let backgroundGradientColorId: Signal<Int?, NoError>
-  public let backgroundStripViewAlpha: Signal<CGFloat, NoError>
-  public let backgroundStripViewColor: Signal<UIColor, NoError>
   public let bottomLayoutConstraintConstant: Signal<CGFloat, NoError>
-  public var mainButtonBackgroundColor: Signal<UIColor, NoError>
-  public var mainButtonBorderColor: Signal<CGColor, NoError>
-  public var mainButtonTitleColor: Signal<UIColor, NoError>
   public let mainButtonText: Signal<String, NoError>
   public let notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, NoError>
   public let notifyDelegateToGoToFriends: Signal<(), NoError>
   public let subtitleLabelText: Signal<String, NoError>
-  public let subtitleLabelColor: Signal<UIColor, NoError>
   public let titleLabelText: Signal<String, NoError>
-  public let titleLabelColor: Signal<UIColor, NoError>
 
   public var inputs: EmptyStatesViewModelInputs { return self }
   public var outputs: EmptyStatesViewModelOutputs { return self }

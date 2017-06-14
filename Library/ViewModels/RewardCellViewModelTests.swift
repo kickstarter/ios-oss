@@ -13,7 +13,6 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
   fileprivate let cardViewBackgroundColor = TestObserver<UIColor, NoError>()
   fileprivate let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
-  fileprivate let contentViewBackgroundColor = TestObserver<UIColor, NoError>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelText = TestObserver<String, NoError>()
   fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
@@ -42,7 +41,6 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.outputs.allGoneHidden.observe(self.allGoneHidden.observer)
     self.vm.outputs.cardViewBackgroundColor.observe(self.cardViewBackgroundColor.observer)
     self.vm.outputs.cardViewDropShadowHidden.observe(self.cardViewDropShadowHidden.observer)
-    self.vm.outputs.contentViewBackgroundColor.observe(self.contentViewBackgroundColor.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelHidden.observe(self.descriptionLabelHidden.observer)
@@ -213,36 +211,6 @@ final class RewardCellViewModelTests: TestCase {
 
     self.minimumLabelText.assertValues(["$42"])
     self.titleLabelText.assertValues(["The goods"])
-  }
-
-  func testContentViewBackgroundColor() {
-    self.vm.inputs.configureWith(
-      project: .template |> Project.lens.category .~ .art,
-      rewardOrBacking: .left(.template)
-    )
-
-    self.contentViewBackgroundColor.assertValues([UIColor.ksr_red_100.withAlphaComponent(0.65)])
-
-    self.vm.inputs.configureWith(
-      project: .template |> Project.lens.category .~ .filmAndVideo,
-      rewardOrBacking: .left(.template)
-    )
-
-    self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.withAlphaComponent(0.65),
-      UIColor.ksr_beige_400.withAlphaComponent(0.65),
-      ])
-
-    self.vm.inputs.configureWith(
-      project: .template |> Project.lens.category .~ .games,
-      rewardOrBacking: .left(.template)
-    )
-
-    self.contentViewBackgroundColor.assertValues([
-      UIColor.ksr_red_100.withAlphaComponent(0.65),
-      UIColor.ksr_beige_400.withAlphaComponent(0.65),
-      UIColor.ksr_violet_200.withAlphaComponent(0.65),
-      ])
   }
 
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
