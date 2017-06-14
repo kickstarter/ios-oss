@@ -6,6 +6,7 @@ import ReactiveSwift
 import UIKit
 
 public final class LiveStreamCountdownViewController: UIViewController {
+  @IBOutlet private weak var bgView: UIView!
   @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
@@ -20,7 +21,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var goToProjectButton: UIButton!
   @IBOutlet private weak var goToProjectButtonContainer: UIView!
-  @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
   @IBOutlet private weak var imageOverlayView: UIView!
@@ -156,9 +156,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle()
-      |> dropShadowStyle()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
-      |> UIView.lens.layer.shadowOpacity .~ 0.2
+      |> dropShadowStyleMedium()
 
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -206,9 +204,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
-    self.gradientView.startPoint = .init(x: 1, y: 0)
-    self.gradientView.endPoint = .init(x: 0, y: 1)
-    _ = self.gradientView
+    _ = self.bgView
+      |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.horizontalSizeClass == .regular
           ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
