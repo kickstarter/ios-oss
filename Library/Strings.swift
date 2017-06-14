@@ -2388,7 +2388,7 @@ from friends yet."
 
    - **es**: "Todavía no hay contribuciones de amigos."
    - **de**: "Es gibt noch keine Beiträge von Freunden."
-   - **fr**: "Mes amis 
+   - **fr**: "Mes amis
 n'ont rien soutenu."
    - **en**: "No pledges
 from friends yet."
@@ -15589,6 +15589,22 @@ saved"
     )
   }
   /**
+  "Follow %{friend_name}"
+
+  - **es**: "Seguir %{friend_name}"
+  - **de**: "Folgen %{friend_name}"
+  - **fr**: "S'abonner %{friend_name}"
+  - **en**: "Follow" %{friend_name}"
+ */
+  public static func social_following_friend_buttons_follow_name(friend_name: String) -> String {
+    return localizedString(
+      key: "social_following.friend.buttons.follow.name",
+      defaultValue: "Follow %{friend_name}",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Following"
 
    - **es**: "Siguiendo"
@@ -15604,6 +15620,20 @@ saved"
       substitutions: [:]
     )
   }
+  /**
+   "Stop Following %{friend_name}"
+
+   - **en**: "Stop Following %{friend_name}"
+  */
+  public static func social_following_friend_buttons_stop_following_name(friend_name: String) -> String {
+    return localizedString(
+      key: "social_following.friend.buttons.stop_following.name",
+      defaultValue: "Stop Following %{friend_name}",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+
   /**
    "%{backed_count} backed"
 
