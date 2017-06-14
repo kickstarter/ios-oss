@@ -70,9 +70,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to show an onboarding alert for first time tapping the favorite button with the category name.
   var showFavoriteOnboardingAlert: Signal<String, NoError> { get }
 
-  /// Emits a color for all subviews.
-  var subviewColor: Signal<UIColor, NoError> { get }
-
   /// Emits a11y hint for title button.
   var titleButtonAccessibilityHint: Signal<String, NoError> { get }
 
@@ -170,8 +167,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.showDiscoveryFilters = rowForFilters
       .takeWhen(paramsAndFiltersAreHidden.filter { !$0.filtersAreHidden })
-
-    self.subviewColor = categoryId.mapConst(discoveryPrimaryColor())
 
     self.animateBorderLineViewAndIsExpanded = Signal.merge(
       self.paramsProperty.signal.skipNil().mapConst(false),
@@ -271,7 +266,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let secondaryLabelText: Signal<String, NoError>
   public let showDiscoveryFilters: Signal<SelectableRow, NoError>
   public let showFavoriteOnboardingAlert: Signal<String, NoError>
-  public let subviewColor: Signal<UIColor, NoError>
   public let titleButtonAccessibilityHint: Signal<String, NoError>
   public let titleButtonAccessibilityLabel: Signal<String, NoError>
   public let updateFavoriteButton: Signal<(selected: Bool, animated: Bool), NoError>

@@ -51,19 +51,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.arrowImageView.rac.tintColor = self.viewModel.outputs.subviewColor
-    self.borderLineView.rac.backgroundColor = self.viewModel.outputs.subviewColor
     self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
     self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
-    self.heartImageView.rac.tintColor = self.viewModel.outputs.subviewColor
-    self.heartOutlineImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
-    self.primaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.secondaryLabel.rac.text = self.viewModel.outputs.secondaryLabelText
     self.secondaryLabel.rac.hidden = self.viewModel.outputs.secondaryLabelIsHidden
-    self.secondaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.dividerLabel.rac.hidden = self.viewModel.outputs.dividerIsHidden
-    self.dividerLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleButtonAccessibilityLabel
     self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleButtonAccessibilityHint
 
@@ -154,23 +147,35 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self.arrowImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
     _ = self.bgView
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.borderLineView
       |> discoveryBorderLineStyle
+      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor()
 
     self.borderLineHeightConstraint.constant = 1.0 / UIScreen.main.scale
 
     _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.favoriteContainerView
       |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
+    _ = self.heartImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
+    _ = self.heartOutlineImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
@@ -179,6 +184,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           : UIFont.ksr_callout().bolded
       }
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.titleStackView
       |> discoveryNavTitleStackViewStyle
