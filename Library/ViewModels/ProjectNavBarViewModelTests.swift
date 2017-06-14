@@ -20,7 +20,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let dismissViewController = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<(), NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let showProjectStarredPrompt = TestObserver<String, NoError>()
+  fileprivate let showProjectStarredPrompt = TestObserver<Void, NoError>()
   fileprivate let starButtonAccessibilityHint = TestObserver<String, NoError>()
   fileprivate let starButtonSelected = TestObserver<Bool, NoError>()
   fileprivate let titleAnimate = TestObserver<Bool, NoError>()
@@ -207,7 +207,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.starButtonSelected.assertValues([false, true],
                                            "Star stays selected after API request.")
-      self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
+      self.showProjectStarredPrompt.assertValueCount(0, "The star prompt shows.")
       XCTAssertEqual(["Project Star", "Starred Project"],
                      trackingClient.events, "A star koala event is tracked.")
     }
@@ -306,6 +306,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   }
 
   func testLoggedInStarFailure() {
+    /// CHECK THIS
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = .template |> Project.lens.personalization.isStarred .~ false
@@ -320,7 +321,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     self.starButtonSelected.assertValues([false, true, false])
 
-    self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
+    self.showProjectStarredPrompt.assertValueCount(1, "The star prompt does not show.")
     XCTAssertEqual([], trackingClient.events, "The star event does not track.")
 
     self.vm.inputs.starButtonTapped()

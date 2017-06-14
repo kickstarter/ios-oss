@@ -264,13 +264,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let projectStarred = starProjectEvent.values()
       .map { $0.project }
-      .on(value: { cache(project: $0)})
+      .on(value: { cache(project: $0, isStarred: $0.personalization.isStarred ?? false) })
 
-    let revertStarToggle = projectOnStarToggle
-      .takeWhen(projectStarred)
-      .map(toggleStarLens) // check this
-
-    let project = Signal.merge(configuredProject, projectOnStarToggle, projectStarred, revertStarToggle)
+    let project = Signal.merge(configuredProject, projectOnStarToggle, projectStarred)
 
     self.starButtonSelected = project
       .map { $0.personalization.isStarred == true }
@@ -378,12 +374,12 @@ private func cached(project: Project) -> Project {
   }
 }
 
-private func cache(project: Project) {
+private func cache(project: Project, isStarred: Bool) {
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] =
     AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int: Bool]()
 
   var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int: Bool]
-  cache?[project.id] = project.personalization.isStarred
+  cache?[project.id] = isStarred
 
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] = cache
 }

@@ -44,7 +44,7 @@ public protocol ProjectNavBarViewModelOutputs {
   var projectName: Signal<String, NoError> { get }
 
   /// Emits when the project has been successfully starred and a prompt should be shown to the user.
-  var showProjectStarredPrompt: Signal<String, NoError> { get }
+  var showProjectStarredPrompt: Signal<Void, NoError> { get }
 
   /// Emits the accessibility hint for the star button.
   var starButtonAccessibilityHint: Signal<String, NoError> { get }
@@ -142,10 +142,25 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.goToLoginTout = loggedOutUserTappedStar
 
-    self.showProjectStarredPrompt = projectOnStarToggleSuccess
+    self.showProjectStarredPrompt = project
+      .takeWhen(self.starButtonTappedProperty.signal)
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
-        today: AppEnvironment.current.dateType.init().date) }
-      .map { _ in Strings.project_star_confirmation() }
+        today: AppEnvironment.current.dateType.init().date ) }
+      .filter { _ in
+        !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectInProjectPage ||
+        !AppEnvironment.current.userDefaults.hasSeenSaveProjectInProjectPage
+      }
+      .on(value: { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectInProjectPage = true
+        AppEnvironment.current.userDefaults.hasSeenSaveProjectInProjectPage = true
+      })
+      .ignoreValues()
+
+
+//      projectOnStarToggleSuccess
+//      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
+//        today: AppEnvironment.current.dateType.init().date) }
+//      .map { _ in Strings.project_star_confirmation() }
 
     self.starButtonSelected = project
       .map { $0.personalization.isStarred == true }
@@ -261,7 +276,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let dismissViewController: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let projectName: Signal<String, NoError>
-  public let showProjectStarredPrompt: Signal<String, NoError>
+  public let showProjectStarredPrompt: Signal<Void, NoError>
   public let starButtonAccessibilityHint: Signal<String, NoError>
   public let starButtonSelected: Signal<Bool, NoError>
   public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>

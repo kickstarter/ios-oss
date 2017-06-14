@@ -132,7 +132,7 @@ public final class ProjectNavBarViewController: UIViewController {
     self.viewModel.outputs.showProjectStarredPrompt
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.showProjectStarredPrompt(message: $0)
+        self?.showProjectStarredPrompt()
     }
 
     self.viewModel.outputs.goToLoginTout
@@ -180,8 +180,8 @@ public final class ProjectNavBarViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  fileprivate func showProjectStarredPrompt(message: String) {
-    let alert = UIAlertController.alert(nil, message: message, handler: nil)
+  fileprivate func showProjectStarredPrompt() {
+    let alert = UIAlertController.alert(nil, message: Strings.project_star_confirmation(), handler: nil)
     self.present(alert, animated: true, completion: nil)
   }
 
