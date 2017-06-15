@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -268,7 +268,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoveryFiltersLoaderCell" id="dox-Ww-A5M" customClass="DiscoveryFiltersLoaderCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="207" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="221" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dox-Ww-A5M" id="hbF-w4-zs9">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
@@ -307,7 +307,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
-                        <outlet property="backgroundGradientView" destination="7FI-hd-vcb" id="xbp-Iz-2oX"/>
+                        <outlet property="bgView" destination="7FI-hd-vcb" id="J4S-Gs-Y5y"/>
                         <outlet property="closeButton" destination="9Eg-ye-TnY" id="KSI-53-uq1"/>
                         <outlet property="filtersTableView" destination="KgX-hp-QnW" id="vX3-Op-f20"/>
                     </connections>
@@ -486,25 +486,25 @@
                                 </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AvP-Jg-11Z" userLabel="Outer Stack View">
-                                <rect key="frame" x="104" y="0.0" width="202" height="65"/>
+                                <rect key="frame" x="104" y="0.0" width="201.5" height="65"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="RUu-Jy-Y4V">
-                                        <rect key="frame" x="0.0" y="22" width="183" height="21"/>
+                                        <rect key="frame" x="0.0" y="22.5" width="182.5" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xzf-ev-nrc">
-                                                <rect key="frame" x="0.0" y="0.0" width="71" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="70.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="/" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHL-NK-fXr">
-                                                <rect key="frame" x="75" y="0.0" width="6" height="21"/>
+                                                <rect key="frame" x="74.5" y="0.0" width="6" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Subcategory" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOI-JQ-dJe">
-                                                <rect key="frame" x="85" y="0.0" width="98" height="21"/>
+                                                <rect key="frame" x="84.5" y="0.0" width="98" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -512,7 +512,7 @@
                                         </subviews>
                                     </stackView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="arrow-down" translatesAutoresizingMaskIntoConstraints="NO" id="0Gr-Vv-egm">
-                                        <rect key="frame" x="191" y="30" width="11" height="6"/>
+                                        <rect key="frame" x="190.5" y="29.5" width="11" height="6"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                 </subviews>
@@ -546,12 +546,12 @@
                     </view>
                     <connections>
                         <outlet property="arrowImageView" destination="0Gr-Vv-egm" id="kxl-cB-kRF"/>
+                        <outlet property="bgView" destination="H2g-DT-JXM" id="5Ko-kL-825"/>
                         <outlet property="borderLineHeightConstraint" destination="JXf-q8-Fkc" id="PFD-oJ-ky2"/>
                         <outlet property="borderLineView" destination="Uqu-6W-LIK" id="vqp-Ea-69S"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
                         <outlet property="favoriteButton" destination="3gE-WC-mdL" id="3U0-oM-QDh"/>
                         <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="YZD-bV-5Ls"/>
-                        <outlet property="gradientBackgroundView" destination="H2g-DT-JXM" id="eqS-Qx-RXI"/>
                         <outlet property="heartImageView" destination="DzE-4H-e6W" id="W47-0B-s1t"/>
                         <outlet property="heartOutlineImageView" destination="Ij6-dc-OpY" id="9Zd-Lt-Qsp"/>
                         <outlet property="outerStackViewTopConstraint" destination="YP3-fh-T5U" id="Cb4-S5-FzH"/>

@@ -28,9 +28,6 @@ public protocol LiveStreamCountdownViewModelInputs {
 }
 
 public protocol LiveStreamCountdownViewModelOutputs {
-  /// Emits the project's root category ID
-  var categoryId: Signal<Int, NoError> { get }
-
   /// Emits the accessibility label string for the live stream countdown
   var countdownAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -122,7 +119,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         .prefix(value: nil)
     }
 
-    self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal
     self.viewControllerTitle = viewDidLoadProperty.signal.mapConst(
       Strings.Live_stream_countdown()
@@ -196,7 +192,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let categoryId: Signal<Int, NoError>
   public let countdownAccessibilityLabel: Signal<String, NoError>
   public let countdownDateLabelText: Signal<String, NoError>
   public let daysString: Signal<String, NoError>

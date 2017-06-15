@@ -11,7 +11,6 @@ final class ProjectNavBarViewModelTests: TestCase {
 
   fileprivate let backgroundAnimate = TestObserver<Bool, NoError>()
   fileprivate let backgroundOpaque = TestObserver<Bool, NoError>()
-  fileprivate let categoryButtonBackgroundColor = TestObserver<UIColor, NoError>()
   fileprivate let categoryButtonText = TestObserver<String, NoError>()
   fileprivate let categoryButtonTintColor = TestObserver<UIColor, NoError>()
   fileprivate let categoryButtonTitleColor = TestObserver<UIColor, NoError>()
@@ -30,7 +29,6 @@ final class ProjectNavBarViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.backgroundOpaqueAndAnimate.map(second).observe(self.backgroundAnimate.observer)
     self.vm.outputs.backgroundOpaqueAndAnimate.map(first).observe(self.backgroundOpaque.observer)
-    self.vm.outputs.categoryButtonBackgroundColor.observe(self.categoryButtonBackgroundColor.observer)
     self.vm.outputs.categoryButtonText.observe(self.categoryButtonText.observer)
     self.vm.outputs.categoryButtonTintColor.observe(self.categoryButtonTintColor.observer)
     self.vm.outputs.categoryButtonTitleColor.observe(self.categoryButtonTitleColor.observer)
@@ -88,13 +86,6 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     self.backgroundOpaque.assertValues([false, true, false, true, false])
     self.backgroundAnimate.assertValues([false, true, true, true, true])
-  }
-
-  func testCategoryButtonBackgroundColor() {
-    self.vm.inputs.configureWith(project: .template, refTag: nil)
-    self.vm.inputs.viewDidLoad()
-
-    self.categoryButtonBackgroundColor.assertValueCount(1)
   }
 
   func testCategoryButtonText() {
