@@ -51,6 +51,8 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
 
   // Emits unfollow button accessibilityLabel that includes friend's name
   var unfollowButtonAccessibilityLabel: Signal<String, NoError> { get }
+
+  var cellAccessibilityLabel: Signal<String, NoError> { get }
 }
 
 public protocol FindFriendsFriendFollowCellViewModelType {
@@ -159,6 +161,21 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           substitutions: ["friend_name": $0])
       }
 
+    let followedText = localizedString(
+      key: "Followed",
+      defaultValue: "Followed",
+      count: nil,
+      substitutions: [:])
+
+    let notFollowedText = localizedString(
+      key: "Not_followed",
+      defaultValue: "Not followed",
+      count: nil,
+      substitutions: [:])
+
+    self.cellAccessibilityLabel = Signal.combineLatest(self.name, self.projectsBackedText, isFollowed)
+      .map { "\($0.0), \($0.1). " + ($0.2 ? followedText : notFollowedText) }
+
     let source = self.configureWithSourceProperty.signal.skipNil().map { $0 }
 
     source
@@ -203,6 +220,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
   public let hideProjectsCreated: Signal<Bool, NoError>
   public let followButtonAccessibilityLabel: Signal<String, NoError>
   public let unfollowButtonAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityLabel: Signal<String, NoError>
 }
 
 private func cached(friend: User) -> User {
