@@ -59,7 +59,7 @@ internal final class CommentDialogViewController: UIViewController {
     }
 
     _ = self.bodyTextView
-      |> UITextView.lens.textColor .~ .black
+      |> UITextView.lens.textColor .~ .ksr_text_black_soft_100
       |> UITextView.lens.font .~ .ksr_body()
   }
 

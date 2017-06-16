@@ -156,7 +156,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
-      |> UIButton.lens.backgroundColor .~ .black
+      |> UIButton.lens.backgroundColor .~ .ksr_black_soft_100
       |> UIButton.lens.image(forState: .normal) %~ { _ in
         image(named: "apple-pay-button-content", tintColor: .white)
       }

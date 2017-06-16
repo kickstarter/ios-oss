@@ -179,7 +179,7 @@ internal final class BackerDashboardViewController: UIViewController {
     }
 
     _ = self.backerNameLabel
-      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.textColor .~ .ksr_text_black_soft_100
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
 
     _ = self.backerLocationLabel
@@ -211,7 +211,7 @@ internal final class BackerDashboardViewController: UIViewController {
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_black_soft_100
       ])
 
     _ = button

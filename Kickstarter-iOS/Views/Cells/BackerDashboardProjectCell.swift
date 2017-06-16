@@ -75,7 +75,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .black
+      |> UIView.lens.backgroundColor .~ .ksr_black_soft_100
       |> UIView.lens.alpha .~ 0.15
 
     _ = self.savedIconImageView

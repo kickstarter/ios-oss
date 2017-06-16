@@ -191,7 +191,7 @@ public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_video_title_video_plays() }
 
 public let dashboardVideoTotalPlaysCountLabelStyle =
-  UILabel.lens.textColor .~ .black
+  UILabel.lens.textColor .~ .ksr_text_black_soft_100
     <> UILabel.lens.font .~ UIFont.ksr_title1().bolded
 
 public let dashboardViewProjectButtonStyle = dashboardGrayTextBorderButtonStyle

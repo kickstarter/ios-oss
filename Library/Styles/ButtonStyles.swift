@@ -19,7 +19,7 @@ public let baseButtonStyle =
 
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(forState: .normal) .~ .black
+  <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_black_soft_100
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_green_400
   <> UIButton.lens.titleColor(forState: .disabled) .~ .init(white: 1.0, alpha: 0.75)

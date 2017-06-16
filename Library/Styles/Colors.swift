@@ -8,11 +8,17 @@ import UIKit
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
       "Beige": [
         400: .ksr_beige_400
+      ],
+
+      "Black Soft": [
+        100: .ksr_black_soft_100
       ],
 
       "Blue": [
@@ -68,6 +74,10 @@ extension UIColor {
         500: .ksr_red_500
       ],
 
+      "Text Black Soft": [
+        100: .ksr_text_black_soft_100
+      ],
+
       "Text Blue": [
         600: .ksr_text_blue_600
       ],
@@ -100,6 +110,11 @@ extension UIColor {
   /// 0xECEDE1
   public static var ksr_beige_400: UIColor {
     return .hex(0xECEDE1)
+  }
+
+  /// 0x282828
+  public static var ksr_black_soft_100: UIColor {
+    return .hex(0x282828)
   }
 
   /// 0x2575E6
@@ -182,16 +197,6 @@ extension UIColor {
     return .hex(0xDCDEDD)
   }
 
-  /// 0xE3ECFA
-  public static var ksr_lavenderToPowderGradientEnd: UIColor {
-    return .hex(0xE3ECFA)
-  }
-
-  /// 0xEEE9F0
-  public static var ksr_lavenderToPowderGradientStart: UIColor {
-    return .hex(0xEEE9F0)
-  }
-
   /// 0xF03C63
   public static var ksr_magenta_400: UIColor {
     return .hex(0xF03C63)
@@ -257,16 +262,6 @@ extension UIColor {
     return .hex(0xE58111)
   }
 
-  /// 0xF6E1D5
-  public static var ksr_peachToBlushGradientEnd: UIColor {
-    return .hex(0xF6E1D5)
-  }
-
-  /// 0xF3E8D6
-  public static var ksr_peachToBlushGradientStart: UIColor {
-    return .hex(0xF3E8D6)
-  }
-
   /// 0xF4E9D8
   public static var ksr_red_100: UIColor {
     return .hex(0xF4E9D8)
@@ -282,14 +277,9 @@ extension UIColor {
     return .hex(0xEF0707)
   }
 
-  /// 0xD9E8E3
-  public static var ksr_sandToSageGradientEnd: UIColor {
-    return .hex(0xD9E8E3)
-  }
-
-  /// 0xEBE5D6
-  public static var ksr_sandToSageGradientStart: UIColor {
-    return .hex(0xEBE5D6)
+  /// 0x282828
+  public static var ksr_text_black_soft_100: UIColor {
+    return .hex(0x282828)
   }
 
   /// 0x1561CB

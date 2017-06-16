@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 
 public func discoveryPrimaryColor() -> UIColor {
-  return .black
+  return .ksr_black_soft_100
 }
 
 public func discoverySecondaryColor() -> UIColor {
@@ -28,7 +28,7 @@ public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.black.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_black_soft_100.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
