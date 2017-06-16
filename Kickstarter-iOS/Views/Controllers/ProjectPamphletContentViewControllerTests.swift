@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 // swiftlint:disable force_unwrapping
 import Prelude
 import Result
@@ -35,29 +34,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)
     super.tearDown()
-  }
-
-  func testAllCategoryGroups() {
-
-    let project = self.cosmicSurgery
-      |> Project.lens.rewards .~ [self.cosmicSurgery.rewards.first!]
-      |> Project.lens.state .~ .live
-
-    let categories = [Category.art, Category.filmAndVideo, Category.games]
-    let devices = [Device.phone4_7inch, Device.pad]
-
-    combos(categories, devices).forEach { category, device in
-      let categorizedProject = project |> Project.lens.category .~ category
-      let vc = ProjectPamphletViewController.configuredWith(
-        projectOrParam: .left(categorizedProject), refTag: nil
-      )
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = device == .pad ? 1_400 : 1_000
-
-      FBSnapshotVerifyView(
-        parent.view, identifier: "category_\(category.slug)_device_\(device)", tolerance: 0.0001
-      )
-    }
   }
 
   func testNonBacker_LiveProject() {

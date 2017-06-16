@@ -64,8 +64,7 @@ public protocol ShareViewModelType {
 
 public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, ShareViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let shareContextAndView = self.shareContextProperty.signal.skipNil()
     let shareContext = self.shareContextProperty.signal.skipNil().map(first)
 

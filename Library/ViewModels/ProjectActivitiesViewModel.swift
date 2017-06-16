@@ -69,7 +69,6 @@ public protocol ProjectActivitiesViewModelType {
 public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   ProjectActivitiesViewModelInputs, ProjectActivitiesViewModelOutputs {
 
-  // swiftlint:disable function_body_length
   public init() {
     let project = self.projectProperty.signal.skipNil()
 

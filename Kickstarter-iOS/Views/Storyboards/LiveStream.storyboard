@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -171,7 +171,7 @@
                                                     <constraint firstItem="wME-a6-25D" firstAttribute="leading" secondItem="fyz-aa-gbk" secondAttribute="leading" id="jAo-Qr-44Q"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4I-CT-M0j" customClass="GradientView" customModule="Library">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4I-CT-M0j">
                                                 <rect key="frame" x="0.0" y="281" width="375" height="519"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ssk-Zb-17W">
@@ -309,6 +309,7 @@ Mikke Snow</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
+                        <outlet property="bgView" destination="P4I-CT-M0j" id="a3X-10-p9Y"/>
                         <outlet property="countdownRootStackView" destination="wME-a6-25D" id="hnH-eR-vLI"/>
                         <outlet property="countdownStackView" destination="wac-fk-fOa" id="lig-zy-jQ5"/>
                         <outlet property="creatorAvatarBottomConstraint" destination="17i-H1-ouJ" id="Vsi-ag-i0p"/>
@@ -322,7 +323,6 @@ Mikke Snow</string>
                         <outlet property="detailsStackViewBackgroundView" destination="ssk-Zb-17W" id="dES-68-bp9"/>
                         <outlet property="goToProjectButton" destination="99c-eb-tYC" id="YrU-RY-JPG"/>
                         <outlet property="goToProjectButtonContainer" destination="Q0E-22-nB0" id="gbO-8X-Xem"/>
-                        <outlet property="gradientView" destination="P4I-CT-M0j" id="JYu-js-kPE"/>
                         <outlet property="hoursSubtitleLabel" destination="K4P-Iw-K4e" id="ChX-HK-QQ1"/>
                         <outlet property="hoursTitleLabel" destination="dEU-pp-pJE" id="1cv-ep-txa"/>
                         <outlet property="imageOverlayView" destination="Y5g-Bn-POX" id="6VZ-5A-2bb"/>
@@ -696,7 +696,7 @@ Mikke Snow</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iYO-Gt-oe7" id="ReN-LF-tVY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="51.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="EY2-Eu-LJH">

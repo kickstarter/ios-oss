@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -133,8 +132,7 @@ public protocol UpdateDraftViewModelType {
 
 public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftViewModelInputs,
 UpdateDraftViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     // MARK: Loading
 
     let project = self.projectProperty.signal.skipNil()

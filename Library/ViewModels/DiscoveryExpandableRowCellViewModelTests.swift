@@ -19,7 +19,6 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
   fileprivate let projectsCountLabelAlpha = TestObserver<CGFloat, NoError>()
   fileprivate let projectsCountLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let projectsCountLabelText = TestObserver<String, NoError>()
-  fileprivate let projectsCountLabelTextColor = TestObserver<UIColor, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -33,7 +32,6 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
     self.vm.outputs.projectsCountLabelAlpha.observe(self.projectsCountLabelAlpha.observer)
     self.vm.outputs.projectsCountLabelHidden.observe(self.projectsCountLabelHidden.observer)
     self.vm.outputs.projectsCountLabelText.observe(self.projectsCountLabelText.observer)
-    self.vm.outputs.projectsCountLabelTextColor.observe(self.projectsCountLabelTextColor.observer)
   }
 
   func testCellAccessibilityHint_WhenCollapsed() {
@@ -197,19 +195,5 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
     self.vm.inputs.willDisplay()
 
     self.projectsCountLabelText.assertValues([Format.wholeNumber(10)])
-  }
-
-  func testProjectsCountLabelTextColor() {
-    let expandableRow =  ExpandableRow(
-      isExpanded: false,
-      params: .defaults |> DiscoveryParams.lens.category .~ .filmAndVideo,
-      selectableRows: []
-    )
-    let categoryId = expandableRow.params.category?.id
-
-    self.vm.inputs.configureWith(row: expandableRow, categoryId: categoryId)
-    self.vm.inputs.willDisplay()
-
-    self.projectsCountLabelTextColor.assertValues([.ksr_forest_500])
   }
 }

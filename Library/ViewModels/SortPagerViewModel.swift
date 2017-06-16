@@ -58,8 +58,7 @@ public protocol SortPagerViewModelType {
 public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewModelInputs,
 SortPagerViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let sorts = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 

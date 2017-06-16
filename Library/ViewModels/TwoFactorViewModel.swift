@@ -68,8 +68,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     fileprivate let facebookToken: String?
     fileprivate let code: String?
 
-    // swiftlint:disable type_name
-    fileprivate enum lens {
+        fileprivate enum lens {
       fileprivate static let code = Lens<TfaData, String?>(
         view: { $0.code },
         set: { TfaData(email: $1.email, password: $1.password, facebookToken: $1.facebookToken, code: $0) }
@@ -78,8 +77,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     // swiftlint:enable type_name
   }
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let isLoading = MutableProperty(false)
 
     let loginData = SignalProducer.combineLatest(

@@ -1,4 +1,3 @@
-//swiftlint:disable file_length
 import Argo
 import FirebaseAnalytics
 import FirebaseAuth

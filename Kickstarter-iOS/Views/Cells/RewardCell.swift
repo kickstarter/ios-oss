@@ -58,8 +58,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -70,6 +69,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
           ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       }
+      |> RewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
       |> UIView.lens.contentMode .~ .top
 
     _ = self.rootStackView
@@ -190,13 +190,11 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
     self.cardView.rac.backgroundColor = self.viewModel.outputs.cardViewBackgroundColor
-    self.contentView.rac.backgroundColor = self.viewModel.outputs.contentViewBackgroundColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor

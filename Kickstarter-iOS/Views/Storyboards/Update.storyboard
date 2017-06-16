@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Update #10-->
+        <!--Update View Controller-->
         <scene sceneID="UiM-e0-fW7">
             <objects>
                 <viewController storyboardIdentifier="UpdateViewController" id="LE3-qN-nOM" customClass="UpdateViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
@@ -15,9 +19,9 @@
                     <view key="view" contentMode="scaleToFill" id="bWE-Rh-wWj">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Update #10" id="DF0-Wc-5x6">
+                    <navigationItem key="navigationItem" id="DF0-Wc-5x6">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="3hg-e8-J0k" userLabel="Share">
                             <connections>
                                 <action selector="shareButtonTapped" destination="LE3-qN-nOM" id="0EI-oM-O6k"/>

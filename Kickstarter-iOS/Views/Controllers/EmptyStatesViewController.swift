@@ -11,7 +11,6 @@ internal protocol EmptyStatesViewControllerDelegate: class {
 
 internal final class EmptyStatesViewController: UIViewController {
 
-  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backgroundStripView: UIView!
   @IBOutlet fileprivate weak var mainButton: UIButton!
   @IBOutlet fileprivate weak var mainButtonBottomLayoutConstraint: NSLayoutConstraint!
@@ -46,50 +45,13 @@ internal final class EmptyStatesViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
-    self.titleLabel.rac.textColor = self.viewModel.outputs.titleLabelColor
-
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleLabelText
-    self.subtitleLabel.rac.textColor = self.viewModel.outputs.subtitleLabelColor
-
-    self.backgroundStripView.rac.alpha = self.viewModel.outputs.backgroundStripViewAlpha
-    self.backgroundStripView.rac.backgroundColor = self.viewModel.outputs.backgroundStripViewColor
-
     self.mainButtonBottomLayoutConstraint.rac.constant = self.viewModel.outputs.bottomLayoutConstraintConstant
-
-    self.viewModel.outputs.backgroundGradientColorId
-      .observeForUI()
-      .observeValues { [weak self] in
-        let (endColor, startColor) = discoveryGradientColors(forCategoryId: $0)
-        self?.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
-    }
-
     self.mainButton.rac.title = self.viewModel.outputs.mainButtonText
-
-    self.viewModel.outputs.mainButtonBackgroundColor
-      .observeForUI()
-      .observeValues { [weak element = mainButton] in
-        _ = element
-          ?|> UIButton.lens.backgroundColor(forState: .normal) .~ $0
-    }
-
-    self.viewModel.outputs.mainButtonTitleColor
-      .observeForUI()
-      .observeValues { [weak element = mainButton] in
-        _ = element
-          ?|> UIButton.lens.titleColor(forState: .normal) .~ $0
-          ?|> UIButton.lens.titleColor(forState: .highlighted) .~ $0
-    }
-
-    self.viewModel.outputs.mainButtonBorderColor
-      .observeForUI()
-      .observeValues { [weak element = mainButton] in
-        _ = element ?|> UIButton.lens.layer.borderColor .~ $0
-    }
 
     self.viewModel.outputs.notifyDelegateToGoToDiscovery
       .observeForControllerAction()
@@ -112,6 +74,7 @@ internal final class EmptyStatesViewController: UIViewController {
     self.stripViewTopLayoutConstraint.constant = -Styles.grid(3)
 
     _ = self.view
+      |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layoutMargins .~ (
         self.traitCollection.isRegularRegular
           ? .init(top: 0, left: Styles.grid(4), bottom: Styles.grid(5), right: Styles.grid(4))
@@ -132,10 +95,12 @@ internal final class EmptyStatesViewController: UIViewController {
     _ = self.titleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.subtitleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.textColor .~ .ksr_text_navy_700
 
     _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -148,6 +113,13 @@ internal final class EmptyStatesViewController: UIViewController {
     _ = self.mainButton
       |> baseButtonStyle
       |> UIButton.lens.layer.borderWidth .~ 1.0
+      |> UIButton.lens.backgroundColor(forState: .normal) .~ UIColor.ksr_green_500.withAlphaComponent(0.1)
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
+      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_green_700
+      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.withAlphaComponent(0.2).cgColor
+
+    _ = self.backgroundStripView
+      |> UIView.lens.backgroundColor .~ .ksr_grey_100
   }
 
   internal func setEmptyState(_ emptyState: EmptyState) {

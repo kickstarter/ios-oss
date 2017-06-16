@@ -53,10 +53,16 @@ final class LoginViewModelTests: TestCase {
       .assertValueCount(1, "Email field is first responder when view loads.")
 
     XCTAssertEqual(["User Login", "Viewed Login"], trackingClient.events, "Koala login is tracked")
-    XCTAssertEqual([false, false],
+
+    XCTAssertEqual([false, nil],
                    self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self))
+
+    XCTAssertEqual([nil, false],
+                   self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
+
     XCTAssertEqual([true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+
     self.isFormValid.assertValues([false], "Form is not valid")
 
     self.vm.inputs.emailChanged("Gina@rules.com")
@@ -185,8 +191,12 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.onePassword(isAvailable: true)
 
-    XCTAssertEqual([true, true],
+    XCTAssertEqual([true, nil],
                    self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self))
+
+    XCTAssertEqual([nil, true],
+                   self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
+
     self.onePasswordButtonHidden.assertValues([false])
 
     self.vm.inputs.onePasswordButtonTapped()

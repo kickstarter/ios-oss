@@ -85,8 +85,7 @@ public protocol BackingViewModelType {
 
 public final class BackingViewModel: BackingViewModelType, BackingViewModelInputs, BackingViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let projectAndBackerAndBackerIsCurrentUser = Signal.combineLatest(
       self.projectAndBackerProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal

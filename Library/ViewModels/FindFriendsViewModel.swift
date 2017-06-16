@@ -70,8 +70,7 @@ public protocol FindFriendsViewModelType {
 public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsViewModelInputs,
   FindFriendsViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let source = self.configureWithProperty.signal
 
     let followAll = self.confirmFollowAllFriendsProperty.signal
@@ -98,7 +97,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .filter(isTrue)
       .ignoreValues()
 
-    let (friends, isLoading, _) = paginate(
+    let (friends, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: true,
@@ -153,6 +152,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     source
       .takeWhen(followAll)
       .observeValues { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
+
+    source
+      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
+      .observeValues { AppEnvironment.current.koala.loadedMoreFriends(source: $0, pageCount: $1) }
   }
   // swiftlint:enable function_body_length
 

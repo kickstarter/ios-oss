@@ -46,8 +46,7 @@ internal final class DashboardViewController: UITableViewController {
       |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData

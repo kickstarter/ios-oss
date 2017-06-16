@@ -59,8 +59,7 @@ internal final class CommentsViewController: UITableViewController {
     }
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
@@ -158,7 +157,7 @@ extension CommentsViewController: CommentDialogDelegate {
 
 extension CommentsViewController: CommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
-    _ = self.navigationController?.popViewController(animated: true)
+    _ = self.navigationController?.popToRootViewController(animated: true)
   }
 
   internal func commentEmptyStateCellGoToCommentDialog() {

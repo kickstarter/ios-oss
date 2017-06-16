@@ -1,11 +1,9 @@
-// swiftlint:disable file_length
 import KsApi
 import Library
 import Prelude
 import Stripe
 import UIKit
 
-// swiftlint:disable type_body_length
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
@@ -148,8 +146,7 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -441,8 +438,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden

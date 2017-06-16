@@ -63,8 +63,7 @@ public final class ProjectNavBarViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  public override func bindStyles() {
+    public override func bindStyles() {
     super.bindStyles()
 
     self.backgroundGradientView.startPoint = .zero
@@ -83,7 +82,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.image(forState: .normal) .~ image(named: "category-icon")
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byTruncatingTail
-      |> UIButton.lens.backgroundColor(forState: .highlighted) .~ .init(white: 0, alpha: 0.1)
+      |> UIButton.lens.backgroundColor(forState: .normal) .~ .init(white: 1.0, alpha: 0.8)
       |> UIButton.lens.adjustsImageWhenHighlighted .~ true
       |> UIButton.lens.adjustsImageWhenDisabled .~ true
       |> UIButton.lens.userInteractionEnabled .~ false
@@ -115,11 +114,9 @@ public final class ProjectNavBarViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  public override func bindViewModel() {
+    public override func bindViewModel() {
     super.bindViewModel()
 
-    self.categoryButton.rac.backgroundColor = self.viewModel.outputs.categoryButtonBackgroundColor
     self.categoryButton.rac.tintColor = self.viewModel.outputs.categoryButtonTintColor
     self.viewModel.outputs.categoryButtonTitleColor
       .observeForUI()

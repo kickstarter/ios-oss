@@ -9,9 +9,8 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var separatorView: UIView!
 
   func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
-    self.pledgeTitleLabel.textColor = discoveryPrimaryColor(forCategoryId: project.category.rootId)
-    self.separatorView.backgroundColor = strokeColor(forCategoryId: project.category.rootId)
+    self.pledgeTitleLabel.textColor = discoveryPrimaryColor()
+    self.separatorView.backgroundColor = .ksr_grey_200
 
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
@@ -37,9 +36,9 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
               bottom: Styles.grid(2),
               right: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.right * 2)
       }
+      |> UITableViewCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.pledgeTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
-
   }
 }

@@ -81,6 +81,18 @@ public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
       <> V.lens.layer.shadowOffset .~ offset
 }
 
+public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {
+  return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
+}
+
+public func dropShadowStyleLarge <V: UIViewProtocol> () -> ((V) -> V) {
+  return dropShadowStyle(radius: 6.0, offset: .init(width: 0, height: 3.0))
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
+}
+
 public let feedTableViewCellStyle = baseTableViewCellStyle()
   <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
     cell.traitCollection.isRegularRegular

@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import LiveStream
 import ReactiveSwift
@@ -85,8 +84,7 @@ public protocol LiveStreamContainerViewModelOutputs {
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
-  //swiftlint:disable function_body_length
-  //swiftlint:disable cyclomatic_complexity
+    //swiftlint:disable cyclomatic_complexity
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),

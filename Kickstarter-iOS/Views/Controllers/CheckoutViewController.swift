@@ -37,8 +37,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.closeLoginTout
@@ -104,7 +103,6 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.viewModel.inputs.userSessionStarted()
     }
   }
-  // swiftlint:disable function_body_length
 
   internal func webView(_ webView: UIWebView,
                         shouldStartLoadWithRequest request: URLRequest,

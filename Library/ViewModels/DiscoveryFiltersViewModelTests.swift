@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 @testable import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
@@ -46,7 +45,7 @@ private let categories = [ Category.art, .illustration, .filmAndVideo, .document
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
-  private let animateInView = TestObserver<Int?, NoError>()
+  private let animateInView = TestObserver<(), NoError>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
   private let loadCategoryRowsInitialId = TestObserver<Int?, NoError>()
   private let loadCategoryRowsSelectedId = TestObserver<Int?, NoError>()
@@ -74,7 +73,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.outputs.loadFavoriteRows.map(second).observe(self.loadFavoriteRowsId.observer)
   }
 
-  func testAnimateIn_Default() {
+  func testAnimateIn() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
 
@@ -82,40 +81,15 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.animateInView.assertValueCount(0)
 
-    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
 
-    self.animateInView.assertValues([nil])
-  }
-
-  func testAnimateIn_Category() {
-    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
-    self.vm.inputs.viewDidLoad()
-
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
-
-    self.animateInView.assertValueCount(0)
-
-    self.vm.inputs.viewWillAppear()
-
-    self.animateInView.assertValues([1])
-  }
-
-  func testAnimateIn_Subcategory() {
-    self.vm.inputs.configureWith(selectedRow: documentarySelectableRow)
-    self.vm.inputs.viewDidLoad()
-
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
-
-    self.animateInView.assertValueCount(0)
-
-    self.vm.inputs.viewWillAppear()
-
-    self.animateInView.assertValues([11])
+    self.animateInView.assertValueCount(1)
   }
 
   func testKoalaEventsTrack() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -141,6 +115,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.loadTopRows.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -166,6 +141,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     withEnvironment(config: config) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
       self.scheduler.advance()
 
       self.loadTopRows.assertValues(
@@ -189,6 +166,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     withEnvironment(config: config) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
       self.scheduler.advance()
 
       self.loadTopRows.assertValues(
@@ -211,6 +190,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     withEnvironment(config: config) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
       self.scheduler.advance()
 
       self.loadTopRows.assertValues(
@@ -232,6 +213,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -259,6 +241,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -282,6 +265,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testTopFilters_Category_Selected() {
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -305,6 +289,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.loadingIndicatorisVisible.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.loadingIndicatorisVisible.assertValues([true])
 
@@ -376,6 +361,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.loadCategoryRows.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.loadingIndicatorisVisible.assertValues([true])
 
@@ -396,6 +382,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testTappingSelectableRow() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -430,6 +417,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCategoriesResponse: specialCategoriesResponse)) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -445,6 +433,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testFavoriteRows_Without_Favorites() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -460,6 +449,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.loadFavoriteRows.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -476,6 +466,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.loadFavoriteRows.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
@@ -491,6 +482,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
 
     self.loadingIndicatorisVisible.assertValueCount(0)
 

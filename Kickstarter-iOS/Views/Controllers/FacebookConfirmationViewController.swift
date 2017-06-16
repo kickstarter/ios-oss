@@ -67,8 +67,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.displayEmail

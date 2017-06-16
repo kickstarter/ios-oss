@@ -6,8 +6,7 @@ public struct ExpandableRow {
   public let params: DiscoveryParams
   public let selectableRows: [SelectableRow]
 
-  // swiftlint:disable type_name
-  public enum lens {
+    public enum lens {
     public static let isExpanded = Lens<ExpandableRow, Bool>(
       view: { $0.isExpanded },
       set: { ExpandableRow(isExpanded: $0, params: $1.params, selectableRows: $1.selectableRows) }

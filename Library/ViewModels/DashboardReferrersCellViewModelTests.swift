@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 import Prelude
 import ReactiveSwift
 import Result

@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 import CoreTelephony
 import KsApi
 import LiveStream
@@ -615,7 +613,7 @@ public final class Koala {
       ]
     )
     self.track(event: "Viewed Login",
-               properties: ["1password_extension_available": onePasswordIsAvailable])
+               properties: ["one_password_extension_available": onePasswordIsAvailable])
   }
 
   public func trackLoginSuccess(authType: AuthType) {
@@ -1302,31 +1300,72 @@ public final class Koala {
   }
 
   public func trackDeclineFriendFollowAll(source: FriendsSource) {
-    self.track(event: "Facebook Friend Decline Follow All", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Friend Decline Follow All",
+      properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Declined Follow All Facebook Friends", properties: props)
   }
 
   public func trackFacebookConnect(source: FriendsSource) {
-    self.track(event: "Facebook Connect", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Connect", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Connected Facebook", properties: props)
   }
 
   public func trackFacebookConnectError(source: FriendsSource) {
-    self.track(event: "Facebook Connect Error", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Connect Error", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Errored Facebook Connect", properties: props)
   }
 
   public func trackFindFriendsView(source: FriendsSource) {
-    self.track(event: "Find Friends View", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Find Friends View", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Viewed Find Friends", properties: props)
   }
 
   public func trackFriendFollow(source: FriendsSource) {
-    self.track(event: "Facebook Friend Follow", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Friend Follow", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Followed Facebook Friend", properties: props)
   }
 
   public func trackFriendFollowAll(source: FriendsSource) {
-    self.track(event: "Facebook Friend Follow All", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Friend Follow All", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Followed All Facebook Friends", properties: props)
   }
 
   public func trackFriendUnfollow(source: FriendsSource) {
-    self.track(event: "Facebook Friend Unfollow", properties: ["source": source.trackingString])
+    let props: [String:Any] = ["source": source.trackingString]
+
+    // deprecated
+    self.track(event: "Facebook Friend Unfollow", properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: "Unfollowed Facebook Friend", properties: props)
+  }
+
+  public func loadedMoreFriends(source: FriendsSource, pageCount: Int) {
+    self.track(event: "Loaded More Friends",
+      properties: ["source": source.trackingString, "page_count": pageCount])
   }
 
   // MARK: Update Draft Events
@@ -2023,7 +2062,6 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
   #endif
 }
 
-// swiftlint:disable type_name
 extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(
