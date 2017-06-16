@@ -12,9 +12,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var copyStackView: UIStackView!
 
-  internal func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
-  }
+  internal func configureWith(value: Void) {}
 
     internal override func bindStyles() {
     super.bindStyles()
@@ -26,7 +24,8 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(1), left: Styles.grid(16), bottom: Styles.grid(2), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
-    }
+      }
+      |> NoRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.cardView
       |> dropShadowStyle()

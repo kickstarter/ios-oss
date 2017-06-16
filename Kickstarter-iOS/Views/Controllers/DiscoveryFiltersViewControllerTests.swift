@@ -108,7 +108,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     }
   }
 
-  func testCategoryRow_Selected_Culture_iPad_View() {
+  func testCategoryRow_Selected_Art_iPad_View() {
     let artSelectableRow = selectableRowTemplate
       |> SelectableRow.lens.params.category .~ .illustration
 
@@ -123,43 +123,13 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     }
   }
 
-  func testCategoryRow_Selected_Culture_View() {
+  func testCategoryRow_Selected_Art_View() {
     let artSelectableRow = selectableRowTemplate
       |> SelectableRow.lens.params.category .~ .illustration
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
-
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
-      }
-    }
-  }
-
-  func testCategoryRow_Selected_Story_View() {
-    let documentarySelectableRow = selectableRowTemplate
-      |> SelectableRow.lens.params.category .~ .documentary
-
-    Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
-        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: documentarySelectableRow)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
-
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
-      }
-    }
-  }
-
-  func testCategoryRow_Selected_Entertainment_View() {
-    let gamesSelectableRow = selectableRowTemplate
-      |> SelectableRow.lens.params.category .~ .tabletopGames
-
-    Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
-        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: gamesSelectableRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1000
 

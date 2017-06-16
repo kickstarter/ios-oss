@@ -18,7 +18,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
-  @IBOutlet fileprivate weak var gradientBackgroundView: GradientView!
+  @IBOutlet fileprivate weak var bgView: UIView!
   @IBOutlet fileprivate weak var heartImageView: UIImageView!
   @IBOutlet fileprivate weak var heartOutlineImageView: UIImageView!
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
@@ -40,9 +40,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.gradientBackgroundView.startPoint = CGPoint(x: 0.0, y: 1.0)
-    self.gradientBackgroundView.endPoint = CGPoint(x: 1.0, y: 0.0)
-
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
 
@@ -54,19 +51,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.arrowImageView.rac.tintColor = self.viewModel.outputs.subviewColor
-    self.borderLineView.rac.backgroundColor = self.viewModel.outputs.subviewColor
     self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
     self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
-    self.heartImageView.rac.tintColor = self.viewModel.outputs.subviewColor
-    self.heartOutlineImageView.rac.tintColor = self.viewModel.outputs.subviewColor
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
-    self.primaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.secondaryLabel.rac.text = self.viewModel.outputs.secondaryLabelText
     self.secondaryLabel.rac.hidden = self.viewModel.outputs.secondaryLabelIsHidden
-    self.secondaryLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.dividerLabel.rac.hidden = self.viewModel.outputs.dividerIsHidden
-    self.dividerLabel.rac.textColor = self.viewModel.outputs.subviewColor
     self.titleButton.rac.accessibilityLabel = self.viewModel.outputs.titleButtonAccessibilityLabel
     self.titleButton.rac.accessibilityHint = self.viewModel.outputs.titleButtonAccessibilityHint
 
@@ -113,10 +103,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         self?.updateFavoriteButton(selected: $0, animated: $1)
     }
 
-    self.viewModel.outputs.gradientViewCategoryIdForColor
+    self.viewModel.outputs.animateBorderLineViewAndIsExpanded
       .observeForUI()
-      .observeValues { [weak self] id, isFullScreen in
-        self?.setBackgroundGradient(categoryId: id, isFullScreen: isFullScreen)
+      .observeValues { [weak self] isExpanded in
+        self?.animateBorderLine(isExpanded: isExpanded)
     }
 
     self.viewModel.outputs.notifyDelegateFilterSelectedParams
@@ -157,20 +147,35 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self.arrowImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
+    _ = self.bgView
+      |> UIView.lens.backgroundColor .~ .white
+
     _ = self.borderLineView
       |> discoveryBorderLineStyle
+      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor()
 
     self.borderLineHeightConstraint.constant = 1.0 / UIScreen.main.scale
 
     _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.favoriteContainerView
       |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
+    _ = self.heartImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
+    _ = self.heartOutlineImageView
+      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
+
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
@@ -179,6 +184,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           : UIFont.ksr_callout().bolded
       }
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.titleStackView
       |> discoveryNavTitleStackViewStyle
@@ -227,100 +233,85 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     if selected {
       self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
-      UIView.animate(withDuration: duration,
-                                 delay: 0.0,
-                                 usingSpringWithDamping: 0.6,
-                                 initialSpringVelocity: 0.8,
-                                 options: .curveEaseOut,
-                                 animations: {
-                                  self.heartImageView.alpha = 1.0
-                                  self.heartImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                                  self.heartOutlineImageView.transform =
-                                    CGAffineTransform(scaleX: 1.4, y: 1.4)
-                                  },
-                                 completion: nil)
+      UIView.animate(
+        withDuration: duration,
+        delay: 0.0,
+        usingSpringWithDamping: 0.6,
+        initialSpringVelocity: 0.8,
+        options: .curveEaseOut,
+        animations: {
+         self.heartImageView.alpha = 1.0
+         self.heartImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+         },
+        completion: nil
+      )
 
-      UIView.animate(withDuration: duration,
-                                 delay: animated ? 0.1 : 0.0,
-                                 usingSpringWithDamping: 0.6,
-                                 initialSpringVelocity: 0.8,
-                                 options: .curveEaseOut,
-                                 animations: {
-                                  self.heartOutlineImageView.transform =
-                                    CGAffineTransform(scaleX: 1.0, y: 1.0)
-                                  self.heartOutlineImageView.alpha = 0.0
-                                  },
-                                 completion: nil)
+      UIView.animate(
+        withDuration: duration,
+        delay: animated ? 0.1 : 0.0,
+        usingSpringWithDamping: 0.6,
+        initialSpringVelocity: 0.8,
+        options: .curveEaseOut,
+        animations: {
+        self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+          self.heartOutlineImageView.alpha = 0.0
+        },
+        completion: nil
+      )
     } else {
-      UIView.animate(withDuration: duration,
-                                 delay: 0.0,
-                                 usingSpringWithDamping: 0.6,
-                                 initialSpringVelocity: 0.8,
-                                 options: .curveEaseOut,
-                                 animations: {
-                                  self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-                                  self.heartOutlineImageView.transform =
-                                    CGAffineTransform(scaleX: 1.4, y: 1.4)
-                                  self.heartOutlineImageView.alpha = 1.0
-                                  },
-                                 completion: nil)
+      UIView.animate(
+        withDuration: duration,
+        delay: 0.0,
+        usingSpringWithDamping: 0.6,
+        initialSpringVelocity: 0.8,
+        options: .curveEaseOut,
+        animations: {
+         self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+         self.heartOutlineImageView.alpha = 1.0
+        },
+        completion: nil
+      )
 
-      UIView.animate(withDuration: duration,
-                                 delay: animated ? 0.1 : 0.0,
-                                 usingSpringWithDamping: 0.6,
-                                 initialSpringVelocity: 0.8,
-                                 options: .curveEaseOut,
-                                 animations: {
-                                  self.heartOutlineImageView.transform =
-                                    CGAffineTransform(scaleX: 1.0, y: 1.0)
-                                  },
-                                 completion: { _ in
-                                  self.heartImageView.alpha = 0.0
-      })
+      UIView.animate(
+        withDuration: duration,
+        delay: animated ? 0.1 : 0.0,
+        usingSpringWithDamping: 0.6,
+        initialSpringVelocity: 0.8,
+        options: .curveEaseOut,
+        animations: {
+         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        },
+        completion: { _ in
+         self.heartImageView.alpha = 0.0
+        }
+      )
     }
   }
   // swiftlint:ensable function_body_length
 
-  fileprivate func setBackgroundGradient(categoryId: Int?, isFullScreen: Bool) {
-
-    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
-
-    if isFullScreen {
-      UIView.transition(with: self.gradientBackgroundView,
-                                duration: 0.2,
-                                options: [.transitionCrossDissolve, .curveEaseOut],
-                                animations: {
-                                  self.gradientBackgroundView.setGradient([
-                                    (color: startColor, location: 0.0),
-                                    (color: endColor, location: 0.2)])
-                                  },
-                                completion: nil)
-
-      UIView.animate(withDuration: 0.2,
-                                 delay: 0.1,
-                                 options: .curveEaseIn,
-                                 animations: {
-                                  self.borderLineView.transform = CGAffineTransform(scaleX: 0.93, y: 1.0)
-                                 },
-                                 completion: nil)
+  fileprivate func animateBorderLine(isExpanded: Bool) {
+    if isExpanded {
+      UIView.animate(
+        withDuration: 0.2,
+        delay: 0.1,
+        options: .curveEaseIn,
+        animations: {
+         self.borderLineView.transform = CGAffineTransform(scaleX: 0.93, y: 1.0)
+        },
+        completion: nil
+      )
     } else {
-      UIView.animate(withDuration: 0.1,
-                                 delay: 0.0,
-                                 options: .curveEaseOut,
-                                 animations: {
-                                  self.borderLineView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                                 },
-                                 completion: nil)
-
-      UIView.transition(with: self.gradientBackgroundView,
-                                duration: 0.2,
-                                options: [.transitionCrossDissolve, .curveEaseOut],
-                                animations: {
-                                  self.gradientBackgroundView.setGradient([
-                                    (color: startColor, location: 0.0),
-                                    (color: endColor, location: 1.0)])
-                                  },
-                                completion: nil)
+      UIView.animate(
+        withDuration: 0.1,
+        delay: 0.0,
+        options: .curveEaseOut,
+        animations: {
+         self.borderLineView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        },
+        completion: nil
+      )
     }
   }
 

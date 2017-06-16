@@ -18,19 +18,19 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
     }
 
     _ = self.highlightView
-      |> UIView.lens.backgroundColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
+      |> UIView.lens.backgroundColor .~ discoverySecondaryColor()
       |> UIView.lens.alpha .~ 0.08
       |> UIView.lens.hidden .~ !value.row.isSelected
 
     _ = self.circleImageView
-      |> UIView.lens.tintColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
+      |> UIView.lens.tintColor .~ discoverySecondaryColor()
       |> UIView.lens.hidden .~ !value.row.isSelected
 
     _ = self.checkImageView
       |> UIView.lens.hidden .~ !value.row.isSelected
 
     _ = self.filterTitleLabel
-      |> UILabel.lens.textColor .~ discoverySecondaryColor(forCategoryId: value.categoryId)
+      |> UILabel.lens.textColor .~ discoverySecondaryColor()
       |> UILabel.lens.numberOfLines .~ 2
 
     self.rowIsSelected = value.row.isSelected
