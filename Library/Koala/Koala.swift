@@ -1276,14 +1276,17 @@ public final class Koala {
   }
 
   public func trackPushPermissionDialogOpen() {
+    print("Boris: trackPushPermissionDialogOpen")
     self.track(event: "Triggered Push Permissions Dialog")
   }
 
   public func trackPushPermissionOptIn() {
+    print("Boris: trackPushPermissionOptIn")
     self.track(event: "Confirmed Push Opt-In")
   }
 
   public func trackPushPermissionOptOut() {
+    print("Boris: trackPushPermissionOptOut")
     self.track(event: "Dismissed Push Opt-In")
   }
 

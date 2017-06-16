@@ -214,12 +214,20 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
+    //BORIS uncomment before commit
+//    self.registerUserNotificationSettings = Signal.merge(
+//      self.applicationWillEnterForegroundProperty.signal,
+//      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+//      self.userSessionStartedProperty.signal
+//      )
+//      .filter { AppEnvironment.current.currentUser != nil }
+
+    //Boris: remove before commit
+    //This is temporary that I dont need to login for push prompt
     self.registerUserNotificationSettings = Signal.merge(
-      self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues()
       )
-      .filter { AppEnvironment.current.currentUser != nil }
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 

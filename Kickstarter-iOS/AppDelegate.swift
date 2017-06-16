@@ -15,6 +15,7 @@ import ReactiveSwift
 import Result
 import SafariServices
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -111,10 +112,35 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerUserNotificationSettings
       .observeForUI()
       .observeValues {
-        UIApplication.shared.registerUserNotificationSettings(
-          UIUserNotificationSettings(types: .alert, categories: [])
-        )
-        UIApplication.shared.registerForRemoteNotifications()
+        if #available(iOS 10.0, *) {
+          UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            if settings.authorizationStatus == .notDetermined {
+              AppEnvironment.current.koala.trackPushPermissionDialogOpen()
+              UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+                (granted, error) in
+
+                UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+                  if settings.authorizationStatus == .authorized {
+                    AppEnvironment.current.koala.trackPushPermissionOptIn()
+                    UIApplication.shared.registerForRemoteNotifications()
+                  }
+                  else {
+                    AppEnvironment.current.koala.trackPushPermissionOptOut()
+                  }
+                }
+              }
+            }
+            else if settings.authorizationStatus == .authorized {
+              UIApplication.shared.registerForRemoteNotifications()
+            }
+          }
+        } else {
+          UIApplication.shared.registerUserNotificationSettings(
+            UIUserNotificationSettings(types: .alert, categories: [])
+          )
+
+          UIApplication.shared.registerForRemoteNotifications()
+        }
     }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
@@ -123,7 +149,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.presentRemoteNotificationAlert
       .observeForUI()
-      .observeValues { [weak self] in self?.presentRemoteNotificationAlert($0) }
+      .observeValues { [weak self] in
+        self?.presentRemoteNotificationAlert($0)
+      }
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
