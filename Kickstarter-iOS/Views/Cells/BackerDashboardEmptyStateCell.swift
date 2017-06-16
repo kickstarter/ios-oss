@@ -16,7 +16,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       self.messageLabel.text = Strings.Pledge_to_your_favorites_then_view_all_the_projects()
       self.titleLabel.text = Strings.Explore_creative_projects()
     case .saved:
-      self.messageLabel.text = Strings.Tap_the_star_on_a_project_to_get_notified()
+      self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.Save_projects()
       self.iconImageView.tintColor = .black
     }

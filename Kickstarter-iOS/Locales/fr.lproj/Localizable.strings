@@ -157,9 +157,11 @@
 "Message_creator" = "Envoyer un message au créateur";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
+"No_messages" = "Pas de messages";
 "No_one_has_posted_an_update_yet" = "Pas d'actus publiées pour le moment.";
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
 "No_replay_is_available_for_this_live_stream" = "Pas de rediffusion possible pour cette diffusion en direct.";
+"No_unread_messages" = "Pas de messages non lus";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
 "Opens_comments" = "Ouvre les commentaires.";
@@ -189,7 +191,7 @@
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici.";
 "Pledge_was_dropped" = "Engagement abandonné.";
 "Pledge_without_a_reward" = "Engagement sans récompense";
-"Pledged_on_date" = "<b>Pledged</b> on %{pledge_date}";
+"Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
 "Project_Cancelled" = "Projet annulé.";
@@ -212,12 +214,13 @@
 "Replay_live_stream_with_creator_name" = "Revoir la diffusion en direct de <br><b>%{creator_name}</b>";
 "Replay_past_live_stream" = "Rediffusion";
 "Replay_past_live_streams" = "Revoir des diffusions en direct passées";
+"Reply_to_user_name" = "Répondre à %{user_name}…";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
 "Reward_Surveys.two" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.zero" = "%{reward_survey_count} questionnaires";
-"Reward_estimated_for_delivery_in_date" = "<b>Reward</b> estimated for delivery in %{delivery_date}";
+"Reward_estimated_for_delivery_in_date" = "<b>Récompense</b> prévue pour %{delivery_date}";
 "Reward_selected" = "Récompense sélectionnée";
 "Rewards_count_rewards.few" = "%{rewards_count} récompenses";
 "Rewards_count_rewards.many" = "%{rewards_count} récompenses";
@@ -256,8 +259,8 @@
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
 "Survey" = "Questionnaire";
-"Tap_the_star_on_a_project_to_get_notified" = "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne.";
-"Tap_the_star_on_each_project_page_to_save_it" = "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne.";
+"Tap_the_heart_on_a_project_to_get_notified" = "Tap the heart icon on a project to get notified 48 hours before it ends.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.";
 "Thank_you_for_supporting_this_project" = "Merci pour votre soutien.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter.";
 "The_live_stream_failed_to_connect" = "Échec de connexion à la diffusion en direct";
@@ -292,7 +295,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
 "You_Launched" = "Projet lancé !";
 "You_backed_this_project" = "Vous avez soutenu ce projet.";
-"You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
+"You_pledged_on_date" = "<b>Votre engagement</b> du %{pledge_date}";
 "You_saved_this_project" = "Vous avez enregistré ce projet.";
 "Your_chat_message_wasnt_sent_successfully" = "Votre message n'a pas été envoyé.";
 "Your_friends_havent_backed_any_projects_yet" = "Vos amis n'ont encore rien soutenu, mais dès qu'ils s'y seront mis, leurs engagements s'afficheront ici.";
@@ -302,7 +305,7 @@
 "Your_pledge_was_canceled_or_the_creator_canceled" = "Votre engagement a été annulé ou le créateur a annulé son projet avant la date limite.";
 "Your_pledge_was_dropped" = "Votre engagement a été abandonné.";
 "Your_reward" = "Votre récompense";
-"Your_reward_estimated_for_delivery_in_date" = "<b>Your reward</b> estimated for delivery in %{delivery_date}";
+"Your_reward_estimated_for_delivery_in_date" = "<b>Votre récompense</b> prévue pour %{delivery_date}";
 "Your_shipping_destination" = "Destination d'expédition";
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
@@ -931,6 +934,7 @@
 "minutes.zero" = "minutes";
 "minutes_plural" = "minutes";
 "percentage_funded" = "Financé à %{percentage}";
+"pledge_amount_pledged_on_pledge_date" = "<b>%{pledge_amount}</b> engagés le %{pledge_date}";
 "plus_shipping_cost" = "+ %{shipping_cost}";
 "profile.buttons.messages" = "Messages";
 "profile.buttons.settings" = "Paramètres";
@@ -1231,6 +1235,7 @@
 "two_factor.error.message" = "Le code fourni ne correspond pas.";
 "two_factor.message" = "Veuillez saisir votre code de vérification.";
 "two_factor.title" = "Vérifier";
+"unread_count_unread" = "%{unread_count} messages non lus";
 "update.comments.creator" = "Créateur";
 "update.comments.empty_state.backer.button" = "Laisser un commentaire";
 "update.comments.empty_state.backer.message" = "Oh, quel dommage.  Soyez le premier contributeur à laisser un commentaire sur cette actu.";

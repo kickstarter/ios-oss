@@ -129,7 +129,7 @@ private func textForSubtitle(emptyState: EmptyState) -> String {
   case .recommended:
     return Strings.Once_you_back_a_project_well_share()
   case .starred:
-    return Strings.Tap_the_star_on_each_project_page_to_save_it()
+    return Strings.Tap_the_heart_on_each_project_page_to_save_it()
   }
 }
 

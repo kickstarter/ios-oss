@@ -6,6 +6,8 @@
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 public enum Strings {
   /**
    "About %{reward_amount}"
@@ -1776,7 +1778,7 @@ backers"
    "Funding successful"
 
    - **es**: "Financiado con éxito"
-   - **de**: "Finazierung erfolgreich"
+   - **de**: "Finanzierung erfolgreich"
    - **fr**: "Intégralement financé"
    - **en**: "Funding successful"
   */
@@ -2367,6 +2369,22 @@ with friends."
     )
   }
   /**
+   "No messages"
+
+   - **es**: "No hay mensajes"
+   - **de**: "Keine Nachrichten"
+   - **fr**: "Pas de messages"
+   - **en**: "No messages"
+  */
+  public static func No_messages() -> String {
+    return localizedString(
+      key: "No_messages",
+      defaultValue: "No messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No one has posted an update yet."
 
    - **es**: "Todavía no se han publicado actualizaciones."
@@ -2413,6 +2431,22 @@ from friends yet."
     return localizedString(
       key: "No_replay_is_available_for_this_live_stream",
       defaultValue: "No replay is available for this live stream.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No unread messages"
+
+   - **es**: "No hay mensajes no leídos"
+   - **de**: "Keine ungelesenen Nachrichten"
+   - **fr**: "Pas de messages non lus"
+   - **en**: "No unread messages"
+  */
+  public static func No_unread_messages() -> String {
+    return localizedString(
+      key: "No_unread_messages",
+      defaultValue: "No unread messages",
       count: nil,
       substitutions: [:]
     )
@@ -2884,9 +2918,9 @@ from friends yet."
   /**
    "<b>Pledged</b> on %{pledge_date}"
 
-   - **es**: "<b>Pledged</b> on %{pledge_date}"
-   - **de**: "<b>Pledged</b> on %{pledge_date}"
-   - **fr**: "<b>Pledged</b> on %{pledge_date}"
+   - **es**: "<b>Contribuido</b> el %{pledge_date}"
+   - **de**: "<b>Beitrag geleistet</b> am %{pledge_date}"
+   - **fr**: "<b>Engagement</b> du %{pledge_date}"
    - **en**: "<b>Pledged</b> on %{pledge_date}"
   */
   public static func Pledged_on_date(pledge_date: String) -> String {
@@ -3252,6 +3286,22 @@ daring ideas."
     )
   }
   /**
+   "Reply to %{user_name}…"
+
+   - **es**: "Responder a %{user_name}…"
+   - **de**: "%{user_name} antworten …"
+   - **fr**: "Répondre à %{user_name}…"
+   - **en**: "Reply to %{user_name}…"
+  */
+  public static func Reply_to_user_name(user_name: String) -> String {
+    return localizedString(
+      key: "Reply_to_user_name",
+      defaultValue: "Reply to %{user_name}…",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **es**: "%{reward_survey_count} cuestionarios"
@@ -3270,9 +3320,9 @@ daring ideas."
   /**
    "<b>Reward</b> estimated for delivery in %{delivery_date}"
 
-   - **es**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
-   - **de**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
-   - **fr**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+   - **es**: "<b>Recompensa</b> estimada para entregarse en %{delivery_date}"
+   - **de**: "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}"
+   - **fr**: "<b>Récompense</b> prévue pour %{delivery_date}"
    - **en**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
   */
   public static func Reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
@@ -3766,33 +3816,33 @@ catch your eye?"
     )
   }
   /**
-   "Tap the star icon on a project to get notified 48 hours before it ends."
+   "Tap the heart icon on a project to get notified 48 hours before it ends."
 
-   - **es**: "Marca un proyecto con asterisco y te notificaremos 48 horas antes de que termine."
-   - **de**: "Tippe auf den Stern neben einem Projekt - wir benachrichtigen dich 48 Stunden, bevor es abläuft."
-   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
-   - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
+   - **es**: "Haz click en el corazón en un proyecto para recibir una notificación 48 hrs, antes de que finalice."
+   - **de**: "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft."
+   - **fr**: "Tap the heart icon on a project to get notified 48 hours before it ends."
+   - **en**: "Tap the heart icon on a project to get notified 48 hours before it ends."
   */
-  public static func Tap_the_star_on_a_project_to_get_notified() -> String {
+  public static func Tap_the_heart_on_a_project_to_get_notified() -> String {
     return localizedString(
-      key: "Tap_the_star_on_a_project_to_get_notified",
-      defaultValue: "Tap the star icon on a project to get notified 48 hours before it ends.",
+      key: "Tap_the_heart_on_a_project_to_get_notified",
+      defaultValue: "Tap the heart icon on a project to get notified 48 hours before it ends.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
 
-   - **es**: "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine."
-   - **de**: "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken."
-   - **fr**: "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
-   - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **es**: "Haz click en el corazón en cada página de proyecto para guardarlo. Te recordaremos 48 hrs. antes de que finalice el proyecto."
+   - **de**: "Klicke einfach auf den Stern auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
+   - **fr**: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **en**: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
-  public static func Tap_the_star_on_each_project_page_to_save_it() -> String {
+  public static func Tap_the_heart_on_each_project_page_to_save_it() -> String {
     return localizedString(
-      key: "Tap_the_star_on_each_project_page_to_save_it",
-      defaultValue: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.",
+      key: "Tap_the_heart_on_each_project_page_to_save_it",
+      defaultValue: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.",
       count: nil,
       substitutions: [:]
     )
@@ -4349,9 +4399,9 @@ Please try again later."
   /**
    "<b>You pledged</b> on %{pledge_date}"
 
-   - **es**: "<b>You pledged</b> on %{pledge_date}"
-   - **de**: "<b>You pledged</b> on %{pledge_date}"
-   - **fr**: "<b>You pledged</b> on %{pledge_date}"
+   - **es**: "<b>Contribuiste</b> el %{pledge_date}"
+   - **de**: "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}"
+   - **fr**: "<b>Votre engagement</b> du %{pledge_date}"
    - **en**: "<b>You pledged</b> on %{pledge_date}"
   */
   public static func You_pledged_on_date(pledge_date: String) -> String {
@@ -4509,9 +4559,9 @@ Please try again later."
   /**
    "<b>Your reward</b> estimated for delivery in %{delivery_date}"
 
-   - **es**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
-   - **de**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
-   - **fr**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+   - **es**: "<b>Tu recompensa</b> estimada para entregarse en %{delivery_date}"
+   - **de**: "<b>Deine Belohnung</b> wird voraussichtlich im %{delivery_date} geliefert"
+   - **fr**: "<b>Votre récompense</b> prévue pour %{delivery_date}"
    - **en**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
   */
   public static func Your_reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
@@ -12229,6 +12279,22 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
     )
   }
   /**
+   "<b>%{pledge_amount}</b> pledged on %{pledge_date}"
+
+   - **es**: "<b>%{pledge_amount}</b> contribuidos el %{pledge_date}"
+   - **de**: "<b>%{pledge_amount}</b> beigetragen am %{pledge_date}"
+   - **fr**: "<b>%{pledge_amount}</b> engagés le %{pledge_date}"
+   - **en**: "<b>%{pledge_amount}</b> pledged on %{pledge_date}"
+  */
+  public static func pledge_amount_pledged_on_pledge_date(pledge_amount: String, pledge_date: String) -> String {
+    return localizedString(
+      key: "pledge_amount_pledged_on_pledge_date",
+      defaultValue: "<b>%{pledge_amount}</b> pledged on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_amount": pledge_amount, "pledge_date": pledge_date]
+    )
+  }
+  /**
    "+%{shipping_cost}"
 
    - **es**: "+%{shipping_cost}"
@@ -16299,6 +16365,22 @@ saved"
       defaultValue: "Verify",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{unread_count} unread"
+
+   - **es**: "%{unread_count} sin leer"
+   - **de**: "%{unread_count} ungelesen"
+   - **fr**: "%{unread_count} messages non lus"
+   - **en**: "%{unread_count} unread"
+  */
+  public static func unread_count_unread(unread_count: String) -> String {
+    return localizedString(
+      key: "unread_count_unread",
+      defaultValue: "%{unread_count} unread",
+      count: nil,
+      substitutions: ["unread_count": unread_count]
     )
   }
   /**
