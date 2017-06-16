@@ -36,8 +36,27 @@ internal final class BackingViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
+    }
+  }
+
+  func testCurrentUserIsBacker_NoReward() {
+    let project = self.cosmicSurgery
+    let backer = self.brando
+    let reward = Reward.noReward
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing |> Backing.lens.reward .~ reward),
+                    currentUser: backer,
+                    language: .en) {
+                      let controller = BackingViewController.configuredWith(project: project, backer: backer)
+                      let (parent, _) = traitControllers(device: .phone4_7inch,
+                                                         orientation: .portrait,
+                                                         child: controller)
+
+                      self.scheduler.run()
+
+                      FBSnapshotVerifyView(parent.view, identifier: "lang_en")
     }
   }
 
@@ -54,7 +73,7 @@ internal final class BackingViewControllerTests: TestCase {
 
          self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -74,7 +93,7 @@ internal final class BackingViewControllerTests: TestCase {
 
          self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filter - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
