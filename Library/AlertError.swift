@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 
 public enum AlertError {

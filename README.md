@@ -60,10 +60,6 @@ familiar with them:
 [Prelude](https://github.com/kickstarter/Kickstarter-Prelude): Foundation of
 types and functions we feel are missing from the Swift standard library.
 
-* [![CircleCI](https://circleci.com/gh/kickstarter/ios-ksapi.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-ksapi)
-[KsApi](https://github.com/kickstarter/ios-ksapi): Models and reactive
-networking layer for fetching data from Kickstarter’s API.
-
 * [![Circle CI](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions.svg?style=svg&)](https://circleci.com/gh/kickstarter/Kickstarter-ReactiveExtensions)
 [ReactiveExtensions](https://github.com/kickstarter/Kickstarter-ReactiveExtensions):
 A collection of operators we like to add to ReactiveCocoa.
