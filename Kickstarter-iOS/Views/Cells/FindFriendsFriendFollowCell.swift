@@ -23,7 +23,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
 
     self.followButton.rac.enabled = self.viewModel.outputs.enableFollowButton
     self.followButton.rac.accessibilityLabel = self.viewModel.outputs.followButtonAccessibilityLabel
