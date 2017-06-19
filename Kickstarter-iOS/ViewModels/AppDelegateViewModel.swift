@@ -5,6 +5,7 @@ import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
+import UserNotifications
 
 public struct HockeyConfigData {
   public let appIdentifier: String
@@ -19,6 +20,12 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.disableUpdates == rhs.disableUpdates
     && lhs.userId == rhs.userId
     && lhs.userName == rhs.userName
+}
+
+public protocol NotificationAuthorizationStatusType {
+  var isAuthorized: Bool { get }
+  var isDenied: Bool { get }
+  var isNotDetermined: Bool { get }
 }
 
 public protocol AppDelegateViewModelInputs {
@@ -69,6 +76,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the app has crashed
   func crashManagerDidFinishSendingCrashReport()
+
+  /// Call when notification authorization status received
+  func notificationAuthorizationStatusChange(_ authorizationStatus: NotificationAuthorizationStatusType)
 }
 
 public protocol AppDelegateViewModelOutputs {
@@ -146,6 +156,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, NoError> { get }
+
+  /// Emits push notification authorization status
+  var notificationAuthorizationStatus: Signal<NotificationAuthorizationStatusType?, NoError> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -214,6 +227,7 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
+    // FIXME:
     //BORIS uncomment before commit
 //    self.registerUserNotificationSettings = Signal.merge(
 //      self.applicationWillEnterForegroundProperty.signal,
@@ -516,6 +530,8 @@ AppDelegateViewModelOutputs {
       .skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsKey.shortcutItem] == nil }
 
+    self.notificationAuthorizationStatus = self.notificationAuthorizationStatusProperty.signal
+
     // Koala
 
     Signal.merge(
@@ -668,6 +684,16 @@ AppDelegateViewModelOutputs {
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
+
+
+  fileprivate let notificationAuthorizationStatusProperty =
+    MutableProperty<NotificationAuthorizationStatusType?>(nil)
+  public func notificationAuthorizationStatusChange(
+    _ notificationSetting: NotificationAuthorizationStatusType
+  ) {
+    return self.notificationAuthorizationStatusProperty.value = notificationSetting
+  }
+
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
@@ -692,6 +718,7 @@ AppDelegateViewModelOutputs {
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>
   public let updateConfigInEnvironment: Signal<Config, NoError>
+  public let notificationAuthorizationStatus: Signal<NotificationAuthorizationStatusType?, NoError>
 }
 
 private func deviceToken(fromData data: Data) -> String {

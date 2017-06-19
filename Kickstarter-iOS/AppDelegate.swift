@@ -17,6 +17,30 @@ import SafariServices
 import UIKit
 import UserNotifications
 
+@available(iOS 10.0, *)
+extension UNAuthorizationStatus: NotificationAuthorizationStatusType {
+  public var isAuthorized: Bool {
+    switch self {
+    case .authorized: return true
+    case .denied, .notDetermined: return false
+    }
+  }
+
+  public var isDenied: Bool {
+    switch self {
+    case .denied: return true
+    case .authorized, .notDetermined: return false
+    }
+  }
+
+  public var isNotDetermined: Bool {
+    switch self {
+    case .notDetermined: return true
+    case .denied, .authorized: return false
+    }
+  }
+}
+
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
