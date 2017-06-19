@@ -35,9 +35,6 @@ public protocol BackingViewModelOutputs {
   /// Emits with the project when should go to messages screen.
   var goToMessages: Signal<(Project, Backing), NoError> { get }
 
-  /// Emits a boolean that determines if the actions stackview should be hidden.
-  var hideActionsStackView: Signal<Bool, NoError> { get }
-
   /// Emits a bool to animate the loader.
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
@@ -219,12 +216,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           : localizedString(key: "Contact_backer", defaultValue: "Contact backer")
       }
 
-    self.hideActionsStackView = .empty
-    //projectAndBackerAndBackerIsCurrentUser
-//      .map { project, _, backerIsCurrentUser in
-//        !backerIsCurrentUser && project.creator != AppEnvironment.current.currentUser
-//    }
-
     self.opacityForContainers = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(0.0),
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
@@ -262,7 +253,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let backerSequence: Signal<String, NoError>
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
-  public let hideActionsStackView: Signal<Bool, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
   public let opacityForContainers: Signal<CGFloat, NoError>

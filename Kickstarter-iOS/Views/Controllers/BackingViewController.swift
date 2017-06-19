@@ -63,7 +63,6 @@ internal final class BackingViewController: UIViewController {
   // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
-    self.actionsStackView.rac.hidden = self.viewModel.outputs.hideActionsStackView
     self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerPledgeAmountLabel.rac.text = self.viewModel.outputs.pledgeAmount
