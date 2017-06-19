@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,6 +17,20 @@
                BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
                BuildableName = "Kickstarter.app"
                BlueprintName = "Kickstarter-iOS"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D01587571EEB2DE4006E7684"
+               BuildableName = "KsApiTests.xctest"
+               BlueprintName = "KsApiTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -56,6 +70,16 @@
                BlueprintIdentifier = "A7BA54311E1E493600E54377"
                BuildableName = "LiveStreamTests.xctest"
                BlueprintName = "LiveStreamTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D01587571EEB2DE4006E7684"
+               BuildableName = "KsApiTests.xctest"
+               BlueprintName = "KsApiTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
