@@ -25,6 +25,9 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits whether Unfollow button should be enabled
   var enableUnfollowButton: Signal<Bool, NoError> { get }
 
+  // Emits follow button accessibilityLabel that includes friend's name
+  var followButtonAccessibilityLabel: Signal<String, NoError> { get }
+
   /// Emits when to show Follow button
   var hideFollowButton: Signal<Bool, NoError> { get }
 
@@ -48,9 +51,6 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
 
   /// Emits number of projects created text
   var projectsCreatedText: Signal<String, NoError> { get }
-
-  // Emits follow button accessibilityLabel that includes friend's name
-  var followButtonAccessibilityLabel: Signal<String, NoError> { get }
 
   // Emits unfollow button accessibilityLabel that includes friend's name
   var unfollowButtonAccessibilityLabel: Signal<String, NoError> { get }
