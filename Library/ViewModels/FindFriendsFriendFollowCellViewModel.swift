@@ -16,6 +16,9 @@ public protocol FindFriendsFriendFollowCellViewModelInputs {
 }
 
 public protocol FindFriendsFriendFollowCellViewModelOutputs {
+  /// Emits accessibilityValue for the Cell
+  var cellAccessibilityValue: Signal<String, NoError> { get }
+
   /// Emits whether Follow button should be enabled
   var enableFollowButton: Signal<Bool, NoError> { get }
 
@@ -52,7 +55,6 @@ public protocol FindFriendsFriendFollowCellViewModelOutputs {
   // Emits unfollow button accessibilityLabel that includes friend's name
   var unfollowButtonAccessibilityLabel: Signal<String, NoError> { get }
 
-  var cellAccessibilityValue: Signal<String, NoError> { get }
 }
 
 public protocol FindFriendsFriendFollowCellViewModelType {
@@ -207,19 +209,19 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     unfollowButtonTappedProperty.value = ()
   }
 
+  public let cellAccessibilityValue: Signal<String, NoError>
   public let enableFollowButton: Signal<Bool, NoError>
   public let enableUnfollowButton: Signal<Bool, NoError>
+  public let followButtonAccessibilityLabel: Signal<String, NoError>
   public let hideFollowButton: Signal<Bool, NoError>
+  public let hideProjectsCreated: Signal<Bool, NoError>
   public let hideUnfollowButton: Signal<Bool, NoError>
   public let imageURL: Signal<URL?, NoError>
   public let location: Signal<String, NoError>
   public let name: Signal<String, NoError>
   public let projectsBackedText: Signal<String, NoError>
   public let projectsCreatedText: Signal<String, NoError>
-  public let hideProjectsCreated: Signal<Bool, NoError>
-  public let followButtonAccessibilityLabel: Signal<String, NoError>
   public let unfollowButtonAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
 }
 
 private func cached(friend: User) -> User {

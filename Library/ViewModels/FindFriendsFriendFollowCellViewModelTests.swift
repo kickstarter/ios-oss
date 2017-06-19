@@ -13,8 +13,10 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   // swiftlint:enable type_name
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
+  let cellAccessibilityValue = TestObserver<String, NoError>()
   let enableFollowButton = TestObserver<Bool, NoError>()
   let enableUnfollowButton = TestObserver<Bool, NoError>()
+  let followButtonAccessibilityLabel = TestObserver<String, NoError>()
   let imageURL = TestObserver<String?, NoError>()
   let location = TestObserver<String, NoError>()
   let friendName = TestObserver<String, NoError>()
@@ -23,9 +25,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let hideFollowButton = TestObserver<Bool, NoError>()
   let hideUnfollowButton = TestObserver<Bool, NoError>()
   let hideProjectsCreated = TestObserver<Bool, NoError>()
-  let followButtonAccessibilityLabel = TestObserver<String, NoError>()
   let unfollowButtonAccessibilityLabel = TestObserver<String, NoError>()
-  let cellAccessibilityValue = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
