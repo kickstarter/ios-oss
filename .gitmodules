@@ -7,6 +7,18 @@
 [submodule "Frameworks/ios-snapshot-test-case"]
 	path = Frameworks/ios-snapshot-test-case
 	url = https://github.com/facebook/ios-snapshot-test-case.git
-[submodule "Frameworks/ios-ksapi"]
-	path = Frameworks/ios-ksapi
-	url = https://github.com/kickstarter/ios-ksapi
+[submodule "Frameworks/ReactiveExtensions"]
+	path = Frameworks/ReactiveExtensions
+	url = https://github.com/kickstarter/Kickstarter-ReactiveExtensions.git
+[submodule "Frameworks/Argo"]
+	path = Frameworks/Argo
+	url = http://github.com/thoughtbot/Argo.git
+[submodule "Frameworks/Curry"]
+	path = Frameworks/Curry
+	url = https://github.com/thoughtbot/Curry.git
+[submodule "Frameworks/Prelude"]
+	path = Frameworks/Prelude
+	url = https://github.com/kickstarter/Kickstarter-Prelude.git
+[submodule "Frameworks/Runes"]
+	path = Frameworks/Runes
+	url = https://github.com/thoughtbot/Runes.git

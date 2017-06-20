@@ -1,6 +1,7 @@
 import KsApi
 import ReactiveSwift
 import Result
+import UIKit
 
 public protocol BackingCellViewModelInputs {
   func configureWith(backing: Backing, project: Project, isFromBacking: Bool)
