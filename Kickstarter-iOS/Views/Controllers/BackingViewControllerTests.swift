@@ -277,9 +277,9 @@ internal final class BackingViewControllerTests: TestCase {
                         let (parent, _) = traitControllers(device: .phone4_7inch,
                                                            orientation: .portrait,
                                                            child: controller)
-                        
+
                         self.scheduler.run()
-                        
+
                         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
