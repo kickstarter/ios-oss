@@ -201,6 +201,9 @@ internal final class BackingViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
+    _ = self.rewardSectionTitleLabel
+      |> UILabel.lens.numberOfLines .~ 2
+
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ .black
