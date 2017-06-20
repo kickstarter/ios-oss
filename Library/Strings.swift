@@ -991,6 +991,22 @@ backers"
     )
   }
   /**
+   "Delivered"
+
+   - **es**: "Delivered"
+   - **de**: "Delivered"
+   - **fr**: "Delivered"
+   - **en**: "Delivered"
+  */
+  public static func Delivered() -> String {
+    return localizedString(
+      key: "Delivered",
+      defaultValue: "Delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
@@ -2447,6 +2463,22 @@ from friends yet."
     return localizedString(
       key: "No_unread_messages",
       defaultValue: "No unread messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not delivered"
+
+   - **es**: "Not delivered"
+   - **de**: "Not delivered"
+   - **fr**: "Not delivered"
+   - **en**: "Not delivered"
+  */
+  public static func Not_delivered() -> String {
+    return localizedString(
+      key: "Not_delivered",
+      defaultValue: "Not delivered",
       count: nil,
       substitutions: [:]
     )

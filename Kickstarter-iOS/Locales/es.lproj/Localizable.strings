@@ -63,6 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} estuvo transmitiendo en vivo en Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}";
+"Delivered" = "Delivered";
 "Discover_more_projects" = "Descubre más proyectos.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
@@ -162,6 +163,7 @@
 "No_pledges_from_friends_yet" = "Todavía no hay contribuciones de amigos.";
 "No_replay_is_available_for_this_live_stream" = "Este Live Stream no cuenta con repetición.";
 "No_unread_messages" = "No hay mensajes no leídos";
+"Not_delivered" = "Not delivered";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
 "Opens_comments" = "Abre comentarios.";

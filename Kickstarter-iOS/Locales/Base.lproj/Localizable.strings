@@ -63,6 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> was live %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} was streaming live on Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
+"Delivered" = "Delivered";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
@@ -162,6 +163,7 @@
 "No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
 "No_unread_messages" = "No unread messages";
+"Not_delivered" = "Not delivered";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
 "Opens_comments" = "Opens comments.";
