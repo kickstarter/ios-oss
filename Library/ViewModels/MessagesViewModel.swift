@@ -138,7 +138,9 @@ MessagesViewModelOutputs {
     self.emptyStateIsVisibleAndMessageToUser = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, "")),
       Signal.combineLatest(
-        messageThreadEnvelopeEvent.errors(), // todo: fix Argo decoding error
+        // todo: fix Argo decoding error on: MessageThreadEnvelope error: 
+        // Multiple(MissingKey(participants), MissingKey(messages), MissingKey(message_thread))
+        messageThreadEnvelopeEvent.errors(),
         configBacking.skipNil(),
         self.project
         )

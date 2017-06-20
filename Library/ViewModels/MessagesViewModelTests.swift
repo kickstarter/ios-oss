@@ -12,7 +12,8 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let vm: MessagesViewModelType = MessagesViewModel()
 
   fileprivate let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), NoError>()
-  fileprivate let emptyStateIsVisibleAndMessageToUser = TestObserver<(Bool, String), NoError>()
+  fileprivate let emptyStateIsVisible = TestObserver<Bool, NoError>()
+  fileprivate let emptyStateMessage = TestObserver<String, NoError>()
   fileprivate let goToBackingProject = TestObserver<Project, NoError>()
   fileprivate let goToBackingUser = TestObserver<User, NoError>()
   fileprivate let goToProject = TestObserver<Project, NoError>()
@@ -27,6 +28,9 @@ internal final class MessagesViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.backingAndProjectAndIsFromBacking.observe(self.backingAndProjectAndIsFromBacking.observer)
+    self.vm.outputs.emptyStateIsVisibleAndMessageToUser.map { $0.0 }
+      .observe(self.emptyStateIsVisible.observer)
+    self.vm.outputs.emptyStateIsVisibleAndMessageToUser.map { $0.1 }.observe(self.emptyStateMessage.observer)
     self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProject.observer)
     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingUser.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -185,16 +189,19 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
     self.replyButtonIsEnabled.assertValueCount(0)
+    self.emptyStateIsVisible.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
 
     self.messages.assertValueCount(0)
     self.replyButtonIsEnabled.assertValues([false])
+    self.emptyStateIsVisible.assertValues([false])
 
     self.scheduler.advance()
 
     self.messages.assertValueCount(1)
     self.replyButtonIsEnabled.assertValues([false, true])
+    self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
 
     self.vm.inputs.replyButtonPressed()
 
@@ -214,5 +221,9 @@ internal final class MessagesViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.successfullyMarkedAsRead.assertValueCount(1)
+  }
+
+  func testEmptyStateIsVisibleAndMessage() {
+    // fix Argo error first
   }
 }
