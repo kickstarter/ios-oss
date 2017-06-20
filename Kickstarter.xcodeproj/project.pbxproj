@@ -793,7 +793,6 @@
 		D0745B4A1EEB0B6C00FA53D3 /* ReactiveSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0745B401EEB0B5E00FA53D3 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0745B4D1EEB0B7800FA53D3 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0745B401EEB0B5E00FA53D3 /* ReactiveSwift.framework */; };
 		D0745B9B1EEB226400FA53D3 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04278041EEB08EA00600E9C /* Prelude.framework */; };
-		D0745B9C1EEB227400FA53D3 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
 		D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CC8A1E53359A004E8FDF /* LiveStreamChatViewController.swift */; };
 		D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCC61E53459A004E8FDF /* LiveStreamChatMessageCell.swift */; };
 		D077CCCD1E534669004E8FDF /* LiveStreamChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D077CCCC1E534669004E8FDF /* LiveStreamChatViewModel.swift */; };
@@ -806,6 +805,16 @@
 		D08A817A1DFAACF8000128DB /* LiveStreamEventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */; };
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
+		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
+		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
+		D0B45B701EF858DE0020A8DA /* Prelude_UIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B45B7E1EF85A7F0020A8DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B45B7D1EF85A7F0020A8DA /* Result.framework */; };
+		D0B45B7F1EF85A7F0020A8DA /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B45B7D1EF85A7F0020A8DA /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B45B811EF85A870020A8DA /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B45B801EF85A870020A8DA /* Runes.framework */; };
+		D0B45B821EF85A870020A8DA /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0B45B801EF85A870020A8DA /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B45CF41EF864700020A8DA /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042781F1EEB08F200600E9C /* ReactiveExtensions.framework */; };
+		D0B45CF51EF864700020A8DA /* ReactiveExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D042781F1EEB08F200600E9C /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */; };
 		D0C5957F1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */; };
 		D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */; };
@@ -816,7 +825,6 @@
 		D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0CDA8A01E7434E400AA3450 /* LiveStreamNavTitleView.xib */; };
 		D0CDA8A31E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CDA8A21E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift */; };
 		D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
-		D0D10BB91EEB3976005EBAD0 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
 		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
 		D0D10C041EEB4550005EBAD0 /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587801EEB2ED6006E7684 /* CategoryTests.swift */; };
@@ -850,8 +858,6 @@
 		D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */; };
 		D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */; };
 		D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588241EEB2ED7006E7684 /* UserTests.swift */; };
-		D0D10C231EEBBCC9005EBAD0 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042781F1EEB08F200600E9C /* ReactiveExtensions.framework */; };
-		D0D10C241EEBBCDD005EBAD0 /* ReactiveExtensions_TestHelpers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04278271EEB08F200600E9C /* ReactiveExtensions_TestHelpers.framework */; };
 		D0D10C251EEBC2F4005EBAD0 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04277DB1EEB08D800600E9C /* Argo.framework */; };
 		D0D10C281EEBC305005EBAD0 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04277F01EEB08E100600E9C /* Curry.framework */; };
 		D0D2AA311E9623F4008D298A /* LiveStreamNavTitleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */; };
@@ -1084,13 +1090,6 @@
 			remoteInfo = LiveStream;
 		};
 		A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7BA54281E1E493500E54377;
-			remoteInfo = LiveStream;
-		};
-		A7BA54F61E1E51F800E54377 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -1356,6 +1355,34 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveSwift-iOS";
 		};
+		D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
+			remoteInfo = KsApi;
+		};
+		D0B45B711EF858DE0020A8DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D04277F71EEB08E900600E9C /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A727E0211D0796D600D8FE43;
+			remoteInfo = "Prelude-UIKit-iOS";
+		};
+		D0B45CF61EF864700020A8DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D04278131EEB08F100600E9C /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FD08861C81EDBD00332CCB;
+			remoteInfo = "ReactiveExtensions-iOS";
+		};
+		D0B45D021EF869850020A8DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D04278131EEB08F100600E9C /* ReactiveExtensions.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A7DB1D391C9F355E008244DA;
+			remoteInfo = "ReactiveExtensions-TestHelpers-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1368,8 +1395,13 @@
 				D0745B061EEB09E500FA53D3 /* Curry.framework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
+				D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */,
+				D0B45B701EF858DE0020A8DA /* Prelude_UIKit.framework in Embed Frameworks */,
 				A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */,
+				D0B45B821EF85A870020A8DA /* Runes.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
+				D0B45B7F1EF85A7F0020A8DA /* Result.framework in Embed Frameworks */,
+				D0B45CF51EF864700020A8DA /* ReactiveExtensions.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
 				D0745B4A1EEB0B6C00FA53D3 /* ReactiveSwift.framework in Embed Frameworks */,
 				D0745B0D1EEB0A0A00FA53D3 /* Prelude.framework in Embed Frameworks */,
@@ -2200,6 +2232,8 @@
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
+		D0B45B7D1EF85A7F0020A8DA /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0B45B801EF85A870020A8DA /* Runes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Runes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2244,10 +2278,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D10C241EEBBCDD005EBAD0 /* ReactiveExtensions_TestHelpers.framework in Frameworks */,
-				D0D10C231EEBBCC9005EBAD0 /* ReactiveExtensions.framework in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
-				D0745B9C1EEB227400FA53D3 /* Prelude_UIKit.framework in Frameworks */,
 				D0745B9B1EEB226400FA53D3 /* Prelude.framework in Frameworks */,
 				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
 				01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */,
@@ -2331,8 +2362,13 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
+				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */,
 				A7722F411D2D3B6C0049BCDC /* FBSDKLoginKit.framework in Frameworks */,
+				D0B45B811EF85A870020A8DA /* Runes.framework in Frameworks */,
 				A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */,
+				D0B45B7E1EF85A7F0020A8DA /* Result.framework in Frameworks */,
+				D0B45CF41EF864700020A8DA /* ReactiveExtensions.framework in Frameworks */,
 				D0745B491EEB0B6C00FA53D3 /* ReactiveSwift.framework in Frameworks */,
 				D0745AD41EEB09DE00FA53D3 /* Argo.framework in Frameworks */,
 				D0745B0C1EEB0A0A00FA53D3 /* Prelude.framework in Frameworks */,
@@ -2355,7 +2391,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D10BB91EEB3976005EBAD0 /* Prelude_UIKit.framework in Frameworks */,
 				D01589A71EEB2FAB006E7684 /* ReactiveExtensions.framework in Frameworks */,
 				D01589A61EEB2F91006E7684 /* ReactiveSwift.framework in Frameworks */,
 				D01589A51EEB2F79006E7684 /* Prelude.framework in Frameworks */,
@@ -2518,6 +2553,8 @@
 		A7424F0D1C84F40E00FDC1E4 /* Embedded */ = {
 			isa = PBXGroup;
 			children = (
+				D0B45B801EF85A870020A8DA /* Runes.framework */,
+				D0B45B7D1EF85A7F0020A8DA /* Result.framework */,
 				A7424F421C84F43300FDC1E4 /* iOS */,
 				A7E1C4BD1D18C871002D6DE3 /* onepassword-app-extension */,
 				A7424F411C84F41600FDC1E4 /* tvOS */,
@@ -3752,7 +3789,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7BA54F71E1E51F800E54377 /* PBXTargetDependency */,
+				D0B45D031EF869850020A8DA /* PBXTargetDependency */,
 			);
 			name = "Library-iOS";
 			productName = "Library-iOS";
@@ -3853,6 +3890,9 @@
 				D0745B081EEB09E500FA53D3 /* PBXTargetDependency */,
 				D0745B0F1EEB0A0A00FA53D3 /* PBXTargetDependency */,
 				D0745B4C1EEB0B6C00FA53D3 /* PBXTargetDependency */,
+				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
+				D0B45B721EF858DE0020A8DA /* PBXTargetDependency */,
+				D0B45CF71EF864700020A8DA /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			productName = Kickstarter;
@@ -3928,7 +3968,7 @@
 					A755113B1C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					A75511441C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -3947,13 +3987,13 @@
 					A7C7959D1C873A870081977F = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					A7D1F9441C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.OMC = {
 								enabled = 1;
@@ -5391,11 +5431,6 @@
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
 			targetProxy = A7BA543C1E1E493600E54377 /* PBXContainerItemProxy */;
 		};
-		A7BA54F71E1E51F800E54377 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7BA54281E1E493500E54377 /* LiveStream */;
-			targetProxy = A7BA54F61E1E51F800E54377 /* PBXContainerItemProxy */;
-		};
 		D015875B1EEB2DE4006E7684 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
@@ -5420,6 +5455,26 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveSwift-iOS";
 			targetProxy = D0745B4B1EEB0B6C00FA53D3 /* PBXContainerItemProxy */;
+		};
+		D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D015874F1EEB2DE4006E7684 /* KsApi */;
+			targetProxy = D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */;
+		};
+		D0B45B721EF858DE0020A8DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-UIKit-iOS";
+			targetProxy = D0B45B711EF858DE0020A8DA /* PBXContainerItemProxy */;
+		};
+		D0B45CF71EF864700020A8DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-iOS";
+			targetProxy = D0B45CF61EF864700020A8DA /* PBXContainerItemProxy */;
+		};
+		D0B45D031EF869850020A8DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveExtensions-TestHelpers-iOS";
+			targetProxy = D0B45D021EF869850020A8DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5502,9 +5557,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Hockey.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -5521,7 +5576,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
-				PROVISIONING_PROFILE_SPECIFIER = circleci;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5579,6 +5634,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5644,6 +5700,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
@@ -5683,6 +5740,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5721,6 +5779,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5958,6 +6017,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
@@ -5996,6 +6056,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
@@ -6015,7 +6076,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -6032,7 +6093,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.alpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
-				PROVISIONING_PROFILE_SPECIFIER = "Alpha Development";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6047,9 +6108,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Release.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -6064,7 +6125,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
-				PROVISIONING_PROFILE_SPECIFIER = AppStore;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6223,11 +6284,11 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -6260,7 +6321,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -6292,7 +6353,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
