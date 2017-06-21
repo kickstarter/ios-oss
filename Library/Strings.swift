@@ -993,7 +993,7 @@ backers"
   /**
    "Delivered"
 
-   - **es**: "Delivered"
+   - **es**: "Entregado"
    - **de**: "Delivered"
    - **fr**: "Delivered"
    - **en**: "Delivered"
@@ -2470,7 +2470,7 @@ from friends yet."
   /**
    "Not delivered"
 
-   - **es**: "Not delivered"
+   - **es**: "No entregado"
    - **de**: "Not delivered"
    - **fr**: "Not delivered"
    - **en**: "Not delivered"
@@ -3851,8 +3851,8 @@ catch your eye?"
    "Tap the star icon on a project to get notified 48 hours before it ends."
 
    - **es**: "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice."
-   - **de**: "Tap the star icon on a project to get notified 48 hours before it ends."
-   - **fr**: "Tap the star icon on a project to get notified 48 hours before it ends."
+   - **de**: "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft."
+   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
    - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
   */
   public static func Tap_the_star_on_a_project_to_get_notified() -> String {
@@ -3867,7 +3867,7 @@ catch your eye?"
    "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
 
    - **es**: "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto."
-   - **de**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **de**: "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
    - **fr**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
    - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
