@@ -100,7 +100,6 @@ MessagesViewModelOutputs {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            //.map(MessageThreadEnvelope?.some)
             .materialize()
         case let .right(thread):
           return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
@@ -140,8 +139,6 @@ MessagesViewModelOutputs {
     self.emptyStateIsVisibleAndMessageToUser = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, "")),
       Signal.combineLatest(
-        //Signal.merge(messageThreadEnvelopeEvent.values().filter(isNil), messageThreadEnvelopeEvent.errors())
-          //.ignoreValues(),
         messageThreadEnvelopeEvent.values().filter(isNil),
         configBacking.skipNil(),
         self.project
