@@ -22,6 +22,7 @@ test:
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
     - SCHEME=LiveStream make test
+    - SCHEME=KsApi make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:
