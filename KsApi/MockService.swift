@@ -609,7 +609,7 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchMessageThread(backing: Backing)
-    -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
+    -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
 
       return SignalProducer(
         value: MessageThreadEnvelope(

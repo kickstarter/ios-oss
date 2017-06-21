@@ -95,20 +95,22 @@ MessagesViewModelOutputs {
       backingOrThread,
       backingOrThread.takeWhen(self.messageSentProperty.signal)
       )
-      .switchMap { backingOrThread -> SignalProducer<Event<MessageThreadEnvelope, ErrorEnvelope>, NoError> in
+      .switchMap { backingOrThread -> SignalProducer<Event<MessageThreadEnvelope?, ErrorEnvelope>, NoError> in
         switch backingOrThread {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+            //.map(MessageThreadEnvelope?.some)
             .materialize()
         case let .right(thread):
           return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+            .map(MessageThreadEnvelope?.some)
             .materialize()
         }
     }
 
-    let messageThreadEnvelope = messageThreadEnvelopeEvent.values()
+    let messageThreadEnvelope = messageThreadEnvelopeEvent.values().skipNil()
 
     let participant = messageThreadEnvelope.map { $0.messageThread.participant }
 
@@ -138,9 +140,9 @@ MessagesViewModelOutputs {
     self.emptyStateIsVisibleAndMessageToUser = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, "")),
       Signal.combineLatest(
-        // todo: fix Argo decoding error on: MessageThreadEnvelope error: 
-        // Multiple(MissingKey(participants), MissingKey(messages), MissingKey(message_thread))
-        messageThreadEnvelopeEvent.errors(),
+        //Signal.merge(messageThreadEnvelopeEvent.values().filter(isNil), messageThreadEnvelopeEvent.errors())
+          //.ignoreValues(),
+        messageThreadEnvelopeEvent.values().filter(isNil),
         configBacking.skipNil(),
         self.project
         )
