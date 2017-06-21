@@ -133,39 +133,38 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.openURL($0) }
 
-    self.viewModel.outputs.registerUserNotificationSettings
+    self.viewModel.outputs.registerForRemoteNotifications
       .observeForUI()
       .observeValues {
         if #available(iOS 10.0, *) {
-          UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-            if settings.authorizationStatus == .notDetermined {
-              AppEnvironment.current.koala.trackPushPermissionDialogOpen()
-              UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-                (granted, error) in
-
-                UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-                  if settings.authorizationStatus == .authorized {
-                    AppEnvironment.current.koala.trackPushPermissionOptIn()
-                    UIApplication.shared.registerForRemoteNotifications()
-                  }
-                  else {
-                    AppEnvironment.current.koala.trackPushPermissionOptOut()
-                  }
-                }
-              }
-            }
-            else if settings.authorizationStatus == .authorized {
-              UIApplication.shared.registerForRemoteNotifications()
-            }
-          }
-        } else {
+          UIApplication.shared.registerForRemoteNotifications()
+        }
+        else {
           UIApplication.shared.registerUserNotificationSettings(
             UIUserNotificationSettings(types: .alert, categories: [])
           )
 
           UIApplication.shared.registerForRemoteNotifications()
         }
-    }
+      }
+
+      if #available(iOS 10.0, *) {
+        self.viewModel.outputs.getNotificationAuthorizationStatus
+          .observeForUI()
+          .observeValues { [weak self] in
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+              self?.viewModel.inputs.notificationAuthorizationStatusReceived(settings.authorizationStatus)
+            }
+          }
+
+        self.viewModel.outputs.authorizeForRemoteNotifications
+          .observeForUI()
+          .observeValues { [weak self] in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _ in
+              self?.viewModel.inputs.notificationAuthorizationCompleted()
+            }
+          }
+      }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
