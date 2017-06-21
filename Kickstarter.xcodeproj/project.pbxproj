@@ -39,6 +39,8 @@
 		015A06F71D219513007AE210 /* DashboardRewardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A06F51D219513007AE210 /* DashboardRewardsCell.swift */; };
 		015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */; };
 		015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B78841D47FF51003216AC /* MFMailComposeViewController.swift */; };
+		0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
+		0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
 		0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */; };
 		0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */; };
 		0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */; };
@@ -67,10 +69,6 @@
 		01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */; };
 		01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5571D133BA0000C4252 /* DashboardRewardRowStackViewViewModel.swift */; };
 		01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B5231D1327A1000C4252 /* DashboardRewardsCellViewModel.swift */; };
-		01C7CDBF1D14BBF200D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C7CDBD1D14BBE500D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift */; };
-		01C7CDC31D1A571600D9E0D1 /* DashboardRewardsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C7CDC11D1A4FD100D9E0D1 /* DashboardRewardsCellViewModelTests.swift */; };
-		01CF1C161E58CA4500E02A2E /* MessageEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CF1C151E58CA4400E02A2E /* MessageEmptyStateCell.swift */; };
-		01CF1C171E58CA4500E02A2E /* MessageEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CF1C151E58CA4400E02A2E /* MessageEmptyStateCell.swift */; };
 		01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */; };
 		01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */; };
 		01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */; };
@@ -1448,6 +1446,7 @@
 		015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardRowStackView.swift; sourceTree = "<group>"; };
 		015A06F51D219513007AE210 /* DashboardRewardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCell.swift; sourceTree = "<group>"; };
 		015B78841D47FF51003216AC /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MFMailComposeViewController.swift; path = Library/MFMailComposeViewController.swift; sourceTree = "<group>"; };
+		0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesEmptyStateCell.swift; sourceTree = "<group>"; };
 		0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootCategory.swift; sourceTree = "<group>"; };
 		0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersStaticRowCell.swift; sourceTree = "<group>"; };
 		0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewController.swift; sourceTree = "<group>"; };
@@ -1469,9 +1468,6 @@
 		01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DashboardProjectsDrawer.storyboard; sourceTree = "<group>"; };
 		01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardProjectsDrawerViewController.swift; sourceTree = "<group>"; };
 		01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+LocalizedPlaceholderKey.swift"; sourceTree = "<group>"; };
-		01C7CDBD1D14BBE500D9E0D1 /* DashboardRewardRowStackViewViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardRowStackViewViewModelTests.swift; sourceTree = "<group>"; };
-		01C7CDC11D1A4FD100D9E0D1 /* DashboardRewardsCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCellViewModelTests.swift; sourceTree = "<group>"; };
-		01CF1C151E58CA4400E02A2E /* MessageEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEmptyStateCell.swift; sourceTree = "<group>"; };
 		01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackerDashboardPagesDataSource.swift; sourceTree = "<group>"; };
 		01D31A361CCA786A0037A178 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDK/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		01D31A371CCA786A0037A178 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDK/iOS/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -2686,7 +2682,7 @@
 				A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */,
 				A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingAndReplayCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
-				01CF1C151E58CA4400E02A2E /* MessageEmptyStateCell.swift */,
+				0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
 				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
@@ -4971,7 +4967,6 @@
 				D0CDA89F1E7434AF00AA3450 /* LiveStreamNavTitleView.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
 				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
-				01CF1C171E58CA4500E02A2E /* MessageEmptyStateCell.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
@@ -5107,6 +5102,7 @@
 				A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				A7A052141CD12DD7005AF5E2 /* CommentCell.swift in Sources */,
 				9D14FF8F1D133351005F4ABB /* ProjectActivityLaunchCell.swift in Sources */,
+				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5114,9 +5110,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01CF1C161E58CA4500E02A2E /* MessageEmptyStateCell.swift in Sources */,
 				013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
+				0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
