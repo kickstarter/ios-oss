@@ -11,36 +11,6 @@ import XCTest
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
 
-enum MockNotificationAutorizationStatus {
-  case notDetermined
-  case denied
-  case authorized
-}
-
-extension MockNotificationAutorizationStatus: NotificationAuthorizationStatusType {
-
-  var isNotDetermined: Bool {
-    switch self {
-    case .notDetermined: return true
-    case .denied: return false
-    case .authorized: return false
-  }
-
-  var isDenied: Bool {
-    switch self {
-    case .notDetermined: return false
-    case .denied: return true
-    case .authorized: return false
-  }
-
-  var isAuthorized: Bool {
-    switch self {
-    case .notDetermined: return false
-    case .denied: return false
-    case .authorized: return true
-  }
-}
-
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
@@ -596,33 +566,67 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-    self.authorizeForRemoteNotifications.assertValueCount(0)
     self.getNotificationAuthorizationStatus.assertValueCount(0)
+    self.authorizeForRemoteNotifications.assertValueCount(0)
     self.registerForRemoteNotifications.assertValueCount(0)
     self.unregisterForRemoteNotifications.assertValueCount(0)
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.userSessionStarted()
 
-      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.getNotificationAuthorizationStatus.assertValueCount(1)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.applicationDidEnterBackground()
       self.vm.inputs.applicationWillEnterForeground()
 
-      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived()
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.denied)
+
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.registerForRemoteNotifications.assertValueCount(0)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.registerForRemoteNotifications.assertValueCount(1)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+
+      //Simulate initial notification authorization
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
+      self.registerForRemoteNotifications.assertValueCount(1)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+
+      self.vm.inputs.notificationAuthorizationCompleted()
+
+      self.getNotificationAuthorizationStatus.assertValueCount(3)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
+      self.registerForRemoteNotifications.assertValueCount(1)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+
+      self.getNotificationAuthorizationStatus.assertValueCount(3)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
+      self.registerForRemoteNotifications.assertValueCount(2)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
     }
 
     self.vm.inputs.userSessionEnded()
 
-    self.registerForRemoteNotifications.assertValueCount(3)
+    self.registerForRemoteNotifications.assertValueCount(2)
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
@@ -1414,6 +1418,40 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([1])
   }
 }
+
+fileprivate enum MockNotificationAutorizationStatus {
+  case notDetermined
+  case denied
+  case authorized
+}
+
+extension MockNotificationAutorizationStatus: NotificationAuthorizationStatusType {
+
+  var isNotDetermined: Bool {
+    switch self {
+    case .notDetermined: return true
+    case .denied: return false
+    case .authorized: return false
+    }
+  }
+
+  var isDenied: Bool {
+    switch self {
+    case .notDetermined: return false
+    case .denied: return true
+    case .authorized: return false
+    }
+  }
+
+  var isAuthorized: Bool {
+    switch self {
+    case .notDetermined: return false
+    case .denied: return false
+    case .authorized: return true
+    }
+  }
+}
+
 
 private let backingForCreatorPushData: [String: Any] = [
   "aps": [

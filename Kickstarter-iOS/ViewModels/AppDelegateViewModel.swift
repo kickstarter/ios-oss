@@ -257,10 +257,9 @@ AppDelegateViewModelOutputs {
 
       self.registerForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
         .skipNil()
-        .skip(until: self.notificationAuthorizationCompletedProperty.signal)
-        .take(first: 1)
         .filter { $0.isAuthorized }
         .ignoreValues()
+
     }
     else {
       //FIXME: Not sure this is the best way to create signal than never fires?
