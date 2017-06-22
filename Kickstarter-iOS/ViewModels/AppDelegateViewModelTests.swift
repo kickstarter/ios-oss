@@ -11,12 +11,44 @@ import XCTest
 @testable import KsApi
 @testable import ReactiveExtensions_TestHelpers
 
+enum MockNotificationAutorizationStatus {
+  case notDetermined
+  case denied
+  case authorized
+}
+
+extension MockNotificationAutorizationStatus: NotificationAuthorizationStatusType {
+
+  var isNotDetermined: Bool {
+    switch self {
+    case .notDetermined: return true
+    case .denied: return false
+    case .authorized: return false
+  }
+
+  var isDenied: Bool {
+    switch self {
+    case .notDetermined: return false
+    case .denied: return true
+    case .authorized: return false
+  }
+
+  var isAuthorized: Bool {
+    switch self {
+    case .notDetermined: return false
+    case .denied: return false
+    case .authorized: return true
+  }
+}
+
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
+  fileprivate let authorizeForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
   private let findRedirectUrl = TestObserver<URL, NoError>()
   fileprivate let forceLogout = TestObserver<(), NoError>()
+  fileprivate let getNotificationAuthorizationStatus = TestObserver<(), NoError>()
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
@@ -31,7 +63,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
   fileprivate let presentViewController = TestObserver<Int, NoError>()
   fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
-  fileprivate let registerUserNotificationSettings = TestObserver<(), NoError>()
+  fileprivate let registerForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
   fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
@@ -40,9 +72,12 @@ final class AppDelegateViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.authorizeForRemoteNotifications.observe(self.authorizeForRemoteNotifications.observer)
     self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
+    self.vm.outputs.getNotificationAuthorizationStatus
+      .observe(self.getNotificationAuthorizationStatus.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
@@ -58,7 +93,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
-    self.vm.outputs.registerUserNotificationSettings.observe(self.registerUserNotificationSettings.observer)
+    self.vm.outputs.registerForRemoteNotifications.observe(self.registerForRemoteNotifications.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
@@ -561,31 +596,33 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
 
-    self.registerUserNotificationSettings.assertValueCount(0)
+    self.authorizeForRemoteNotifications.assertValueCount(0)
+    self.getNotificationAuthorizationStatus.assertValueCount(0)
+    self.registerForRemoteNotifications.assertValueCount(0)
     self.unregisterForRemoteNotifications.assertValueCount(0)
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.userSessionStarted()
 
-      self.registerUserNotificationSettings.assertValueCount(1)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.getNotificationAuthorizationStatus.assertValueCount(1)
+      self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.applicationDidEnterBackground()
       self.vm.inputs.applicationWillEnterForeground()
 
-      self.registerUserNotificationSettings.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
-
-      self.registerUserNotificationSettings.assertValueCount(3)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
+      self.vm.inputs.notificationAuthorizationStatusReceived()
     }
 
     self.vm.inputs.userSessionEnded()
 
-    self.registerUserNotificationSettings.assertValueCount(3)
+    self.registerForRemoteNotifications.assertValueCount(3)
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 

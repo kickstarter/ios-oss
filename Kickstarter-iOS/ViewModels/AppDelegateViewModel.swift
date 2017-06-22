@@ -22,6 +22,7 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.userName == rhs.userName
 }
 
+// FIXME: where to put this?
 public protocol NotificationAuthorizationStatusType {
   var isAuthorized: Bool { get }
   var isDenied: Bool { get }
@@ -234,23 +235,43 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
-    // FIXME:
-    //BORIS uncomment before commit
-
-//    let applicationLaunchedWithUser = Signal.merge(
-//      self.applicationWillEnterForegroundProperty.signal,
-//      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-//      self.userSessionStartedProperty.signal
-//      )
-//      .filter { AppEnvironment.current.currentUser != nil }
-
-    //Boris: remove before commit
-    //This is temporary that I dont need to login for push prompt
     let applicationLaunchedWithUser = Signal.merge(
-        self.applicationWillEnterForegroundProperty.signal,
-        self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      self.applicationWillEnterForegroundProperty.signal,
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.userSessionStartedProperty.signal
       )
+      .filter { AppEnvironment.current.currentUser != nil }
 
+    //FIXME: Boris: remove before commit
+    //This is temporary that I dont need to login for push prompt
+//    let applicationLaunchedWithUser = Signal.merge(
+//        self.applicationWillEnterForegroundProperty.signal,
+//        self.applicationLaunchOptionsProperty.signal.ignoreValues()
+//      )
+
+    if #available(iOS 10.0, *) {
+      self.getNotificationAuthorizationStatus =
+        Signal.merge(
+          applicationLaunchedWithUser,
+          self.notificationAuthorizationCompletedProperty.signal)
+
+      self.registerForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
+        .skipNil()
+        .skip(until: self.notificationAuthorizationCompletedProperty.signal)
+        .take(first: 1)
+        .filter { $0.isAuthorized }
+        .ignoreValues()
+    }
+    else {
+      //FIXME: Not sure this is the best way to create signal than never fires?
+      self.getNotificationAuthorizationStatus = Signal<(), NoError>.pipe().output
+      self.registerForRemoteNotifications = applicationLaunchedWithUser
+    }
+
+    self.authorizeForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
+      .skipNil()
+      .filter { $0.isNotDetermined }
+      .ignoreValues()
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -538,32 +559,6 @@ AppDelegateViewModelOutputs {
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .map { _, options in options?[UIApplicationLaunchOptionsKey.shortcutItem] == nil }
-
-
-
-    if #available(iOS 10.0, *) {
-      self.getNotificationAuthorizationStatus =
-        Signal.merge(
-          applicationLaunchedWithUser,
-          self.notificationAuthorizationCompletedProperty.signal)
-
-      self.registerForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
-        .skipNil()
-        .skip(until: self.notificationAuthorizationCompletedProperty.signal)
-        .take(first: 1)
-        .filter { $0.isAuthorized }
-        .ignoreValues()
-    }
-    else {
-      //FIXME: Not sure this is the best way to create signal than never fires?
-      self.getNotificationAuthorizationStatus = Signal<(), NoError>.pipe().output
-      self.registerForRemoteNotifications = applicationLaunchedWithUser
-    }
-
-    self.authorizeForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
-      .skipNil()
-      .filter { $0.isNotDetermined }
-      .ignoreValues()
 
     // Koala
 
