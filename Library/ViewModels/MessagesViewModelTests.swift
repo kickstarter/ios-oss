@@ -80,32 +80,47 @@ internal final class MessagesViewModelTests: TestCase {
     let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
 
-    self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
-    self.vm.inputs.viewDidLoad()
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
 
-    self.scheduler.advance()
+    let apiService = MockService(fetchMessageThreadResponse: messageThread)
 
-    self.project.assertValues([project])
-    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
-    self.messages.assertValueCount(1)
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+      self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+      self.scheduler.advance()
+
+      self.project.assertValues([project])
+      self.backingAndProjectAndIsFromBacking.assertValueCount(1)
+      self.messages.assertValueCount(1)
+
+      XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+    }
   }
 
   func testOutputs_ConfiguredWithProject_AndBacking() {
     let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
 
-    self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
-    self.vm.inputs.viewDidLoad()
+    let apiService = MockService(fetchMessageThreadResponse: messageThread)
 
-    self.scheduler.advance()
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+      self.vm.inputs.viewDidLoad()
 
-    self.project.assertValues([project])
-    self.backingAndProjectAndIsFromBacking.assertValueCount(1)
-    self.messages.assertValueCount(1)
+      self.scheduler.advance()
 
-    XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+      self.project.assertValues([project])
+      self.backingAndProjectAndIsFromBacking.assertValueCount(1)
+      self.messages.assertValueCount(1)
+
+      XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+    }
   }
 
   func testGoToProject() {
@@ -185,33 +200,40 @@ internal final class MessagesViewModelTests: TestCase {
   func testReplyFlow() {
     let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
 
-    self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+    let apiService = MockService(fetchMessageThreadResponse: messageThread)
 
-    self.replyButtonIsEnabled.assertValueCount(0)
-    self.emptyStateIsVisible.assertValueCount(0)
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
-    self.vm.inputs.viewDidLoad()
+      self.replyButtonIsEnabled.assertValueCount(0)
+      self.emptyStateIsVisible.assertValueCount(0)
 
-    self.messages.assertValueCount(0)
-    self.replyButtonIsEnabled.assertValues([false])
-    self.emptyStateIsVisible.assertValues([false])
+      self.vm.inputs.viewDidLoad()
 
-    self.scheduler.advance()
+      self.messages.assertValueCount(0)
+      self.replyButtonIsEnabled.assertValues([false])
+      self.emptyStateIsVisible.assertValues([false])
 
-    self.messages.assertValueCount(1)
-    self.replyButtonIsEnabled.assertValues([false, true])
-    self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
+      self.scheduler.advance()
 
-    self.vm.inputs.replyButtonPressed()
+      self.messages.assertValueCount(1)
+      self.replyButtonIsEnabled.assertValues([false, true])
+      self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
 
-    self.presentMessageDialog.assertValueCount(1)
+      self.vm.inputs.replyButtonPressed()
 
-    self.vm.inputs.messageSent(Message.template)
+      self.presentMessageDialog.assertValueCount(1)
 
-    self.scheduler.advance()
+      self.vm.inputs.messageSent(Message.template)
 
-    self.messages.assertValueCount(2)
+      self.scheduler.advance()
+
+      self.messages.assertValueCount(2)
+    }
   }
 
   func testMarkAsRead() {
@@ -223,7 +245,77 @@ internal final class MessagesViewModelTests: TestCase {
     self.successfullyMarkedAsRead.assertValueCount(1)
   }
 
-  func testEmptyStateIsVisibleAndMessage() {
-    // fix Argo error first
+  func testEmptyStateIsVisibleAndMessage_CurrentUserIsBacker() {
+    let project = .template
+      |> Project.lens.id .~ 42
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.creator..User.lens.id .~ 20
+    let backing = .template
+      |> Backing.lens.backer .~ .template
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.emptyStateIsVisible.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.emptyStateIsVisible.assertValues([false])
+      self.emptyStateMessage.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.emptyStateIsVisible.assertValues([false, true])
+      self.emptyStateMessage.assertValues(["", Strings.messages_empty_state_message_backer()])
+    }
+  }
+
+  func testEmptyStateIsVisibleAndMessage_CurrentUserIsCreator() {
+    let creator = .template |> User.lens.id .~ 20
+    let project = .template
+      |> Project.lens.id .~ 42
+      |> Project.lens.creator .~ creator
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    withEnvironment(currentUser: creator) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: .template)))
+
+      self.emptyStateIsVisible.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.emptyStateIsVisible.assertValues([false])
+      self.emptyStateMessage.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.emptyStateIsVisible.assertValues([false, true])
+      self.emptyStateMessage.assertValues(["", Strings.messages_empty_state_message_creator()])
+    }
+  }
+
+  func testEmptyStateIsVisibleAndMessage_CurrentUserIsCollaboratorAndBacker() {
+    let collaborator = .template |> User.lens.id .~ 20
+    let project = .template
+      |> Project.lens.creator..User.lens.id .~ 40
+      |> Project.lens.memberData.permissions .~ [.viewPledges]
+    let backing = .template
+      |> Backing.lens.backer .~ collaborator
+
+    withEnvironment(currentUser: collaborator) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.emptyStateIsVisible.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.emptyStateIsVisible.assertValues([false])
+      self.emptyStateMessage.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.emptyStateIsVisible.assertValues([false, true])
+      self.emptyStateMessage.assertValues(["", Strings.messages_empty_state_message_backer()])
+    }
   }
 }

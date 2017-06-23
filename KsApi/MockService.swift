@@ -52,7 +52,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let publishUpdateError: ErrorEnvelope?
 
-  fileprivate let fetchMessageThreadResponse: MessageThread
+  fileprivate let fetchMessageThreadResponse: MessageThread?
   fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
   fileprivate let fetchProjectResponse: Project?
@@ -278,7 +278,7 @@ internal struct MockService: ServiceType {
 
     self.publishUpdateError = publishUpdateError
 
-    self.fetchMessageThreadResponse = fetchMessageThreadResponse ?? .template
+    self.fetchMessageThreadResponse = fetchMessageThreadResponse
 
     self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
       .template |> MessageThread.lens.id .~ 1,
@@ -603,7 +603,7 @@ internal struct MockService: ServiceType {
             .template |> Message.lens.id .~ 2,
             .template |> Message.lens.id .~ 3
           ],
-          messageThread: self.fetchMessageThreadResponse
+          messageThread: self.fetchMessageThreadResponse ?? .template
         )
       )
   }
@@ -611,17 +611,21 @@ internal struct MockService: ServiceType {
   internal func fetchMessageThread(backing: Backing)
     -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
 
-      return SignalProducer(
-        value: MessageThreadEnvelope(
-          participants: [.template, .template |> User.lens.id .~ 2],
-          messages: [
-            .template |> Message.lens.id .~ 1,
-            .template |> Message.lens.id .~ 2,
-            .template |> Message.lens.id .~ 3
-          ],
-          messageThread: self.fetchMessageThreadResponse
+      if let thread = self.fetchMessageThreadResponse {
+        return SignalProducer(
+          value: MessageThreadEnvelope(
+            participants: [.template, .template |> User.lens.id .~ 2],
+            messages: [
+              .template |> Message.lens.id .~ 1,
+              .template |> Message.lens.id .~ 2,
+              .template |> Message.lens.id .~ 3
+            ],
+            messageThread: thread
+          )
         )
-      )
+      } else {
+        return SignalProducer(value: nil)
+      }
   }
 
   internal func fetchMessageThreads(mailbox: Mailbox, project: Project?)
