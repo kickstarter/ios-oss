@@ -165,7 +165,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, NoError> { get }
-
 }
 
 public protocol AppDelegateViewModelType {
