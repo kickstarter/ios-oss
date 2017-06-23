@@ -991,6 +991,22 @@ backers"
     )
   }
   /**
+   "Delivered"
+
+   - **es**: "Entregado"
+   - **de**: "Delivered"
+   - **fr**: "Delivered"
+   - **en**: "Delivered"
+  */
+  public static func Delivered() -> String {
+    return localizedString(
+      key: "Delivered",
+      defaultValue: "Delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
@@ -2452,6 +2468,22 @@ from friends yet."
     )
   }
   /**
+   "Not delivered"
+
+   - **es**: "No entregado"
+   - **de**: "Not delivered"
+   - **fr**: "Not delivered"
+   - **en**: "Not delivered"
+  */
+  public static func Not_delivered() -> String {
+    return localizedString(
+      key: "Not_delivered",
+      defaultValue: "Not delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Once you back a project, we’ll share personalized recommendations in this space."
 
    - **es**: "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas."
@@ -3816,33 +3848,33 @@ catch your eye?"
     )
   }
   /**
-   "Tap the heart icon on a project to get notified 48 hours before it ends."
+   "Tap the star icon on a project to get notified 48 hours before it ends."
 
-   - **es**: "Haz click en el corazón en un proyecto para recibir una notificación 48 hrs, antes de que finalice."
+   - **es**: "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice."
    - **de**: "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft."
-   - **fr**: "Tap the heart icon on a project to get notified 48 hours before it ends."
-   - **en**: "Tap the heart icon on a project to get notified 48 hours before it ends."
+   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
+   - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
   */
-  public static func Tap_the_heart_on_a_project_to_get_notified() -> String {
+  public static func Tap_the_star_on_a_project_to_get_notified() -> String {
     return localizedString(
-      key: "Tap_the_heart_on_a_project_to_get_notified",
-      defaultValue: "Tap the heart icon on a project to get notified 48 hours before it ends.",
+      key: "Tap_the_star_on_a_project_to_get_notified",
+      defaultValue: "Tap the star icon on a project to get notified 48 hours before it ends.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
+   "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
 
-   - **es**: "Haz click en el corazón en cada página de proyecto para guardarlo. Te recordaremos 48 hrs. antes de que finalice el proyecto."
-   - **de**: "Klicke einfach auf den Stern auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
-   - **fr**: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
-   - **en**: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **es**: "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto."
+   - **de**: "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
+   - **fr**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
-  public static func Tap_the_heart_on_each_project_page_to_save_it() -> String {
+  public static func Tap_the_star_on_each_project_page_to_save_it() -> String {
     return localizedString(
-      key: "Tap_the_heart_on_each_project_page_to_save_it",
-      defaultValue: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.",
+      key: "Tap_the_star_on_each_project_page_to_save_it",
+      defaultValue: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.",
       count: nil,
       substitutions: [:]
     )
