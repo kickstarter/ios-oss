@@ -1275,10 +1275,6 @@ public final class Koala {
                properties: ["type": type])
   }
 
-  public func trackPushPermissionDialogOpen() {
-    self.track(event: "Triggered Push Permissions Dialog")
-  }
-
   public func trackPushPermissionOptIn() {
     self.track(event: "Confirmed Push Opt-In")
   }

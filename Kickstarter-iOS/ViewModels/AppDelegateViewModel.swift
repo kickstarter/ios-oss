@@ -553,9 +553,6 @@ AppDelegateViewModelOutputs {
 
     // Koala
 
-    self.authorizeForRemoteNotifications
-      .observeValues { AppEnvironment.current.koala.trackPushPermissionDialogOpen() }
-
     self.notificationAuthorizationStatusProperty.signal
       .skipNil()
       .skip(until: self.notificationAuthorizationCompletedProperty.signal)

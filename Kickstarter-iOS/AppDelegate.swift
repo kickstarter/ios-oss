@@ -145,9 +145,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           UIApplication.shared.registerForRemoteNotifications()
         }
-
-        // FIXME Boris:
-        print("Boris: registerForRemoteNotification called")
       }
 
       if #available(iOS 10.0, *) {

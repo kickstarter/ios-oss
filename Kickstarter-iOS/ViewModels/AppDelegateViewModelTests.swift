@@ -636,9 +636,9 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testTrackingPushAutorizationOptIn() {
+  func testTrackingPushAuthorizationOptIn() {
     let client = MockTrackingClient()
-    
+
     withEnvironment(currentUser: .template, koala: Koala(client: client)) {
       self.vm.inputs.userSessionStarted()
 
@@ -699,7 +699,6 @@ final class AppDelegateViewModelTests: TestCase {
       XCTAssertEqual(1, client.events |> count("Dismissed Push Opt-In"))
     }
   }
-
 
   func testRegisterDeviceToken() {
     withEnvironment(currentUser: .template) {
@@ -1522,7 +1521,6 @@ extension MockNotificationAutorizationStatus: NotificationAuthorizationStatusTyp
     }
   }
 }
-
 
 private let backingForCreatorPushData: [String: Any] = [
   "aps": [
