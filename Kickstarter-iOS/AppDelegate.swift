@@ -138,14 +138,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues {
         if #available(iOS 10.0, *) {
           UIApplication.shared.registerForRemoteNotifications()
-        }
-        else {
+        } else {
           UIApplication.shared.registerUserNotificationSettings(
             UIUserNotificationSettings(types: .alert, categories: [])
           )
 
           UIApplication.shared.registerForRemoteNotifications()
         }
+
+        // FIXME Boris:
+        print("Boris: registerForRemoteNotification called")
       }
 
       if #available(iOS 10.0, *) {

@@ -22,7 +22,6 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.userName == rhs.userName
 }
 
-// FIXME: where to put this?
 public protocol NotificationAuthorizationStatusType {
   var isAuthorized: Bool { get }
   var isDenied: Bool { get }
@@ -242,13 +241,6 @@ AppDelegateViewModelOutputs {
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
-    //FIXME: Boris: remove before commit
-    //This is temporary that I dont need to login for push prompt
-//    let applicationLaunchedWithUser = Signal.merge(
-//        self.applicationWillEnterForegroundProperty.signal,
-//        self.applicationLaunchOptionsProperty.signal.ignoreValues()
-//      )
-
     if #available(iOS 10.0, *) {
       self.getNotificationAuthorizationStatus =
         Signal.merge(
@@ -260,10 +252,10 @@ AppDelegateViewModelOutputs {
         .filter { $0.isAuthorized }
         .ignoreValues()
 
-    }
-    else {
-      //FIXME: Not sure this is the best way to create signal than never fires?
+    } else {
+      //Never firing signal in ios 9
       self.getNotificationAuthorizationStatus = Signal<(), NoError>.pipe().output
+
       self.registerForRemoteNotifications = applicationLaunchedWithUser
     }
 
@@ -571,8 +563,7 @@ AppDelegateViewModelOutputs {
       .observeValues {
         if $0.isAuthorized {
           AppEnvironment.current.koala.trackPushPermissionOptIn()
-        }
-        else if $0.isDenied {
+        } else if $0.isDenied {
           AppEnvironment.current.koala.trackPushPermissionOptOut()
         }
       }
