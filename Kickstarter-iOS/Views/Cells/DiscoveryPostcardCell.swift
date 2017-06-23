@@ -125,11 +125,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStateSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_navy_500
       |> UILabel.lens.font .~ .ksr_body(size: 13)
-      |> UILabel.lens.numberOfLines .~ 2
+      |> UILabel.lens.numberOfLines .~ 1
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.projectStateTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.projectStateStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
