@@ -253,7 +253,7 @@ AppDelegateViewModelOutputs {
 
     } else {
       //Never firing signal in ios 9
-      self.getNotificationAuthorizationStatus = Signal<(), NoError>.pipe().output
+      self.getNotificationAuthorizationStatus = .empty
 
       self.registerForRemoteNotifications = applicationLaunchedWithUser
     }
