@@ -176,8 +176,6 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   func testCurrentUserIsCreator_Backing_Canceled() {
-    let project = self.cosmicSurgery
-      |> Project.lens.creator .~ self.creator
     let backingCanceled = self.backing |> Backing.lens.status .~ .canceled
 
     Language.allLanguages.forEach { language in
@@ -198,8 +196,6 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   func testCurrentUserIsCreator_Backing_Collected() {
-    let project = self.cosmicSurgery
-      |> Project.lens.creator .~ self.creator
     let backingCollected = self.backing |> Backing.lens.status .~ .collected
 
     Language.allLanguages.forEach { language in
@@ -220,8 +216,6 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   func testCurrentUserIsCreator_Backing_Dropped() {
-    let project = self.cosmicSurgery
-      |> Project.lens.creator .~ self.creator
     let backingDropped = self.backing |> Backing.lens.status .~ .dropped
 
     Language.allLanguages.forEach { language in
@@ -242,8 +236,6 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   func testCurrentUserIsCreator_Backing_Errored() {
-    let project = self.cosmicSurgery
-      |> Project.lens.creator .~ self.creator
     let backingErrored = self.backing |> Backing.lens.status .~ .errored
 
     Language.allLanguages.forEach { language in
@@ -264,8 +256,6 @@ internal final class BackingViewControllerTests: TestCase {
   }
 
   func testCurrentUserIsCreator_Project_Failed() {
-    let project = self.cosmicSurgery
-      |> Project.lens.creator .~ self.creator
     let projectFailed = self.cosmicSurgery |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in
