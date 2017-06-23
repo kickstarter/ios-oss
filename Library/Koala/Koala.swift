@@ -1275,16 +1275,19 @@ public final class Koala {
                properties: ["type": type])
   }
 
+  //FIXME: reomve prints
   public func trackPushPermissionDialogOpen() {
     print("Boris: trackPushPermissionDialogOpen")
     self.track(event: "Triggered Push Permissions Dialog")
   }
 
+  //FIXME: reomve prints
   public func trackPushPermissionOptIn() {
     print("Boris: trackPushPermissionOptIn")
     self.track(event: "Confirmed Push Opt-In")
   }
 
+  //FIXME: reomve prints
   public func trackPushPermissionOptOut() {
     print("Boris: trackPushPermissionOptOut")
     self.track(event: "Dismissed Push Opt-In")

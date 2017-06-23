@@ -630,6 +630,77 @@ final class AppDelegateViewModelTests: TestCase {
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
+  fileprivate func count(_ string: String) -> ([String]) -> Int {
+    return { array in
+      return array.reduce(0, { acc, val in val == string ? acc + 1 : acc })
+    }
+  }
+
+  func testTrackingPushAutorizationOptIn() {
+    let client = MockTrackingClient()
+    
+    withEnvironment(currentUser: .template, koala: Koala(client: client)) {
+      self.vm.inputs.userSessionStarted()
+
+      XCTAssertEqual(0, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+
+      XCTAssertEqual(0, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+
+      XCTAssertEqual(1, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.notificationAuthorizationCompleted()
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+
+      XCTAssertEqual(1, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(1, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+    }
+  }
+
+  func testTrackingPushAutorizationOptOut() {
+    let client = MockTrackingClient()
+
+    withEnvironment(currentUser: .template, koala: Koala(client: client)) {
+      self.vm.inputs.userSessionStarted()
+
+      XCTAssertEqual(0, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+
+      XCTAssertEqual(0, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+
+      XCTAssertEqual(1, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+
+      self.vm.inputs.notificationAuthorizationCompleted()
+      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.denied)
+
+      XCTAssertEqual(1, client.events |> count("Triggered Push Permissions Dialog"))
+      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
+      XCTAssertEqual(1, client.events |> count("Dismissed Push Opt-In"))
+    }
+  }
+
+
   func testRegisterDeviceToken() {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
