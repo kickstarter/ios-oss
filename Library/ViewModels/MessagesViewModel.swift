@@ -144,7 +144,7 @@ MessagesViewModelOutputs {
         self.project
         )
         .map { _, backing, project in
-          let isCreatorOrCollaborator = project.memberData.permissions.count > 0
+          let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty
             && backing.backer != AppEnvironment.current.currentUser
           let message = isCreatorOrCollaborator
             ? Strings.messages_empty_state_message_creator()

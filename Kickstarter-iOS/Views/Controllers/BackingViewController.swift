@@ -227,11 +227,9 @@ internal final class BackingViewController: UIViewController {
 
   fileprivate func goToMessages(project: Project, backing: Backing) {
     if let nav = self.navigationController {
-      for controller in nav.childViewControllers {
-        if controller is MessagesViewController {
-          nav.popViewController(animated: true)
-          return
-        }
+      for controller in nav.childViewControllers where controller is MessagesViewController {
+        nav.popViewController(animated: true)
+        return
       }
     }
 
