@@ -10,7 +10,7 @@ internal final class BackingViewControllerTests: TestCase {
     |> Project.lens.state .~ .successful
   private let backing = Backing.template
     |> Backing.lens.pledgedAt .~ 1468527587.32843
-  private let brando = User.brando
+  private let brando = User.brando |> User.lens.avatar.small .~ ""
   private let creator = .template |> User.lens.id .~ 42
 
   override func setUp() {
