@@ -5,6 +5,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import Result
 import XCTest
+import UserNotifications
 @testable import Library
 @testable import LiveStream
 @testable import Kickstarter_Framework
@@ -562,6 +563,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
+  @available(iOS 10.0, *)
   func testRegisterUnregisterNotifications() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
                                                  launchOptions: [:])
@@ -587,14 +589,14 @@ final class AppDelegateViewModelTests: TestCase {
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.denied)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
       self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
       self.authorizeForRemoteNotifications.assertValueCount(0)
@@ -602,7 +604,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       //Simulate initial notification authorization
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
       self.authorizeForRemoteNotifications.assertValueCount(1)
@@ -616,7 +618,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       self.getNotificationAuthorizationStatus.assertValueCount(3)
       self.authorizeForRemoteNotifications.assertValueCount(1)
@@ -630,6 +632,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
+  @available(iOS 10.0, *)
   func testTrackingPushAuthorizationOptIn() {
     let client = MockTrackingClient()
 
@@ -643,18 +646,19 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationCompleted()
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Confirmed Push Opt-In"],
         client.events)
     }
   }
 
+  @available(iOS 10.0, *)
   func testTrackingPushAuthorizationOptOut() {
     let client = MockTrackingClient()
 
@@ -668,12 +672,12 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationCompleted()
-      self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.denied)
+      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Dismissed Push Opt-In"],
         client.events)
@@ -1466,39 +1470,6 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(result)
 
     self.presentViewController.assertValues([1])
-  }
-}
-
-fileprivate enum MockNotificationAutorizationStatus {
-  case notDetermined
-  case denied
-  case authorized
-}
-
-extension MockNotificationAutorizationStatus: NotificationAuthorizationStatusType {
-
-  var isNotDetermined: Bool {
-    switch self {
-    case .notDetermined: return true
-    case .denied: return false
-    case .authorized: return false
-    }
-  }
-
-  var isDenied: Bool {
-    switch self {
-    case .notDetermined: return false
-    case .denied: return true
-    case .authorized: return false
-    }
-  }
-
-  var isAuthorized: Bool {
-    switch self {
-    case .notDetermined: return false
-    case .denied: return false
-    case .authorized: return true
-    }
   }
 }
 
