@@ -630,65 +630,53 @@ final class AppDelegateViewModelTests: TestCase {
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
-  fileprivate func count(_ string: String) -> ([String]) -> Int {
-    return { array in
-      return array.reduce(0, { acc, val in val == string ? acc + 1 : acc })
-    }
-  }
-
   func testTrackingPushAuthorizationOptIn() {
     let client = MockTrackingClient()
 
     withEnvironment(currentUser: .template, koala: Koala(client: client)) {
       self.vm.inputs.userSessionStarted()
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual([], client.events)
 
       self.vm.inputs.applicationDidEnterBackground()
       self.vm.inputs.applicationWillEnterForeground()
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationCompleted()
       self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.authorized)
 
-      XCTAssertEqual(1, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Confirmed Push Opt-In"],
+        client.events)
     }
   }
 
-  func testTrackingPushAutorizationOptOut() {
+  func testTrackingPushAuthorizationOptOut() {
     let client = MockTrackingClient()
 
     withEnvironment(currentUser: .template, koala: Koala(client: client)) {
       self.vm.inputs.userSessionStarted()
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual([], client.events)
 
       self.vm.inputs.applicationDidEnterBackground()
       self.vm.inputs.applicationWillEnterForeground()
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.notDetermined)
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(0, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
       self.vm.inputs.notificationAuthorizationCompleted()
       self.vm.inputs.notificationAuthorizationStatusReceived(MockNotificationAutorizationStatus.denied)
 
-      XCTAssertEqual(0, client.events |> count("Confirmed Push Opt-In"))
-      XCTAssertEqual(1, client.events |> count("Dismissed Push Opt-In"))
+      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Dismissed Push Opt-In"],
+        client.events)
     }
   }
 
