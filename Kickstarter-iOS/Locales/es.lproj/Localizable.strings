@@ -95,10 +95,12 @@
 "Find_projects_youll_love_and_help_bring" = "Aquí encuentras proyectos a tu gusto - ¡tu contribución ayudará a hacerlos realidad!";
 "Find_projects_youll_love_in_art_design_film" = "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí.";
 "First_created" = "Primer proyecto creado";
+"Follow_friend_name" = "Seguir a %{friend_name}.";
 "Follow_friends" = "Seguir amigos";
 "Follow_more_friends" = "Seguir a más amigos";
 "Follow_your_Facebook_friends_and_get_notified" = "Sigue a tus amigos y te avisaremos cuando publican o patrocinan un proyecto.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Sigue a tus amigos de Facebook y entérate cuando patrocinan o publican un proyecto.";
+"Followed" = "Siguiendo";
 "Following" = "Siguiendo";
 "Follows_friend_name" = "Sigue a %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>.";
@@ -164,6 +166,7 @@
 "No_replay_is_available_for_this_live_stream" = "Este Live Stream no cuenta con repetición.";
 "No_unread_messages" = "No hay mensajes no leídos";
 "Not_delivered" = "No entregado";
+"Not_followed" = "No siguiendo";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
 "Opens_comments" = "Abre comentarios.";
@@ -276,6 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
 "Total_pledged" = "Contribuciones en total";
+"Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
 "Unsaves_project" = "Deshacer \"guardar proyecto\".";
 "Unsubscribe" = "Anular suscripción";
