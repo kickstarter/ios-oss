@@ -80,16 +80,7 @@ internal final class BackingViewController: UIViewController {
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
 
-    self.viewModel.outputs.backerAvatarURL
-      .observeForControllerAction()
-      .on(event: { [weak backerAvatarImageView] _ in
-        backerAvatarImageView?.af_cancelImageRequest()
-        backerAvatarImageView?.image = nil
-      })
-      .skipNil()
-      .observeValues { [weak backerAvatarImageView] url in
-        backerAvatarImageView?.af_setImage(withURL: url)
-    }
+    self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
 
     self.viewModel.outputs.goToMessages
       .observeForControllerAction()
