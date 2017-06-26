@@ -63,7 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> était en direct %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} était en direct sur Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
-"Delivered" = "Delivered";
+"Delivered" = "Distribué";
 "Discover_more_projects" = "Découvrez plus de projets.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
@@ -95,10 +95,12 @@
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
+"Follow_friend_name" = "Suivre %{friend_name}";
 "Follow_friends" = "Suivez vos amis";
 "Follow_more_friends" = "Suivre plus d'amis";
 "Follow_your_Facebook_friends_and_get_notified" = "Rejoignez-les et découvrez ensemble de nouveaux projets.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent.";
+"Followed" = "Abonné";
 "Following" = "Projets soutenus par mes amis";
 "Follows_friend_name" = "Abonnement aux actus de %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>.";
@@ -163,7 +165,8 @@
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
 "No_replay_is_available_for_this_live_stream" = "Pas de rediffusion possible pour cette diffusion en direct.";
 "No_unread_messages" = "Pas de messages non lus";
-"Not_delivered" = "Not delivered";
+"Not_delivered" = "Non distribué";
+"Not_followed" = "Non abonné";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
 "Opens_comments" = "Ouvre les commentaires.";
@@ -262,7 +265,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
 "Survey" = "Questionnaire";
 "Tap_the_star_on_a_project_to_get_notified" = "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne.";
-"Tap_the_star_on_each_project_page_to_save_it" = "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.";
+"Tap_the_star_on_each_project_page_to_save_it" = "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne.";
 "Thank_you_for_supporting_this_project" = "Merci pour votre soutien.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "L'adresse e-mail associée à ce compte Facebook a déjà été enregistrée par un autre utilisateur Kickstarter.";
 "The_live_stream_failed_to_connect" = "Échec de connexion à la diffusion en direct";
@@ -276,6 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application.";
 "To_read_this_project_update_you_must_be_a_backer" = "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer.";
 "Total_pledged" = "Total engagé";
+"Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
 "Unsaves_project" = "Annule l'enregistrement du projet.";
 "Unsubscribe" = "Se désabonner";

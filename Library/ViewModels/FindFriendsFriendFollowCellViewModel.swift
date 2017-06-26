@@ -145,37 +145,9 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       )
       .skipRepeats()
 
-    self.followButtonAccessibilityLabel = name
-      .map {
-        localizedString(
-          key: "Follow_friend_name",
-          defaultValue: "Follow %{friend_name}",
-          count: nil,
-          substitutions: ["friend_name": $0])
-      }
-
-    self.unfollowButtonAccessibilityLabel = name
-      .map {
-        localizedString(
-          key: "Unfollow_friend_name",
-          defaultValue: "Unfollow %{friend_name}",
-          count: nil,
-          substitutions: ["friend_name": $0])
-      }
-
-    let followedText = localizedString(
-      key: "Followed",
-      defaultValue: "Followed",
-      count: nil,
-      substitutions: [:])
-
-    let notFollowedText = localizedString(
-      key: "Not_followed",
-      defaultValue: "Not followed",
-      count: nil,
-      substitutions: [:])
-
-    self.cellAccessibilityValue = isFollowed.map { $0 ? followedText : notFollowedText }
+    self.followButtonAccessibilityLabel = name.map(Strings.Follow_friend_name)
+    self.unfollowButtonAccessibilityLabel = name.map(Strings.Unfollow_friend_name)
+    self.cellAccessibilityValue = isFollowed.map { $0 ? Strings.Followed() : Strings.Not_followed() }
 
     let source = self.configureWithSourceProperty.signal.skipNil().map { $0 }
 
