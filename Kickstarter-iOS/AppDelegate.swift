@@ -17,7 +17,6 @@ import SafariServices
 import UIKit
 import UserNotifications
 
-
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
