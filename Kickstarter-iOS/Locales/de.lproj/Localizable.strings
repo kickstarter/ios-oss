@@ -63,7 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> war vor %{time_ago} live";
 "Creator_name_was_streaming_live_on_Kickstarter" = "Der Stream von %{creator_name} war gerade live auf Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
-"Delivered" = "Delivered";
+"Delivered" = "Verschickt";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
@@ -95,10 +95,12 @@
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
+"Follow_friend_name" = "%{friend_name} folgen.";
 "Follow_friends" = "Freunden folgen";
 "Follow_more_friends" = "Folge noch mehr Freunden";
 "Follow_your_Facebook_friends_and_get_notified" = "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
+"Followed" = "Abonniert";
 "Following" = "Abonniert";
 "Follows_friend_name" = "%{friend_name} folgen.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt.";
@@ -163,7 +165,8 @@
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
-"Not_delivered" = "Not delivered";
+"Not_delivered" = "Nicht verschickt";
+"Not_followed" = "Nicht abonniert";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
 "Opens_comments" = "Öffnet Kommentare.";
@@ -276,6 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
 "To_read_this_project_update_you_must_be_a_backer" = "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich.";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
+"Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
 "Unsaves_project" = "Macht Speichern dieses Projektes rückgängig.";
 "Unsubscribe" = "Abo abbestellen";

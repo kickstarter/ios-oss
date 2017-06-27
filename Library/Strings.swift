@@ -994,8 +994,8 @@ backers"
    "Delivered"
 
    - **es**: "Entregado"
-   - **de**: "Delivered"
-   - **fr**: "Delivered"
+   - **de**: "Verschickt"
+   - **fr**: "Distribué"
    - **en**: "Delivered"
   */
   public static func Delivered() -> String {
@@ -1439,6 +1439,22 @@ backers"
     )
   }
   /**
+   "Follow %{friend_name}."
+
+   - **es**: "Seguir a %{friend_name}."
+   - **de**: "%{friend_name} folgen."
+   - **fr**: "Suivre %{friend_name}"
+   - **en**: "Follow %{friend_name}."
+  */
+  public static func Follow_friend_name(friend_name: String) -> String {
+    return localizedString(
+      key: "Follow_friend_name",
+      defaultValue: "Follow %{friend_name}.",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
    "Follow friends"
 
    - **es**: "Seguir amigos"
@@ -1498,6 +1514,22 @@ backers"
     return localizedString(
       key: "Follow_your_Facebook_friends_and_keep_up_with_the_projects",
       defaultValue: "Follow your Facebook friends and keep up with the projects they back and launch.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Followed"
+
+   - **es**: "Siguiendo"
+   - **de**: "Abonniert"
+   - **fr**: "Abonné"
+   - **en**: "Followed"
+  */
+  public static func Followed() -> String {
+    return localizedString(
+      key: "Followed",
+      defaultValue: "Followed",
       count: nil,
       substitutions: [:]
     )
@@ -2471,14 +2503,30 @@ from friends yet."
    "Not delivered"
 
    - **es**: "No entregado"
-   - **de**: "Not delivered"
-   - **fr**: "Not delivered"
+   - **de**: "Nicht verschickt"
+   - **fr**: "Non distribué"
    - **en**: "Not delivered"
   */
   public static func Not_delivered() -> String {
     return localizedString(
       key: "Not_delivered",
       defaultValue: "Not delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not followed"
+
+   - **es**: "No siguiendo"
+   - **de**: "Nicht abonniert"
+   - **fr**: "Non abonné"
+   - **en**: "Not followed"
+  */
+  public static func Not_followed() -> String {
+    return localizedString(
+      key: "Not_followed",
+      defaultValue: "Not followed",
       count: nil,
       substitutions: [:]
     )
@@ -3868,7 +3916,7 @@ catch your eye?"
 
    - **es**: "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto."
    - **de**: "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
-   - **fr**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
+   - **fr**: "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
    - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
   public static func Tap_the_star_on_each_project_page_to_save_it() -> String {
@@ -4085,6 +4133,22 @@ catch your eye?"
       defaultValue: "Total pledged",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Unfollow %{friend_name}"
+
+   - **es**: "Dejar de seguir a %{friend_name}"
+   - **de**: "%{friend_name} nicht mehr folgen"
+   - **fr**: "Ne plus suivre %{friend_name}"
+   - **en**: "Unfollow %{friend_name}"
+  */
+  public static func Unfollow_friend_name(friend_name: String) -> String {
+    return localizedString(
+      key: "Unfollow_friend_name",
+      defaultValue: "Unfollow %{friend_name}",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
     )
   }
   /**
