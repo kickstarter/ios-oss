@@ -115,6 +115,9 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
+		7DD8EE4F1F02DD2C0070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
+		7DD8EE501F02DD560070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
 		8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */; };
 		8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
 		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
@@ -1515,6 +1518,7 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		7DD8EE231F02DBED0070B63D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/FBSDK/iOS/Bolts.framework; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
 		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
@@ -2282,6 +2286,7 @@
 				D0745B9B1EEB226400FA53D3 /* Prelude.framework in Frameworks */,
 				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
 				01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */,
+				7DD8EE501F02DD560070B63D /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2352,6 +2357,7 @@
 				D0D2AB5E1E964849008D298A /* GLKit.framework in Frameworks */,
 				D0D2AB641E964849008D298A /* UIKit.framework in Frameworks */,
 				A75F71631D897E4C0091258A /* Stripe.framework in Frameworks */,
+				7DD8EE4F1F02DD2C0070B63D /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2373,6 +2379,7 @@
 				D0745AD41EEB09DE00FA53D3 /* Argo.framework in Frameworks */,
 				D0745B0C1EEB0A0A00FA53D3 /* Prelude.framework in Frameworks */,
 				D0745B051EEB09E500FA53D3 /* Curry.framework in Frameworks */,
+				7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3134,6 +3141,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7DD8EE231F02DBED0070B63D /* Bolts.framework */,
 				A701B5EE1EB384E1001D4E5F /* PassKit.framework */,
 				80762E261D071BFE0074189D /* Alamofire.xcodeproj */,
 				80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */,
