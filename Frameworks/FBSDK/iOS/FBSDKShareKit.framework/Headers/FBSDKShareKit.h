@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import <FBSDKShareKit/FBSDKHashtag.h>
 #import <FBSDKShareKit/FBSDKShareAPI.h>
 #import <FBSDKShareKit/FBSDKShareConstants.h>
 #import <FBSDKShareKit/FBSDKShareLinkContent.h>
@@ -46,5 +47,9 @@
 #import <FBSDKShareKit/FBSDKShareButton.h>
 #import <FBSDKShareKit/FBSDKShareDialog.h>
 #import <FBSDKShareKit/FBSDKShareDialogMode.h>
+#import <FBSDKShareKit/FBSDKShareMediaContent.h>
 #import <FBSDKShareKit/FBSDKSendButton.h>
+#else
+#import <FBSDKShareKit/FBSDKDeviceShareViewController.h>
+#import <FBSDKShareKit/FBSDKDeviceShareButton.h>
 #endif

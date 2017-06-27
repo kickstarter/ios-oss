@@ -16,15 +16,26 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#import <FBSDKShareKit/FBSDKSharingContent.h>
 
-/*
- @abstract An internal base class for device related flows.
- @discussion This is an internal API that should not be used directly and is subject to change.
-*/
-@interface FBSDKDeviceViewControllerBase : UIViewController
+/**
+  A model for media content (photo or video) to be shared.
+ */
+@interface FBSDKShareMediaContent : NSObject <FBSDKSharingContent>
+
+/**
+  Media to be shared.
+ - Returns: Array of the media (FBSDKSharePhoto or FBSDKShareVideo)
+ */
+@property (nonatomic, copy) NSArray *media;
+
+/**
+  Compares the receiver to another media content.
+ - Parameter content: The other content
+ - Returns: YES if the receiver's values are equal to the other content's values; otherwise NO
+ */
+- (BOOL)isEqualToShareMediaContent:(FBSDKShareMediaContent *)content;
+
 @end
-
-NS_ASSUME_NONNULL_END
