@@ -2352,8 +2352,6 @@
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
-		D0B45B7D1EF85A7F0020A8DA /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0B45B801EF85A870020A8DA /* Runes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Runes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2678,8 +2676,6 @@
 		A7424F0D1C84F40E00FDC1E4 /* Embedded */ = {
 			isa = PBXGroup;
 			children = (
-				D0B45B801EF85A870020A8DA /* Runes.framework */,
-				D0B45B7D1EF85A7F0020A8DA /* Result.framework */,
 				A7424F421C84F43300FDC1E4 /* iOS */,
 				A7E1C4BD1D18C871002D6DE3 /* onepassword-app-extension */,
 				A7424F411C84F41600FDC1E4 /* tvOS */,
