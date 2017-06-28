@@ -40,11 +40,13 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
+  func heartProjectFromNav(project: Project?)
+
   /// Call when share button is tapped.
   func shareButtonTapped()
 
-  /// Call when star button is tapped.
-  func starButtonTapped()
+  /// Call when heart button is tapped.
+  func heartButtonTapped()
 
   /// Call when the cell has received a user session ended notification.
   func userSessionEnded()
@@ -87,7 +89,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits when we should notify the delegate that the share button was tapped.
   var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
-  /// Emits when we should notify the delegate that the star button was tapped.
+  /// Emits when we should notify the delegate that the heart button was tapped.
   var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
 
   // var notifyDelegateShowLoginTout<LoginIntent>
@@ -132,8 +134,11 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean that determines if the social view should be hidden.
   var socialStackViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits a boolead that determines if the star button should be selected.
-  var starButtonSelected: Signal<Bool, NoError> { get }
+  /// Emits a boolean that determines if the heart button should be selected.
+  var heartButtonSelected: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the heart button should be enabled.
+  var heartButtonEnabled: Signal<Bool, NoError> { get }
 }
 
 public protocol DiscoveryPostcardViewModelType {
@@ -231,45 +236,58 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(ShareContext.discovery)
       .takeWhen(self.shareButtonTappedProperty.signal)
 
-    let loggedOutUserTappedStar = currentUser
-      .takeWhen(self.starButtonTappedProperty.signal)
+    let loggedOutUserTappedHeart = currentUser
+      .takeWhen(self.heartButtonTappedProperty.signal)
       .filter(isNil)
       .ignoreValues()
 
-    let loggedInUserTappedStar = currentUser
-      .takeWhen(self.starButtonTappedProperty.signal)
+    let loggedInUserTappedHeart = currentUser
+      .takeWhen(self.heartButtonTappedProperty.signal)
       .filter(isNotNil)
       .ignoreValues()
 
-    let userLoginAfterTappingStar = Signal.combineLatest(
+    let userLoginAfterTappingHeart = Signal.combineLatest(
       self.userSessionStartedProperty.signal,
-      loggedOutUserTappedStar
+      loggedOutUserTappedHeart
       )
       .ignoreValues()
       .take(first: 1)
 
-    let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
+    let isLoading = MutableProperty(false)
 
-    let projectOnStarToggle = configuredProject
-      .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
-      .scan(nil) { accum, project in (accum ?? project) |> toggleStarLens }
-      .skipNil()
+    let projectOnHeartToggle = configuredProject
+      .takeWhen(.merge(loggedInUserTappedHeart, userLoginAfterTappingHeart))
+      .on(event: { _ in isLoading.value = true })
 
-    let starProjectEvent = projectOnStarToggle
+    let saveProjectEvent = projectOnHeartToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
+          .on(terminated: { isLoading.value = false })
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
-    let projectStarred = starProjectEvent.values()
+    let projectHearted = saveProjectEvent.values()
       .map { $0.project }
-      .on(value: { cache(project: $0, isStarred: $0.personalization.isStarred ?? false) })
 
-    let project = Signal.merge(configuredProject, projectOnStarToggle, projectStarred)
+    let projectOnSaveError = configuredProject
+      .takeWhen(saveProjectEvent.errors())
 
-    self.starButtonSelected = project
-      .map { $0.personalization.isStarred == true }
+    let projectHeartedFromNav = configuredProject
+      .takePairWhen(self.heartProjectFromNavProperty.signal.skipNil())
+      .filter { $0 == $1 }
+      .map { $0.1 }
+
+    self.heartButtonSelected = Signal.merge(
+      projectOnHeartToggle.map { cache(project:$0, shouldToggle: true) },
+      configuredProject.map { cache(project: $0, shouldToggle: false) },
+      projectHeartedFromNav.map { cache(project: $0, shouldToggle: true) },
+      projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
+      )
+
+    let project = Signal.merge(projectOnHeartToggle, configuredProject, projectHeartedFromNav, projectOnSaveError)
+
+    self.heartButtonEnabled = isLoading.signal.map(negate)
       .skipRepeats()
 
     self.metadataViewHidden = configuredProject
@@ -282,12 +300,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.notifyDelegateShowLoginTout = loggedOutUserTappedStar
+    self.notifyDelegateShowLoginTout = loggedOutUserTappedHeart
 
     self.notifyDelegateShowSaveAlert = project
-      .takeWhen(self.starButtonTappedProperty.signal)
-      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
-        today: AppEnvironment.current.dateType.init().date)  }
+      .takeWhen(self.heartButtonTappedProperty.signal)
+      .filter { $0.personalization.isStarred == false && !$0.endsIn48Hours(
+        today: AppEnvironment.current.dateType.init().date) }
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
           !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
@@ -298,8 +316,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       })
       .ignoreValues()
 
-    projectStarred
-      .observeValues { AppEnvironment.current.koala.trackProjectStar($0, context: .discovery) }
+    projectHearted
+      .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .discovery) }
 
     // a11y
     self.cellAccessibilityLabel = configuredProject.map(Project.lens.name.view)
@@ -313,14 +331,19 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectProperty.value = project
   }
 
+  fileprivate let heartProjectFromNavProperty = MutableProperty<Project?>(nil)
+  public func heartProjectFromNav(project: Project?) {
+    self.heartProjectFromNavProperty.value = project
+  }
+
   fileprivate let shareButtonTappedProperty = MutableProperty()
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
   }
 
-  fileprivate let starButtonTappedProperty = MutableProperty()
-  public func starButtonTapped() {
-    self.starButtonTappedProperty.value = ()
+  fileprivate let heartButtonTappedProperty = MutableProperty()
+  public func heartButtonTapped() {
+    self.heartButtonTappedProperty.value = ()
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty()
@@ -359,7 +382,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
-  public let starButtonSelected: Signal<Bool, NoError> // save or star?
+  public let heartButtonSelected: Signal<Bool, NoError>
+
+  public let heartButtonEnabled: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }
@@ -374,19 +399,22 @@ private func cached(project: Project) -> Project {
   }
 }
 
-private func cache(project: Project, isStarred: Bool) {
+private func cache(project: Project, shouldToggle: Bool) -> Bool {
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] =
     AppEnvironment.current.cache[KSCache.ksr_projectStarred] ?? [Int: Bool]()
 
   var cache = AppEnvironment.current.cache[KSCache.ksr_projectStarred] as? [Int: Bool]
-  cache?[project.id] = isStarred
+
+  if let value = cache?[project.id] {
+    cache?[project.id] = shouldToggle ? !value : value
+  } else {
+    cache?[project.id] = shouldToggle
+      ? !(project.personalization.isStarred ?? false)
+      : (project.personalization.isStarred ?? false)
+  }
 
   AppEnvironment.current.cache[KSCache.ksr_projectStarred] = cache
-}
-
-// todo:
-private func removeProject(project: Project) {
-
+  return cache?[project.id] ?? false
 }
 
 private func socialText(forFriends friends: [User]) -> String? {

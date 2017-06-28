@@ -16,6 +16,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
+  internal let notifyDelegateShowLoginTout = TestObserver<Void, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
   internal let notifyDelegateShowSaveAlert = TestObserver<Void, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
@@ -31,7 +32,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
-  internal let starButtonSelected = TestObserver<Bool, NoError>()
+  internal let heartButtonSelected = TestObserver<Bool, NoError>()
+  internal let heartButtonEnabled = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -45,6 +47,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       .observe(self.fundingProgressContainerViewHidden.observer)
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
+    self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
     self.vm.notifyDelegateShowSaveAlert.observe(self.notifyDelegateShowSaveAlert.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
@@ -61,7 +64,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
-    self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
+    self.vm.outputs.heartButtonSelected.observe(self.heartButtonSelected.observer)
+    self.vm.outputs.heartButtonEnabled.observe(self.heartButtonEnabled.observer)
   }
 
   func testCellAccessibility() {
@@ -94,22 +98,81 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.notifyDelegateShareButtonTapped.assertValues([discoveryContext])
   }
 
-  func testTappedStarButton() {
+  func testSaveAlertNotification() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.heartButtonTapped()
+    self.scheduler.advance()
+    self.notifyDelegateShowSaveAlert.assertValueCount(1)
+  }
+
+  func testTappedHeartButton_LoggedIn_User() {
     let project = Project.template
-    let toggleStarResponse = .template
+    let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-      withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-
-        self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse), currentUser: .template) {
 
         self.vm.inputs.configureWith(project: project)
 
+        self.heartButtonSelected.assertValues([false], "Heart button is not selected at first.")
+
+        self.vm.inputs.heartButtonTapped()
+
+        self.heartButtonSelected.assertValues([false, true], "Heart button selects immediately.")
+
+        self.scheduler.advance()
+
+        self.heartButtonEnabled.assertValues([false, true], "Heart button stays enabled.")
+    }
+  }
+
+  func testTappedHeartButton_LoggedOut_User() {
+    let project = Project.template
+    let toggleHeartResponse = .template
+      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
+
+      withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
+
+        self.vm.inputs.configureWith(project: project)
+
+        self.heartButtonSelected.assertValues([false], "Heart button is not selected at first.")
+
+        self.vm.inputs.heartButtonTapped()
+
+        self.heartButtonSelected.assertValues([false], "Nothing is emitted when heart button tapped while logged out.")
+
+        self.notifyDelegateShowLoginTout.assertValueCount(1, "Prompt to login when heart button tapped while logged out.")
+
+        AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
         self.vm.inputs.userSessionStarted()
 
-        self.vm.inputs.starButtonTapped()
+        self.heartButtonSelected.assertValues([false, true], "Once logged in, the project hearts immediately.")
 
-        self.notifyDelegateShowSaveAlert.assertValueCount(1)
+        self.heartButtonEnabled.assertValues([false, true])
+
+        self.scheduler.advance()
+
+        self.heartButtonSelected.assertValues([false, true],
+                                             "Heart stays selected after API request.")
+
+        let untoggleHeartResponse = .template
+          |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
+
+        withEnvironment(apiService: MockService(toggleStarResponse: untoggleHeartResponse)) {
+          self.vm.inputs.heartButtonTapped()
+
+          self.heartButtonSelected.assertValues([false, true, false],
+                                               "The project unhearts immediately.")
+
+          self.scheduler.advance()
+
+          self.heartButtonEnabled.assertValues([false, true, false, true],"Heart button is enabled after API request")
+
+          self.heartButtonSelected.assertValues([false, true, false],
+                                               "The heart button stays unselected.")
+      }
     }
   }
 

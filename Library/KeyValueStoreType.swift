@@ -9,8 +9,6 @@ public enum AppKeys: String {
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
-  case hasSeenSaveProjectInProjectPage = "com.kickstarter.KeyValueStoreType.seenSaveProjectInProject"
-
 }
 
 public protocol KeyValueStoreType: class {
@@ -34,7 +32,6 @@ public protocol KeyValueStoreType: class {
   var hasSeenFavoriteCategoryAlert: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
-  var hasSeenSaveProjectInProjectPage: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
 }
 
@@ -99,15 +96,6 @@ extension KeyValueStoreType {
     }
     set {
       self.setBool(newValue, forKey: AppKeys.hasSeenSaveProjectAlert.rawValue)
-    }
-  }
-
-  public var hasSeenSaveProjectInProjectPage: Bool {
-    get {
-      return self.boolForKey(AppKeys.hasSeenSaveProjectInProjectPage.rawValue)
-    }
-    set {
-      self.setBool(newValue, forKey: AppKeys.hasSeenSaveProjectInProjectPage.rawValue)
     }
   }
 

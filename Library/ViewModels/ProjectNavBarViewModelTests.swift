@@ -20,9 +20,10 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let dismissViewController = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<(), NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let showProjectStarredPrompt = TestObserver<Void, NoError>()
+  fileprivate let showProjectSavedPrompt = TestObserver<Void, NoError>()
   fileprivate let starButtonAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let starButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let heartButtonEnabled = TestObserver<Bool, NoError>()
+  fileprivate let heartButtonSelected = TestObserver<Bool, NoError>()
   fileprivate let titleAnimate = TestObserver<Bool, NoError>()
   fileprivate let titleHidden = TestObserver<Bool, NoError>()
 
@@ -39,9 +40,10 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.projectName.observe(self.projectName.observer)
-    self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
-    self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
+    self.vm.outputs.showProjectSavedPrompt.observe(self.showProjectSavedPrompt.observer)
+    self.vm.outputs.heartButtonSelected.observe(self.heartButtonSelected.observer)
     self.vm.outputs.starButtonAccessibilityHint.observe(self.starButtonAccessibilityHint.observer)
+    self.vm.outputs.heartButtonEnabled.observe(self.heartButtonEnabled.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(second).observe(self.titleAnimate.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(first).observe(self.titleHidden.observer)
   }
@@ -180,77 +182,88 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  // Tests the flow of a logged out user trying to star a project, and then going through the login flow.
-  func testLoggedOutUser_StarsProject() {
+  // Tests the flow of a logged out user trying to heart a project, and then going through the login flow.
+  func testLoggedOutUser_HeartsProject() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
-    let toggleStarResponse = .template
+    let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
+      self.heartButtonEnabled.assertDidNotEmitValue()
+      self.heartButtonSelected.assertDidNotEmitValue("No values emitted at first.")
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.starButtonSelected.assertValues([false], "Star button is not selected at first")
+      self.heartButtonSelected.assertValues([false], "Heart button is not selected at first")
+      self.heartButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.heartButtonTapped()
 
-      self.starButtonSelected.assertValues([false], "Nothing is emitted when starring while logged out.")
-      self.goToLoginTout.assertValueCount(1, "Prompt to login when starring while logged out.")
+      self.heartButtonSelected.assertValues([false], "Nothing is emitted when heart button tapped while logged out.")
+      self.heartButtonEnabled.assertDidNotEmitValue()
+
+      self.goToLoginTout.assertValueCount(1, "Prompt to login when hearting while logged out.")
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.starButtonSelected.assertValues([false, true], "Once logged in, the project stars immediately.")
+      self.heartButtonSelected.assertValues([false, true], "Once logged in, the heart is selected immediately.")
+      self.heartButtonEnabled.assertValues([false, true])
 
       self.scheduler.advance()
 
-      self.starButtonSelected.assertValues([false, true],
-                                           "Star stays selected after API request.")
-      self.showProjectStarredPrompt.assertValueCount(0, "The star prompt shows.")
+      self.heartButtonSelected.assertValues([false, true],
+                                           "Heart button stays selected after API request.")
+      self.heartButtonEnabled.assertValues([false, true])
+      self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
       XCTAssertEqual(["Project Star", "Starred Project"],
                      trackingClient.events, "A star koala event is tracked.")
     }
   }
 
-  // Tests a logged in user starring a project.
-  func testLoggedInUser_StarsAndUnstarsProject() {
+  // Tests a logged in user hearting a project.
+  func testLoggedInUser_HeartsAndUnheartsProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = Project.template
-    let toggleStarResponse = .template
+    let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.starButtonSelected.assertValues([false], "Star button is not selected at first")
+      self.heartButtonSelected.assertValues([false], "Heart button is not selected at first")
+      self.heartButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.heartButtonTapped()
 
-      self.starButtonSelected.assertValues([false, true], "Star button selects immediately.")
+      self.heartButtonSelected.assertValues([false, true], "Heart button selects immediately.")
+      self.heartButtonEnabled.assertValues([false, true])
+
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
+      self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
       XCTAssertEqual(["Project Star", "Starred Project"],
                      trackingClient.events, "A star koala event is tracked.")
 
-      let untoggleStarResponse = .template
+      let untoggleHeartResponse = .template
         |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
-      withEnvironment(apiService: MockService(toggleStarResponse: untoggleStarResponse)) {
-        self.vm.inputs.starButtonTapped()
+      withEnvironment(apiService: MockService(toggleStarResponse: untoggleHeartResponse)) {
+        self.vm.inputs.heartButtonTapped()
 
-        self.starButtonSelected.assertValues([false, true, false],
-                                             "The project unstars immediately.")
+        self.heartButtonSelected.assertValues([false, true, false],
+                                             "Heart button selects immediately.")
+        self.heartButtonEnabled.assertValues([false, true, false, true])
+
 
         self.scheduler.advance()
 
-        self.starButtonSelected.assertValues([false, true, false],
-                                             "The star button stays unselected.")
+        self.heartButtonSelected.assertValues([false, true, false],
+                                             "The heart button stays unselected.")
 
-        self.showProjectStarredPrompt.assertValueCount(1, "The star prompt only showed for starring.")
+        self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt only showed for starring.")
         XCTAssertEqual(["Project Star", "Starred Project", "Project Unstar", "Unstarred Project"],
                        self.trackingClient.events,
                        "An unstar koala event is tracked.")
@@ -258,25 +271,25 @@ final class ProjectNavBarViewModelTests: TestCase {
     }
   }
 
-  // Tests a logged in user starring a project that ends soon.
-  func testLoggedInUser_StarsEndingSoonProject() {
+  // Tests a logged in user hearting a project that ends soon.
+  func testLoggedInUser_HeartEndingSoonProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = .template
       |> Project.lens.personalization.isStarred .~ false
       |> Project.lens.dates.deadline .~ (MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
-    let toggleStarResponse = .template
+    let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.heartButtonTapped()
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(
-        0, "The star prompt doesn't show cause it's less than 48hrs."
+      self.showProjectSavedPrompt.assertValueCount(
+        0, "The save project prompt doesn't show cause it's less than 48hrs."
       )
 
       XCTAssertEqual(["Project Star", "Starred Project"], self.trackingClient.events,
@@ -284,28 +297,28 @@ final class ProjectNavBarViewModelTests: TestCase {
     }
   }
 
-  // Tests a user unstarring a project.
-  func testLoggedInUser_UnstarsProject() {
+  // Tests a user unhearting a project.
+  func testLoggedInUser_UnheartsProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = .template |> Project.lens.personalization.isStarred .~ true
-    let toggleStarResponse = .template
+    let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.heartButtonTapped()
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
+      self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
 
       XCTAssertEqual(["Project Unstar", "Unstarred Project"], self.trackingClient.events,
                      "An unstar koala event is tracked.")
     }
   }
 
-  func testLoggedInStarFailure() {
+  func testLoggedInHeartFailure() {
     /// CHECK THIS
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
@@ -313,18 +326,18 @@ final class ProjectNavBarViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, refTag: nil)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.starButtonTapped()
+    self.vm.inputs.heartButtonTapped()
 
-    self.starButtonSelected.assertValues([false, true])
+    self.heartButtonSelected.assertValues([false, true])
 
     self.scheduler.advance()
 
-    self.starButtonSelected.assertValues([false, true, false])
+    self.heartButtonSelected.assertValues([false, true, false])
 
-    self.showProjectStarredPrompt.assertValueCount(1, "The star prompt does not show.")
+    self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
     XCTAssertEqual([], trackingClient.events, "The star event does not track.")
 
-    self.vm.inputs.starButtonTapped()
+    self.vm.inputs.heartButtonTapped()
 
     // fix:
     //    self.starButtonSelected.assertValues([false, true, false, true])

@@ -104,15 +104,22 @@ public let navyButtonStyle =
 public let saveButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
   <> UIButton.lens.tintColor .~ .white
-  <> UIButton.lens.image(forState: .normal) .~ image(named: "heart-unfilled-icon")
-  <> UIButton.lens.image(forState: .highlighted) .~ image(named: "heart-filled-icon")
-  <> UIButton.lens.image(forState: .selected) .~ image(named: "heart-filled-icon")
+  <> UIButton.lens.contentEdgeInsets
+    .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2),
+             right: Styles.grid(2))
+  <> UIButton.lens.image(forState: .normal) .~ image(named: "icon-heart-unfilled")
+  <> UIButton.lens.image(forState: .selected) .~ image(named: "icon-heart-filled")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
+  <> UIButton.lens.adjustsImageWhenDisabled .~ false
 
 public let shareButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
   <> UIButton.lens.tintColor .~ .white
-  <> UIButton.lens.image(forState: .normal) .~ image(named: "share")
+  <> UIButton.lens.contentEdgeInsets
+    .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2),
+             right: Styles.grid(1))
+  <> UIButton.lens.image(forState: .normal) .~ image(named: "icon-share")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
 public let textOnlyButtonStyle = baseButtonStyle

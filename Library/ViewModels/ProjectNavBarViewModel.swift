@@ -10,7 +10,7 @@ public protocol ProjectNavBarViewModelInputs {
   func projectImageIsVisible(_ visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
-  func starButtonTapped()
+  func heartButtonTapped()
   func userSessionEnded()
   func userSessionStarted()
   func viewDidLoad()
@@ -43,16 +43,20 @@ public protocol ProjectNavBarViewModelOutputs {
   /// Emits the name of the project
   var projectName: Signal<String, NoError> { get }
 
-  /// Emits when the project has been successfully starred and a prompt should be shown to the user.
-  var showProjectStarredPrompt: Signal<Void, NoError> { get }
+  /// Emits when the project has been successfully saved and a prompt should be shown to the user.
+  var showProjectSavedPrompt: Signal<Void, NoError> { get }
 
   /// Emits the accessibility hint for the star button.
-  var starButtonAccessibilityHint: Signal<String, NoError> { get }
+  var starButtonAccessibilityHint: Signal<String, NoError> { get } // check this after new strings
 
-  /// Emits a boolean that determines if the star button is selected.
-  var starButtonSelected: Signal<Bool, NoError> { get }
+  /// Emits a boolean that determines if the heart button is selected.
+  var heartButtonSelected: Signal<Bool, NoError> { get }
 
   var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
+
+  var project: Signal<Project, NoError> { get }
+
+  var heartButtonEnabled: Signal<Bool, NoError> { get }
 }
 
 public protocol ProjectNavBarViewModelType {
@@ -81,49 +85,55 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
-    let loggedInUserTappedStar = currentUser
-      .takeWhen(self.starButtonTappedProperty.signal)
+    let loggedInUserTappedHeart = currentUser
+      .takeWhen(self.heartButtonTappedProperty.signal)
       .filter(isNotNil)
       .ignoreValues()
 
-    let loggedOutUserTappedStar = currentUser
-      .takeWhen(self.starButtonTappedProperty.signal)
+    let loggedOutUserTappedHeart = currentUser
+      .takeWhen(self.heartButtonTappedProperty.signal)
       .filter(isNil)
       .ignoreValues()
 
     // Emits only when a user logs in after having tapped the star while logged out.
-    let userLoginAfterTappingStar = Signal.combineLatest(
+    let userLoginAfterTappingHeart = Signal.combineLatest(
       self.userSessionStartedProperty.signal,
-      loggedOutUserTappedStar
+      loggedOutUserTappedHeart
       )
       .ignoreValues()
       .take(first: 1)
 
-    let toggleStarLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
+    let toggleHeartLens = Project.lens.personalization.isStarred %~ { !($0 ?? false) }
 
-    let projectOnStarToggle = configuredProject
-      .takeWhen(.merge(loggedInUserTappedStar, userLoginAfterTappingStar))
-      .scan(nil) { accum, project in (accum ?? project) |> toggleStarLens }
+    let projectOnHeartToggle = configuredProject
+      .takeWhen(.merge(loggedInUserTappedHeart, userLoginAfterTappingHeart))
+      .scan(nil) { accum, project in (accum ?? project) |> toggleHeartLens }
       .skipNil()
 
-    let projectOnStarToggleAndSuccess = projectOnStarToggle
+    let isLoading = MutableProperty(false)
+
+    let projectOnHeartToggleAndSuccess = projectOnHeartToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
+          .on(
+            starting: { isLoading.value = true },
+            terminated: { isLoading.value = false}
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { ($0.project, success: true) }
           .flatMapError { _ in .init(value: (project, success: false)) }
     }
 
-    let projectOnStarToggleSuccess = projectOnStarToggleAndSuccess
+    let projectOnHeartToggleSuccess = projectOnHeartToggleAndSuccess
       .filter(second)
       .map(first)
 
-    let revertStarToggle = projectOnStarToggle
-      .takeWhen(projectOnStarToggleAndSuccess.filter(second >>> isFalse))
-      .map(toggleStarLens)
+    let revertStarToggle = projectOnHeartToggle
+      .takeWhen(projectOnHeartToggleAndSuccess.filter(second >>> isFalse))
+      .map(toggleHeartLens)
 
     let project = Signal
-      .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
+      .merge(configuredProject, projectOnHeartToggle, projectOnHeartToggleSuccess, revertStarToggle)
 
     self.categoryButtonBackgroundColor = configuredProject.map {
         discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
@@ -140,32 +150,27 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.categoryButtonTitleColor = self.categoryButtonTintColor
 
-    self.goToLoginTout = loggedOutUserTappedStar
+    self.goToLoginTout = loggedOutUserTappedHeart
 
-    self.showProjectStarredPrompt = project
-      .takeWhen(self.starButtonTappedProperty.signal)
+    self.showProjectSavedPrompt = project
+      .takeWhen(self.heartButtonTappedProperty.signal)
       .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date ) }
       .filter { _ in
-        !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectInProjectPage ||
-        !AppEnvironment.current.userDefaults.hasSeenSaveProjectInProjectPage
+        !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
+        !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
       }
       .on(value: { _ in
-        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectInProjectPage = true
-        AppEnvironment.current.userDefaults.hasSeenSaveProjectInProjectPage = true
+        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
+        AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
       })
       .ignoreValues()
 
-//      projectOnStarToggleSuccess
-//      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
-//        today: AppEnvironment.current.dateType.init().date) }
-//      .map { _ in Strings.project_star_confirmation() }
-
-    self.starButtonSelected = project
+    self.heartButtonSelected = project
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
-    self.starButtonAccessibilityHint = self.starButtonSelected
+    self.starButtonAccessibilityHint = self.heartButtonSelected
       .map { starred in starred ? Strings.Unsaves_project() : Strings.Saves_project() }
 
     self.projectName = project.map(Project.lens.name.view)
@@ -175,6 +180,9 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       self.projectVideoDidStartProperty.signal.mapConst(true),
       self.projectVideoDidFinishProperty.signal.mapConst(false)
     )
+
+    self.heartButtonEnabled = isLoading.signal.map(negate)
+      .skipRepeats()
 
     let projectImageIsVisible = Signal.merge(
       self.projectImageIsVisibleProperty.signal,
@@ -207,14 +215,17 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
+    self.project = project
+      .takeWhen(self.heartButtonTappedProperty.signal)
+
     Signal.combineLatest(project, configuredRefTag)
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { project, refTag in
         AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
     }
 
-    projectOnStarToggleSuccess
-      .observeValues { AppEnvironment.current.koala.trackProjectStar($0, context: .project) }
+    projectOnHeartToggleSuccess
+      .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .project) }
   }
   // swiftlint:enable function_body_length
 
@@ -246,9 +257,9 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public func categoryButtonTapped() {
   }
 
-  fileprivate let starButtonTappedProperty = MutableProperty()
-  public func starButtonTapped() {
-    self.starButtonTappedProperty.value = ()
+  fileprivate let heartButtonTappedProperty = MutableProperty()
+  public func heartButtonTapped() {
+    self.heartButtonTappedProperty.value = ()
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty()
@@ -275,10 +286,13 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let dismissViewController: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let projectName: Signal<String, NoError>
-  public let showProjectStarredPrompt: Signal<Void, NoError>
+  public let showProjectSavedPrompt: Signal<Void, NoError>
   public let starButtonAccessibilityHint: Signal<String, NoError>
-  public let starButtonSelected: Signal<Bool, NoError>
+  public let heartButtonSelected: Signal<Bool, NoError>
+  public let heartButtonEnabled: Signal<Bool, NoError>
   public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
+
+  public let project: Signal<Project, NoError>
 
   public var inputs: ProjectNavBarViewModelInputs { return self }
   public var outputs: ProjectNavBarViewModelOutputs { return self }

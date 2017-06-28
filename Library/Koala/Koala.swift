@@ -1205,7 +1205,7 @@ public final class Koala {
     self.track(event: "Closed Project Page", properties: props)
   }
 
-  public func trackProjectStar(_ project: Project, context: SaveContext) {
+  public func trackProjectSave(_ project: Project, context: SaveContext) {
     guard let isStarred = project.personalization.isStarred else { return }
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
