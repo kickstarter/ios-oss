@@ -68,7 +68,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           ],
           italic: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: color(forCategoryId: categoryId)
+            NSForegroundColorAttributeName: UIColor.ksr_navy_700
           ])
           ?? NSAttributedString(string: "")
     }
@@ -115,20 +115,6 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
     return .ksr_green_400
   default:
     return .ksr_green_400
-  }
-}
-
-public func color(forCategoryId id: Int?) -> UIColor {
-  let group = CategoryGroup(categoryId: id)
-  switch group {
-  case .none:
-    return .ksr_navy_700
-  case .culture:
-    return .ksr_red_400
-  case .entertainment:
-    return .ksr_violet_500
-  case .story:
-    return .ksr_forest_600
   }
 }
 

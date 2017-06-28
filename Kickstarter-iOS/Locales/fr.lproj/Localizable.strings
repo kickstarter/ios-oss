@@ -63,6 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> était en direct %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} était en direct sur Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
+"Delivered" = "Distribué";
 "Discover_more_projects" = "Découvrez plus de projets.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
@@ -94,10 +95,12 @@
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
+"Follow_friend_name" = "Suivre %{friend_name}";
 "Follow_friends" = "Suivez vos amis";
 "Follow_more_friends" = "Suivre plus d'amis";
 "Follow_your_Facebook_friends_and_get_notified" = "Rejoignez-les et découvrez ensemble de nouveaux projets.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent.";
+"Followed" = "Abonné";
 "Following" = "Projets soutenus par mes amis";
 "Follows_friend_name" = "Abonnement aux actus de %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>.";
@@ -157,11 +160,13 @@
 "Message_creator" = "Envoyer un message au créateur";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
-"No_messages" = "No messages";
+"No_messages" = "Pas de messages";
 "No_one_has_posted_an_update_yet" = "Pas d'actus publiées pour le moment.";
 "No_pledges_from_friends_yet" = "Mes amis \nn'ont rien soutenu.";
 "No_replay_is_available_for_this_live_stream" = "Pas de rediffusion possible pour cette diffusion en direct.";
-"No_unread_messages" = "No unread messages";
+"No_unread_messages" = "Pas de messages non lus";
+"Not_delivered" = "Non distribué";
+"Not_followed" = "Non abonné";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
 "Opens_comments" = "Ouvre les commentaires.";
@@ -214,7 +219,7 @@
 "Replay_live_stream_with_creator_name" = "Revoir la diffusion en direct de <br><b>%{creator_name}</b>";
 "Replay_past_live_stream" = "Rediffusion";
 "Replay_past_live_streams" = "Revoir des diffusions en direct passées";
-"Reply_to_user_name" = "Reply to %{user_name}…";
+"Reply_to_user_name" = "Répondre à %{user_name}…";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -274,6 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application.";
 "To_read_this_project_update_you_must_be_a_backer" = "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer.";
 "Total_pledged" = "Total engagé";
+"Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
 "Unsaves_project" = "Annule l'enregistrement du projet.";
 "Unsubscribe" = "Se désabonner";
@@ -934,7 +940,7 @@
 "minutes.zero" = "minutes";
 "minutes_plural" = "minutes";
 "percentage_funded" = "Financé à %{percentage}";
-"pledge_amount_pledged_on_pledge_date" = "<b>%{pledge_amount}</b> pledged on %{pledge_date}";
+"pledge_amount_pledged_on_pledge_date" = "<b>%{pledge_amount}</b> engagés le %{pledge_date}";
 "plus_shipping_cost" = "+ %{shipping_cost}";
 "profile.buttons.messages" = "Messages";
 "profile.buttons.settings" = "Paramètres";
@@ -1235,7 +1241,7 @@
 "two_factor.error.message" = "Le code fourni ne correspond pas.";
 "two_factor.message" = "Veuillez saisir votre code de vérification.";
 "two_factor.title" = "Vérifier";
-"unread_count_unread" = "%{unread_count} unread";
+"unread_count_unread" = "%{unread_count} messages non lus";
 "update.comments.creator" = "Créateur";
 "update.comments.empty_state.backer.button" = "Laisser un commentaire";
 "update.comments.empty_state.backer.message" = "Oh, quel dommage.  Soyez le premier contributeur à laisser un commentaire sur cette actu.";

@@ -73,3 +73,4 @@ fastlane/screenshots
 Screenshots/FailureDiffs/*
 
 Frameworks/OpenTok/*
+Frameworks/native-secrets

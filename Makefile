@@ -91,16 +91,16 @@ lint:
 	swiftlint lint --reporter json --strict
 
 strings:
-	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
+	cat Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
 		| xcrun -sdk macosx swift -
 
 secrets:
-	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
-	-@git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
-	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
+	-@rm -rf Frameworks/native-secrets
+	-@git clone https://github.com/kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
+	if [ ! -d Frameworks/native-secrets ]; \
 	then \
-		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
-		&& cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift \
+		mkdir -p Frameworks/native-secrets/ios \
+		&& cp -n Configs/Secrets.swift.example Frameworks/native-secrets/ios/Secrets.swift \
 		|| true; \
 	fi
 

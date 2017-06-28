@@ -21,6 +21,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
 
     _ = self.projectsCountLabel
       |> UILabel.lens.isAccessibilityElement .~ false
+      |> UILabel.lens.textColor .~ discoverySecondaryColor()
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_headline(size: 13)
@@ -36,7 +37,6 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
     self.filterTitleLabel.rac.text = self.viewModel.outputs.filterTitleLabelText
     self.projectsCountLabel.rac.text = self.viewModel.outputs.projectsCountLabelText
     self.projectsCountLabel.rac.hidden = self.viewModel.outputs.projectsCountLabelHidden
-    self.projectsCountLabel.rac.textColor = self.viewModel.outputs.projectsCountLabelTextColor
     self.projectsCountLabel.rac.alpha = self.viewModel.outputs.projectsCountLabelAlpha
 
     self.viewModel.outputs.expandCategoryStyle

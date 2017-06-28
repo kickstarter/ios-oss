@@ -19,9 +19,6 @@ public protocol ProjectNavBarViewModelInputs {
 public protocol ProjectNavBarViewModelOutputs {
   var backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError> { get }
 
-  /// Emits the color of the category button's background.
-  var categoryButtonBackgroundColor: Signal<UIColor, NoError> { get }
-
   /// Emits the category button's title text.
   var categoryButtonText: Signal<String, NoError> { get }
 
@@ -135,18 +132,10 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let project = Signal
       .merge(configuredProject, projectOnHeartToggle, projectOnHeartToggleSuccess, revertStarToggle)
 
-    self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
-      }
-      .skipRepeats()
-
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
       .skipRepeats()
 
-    self.categoryButtonTintColor = configuredProject.map {
-      discoveryPrimaryColor(forCategoryId: $0.category.rootId)
-      }
-      .skipRepeats()
+    self.categoryButtonTintColor = configuredProject.mapConst(discoveryPrimaryColor())
 
     self.categoryButtonTitleColor = self.categoryButtonTintColor
 
@@ -278,7 +267,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   }
 
   public let backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError>
-  public let categoryButtonBackgroundColor: Signal<UIColor, NoError>
   public let categoryButtonText: Signal<String, NoError>
   public let categoryButtonTintColor: Signal<UIColor, NoError>
   public let categoryButtonTitleColor: Signal<UIColor, NoError>

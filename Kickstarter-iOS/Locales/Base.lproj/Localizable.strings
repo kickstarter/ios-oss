@@ -63,6 +63,7 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> was live %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} was streaming live on Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
+"Delivered" = "Delivered";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
@@ -94,10 +95,12 @@
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
 "Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
+"Follow_friend_name" = "Follow %{friend_name}.";
 "Follow_friends" = "Follow friends";
 "Follow_more_friends" = "Follow more friends";
 "Follow_your_Facebook_friends_and_get_notified" = "Follow your Facebook friends and get notified when they back or launch projects.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Follow your Facebook friends and keep up with the projects they back and launch.";
+"Followed" = "Followed";
 "Following" = "Following";
 "Follows_friend_name" = "Follows %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> backed an <i>Art</i> project.";
@@ -162,6 +165,8 @@
 "No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
 "No_unread_messages" = "No unread messages";
+"Not_delivered" = "Not delivered";
+"Not_followed" = "Not followed";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
 "Opens_comments" = "Opens comments.";
@@ -274,6 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
 "Total_pledged" = "Total pledged";
+"Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
 "Unsubscribe" = "Unsubscribe";
