@@ -28,8 +28,10 @@ internal final class BackingCell: UITableViewCell, ValueCell {
                                      for: .touchUpInside)
   }
 
-  internal func configureWith(value: (Backing, Project, Bool)) {
-    self.viewModel.inputs.configureWith(backing: value.0, project: value.1, isFromBacking: value.2)
+  internal func configureWith(value: (backing: Backing, project: Project, isFromBacking: Bool)) {
+    self.viewModel.inputs.configureWith(backing: value.backing,
+                                        project: value.project,
+                                        isFromBacking: value.isFromBacking)
   }
 
   internal override func bindStyles() {

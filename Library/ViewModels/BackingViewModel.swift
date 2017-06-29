@@ -29,7 +29,7 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer sequence to be displayed.
   var backerSequence: Signal<String, NoError> { get }
 
-  /// Emits with the project when should go to message creator screen.
+  /// Emits a MessageSubject and Koala.MessageDialogContext when should go to message creator screen.
   var goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
 
   /// Emits with the project when should go to messages screen.
@@ -132,10 +132,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.backerAvatarURL = basicBacker.map { URL(string: $0.avatar.small) }
 
     self.pledgeSectionTitle = Signal.merge(
-      emptyStringOnLoad.map { NSAttributedString(string: $0) },
-      projectAndBackingAndBackerIsCurrentUser.map { project, backing, backerIsCurrentUser in
-        pledgeTitle(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
-      }
+      emptyStringOnLoad.map(NSAttributedString.init(string:)),
+      projectAndBackingAndBackerIsCurrentUser.map(pledgeTitle(for:backing:backerIsCurrentUser:))
     )
 
     self.pledgeAmount = Signal.merge(
@@ -165,7 +163,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       emptyStringOnLoad.mapConst(NSAttributedString(string: "")),
       projectAndBackingAndBackerIsCurrentUser
       .map { project, backing, backerIsCurrentUser in
-        return statusDescString(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
+        statusDescString(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
       }
     )
 
@@ -182,11 +180,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser
         .map { project, backing, _ in
           let currency = Format.currency(backing.reward?.minimum ?? 0, country: project.country)
-          if let rewardTitle = backing.reward?.title {
-            return currency + " - " + rewardTitle
-          } else {
-            return currency
-          }
+          return backing.reward?.title.map { currency + " - " + $0 } ?? currency
       }
     )
 
@@ -274,7 +268,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {
 
-  var string = ""
+  let string: String
   switch backing.status {
   case .canceled:
     string = backerIsCurrentUser
@@ -318,7 +312,7 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
   }
 }
 
-private func pledgeTitle(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
+private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrentUser: Bool)
   -> NSAttributedString {
 
   let date = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
@@ -336,14 +330,13 @@ private func pledgeTitle(for backing: Backing, project: Project, backerIsCurrent
       NSFontAttributeName: UIFont.ksr_headline(size: 15),
       NSForegroundColorAttributeName: UIColor.black
     ])
-    ?? NSAttributedString(string: "")
+    ?? .init()
 }
 
 private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {
 
-  guard let reward = reward else { return NSAttributedString(string: "") }
-  guard let estimatedDate = reward.estimatedDeliveryOn else { return NSAttributedString(string: "") }
+  guard let estimatedDate = reward?.estimatedDeliveryOn else { return .init() }
 
   let date = Format.date(secondsInUTC: estimatedDate,
                          dateFormat: "MMM YYYY",
@@ -362,6 +355,6 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
       NSFontAttributeName: UIFont.ksr_headline(size: 15),
       NSForegroundColorAttributeName: UIColor.black
     ])
-    ?? NSAttributedString(string: "")
+    ?? .init()
 }
 // swiftlint:enable file_length
