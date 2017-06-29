@@ -16,19 +16,21 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#import <FBSDKCoreKit/FBSDKButton.h>
+#import <FBSDKCoreKit/FBSDKCopying.h>
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+  Extension protocol for NSMutableCopying that adds the mutableCopy method, which is implemented on NSObject.
 
-/*
- @abstract An internal base class for device related flows.
- @discussion This is an internal API that should not be used directly and is subject to change.
+ NSObject<NSCopying, NSMutableCopying> implicitly conforms to this protocol.
  */
-@interface FBSDKDeviceButton : FBSDKButton
+@protocol FBSDKMutableCopying <FBSDKCopying, NSMutableCopying>
+
+/**
+  Implemented by NSObject as a convenience to mutableCopyWithZone:.
+ - Returns: A mutable copy of the receiver.
+ */
+- (id)mutableCopy;
 
 @end
-
-NS_ASSUME_NONNULL_END
-
