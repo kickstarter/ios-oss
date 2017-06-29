@@ -190,7 +190,8 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.vm.inputs.heartButtonTapped()
 
-      self.heartButtonSelected.assertValues([false], "Nothing is emitted when heart button tapped while logged out.")
+      self.heartButtonSelected.assertValues([false],
+                                            "Nothing is emitted when heart button tapped while logged out.")
       self.heartButtonEnabled.assertDidNotEmitValue()
 
       self.goToLoginTout.assertValueCount(1, "Prompt to login when hearting while logged out.")
@@ -198,7 +199,8 @@ final class ProjectNavBarViewModelTests: TestCase {
       AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.heartButtonSelected.assertValues([false, true], "Once logged in, the heart is selected immediately.")
+      self.heartButtonSelected.assertValues([false, true],
+                                            "Once logged in, the heart is selected immediately.")
       self.heartButtonEnabled.assertValues([false, true])
 
       self.scheduler.advance()
@@ -247,7 +249,6 @@ final class ProjectNavBarViewModelTests: TestCase {
         self.heartButtonSelected.assertValues([false, true, false],
                                              "Heart button selects immediately.")
         self.heartButtonEnabled.assertValues([false, true, false, true])
-
 
         self.scheduler.advance()
 

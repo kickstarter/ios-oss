@@ -64,7 +64,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
 
     NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self] notification in
+      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
+        notification in
         self?.viewModel.inputs.heartProjectFromNav(project: notification.userInfo?["project"] as? Project)
       }
   }

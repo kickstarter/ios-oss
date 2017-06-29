@@ -177,7 +177,9 @@ public final class ProjectNavBarViewController: UIViewController {
     self.viewModel.outputs.project
       .observeForUI()
       .observeValues { project in
-        NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved, object: nil, userInfo: ["project": project])
+        NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved,
+                                        object: nil,
+                                        userInfo: ["project": project])
     }
 
     self.shareViewModel.outputs.showShareSheet

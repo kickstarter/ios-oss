@@ -283,9 +283,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       configuredProject.map { cache(project: $0, shouldToggle: false) },
       projectHeartedFromNav.map { cache(project: $0, shouldToggle: true) },
       projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
-      )
+    )
 
-    let project = Signal.merge(projectOnHeartToggle, configuredProject, projectHeartedFromNav, projectOnSaveError)
+    let project = Signal.merge(
+      projectOnHeartToggle,
+      configuredProject,
+      projectHeartedFromNav,
+      projectOnSaveError
+    )
 
     self.heartButtonEnabled = isLoading.signal.map(negate)
       .skipRepeats()

@@ -112,7 +112,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let toggleHeartResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse), currentUser: .template) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse),
+                    currentUser: .template) {
 
         self.vm.inputs.configureWith(project: project)
 
@@ -141,14 +142,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
         self.vm.inputs.heartButtonTapped()
 
-        self.heartButtonSelected.assertValues([false], "Nothing is emitted when heart button tapped while logged out.")
+        self.heartButtonSelected.assertValues([false],
+                                              "Nothing is emitted when heart button tapped while logged out.")
 
-        self.notifyDelegateShowLoginTout.assertValueCount(1, "Prompt to login when heart button tapped while logged out.")
+        self.notifyDelegateShowLoginTout.assertValueCount(1,
+                                                "Prompt to login when heart button tapped while logged out.")
 
         AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
         self.vm.inputs.userSessionStarted()
 
-        self.heartButtonSelected.assertValues([false, true], "Once logged in, the project hearts immediately.")
+        self.heartButtonSelected.assertValues([false, true],
+                                              "Once logged in, the project hearts immediately.")
 
         self.heartButtonEnabled.assertValues([false, true])
 
@@ -168,7 +172,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
           self.scheduler.advance()
 
-          self.heartButtonEnabled.assertValues([false, true, false, true],"Heart button is enabled after API request")
+          self.heartButtonEnabled.assertValues([false, true, false, true],
+                                               "Heart button is enabled after API request")
 
           self.heartButtonSelected.assertValues([false, true, false],
                                                "The heart button stays unselected.")
