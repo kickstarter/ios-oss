@@ -131,8 +131,11 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .takeWhen(projectOnSaveButtonToggleAndSuccess.filter(second >>> isFalse))
       .map(toggleSaveLens)
 
-    let project = Signal
-      .merge(configuredProject, projectOnSaveButtonToggle, projectOnSaveButtonToggleSuccess, revertSaveButtonToggle)
+    let project = Signal.merge(
+      configuredProject,
+      projectOnSaveButtonToggle,
+      projectOnSaveButtonToggleSuccess,
+      revertSaveButtonToggle)
 
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
       .skipRepeats()
