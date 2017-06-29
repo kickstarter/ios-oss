@@ -84,7 +84,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -100,6 +100,33 @@ internal final class MessagesViewModelTests: TestCase {
     }
   }
 
+  func testOutputs_ConfiguredWithProject_Error() {
+    let project = Project.template |> Project.lens.id .~ 42
+    let backing = Backing.template
+
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let apiService = MockService(fetchMessageThreadResult: Result(error: errorUnknown))
+
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.project.assertValues([project])
+      self.backingAndProjectAndIsFromBacking.assertValueCount(0)
+      self.messages.assertValueCount(0)
+
+      XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
+    }
+  }
+
   func testOutputs_ConfiguredWithProject_AndBacking() {
     let project = Project.template |> Project.lens.id .~ 42
     let backing = Backing.template
@@ -107,7 +134,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -149,7 +176,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -178,7 +205,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -204,7 +231,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResponse: messageThread)
+    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
