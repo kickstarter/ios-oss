@@ -113,8 +113,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     hideUnfollowButton.assertValues([false], "Show Unfollow Button")
     enableFollowButton.assertValues([false], "Disable Follow Button")
     enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
-    followButtonAccessibilityLabel.assertValues(["Follow Jed."], "Accessibility label assigned to the Button")
-    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed."],
+    followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed"],
       "Accessibility label assigned to the Button")
     cellAccessibilityValue.assertValues(["Followed"])
 
@@ -130,8 +130,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     XCTAssertEqual(["Facebook Friend Unfollow", "Unfollowed Facebook Friend"], self.trackingClient.events)
     XCTAssertEqual(["activity", "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-    followButtonAccessibilityLabel.assertValues(["Follow Jed."], "Accessibility label assigned to the Button")
-    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed."],
+    followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed"],
       "Accessibility label assigned to the Button")
 
     scheduler.advance()
@@ -186,8 +186,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
                                       "Disable Unfollow Button")
 
     //Accessibility labels remains the same through all the sequences of following/unfollowing
-    followButtonAccessibilityLabel.assertValues(["Follow Jed."], "Accessibility label assigned to the Button")
-    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed."],
+    followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Jed"],
                                                   "Accessibility label assigned to the Button")
   }
 
@@ -208,8 +208,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     hideUnfollowButton.assertValues([true], "Hide Unfollow Button")
     enableFollowButton.assertValues([true], "Enable Follow Button")
     enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
-    followButtonAccessibilityLabel.assertValues(["Follow Zed."], "Accessibility label assigned to the Button")
-    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Zed."],
+    followButtonAccessibilityLabel.assertValues(["Follow Zed"], "Accessibility label assigned to the Button")
+    unfollowButtonAccessibilityLabel.assertValues(["Unfollow Zed"],
      "Accessibility label assigned to the Button")
     XCTAssertEqual([], self.trackingClient.events)
 

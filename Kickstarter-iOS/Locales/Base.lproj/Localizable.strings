@@ -95,7 +95,7 @@
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
 "Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
-"Follow_friend_name" = "Follow %{friend_name}.";
+"Follow_friend_name" = "Follow %{friend_name}";
 "Follow_friends" = "Follow friends";
 "Follow_more_friends" = "Follow more friends";
 "Follow_your_Facebook_friends_and_get_notified" = "Follow your Facebook friends and get notified when they back or launch projects.";
@@ -279,7 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
 "Total_pledged" = "Total pledged";
-"Unfollow_friend_name" = "Unfollow %{friend_name}.";
+"Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
 "Unsubscribe" = "Unsubscribe";

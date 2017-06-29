@@ -1439,17 +1439,17 @@ backers"
     )
   }
   /**
-   "Follow %{friend_name}."
+   "Follow %{friend_name}"
 
    - **es**: "Seguir a %{friend_name}."
    - **de**: "%{friend_name} folgen."
    - **fr**: "Suivre %{friend_name}"
-   - **en**: "Follow %{friend_name}."
+   - **en**: "Follow %{friend_name}"
   */
   public static func Follow_friend_name(friend_name: String) -> String {
     return localizedString(
       key: "Follow_friend_name",
-      defaultValue: "Follow %{friend_name}.",
+      defaultValue: "Follow %{friend_name}",
       count: nil,
       substitutions: ["friend_name": friend_name]
     )
@@ -4136,17 +4136,17 @@ catch your eye?"
     )
   }
   /**
-   "Unfollow %{friend_name}."
+   "Unfollow %{friend_name}"
 
    - **es**: "Dejar de seguir a %{friend_name}"
    - **de**: "%{friend_name} nicht mehr folgen"
    - **fr**: "Ne plus suivre %{friend_name}"
-   - **en**: "Unfollow %{friend_name}."
+   - **en**: "Unfollow %{friend_name}"
   */
   public static func Unfollow_friend_name(friend_name: String) -> String {
     return localizedString(
       key: "Unfollow_friend_name",
-      defaultValue: "Unfollow %{friend_name}.",
+      defaultValue: "Unfollow %{friend_name}",
       count: nil,
       substitutions: ["friend_name": friend_name]
     )
