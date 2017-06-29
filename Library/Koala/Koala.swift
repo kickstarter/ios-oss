@@ -508,7 +508,7 @@ public final class Koala {
   }
 
   public func trackSaveProject(context: SaveContext) {
-    self.track(event: "Star", properties: [
+    self.track(event: "Star", properties: [ // check this
       "context": context.trackingString
       ])
   }

@@ -279,7 +279,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
 "Total_pledged" = "Total pledged";
-"Unfollow_friend_name" = "Unfollow %{friend_name}";
+"Unfollow_friend_name" = "Unfollow %{friend_name}.";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
 "Unsubscribe" = "Unsubscribe";

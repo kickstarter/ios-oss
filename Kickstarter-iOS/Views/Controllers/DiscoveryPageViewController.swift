@@ -225,7 +225,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func showStarButton(_ show: Bool) -> Bool {
+  fileprivate func showSaveButton(_ show: Bool) -> Bool {
     return show
   }
 

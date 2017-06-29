@@ -527,7 +527,6 @@
                                     <outlet property="fundingProgressContainerView" destination="AjI-7F-4q1" id="eku-kg-RsI"/>
                                     <outlet property="fundingSubtitleLabel" destination="eZW-iA-YlR" id="HWl-u7-yTn"/>
                                     <outlet property="fundingTitleLabel" destination="UKY-lM-bEh" id="ls5-yX-sbY"/>
-                                    <outlet property="heartButton" destination="5Ss-o3-RmP" id="OiP-nt-adD"/>
                                     <outlet property="metadataBackgroundView" destination="8v0-Ix-KPn" id="wXo-Nr-tbX"/>
                                     <outlet property="metadataIconImageView" destination="muw-ic-gpV" id="WZr-U7-D1v"/>
                                     <outlet property="metadataLabel" destination="zWM-jg-i8M" id="Vei-Bl-CU1"/>
@@ -540,7 +539,8 @@
                                     <outlet property="projectStateSubtitleLabel" destination="Ns6-N4-QxS" id="mLK-N6-YYU"/>
                                     <outlet property="projectStateTitleLabel" destination="X4W-KP-C0k" id="BjS-Pk-6no"/>
                                     <outlet property="projectStatsStackView" destination="5bC-Ts-lge" id="5ai-0c-eEB"/>
-                                    <outlet property="shareAndHeartStackView" destination="OqX-qg-UeE" id="SId-On-Emb"/>
+                                    <outlet property="saveButton" destination="5Ss-o3-RmP" id="HlO-oq-Ats"/>
+                                    <outlet property="shareAndSaveStackView" destination="OqX-qg-UeE" id="gie-PI-fgr"/>
                                     <outlet property="shareButton" destination="NeZ-dl-EIR" id="yRT-Wv-bTE"/>
                                     <outlet property="socialAvatarImageView" destination="KiT-j5-BB7" id="b0m-Ja-k5T"/>
                                     <outlet property="socialLabel" destination="cCZ-kN-QmM" id="hRv-P9-bzK"/>

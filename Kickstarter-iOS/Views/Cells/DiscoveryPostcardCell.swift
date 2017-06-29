@@ -40,17 +40,17 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
-  @IBOutlet fileprivate weak var shareAndHeartStackView: UIStackView!
+  @IBOutlet fileprivate weak var saveButton: UIButton!
+  @IBOutlet fileprivate weak var shareAndSaveStackView: UIStackView!
   @IBOutlet fileprivate weak var shareButton: UIButton!
   @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
-  @IBOutlet fileprivate weak var heartButton: UIButton!
 
     internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
 
     NotificationCenter.default
@@ -66,7 +66,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
-        self?.viewModel.inputs.heartProjectFromNav(project: notification.userInfo?["project"] as? Project)
+        self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
       }
   }
 
@@ -157,7 +157,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    _ = self.shareAndHeartStackView
+    _ = self.shareAndSaveStackView
       |> UIStackView.lens.alignment .~ .center
 
     _ = self.socialAvatarImageView
@@ -175,7 +175,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    _ = self.heartButton
+    _ = self.saveButton
       |> saveButtonStyle
 
     _ = self.shareButton
@@ -204,8 +204,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
-    self.heartButton.rac.selected = self.viewModel.outputs.heartButtonSelected
-    self.heartButton.rac.enabled = self.viewModel.outputs.heartButtonEnabled
+    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
     self.viewModel.outputs.metadataData
       .observeForUI()
@@ -285,8 +285,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  @objc fileprivate func heartButtonTapped() {
-    self.viewModel.inputs.heartButtonTapped()
+  @objc fileprivate func saveButtonTapped() {
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @objc fileprivate func shareButtonTapped() {

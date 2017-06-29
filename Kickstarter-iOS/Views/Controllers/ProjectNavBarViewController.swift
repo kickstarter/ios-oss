@@ -19,7 +19,7 @@ public final class ProjectNavBarViewController: UIViewController {
   @IBOutlet fileprivate weak var navContainerView: UIView!
   @IBOutlet fileprivate weak var projectNameLabel: UILabel!
   @IBOutlet fileprivate weak var shareButton: UIButton!
-  @IBOutlet fileprivate weak var heartButton: UIButton!
+  @IBOutlet fileprivate weak var saveButton: UIButton!
 
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
@@ -43,7 +43,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-    self.heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     self.projectNameLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
@@ -110,7 +110,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> shareButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-    _ = self.heartButton
+    _ = self.saveButton
       |> saveButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
   }
@@ -125,9 +125,9 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeValues { [weak self] in self?.categoryButton.setTitleColor($0, for: .normal) }
     self.categoryButton.rac.title = self.viewModel.outputs.categoryButtonText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.heartButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint // fix this
-    self.heartButton.rac.selected = self.viewModel.outputs.heartButtonSelected
-    self.heartButton.rac.enabled = self.viewModel.outputs.heartButtonEnabled
+    self.saveButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint // fix this
+    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
     self.viewModel.outputs.showProjectSavedPrompt
       .observeForControllerAction()
@@ -163,7 +163,7 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.closeButton.tintColor = opaque ? .ksr_text_navy_700 : .white
           self?.shareButton.tintColor = opaque ? .ksr_text_navy_700 : .white
-          self?.heartButton.tintColor = opaque ? .ksr_text_navy_700 : .white
+          self?.saveButton.tintColor = opaque ? .ksr_text_navy_700 : .white
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }
@@ -241,8 +241,8 @@ public final class ProjectNavBarViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func heartButtonTapped() {
-    self.viewModel.inputs.heartButtonTapped()
+  @objc fileprivate func saveButtonTapped() {
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @objc fileprivate func projectNameTapped() {

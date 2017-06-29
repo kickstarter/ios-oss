@@ -29,11 +29,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let projectStateTitleLabelColor = TestObserver<UIColor, NoError>()
   internal let projectStateTitleLabelText = TestObserver<String, NoError>()
   internal let projectStatsStackViewHidden = TestObserver<Bool, NoError>()
+  internal let saveButtonEnabled = TestObserver<Bool, NoError>()
+  internal let saveButtonSelected = TestObserver<Bool, NoError>()
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
-  internal let heartButtonSelected = TestObserver<Bool, NoError>()
-  internal let heartButtonEnabled = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -61,11 +61,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.projectStateTitleLabelColor.observe(self.projectStateTitleLabelColor.observer)
     self.vm.outputs.projectStateTitleLabelText.observe(self.projectStateTitleLabelText.observer)
     self.vm.outputs.projectStatsStackViewHidden.observe(self.projectStatsStackViewHidden.observer)
+    self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
+    self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
-    self.vm.outputs.heartButtonSelected.observe(self.heartButtonSelected.observer)
-    self.vm.outputs.heartButtonEnabled.observe(self.heartButtonEnabled.observer)
   }
 
   func testCellAccessibility() {
@@ -102,81 +102,81 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
     self.vm.inputs.configureWith(project: project)
-    self.vm.inputs.heartButtonTapped()
+    self.vm.inputs.saveButtonTapped()
     self.scheduler.advance()
     self.notifyDelegateShowSaveAlert.assertValueCount(1)
   }
 
-  func testTappedHeartButton_LoggedIn_User() {
+  func testTappedSaveButton_LoggedIn_User() {
     let project = Project.template
-    let toggleHeartResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse),
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse),
                     currentUser: .template) {
 
         self.vm.inputs.configureWith(project: project)
 
-        self.heartButtonSelected.assertValues([false], "Heart button is not selected at first.")
+        self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
 
-        self.vm.inputs.heartButtonTapped()
+        self.vm.inputs.saveButtonTapped()
 
-        self.heartButtonSelected.assertValues([false, true], "Heart button selects immediately.")
+        self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
 
         self.scheduler.advance()
 
-        self.heartButtonEnabled.assertValues([false, true], "Heart button stays enabled.")
+        self.saveButtonEnabled.assertValues([false, true], "Save button stays enabled.")
     }
   }
 
-  func testTappedHeartButton_LoggedOut_User() {
+  func testTappedSaveButton_LoggedOut_User() {
     let project = Project.template
-    let toggleHeartResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-      withEnvironment(apiService: MockService(toggleStarResponse: toggleHeartResponse)) {
+      withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
 
         self.vm.inputs.configureWith(project: project)
 
-        self.heartButtonSelected.assertValues([false], "Heart button is not selected at first.")
+        self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
 
-        self.vm.inputs.heartButtonTapped()
+        self.vm.inputs.saveButtonTapped()
 
-        self.heartButtonSelected.assertValues([false],
-                                              "Nothing is emitted when heart button tapped while logged out.")
+        self.saveButtonSelected.assertValues([false],
+                                              "Nothing is emitted when save button tapped while logged out.")
 
         self.notifyDelegateShowLoginTout.assertValueCount(1,
-                                                "Prompt to login when heart button tapped while logged out.")
+                                                "Prompt to login when save button tapped while logged out.")
 
         AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
         self.vm.inputs.userSessionStarted()
 
-        self.heartButtonSelected.assertValues([false, true],
-                                              "Once logged in, the project hearts immediately.")
+        self.saveButtonSelected.assertValues([false, true],
+                                              "Once logged in, the save button is selected immediately.")
 
-        self.heartButtonEnabled.assertValues([false, true])
+        self.saveButtonEnabled.assertValues([false, true])
 
         self.scheduler.advance()
 
-        self.heartButtonSelected.assertValues([false, true],
-                                             "Heart stays selected after API request.")
+        self.saveButtonSelected.assertValues([false, true],
+                                             "Save button stays selected after API request.")
 
-        let untoggleHeartResponse = .template
+        let untoggleSaveResponse = .template
           |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
-        withEnvironment(apiService: MockService(toggleStarResponse: untoggleHeartResponse)) {
-          self.vm.inputs.heartButtonTapped()
+        withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
+          self.vm.inputs.saveButtonTapped()
 
-          self.heartButtonSelected.assertValues([false, true, false],
-                                               "The project unhearts immediately.")
+          self.saveButtonSelected.assertValues([false, true, false],
+                                               "The project unsaves immediately.")
 
           self.scheduler.advance()
 
-          self.heartButtonEnabled.assertValues([false, true, false, true],
-                                               "Heart button is enabled after API request")
+          self.saveButtonEnabled.assertValues([false, true, false, true],
+                                               "Save button is enabled after API request")
 
-          self.heartButtonSelected.assertValues([false, true, false],
-                                               "The heart button stays unselected.")
+          self.saveButtonSelected.assertValues([false, true, false],
+                                               "The save button stays unselected.")
       }
     }
   }

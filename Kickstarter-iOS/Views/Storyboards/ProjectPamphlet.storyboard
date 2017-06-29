@@ -156,9 +156,9 @@
                         <outlet property="backgroundGradientView" destination="HAt-cG-1HE" id="2Qe-qU-t6R"/>
                         <outlet property="categoryButton" destination="QjD-Qc-R1g" id="avk-U7-NWi"/>
                         <outlet property="closeButton" destination="DOA-as-ZZE" id="T57-LC-MEt"/>
-                        <outlet property="heartButton" destination="FYk-7e-N0e" id="ftV-59-wcG"/>
                         <outlet property="navContainerView" destination="jxM-Ay-art" id="yAZ-G2-KFP"/>
                         <outlet property="projectNameLabel" destination="F7o-wQ-ufD" id="hTX-dd-zPb"/>
+                        <outlet property="saveButton" destination="FYk-7e-N0e" id="utB-Zt-SPg"/>
                         <outlet property="shareButton" destination="7Gb-Xw-vvb" id="Uf6-43-cpH"/>
                     </connections>
                 </viewController>

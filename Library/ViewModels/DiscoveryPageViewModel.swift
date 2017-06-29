@@ -64,9 +64,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
 
-  /// Emits when the login tout should be shown to the user.
- // var goToLoginTout: Signal<(), NoError> { get }
-
   /// Emits a list of projects that should be shown.
   var projects: Signal<[Project], NoError> { get }
 

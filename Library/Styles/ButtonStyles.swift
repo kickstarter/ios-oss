@@ -110,8 +110,6 @@ public let saveButtonStyle =
   <> UIButton.lens.image(forState: .normal) .~ image(named: "icon-heart-unfilled")
   <> UIButton.lens.image(forState: .selected) .~ image(named: "icon-heart-filled")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
-  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
-  <> UIButton.lens.adjustsImageWhenDisabled .~ false
 
 public let shareButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
