@@ -9,6 +9,14 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   let dataSource = ProjectPamphletContentDataSource()
   let tableView = UITableView()
 
+  func testIndexPathIsPledgeAnyAmountCell() {
+    let project = Project.template
+    dataSource.load(project: project, liveStreamEvents: [])
+
+    let section = ProjectPamphletContentDataSource.Section.calloutReward.rawValue
+    XCTAssertTrue(dataSource.indexPathIsPledgeAnyAmountCell(.init(row: 0, section: section)))
+  }
+
   func testSubpages_NoLiveStreams() {
     let section = ProjectPamphletContentDataSource.Section.subpages.rawValue
 
