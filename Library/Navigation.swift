@@ -25,7 +25,7 @@ public enum Navigation {
     }
   }
 
-  public enum Tab {
+  public enum   Tab {
     case discovery([String:String]?)
     case search
     case activity

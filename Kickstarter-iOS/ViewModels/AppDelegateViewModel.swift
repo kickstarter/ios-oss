@@ -369,7 +369,11 @@ AppDelegateViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
-          .map { env in env.messageThread }
+          .map { env in
+            //FIXME delete these changes
+            print("Env: \(env)")
+            return env.messageThread
+          }
     }
 
     self.goToProfile = deepLink
@@ -741,7 +745,15 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let message = envelope.message {
+    //FIXME this is experiment - remove
     return .messages(messageThreadId: message.messageThreadId)
+
+//    if envelope.forCreator == true {
+//      return .tab(.dashboard(project: .id(message.projectId)))
+//    }
+//    else {
+//      return .messages(messageThreadId: message.messageThreadId)
+//    }
   }
 
   if let survey = envelope.survey {

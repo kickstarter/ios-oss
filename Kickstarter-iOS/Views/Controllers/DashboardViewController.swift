@@ -46,7 +46,7 @@ internal final class DashboardViewController: UITableViewController {
       |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData
@@ -114,6 +114,12 @@ internal final class DashboardViewController: UITableViewController {
         element?.updateData(data)
     }
 
+    self.viewModel.outputs.goToMessages
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToMessages(project: project)
+      }
+
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, reftag in
@@ -158,7 +164,7 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func goToMessages(_ project: Project) {
+  fileprivate func goToMessages(project: Project) {
     let vc = MessageThreadsViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -221,8 +227,8 @@ extension DashboardViewController: DashboardActionCellDelegate {
     self.goToActivity(project)
   }
 
-  internal func goToMessages(_ cell: DashboardActionCell?, project: Project) {
-    self.goToMessages(project)
+  internal func goToMessages(_ cell: DashboardActionCell?) {
+    self.viewModel.inputs.openMessageThreadRequested()
   }
 
   internal func goToPostUpdate(_ cell: DashboardActionCell?, project: Project) {

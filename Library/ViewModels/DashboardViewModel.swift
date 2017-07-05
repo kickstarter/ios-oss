@@ -26,11 +26,15 @@ public struct ProjectsDrawerData {
 }
 
 public protocol DashboardViewModelInputs {
+
   /// Call to switch display to another project from the drawer.
   func `switch`(toProject param: Param)
 
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
+
+  /// Call to open project messages thread
+  func openMessageThreadRequested()
 
   /// Call when the project context cell is tapped.
   func projectContextCellTapped()
@@ -55,6 +59,9 @@ public protocol DashboardViewModelOutputs {
   /// Emits the funding stats and project to be displayed in the funding cell.
   var fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
                            project: Project), NoError> { get }
+
+  /// Emits when to go to project messages thread
+  var goToMessages: Signal<Project, NoError> { get }
 
   /// Emits when to go to the project page.
   var goToProject: Signal<(Project, RefTag), NoError> { get }
@@ -186,6 +193,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .takeWhen(self.projectContextCellTappedProperty.signal)
       .map { ($0, RefTag.dashboard) }
 
+    self.goToMessages = self.project
+      .takeWhen(self.openMessageThreadRequestedProperty.signal)
+
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
     let projectForTrackingViews = Signal.merge(
@@ -250,12 +260,17 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
+  fileprivate let openMessageThreadRequestedProperty = MutableProperty()
+  public func openMessageThreadRequested() {
+    self.openMessageThreadRequestedProperty.value = ()
+  }
 
   public let animateOutProjectsDrawer: Signal<(), NoError>
   public let dismissProjectsDrawer: Signal<(), NoError>
   public let focusScreenReaderOnTitleView: Signal<(), NoError>
   public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
     project: Project), NoError>
+  public let goToMessages: Signal<Project, NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
   public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
