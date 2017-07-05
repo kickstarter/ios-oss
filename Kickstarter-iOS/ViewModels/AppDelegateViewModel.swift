@@ -22,34 +22,10 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.userName == rhs.userName
 }
 
-public protocol NotificationAuthorizationStatusType {
-  var isAuthorized: Bool { get }
-  var isDenied: Bool { get }
-  var isNotDetermined: Bool { get }
-}
-
-@available(iOS 10.0, *)
-extension UNAuthorizationStatus: NotificationAuthorizationStatusType {
-  public var isAuthorized: Bool {
-    switch self {
-    case .authorized: return true
-    case .denied, .notDetermined: return false
-    }
-  }
-
-  public var isDenied: Bool {
-    switch self {
-    case .denied: return true
-    case .authorized, .notDetermined: return false
-    }
-  }
-
-  public var isNotDetermined: Bool {
-    switch self {
-    case .notDetermined: return true
-    case .denied, .authorized: return false
-    }
-  }
+public enum NotificationAuthorizationStatusType {
+  case authorized
+  case denied
+  case notDetermined
 }
 
 public protocol AppDelegateViewModelInputs {
@@ -90,10 +66,11 @@ public protocol AppDelegateViewModelInputs {
   func foundRedirectUrl(_ url: URL)
 
   /// Call when notification authorization is completed
-  func notificationAuthorizationCompleted()
+  func notificationAuthorizationCompleted(isGranted: Bool)
 
   /// Call when notification authorization status received
-  func notificationAuthorizationStatusReceived(_ authorizationStatus: NotificationAuthorizationStatusType)
+  @available(iOS 10.0, *)
+  func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus)
 
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
@@ -265,14 +242,10 @@ AppDelegateViewModelOutputs {
       .filter { AppEnvironment.current.currentUser != nil }
 
     if #available(iOS 10.0, *) {
-      self.getNotificationAuthorizationStatus =
-        Signal.merge(
-          applicationLaunchedWithUser,
-          self.notificationAuthorizationCompletedProperty.signal)
+      self.getNotificationAuthorizationStatus = applicationLaunchedWithUser
 
-      self.registerForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
-        .skipNil()
-        .filter { $0.isAuthorized }
+      self.registerForRemoteNotifications = self.notificationAuthorizationCompletedProperty.signal
+        .filter(isTrue)
         .ignoreValues()
 
     } else {
@@ -282,10 +255,13 @@ AppDelegateViewModelOutputs {
       self.registerForRemoteNotifications = applicationLaunchedWithUser
     }
 
-    self.authorizeForRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
-      .skipNil()
-      .filter { $0.isNotDetermined }
-      .ignoreValues()
+    self.authorizeForRemoteNotifications = Signal.merge(
+      applicationLaunchedWithUser,
+      self.notificationAuthorizationStatusProperty.signal
+        .skipNil()
+        .filter { $0 == .notDetermined }
+        .ignoreValues()
+    )
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -578,13 +554,15 @@ AppDelegateViewModelOutputs {
 
     self.notificationAuthorizationStatusProperty.signal
       .skipNil()
-      .skip(until: self.notificationAuthorizationCompletedProperty.signal)
+      .skip(until: self.notificationAuthorizationCompletedProperty.signal.ignoreValues())
       .take(first: 1)
-      .observeValues {
-        if $0.isAuthorized {
+      .observeValues { status in
+        switch status {
+        case .authorized:
           AppEnvironment.current.koala.trackPushPermissionOptIn()
-        } else if $0.isDenied {
+        case .denied:
           AppEnvironment.current.koala.trackPushPermissionOptOut()
+        default: ()
         }
       }
 
@@ -739,17 +717,16 @@ AppDelegateViewModelOutputs {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  fileprivate let notificationAuthorizationCompletedProperty = MutableProperty()
-  public func notificationAuthorizationCompleted() {
-    self.notificationAuthorizationCompletedProperty.value = ()
+  fileprivate let notificationAuthorizationCompletedProperty = MutableProperty(false)
+  public func notificationAuthorizationCompleted(isGranted: Bool) {
+    self.notificationAuthorizationCompletedProperty.value = isGranted
   }
 
   fileprivate let notificationAuthorizationStatusProperty =
     MutableProperty<NotificationAuthorizationStatusType?>(nil)
-  public func notificationAuthorizationStatusReceived(
-    _ notificationSetting: NotificationAuthorizationStatusType
-  ) {
-    return self.notificationAuthorizationStatusProperty.value = notificationSetting
+  @available(iOS 10.0, *)
+  public func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus) {
+    return self.notificationAuthorizationStatusProperty.value = authStatusType(for: authorizationStatus)
   }
 
   public let authorizeForRemoteNotifications: Signal<(), NoError>
@@ -1041,4 +1018,13 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
+}
+
+@available(iOS 10.0, *)
+private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatusType {
+  switch status {
+    case .authorized: return .authorized
+    case .denied: return .denied
+    case .notDetermined: return .notDetermined
+  }
 }
