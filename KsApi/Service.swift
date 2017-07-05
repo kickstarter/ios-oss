@@ -188,7 +188,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchMessageThread(backing: Backing)
-    -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
+    -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
     return request(.messagesForBacking(backing))
   }
 
@@ -535,5 +535,30 @@ public struct Service: ServiceType {
         uploading: properties.file.map { ($1, $0.rawValue) }
         )
         .flatMap(decodeModels)
+  }
+
+  private func request<M: Decodable>(_ route: Route)
+    -> SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
+
+      let properties = route.requestProperties
+
+      guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
+        fatalError(
+          "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
+        )
+      }
+
+      return Service.session.rac_JSONResponse(
+        preparedRequest(forURL: URL, method: properties.method, query: properties.query),
+        uploading: properties.file.map { ($1, $0.rawValue) }
+        )
+        .flatMap(decodeModel)
+  }
+
+  private func decodeModel<M: Decodable>(_ json: Any) ->
+    SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
+
+      return SignalProducer(value: json)
+        .map { json in decode(json) as M? }
   }
 }

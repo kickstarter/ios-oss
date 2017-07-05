@@ -52,7 +52,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let publishUpdateError: ErrorEnvelope?
 
-  fileprivate let fetchMessageThreadResponse: MessageThread
+  fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
   fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
   fileprivate let fetchProjectResponse: Project?
@@ -171,7 +171,7 @@ internal struct MockService: ServiceType {
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
                 removeAttachmentError: ErrorEnvelope? = nil,
                 publishUpdateError: ErrorEnvelope? = nil,
-                fetchMessageThreadResponse: MessageThread? = nil,
+                fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
                 fetchMessageThreadsResponse: [MessageThread]? = nil,
                 fetchProjectActivitiesResponse: [Activity]? = nil,
                 fetchProjectActivitiesError: ErrorEnvelope? = nil,
@@ -278,7 +278,7 @@ internal struct MockService: ServiceType {
 
     self.publishUpdateError = publishUpdateError
 
-    self.fetchMessageThreadResponse = fetchMessageThreadResponse ?? .template
+    self.fetchMessageThreadResult = fetchMessageThreadResult
 
     self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
       .template |> MessageThread.lens.id .~ 1,
@@ -594,6 +594,9 @@ internal struct MockService: ServiceType {
 
   internal func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
+      if let error = self.fetchMessageThreadResult?.error {
+        return SignalProducer(error: error)
+      }
 
       return SignalProducer(
         value: MessageThreadEnvelope(
@@ -603,25 +606,32 @@ internal struct MockService: ServiceType {
             .template |> Message.lens.id .~ 2,
             .template |> Message.lens.id .~ 3
           ],
-          messageThread: self.fetchMessageThreadResponse
+          messageThread: self.fetchMessageThreadResult?.value as? MessageThread ?? .template
         )
       )
   }
 
   internal func fetchMessageThread(backing: Backing)
-    -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
+    -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
+      if let error = self.fetchMessageThreadResult?.error {
+        return SignalProducer(error: error)
+      }
 
-      return SignalProducer(
-        value: MessageThreadEnvelope(
-          participants: [.template, .template |> User.lens.id .~ 2],
-          messages: [
-            .template |> Message.lens.id .~ 1,
-            .template |> Message.lens.id .~ 2,
-            .template |> Message.lens.id .~ 3
-          ],
-          messageThread: self.fetchMessageThreadResponse
+      if let thread = self.fetchMessageThreadResult?.value as? MessageThread {
+        return SignalProducer(
+          value: MessageThreadEnvelope(
+            participants: [.template, .template |> User.lens.id .~ 2],
+            messages: [
+              .template |> Message.lens.id .~ 1,
+              .template |> Message.lens.id .~ 2,
+              .template |> Message.lens.id .~ 3
+            ],
+            messageThread: thread
+          )
         )
-      )
+      } else {
+        return SignalProducer(value: nil)
+      }
   }
 
   internal func fetchMessageThreads(mailbox: Mailbox, project: Project?)
@@ -1181,7 +1191,7 @@ private extension MockService {
           removeAttachmentResponse: $1.removeAttachmentResponse,
           removeAttachmentError: $1.removeAttachmentError,
           publishUpdateError: $1.publishUpdateError,
-          fetchMessageThreadResponse: $1.fetchMessageThreadResponse,
+          fetchMessageThreadResult: $1.fetchMessageThreadResult,
           fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
           fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
           fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
