@@ -577,7 +577,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.userSessionStarted()
 
       self.getNotificationAuthorizationStatus.assertValueCount(1)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
@@ -585,50 +585,50 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationWillEnterForeground()
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.authorizeForRemoteNotifications.assertValueCount(2)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
+      self.authorizeForRemoteNotifications.assertValueCount(2)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(1)
+      self.authorizeForRemoteNotifications.assertValueCount(2)
+      self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       //Simulate initial notification authorization
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(1)
+      self.authorizeForRemoteNotifications.assertValueCount(3)
+      self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationCompleted()
+      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
 
-      self.getNotificationAuthorizationStatus.assertValueCount(3)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(3)
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
-      self.getNotificationAuthorizationStatus.assertValueCount(3)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(2)
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(3)
+      self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
     }
 
     self.vm.inputs.userSessionEnded()
 
-    self.registerForRemoteNotifications.assertValueCount(2)
+    self.registerForRemoteNotifications.assertValueCount(1)
     self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
@@ -650,7 +650,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
-      self.vm.inputs.notificationAuthorizationCompleted()
+      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Confirmed Push Opt-In"],
@@ -676,7 +676,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
 
-      self.vm.inputs.notificationAuthorizationCompleted()
+      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
 
       XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Dismissed Push Opt-In"],
