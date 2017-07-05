@@ -12,9 +12,10 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var copyStackView: UIStackView!
 
-  internal func configureWith(value: Void) {}
+  // value required to bind value to data source
+  internal func configureWith(value: Project) {}
 
-    internal override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
