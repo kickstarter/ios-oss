@@ -268,6 +268,8 @@ AppDelegateViewModelOutputs {
 
     let deepLinkFromNotification = pushEnvelope
       .map(navigation(fromPushEnvelope:))
+      //FIXME: remove do
+      .logEvents(identifier: "✨deepLinkFromNotification✨")
 
     // Deep links
 
@@ -360,6 +362,10 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.login) }
       .ignoreValues()
 
+    //TODO: This is where we get signal of going of going to the MessageTread but there is no
+    // separation between user messages and Creator's project messages
+    // we can spilt logic here or create new signal specific for the Creator's Project messages
+    // see fixme on line ~ 754
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
