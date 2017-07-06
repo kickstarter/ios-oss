@@ -22,7 +22,7 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.userName == rhs.userName
 }
 
-public enum NotificationAuthorizationStatusType {
+public enum NotificationAuthorizationStatus {
   case authorized
   case denied
   case notDetermined
@@ -562,7 +562,7 @@ AppDelegateViewModelOutputs {
           AppEnvironment.current.koala.trackPushPermissionOptIn()
         case .denied:
           AppEnvironment.current.koala.trackPushPermissionOptOut()
-        default: ()
+        case .notDetermined: ()
         }
       }
 
@@ -723,7 +723,7 @@ AppDelegateViewModelOutputs {
   }
 
   fileprivate let notificationAuthorizationStatusProperty =
-    MutableProperty<NotificationAuthorizationStatusType?>(nil)
+    MutableProperty<NotificationAuthorizationStatus?>(nil)
   @available(iOS 10.0, *)
   public func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus) {
     return self.notificationAuthorizationStatusProperty.value = authStatusType(for: authorizationStatus)
@@ -1021,7 +1021,7 @@ private func visitorCookies() -> [HTTPCookie] {
 }
 
 @available(iOS 10.0, *)
-private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatusType {
+private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatus {
   switch status {
     case .authorized: return .authorized
     case .denied: return .denied
