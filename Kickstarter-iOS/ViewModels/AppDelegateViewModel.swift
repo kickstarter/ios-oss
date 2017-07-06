@@ -65,10 +65,10 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
-  /// Call when notification authorization is completed
+  /// Call when notification authorization is completed with user permission or denial.
   func notificationAuthorizationCompleted(isGranted: Bool)
 
-  /// Call when notification authorization status received
+  /// Call when notification authorization status received.
   @available(iOS 10.0, *)
   func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus)
 
@@ -83,14 +83,13 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the app has crashed
   func crashManagerDidFinishSendingCrashReport()
-
 }
 
 public protocol AppDelegateViewModelOutputs {
   /// The value to return from the delegate's `application:didFinishLaunchingWithOptions:` method.
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
-  /// Emits when application is ready to be authorized for remote notifications
+  /// Emits when application should request authorizatoin for notifications.
   var authorizeForRemoteNotifications: Signal<(), NoError> { get }
 
   /// Emits an app identifier that should be used to configure the hockey app manager.
@@ -108,6 +107,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), NoError> { get }
 
+  /// Emits when application should call getNotificationSettings() to obtain authorization status.
   var getNotificationAuthorizationStatus: Signal<(), NoError> { get }
 
   /// Emits when the root view controller should navigate to activity.
@@ -149,7 +149,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the push token has been successfully registered on the server.
   var pushTokenSuccessfullyRegistered: Signal<(), NoError> { get }
 
-  /// Emits when application is ready to be registered for remote notifications
+  /// Emits when we should attempt registering the user for notifications.
   var registerForRemoteNotifications: Signal<(), NoError> { get }
 
   /// Emits an array of short cut items to put into the shared application.
@@ -234,7 +234,7 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
-    let applicationLaunchedWithUser = Signal.merge(
+    let applicationIsReadyForRegisteringNotifications = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal
@@ -242,21 +242,20 @@ AppDelegateViewModelOutputs {
       .filter { AppEnvironment.current.currentUser != nil }
 
     if #available(iOS 10.0, *) {
-      self.getNotificationAuthorizationStatus = applicationLaunchedWithUser
+      self.getNotificationAuthorizationStatus = applicationIsReadyForRegisteringNotifications
 
       self.registerForRemoteNotifications = self.notificationAuthorizationCompletedProperty.signal
         .filter(isTrue)
         .ignoreValues()
-
     } else {
       //Never firing signal in ios 9
       self.getNotificationAuthorizationStatus = .empty
 
-      self.registerForRemoteNotifications = applicationLaunchedWithUser
+      self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
     }
 
     self.authorizeForRemoteNotifications = Signal.merge(
-      applicationLaunchedWithUser,
+      applicationIsReadyForRegisteringNotifications,
       self.notificationAuthorizationStatusProperty.signal
         .skipNil()
         .filter { $0 == .notDetermined }

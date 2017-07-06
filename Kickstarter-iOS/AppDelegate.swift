@@ -135,11 +135,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.viewModel.outputs.authorizeForRemoteNotifications
           .observeForUI()
           .observeValues { [weak self] in
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) {
-              (isGranted, _) in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (isGranted, _) in
               self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
-              }
             }
+          }
       }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
