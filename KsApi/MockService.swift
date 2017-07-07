@@ -112,6 +112,7 @@ internal struct MockService: ServiceType {
   fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
 
   fileprivate let toggleStarResponse: StarEnvelope?
+  fileprivate let toggleStarError: ErrorEnvelope?
 
   fileprivate let unfollowFriendError: ErrorEnvelope?
 
@@ -209,6 +210,7 @@ internal struct MockService: ServiceType {
                 signupError: ErrorEnvelope? = nil,
                 submitApplePayResponse: SubmitApplePayEnvelope = .template,
                 toggleStarResponse: StarEnvelope? = nil,
+                toggleStarError: ErrorEnvelope? = nil,
                 unfollowFriendError: ErrorEnvelope? = nil,
                 updateDraftError: ErrorEnvelope? = nil,
                 updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -361,6 +363,7 @@ internal struct MockService: ServiceType {
     self.submitApplePayResponse = submitApplePayResponse
 
     self.toggleStarResponse = toggleStarResponse
+    self.toggleStarError = toggleStarError
 
     self.unfollowFriendError = unfollowFriendError
 
@@ -1218,6 +1221,7 @@ private extension MockService {
           signupError: $1.signupError,
           submitApplePayResponse: $1.submitApplePayResponse,
           toggleStarResponse: $1.toggleStarResponse,
+          toggleStarError: $1.toggleStarError,
           unfollowFriendError: $1.unfollowFriendError,
           updateDraftError: $1.updateDraftError,
           updatePledgeResult: $1.updatePledgeResult,

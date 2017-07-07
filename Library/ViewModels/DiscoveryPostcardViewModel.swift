@@ -263,8 +263,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let saveProjectEvent = projectOnSaveButtonToggle
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
-          .on(terminated: { isLoading.value = false })
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(terminated: { isLoading.value = false })
           .materialize()
     }
 
@@ -404,6 +404,7 @@ private func cached(project: Project) -> Project {
   }
 }
 
+// Function returns a boolean that determines if the star button should be toggled
 private func cache(project: Project, shouldToggle: Bool) -> Bool {
   AppEnvironment.current.cache[KSCache.ksr_projectSaved] =
     AppEnvironment.current.cache[KSCache.ksr_projectSaved] ?? [Int: Bool]()

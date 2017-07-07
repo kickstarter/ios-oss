@@ -107,6 +107,36 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.notifyDelegateShowSaveAlert.assertValueCount(1)
   }
 
+  func testSaveProject_WithError() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: .UnknownCode,
+      httpCode: 404,
+      exception: nil
+    )
+
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
+
+      self.vm.inputs.configureWith(project: project)
+
+      self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+      self.saveButtonEnabled.assertValueCount(0)
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled while request is being made.")
+
+      self.scheduler.advance()
+
+      self.saveButtonSelected.assertValues([false, true, false], "Save button deselects.")
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+
+    }
+  }
+
   func testTappedSaveButton_LoggedIn_User() {
     let project = Project.template
     let toggleSaveResponse = .template
@@ -118,14 +148,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         self.vm.inputs.configureWith(project: project)
 
         self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+        self.saveButtonEnabled.assertValueCount(0)
 
         self.vm.inputs.saveButtonTapped()
 
         self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+        self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
 
         self.scheduler.advance()
 
-        self.saveButtonEnabled.assertValues([false, true], "Save button stays enabled.")
+        self.saveButtonSelected.assertValues([false, true], "Save button remains selected after request.")
+        self.saveButtonEnabled.assertValues([false, true], "Save is enabled after request.")
     }
   }
 
@@ -139,11 +172,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         self.vm.inputs.configureWith(project: project)
 
         self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+        self.saveButtonEnabled.assertValueCount(0)
 
         self.vm.inputs.saveButtonTapped()
 
         self.saveButtonSelected.assertValues([false],
                                               "Nothing is emitted when save button tapped while logged out.")
+        self.saveButtonEnabled.assertValueCount(0)
 
         self.notifyDelegateShowLoginTout.assertValueCount(1,
                                                 "Prompt to login when save button tapped while logged out.")
@@ -153,13 +188,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
         self.saveButtonSelected.assertValues([false, true],
                                               "Once logged in, the save button is selected immediately.")
-
-        self.saveButtonEnabled.assertValues([false, true])
+        self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
 
         self.scheduler.advance()
 
         self.saveButtonSelected.assertValues([false, true],
                                              "Save button stays selected after API request.")
+        self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
 
         let untoggleSaveResponse = .template
           |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
@@ -168,15 +203,16 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           self.vm.inputs.saveButtonTapped()
 
           self.saveButtonSelected.assertValues([false, true, false],
-                                               "The project unsaves immediately.")
+                                               "Save button is deselected.")
+          self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request.")
 
           self.scheduler.advance()
 
-          self.saveButtonEnabled.assertValues([false, true, false, true],
-                                               "Save button is enabled after API request")
-
           self.saveButtonSelected.assertValues([false, true, false],
-                                               "The save button stays unselected.")
+                                               "The save button remains unselected.")
+          self.saveButtonEnabled.assertValues([false, true, false, true],
+                                              "Save button is enabled after request.")
+
       }
     }
   }

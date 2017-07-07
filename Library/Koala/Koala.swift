@@ -507,12 +507,6 @@ public final class Koala {
       ])
   }
 
-  public func trackSaveProject(context: SaveContext) {
-    self.track(event: "Star", properties: [ // check this
-      "context": context.trackingString
-      ])
-  }
-
   // MARK: Checkout Events
   public func trackCheckoutCancel(project: Project,
                                   reward: Reward,
@@ -1216,7 +1210,11 @@ public final class Koala {
                properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: isStarred ? "Starred Project" : "Unstarred Project",
+               properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: isStarred ? "Saved Project" : "Unsaved Project",
                properties: props)
+
   }
 
   public func trackOpenedExternalLink(project: Project, context: ExternalLinkContext ) {

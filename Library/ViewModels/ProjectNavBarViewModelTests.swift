@@ -200,16 +200,16 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.userSessionStarted()
 
       self.saveButtonSelected.assertValues([false, true],
-                                            "Once logged in, the save is selected immediately.")
-      self.saveButtonEnabled.assertValues([false, true])
+                                            "Once logged in, the save button selects immediately.")
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
 
       self.scheduler.advance()
 
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button stays selected after API request.")
-      self.saveButtonEnabled.assertValues([false, true])
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
       self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
-      XCTAssertEqual(["Project Star", "Starred Project"],
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
     }
   }
@@ -232,12 +232,17 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped()
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
-      self.saveButtonEnabled.assertValues([false, true])
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request." )
 
       self.scheduler.advance()
 
+      self.saveButtonSelected.assertValues([false, true],
+                                           "Save button remains selected.")
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+
+
       self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
-      XCTAssertEqual(["Project Star", "Starred Project"],
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
 
       let untoggleSaveResponse = .template
@@ -247,16 +252,17 @@ final class ProjectNavBarViewModelTests: TestCase {
         self.vm.inputs.saveButtonTapped()
 
         self.saveButtonSelected.assertValues([false, true, false],
-                                             "Save button selects immediately.")
-        self.saveButtonEnabled.assertValues([false, true, false, true])
+                                             "Save button deselects immediately.")
+        self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request")
 
         self.scheduler.advance()
 
         self.saveButtonSelected.assertValues([false, true, false],
-                                             "The save button stays unselected.")
+                                             "The save button remains unselected.")
+        self.saveButtonEnabled.assertValues([false, true, false, true], "Save button is enabled after request")
 
         self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt only showed for starring.")
-        XCTAssertEqual(["Project Star", "Starred Project", "Project Unstar", "Unstarred Project"],
+        XCTAssertEqual(["Project Star", "Starred Project", "Saved Project", "Project Unstar", "Unstarred Project", "Unsaved Project"],
                        self.trackingClient.events,
                        "An unstar koala event is tracked.")
       }
@@ -284,7 +290,7 @@ final class ProjectNavBarViewModelTests: TestCase {
         0, "The save project prompt doesn't show cause it's less than 48hrs."
       )
 
-      XCTAssertEqual(["Project Star", "Starred Project"], self.trackingClient.events,
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"], self.trackingClient.events,
                      "A star koala event is tracked.")
     }
   }
@@ -305,7 +311,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
 
-      XCTAssertEqual(["Project Unstar", "Unstarred Project"], self.trackingClient.events,
+      XCTAssertEqual(["Project Unstar", "Unstarred Project", "Unsaved Project"], self.trackingClient.events,
                      "An unstar koala event is tracked.")
     }
   }
