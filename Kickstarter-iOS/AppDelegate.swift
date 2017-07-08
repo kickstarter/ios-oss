@@ -26,7 +26,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.window?.rootViewController as? RootTabBarViewController
   }
 
-    func application(
+  func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
