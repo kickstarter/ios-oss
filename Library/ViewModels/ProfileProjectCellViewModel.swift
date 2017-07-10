@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 import Result
+import UIKit
 
 public protocol ProfileProjectCellViewModelInputs {
   /// Call with a backed project.

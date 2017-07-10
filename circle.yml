@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: 8.3.2
+    version: 8.3.3
 dependencies:
   cache_directories:
     - "Frameworks/OpenTok"
@@ -22,6 +22,7 @@ test:
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
     - SCHEME=LiveStream make test
+    - SCHEME=KsApi make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:

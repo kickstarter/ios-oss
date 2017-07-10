@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 import Result
+import UIKit
 
 public protocol BackerDashboardProjectCellViewModelInputs {
   /// Call to configure with a backed project.
