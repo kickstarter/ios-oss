@@ -15,6 +15,7 @@ import ReactiveSwift
 import Result
 import SafariServices
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,7 +26,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.window?.rootViewController as? RootTabBarViewController
   }
 
-    func application(
+  func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -108,14 +109,37 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.openURL($0) }
 
-    self.viewModel.outputs.registerUserNotificationSettings
+    self.viewModel.outputs.registerForRemoteNotifications
       .observeForUI()
       .observeValues {
-        UIApplication.shared.registerUserNotificationSettings(
-          UIUserNotificationSettings(types: .alert, categories: [])
-        )
-        UIApplication.shared.registerForRemoteNotifications()
-    }
+        if #available(iOS 10.0, *) {
+          UIApplication.shared.registerForRemoteNotifications()
+        } else {
+          UIApplication.shared.registerUserNotificationSettings(
+            UIUserNotificationSettings(types: .alert, categories: [])
+          )
+
+          UIApplication.shared.registerForRemoteNotifications()
+        }
+      }
+
+      if #available(iOS 10.0, *) {
+        self.viewModel.outputs.getNotificationAuthorizationStatus
+          .observeForUI()
+          .observeValues { [weak self] in
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+              self?.viewModel.inputs.notificationAuthorizationStatusReceived(settings.authorizationStatus)
+            }
+          }
+
+        self.viewModel.outputs.authorizeForRemoteNotifications
+          .observeForUI()
+          .observeValues { [weak self] in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (isGranted, _) in
+              self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
+            }
+          }
+      }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
@@ -123,7 +147,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.presentRemoteNotificationAlert
       .observeForUI()
-      .observeValues { [weak self] in self?.presentRemoteNotificationAlert($0) }
+      .observeValues { [weak self] in
+        self?.presentRemoteNotificationAlert($0)
+      }
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
