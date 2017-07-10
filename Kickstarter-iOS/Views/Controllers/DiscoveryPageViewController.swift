@@ -225,10 +225,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func showSaveButton(_ show: Bool) -> Bool {
-    return show
-  }
-
   fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)

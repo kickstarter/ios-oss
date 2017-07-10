@@ -125,7 +125,7 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeValues { [weak self] in self?.categoryButton.setTitleColor($0, for: .normal) }
     self.categoryButton.rac.title = self.viewModel.outputs.categoryButtonText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.saveButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint // fix this
+    self.saveButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
@@ -174,7 +174,7 @@ public final class ProjectNavBarViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.viewModel.outputs.project
+    self.viewModel.outputs.postNotificationWithProject
       .observeForUI()
       .observeValues { project in
         NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved,

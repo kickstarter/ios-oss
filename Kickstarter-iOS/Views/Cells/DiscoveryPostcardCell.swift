@@ -4,13 +4,15 @@ import Library
 import Prelude
 import UIKit
 
-// Called when the share button is tapped
 internal protocol DiscoveryPostcardCellDelegate: class {
+  /// Called when the share button is tapped
   func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
                          fromSourceView: UIView)
 
+  /// Called when the heart/save button is tapped
   func discoveryPostcardCellProjectSaveAlert()
 
+  /// Called when logged out user taps heart/save button
   func discoveryPostcardCellGoToLoginTout()
 }
 
@@ -262,7 +264,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
 
     self.viewModel.outputs.notifyDelegateShowLoginTout
-      .observeForUI()
+      .observeForControllerAction()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellGoToLoginTout()

@@ -93,7 +93,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits when we should notify the delegate that the heart button was tapped.
   var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
 
-  // var notifyDelegateShowLoginTout<LoginIntent>
+  /// Emits when we should notify delegate that heart button was tapped by logged out user.
   var notifyDelegateShowLoginTout: Signal<Void, NoError> { get }
 
   /// Emits the text for the pledged title label.
@@ -140,7 +140,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean that determines if the social view should be hidden.
   var socialStackViewHidden: Signal<Bool, NoError> { get }
- }
+}
 
 public protocol DiscoveryPostcardViewModelType {
   var inputs: DiscoveryPostcardViewModelInputs { get }
@@ -252,7 +252,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       loggedOutUserTappedSaveButton
       )
       .ignoreValues()
-      .take(first: 1)
 
     let isLoading = MutableProperty(false)
 

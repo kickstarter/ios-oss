@@ -37,8 +37,8 @@ public protocol ProjectNavBarViewModelOutputs {
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
 
-  /// Emits a project
-  var project: Signal<Project, NoError> { get }
+  /// Emits a project.
+  var postNotificationWithProject: Signal<Project, NoError> { get }
 
   /// Emits the name of the project
   var projectName: Signal<String, NoError> { get }
@@ -53,10 +53,10 @@ public protocol ProjectNavBarViewModelOutputs {
   var showProjectSavedPrompt: Signal<Void, NoError> { get }
 
   /// Emits the accessibility hint for the star button.
-  var starButtonAccessibilityHint: Signal<String, NoError> { get } // check this after new strings
+  var starButtonAccessibilityHint: Signal<String, NoError> { get }
 
   var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
-  }
+}
 
 public protocol ProjectNavBarViewModelType {
   var inputs: ProjectNavBarViewModelInputs { get }
@@ -209,7 +209,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    self.project = project
+    self.postNotificationWithProject = project
       .takeWhen(self.saveButtonTappedProperty.signal)
 
     Signal.combineLatest(project, configuredRefTag)
@@ -278,7 +278,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
   public let dismissViewController: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
-  public let project: Signal<Project, NoError>
+  public let postNotificationWithProject: Signal<Project, NoError>
   public let projectName: Signal<String, NoError>
   public let saveButtonEnabled: Signal<Bool, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>
