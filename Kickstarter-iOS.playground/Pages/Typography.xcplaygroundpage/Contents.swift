@@ -31,7 +31,7 @@ let fonts: [(String, UIFont)] = [
   ].sorted { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
 
 let base = UILabel.lens.text .~ "The quick brown fox jumps over the lazy dog"
-  <> UILabel.lens.textColor .~ .ksr_text_navy_900
+  <> UILabel.lens.textColor .~ .ksr_text_grey_900
 
 for (name, font) in fonts {
   rootStackView.addArrangedSubview(

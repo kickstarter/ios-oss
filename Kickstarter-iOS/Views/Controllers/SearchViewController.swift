@@ -65,7 +65,7 @@ internal final class SearchViewController: UITableViewController {
     _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
       ||> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       ||> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      ||> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      ||> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700

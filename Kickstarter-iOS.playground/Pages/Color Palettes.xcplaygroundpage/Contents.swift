@@ -43,7 +43,7 @@ func labelsStackView(colorName colorName: String, startColor: UIColor, endColor:
       UILabel()
         |> UILabel.lens.text .~ "\(colorName)\(weightValue)"
         |> UILabel.lens.font .~ .ksr_headline(size: 14)
-        |> UILabel.lens.textColor .~ .ksr_navy_900,
+        |> UILabel.lens.textColor .~ .ksr_grey_900,
       UILabel()
         |> UILabel.lens.text .~ "#\(startColor.hexString)\(endColorValue)"
         |> UILabel.lens.font .~ .ksr_subhead(size: 14)

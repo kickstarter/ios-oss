@@ -157,12 +157,12 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.totalPledgedLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.textColor .~ .ksr_grey_900
       |> UILabel.lens.text %~ { _ in Strings.Total_pledged() }
 
     _ = self.totalPledgedAmountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.textColor .~ .ksr_grey_900
 
     _ = self.pledgeLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -190,14 +190,14 @@ internal final class BackingViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
 
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.textColor .~ .ksr_grey_900
 
     _ = self.backerRewardDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)

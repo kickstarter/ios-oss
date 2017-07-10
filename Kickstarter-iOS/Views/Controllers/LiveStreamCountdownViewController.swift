@@ -128,7 +128,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.textColor .~ .ksr_text_grey_900
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
@@ -214,10 +214,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.goToProjectButton
       |> liveStreamGoToProjectStyle
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_900
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_grey_900
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_900.withAlphaComponent(0.8)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_grey_900.withAlphaComponent(0.8)
 
     _ = self.separatorViews
       ||> separatorStyle

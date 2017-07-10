@@ -46,7 +46,7 @@ LiveStreamDiscoveryUpcomingAndReplayCellViewModelOutputs {
       .map {
         $0.hasReplay == .some(true)
           ? UIColor.ksr_navy_700.withAlphaComponent(0.9)
-          : UIColor.ksr_navy_900.withAlphaComponent(0.8)
+          : UIColor.ksr_grey_900.withAlphaComponent(0.8)
     }
 
     self.creatorLabelText = liveStreamEvent

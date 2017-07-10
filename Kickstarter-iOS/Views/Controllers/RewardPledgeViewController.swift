@@ -156,7 +156,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
-      |> UIButton.lens.backgroundColor .~ .ksr_black_soft_100
+      |> UIButton.lens.backgroundColor .~ .ksr_grey_900
       |> UIButton.lens.image(forState: .normal) %~ { _ in
         image(named: "apple-pay-button-content", tintColor: .white)
       }
@@ -286,7 +286,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
 
     _ = self.loadingOverlayView
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
@@ -377,7 +377,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingActivityIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
 
     _ = self.shipsToLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
@@ -424,7 +424,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_grey_900
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.userInteractionEnabled .~ true
 

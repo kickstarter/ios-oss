@@ -46,7 +46,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UILabel.lens.font .~ .ksr_title1(size: 22)
 
     _ = rowStackViews.flatMap { $0.arrangedSubviews.first as? UILabel }
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_900
+      ||> UILabel.lens.textColor .~ .ksr_grey_900
       ||> UILabel.lens.font .~ .ksr_body()
 
     _ = buttons

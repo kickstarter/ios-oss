@@ -20,7 +20,7 @@ public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC
 }
 
 public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_black_soft_100
+  return VC.lens.view.backgroundColor .~ .ksr_grey_900
     <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
@@ -102,7 +102,7 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
 
 public let formFieldStyle =
   UITextField.lens.font .~ .ksr_body()
-    <> UITextField.lens.textColor .~ .ksr_text_navy_900
+    <> UITextField.lens.textColor .~ .ksr_text_grey_900
     <> UITextField.lens.backgroundColor .~ .clear
     <> UITextField.lens.borderStyle .~ .none
     <> UITextField.lens.autocapitalizationType .~ .none
@@ -133,7 +133,7 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
 
 private let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_black_soft_100,
+    NSForegroundColorAttributeName: UIColor.ksr_grey_900,
     NSFontAttributeName: UIFont.ksr_callout()
     ]
     <> UINavigationBar.lens.translucent .~ false

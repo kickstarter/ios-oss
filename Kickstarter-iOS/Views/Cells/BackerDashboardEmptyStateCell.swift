@@ -18,7 +18,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
     case .saved:
       self.messageLabel.text = Strings.Tap_the_star_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.Save_projects()
-      self.iconImageView.tintColor = .ksr_black_soft_100
+      self.iconImageView.tintColor = .ksr_grey_900
     }
   }
 
@@ -38,7 +38,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ UIFont.ksr_callout(size: 15.0)
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_black_soft_100
+      |> UILabel.lens.textColor .~ .ksr_text_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 17.0)
   }
 }
