@@ -39,6 +39,8 @@
 		015A06F71D219513007AE210 /* DashboardRewardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A06F51D219513007AE210 /* DashboardRewardsCell.swift */; };
 		015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */; };
 		015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B78841D47FF51003216AC /* MFMailComposeViewController.swift */; };
+		0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
+		0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
 		0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */; };
 		0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */; };
 		0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */; };
@@ -1561,6 +1563,7 @@
 		015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardRowStackView.swift; sourceTree = "<group>"; };
 		015A06F51D219513007AE210 /* DashboardRewardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardRewardsCell.swift; sourceTree = "<group>"; };
 		015B78841D47FF51003216AC /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MFMailComposeViewController.swift; path = Library/MFMailComposeViewController.swift; sourceTree = "<group>"; };
+		0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesEmptyStateCell.swift; sourceTree = "<group>"; };
 		0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootCategory.swift; sourceTree = "<group>"; };
 		0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersStaticRowCell.swift; sourceTree = "<group>"; };
 		0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewController.swift; sourceTree = "<group>"; };
@@ -2802,6 +2805,7 @@
 				A71C7FB11E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift */,
 				A742CCA41E440EA80029D256 /* LiveStreamDiscoveryUpcomingAndReplayCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
+				0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
 				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
@@ -5358,6 +5362,7 @@
 				A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
 				A7A052141CD12DD7005AF5E2 /* CommentCell.swift in Sources */,
 				9D14FF8F1D133351005F4ABB /* ProjectActivityLaunchCell.swift in Sources */,
+				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5367,6 +5372,7 @@
 			files = (
 				013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
+				0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

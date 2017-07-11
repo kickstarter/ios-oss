@@ -8,82 +8,94 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class BackingViewModelTests: TestCase {
-  internal let vm: BackingViewModelType = BackingViewModel()
+  private let vm: BackingViewModelType = BackingViewModel()
 
-  internal let backerAvatarURL = TestObserver<String?, NoError>()
-  internal let backerName = TestObserver<String, NoError>()
-  internal let backerNameAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerSequence = TestObserver<String, NoError>()
-  internal let backerSequenceAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerPledgeAmountAndDate = TestObserver<String, NoError>()
-  internal let backerPledgeAmountAndDateAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerPledgeStatus = TestObserver<String, NoError>()
-  internal let backerPledgeStatusAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerRewardDescription = TestObserver<String, NoError>()
-  internal let backerRewardDescriptionAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerShippingAmount = TestObserver<String, NoError>()
-  internal let backerShippingAmountAccessibilityLabel = TestObserver<String, NoError>()
-  internal let backerShippingDescription = TestObserver<String, NoError>()
-  internal let backerShippingDescriptionAccessibilityLabel = TestObserver<String, NoError>()
-  internal let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
-  internal let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
-  internal let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
-  internal let goToMessagesBacking = TestObserver<Backing, NoError>()
-  internal let goToMessagesProject = TestObserver<Project, NoError>()
-  internal let hideActionsStackView = TestObserver<Bool, NoError>()
-  internal let presentMessageDialog = TestObserver<MessageThread, NoError>()
-  internal let messageButtonTitleText = TestObserver<String, NoError>()
-  internal let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
-  internal let rootStackViewAxis = TestObserver<UILayoutConstraintAxis, NoError>()
+  private let backerAvatarURL = TestObserver<String?, NoError>()
+  private let backerName = TestObserver<String, NoError>()
+  private let backerSequence = TestObserver<String, NoError>()
+  private let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
+  private let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
+  private let goToMessagesBacking = TestObserver<Backing, NoError>()
+  private let goToMessagesProject = TestObserver<Project, NoError>()
+  private let loaderIsAnimating = TestObserver<Bool, NoError>()
+  private let messageButtonTitleText = TestObserver<String, NoError>()
+  private let opacityForContainers = TestObserver<CGFloat, NoError>()
+  private let pledgeAmount = TestObserver<String, NoError>()
+  private let pledgeSectionTitle = TestObserver<String, NoError>()
+  private let rewardDescription = TestObserver<String, NoError>()
+  private let rewardSectionAndShippingIsHidden = TestObserver<Bool, NoError>()
+  private let rewardSectionTitle = TestObserver<String, NoError>()
+  private let rewardTitleWithAmount = TestObserver<String, NoError>()
+  private let rootStackViewAxis = TestObserver<UILayoutConstraintAxis, NoError>()
+  private let shippingAmount = TestObserver<String, NoError>()
+  private let statusDescription = TestObserver<String, NoError>()
+  private let totalPledgeAmount = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: .template))
     self.vm.outputs.backerAvatarURL.map { $0?.absoluteString }.observe(backerAvatarURL.observer)
     self.vm.outputs.backerName.observe(backerName.observer)
-    self.vm.outputs.backerNameAccessibilityLabel.observe(backerNameAccessibilityLabel.observer)
     self.vm.outputs.backerSequence.observe(backerSequence.observer)
-    self.vm.outputs.backerSequenceAccessibilityLabel.observe(backerSequenceAccessibilityLabel.observer)
-    self.vm.outputs.backerPledgeAmountAndDate.observe(backerPledgeAmountAndDate.observer)
-    self.vm.outputs.backerPledgeAmountAndDateAccessibilityLabel
-      .observe(backerPledgeAmountAndDateAccessibilityLabel.observer)
-    self.vm.outputs.backerPledgeStatus.observe(backerPledgeStatus.observer)
-    self.vm.outputs.backerPledgeStatusAccessibilityLabel
-      .observe(backerPledgeStatusAccessibilityLabel.observer)
-    self.vm.outputs.backerRewardDescription.observe(backerRewardDescription.observer)
-    self.vm.outputs.backerRewardDescriptionAccessibilityLabel
-      .observe(backerRewardDescriptionAccessibilityLabel.observer)
-    self.vm.outputs.backerShippingAmount.observe(backerShippingAmount.observer)
-    self.vm.outputs.backerShippingAmountAccessibilityLabel
-      .observe(backerShippingAmountAccessibilityLabel.observer)
-    self.vm.outputs.backerShippingDescription.observe(backerShippingDescription.observer)
-    self.vm.outputs.backerShippingDescriptionAccessibilityLabel
-      .observe(backerShippingDescriptionAccessibilityLabel.observer)
-    self.vm.outputs.estimatedDeliveryDateLabelText.observe(estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.goToMessageCreator.map(first).observe(goToMessageCreatorSubject.observer)
     self.vm.outputs.goToMessageCreator.map(second).observe(goToMessageCreatorContext.observer)
     self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
     self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
-    self.vm.outputs.hideActionsStackView.observe(hideActionsStackView.observer)
+    self.vm.outputs.loaderIsAnimating.observe(loaderIsAnimating.observer)
     self.vm.outputs.messageButtonTitleText.observe(messageButtonTitleText.observer)
-    self.vm.outputs.loadingOverlayIsHidden.observe(loadingOverlayIsHidden.observer)
+    self.vm.outputs.opacityForContainers.observe(opacityForContainers.observer)
+    self.vm.outputs.pledgeAmount.observe(pledgeAmount.observer)
+    self.vm.outputs.pledgeSectionTitle.map { $0.string }.observe(pledgeSectionTitle.observer)
+    self.vm.outputs.rewardDescription.observe(rewardDescription.observer)
+    self.vm.outputs.rewardSectionAndShippingIsHidden.observe(rewardSectionAndShippingIsHidden.observer)
+    self.vm.outputs.rewardSectionTitle.map { $0.string }.observe(rewardSectionTitle.observer)
+    self.vm.outputs.rewardTitleWithAmount.observe(rewardTitleWithAmount.observer)
     self.vm.outputs.rootStackViewAxis.observe(rootStackViewAxis.observer)
-     }
+    self.vm.outputs.shippingAmount.observe(shippingAmount.observer)
+    self.vm.outputs.statusDescription.map { $0.string }.observe(statusDescription.observer)
+    self.vm.outputs.totalPledgeAmount.observe(totalPledgeAmount.observer)
+  }
 
-  func testBackerAvatarURL() {
+  func testHeaderBackerInfo() {
+    let user = .template
+      |> User.lens.name .~ "Stella"
+      |> User.lens.avatar.small .~ "http://www.image.com/lit.jpg"
 
-    withEnvironment(currentUser: .template |> User.lens.avatar.small .~ "http://www.image.com/lit.jpg") {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+    let backing = .template
+      |> Backing.lens.sequence .~ 5
+      |> Backing.lens.backer .~ user
 
-      self.backerAvatarURL.assertValues([])
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: user) {
+      self.vm.inputs.configureWith(project: .template, backer: user)
+
+      self.backerAvatarURL.assertValueCount(0)
+      self.backerName.assertValueCount(0)
+      self.backerSequence.assertValueCount(0)
+      self.loaderIsAnimating.assertValueCount(0)
+      self.opacityForContainers.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 
-      self.backerAvatarURL.assertValues(["http://www.image.com/lit.jpg"], "User avatar emitted")
+      self.backerAvatarURL.assertValues(["http://www.image.com/lit.jpg"], "Emits user avatar url.")
+      self.backerName.assertValues(["Stella"], "Emits backer name.")
+      self.backerSequence
+        .assertValues([Strings.backer_modal_backer_number(backer_number: Format.wholeNumber(0))])
+      self.loaderIsAnimating.assertValues([true])
+      self.opacityForContainers.assertValues([0.0], "Containers below header start at 0 opacity.")
+
+      self.scheduler.advance()
+
+      self.backerAvatarURL.assertValues(["http://www.image.com/lit.jpg"], "User avatar does not emit again.")
+      self.backerName.assertValues(["Stella"], "Backer name does not emit again.")
+      self.backerSequence
+        .assertValues([Strings.backer_modal_backer_number(backer_number: Format.wholeNumber(0)),
+                       Strings.backer_modal_backer_number(backer_number: "5")], "Emits backer sequence.")
+      self.loaderIsAnimating.assertValues([true, false])
+      self.opacityForContainers.assertValues([0.0, 1.0], "Containers fade in after full backer info loads.")
     }
   }
 
-  func testUserName() {
+  func testBackerIsNil() {
     withEnvironment(currentUser: .template |> User.lens.name .~ "Carla") {
       self.vm.inputs.configureWith(project: .template, backer: nil)
 
@@ -95,282 +107,167 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
-  func testBackerName() {
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: .template,
-                                   backer: .template |> User.lens.name .~ "Swanson")
+  func testPledgeInfo_BackerView() {
+    let user = .template
+      |> User.lens.name .~ "Stella"
 
-      self.backerName.assertValues([])
+    let backing = .template
+      |> Backing.lens.amount .~ 35
+      |> Backing.lens.backer .~ user
+      |> Backing.lens.pledgedAt .~ 1468527587.32843
+      |> Backing.lens.shippingAmount .~ 5
+      |> Backing.lens.status .~ .pledged
 
-      self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: user) {
+      self.vm.inputs.configureWith(project: .template, backer: user)
 
-      self.backerName.assertValues(["Swanson"], "Name should be Swanson")
-    }
-  }
-
-  func testBackerNameAccessibilityLabel() {
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: .template,
-                                   backer: .template |> User.lens.name .~ "Swanson")
-
-      self.backerNameAccessibilityLabel.assertValues([])
-
-      self.vm.inputs.viewDidLoad()
-
-      self.backerNameAccessibilityLabel.assertValues(["Swanson"], "Name should be Swanson")
-    }
-  }
-
-  func testBackerSequence() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template |> Backing.lens.sequence .~ 5)) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+      self.pledgeAmount.assertValueCount(0)
+      self.pledgeSectionTitle.assertValueCount(0)
+      self.shippingAmount.assertValueCount(0)
+      self.statusDescription.assertValueCount(0)
+      self.totalPledgeAmount.assertValueCount(0)
+      self.messageButtonTitleText.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 
-      self.backerSequence.assertDidNotEmitValue()
+      self.pledgeAmount.assertValues([""])
+      self.pledgeSectionTitle.assertValues([""])
+      self.shippingAmount.assertValues([""])
+      self.statusDescription.assertValues([""])
+      self.totalPledgeAmount.assertValues([""])
 
       self.scheduler.advance()
 
-      self.backerSequence.assertValues([Strings.backer_modal_backer_number(backer_number: "5")],
-                                       "Backer label emits backer sequence")
+      self.pledgeAmount.assertValues(["", "$30"])
+      self.pledgeSectionTitle.assertValues(["", "You pledged on July 14, 2016"])
+      self.shippingAmount.assertValues(["", "$5"])
+      self.statusDescription.assertValues(["", Strings.Youve_pledged_to_support_this_project()])
+      self.totalPledgeAmount.assertValues(["", "$35"])
+      self.messageButtonTitleText.assertValues([Strings.Contact_creator()])
     }
   }
 
-  func testBackerSequenceAccessibilityLabel() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template |> Backing.lens.sequence .~ 5)) {
-      self.vm.inputs.configureWith(project: .template, backer: nil)
+  func testPledgeInfo_CreatorView() {
+    let creator = .template
+      |> User.lens.id .~ 12
 
-      self.backerSequenceAccessibilityLabel.assertValues([])
+    let backing = .template
+      |> Backing.lens.pledgedAt .~ 1468527587.32843
+      |> Backing.lens.status .~ .pledged
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: creator) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+      self.pledgeSectionTitle.assertValueCount(0)
+      self.statusDescription.assertValueCount(0)
+      self.messageButtonTitleText.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 
-      self.backerSequence.assertDidNotEmitValue()
+      self.pledgeSectionTitle.assertValues([""])
+      self.statusDescription.assertValues([""])
 
       self.scheduler.advance()
 
-      self.backerSequenceAccessibilityLabel.assertValues([Strings.backer_modal_backer_number(backer_number:
-        "5")],
-                                       "Backer label emits backer sequence")
+      self.pledgeSectionTitle.assertValues(["", "Pledged on July 14, 2016"])
+      self.statusDescription.assertValues(["", Strings.Backer_has_pledged_to_this_project()])
+      self.messageButtonTitleText.assertValues([localizedString(key: "Contact_backer",
+                                                                defaultValue: "Contact backer")])
     }
   }
 
-  func testBackerPledgeAmountAndDate() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.amount .~ 35
-      |> Backing.lens.pledgedAt .~ 1468527587.32843 )) {
-
-        self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerPledgeAmountAndDate.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerPledgeAmountAndDate.assertValues(["$35 on July 14, 2016"],
-                                                                    "Backer label emits pledge amount")
-    }
-  }
-
-  func testBackerPledgeAmountAndDateAccessibilityLabel() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.amount .~ 35
-      |> Backing.lens.pledgedAt .~ 1468527587.32843 )) {
-        self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
-
-        self.backerPledgeAmountAndDateAccessibilityLabel.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerPledgeAmountAndDateAccessibilityLabel.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerPledgeAmountAndDateAccessibilityLabel.assertValues(["Pledged $35 on July 14, 2016"],
-                                                    "Backer label emits pledge amount")
-    }
-  }
-
-  func testBackerPledgeStatus() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.status .~ .pledged)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerPledgeStatus.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerPledgeStatus.assertValues(["Status: Pledged"], "Backer label emits pledge status")
-    }
-  }
-
-  func testbackerPledgeStatusAccessibilityLabel() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.status .~ .pledged)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerPledgeStatusAccessibilityLabel.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerPledgeStatusAccessibilityLabel.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerPledgeStatusAccessibilityLabel.assertValues(["Status: Pledged"],
-                                                               "Backer label emits pledge status")
-    }
-  }
-
-  func testBackerRewardDescription() {
-    let reward = .template |> Reward.lens.description .~ "Cool Item"
-
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.amount .~ 10_00
-      |> Backing.lens.reward .~ reward)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerRewardDescription.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerRewardDescription.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerRewardDescription.assertValues(["$10 - Cool Item"],
-                                                "Backer label emits reward description")
-    }
-  }
-
-  func testBackerRewardDescriptionAccessibilityLabel() {
-    let reward = .template |> Reward.lens.description .~ "Cool Item"
-
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.amount .~ 10_00
-      |> Backing.lens.reward .~ reward)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerRewardDescriptionAccessibilityLabel.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerRewardDescriptionAccessibilityLabel.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerRewardDescriptionAccessibilityLabel.assertValues(["$10 - Cool Item"],
-                                                                    "Backer label emits reward description")
-    }
-  }
-
-  func testBackerShippingAmount() {
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.shippingAmount .~ 37)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerShippingAmount.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerShippingAmount.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerShippingAmount.assertValues(["$37"], "Backer label emits shipping amount")
-    }
-  }
-
-  func testBackerShippingAmountAccessibilityLabel() {
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.shippingAmount .~ 37)) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerShippingAmountAccessibilityLabel.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerShippingAmountAccessibilityLabel.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerShippingAmountAccessibilityLabel.assertValues(["$37"],
-                                                               "Backer label emits shipping amount")
-    }
-  }
-
-  func testBackerShippingDescription() {
-    let shipping = Reward.Shipping(
-      enabled: true,
-      preference: .none,
-      summary: "Ships only to Litville, Legitas"
-    )
-
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.reward .~ (.template |> Reward.lens.shipping .~ shipping))) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerShippingDescription.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerShippingDescription.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerShippingDescription.assertValues([ "Ships only to Litville, Legitas"],
-                                                    "Backer label emits reward description")
-    }
-  }
-
-  func testBackerShippingDescriptionAccessibilityLabel() {
-    let shipping = Reward.Shipping(
-      enabled: true,
-      preference: .none,
-      summary: "Ships only to Litville, Legitas"
-    )
-
-    withEnvironment(apiService: MockService (fetchBackingResponse: .template
-      |> Backing.lens.reward .~ (.template |> Reward.lens.shipping .~ shipping))) {
-        self.vm.inputs.configureWith(project: .template, backer: nil)
-
-        self.backerShippingDescriptionAccessibilityLabel.assertValues([])
-
-        self.vm.inputs.viewDidLoad()
-
-        self.backerShippingDescriptionAccessibilityLabel.assertDidNotEmitValue()
-
-        self.scheduler.advance()
-
-        self.backerShippingDescriptionAccessibilityLabel.assertValues([ "Ships only to Litville, Legitas"],
-                                                    "Backer label emits reward description")
-    }
-  }
-
-  func testEstimatedDeliveryDateLabelText() {
-    let date = 1485907200.0// Feb 01 2017 in UTC
+  func testRewardInfo_BackerView() {
+    let date = 1485907200.0 // Feb 01 2017 in UTC
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST
 
-    let reward = .template |> Reward.lens.estimatedDeliveryOn .~ date
+    let reward = .template
+      |> Reward.lens.title .~ "A Nice Title"
+      |> Reward.lens.description .~ "A nice description."
+      |> Reward.lens.estimatedDeliveryOn .~ date
 
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template
-      |> Backing.lens.reward .~ reward), calendar: calEST ) {
-        self.vm.inputs.configureWith(project: .template |> Project.lens.country .~ .US, backer: nil)
+    let backing = .template
+      |> Backing.lens.amount .~ 10_00
+      |> Backing.lens.reward .~ reward
 
-        self.backerPledgeAmountAndDateAccessibilityLabel.assertValues([])
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing),
+                    calendar: calEST,
+                    currentUser: .template) {
 
-        self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(project: .template, backer: .template)
 
-        self.backerPledgeAmountAndDateAccessibilityLabel.assertDidNotEmitValue()
+      self.rewardDescription.assertValueCount(0)
+      self.rewardSectionAndShippingIsHidden.assertValueCount(0)
+      self.rewardSectionTitle.assertValueCount(0)
+      self.rewardTitleWithAmount.assertValueCount(0)
 
-        self.scheduler.advance()
+      self.vm.inputs.viewDidLoad()
 
-        self.estimatedDeliveryDateLabelText.assertValues(["February 2017"],
-                                                         "Emits the estimated delivery date")
+      self.rewardDescription.assertValues([""])
+      self.rewardSectionAndShippingIsHidden.assertValues([])
+      self.rewardSectionTitle.assertValues([""])
+      self.rewardTitleWithAmount.assertValues([""])
+
+      self.scheduler.advance()
+
+      self.rewardDescription.assertValues(["", "A nice description."])
+      self.rewardSectionAndShippingIsHidden.assertValues([false], "Reward and shipping are not hidden.")
+      self.rewardSectionTitle.assertValues(["", "Your reward estimated for delivery in Feb 2017"])
+      self.rewardTitleWithAmount.assertValues(["", "$10 - A Nice Title"])
+    }
+  }
+
+  func testRewardInfo_CreatorView() {
+    let date = 1485907200.0 // Feb 01 2017 in UTC
+    let EST = TimeZone(abbreviation: "EST")!
+    var calEST = Calendar.current
+    calEST.timeZone = EST
+
+    let creator = .template
+      |> User.lens.id .~ 12
+
+    let reward = .template
+      |> Reward.lens.estimatedDeliveryOn .~ date
+
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing),
+                    calendar: calEST,
+                    currentUser: creator) {
+
+                      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+                      self.rewardSectionTitle.assertValueCount(0)
+
+                      self.vm.inputs.viewDidLoad()
+
+                      self.rewardSectionTitle.assertValues([""])
+
+                      self.scheduler.advance()
+
+                      self.rewardSectionTitle.assertValues(["", "Reward estimated for delivery in Feb 2017"])
+    }
+  }
+
+  func testRewardAndShippingHidden() {
+    let reward = .template
+      |> Reward.lens.id .~ Reward.noReward.id
+
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+      self.rewardSectionAndShippingIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardSectionAndShippingIsHidden.assertValues([true])
     }
   }
 
@@ -416,52 +313,6 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
-  func testCurrentUserIsCreator() {
-    let creator = .template |> User.lens.id .~ 42
-    let project = .template
-      |> Project.lens.creator .~ creator
-    let backing = Backing.template
-
-    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: creator) {
-      self.vm.inputs.configureWith(project: project, backer: nil)
-
-      self.vm.inputs.viewDidLoad()
-
-      self.hideActionsStackView.assertValues([false], "Shows actions stack view")
-    }
-  }
-
-  func testCurrentUserIsBacker() {
-    let project = Project.template
-    let backer = .template |> User.lens.id .~ 20
-    let backing = Backing.template
-
-    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
-      self.vm.inputs.configureWith(project: project, backer: backer)
-
-      self.vm.inputs.viewDidLoad()
-
-      self.hideActionsStackView.assertValues([false], "Shows actions stack view")
-    }
-  }
-
-  func testCurrentUserIsCollaborator() {
-    let creator = .template |> User.lens.id .~ 42
-    let project = .template
-      |> Project.lens.creator .~ creator
-    let backing = Backing.template
-    let backer = .template |> User.lens.id .~ 199
-    let collaborator = .template |> User.lens.id .~ 99
-
-    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: collaborator) {
-      self.vm.inputs.configureWith(project: project, backer: backer)
-
-      self.vm.inputs.viewDidLoad()
-
-      self.hideActionsStackView.assertValues([true], "Hides actions stack view for non-creator/non-backer")
-    }
-  }
-
   func testEventsTracked() {
     withEnvironment(apiService: MockService(fetchBackingResponse: .template)) {
       self.vm.inputs.configureWith(project: .template, backer: .template)
@@ -492,19 +343,6 @@ internal final class BackingViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.vertical])
-    }
-  }
-
-  func testLoadingOverlay() {
-    withEnvironment(apiService: MockService(fetchBackingResponse: .template)) {
-      self.vm.inputs.configureWith(project: .template, backer: .template)
-      self.vm.inputs.viewDidLoad()
-
-      self.loadingOverlayIsHidden.assertValues([false])
-
-      self.scheduler.advance()
-
-      self.loadingOverlayIsHidden.assertValues([false, true])
     }
   }
 }

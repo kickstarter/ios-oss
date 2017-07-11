@@ -15,6 +15,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let defaultUser = .template |> User.lens.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
+  fileprivate let pledgeFooterIsHidden = TestObserver<Bool, NoError>()
   fileprivate let title = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -27,6 +28,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateGoToBacking.observe(self.notifyDelegateGoToBacking.observer)
     self.vm.outputs.notifyDelegateGoToSendReply
       .observe(self.notifyDelegateGoToSendReply.observer)
+    self.vm.outputs.pledgeFooterIsHidden.observe(self.pledgeFooterIsHidden.observer)
     self.vm.outputs.title.observe(self.title.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.defaultUser))
@@ -97,7 +99,12 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.project .~ project
 
+      self.pledgeFooterIsHidden.assertValueCount(0)
+
       self.vm.inputs.configureWith(activity: activity, project: project)
+
+      self.pledgeFooterIsHidden.assertValues([false], "Show the footer to go to pledge info.")
+
       self.vm.inputs.backingButtonPressed()
       self.notifyDelegateGoToBacking.assertValueCount(1, "Should go to backing")
   }
@@ -191,5 +198,23 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       update_number: "5"
     )
     self.title.assertValues([expected], "Should emit 'you' commented on update")
+  }
+
+  func testHideReplyAndPledgeInfoButtons_IfUserIsCreator() {
+    let creator = .template |> User.lens.name .~ "Benny"
+    let project = .template |> Project.lens.creator .~ creator
+    let activity = .template
+      |> Activity.lens.category .~ .commentPost
+      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.project .~ project
+      |> Activity.lens.user .~ creator
+
+    withEnvironment(currentUser: creator) {
+      self.pledgeFooterIsHidden.assertValueCount(0)
+
+      self.vm.inputs.configureWith(activity: activity, project: project)
+
+      self.pledgeFooterIsHidden.assertValues([true], "Hide the footer for the creator.")
+    }
   }
 }

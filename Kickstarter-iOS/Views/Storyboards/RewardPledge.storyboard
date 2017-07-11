@@ -299,13 +299,9 @@
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YIg-Ok-6gs">
-                                                                <rect key="frame" x="0.0" y="34" width="400" height="34"/>
-                                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <state key="normal">
-                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                            </button>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zVf-Ev-AXG">
+                                                                <rect key="frame" x="0.0" y="34" width="400" height="50"/>
+                                                            </stackView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zhJ-QH-nIU">
                                                                 <rect key="frame" x="0.0" y="68" width="400" height="34"/>
                                                                 <state key="normal" title="Or use a different payment method">
@@ -337,6 +333,9 @@
                                                                 </state>
                                                             </button>
                                                         </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="zVf-Ev-AXG" firstAttribute="height" secondItem="zhJ-QH-nIU" secondAttribute="height" id="aKV-pK-eYU"/>
+                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
@@ -504,7 +503,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="900"/>
                     <connections>
-                        <outlet property="applePayButton" destination="YIg-Ok-6gs" id="IX2-LH-xWN"/>
+                        <outlet property="applePayButtonContainerView" destination="zVf-Ev-AXG" id="rWQ-1u-QcB"/>
                         <outlet property="bottomConstraint" destination="GMs-eB-CVQ" id="L20-X2-auF"/>
                         <outlet property="cancelPledgeButton" destination="zpA-Ap-b5C" id="YQC-cj-fhC"/>
                         <outlet property="cardInnerView" destination="C2f-Es-FaN" id="qKJ-9o-vL9"/>

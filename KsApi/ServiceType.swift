@@ -109,7 +109,7 @@ public protocol ServiceType {
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages related to a particular backing.
-  func fetchMessageThread(backing: Backing) -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope>
+  func fetchMessageThread(backing: Backing) -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular mailbox and specific to a particular project.
   func fetchMessageThreads(mailbox: Mailbox, project: Project?)

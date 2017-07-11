@@ -34,6 +34,9 @@ public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Go to the comment reply dialog for the project/update comment.
   var notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError> { get }
 
+  /// Emits a Bool whether the footer pledge and reply stack view is hidden or not.
+  var pledgeFooterIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits the activity's title.
   var title: Signal<String, NoError> { get }
 }
@@ -92,6 +95,12 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     self.cellAccessibilityLabel = self.title.map { title in title.htmlStripped() ?? "" }
 
     self.cellAccessibilityValue = self.body
+
+    self.pledgeFooterIsHidden = activityAndProject
+      .map { activity, project in
+        activity.user == AppEnvironment.current.currentUser
+          && project.creator == AppEnvironment.current.currentUser
+    }
   }
 
   fileprivate let backingButtonPressedProperty = MutableProperty()
@@ -115,6 +124,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
   public let cellAccessibilityValue: Signal<String, NoError>
   public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
   public let notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError>
+  public let pledgeFooterIsHidden: Signal<Bool, NoError>
   public let title: Signal<String, NoError>
 
   public var inputs: ProjectActivityCommentCellViewModelInputs { return self }
