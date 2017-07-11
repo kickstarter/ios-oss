@@ -895,8 +895,15 @@ internal struct MockService: ServiceType {
   }
 
   internal func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    guard let toggleStarResponse = toggleStarResponse else { return .init(error: .couldNotParseJSON) }
-    return .init(value: toggleStarResponse)
+//    guard let toggleStarResponse = toggleStarResponse else { return .init(error: .couldNotParseJSON) }
+//    return .init(value: toggleStarResponse)
+
+      if let error = self.toggleStarError {
+        return SignalProducer(error: error)
+      } else if let toggleStar = self.toggleStarResponse {
+        return SignalProducer(value: toggleStar)
+      }
+      return .empty
   }
 
   internal func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {

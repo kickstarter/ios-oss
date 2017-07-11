@@ -122,6 +122,7 @@
 "Funding_successful" = "Funding successful";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
 "Go_to_project_page" = "Go to project page";
+"Got_it" = "Got it.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
@@ -264,6 +265,8 @@
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
 "Survey" = "Survey";
+"Tap_the_heart_on_a_project_to_get_notified" = "Tap the heart icon on a project to get notified 48 hours before it ends.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.";
 "Tap_the_star_on_a_project_to_get_notified" = "Tap the star icon on a project to get notified 48 hours before it ends.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.";
 "Thank_you_for_supporting_this_project" = "Thank you for supporting this project.";
@@ -279,7 +282,7 @@
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
 "Total_pledged" = "Total pledged";
-"Unfollow_friend_name" = "Unfollow %{friend_name}.";
+"Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaves_project" = "Unsaves project.";
 "Unsubscribe" = "Unsubscribe";

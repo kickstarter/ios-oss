@@ -1871,6 +1871,22 @@ backers"
     )
   }
   /**
+   "Got it."
+
+   - **es**: "Got it."
+   - **de**: "Got it."
+   - **fr**: "Got it."
+   - **en**: "Got it."
+  */
+  public static func Got_it() -> String {
+    return localizedString(
+      key: "Got_it",
+      defaultValue: "Got it.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Got it! Your survey response has been submitted."
 
    - **es**: "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario."
@@ -3896,6 +3912,38 @@ catch your eye?"
     )
   }
   /**
+   "Tap the heart icon on a project to get notified 48 hours before it ends."
+
+   - **es**: "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice."
+   - **de**: "Tippe auf das Herz neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft."
+   - **fr**: "Cliquez sur l'icône en forme de cœur située à côté du projet pour recevoir une notification 48 avant la fin de la campagne."
+   - **en**: "Tap the heart icon on a project to get notified 48 hours before it ends."
+  */
+  public static func Tap_the_heart_on_a_project_to_get_notified() -> String {
+    return localizedString(
+      key: "Tap_the_heart_on_a_project_to_get_notified",
+      defaultValue: "Tap the heart icon on a project to get notified 48 hours before it ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
+
+   - **es**: "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto."
+   - **de**: "Klicke einfach auf das Herz auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
+   - **fr**: "Cliquez sur le cœur qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
+   - **en**: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends."
+  */
+  public static func Tap_the_heart_on_each_project_page_to_save_it() -> String {
+    return localizedString(
+      key: "Tap_the_heart_on_each_project_page_to_save_it",
+      defaultValue: "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Tap the star icon on a project to get notified 48 hours before it ends."
 
    - **es**: "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice."
@@ -4136,17 +4184,17 @@ catch your eye?"
     )
   }
   /**
-   "Unfollow %{friend_name}."
+   "Unfollow %{friend_name}"
 
    - **es**: "Dejar de seguir a %{friend_name}"
    - **de**: "%{friend_name} nicht mehr folgen"
    - **fr**: "Ne plus suivre %{friend_name}"
-   - **en**: "Unfollow %{friend_name}."
+   - **en**: "Unfollow %{friend_name}"
   */
   public static func Unfollow_friend_name(friend_name: String) -> String {
     return localizedString(
       key: "Unfollow_friend_name",
-      defaultValue: "Unfollow %{friend_name}.",
+      defaultValue: "Unfollow %{friend_name}",
       count: nil,
       substitutions: ["friend_name": friend_name]
     )

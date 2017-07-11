@@ -311,7 +311,7 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
       preferredStyle: .alert)
     alertController.addAction(
       UIAlertAction(
-        title: Strings.discovery_favorite_categories_alert_buttons_got_it(),
+        title: Strings.Got_it(),
         style: .cancel,
         handler: nil
       )

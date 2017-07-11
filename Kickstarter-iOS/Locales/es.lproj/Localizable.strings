@@ -122,6 +122,7 @@
 "Funding_successful" = "Financiado con éxito";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
 "Go_to_project_page" = "Ir a la página de proyecto";
+"Got_it" = "Got it.";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
 "Home" = "Inicio";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
@@ -264,6 +265,8 @@
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Survey" = "Cuestionario";
+"Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Tap_the_star_on_a_project_to_get_notified" = "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Thank_you_for_supporting_this_project" = "Gracias por apoyar este proyecto.";

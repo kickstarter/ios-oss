@@ -195,7 +195,7 @@ public final class ProjectNavBarViewController: UIViewController {
       preferredStyle: .alert)
     alert.addAction(
       UIAlertAction(
-        title: Strings.discovery_favorite_categories_alert_buttons_got_it(),
+        title: Strings.Got_it(),
         style: .cancel,
         handler: nil
       )

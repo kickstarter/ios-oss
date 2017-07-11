@@ -122,6 +122,7 @@
 "Funding_successful" = "Intégralement financé";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
 "Go_to_project_page" = "Accéder à la page de projet";
+"Got_it" = "Got it.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -264,6 +265,8 @@
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
 "Survey" = "Questionnaire";
+"Tap_the_heart_on_a_project_to_get_notified" = "Cliquez sur l'icône en forme de cœur située à côté du projet pour recevoir une notification 48 avant la fin de la campagne.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Cliquez sur le cœur qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne.";
 "Tap_the_star_on_a_project_to_get_notified" = "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne.";
 "Thank_you_for_supporting_this_project" = "Merci pour votre soutien.";

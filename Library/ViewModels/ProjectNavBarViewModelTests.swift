@@ -318,24 +318,33 @@ final class ProjectNavBarViewModelTests: TestCase {
 
   func testLoggedInSaveFailure() {
     /// CHECK THIS
-    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: .UnknownCode,
+      httpCode: 404,
+      exception: nil
+    )
 
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
-    self.vm.inputs.configureWith(project: project, refTag: nil)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.saveButtonTapped()
+    withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, refTag: nil)
 
-    self.saveButtonSelected.assertValues([false, true])
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.saveButtonTapped()
 
-    self.scheduler.advance()
+      self.saveButtonSelected.assertValues([false, true])
 
-    self.saveButtonSelected.assertValues([false, true, false])
+      self.scheduler.advance()
 
-    self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
-    XCTAssertEqual([], trackingClient.events, "The star event does not track.")
+      self.saveButtonSelected.assertValues([false, true, false])
 
-    self.vm.inputs.saveButtonTapped()
+      self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
+      XCTAssertEqual([], trackingClient.events, "The star event does not track.")
+
+      self.vm.inputs.saveButtonTapped()
+    }
+
 
     // fix:
     //    self.starButtonSelected.assertValues([false, true, false, true])
