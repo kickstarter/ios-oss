@@ -55,8 +55,7 @@ extension UIColor {
         400: .ksr_navy_400,
         500: .ksr_navy_500,
         600: .ksr_navy_600,
-        700: .ksr_navy_700,
-        900: .ksr_navy_900
+        700: .ksr_navy_700
       ],
 
       "Orange": [
@@ -87,8 +86,7 @@ extension UIColor {
       "Text Navy": [
         500: .ksr_text_navy_500,
         600: .ksr_text_navy_600,
-        700: .ksr_text_navy_700,
-        900: .ksr_text_navy_900
+        700: .ksr_text_navy_700
       ],
 
       "Text Red": [
@@ -234,11 +232,6 @@ extension UIColor {
     return .hex(0x353535)
   }
 
-  /// 0x020621
-  public static var ksr_navy_900: UIColor {
-    return .hex(0x020621)
-  }
-
   /// 0x1A8CFF
   public static var ksr_onePasswordBlue: UIColor {
     return .hex(0x1A8CFF)
@@ -307,11 +300,6 @@ extension UIColor {
   /// 0x353535
   public static var ksr_text_navy_700: UIColor {
     return .hex(0x353535)
-  }
-
-  /// 0x020621
-  public static var ksr_text_navy_900: UIColor {
-    return .hex(0x020621)
   }
 
   /// 0xEF0707
