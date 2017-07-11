@@ -45,7 +45,7 @@ public func discoveryFilterLabelFontStyle<L: UILabelProtocol> (isSelected: Bool)
 public func discoveryFilterLabelStyle<L: UILabelProtocol> (categoryId: Int?, isSelected: Bool)
   -> ((L) -> L) {
   return L.lens.textColor .~ discoveryPrimaryColor()
-      <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.6))
+      <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.8))
 }
 
 public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()

@@ -93,7 +93,7 @@ public let lightNavyButtonStyle =
 public let navyButtonStyle =
   baseButtonStyle
     <> UIButton.lens.titleColor(forState: .normal) .~ .white
-    <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_navy_700
+    <> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_grey_900
     <> UIButton.lens.titleColor(forState: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
     <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_600
     <> UIButton.lens.titleColor(forState: .disabled) .~ .init(white: 0.0, alpha: 0.4)

@@ -94,7 +94,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_grey_900.withAlphaComponent(0.4)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_grey_900.withAlphaComponent(0.3)
 
     _ = self.creatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)

@@ -84,7 +84,7 @@ public final class LiveStreamContainerViewController: UIViewController {
       |> UIStackView.lens.distribution .~ .fillEqually
 
     _  = self.loaderView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_900
+      |> UIView.lens.backgroundColor .~ .black
 
     _  = self.loaderActivityIndicatorView
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
