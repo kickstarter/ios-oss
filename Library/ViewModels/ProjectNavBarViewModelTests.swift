@@ -345,7 +345,6 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped()
     }
 
-
     // fix:
     //    self.starButtonSelected.assertValues([false, true, false, true])
     //
