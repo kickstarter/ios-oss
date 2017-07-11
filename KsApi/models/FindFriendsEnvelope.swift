@@ -16,7 +16,7 @@ public struct FindFriendsEnvelope {
   }
 }
 
-extension FindFriendsEnvelope: Decodable {
+extension FindFriendsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
     return curry(FindFriendsEnvelope.init)
       <^> json <|   "contacts_imported"
@@ -25,14 +25,14 @@ extension FindFriendsEnvelope: Decodable {
   }
 }
 
-extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
+extension FindFriendsEnvelope.UrlsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope> {
     return curry(FindFriendsEnvelope.UrlsEnvelope.init)
       <^> json <| "api"
   }
 }
 
-extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
+extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope> {
     return curry(FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope.init)
       <^> json <|? "more_users"

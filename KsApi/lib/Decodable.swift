@@ -1,6 +1,6 @@
 import Argo
 
-public extension Decodable {
+public extension Argo.Decodable {
   /**
    Decode a JSON dictionary into a `Decoded` type.
 

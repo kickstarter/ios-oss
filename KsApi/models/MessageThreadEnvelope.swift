@@ -8,7 +8,7 @@ public struct MessageThreadEnvelope {
   public let messageThread: MessageThread
 }
 
-extension MessageThreadEnvelope: Decodable {
+extension MessageThreadEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
     return curry(MessageThreadEnvelope.init)
       <^> json <|| "participants"

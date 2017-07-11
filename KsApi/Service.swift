@@ -460,7 +460,7 @@ public struct Service: ServiceType {
     return request(.updateUserSelf(user))
   }
 
-  private func decodeModel<M: Decodable>(_ json: Any) ->
+  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
     SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
 
       return SignalProducer(value: json)
@@ -476,7 +476,7 @@ public struct Service: ServiceType {
       }
   }
 
-  private func decodeModels<M: Decodable>(_ json: Any) ->
+  private func decodeModels<M: Argo.Decodable>(_ json: Any) ->
     SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
 
       return SignalProducer(value: json)
@@ -494,7 +494,7 @@ public struct Service: ServiceType {
 
   private static let session = URLSession(configuration: .default)
 
-  private func requestPagination<M: Decodable>(_ paginationUrl: String)
+  private func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
 
       guard let paginationUrl = URL(string: paginationUrl) else {
@@ -505,7 +505,7 @@ public struct Service: ServiceType {
         .flatMap(decodeModel)
   }
 
-  private func request<M: Decodable>(_ route: Route)
+  private func request<M: Argo.Decodable>(_ route: Route)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
 
       let properties = route.requestProperties
@@ -523,7 +523,7 @@ public struct Service: ServiceType {
         .flatMap(decodeModel)
   }
 
-  private func request<M: Decodable>(_ route: Route)
+  private func request<M: Argo.Decodable>(_ route: Route)
     -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
 
       let properties = route.requestProperties
@@ -537,7 +537,7 @@ public struct Service: ServiceType {
         .flatMap(decodeModels)
   }
 
-  private func request<M: Decodable>(_ route: Route)
+  private func request<M: Argo.Decodable>(_ route: Route)
     -> SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
 
       let properties = route.requestProperties
@@ -555,7 +555,7 @@ public struct Service: ServiceType {
         .flatMap(decodeModel)
   }
 
-  private func decodeModel<M: Decodable>(_ json: Any) ->
+  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
     SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
 
       return SignalProducer(value: json)

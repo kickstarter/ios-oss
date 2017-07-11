@@ -12,7 +12,7 @@ public struct MessageThread {
   public let unreadMessagesCount: Int
 }
 
-extension MessageThread: Decodable {
+extension MessageThread: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThread> {
     let create = curry(MessageThread.init)
     let tmp = create

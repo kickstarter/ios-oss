@@ -51,7 +51,7 @@ public struct PushEnvelope {
   }
 }
 
-extension PushEnvelope: Decodable {
+extension PushEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope> {
     let create = curry(PushEnvelope.init)
 
@@ -71,7 +71,7 @@ extension PushEnvelope: Decodable {
   }
 }
 
-extension PushEnvelope.Activity: Decodable {
+extension PushEnvelope.Activity: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Activity> {
     let create = curry(PushEnvelope.Activity.init)
     let tmp = create
@@ -86,21 +86,21 @@ extension PushEnvelope.Activity: Decodable {
   }
 }
 
-extension PushEnvelope.ApsEnvelope: Decodable {
+extension PushEnvelope.ApsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.ApsEnvelope> {
     return curry(PushEnvelope.ApsEnvelope.init)
       <^> json <| "alert"
   }
 }
 
-extension PushEnvelope.LiveStream: Decodable {
+extension PushEnvelope.LiveStream: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.LiveStream> {
     return curry(PushEnvelope.LiveStream.init)
       <^> json <| "id"
   }
 }
 
-extension PushEnvelope.Message: Decodable {
+extension PushEnvelope.Message: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Message> {
     return curry(PushEnvelope.Message.init)
       <^> json <| "message_thread_id"
@@ -108,7 +108,7 @@ extension PushEnvelope.Message: Decodable {
   }
 }
 
-extension PushEnvelope.Project: Decodable {
+extension PushEnvelope.Project: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Project> {
     return curry(PushEnvelope.Project.init)
       <^> json <| "id"
@@ -116,7 +116,7 @@ extension PushEnvelope.Project: Decodable {
   }
 }
 
-extension PushEnvelope.Survey: Decodable {
+extension PushEnvelope.Survey: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Survey> {
     return curry(PushEnvelope.Survey.init)
       <^> json <| "id"
@@ -124,7 +124,7 @@ extension PushEnvelope.Survey: Decodable {
   }
 }
 
-extension PushEnvelope.Update: Decodable {
+extension PushEnvelope.Update: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Update> {
     return curry(PushEnvelope.Update.init)
       <^> json <| "id"

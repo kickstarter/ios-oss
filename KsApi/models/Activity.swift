@@ -50,7 +50,7 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Activity: Decodable {
+extension Activity: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity> {
     let create = curry(Activity.init)
     let tmp = create
@@ -66,7 +66,7 @@ extension Activity: Decodable {
   }
 }
 
-extension Activity.Category: Decodable {
+extension Activity.Category: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.Category> {
     switch json {
     case let .string(category):
@@ -77,7 +77,7 @@ extension Activity.Category: Decodable {
   }
 }
 
-extension Activity.MemberData: Decodable {
+extension Activity.MemberData: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
     let create = curry(Activity.MemberData.init)
     let tmp = create

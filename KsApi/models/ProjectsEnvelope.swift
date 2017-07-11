@@ -15,7 +15,7 @@ public struct ProjectsEnvelope {
   }
 }
 
-extension ProjectsEnvelope: Decodable {
+extension ProjectsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectsEnvelope> {
     return curry(ProjectsEnvelope.init)
       <^> json <|| "projects"
@@ -23,14 +23,14 @@ extension ProjectsEnvelope: Decodable {
   }
 }
 
-extension ProjectsEnvelope.UrlsEnvelope: Decodable {
+extension ProjectsEnvelope.UrlsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectsEnvelope.UrlsEnvelope> {
     return curry(ProjectsEnvelope.UrlsEnvelope.init)
       <^> json <| "api"
   }
 }
 
-extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
+extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectsEnvelope.UrlsEnvelope.ApiEnvelope> {
     return curry(ProjectsEnvelope.UrlsEnvelope.ApiEnvelope.init)
       <^> (json <| "more_projects" <|> .success(""))

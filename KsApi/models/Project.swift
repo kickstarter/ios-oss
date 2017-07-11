@@ -36,7 +36,7 @@ public struct Project {
     public let high: String
   }
 
-  public enum State: String, Decodable {
+  public enum State: String, Argo.Decodable {
     case canceled
     case failed
     case live
@@ -148,7 +148,7 @@ extension Project: CustomDebugStringConvertible {
   }
 }
 
-extension Project: Decodable {
+extension Project: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project> {
     let create = curry(Project.init)
     let tmp1 = create
@@ -175,14 +175,14 @@ extension Project: Decodable {
   }
 }
 
-extension Project.UrlsEnvelope: Decodable {
+extension Project.UrlsEnvelope: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
     return curry(Project.UrlsEnvelope.init)
       <^> json <| "web"
   }
 }
 
-extension Project.UrlsEnvelope.WebEnvelope: Decodable {
+extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope.WebEnvelope> {
     return curry(Project.UrlsEnvelope.WebEnvelope.init)
       <^> json <| "project"
@@ -190,7 +190,7 @@ extension Project.UrlsEnvelope.WebEnvelope: Decodable {
   }
 }
 
-extension Project.Stats: Decodable {
+extension Project.Stats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
     let create = curry(Project.Stats.init)
     return create
@@ -203,7 +203,7 @@ extension Project.Stats: Decodable {
   }
 }
 
-extension Project.MemberData: Decodable {
+extension Project.MemberData: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
     let create = curry(Project.MemberData.init)
     return create
@@ -214,7 +214,7 @@ extension Project.MemberData: Decodable {
   }
 }
 
-extension Project.Dates: Decodable {
+extension Project.Dates: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Dates> {
     return curry(Project.Dates.init)
       <^> json <| "deadline"
@@ -225,7 +225,7 @@ extension Project.Dates: Decodable {
   }
 }
 
-extension Project.Personalization: Decodable {
+extension Project.Personalization: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
     return curry(Project.Personalization.init)
       <^> json <|? "backing"
@@ -235,7 +235,7 @@ extension Project.Personalization: Decodable {
   }
 }
 
-extension Project.Photo: Decodable {
+extension Project.Photo: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project.Photo> {
     let create = curry(Project.Photo.init)
 
@@ -252,7 +252,7 @@ extension Project.Photo: Decodable {
   }
 }
 
-extension Project.MemberData.Permission: Decodable {
+extension Project.MemberData.Permission: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
     if case .string(let permission) = json {
       return self.init(rawValue: permission).map(pure) ?? .success(.unknown)
