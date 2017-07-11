@@ -7,7 +7,8 @@ import UIKit
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  @IBOutlet fileprivate weak var applePayButton: UIButton!
+  fileprivate var applePayButton = PKPaymentButton(type: .plain, style: .black)
+  @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
   @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate weak var cardInnerView: UIView!
@@ -95,6 +96,8 @@ internal final class RewardPledgeViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
+
     self.applePayButton.addTarget(
       self, action: #selector(applePayButtonTapped), for: .touchUpInside
     )
@@ -155,11 +158,6 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
-      |> UIButton.lens.backgroundColor .~ .black
-      |> UIButton.lens.image(forState: .normal) %~ { _ in
-        image(named: "apple-pay-button-content", tintColor: .white)
-      }
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     _ = self.cancelPledgeButton
@@ -441,7 +439,7 @@ internal final class RewardPledgeViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.applePayButtonContainerView.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.cancelPledgeButton.rac.hidden = self.viewModel.outputs.cancelPledgeButtonHidden
     self.changePaymentMethodButton.rac.hidden = self.viewModel.outputs.changePaymentMethodButtonHidden
     self.continueToPaymentButton.rac.hidden = self.viewModel.outputs.continueToPaymentsButtonHidden
