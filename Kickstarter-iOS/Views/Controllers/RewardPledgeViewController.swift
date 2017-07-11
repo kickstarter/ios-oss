@@ -439,7 +439,7 @@ internal final class RewardPledgeViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.applePayButtonContainerView.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.cancelPledgeButton.rac.hidden = self.viewModel.outputs.cancelPledgeButtonHidden
     self.changePaymentMethodButton.rac.hidden = self.viewModel.outputs.changePaymentMethodButtonHidden
     self.continueToPaymentButton.rac.hidden = self.viewModel.outputs.continueToPaymentsButtonHidden
