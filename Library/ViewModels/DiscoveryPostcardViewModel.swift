@@ -29,7 +29,7 @@ private enum PostcardMetadataType {
                                     iconAndTextColor: .ksr_text_navy_700)
       } else { return nil }
     case .potd:
-      return PostcardMetadataData(iconImage: image(named: "metadata-potd"),
+      return PostcardMetadataData(iconImage: nil,
                                   labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
                                   iconAndTextColor: .ksr_text_navy_700)
     case .starred:
