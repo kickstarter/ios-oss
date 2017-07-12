@@ -10,7 +10,7 @@ public struct Comment {
   public let id: Int
 }
 
-extension Comment: Decodable {
+extension Comment: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Comment> {
     let create = curry(Comment.init)
     let tmp = create

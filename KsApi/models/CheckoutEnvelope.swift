@@ -13,7 +13,7 @@ public struct CheckoutEnvelope {
   public let stateReason: String
 }
 
-extension CheckoutEnvelope: Decodable {
+extension CheckoutEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CheckoutEnvelope> {
     let create = curry(CheckoutEnvelope.init)
     return create
@@ -22,5 +22,5 @@ extension CheckoutEnvelope: Decodable {
   }
 }
 
-extension CheckoutEnvelope.State: Decodable {
+extension CheckoutEnvelope.State: Argo.Decodable {
 }

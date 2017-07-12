@@ -39,7 +39,7 @@ extension Project {
   }
 }
 
-extension Project.Country: Decodable {
+extension Project.Country: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Country> {
     let create = curry(Project.Country.init)
 

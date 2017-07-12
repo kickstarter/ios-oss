@@ -9,7 +9,7 @@ public struct RewardsItem {
   public let rewardId: Int
 }
 
-extension RewardsItem: Decodable {
+extension RewardsItem: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<RewardsItem> {
     return curry(RewardsItem.init)
       <^> json <| "id"

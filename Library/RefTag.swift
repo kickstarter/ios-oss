@@ -243,7 +243,7 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
   }
 }
 
-extension RefTag: Decodable {
+extension RefTag: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<RefTag> {
     switch json {
     case let .string(code):

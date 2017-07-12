@@ -56,7 +56,7 @@ public func == (lhs: Param, rhs: Param) -> Bool {
   }
 }
 
-extension Param: Decodable {
+extension Param: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Param> {
     switch json {
     case let .string(slug):

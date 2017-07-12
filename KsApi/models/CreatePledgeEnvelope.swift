@@ -8,7 +8,7 @@ public struct CreatePledgeEnvelope {
   public let status: Int
 }
 
-extension CreatePledgeEnvelope: Decodable {
+extension CreatePledgeEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CreatePledgeEnvelope> {
     return curry(CreatePledgeEnvelope.init)
       <^> json <|? ["data", "checkout_url"]

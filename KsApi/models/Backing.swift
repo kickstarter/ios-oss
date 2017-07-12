@@ -33,7 +33,7 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Backing: Decodable {
+extension Backing: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
     let create = curry(Backing.init)
     let tmp1 = create
@@ -55,5 +55,5 @@ extension Backing: Decodable {
   }
 }
 
-extension Backing.Status: Decodable {
+extension Backing.Status: Argo.Decodable {
 }

@@ -11,7 +11,7 @@ public struct Message {
   public let sender: User
 }
 
-extension Message: Decodable {
+extension Message: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Message> {
     let create = curry(Message.init)
     return create

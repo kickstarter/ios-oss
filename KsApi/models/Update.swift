@@ -33,7 +33,7 @@ public func == (lhs: Update, rhs: Update) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Update: Decodable {
+extension Update: Argo.Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<Update> {
     let create = curry(Update.init)
@@ -57,14 +57,14 @@ extension Update: Decodable {
   }
 }
 
-extension Update.UrlsEnvelope: Decodable {
+extension Update.UrlsEnvelope: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
     return curry(Update.UrlsEnvelope.init)
       <^> json <| "web"
   }
 }
 
-extension Update.UrlsEnvelope.WebEnvelope: Decodable {
+extension Update.UrlsEnvelope.WebEnvelope: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope.WebEnvelope> {
     return curry(Update.UrlsEnvelope.WebEnvelope.init)
       <^> json <| "update"
