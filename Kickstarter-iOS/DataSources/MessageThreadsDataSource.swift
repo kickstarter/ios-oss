@@ -14,7 +14,7 @@ internal final class MessageThreadsDataSource: ValueCellDataSource {
   }
 
   internal func emptyState(isVisible: Bool) {
-    self.set(cellIdentifiers: isVisible ? ["MessageThreadsEmptyState"] : [],
+    self.set(cellIdentifiers: isVisible ? ["MessageThreadEmptyStateCell"] : [],
              inSection: Section.emptyState.rawValue)
   }
 
