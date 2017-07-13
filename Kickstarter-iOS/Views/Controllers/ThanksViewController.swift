@@ -4,6 +4,7 @@ import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Social
+import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
@@ -185,18 +186,22 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   fileprivate func showRatingAlert() {
-    self.present(
-      UIAlertController.rating(
-        yesHandler: { [weak self] _ in
-          self?.viewModel.inputs.rateNowButtonTapped()
-        }, remindHandler: { [weak self] _ in
-          self?.viewModel.inputs.rateRemindLaterButtonTapped()
-        }, noHandler: { [weak self] _ in
-          self?.viewModel.inputs.rateNoThanksButtonTapped()
-      }),
-      animated: true,
-      completion: nil
-    )
+    if #available(iOS 10.3, *) {
+      SKStoreReviewController.requestReview()
+    } else {
+      self.present(
+        UIAlertController.rating(
+          yesHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateNowButtonTapped()
+          }, remindHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateRemindLaterButtonTapped()
+          }, noHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateNoThanksButtonTapped()
+        }),
+        animated: true,
+        completion: nil
+      )
+    }
   }
 
   fileprivate func showGamesNewsletterAlert() {
