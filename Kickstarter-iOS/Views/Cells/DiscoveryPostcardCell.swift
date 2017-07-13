@@ -189,6 +189,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.metadataData
       .observeForUI()
       .observeValues { [weak self] data in
+        self?.metadataIconImageView.isHidden = data.iconImage == nil
         self?.metadataIconImageView.image = data.iconImage
         self?.metadataLabel.text = data.labelText
         self?.metadataIconImageView.tintColor = data.iconAndTextColor
