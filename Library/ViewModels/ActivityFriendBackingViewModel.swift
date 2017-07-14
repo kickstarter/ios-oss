@@ -64,11 +64,11 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           ],
           bold: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+            NSForegroundColorAttributeName: UIColor.ksr_text_grey_900
           ],
           italic: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_navy_700
+            NSForegroundColorAttributeName: UIColor.ksr_text_grey_900
           ])
           ?? NSAttributedString(string: "")
     }

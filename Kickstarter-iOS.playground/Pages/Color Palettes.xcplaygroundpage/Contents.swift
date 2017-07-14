@@ -5,7 +5,7 @@ import UIKit
 import PlaygroundSupport
 
 let groups = [
-  ["Forest", "Green", "Grey", "Magenta"],
+  ["Green", "Grey"],
   ["Navy", "Orange", "Red"],
   ["Violet", "Text Green", "Text Navy"]
 ]
