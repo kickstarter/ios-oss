@@ -113,6 +113,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), NoError> { get }
 
+  /// Emits when application should navigate to the creator's message thread
+  var goToCreatorMessageThread: Signal<(Param, MessageThread), NoError> { get }
+
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDashboard: Signal<Param?, NoError> { get }
 
@@ -403,6 +406,20 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.login) }
       .ignoreValues()
 
+    self.goToCreatorMessageThread = deepLink
+      .map { navigation -> (Param, messageThreadId)? in
+        guard case let .creatorMessages(projectId, messageThreadId) = navigation else { return nil }
+        return .some((projectId, messageThreadId: messageThreadId))
+      }
+      .skipNil()
+      .switchMap {
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0.1)
+          .demoteErrors()
+          .map { (env:MessageThreadEnvelope) in
+            return ($0.0, env.messageThread)
+          }
+      }
+
     //TODO: This is where we get signal of going of going to the MessageTread but there is no
     // separation between user messages and Creator's project messages
     // we can spilt logic here or create new signal specific for the Creator's Project messages
@@ -413,15 +430,17 @@ AppDelegateViewModelOutputs {
         return .some(messageThreadId)
       }
       .skipNil()
-      .switchMap {
-        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
-          .demoteErrors()
-          .map { env in
-            //FIXME delete these changes
-            print("Env: \(env)")
-            return env.messageThread
-          }
-    }
+      .map { _ in MessageThread.template }
+      //FIXME uncomment this
+//      .switchMap {
+//        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
+//          .demoteErrors()
+//          .map { (env:MessageThreadEnvelope) in
+//            //FIXME delete these changes
+//            print("Env: \(env)")
+//            return env.messageThread
+//          }
+//    }
 
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
@@ -746,6 +765,7 @@ AppDelegateViewModelOutputs {
   public let forceLogout: Signal<(), NoError>
   public let getNotificationAuthorizationStatus: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
+  public let goToCreatorMessageThread: Signal<(Param, Int), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
   public let goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError>
@@ -821,15 +841,12 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let message = envelope.message {
-    //FIXME this is experiment - remove
-    return .messages(messageThreadId: message.messageThreadId)
-
-//    if envelope.forCreator == true {
-//      return .tab(.dashboard(project: .id(message.projectId)))
-//    }
-//    else {
-//      return .messages(messageThreadId: message.messageThreadId)
-//    }
+    if envelope.forCreator == true {
+      return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
+    }
+    else {
+      return .messages(messageThreadId: message.messageThreadId)
+    }
   }
 
   if let survey = envelope.survey {
