@@ -27,7 +27,7 @@ public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> (
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
-    <> TVC.lens.view.backgroundColor .~ .ksr_grey_300
+    <> TVC.lens.view.backgroundColor .~ .white
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 

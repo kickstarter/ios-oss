@@ -40,7 +40,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> feedTableViewCellStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))

@@ -58,7 +58,7 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
-    _ = self.imageShadowView |> dropShadowStyle()
+    _ = self.imageShadowView |> dropShadowStyleLarge()
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
