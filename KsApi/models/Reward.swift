@@ -47,7 +47,7 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
   return minimumAndIdComparator.isOrdered(lhs, rhs)
 }
 
-extension Reward: Decodable {
+extension Reward: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let create = curry(Reward.init)
     let tmp1 = create
@@ -68,7 +68,7 @@ extension Reward: Decodable {
   }
 }
 
-extension Reward.Shipping: Decodable {
+extension Reward.Shipping: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward.Shipping> {
     return curry(Reward.Shipping.init)
       <^> (json <| "shipping_enabled" <|> .success(false))
@@ -77,4 +77,4 @@ extension Reward.Shipping: Decodable {
   }
 }
 
-extension Reward.Shipping.Preference: Decodable {}
+extension Reward.Shipping.Preference: Argo.Decodable {}

@@ -16,7 +16,7 @@ public func == (lhs: Location, rhs: Location) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Location: Decodable {
+extension Location: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Location> {
     return curry(Location.init)
       <^> json <| "country"

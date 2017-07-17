@@ -15,7 +15,7 @@ public struct ProjectNotification {
   }
 }
 
-extension ProjectNotification: Decodable {
+extension ProjectNotification: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification> {
     let create = curry(ProjectNotification.init)
     return create
@@ -26,7 +26,7 @@ extension ProjectNotification: Decodable {
   }
 }
 
-extension ProjectNotification.Project: Decodable {
+extension ProjectNotification.Project: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification.Project> {
     return curry(ProjectNotification.Project.init)
       <^> json <| "id"

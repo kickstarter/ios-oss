@@ -7,7 +7,7 @@ public struct ChangePaymentMethodEnvelope {
   public let status: Int
 }
 
-extension ChangePaymentMethodEnvelope: Decodable {
+extension ChangePaymentMethodEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ChangePaymentMethodEnvelope> {
     return curry(ChangePaymentMethodEnvelope.init)
       <^> json <|? ["data", "new_checkout_url"]

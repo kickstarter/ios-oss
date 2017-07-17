@@ -15,7 +15,7 @@ public struct CommentsEnvelope {
   }
 }
 
-extension CommentsEnvelope: Decodable {
+extension CommentsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope> {
     return curry(CommentsEnvelope.init)
       <^> json <|| "comments"
@@ -23,14 +23,14 @@ extension CommentsEnvelope: Decodable {
   }
 }
 
-extension CommentsEnvelope.UrlsEnvelope: Decodable {
+extension CommentsEnvelope.UrlsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope.UrlsEnvelope> {
     return curry(CommentsEnvelope.UrlsEnvelope.init)
       <^> json <| "api"
   }
 }
 
-extension CommentsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
+extension CommentsEnvelope.UrlsEnvelope.ApiEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope.UrlsEnvelope.ApiEnvelope> {
     return curry(CommentsEnvelope.UrlsEnvelope.ApiEnvelope.init)
       <^> (json <| "more_comments" <|> .success(""))

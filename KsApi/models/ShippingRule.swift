@@ -8,7 +8,7 @@ public struct ShippingRule {
   public let location: Location
 }
 
-extension ShippingRule: Decodable {
+extension ShippingRule: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ShippingRule> {
     return curry(ShippingRule.init)
       <^> (json <| "cost" >>- stringToDouble)
