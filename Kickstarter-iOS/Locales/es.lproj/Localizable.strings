@@ -122,6 +122,7 @@
 "Funding_successful" = "Financiado con éxito";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
 "Go_to_project_page" = "Ir a la página de proyecto";
+"Got_it" = "¡Listo!";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
 "Home" = "Inicio";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
@@ -158,6 +159,7 @@
 "Manage_your_reward" = "Administra tu recompensa";
 "Message_backer" = "Enviar mensaje a patrocinador";
 "Message_creator" = "Enviar mensaje al creador";
+"Message_user_name" = "Message %{user_name}…";
 "No_Results" = "Sin resultados";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_messages" = "No hay mensajes";
@@ -264,6 +266,8 @@
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Survey" = "Cuestionario";
+"Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Tap_the_star_on_a_project_to_get_notified" = "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Thank_you_for_supporting_this_project" = "Gracias por apoyar este proyecto.";
@@ -278,9 +282,11 @@
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
+"Toggle_saving_this_project" = "Guardar/No guardar este proyecto";
 "Total_pledged" = "Contribuciones en total";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
+"Unsaved" = "Sin guardar";
 "Unsaves_project" = "Deshacer \"guardar proyecto\".";
 "Unsubscribe" = "Anular suscripción";
 "Unsubscribes_from_upcoming_lives_streams" = "Desactiva subscripción a futuros Live-Streams.";

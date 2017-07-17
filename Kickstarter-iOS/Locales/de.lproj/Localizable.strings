@@ -122,6 +122,7 @@
 "Funding_successful" = "Finanzierung erfolgreich";
 "Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
 "Go_to_project_page" = "Zu Projektseite";
+"Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
@@ -158,6 +159,7 @@
 "Manage_your_reward" = "Belohnung verwalten";
 "Message_backer" = "Nachricht an Unterstützer senden";
 "Message_creator" = "Nachricht an Projektgründer senden";
+"Message_user_name" = "Message %{user_name}…";
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
 "No_messages" = "Keine Nachrichten";
@@ -264,6 +266,8 @@
 "Subscribed" = "Abo aktiviert";
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
 "Survey" = "Befragung";
+"Tap_the_heart_on_a_project_to_get_notified" = "Tippe auf das Herz neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft.";
+"Tap_the_heart_on_each_project_page_to_save_it" = "Klicke einfach auf das Herz auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken.";
 "Tap_the_star_on_a_project_to_get_notified" = "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken.";
 "Thank_you_for_supporting_this_project" = "Vielen Dank für deine Unterstützung dieses Projekts.";
@@ -278,9 +282,11 @@
 "Time_left_left" = "%{time_left} übrig";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
 "To_read_this_project_update_you_must_be_a_backer" = "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich.";
+"Toggle_saving_this_project" = "Umschalten zu Projekt speichern";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
+"Unsaved" = "Speichern wurde rückgängig gemacht";
 "Unsaves_project" = "Macht Speichern dieses Projektes rückgängig.";
 "Unsubscribe" = "Abo abbestellen";
 "Unsubscribes_from_upcoming_lives_streams" = "Abo für zukünftige Live-Streams abbestellen.";
