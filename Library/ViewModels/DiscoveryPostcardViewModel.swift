@@ -252,6 +252,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       loggedOutUserTappedSaveButton
       )
       .ignoreValues()
+      //.take(first: 1)
 
     let isLoading = MutableProperty(false)
 
@@ -278,18 +279,18 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .filter { $0 == $1 }
       .map { $0.1 }
 
-    self.saveButtonSelected = Signal.merge(
-      projectOnSaveButtonToggle.map { cache(project:$0, shouldToggle: true) },
-      configuredProject.map { cache(project: $0, shouldToggle: false) },
-      projectSavedFromNotification.map { cache(project: $0, shouldToggle: true) },
-      projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
-    )
-
     let project = Signal.merge(
       projectOnSaveButtonToggle,
       configuredProject,
       projectSavedFromNotification,
       projectOnSaveError
+    )
+
+    self.saveButtonSelected = Signal.merge(
+      projectOnSaveButtonToggle.map { cache(project: $0, shouldToggle: true) },
+      configuredProject.map { cache(project: $0, shouldToggle: false) },
+      projectSavedFromNotification.map { cache(project: $0, shouldToggle: true) },
+      projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
     )
 
     self.saveButtonEnabled = isLoading.signal.map(negate)
