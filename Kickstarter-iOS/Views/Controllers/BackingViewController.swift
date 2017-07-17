@@ -128,11 +128,11 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.backerNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.backerSequenceLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.messageCreatorButton
       |> navyButtonStyle
@@ -157,55 +157,55 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.totalPledgedLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_grey_900
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
       |> UILabel.lens.text %~ { _ in Strings.Total_pledged() }
 
     _ = self.totalPledgedAmountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_grey_900
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
 
     _ = self.pledgeLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Pledge() }
 
     _ = self.backerPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.shippingLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Shipping() }
 
     _ = self.shippingPlusLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.text .~ "+"
 
     _ = self.backerShippingAmountLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
 
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_grey_900
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
 
     _ = self.backerRewardDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.statusDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   }
 
   @objc fileprivate func messageCreatorTapped(_ button: UIButton) {

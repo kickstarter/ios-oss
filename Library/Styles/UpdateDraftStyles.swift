@@ -12,7 +12,7 @@ public let updateTitleTextFieldStyle = formFieldStyle
   <> UITextField.lens.font %~ { _ in .ksr_title1(size: 22) }
   <> UITextField.lens.placeholder %~ { _ in Strings.dashboard_post_update_compose_placeholder_title() }
   <> UITextField.lens.returnKeyType .~ .next
-  <> UITextField.lens.textColor .~ .ksr_text_navy_700
+  <> UITextField.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clear
   <> UITextView.lens.font %~ { _ in .ksr_callout() }

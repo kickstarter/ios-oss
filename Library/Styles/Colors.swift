@@ -13,8 +13,10 @@ import UIKit
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
-      "Dark-Grey": [
-        900: .ksr_dark-grey_900
+      "Dark Grey": [
+        400: .ksr_dark_grey_400,
+        500: .ksr_dark_grey_500,
+        900: .ksr_dark_grey_900
       ],
 
       "Green": [
@@ -49,6 +51,12 @@ extension UIColor {
         400: .ksr_red_400
       ],
 
+      "Text Dark Grey": [
+        400: .ksr_text_dark_grey_400,
+        500: .ksr_text_dark_grey_500,
+        900: .ksr_text_dark_grey_900
+      ],
+
       "Text Green": [
         700: .ksr_text_green_700,
         800: .ksr_text_green_800
@@ -59,10 +67,6 @@ extension UIColor {
         600: .ksr_text_navy_600
       ],
 
-      "Text-Dark-Grey": [
-        900: .ksr_text-dark-grey_900
-      ],
-
       "Violet": [
         500: .ksr_violet_500
       ]
@@ -70,17 +74,17 @@ extension UIColor {
   }
 
   /// 0x9B9E9E
-  public static var ksr_dark-grey-400: UIColor {
+  public static var ksr_dark_grey_400: UIColor {
     return .hex(0x9B9E9E)
   }
 
   /// 0x656868
-  public static var ksr_dark-grey-500: UIColor {
+  public static var ksr_dark_grey_500: UIColor {
     return .hex(0x656868)
   }
 
   /// 0x282828
-  public static var ksr_dark-grey_900: UIColor {
+  public static var ksr_dark_grey_900: UIColor {
     return .hex(0x282828)
   }
 
@@ -185,17 +189,17 @@ extension UIColor {
   }
 
   /// 0x9B9E9E
-  public static var ksr_text-dark-grey-400: UIColor {
+  public static var ksr_text_dark_grey_400: UIColor {
     return .hex(0x9B9E9E)
   }
 
   /// 0x656868
-  public static var ksr_text-dark-grey-500: UIColor {
+  public static var ksr_text_dark_grey_500: UIColor {
     return .hex(0x656868)
   }
 
   /// 0x282828
-  public static var ksr_text-dark-grey_900: UIColor {
+  public static var ksr_text_dark_grey_900: UIColor {
     return .hex(0x282828)
   }
 

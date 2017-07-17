@@ -81,7 +81,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
          self.deadlineSubtitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_700
+      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
@@ -104,7 +104,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .ksr_green_400
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_navy_700
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
 
     _ = self.metadataLabel
       |> postcardMetadataLabelStyle

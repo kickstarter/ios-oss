@@ -108,7 +108,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bodyLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font %~~ { _, label in
           label.traitCollection.isRegularRegular
             ? UIFont.ksr_body()

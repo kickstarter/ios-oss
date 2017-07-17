@@ -79,7 +79,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   }
 
   @IBAction internal func tappedProjectImage() {

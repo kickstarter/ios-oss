@@ -31,7 +31,7 @@ internal final class ProfileHeaderView: UICollectionReusableView, ValueCell {
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_headline(size: 15)
 
     _ = [self.backedProjectsLabel, self.createdProjectsLabel]

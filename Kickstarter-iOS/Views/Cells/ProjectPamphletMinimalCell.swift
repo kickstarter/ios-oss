@@ -20,11 +20,11 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.activityIndicator
-      |> UIActivityIndicatorView.lens.tintColor .~ .ksr_navy_700
+      |> UIActivityIndicatorView.lens.tintColor .~ .ksr_dark_grey_500
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.backgroundColor .~ .ksr_grey_900
+      |> UIImageView.lens.backgroundColor .~ .ksr_dark_grey_900
 
     _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
@@ -32,7 +32,7 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
           ? .ksr_title3(size: 28)
           : .ksr_title3(size: 20)
       }
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.projectNameStackView

@@ -42,11 +42,11 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.deadlineTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
 
@@ -71,7 +71,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
           ? UIFont.ksr_title2()
           : UIFont.ksr_title1(size: 18)
       }
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 

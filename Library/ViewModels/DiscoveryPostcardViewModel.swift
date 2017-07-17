@@ -26,16 +26,16 @@ private enum PostcardMetadataType {
         return PostcardMetadataData(iconImage: image(named: "metadata-featured"),
                                     labelText: Strings.discovery_baseball_card_metadata_featured_project(
                                       category_name: rootCategory),
-                                    iconAndTextColor: .ksr_text_navy_700)
+                                    iconAndTextColor: .ksr_text_dark_grey_500)
       } else { return nil }
     case .potd:
       return PostcardMetadataData(iconImage: image(named: "metadata-potd"),
                                   labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-                                  iconAndTextColor: .ksr_text_navy_700)
+                                  iconAndTextColor: .ksr_text_dark_grey_500)
     case .starred:
       return PostcardMetadataData(iconImage: image(named: "metadata-starred"),
                                   labelText: Strings.You_saved_this_project(),
-                                  iconAndTextColor: .ksr_text_navy_700)
+                                  iconAndTextColor: .ksr_text_dark_grey_500)
     }
   }
 }
@@ -193,7 +193,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     }
 
     self.projectStateTitleLabelColor = project
-      .map { $0.state == .successful ? .ksr_text_green_700 : .ksr_text_navy_700 }
+      .map { $0.state == .successful ? .ksr_text_green_700 : .ksr_text_dark_grey_900 }
       .skipRepeats()
 
     self.projectStateTitleLabelText = project

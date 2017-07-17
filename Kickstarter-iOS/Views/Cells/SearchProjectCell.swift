@@ -40,13 +40,13 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
     _ = self.deadlineSubtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
 
     _ =  self.deadlineTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.columnsStackView
       |> UIStackView.lens.alignment .~ .top

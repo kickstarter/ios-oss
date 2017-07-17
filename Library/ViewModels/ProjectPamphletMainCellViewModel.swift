@@ -131,19 +131,19 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.projectStateLabelTextColor = project
       .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
+      .map { $0.state == .successful ? UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_400 }
 
     self.fundingProgressBarViewBackgroundColor = project
       .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_green_500 : UIColor.ksr_navy_500 }
+      .map { $0.state == .successful ? UIColor.ksr_green_500 : UIColor.ksr_dark_grey_400 }
 
     self.projectUnsuccessfulLabelTextColor = project
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_text_navy_700 : UIColor.ksr_text_navy_500 }
+        UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_400 }
 
     self.pledgedTitleLabelTextColor = project
       .map { $0.state == .successful  || $0.state == .live ?
-        UIColor.ksr_text_green_700 : UIColor.ksr_text_navy_500 }
+        UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_400 }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 

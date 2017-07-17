@@ -6,7 +6,7 @@ import Result
 import UIKit
 
 private let defaultFont = UIFont.systemFont(ofSize: 12)
-private let defaultColor = UIColor.ksr_text_grey_900
+private let defaultColor = UIColor.ksr_text_dark_grey_900
 
 public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
   var baseAttributes: [String:AnyObject] { get set }

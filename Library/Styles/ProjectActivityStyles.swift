@@ -32,5 +32,5 @@ public let projectActivityStateChangeLabelStyle = UILabel.lens.numberOfLines .~ 
   <> UILabel.lens.textAlignment .~ .center
 
 // Use `.ksr_title3(size: 14)` for font.
-public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_navy_500
+public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   <> UILabel.lens.numberOfLines .~ 2

@@ -38,13 +38,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testCommentsSubpage() {
     self.vm.inputs.configureWith(subpage: .comments(12, .middle))
 
-    self.countLabelTextColor.assertValue(.ksr_text_navy_700)
+    self.countLabelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.countLabelText.assertValue("12")
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Comments")
-    self.labelTextColor.assertValue(.ksr_text_navy_700)
+    self.labelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.topGradientViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(false)
   }
@@ -72,13 +72,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
-    self.countLabelTextColor.assertValue(.ksr_text_navy_700)
+    self.countLabelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.countLabelText.assertValue("Replay")
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Past live stream")
-    self.labelTextColor.assertValue(.ksr_text_navy_700)
+    self.labelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)
   }
@@ -86,13 +86,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testUpdatesSubpage() {
     self.vm.inputs.configureWith(subpage: .updates(12, .last))
 
-    self.countLabelTextColor.assertValue(.ksr_text_navy_700)
+    self.countLabelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.countLabelText.assertValue("12")
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Updates")
-    self.labelTextColor.assertValue(.ksr_text_navy_700)
+    self.labelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.topGradientViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(true)
   }
@@ -147,13 +147,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
-    self.countLabelTextColor.assertValue(.ksr_text_navy_700)
+    self.countLabelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.countLabelText.assertValue("in 1 hr")
     self.countLabelBorderColor.assertValue(.clear)
     self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Upcoming live stream")
-    self.labelTextColor.assertValue(.ksr_text_navy_700)
+    self.labelTextColor.assertValue(.ksr_text_dark_grey_500)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)
   }

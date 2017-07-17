@@ -60,6 +60,6 @@ internal final class LiveStreamDiscoveryTitleCell: UITableViewCell, ValueCell {
           ? UIFont.ksr_title3()
           : UIFont.ksr_title1(size: 18)
       }
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_grey_900
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
   }
 }

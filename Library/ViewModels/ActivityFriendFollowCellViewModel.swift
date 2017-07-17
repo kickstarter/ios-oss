@@ -41,7 +41,7 @@ ActivityFriendFollowCellViewModelOutputs {
         ],
         bold: [
           NSFontAttributeName: UIFont.ksr_headline(size: 14.0),
-          NSForegroundColorAttributeName: UIColor.ksr_text_navy_700
+          NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
         ]) ?? NSAttributedString(string: "")
     }
 

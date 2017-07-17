@@ -128,7 +128,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .ksr_text_grey_900
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
@@ -177,7 +177,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     let introLabelBoldAttributes = [
       NSFontAttributeName: introLabelBaseFont.bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_navy_700
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_500
     ]
     _ = self.introLabel
       |> SimpleHTMLLabel.lens.baseAttributes .~ introLabelBaseAttributes
@@ -188,7 +188,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.font %~~ { _, v in
         v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3(size: 18)
       }
-      |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
@@ -214,10 +214,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.goToProjectButton
       |> liveStreamGoToProjectStyle
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_grey_900
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_grey_900.withAlphaComponent(0.8)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.8)
 
     _ = self.separatorViews
       ||> separatorStyle

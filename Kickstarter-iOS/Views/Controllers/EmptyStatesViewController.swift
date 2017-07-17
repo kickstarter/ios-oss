@@ -95,12 +95,12 @@ internal final class EmptyStatesViewController: UIViewController {
     _ = self.titleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.subtitleLabel
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)

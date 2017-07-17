@@ -100,7 +100,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_500
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.allGoneLabel
@@ -137,11 +137,11 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_includes() }
 
     _ = self.youreABackerCheckmarkImageView
-      |> UIImageView.lens.tintColor .~ .ksr_text_navy_700
+      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
       |> UIImageView.lens.image %~ { _ in
         UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
     }
@@ -164,7 +164,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.footerLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.separatorViews
       ||> separatorStyle

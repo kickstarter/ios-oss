@@ -98,9 +98,9 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
 private func metadataColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_navy_500
+    return .ksr_dark_grey_400
   case .launch:
-    return .ksr_navy_700
+    return .ksr_dark_grey_500
   case .success:
     return .ksr_green_700
   default:

@@ -30,11 +30,11 @@ public let fbLoginButtonStyle = facebookButtonStyle
     Strings.login_tout_buttons_log_in_with_facebook()
 }
 
-public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text_grey_900
+public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
 
-public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_navy_700
+public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.font .~ .ksr_headline()
   <> UILabel.lens.textAlignment .~ .left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
@@ -50,13 +50,13 @@ public let fbDisclaimerLabelStyle =
 }
 
 public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
-  <> UILabel.lens.textColor .~ .ksr_text_navy_700
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.text %~ { _ in Strings.facebook_confirmation_wrong_account_title() }
 
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_500
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_900
+    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_900
     <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginButtonStyle = greenButtonStyle
@@ -79,7 +79,7 @@ public let onePasswordButtonStyle =
     <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
-  <> UILabel.lens.textColor .~ .ksr_text_navy_700
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full() }
 
 public let passwordFieldStyle = formFieldStyle

@@ -81,7 +81,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       }
 
     _ = self.commentsCountImageView
-      |> UIImageView.lens.tintColor .~ .ksr_navy_600
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
 
     _ = self.commentsCountLabel
       |> statLabel
@@ -115,7 +115,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     _ = self.updateTitleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   }
   // swiftlint:enable function_body_length
 }

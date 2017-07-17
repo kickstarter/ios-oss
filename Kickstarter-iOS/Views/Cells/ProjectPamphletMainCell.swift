@@ -89,7 +89,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_text_navy_500
+      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
       ||> UILabel.lens.numberOfLines .~ 2
 
@@ -109,7 +109,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.conversionLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
 
@@ -121,7 +121,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.creatorLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     _ = self.creatorStackView
@@ -137,7 +137,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .ksr_body(size: 18)
           : .ksr_body(size: 15)
       }
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.projectNameAndCreatorStackView
@@ -149,15 +149,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .ksr_title3(size: 28)
           : .ksr_title3(size: 20)
       }
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.readMoreButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
-      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3) - 1,

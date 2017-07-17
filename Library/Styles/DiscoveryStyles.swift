@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 
 public func discoveryPrimaryColor() -> UIColor {
-  return .ksr_grey_900
+  return .ksr_dark_grey_900
 }
 
 public func discoverySecondaryColor() -> UIColor {
@@ -24,11 +24,11 @@ public let discoveryNavTitleStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_grey_900
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_900.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
@@ -119,7 +119,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-    <> UILabel.lens.textColor .~ .ksr_text_navy_700
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center

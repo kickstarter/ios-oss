@@ -60,15 +60,15 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
         return title.simpleHtmlAttributedString(
           base: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
           ],
           bold: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_grey_900
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
           ],
           italic: [
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_grey_900
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
           ])
           ?? NSAttributedString(string: "")
     }

@@ -65,10 +65,10 @@ internal final class SearchViewController: UITableViewController {
     _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
       ||> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       ||> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      ||> UIActivityIndicatorView.lens.color .~ .ksr_grey_900
+      ||> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
 
     _ = self.cancelButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_callout(size:16)
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
@@ -85,7 +85,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchTextField
       |> UITextField.lens.font .~ .ksr_body(size: 14)
-      |> UITextField.lens.textColor .~ .ksr_text_navy_700
+      |> UITextField.lens.textColor .~ .ksr_text_dark_grey_500
       |> UITextField.lens.placeholder %~ { _ in Strings.tabbar_search() }
 
     _ = self.tableView

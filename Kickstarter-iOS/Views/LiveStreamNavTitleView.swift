@@ -64,7 +64,7 @@ internal final class LiveStreamNavTitleView: UIView {
 
     _ = self.numberOfPeopleWatchingLabelContainer
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_grey_900.withAlphaComponent(0.5)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.5)
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.numberOfPeopleWatchingLabel

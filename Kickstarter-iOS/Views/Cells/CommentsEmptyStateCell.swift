@@ -73,12 +73,12 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16.0)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18.0)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.No_comments_yet() }
   }
 

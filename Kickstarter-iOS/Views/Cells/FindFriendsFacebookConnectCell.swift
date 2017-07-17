@@ -87,16 +87,16 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Connect_with_Facebook_to_follow_friends_and_get_notified() }
 
     _ = self.closeButton
-      |> UIButton.lens.tintColor .~ .ksr_navy_700
+      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
                                                   bottom: Styles.grid(3), right: Styles.grid(2))
