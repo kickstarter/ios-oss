@@ -186,6 +186,66 @@ final class ProjectPamphletViewModelTests: TestCase {
                    "A single cookie has been set.")
   }
 
+  func testMockCookieStorageSet_SeparateSchedulers() {
+    let project = Project.template
+    let scheduler1 = TestScheduler(startDate: MockDate().date)
+    let scheduler2 = TestScheduler(startDate: scheduler1.currentDate.addingTimeInterval(1))
+
+    withEnvironment(scheduler: scheduler1) {
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
+
+      scheduler1.advance()
+
+      XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
+    }
+
+    withEnvironment(scheduler: scheduler2) {
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
+
+      scheduler2.advance()
+
+      XCTAssertEqual(2, self.cookieStorage.cookies?.count, "Two cookies are set on separate schedulers.")
+    }
+  }
+
+  func testMockCookieStorageSet_SameScheduler() {
+    let project = Project.template
+    let scheduler1 = TestScheduler(startDate: MockDate().date)
+
+    withEnvironment(scheduler: scheduler1) {
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
+
+      scheduler1.advance()
+
+      XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
+    }
+
+    withEnvironment(scheduler: scheduler1) {
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
+
+      scheduler1.advance()
+
+      XCTAssertEqual(1, self.cookieStorage.cookies?.count,
+                     "A single cookie has been set on the same scheduler.")
+    }
+  }
+
   func testTracksRefTag_WithBadData() {
     let project = Project.template
 
