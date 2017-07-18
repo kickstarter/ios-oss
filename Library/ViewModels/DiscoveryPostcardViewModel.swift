@@ -406,18 +406,16 @@ private func cached(project: Project) -> Project {
 
 // Function returns a boolean that determines if the star button should be toggled
 private func cache(project: Project, shouldToggle: Bool) -> Bool {
+
+  guard let isSaved = project.personalization.isStarred else { return false }
+
   AppEnvironment.current.cache[KSCache.ksr_projectSaved] =
     AppEnvironment.current.cache[KSCache.ksr_projectSaved] ?? [Int: Bool]()
 
   var cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool]
 
-  if let value = cache?[project.id] {
-    cache?[project.id] = shouldToggle ? !value : value
-  } else {
-    cache?[project.id] = shouldToggle
-      ? !(project.personalization.isStarred ?? false)
-      : (project.personalization.isStarred ?? false)
-  }
+  let value = cache?[project.id] ?? isSaved
+  cache?[project.id] = shouldToggle ? !value : value
 
   AppEnvironment.current.cache[KSCache.ksr_projectSaved] = cache
   return cache?[project.id] ?? false
