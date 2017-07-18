@@ -189,7 +189,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testMockCookieStorageSet_SeparateSchedulers() {
     let project = Project.template
     let scheduler1 = TestScheduler(startDate: MockDate().date)
-    let scheduler2 = TestScheduler(startDate: scheduler1.currentDate.addingTimeInterval(112345))
+    let scheduler2 = TestScheduler(startDate: scheduler1.currentDate.addingTimeInterval(1))
 
     withEnvironment(scheduler: scheduler1) {
       let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
