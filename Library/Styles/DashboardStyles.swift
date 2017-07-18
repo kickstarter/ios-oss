@@ -3,8 +3,8 @@ import Prelude_UIKit
 import UIKit
 
 public let dashboardActionButtonStyle = UIButton.lens.titleLabel.font .~ .ksr_subhead()
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_600
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_400
 
 public let dashboardActivityButtonStyle =
   dashboardActionButtonStyle
@@ -13,7 +13,7 @@ public let dashboardActivityButtonStyle =
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   <> UILabel.lens.font .~ .ksr_title2()
 
 public let dashboardCardStyle = roundedStyle()
@@ -87,7 +87,7 @@ public let dashboardGreenTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
 
 public let dashboardStatTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
 public let dashboardStatSubtitleLabelStyle =
@@ -102,7 +102,7 @@ public let dashboardMessagesButtonStyle =
 
 public let dashboardLastUpdatePublishedAtLabelStyle =
   UILabel.lens.font .~ .ksr_caption1()
-    <> UILabel.lens.textColor .~ .ksr_text_navy_500
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
     <> UILabel.lens.accessibilityElementsHidden .~ true
 
 public let dashboardReferrersPledgePercentLabelStyle =
@@ -121,9 +121,8 @@ public let dashboardReferrersSourceLabelStyle = dashboardColumnTextLabelStyle
 public let dashboardReferrersTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_referrers_title_referrers() }
 
-public let postUpdateButtonStyle = dashboardGreenTextBorderButtonStyle
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+public let postUpdateButtonStyle = borderButtonStyle
+  //<> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
   <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_buttons_post_update() }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_post_update_hint() }
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_post_update() }

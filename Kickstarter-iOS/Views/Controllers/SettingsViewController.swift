@@ -136,7 +136,7 @@ internal final class SettingsViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
 

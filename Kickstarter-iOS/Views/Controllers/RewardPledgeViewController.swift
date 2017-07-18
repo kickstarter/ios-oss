@@ -270,7 +270,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.estimatedFulfillmentStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -384,7 +384,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
     _ = self.shippingInputStackView
@@ -397,7 +397,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.shippingLocationsLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)

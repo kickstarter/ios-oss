@@ -119,7 +119,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center

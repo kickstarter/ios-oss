@@ -81,7 +81,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
          self.deadlineSubtitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }

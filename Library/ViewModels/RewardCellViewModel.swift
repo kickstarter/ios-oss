@@ -106,8 +106,8 @@ RewardCellViewModelOutputs {
     self.titleLabelTextColor = projectAndReward
       .map { project, reward in
         reward.remaining != 0 || userIsBacking(reward: reward, inProject: project) || project.state != .live
-          ? .ksr_text_dark_grey_500
-          : .ksr_text_dark_grey_400
+          ? .ksr_text_dark_grey_900
+          : .ksr_text_dark_grey_500
     }
 
     let youreABacker = projectAndReward

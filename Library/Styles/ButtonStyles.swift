@@ -26,12 +26,12 @@ public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(forState: .disabled) .~ .ksr_dark_grey_400
 
 public let borderButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_dark_grey_500
+  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_dark_grey_900
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_500
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_900
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_grey_400
   <> UIButton.lens.titleColor(forState: .disabled) .~ .ksr_grey_400
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_500.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
 public let greenBorderButtonStyle = baseButtonStyle

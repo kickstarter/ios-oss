@@ -100,7 +100,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_500
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.allGoneLabel
@@ -123,17 +123,17 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.descriptionLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
@@ -164,7 +164,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.footerLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -246,7 +246,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     for item in items {
       let label = UILabel()
         |> UILabel.lens.font .~ .ksr_body(size: 14)
-        |> UILabel.lens.textColor .~ .ksr_text_navy_600
+        |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 

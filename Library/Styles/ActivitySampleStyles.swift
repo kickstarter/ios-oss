@@ -22,13 +22,13 @@ public let activitySampleFriendFollowLabelStyle =
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectSubtitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_400
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
@@ -36,9 +36,6 @@ public let activitySampleProjectTitleLabelStyle =
 public let activitySampleSeeAllActivityButtonStyle =
   borderButtonStyle
     <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 13)
-    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
-    <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_500.cgColor
     <> UIButton.lens.title(forState: .normal) %~ { _ in
       Strings.discovery_activity_sample_button_see_all_activity()
 }

@@ -139,11 +139,11 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.projectUnsuccessfulLabelTextColor = project
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_400 }
+        UIColor.ksr_text_dark_grey_900 : UIColor.ksr_text_dark_grey_500 }
 
     self.pledgedTitleLabelTextColor = project
       .map { $0.state == .successful  || $0.state == .live ?
-        UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_400 }
+        UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_900 }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 

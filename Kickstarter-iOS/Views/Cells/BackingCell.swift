@@ -55,18 +55,18 @@ internal final class BackingCell: UITableViewCell, ValueCell {
     }
 
     _ = self.deliveryLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
       |> UILabel.lens.font .~ UIFont.ksr_caption1()
 
     _ = self.dividerView
       |> separatorStyle
 
     _ = self.pledgedLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_headline()
 
     _ = self.rewardLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
