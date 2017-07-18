@@ -25,6 +25,7 @@ final class MessageThreadsDataSourceTests: XCTestCase {
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
 
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(self.dataSource.emptyStateCellIdentifier, self.dataSource.reusableId(item: 0, section: 0))
+    XCTAssertEqual(MessageThreadsDataSource.emptyStateCellIdentifier,
+                   self.dataSource.reusableId(item: 0, section: 0))
   }
 }

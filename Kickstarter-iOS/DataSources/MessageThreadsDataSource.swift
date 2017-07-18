@@ -7,7 +7,7 @@ internal final class MessageThreadsDataSource: ValueCellDataSource {
     case messageThreads
   }
 
-  internal let emptyStateCellIdentifier = String(describing: MessageThreadEmptyStateCell.self)
+  internal static let emptyStateCellIdentifier = String(describing: MessageThreadEmptyStateCell.self)
 
   internal func load(messageThreads: [MessageThread]) {
     self.set(values: messageThreads,
@@ -16,7 +16,7 @@ internal final class MessageThreadsDataSource: ValueCellDataSource {
   }
 
   internal func emptyState(isVisible: Bool) {
-    self.set(cellIdentifiers: isVisible ? [self.emptyStateCellIdentifier] : [],
+    self.set(cellIdentifiers: isVisible ? [MessageThreadsDataSource.emptyStateCellIdentifier] : [],
              inSection: Section.emptyState.rawValue)
   }
 
