@@ -175,7 +175,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
 
-    self.configurePlayerWithURL.assertValues([])
+    self.configurePlayerWithURL.assertValueCount(0)
     self.addCompletionObserver.assertValues([])
     self.playButtonHidden.assertValues([true])
     self.projectImageHidden.assertValues([false])

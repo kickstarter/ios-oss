@@ -99,7 +99,7 @@ internal final class BackingViewModelTests: TestCase {
     withEnvironment(currentUser: .template |> User.lens.name .~ "Carla") {
       self.vm.inputs.configureWith(project: .template, backer: nil)
 
-      self.backerName.assertValues([])
+      self.backerName.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
 

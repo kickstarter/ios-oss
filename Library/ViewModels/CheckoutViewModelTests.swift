@@ -989,7 +989,7 @@ final class CheckoutViewModelTests: TestCase {
                                  applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.setStripeAppleMerchantIdentifier.assertValues([])
+    self.setStripeAppleMerchantIdentifier.assertValueCount(0)
   }
 
   func testSetStripeAppleMerchantIdentifier_ApplePayCapable() {
@@ -1012,7 +1012,7 @@ final class CheckoutViewModelTests: TestCase {
                                    applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      self.setStripePublishableKey.assertValues([])
+      self.setStripePublishableKey.assertValueCount(0)
     }
   }
 

@@ -3,7 +3,7 @@ import Prelude
 import XCTest
 @testable import LiveStream
 
-public extension Decodable {
+public extension Argo.Decodable {
   public static func decodeJSONDictionary(_ json: [String: Any]) -> Decoded<DecodedType> {
     return Self.decode(JSON(json))
   }
