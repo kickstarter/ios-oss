@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let activitySampleBackingTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 

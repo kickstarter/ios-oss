@@ -34,7 +34,7 @@ public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_text
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
 
-public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   <> UILabel.lens.font .~ .ksr_headline()
   <> UILabel.lens.textAlignment .~ .left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
