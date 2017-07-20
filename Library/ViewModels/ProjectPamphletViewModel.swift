@@ -177,7 +177,7 @@ private func cleanUp(refTagString: String) -> String {
 // Constructs a cookie from a ref tag and project.
 private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
-  let timestamp = Int(Date().timeIntervalSince1970)
+  let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
   var properties: [HTTPCookiePropertyKey:Any] = [:]
   properties[.name]    = cookieName(project)
@@ -185,7 +185,8 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   properties[.domain]  = URL(string: project.urls.web.project)?.host
   properties[.path]    = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
-  properties[.expires] = Date(timeIntervalSince1970: project.dates.deadline)
+  properties[.expires] = AppEnvironment.current.dateType
+    .init(timeIntervalSince1970: project.dates.deadline).date
 
   return HTTPCookie(properties: properties)
 }
