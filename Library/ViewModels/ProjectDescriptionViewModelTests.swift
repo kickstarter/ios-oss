@@ -16,6 +16,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
   fileprivate let isLoading = TestObserver<Bool, NoError>()
   fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
+  fileprivate let showErrorAlert = TestObserver<NSError, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -25,6 +26,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadWebViewRequest.observe(self.loadWebViewRequest.observer)
+    self.vm.outputs.showErrorAlert.map { $0 as NSError }.observe(self.showErrorAlert.observer)
   }
 
   func testGoBackToProject() {
@@ -197,5 +199,31 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.goBackToProject.assertValueCount(0)
     self.goToMessageDialog.assertValueCount(0)
     self.goToSafariBrowser.assertValueCount(0)
+  }
+
+  func testError() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    let request = URLRequest(url: URL(string: project.urls.web.project)!)
+
+    let navigationAction = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+    )
+
+    self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+    self.vm.inputs.webViewDidStartProvisionalNavigation()
+
+    let error = NSError(
+      domain: "notonlinesorry", code: -666, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
+    )
+    self.vm.inputs.webViewDidFailProvisionalNavigation(withError: error)
+
+    self.showErrorAlert.assertValues([error])
   }
 }
