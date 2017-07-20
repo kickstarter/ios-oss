@@ -79,6 +79,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the disparate data to be displayed on the metadata view label.
   var metadataData: Signal<PostcardMetadataData, NoError> { get }
 
+  /// Emits a boolean to determine if metadata icon should be hidden
+  var metadataIconHidden: Signal<Bool, NoError> { get }
+
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
 
@@ -168,6 +171,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 
+    self.metadataIconHidden = project.map { p in
+      let today = AppEnvironment.current.dateType.init().date
+      return p.isPotdToday(today: today)
+    }
+
     self.percentFundedTitleLabelText = project
       .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
 
@@ -253,6 +261,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataData: Signal<PostcardMetadataData, NoError>
+  public let metadataIconHidden: Signal<Bool, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>

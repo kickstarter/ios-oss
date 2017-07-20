@@ -15,6 +15,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
+  internal let metadataIconHidden = TestObserver<Bool, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
@@ -42,6 +43,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
     self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
+    self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
@@ -119,12 +121,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.metadataLabelText.assertValues([], "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
+      self.metadataIconHidden.assertValues([false])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "dadbeeef", user: User.template))
       self.vm.inputs.configureWith(project: backedProject)
 
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
+      self.metadataIconHidden.assertValues([false, false])
 
       self.vm.inputs.configureWith(project: starredAndPotdProject)
 
@@ -134,6 +138,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.You_saved_this_project()
         ], "Starred metadata takes precedence.")
 
+      self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
+
       self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
       self.metadataLabelText.assertValues(
         [
@@ -141,6 +147,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.You_saved_this_project(),
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
+
+      self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
 
       self.vm.inputs.configureWith(project: featuredProject)
       self.metadataLabelText.assertValues(
@@ -153,6 +161,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           )
         ], "Featured metadata emits.")
 
+      self.metadataIconHidden.assertValues([false, false, true, true, false],
+        "Icon shown for the featured project")
+
       self.vm.inputs.configureWith(project: potdAndFeaturedProject)
       self.metadataLabelText.assertValues(
         [
@@ -164,6 +175,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           ),
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Potd metadata takes precedence.")
+
+      self.metadataIconHidden.assertValues([false, false, true, true, false, true],
+        "No Icon shown for the potd project")
 
       AppEnvironment.logout()
 
