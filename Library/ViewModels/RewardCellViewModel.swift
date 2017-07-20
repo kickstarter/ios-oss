@@ -298,9 +298,9 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
   } else if project.state == .live {
     return .ksr_text_green_700
   } else if project.state != .live {
-    return .ksr_text_dark_grey_500
+    return .ksr_text_dark_grey_900
   } else {
-    return .ksr_text_dark_grey_500
+    return .ksr_text_dark_grey_900
   }
 }
 
