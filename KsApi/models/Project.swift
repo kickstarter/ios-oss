@@ -139,7 +139,7 @@ public struct Project {
 
 extension Project: Equatable {}
 public func == (lhs: Project, rhs: Project) -> Bool {
-  return lhs.id == rhs.id && lhs.personalization.isStarred == rhs.personalization.isStarred
+  return lhs.id == rhs.id
 }
 
 extension Project: CustomDebugStringConvertible {

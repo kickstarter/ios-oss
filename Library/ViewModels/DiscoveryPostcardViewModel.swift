@@ -276,7 +276,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let projectSavedFromNotification = configuredProject
       .takePairWhen(self.projectFromNotificationProperty.signal.skipNil())
-      .filter { $0 == $1 }
+      .filter { $0.id == $1.id }
       .map { $0.1 }
 
     let project = Signal.merge(

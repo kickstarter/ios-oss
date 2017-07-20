@@ -126,12 +126,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.vm.inputs.saveButtonTapped()
 
-      self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+      self.saveButtonSelected.assertValues([false, false],
+                                           "Emits false because the project personalization value is nil.")
       self.saveButtonEnabled.assertValues([false], "Save button is disabled while request is being made.")
 
       self.scheduler.advance()
 
-      self.saveButtonSelected.assertValues([false, true, false], "Save button deselects.")
+      self.saveButtonSelected.assertValues([false, false, false], "Emits again with error.")
       self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
 
     }
@@ -139,39 +140,41 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testTappedSaveButton_LoggedIn_User() {
     let project = Project.template
+      |> Project.lens.personalization.isStarred .~ true
     let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
+      |> StarEnvelope.lens.project .~ project
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse),
                     currentUser: .template) {
 
         self.vm.inputs.configureWith(project: project)
 
-        self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+        self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
         self.saveButtonEnabled.assertValueCount(0)
 
         self.vm.inputs.saveButtonTapped()
 
-        self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+        self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
         self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
 
         self.scheduler.advance()
 
-        self.saveButtonSelected.assertValues([false, true], "Save button remains selected after request.")
+        self.saveButtonSelected.assertValues([true, false], "Save button remains deselected after request.")
         self.saveButtonEnabled.assertValues([false, true], "Save is enabled after request.")
     }
   }
 
   func testTappedSaveButton_LoggedOut_User() {
     let project = Project.template
+      |> Project.lens.personalization.isStarred .~ false
     let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
+      |> StarEnvelope.lens.project .~ project
 
       withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
 
         self.vm.inputs.configureWith(project: project)
 
-        self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+        self.saveButtonSelected.assertValues([false], "Save button is not selected for logged out user.")
         self.saveButtonEnabled.assertValueCount(0)
 
         self.vm.inputs.saveButtonTapped()
@@ -214,6 +217,25 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
                                               "Save button is enabled after request.")
 
       }
+    }
+  }
+
+  func testSaveProjectFromPamphlet() {
+    let project = Project.template
+      |> Project.lens.personalization.isStarred .~ false
+    let toggleSaveResponse = .template
+      |> StarEnvelope.lens.project .~ project
+    let projectUpdated = project
+      |> Project.lens.personalization.isStarred .~ true
+
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
+      self.vm.inputs.configureWith(project: project)
+
+      self.saveButtonSelected.assertValues([false])
+
+      self.vm.inputs.projectFromNotification(project: projectUpdated)
+
+      self.saveButtonSelected.assertValues([false, true])
     }
   }
 
