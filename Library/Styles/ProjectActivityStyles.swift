@@ -5,7 +5,6 @@ import UIKit
 public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 2.0)
   <> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_400
 
-
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
 public let projectActivityFooterButton =
