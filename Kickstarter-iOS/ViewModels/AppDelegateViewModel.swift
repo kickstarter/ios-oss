@@ -407,18 +407,20 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     self.goToCreatorMessageThread = deepLink
-      .map { navigation -> (Param, messageThreadId)? in
+      .map { navigation -> (Param, Int)? in
         guard case let .creatorMessages(projectId, messageThreadId) = navigation else { return nil }
         return .some((projectId, messageThreadId: messageThreadId))
       }
       .skipNil()
-      .switchMap {
-        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0.1)
-          .demoteErrors()
-          .map { (env:MessageThreadEnvelope) in
-            return ($0.0, env.messageThread)
-          }
-      }
+      .map { ($0.0, MessageThread.template) }
+      //Fixme uncomment this code
+//      .switchMap { projectId, messageThreadId in
+//        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
+//          .demoteErrors()
+//          .map { (env:MessageThreadEnvelope) in
+//            return (projectId, env.messageThread)
+//          }
+//      }
 
     //TODO: This is where we get signal of going of going to the MessageTread but there is no
     // separation between user messages and Creator's project messages
@@ -765,7 +767,7 @@ AppDelegateViewModelOutputs {
   public let forceLogout: Signal<(), NoError>
   public let getNotificationAuthorizationStatus: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
-  public let goToCreatorMessageThread: Signal<(Param, Int), NoError>
+  public let goToCreatorMessageThread: Signal<(Param, MessageThread), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
   public let goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError>

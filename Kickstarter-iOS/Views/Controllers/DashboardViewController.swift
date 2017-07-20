@@ -135,6 +135,12 @@ internal final class DashboardViewController: UITableViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
+
+    self.viewModel.outputs.goToMessageThread
+      .observeForControllerAction()
+      .observeValues { [weak self] project, messageThread in
+        self?.goToMessageThread(project: project, messageThread: messageThread)
+      }
   }
   // swiftlint:enable function_body_length
 
@@ -219,6 +225,17 @@ internal final class DashboardViewController: UITableViewController {
 
   @objc fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
+  }
+
+  fileprivate func goToMessageThread(project: Project, messageThread: MessageThread) {
+    let threadsVC = MessageThreadsViewController.configuredWith(project: project)
+    let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
+
+    self.navigationController?.setViewControllers([self, threadsVC, messageThreadVC], animated: true)
+  }
+
+  public func goToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
+    self.viewModel.inputs.goToProjectMessageThread(projectId: projectId, messageThread: messageThread)
   }
 }
 

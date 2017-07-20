@@ -317,8 +317,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 
-  fileprivate func goToCreatorMessageThread(_ projectId: Param, _ messageThreadId: Int) {
-    self.rootTabBarController?.switchToCreatorMessageThread(projectId, messageThreadId)
+  fileprivate func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
+    self.rootTabBarController?.switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
   private func findRedirectUrl(_ url: URL) {

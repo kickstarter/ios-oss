@@ -67,20 +67,6 @@ public final class RootTabBarViewController: UITabBarController {
       .observeForControllerAction()
       .observeValues { $0.`switch`(toProject: $1) }
 
-    self.viewModel.outputs.swithToCreatorMessageThread
-      .observeForControllerAction()
-      .observeValues { vc, project, messageThread in
-        vc.`switch`(toProject: project)
-
-        guard let dashboardNav = self.selectedViewController as? UINavigationController,
-              let dashboardVC = dashboardNav.viewControllers.first
-          else { return }
-
-        let let threadsVC = MessageThreadsViewController.configuredWith(project: project)
-        let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
-
-        dashboardNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
-      }
   }
 
   public func switchToActivities() {
@@ -118,6 +104,20 @@ public final class RootTabBarViewController: UITabBarController {
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
+  }
+
+  public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
+    self.switchToDashboard(project: nil)
+
+    guard let dashboardNav = self.selectedViewController as? UINavigationController,
+          let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
+      else { return }
+
+    //Fixme remove
+    print(">>>>> Dashboard nav on top")
+
+    dashboardVC.goToProjectMessageThread(projectId: projectId, messageThread: messageThread)
+
   }
 
   // swiftlint:disable:next cyclomatic_complexity
