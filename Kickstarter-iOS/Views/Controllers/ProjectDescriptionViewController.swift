@@ -76,6 +76,16 @@ internal final class ProjectDescriptionViewController: WebViewController {
       .observeValues { [weak self] in
         _ = self?.webView.load($0)
     }
+
+    self.viewModel.outputs.showErrorAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.present(
+          UIAlertController.genericError($0.localizedDescription),
+          animated: true,
+          completion: nil
+        )
+    }
   }
 
   internal func webView(_ webView: WKWebView,
@@ -86,20 +96,27 @@ internal final class ProjectDescriptionViewController: WebViewController {
     decisionHandler(self.viewModel.outputs.decidedPolicyForNavigationAction)
   }
 
-  func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+  internal func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidStartProvisionalNavigation()
   }
 
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  internal func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidFinishNavigation()
+  }
+
+  internal func webView(_ webView: WKWebView,
+                        didFailProvisionalNavigation navigation: WKNavigation!,
+                        withError error: Error) {
+
+    self.viewModel.inputs.webViewDidFailProvisionalNavigation(withError: error)
   }
 
   fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.delegate = self
     self.present(UINavigationController(rootViewController: vc),
-                               animated: true,
-                               completion: nil)
+                 animated: true,
+                 completion: nil)
   }
 
   fileprivate func goToSafariBrowser(url: URL) {

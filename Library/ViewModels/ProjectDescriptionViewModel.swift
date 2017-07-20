@@ -14,6 +14,9 @@ public protocol ProjectDescriptionViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  /// Call when the webview fails to navigate.
+  func webViewDidFailProvisionalNavigation(withError error: Error)
+
   /// Call when the webview finishes navigating.
   func webViewDidFinishNavigation()
 
@@ -39,6 +42,9 @@ public protocol ProjectDescriptionViewModelOutputs {
 
   /// Emits a url request that should be loaded into the webview.
   var loadWebViewRequest: Signal<URLRequest, NoError> { get }
+
+  /// Emits when an error should be displayed.
+  var showErrorAlert: Signal<Error, NoError> { get }
 }
 
 public protocol ProjectDescriptionViewModelType {
@@ -96,7 +102,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
         return project
     }
 
-    self.goBackToProject = possiblyGoBackToProject.skipNil().ignoreValues()
+    self.showErrorAlert = self.webViewDidFailProvisionalNavigationProperty.signal.skipNil()
+
+    self.goBackToProject = Signal.merge(
+      possiblyGoBackToProject.skipNil().ignoreValues(),
+      self.showErrorAlert.ignoreValues()
+    )
 
     self.goToSafariBrowser = Signal.zip(
       navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject
@@ -133,6 +144,11 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     return self.policyDecisionProperty.value
   }
 
+  fileprivate let webViewDidFailProvisionalNavigationProperty = MutableProperty(Error?.none)
+  public func webViewDidFailProvisionalNavigation(withError error: Error) {
+    self.webViewDidFailProvisionalNavigationProperty.value = error
+  }
+
   fileprivate let webViewDidFinishNavigationProperty = MutableProperty()
   public func webViewDidFinishNavigation() {
     self.webViewDidFinishNavigationProperty.value = ()
@@ -148,6 +164,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public let goToSafariBrowser: Signal<URL, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let loadWebViewRequest: Signal<URLRequest, NoError>
+  public let showErrorAlert: Signal<Error, NoError>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }
   public var outputs: ProjectDescriptionViewModelOutputs { return self }
