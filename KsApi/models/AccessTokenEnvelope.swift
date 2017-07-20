@@ -7,7 +7,7 @@ public struct AccessTokenEnvelope {
   public let user: User
 }
 
-extension AccessTokenEnvelope: Decodable {
+extension AccessTokenEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<AccessTokenEnvelope> {
     return curry(AccessTokenEnvelope.init)
       <^> json <| "access_token"

@@ -14,7 +14,7 @@ public struct Config {
   public let stripePublishableKey: String
 }
 
-extension Config: Decodable {
+extension Config: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Config> {
     let create = curry(Config.init)
     let tmp = create
@@ -64,7 +64,7 @@ extension Config: EncodableType {
 // Useful for getting around swift optimization bug: https://github.com/thoughtbot/Argo/issues/363
 // Turns out using `>>-` or `flatMap` on a `Decoded` fails to compile with optimizations on, so this
 // function does it manually.
-private func decodeDictionary<T: Decodable>(_ j: Decoded<JSON>)
+private func decodeDictionary<T: Argo.Decodable>(_ j: Decoded<JSON>)
   -> Decoded<[String:T]> where T.DecodedType == T {
   switch j {
   case let .success(json): return [String: T].decode(json)

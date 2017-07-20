@@ -35,7 +35,7 @@ public struct LiveStreamChatMessage {
   }
 }
 
-extension LiveStreamChatMessage: Decodable {
+extension LiveStreamChatMessage: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamChatMessage> {
     let create = curry(LiveStreamChatMessage.init)
 

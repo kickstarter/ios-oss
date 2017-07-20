@@ -8,7 +8,7 @@ public struct LiveStreamEventsEnvelope {
   public fileprivate(set) var liveStreamEvents: [LiveStreamEvent]
 }
 
-extension LiveStreamEventsEnvelope: Decodable {
+extension LiveStreamEventsEnvelope: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEventsEnvelope> {
     return curry(LiveStreamEventsEnvelope.init)
       <^> json <| "number_live_streams"

@@ -23,13 +23,13 @@ public struct DiscoveryParams {
   public let starred: Bool?
   public let state: State?
 
-  public enum State: String, Decodable {
+  public enum State: String, Argo.Decodable {
     case all
     case live
     case successful
   }
 
-  public enum Sort: String, Decodable {
+  public enum Sort: String, Argo.Decodable {
     case endingSoon = "end_date"
     case magic
     case mostFunded = "most_funded"
@@ -93,7 +93,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
   }
 }
 
-extension DiscoveryParams: Decodable {
+extension DiscoveryParams: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let create = curry(DiscoveryParams.init)
 
