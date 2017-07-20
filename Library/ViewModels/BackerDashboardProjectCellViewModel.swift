@@ -126,7 +126,7 @@ private func titleString(for project: Project) -> NSAttributedString {
   default:
     return NSAttributedString(string: project.name, attributes: [
       NSFontAttributeName: UIFont.ksr_caption1(size: 13),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
     ])
   }
 }

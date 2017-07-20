@@ -47,7 +47,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
 
     _ = self.creatorNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.respondNowButton
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)

@@ -105,7 +105,7 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
   let attributedString = fullString.simpleHtmlAttributedString(
       base: [
         NSFontAttributeName: UIFont.ksr_footnote(),
-        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
       ],
       bold: [
         NSFontAttributeName: UIFont.ksr_headline(size: 13.0),

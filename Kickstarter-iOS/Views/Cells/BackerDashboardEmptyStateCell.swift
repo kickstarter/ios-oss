@@ -34,7 +34,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
     }
 
     _ = self.messageLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ UIFont.ksr_callout(size: 15.0)
 
     _ = self.titleLabel

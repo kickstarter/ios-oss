@@ -128,11 +128,11 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.backerNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.backerSequenceLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.messageCreatorButton
       |> navyButtonStyle
