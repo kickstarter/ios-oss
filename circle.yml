@@ -13,6 +13,7 @@ dependencies:
     - instruments -s devices
     - xcodebuild -showsdks
     - gem install fastlane -NVv 2.37.0
+    - echo "" | xcversion simulators --install='iOS 10.3.1'
 test:
   pre:
     - xcrun instruments -w 'iPhone 7 (10.2)' || true
