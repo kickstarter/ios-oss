@@ -26,7 +26,7 @@ public let discoveryNavTitleStackViewStyle =
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_navy_500
+  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_dark_grey_400
   <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0

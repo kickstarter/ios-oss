@@ -39,7 +39,7 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
         percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
       return string.simpleHtmlAttributedString(base: [
         NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
-        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
         ],
         bold: [
           NSFontAttributeName: UIFont.ksr_headline(size: 14.0),
@@ -52,7 +52,7 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
         percentage: "<b>\(Format.percentage($0.stats.percentFunded))</b>")
       return string.simpleHtmlAttributedString(base: [
         NSFontAttributeName: UIFont.ksr_subhead(size: 13.0),
-        NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
         ],
                                                bold: [
                                                 NSFontAttributeName: UIFont.ksr_headline(size: 13.0),

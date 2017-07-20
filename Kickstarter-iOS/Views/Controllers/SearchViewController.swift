@@ -77,7 +77,7 @@ internal final class SearchViewController: UITableViewController {
       |> UIView.lens.backgroundColor .~ .ksr_grey_300
 
     _ = self.searchIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_navy_500
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
       |> UIImageView.lens.image .~ image(named: "search-icon")
 
     _ = self.searchStackView

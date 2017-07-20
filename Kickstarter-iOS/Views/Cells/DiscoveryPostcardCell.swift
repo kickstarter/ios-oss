@@ -123,7 +123,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.projectStateSubtitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 1
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail

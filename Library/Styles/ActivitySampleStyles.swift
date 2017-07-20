@@ -47,7 +47,7 @@ public let activitySampleStackViewStyle =
 
 public let activitySampleTitleLabelStyle =
   UILabel.lens.font .~ .ksr_footnote()
-    <> UILabel.lens.textColor .~ .ksr_text_navy_500
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
     <> UILabel.lens.numberOfLines .~ 1
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.text %~ { _ in Strings.discovery_activity_sample_title_Since_your_last_visit() }

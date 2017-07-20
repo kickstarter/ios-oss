@@ -549,7 +549,7 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
-    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
   }
 
   func testMinimumLabel_NoReward() {
@@ -627,7 +627,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([false])
     self.titleLabelText.assertValues(["The thing"])
-    self.titleLabelTextColor.assertValues([.ksr_text_navy_500])
+    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_400])
   }
 
   func testTitleLabelColor_WithTitle_AllGone_NonLive() {
@@ -697,7 +697,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
     }
   }
 
@@ -713,7 +713,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_navy_500])
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
     }
   }
 

@@ -119,7 +119,7 @@ public let textOnlyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_dark_grey_900
   <> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
   <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_green_400
-  <> UIButton.lens.titleColor(forState: .disabled) .~ .ksr_navy_500
+  <> UIButton.lens.titleColor(forState: .disabled) .~ .ksr_dark_grey_400
 
 public let twitterButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .white

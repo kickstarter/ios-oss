@@ -47,7 +47,7 @@ func labelsStackView(colorName colorName: String, startColor: UIColor, endColor:
       UILabel()
         |> UILabel.lens.text .~ "#\(startColor.hexString)\(endColorValue)"
         |> UILabel.lens.font .~ .ksr_subhead(size: 14)
-        |> UILabel.lens.textColor .~ .ksr_navy_500
+        |> UILabel.lens.textColor .~ .ksr_dark_grey_400
   ]
 }
 

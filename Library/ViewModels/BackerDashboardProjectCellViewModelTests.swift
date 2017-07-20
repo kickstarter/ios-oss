@@ -86,7 +86,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["20%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([0.2])
-    self.progressBarColor.assertValues([UIColor.ksr_navy_500])
+    self.progressBarColor.assertValues([UIColor.ksr_dark_grey_400])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([true])
   }

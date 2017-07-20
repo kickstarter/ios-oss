@@ -91,7 +91,7 @@ public final class FundingGraphView: UIView {
     }
 
     // Stroke the darker graph line before filling with lighter color.
-    UIColor.ksr_text_navy_500.setStroke()
+    UIColor.ksr_text_dark_grey_400.setStroke()
     line.stroke()
 
     line.addLine(to: CGPoint(x: lastPoint.x, y: self.bounds.height))

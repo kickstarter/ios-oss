@@ -87,7 +87,7 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
 private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_navy_500
+    return .ksr_dark_grey_400
   case .launch, .success:
     return .ksr_green_400
   default:
@@ -136,7 +136,7 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
 
   let mutableString = NSMutableAttributedString(string: funded, attributes: [
     NSFontAttributeName: UIFont.ksr_caption1(),
-    NSForegroundColorAttributeName: UIColor.ksr_navy_500
+    NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
     ])
 
   if let percentRange = mutableString.string.range(of: percentage) {
@@ -147,7 +147,7 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
       NSForegroundColorAttributeName:
         (activity.category == .cancellation
           || activity.category == .failure
-          || activity.category == .suspension) ? UIColor.ksr_text_navy_500 : UIColor.ksr_green_500
+          || activity.category == .suspension) ? UIColor.ksr_text_dark_grey_400 : UIColor.ksr_green_500
       ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
   }
 

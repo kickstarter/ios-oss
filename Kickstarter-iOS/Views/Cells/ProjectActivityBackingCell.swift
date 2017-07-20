@@ -172,10 +172,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
-      |> UILabel.lens.textColor .~ .ksr_navy_500
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_400
 
     _ = self.previousPledgeStrikethroughView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_500
+      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_400
 
     _ = self.sendMessageButton
       |> projectActivityFooterButton

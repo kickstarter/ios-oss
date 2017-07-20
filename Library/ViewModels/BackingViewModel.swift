@@ -307,7 +307,7 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
   } else {
     return NSAttributedString(string: string, attributes: [
       NSFontAttributeName: UIFont.ksr_subhead(size: 13),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
     ])
   }
 }

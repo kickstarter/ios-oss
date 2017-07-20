@@ -49,7 +49,7 @@ public let dashboardDrawerProjectNumberTextLabelStyle = dashboardColumnTextLabel
   <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardFundingGraphAxisSeparatorViewStyle =
-  UIView.lens.backgroundColor .~ .ksr_navy_500
+  UIView.lens.backgroundColor .~ .ksr_dark_grey_400
   <> UIView.lens.accessibilityElementsHidden .~ true
 
 public let dashboardFundingGraphXAxisLabelStyle =
@@ -63,7 +63,7 @@ public let dashboardFundingGraphXAxisStackViewStyle =
 
 public let dashboardFundingGraphYAxisLabelStyle =
   UILabel.lens.font .~ .ksr_caption2()
-    <> UILabel.lens.textColor .~ .ksr_text_navy_500
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
 public let dashboardFundingProgressTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_funding_title_funding_progress() }
@@ -91,7 +91,7 @@ public let dashboardStatTitleLabelStyle =
     <> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
 public let dashboardStatSubtitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_navy_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_400
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardMessagesButtonStyle =
@@ -169,7 +169,7 @@ public let dashboardTitleViewTextEnabledStyle =
   }
 
 public let dashboardVideoCompletionPercentageLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_navy_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   <> UILabel.lens.font .~ UIFont.ksr_caption1()
 
 public let dashboardVideoExternalPlaysProgressViewStyle =

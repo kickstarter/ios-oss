@@ -6,7 +6,7 @@ public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
 public let disclaimerButtonStyle =
-  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_500
+  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_400
     <> UIButton.lens.titleLabel.font %~~ { _, label in
       label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
     }
@@ -43,7 +43,7 @@ public let fbDisclaimerLabelStyle =
   UILabel.lens.font %~~ { _, label in
     label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
   }
-  <> UILabel.lens.textColor .~ .ksr_text_navy_500
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   <> UILabel.lens.textAlignment .~ .center
   <> UILabel.lens.text %~ { _ in
     Strings.discovery_facebook_connect_hero_we_will_never_post_anything_on_facebook()
@@ -75,7 +75,7 @@ public let loginWithEmailButtonStyle = borderButtonStyle
 public let onePasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_callout()
     <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_onePasswordBlue
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_navy_500
+    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_400
     <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
