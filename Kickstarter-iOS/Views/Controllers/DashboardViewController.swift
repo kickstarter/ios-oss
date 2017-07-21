@@ -232,6 +232,12 @@ internal final class DashboardViewController: UITableViewController {
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
     self.navigationController?.setViewControllers([self, threadsVC, messageThreadVC], animated: true)
+
+
+//
+//    let threadsVC = MessageThreadsViewController.configuredWith(project: project)
+//
+//    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   public func goToProjectMessageThread(projectId: Param, messageThread: MessageThread) {

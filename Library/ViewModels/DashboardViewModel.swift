@@ -101,15 +101,21 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   DashboardViewModelType {
 
     public init() {
-    let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+
+    let viewWillAppear = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+
+    let emptyProjectsWhenViewAppearing:Signal<[Project], NoError> = viewWillAppear.map {[]}
+    let fetchedProjects = viewWillAppear
       .switchMap {
-        AppEnvironment.current.apiService.fetchProjects(member: true)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
-          .map { $0.projects }
+          AppEnvironment.current.apiService.fetchProjects(member: true)
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+            .demoteErrors()
+            .map { $0.projects }
       }
       //fixme delete
       .logEvents(identifier: ">>>> projects")
+
+    let projects = Signal.merge(emptyProjectsWhenViewAppearing, fetchedProjects)
 
 ////      let signal: Signal<Param?, NoError> = self.switchToProjectProperty.producer
 //      let zz = self.goToProjectMessageThreadProperty.producer.skipNil().map { ($0.0, $0.1) }
@@ -122,46 +128,84 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 //        }
 //      }
 
-      let selectedProjectParam: Signal<(Param?, MessageThread?), NoError> = Signal.merge(
-          self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues().map { (nil, nil) },
-          self.switchToProjectProperty.signal.map { ($0, nil) } )
-        //fixme delete
+
+
+      let selectedProjectParam: SignalProducer<(Param?, MessageThread?), NoError> = SignalProducer.merge(
+        self.switchToProjectProperty.producer.map { ($0, nil) }
+          //fixme delete
+          .logEvents(identifier: ">>>> switchToProjectProperty")
+          ,
+        self.goToProjectMessageThreadProperty.producer.skipNil().map { ($0.0, $0.1) }
+
+          //fixme delete
+          .logEvents(identifier: ">>>> goToProjectMessageThreadProperty")
+      )
+        .skipRepeats { lhs, rhs in
+          return lhs.0 != rhs.0 && lhs.1 != rhs.1
+        }
+
+      //fixme delete
         .logEvents(identifier: ">>>> selectedProjectParam")
 
-      let messageThreadProjectParam: Signal<(Param?, MessageThread?), NoError> =
-        self.goToProjectMessageThreadProperty.signal.map {
-          if let pt = $0 {
-            return (pt.0, pt.1)
-          }
-          else {
-            return (nil, nil)
-          }
-        }
-          //fixme delete
-          .logEvents(identifier: ">>>> messageThreadProjectParam")
 
-      let projectsAndSelected = Signal.combineLatest(
-        projects,
-        Signal.merge(selectedProjectParam, messageThreadProjectParam)
-      )
-      .map { (projects, paramTreadPair)->([Project], Project, MessageThread?)? in
-        let project: Project?
-        if let param = paramTreadPair.0 {
-          project = find(projectForParam: param, in: projects) ?? projects.first
-        }
-        else {
-          project = projects.first
-        }
+      let projectsAndSelected = projects.filter { !$0.isEmpty }
+        .switchMap { [selectedProjectParam] projects in
+          selectedProjectParam
+            .map { param, messageThread -> ([Project], Project, MessageThread?)? in
+              if let foundProj = find(projectForParam: param, in: projects) ?? projects.first {
+                  return (projects, foundProj, messageThread)
+              }
+              else {
+                return nil
+              }
+            }
+            .skipNil()
+            //fixme delete
+            .map { ($0.1, $0.2, $0.0) }
+            .logEvents(identifier: ">>>> projectsAndSelected")
+            .map { ($0.2, $0.0, $0.1) }
+         }
 
-        if let project = project {
-          return (projects, project, paramTreadPair.1)
-        } else {
-          return nil
-        }
-      }
-      .skipNil()
-        //fixme delete
-        .logEvents(identifier: ">>>> projectsAndSelected")
+//      let selectedProjectParam: Signal<(Param?, MessageThread?), NoError> = Signal.merge(
+//          self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues().map { (nil, nil) },
+//          self.switchToProjectProperty.signal.map { ($0, nil) } )
+//        //fixme delete
+//        .logEvents(identifier: ">>>> selectedProjectParam")
+//
+//      let messageThreadProjectParam: Signal<(Param?, MessageThread?), NoError> =
+//        self.goToProjectMessageThreadProperty.signal.map {
+//          if let pt = $0 {
+//            return (pt.0, pt.1)
+//          }
+//          else {
+//            return (nil, nil)
+//          }
+//        }
+//          //fixme delete
+//          .logEvents(identifier: ">>>> messageThreadProjectParam")
+//
+//      let projectsAndSelected = Signal.combineLatest(
+//        projects,
+//        Signal.merge(selectedProjectParam, messageThreadProjectParam)
+//      )
+//      .map { (projects, paramTreadPair)->([Project], Project, MessageThread?)? in
+//        let project: Project?
+//        if let param = paramTreadPair.0 {
+//          project = find(projectForParam: param, in: projects) ?? projects.first
+//        }
+//        else {
+//          project = projects.first
+//        }
+//
+//        if let project = project {
+//          return (projects, project, paramTreadPair.1)
+//        } else {
+//          return nil
+//        }
+//      }
+//      .skipNil()
+//        //fixme delete
+//        .logEvents(identifier: ">>>> projectsAndSelected")
 
 //      let projectSelectedDirectly = projects
 //        .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
@@ -213,7 +257,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 //        .logEvents(identifier: ">>>> projectsAndSelected")
 
 //      let zz = SignalProducer.merge(selectedProjectParam, messageThreadProjectParam)
-
+//
+    //Original
 //      let projectsAndSelected = projects
 //        .switchMap {[switchToProject = SignalProducer.merge(selectedProjectParam, messageThreadProjectParam)]
 //          projects in
@@ -454,6 +499,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   }
   fileprivate let switchToProjectProperty = MutableProperty<Param?>(nil)
   public func `switch`(toProject param: Param) {
+    //fixme delete
+    print(">>>>> About to set project param \(param)")
     self.switchToProjectProperty.value = param
   }
   fileprivate let goToProjectMessageThreadProperty = MutableProperty<(Param, MessageThread)?>(nil)

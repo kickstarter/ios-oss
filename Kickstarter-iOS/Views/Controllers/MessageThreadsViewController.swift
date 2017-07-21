@@ -134,4 +134,9 @@ internal final class MessageThreadsViewController: UITableViewController {
 
     self.navigationController?.pushViewController(search, animated: true)
   }
+
+  func setProject(_ project: Project) {
+    //Fixme yaks - needs review
+    (self.viewModel as? MessageThreadsViewModel)?.configureWith(project: project)
+  }
 }
