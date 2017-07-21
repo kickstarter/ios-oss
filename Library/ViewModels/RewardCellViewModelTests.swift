@@ -104,7 +104,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template,
                                  rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
-    self.cardViewBackgroundColor.assertValues([UIColor.white, UIColor.ksr_grey_100])
+    self.cardViewBackgroundColor.assertValues([UIColor.white, UIColor.white])
   }
 
   func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {
@@ -119,7 +119,7 @@ final class RewardCellViewModelTests: TestCase {
                                  rewardOrBacking: .left(.template))
     self.vm.inputs.boundStyles()
 
-    self.cardViewDropShadowHidden.assertValues([true])
+    self.cardViewDropShadowHidden.assertValues([false])
   }
 
   func testCardViewDropShadowHidden_LiveProject_Backer_NotAllGone() {
