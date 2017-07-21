@@ -14,7 +14,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
-
   @IBOutlet fileprivate weak var cardView: UIView!
   @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!

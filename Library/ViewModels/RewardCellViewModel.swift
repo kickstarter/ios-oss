@@ -204,7 +204,9 @@ RewardCellViewModelOutputs {
 
     let tappable = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
-        (project.state == .live && reward.remaining != 0) || (project.state != .live && reward.remaining != 0) || youreABacker
+        (project.state == .live && reward.remaining != 0)
+        || (project.state != .live && reward.remaining != 0)
+        || youreABacker
     }
 
     self.cardViewDropShadowHidden = Signal.combineLatest(
