@@ -219,7 +219,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.cardViewDropShadowHidden
       .observeForUI()
       .observeValues { [weak self] hidden in
-        self?.cardView.layer.shadowOpacity = hidden ? 0.5 : 1
+        self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
     }
 
     self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion
