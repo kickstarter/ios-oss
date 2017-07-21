@@ -215,7 +215,7 @@ RewardCellViewModelOutputs {
 
     self.cardViewBackgroundColor = Signal.combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
       .map(first)
-      .map { $0 ? .ksr_grey_100 : .white }
+      .map { _ in .white }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)

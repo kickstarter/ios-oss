@@ -14,6 +14,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
+
   @IBOutlet fileprivate weak var cardView: UIView!
   @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
@@ -62,7 +63,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      //|> DiscoveryPostcardCell.lens.backgroundColor .~ .clear
+
       // Future: the top should adjust to grid(4) when there is metadata present.
       |> DiscoveryPostcardCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -113,7 +114,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> postcardMetadataStackViewStyle
 
     _ = self.metadataBackgroundView
-      |> dropShadowStyle(radius: 0.5)
+      |> dropShadowStyleMedium()
 
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)

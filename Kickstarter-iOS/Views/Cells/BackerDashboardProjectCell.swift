@@ -52,7 +52,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white

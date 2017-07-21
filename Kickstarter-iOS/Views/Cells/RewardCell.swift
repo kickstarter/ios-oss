@@ -109,7 +109,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> rewardDropShadowStyle()
 
     _ = self.minimumLabel
       |> UILabel.lens.font .~ .ksr_title2(size: 24)
@@ -219,7 +219,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.cardViewDropShadowHidden
       .observeForUI()
       .observeValues { [weak self] hidden in
-        self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
+        self?.cardView.layer.shadowOpacity = hidden ? 0.5 : 1
     }
 
     self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion

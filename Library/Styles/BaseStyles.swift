@@ -47,7 +47,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
-      <> TVC.lens.backgroundColor .~ .clear
+      <> TVC.lens.backgroundColor .~ .white
       <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
@@ -79,6 +79,12 @@ public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
       <> V.lens.layer.masksToBounds .~ false
       <> V.lens.layer.shouldRasterize .~ true
       <> V.lens.layer.shadowOffset .~ offset
+}
+
+public func rewardDropShadowStyle <V: UIViewProtocol> () -> ((V) -> V) {
+  return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
 }
 
 public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {

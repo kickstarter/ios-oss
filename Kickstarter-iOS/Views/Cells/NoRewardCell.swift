@@ -29,7 +29,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> NoRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.pledgeButton
