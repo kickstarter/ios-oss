@@ -111,6 +111,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .demoteErrors()
           .map { $0.projects }
       }
+      .skipRepeats(==)
       //boris-fixme delete
       .logEvents(identifier: ">>>> projects")
 
@@ -125,15 +126,15 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       }
 
     let projectAndThreadFromPush = projects
-      .switchMap { [switchToProjectTread = self.goToProjectMessageThreadProperty.producer] projects in
-        switchToProjectTread
+      .switchMap { [switchToProjectThread = self.goToProjectMessageThreadProperty.producer] projects in
+        switchToProjectThread
           .skipNil()
-          .map { paramTreadPair -> ([Project], Project, MessageThread)? in
-            if let project = find(projectForParam: paramTreadPair.0, in: projects) ?? projects.first {
-              return (projects, project, paramTreadPair.1)
-            } else {
+          .map { paramThreadPair -> ([Project], Project, MessageThread)? in
+            guard let project = find(projectForParam: paramThreadPair.0, in: projects) else {
               return nil
             }
+
+            return (projects, project, paramThreadPair.1)
           }
           .skipNil()
       }
