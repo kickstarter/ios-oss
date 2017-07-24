@@ -104,7 +104,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let viewWillAppear = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
 
-    let emptyProjectsWhenViewAppearing:Signal<[Project], NoError> = viewWillAppear.map {[]}
+    //let emptyProjectsWhenViewAppearing:Signal<[Project], NoError> = viewWillAppear.map {[]}
     let fetchedProjects = viewWillAppear
       .switchMap {
           AppEnvironment.current.apiService.fetchProjects(member: true)
@@ -115,7 +115,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       //fixme delete
       .logEvents(identifier: ">>>> projects")
 
-    let projects = Signal.merge(emptyProjectsWhenViewAppearing, fetchedProjects)
+    //let projects = Signal.merge(emptyProjectsWhenViewAppearing, fetchedProjects)
+    let projects = fetchedProjects
+      //fixme delete
+      .logEvents(identifier: ">>>> projects")
 
 ////      let signal: Signal<Param?, NoError> = self.switchToProjectProperty.producer
 //      let zz = self.goToProjectMessageThreadProperty.producer.skipNil().map { ($0.0, $0.1) }
@@ -140,9 +143,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           //fixme delete
           .logEvents(identifier: ">>>> goToProjectMessageThreadProperty")
       )
-        .skipRepeats { lhs, rhs in
-          return lhs.0 != rhs.0 && lhs.1 != rhs.1
-        }
+       // .skipRepeats { lhs, rhs in
+     //     return lhs.0 != rhs.0 && lhs.1 != rhs.1
+      //  }
 
       //fixme delete
         .logEvents(identifier: ">>>> selectedProjectParam")
@@ -298,6 +301,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 //      //fixme delete
 //      .logEvents(identifier: ">!3> projectsAndSelected")
 
+      /*
     let projectSelection = projects
       .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
       switchToProject
@@ -311,6 +315,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
       //fixme delete
       .logEvents(identifier: ">>>> projectSelection")
+ */
 
 //    let projectsAndSelected = projects
 //      .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
