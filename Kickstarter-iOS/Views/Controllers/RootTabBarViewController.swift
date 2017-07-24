@@ -113,7 +113,7 @@ public final class RootTabBarViewController: UITabBarController {
           let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
       else { return }
 
-    //Fixme remove
+    //boris-fixme remove
     print(">>>>> Dashboard nav on top")
 
     dashboardVC.goToProjectMessageThread(projectId: projectId, messageThread: messageThread)

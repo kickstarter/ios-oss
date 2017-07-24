@@ -312,7 +312,7 @@ AppDelegateViewModelOutputs {
 
     let deepLinkFromNotification = pushEnvelope
       .map(navigation(fromPushEnvelope:))
-      //FIXME: remove do
+      //boris-fixme: remove do
       .logEvents(identifier: "✨deepLinkFromNotification✨")
 
     // Deep links
@@ -413,7 +413,7 @@ AppDelegateViewModelOutputs {
       }
       .skipNil()
       .map { ($0.0, MessageThread.template) }
-      //Fixme uncomment this code
+      //boris-fixme uncomment this code
 //      .switchMap { projectId, messageThreadId in
 //        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
 //          .demoteErrors()
@@ -422,10 +422,6 @@ AppDelegateViewModelOutputs {
 //          }
 //      }
 
-    //TODO: This is where we get signal of going of going to the MessageTread but there is no
-    // separation between user messages and Creator's project messages
-    // we can spilt logic here or create new signal specific for the Creator's Project messages
-    // see fixme on line ~ 754
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
@@ -433,12 +429,12 @@ AppDelegateViewModelOutputs {
       }
       .skipNil()
       .map { _ in MessageThread.template }
-      //FIXME uncomment this
+      //boris-fixme uncomment this
 //      .switchMap {
 //        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
 //          .demoteErrors()
 //          .map { (env:MessageThreadEnvelope) in
-//            //FIXME delete these changes
+//            //boris-fixme delete these changes
 //            print("Env: \(env)")
 //            return env.messageThread
 //          }
@@ -845,8 +841,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let message = envelope.message {
     if envelope.forCreator == true {
       return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
-    }
-    else {
+    } else {
       return .messages(messageThreadId: message.messageThreadId)
     }
   }

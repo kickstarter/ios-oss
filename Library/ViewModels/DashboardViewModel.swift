@@ -102,26 +102,53 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     public init() {
 
+    let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+      //boris-fixme delete
+      .logEvents(identifier: ">>>> viewWillAppearAnimatedProperty")
+      .switchMap {
+        AppEnvironment.current.apiService.fetchProjects(member: true)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+          .map { $0.projects }
+      }
+      //boris-fixme delete
+      .logEvents(identifier: ">>>> projects")
 
+    let projectsAndSelectedDirectly = projects
+      .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
+        switchToProject
+          .map { param -> Project? in
+            find(projectForParam: param, in: projects) ?? projects.first
+          }
+          .skipNil()
+          .map { (projects, $0) }
+      }
 
+    let projectAndThreadFromPush = projects
+      .switchMap { [switchToProjectTread = self.goToProjectMessageThreadProperty.producer] projects in
+        switchToProjectTread
+          .skipNil()
+          .map { paramTreadPair -> ([Project], Project, MessageThread)? in
+            if let project = find(projectForParam: paramTreadPair.0, in: projects) ?? projects.first {
+              return (projects, project, paramTreadPair.1)
+            } else {
+              return nil
+            }
+          }
+          .skipNil()
+      }
+      //boris-fixme delete
+      .logEvents(identifier: ">>>> projectAndThreadFromPush")
 
+    let projectsAndSelected = Signal.merge(
+      projectsAndSelectedDirectly.map { ($0.0, $0.1, nil) },
+      projectAndThreadFromPush.map { ($0.0, $0.1, $0.2) })
 
+    self.project = projectsAndSelected.map(second)
 
-
-
-
-
-
-
-    self.goToMessageThread = projectsAndSelected
-      .filter { $0.2 != nil }
-      .map { ($0.1, $0.2!) }
-      //fixme delete
+    self.goToMessageThread = projectAndThreadFromPush.map { ($0.1, $0.2) }
+      //boris-fixme delete
       .logEvents(identifier: ">>>> Go to message thread")
-
-
-
-
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
@@ -152,19 +179,19 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let drawerStateProjectsAndSelectedProject = Signal.merge(
       projectsAndSelected.map { ($0.0, $0.1, false) },
-      projectsAndSelected.map { ($0.0, $0.1) }.takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) }
-      )
-      .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
+      projectsAndSelected
+        .map { ($0.0, $0.1) }
+        .takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) })
+        .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
+          let (projects, project, toggle) = projectsProjectToggle
 
-        let (projects, project, toggle) = projectsProjectToggle
-
-        return (
-          toggle ? (data?.0.toggled ?? DrawerState.closed) : DrawerState.closed,
-          projects,
-          project
-        )
-      }
-      .skipNil()
+          return (
+            toggle ? (data?.0.toggled ?? DrawerState.closed) : DrawerState.closed,
+            projects,
+            project
+          )
+        }
+        .skipNil()
 
     self.updateTitleViewData = drawerStateProjectsAndSelectedProject
       .map { drawerState, projects, selectedProject in
@@ -203,39 +230,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.goToMessages = self.project
       .takeWhen(self.openMessageThreadRequestedProperty.signal)
-
-//    self.goToMessageThread = self.goToProjectMessageThreadProperty.signal.skipNil()
-//      .withLatest(from: self.project)
-//      .filter { $0.0 == .id($1.id) }
-//      .map { ($1, $0.1) }
-
-//
-
-
-
-//      let projectForMessageThread = Signal
-//        .combineLatest(
-//          self.goToProjectMessageThreadProperty.signal.skipNil(),
-//          self.project
-//        )
-//        .filter { $0.0 == .id($1.id) }
-//        .map { ($1, $0.1) }
-//
-
-//      self.goToMessageThread = projectForMessageThread
-//        .takeWhen(self.goToProjectMessageThreadProperty.signal.skipNil())
-//        //FIXME: remove
-//        .logEvents(identifier: ">+> Go to message thread")
-
-//    self.goToMessageThread = Signal
-//      .combineLatest(
-//        self.goToProjectMessageThreadProperty.signal.skipNil(),
-//        self.project
-//      )
-//      .filter { $0.0 == .id($1.id) }
-//      .map { ($1, $0.1) }
-//      //FIXME: remove do
-//      .logEvents(identifier: ">+> Go to message thread")
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
@@ -277,9 +271,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
 
-
   // swiftlint:enable function_body_length
-
   fileprivate let showHideProjectsDrawerProperty = MutableProperty()
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()
@@ -290,7 +282,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   }
   fileprivate let switchToProjectProperty = MutableProperty<Param?>(nil)
   public func `switch`(toProject param: Param) {
-    //fixme delete
+    //boris-fixme delete
     print(">>>>> About to set project param \(param)")
     self.switchToProjectProperty.value = param
   }

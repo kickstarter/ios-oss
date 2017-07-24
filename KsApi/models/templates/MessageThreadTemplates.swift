@@ -1,5 +1,5 @@
 extension MessageThread {
-  //Fixme make internal again
+  //boris-fixme make internal again
   public static let template = MessageThread(
     backing: nil,
     closed: false,

@@ -136,7 +136,7 @@ internal final class MessageThreadsViewController: UITableViewController {
   }
 
   func setProject(_ project: Project) {
-    //Fixme yaks - needs review
+    //boris-fixme yaks - needs review
     (self.viewModel as? MessageThreadsViewModel)?.configureWith(project: project)
   }
 }
