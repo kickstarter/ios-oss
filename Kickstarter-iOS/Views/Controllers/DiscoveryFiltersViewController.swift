@@ -9,7 +9,7 @@ internal protocol DiscoveryFiltersViewControllerDelegate: class {
 }
 
 internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet private weak var backgroundGradientView: GradientView!
+  @IBOutlet private weak var bgView: UIView!
   @IBOutlet private weak var closeButton: UIButton!
   @IBOutlet private weak var filtersTableView: UITableView!
 
@@ -32,18 +32,15 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
 
-    self.backgroundGradientView.startPoint = CGPoint(x: 0.0, y: 1.0)
-    self.backgroundGradientView.endPoint = CGPoint(x: 1.0, y: 0.0)
-
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
 
-    self.viewModel.inputs.viewWillAppear()
+    self.viewModel.inputs.viewDidAppear()
   }
 
   internal override func bindViewModel() {
@@ -52,16 +49,18 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     self.viewModel.outputs.animateInView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.animateIn(categoryId: $0)
+        self?.animateIn()
     }
 
     self.viewModel.outputs.loadingIndicatorIsVisible
       .observeForUI()
       .observeValues { [weak self] isVisible in
+        guard let _self = self else { return }
         if isVisible {
-          self?.dataSource.loadCategoriesLoaderRow()
+          _self.dataSource.loadCategoriesLoaderRow()
+          _self.filtersTableView.reloadData()
         } else {
-          self?.deleteCategoriesLoaderRow()
+          _self.deleteCategoriesLoaderRow(_self.filtersTableView)
         }
     }
 
@@ -98,6 +97,9 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   internal override func bindStyles() {
     super.bindStyles()
 
+    _ = self.bgView
+      |> UIView.lens.backgroundColor .~ .white
+
     _ = self.filtersTableView
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 55.0
@@ -133,51 +135,46 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     }
   }
 
-  private func animateIn(categoryId: Int?) {
-    let (startColor, endColor) = discoveryGradientColors(forCategoryId: categoryId)
-    self.backgroundGradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
-    self.backgroundGradientView.alpha = 0
-
-    self.filtersTableView.frame.origin.y -= 20
+  private func animateIn() {
+    self.filtersTableView.frame.origin.y -= 20.0
     self.filtersTableView.alpha = 0
 
-    UIView.animate(withDuration: 0.2,
-                               delay: 0.0,
-                               options: .curveEaseOut,
-                               animations: {
-                                self.backgroundGradientView.alpha = 1
-                                },
-                               completion: nil)
-
-    UIView.animate(withDuration: 0.2,
-                               delay: 0.2,
-                               usingSpringWithDamping: 0.6,
-                               initialSpringVelocity: 1.0,
-                               options: .curveEaseOut, animations: {
-                                self.filtersTableView.alpha = 1
-                                self.filtersTableView.frame.origin.y += 20
-                                },
-                               completion: nil)
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0.0,
+      usingSpringWithDamping: 0.45,
+      initialSpringVelocity: 1.0,
+      options: .curveEaseOut,
+      animations: {
+        self.bgView.alpha = 1.0
+        self.filtersTableView.alpha = 1.0
+        self.filtersTableView.frame.origin.y += 20.0
+      },
+      completion: nil
+    )
   }
 
   private func animateOut() {
-    UIView.animate(withDuration: 0.1,
-                               delay: 0.0,
-                               options: .curveEaseOut,
-                               animations: {
-                                self.filtersTableView.alpha = 0
-                                self.filtersTableView.frame.origin.y -= 20
-                                },
-                               completion: nil)
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0.0,
+      options: .curveEaseIn,
+      animations: {
+        self.filtersTableView.alpha = 0.0
+        self.filtersTableView.frame.origin.y -= 20.0
+      },
+      completion: nil
+    )
 
-    UIView.animate(withDuration: 0.2,
-                               delay: 0.1,
-                               options: .curveEaseOut,
-                               animations: {
-                                self.backgroundGradientView.alpha = 0
-                                self.filtersTableView.alpha = 0
-                                },
-                               completion: nil)
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0.1,
+      options: .curveEaseOut,
+      animations: {
+        self.bgView.alpha = 0.0
+      },
+      completion: nil
+    )
   }
 
   @objc private func closeButtonTapped(_ button: UIButton) {
@@ -190,20 +187,28 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       self.filtersTableView.reloadData()
       self.filtersTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
     } else {
-      UIView.transition(with: self.filtersTableView,
-                        duration: 0.2,
-                        options: .transitionCrossDissolve,
-                        animations: {
-                          self.filtersTableView.reloadData()
-      }, completion: nil)
+      UIView.transition(
+        with: self.filtersTableView,
+        duration: 0.2,
+        options: .transitionCrossDissolve,
+        animations: {
+          self.filtersTableView.reloadData()
+        },
+        completion: nil
+      )
     }
   }
 
-  private func deleteCategoriesLoaderRow() {
+  private func deleteCategoriesLoaderRow(_ tableView: UITableView) {
+    guard let
+      deleteCategoriesLoaderRow = self.dataSource.deleteCategoriesLoaderRow(tableView),
+      !deleteCategoriesLoaderRow.isEmpty else {
+        return
+    }
+
     self.filtersTableView.beginUpdates()
+    defer { self.filtersTableView.endUpdates() }
 
-    self.filtersTableView.deleteRows(at: self.dataSource.deleteCategoriesLoaderRow(), with: .fade)
-
-    self.filtersTableView.endUpdates()
+    self.filtersTableView.deleteRows(at: deleteCategoriesLoaderRow, with: .fade)
   }
 }

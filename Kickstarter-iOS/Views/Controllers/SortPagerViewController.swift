@@ -202,7 +202,7 @@ internal final class SortPagerViewController: UIViewController {
       options: [.transitionCrossDissolve, .curveEaseOut],
       animations: {
         _ = [self.indicatorView, self.borderLineView]
-          ||> UIView.lens.backgroundColor .~ discoveryPrimaryColor(forCategoryId: categoryId)
+          ||> UIView.lens.backgroundColor .~ discoveryPrimaryColor()
       },
       completion: nil)
   }

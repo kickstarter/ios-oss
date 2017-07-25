@@ -12,22 +12,21 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var copyStackView: UIStackView!
 
-  internal func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
-  }
+  // value required to bind value to data source
+  internal func configureWith(value: Project) {}
 
-  // swiftlint:disable function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableViewCellStyle()
       |> NoRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
-      |> (NoRewardCell.lens.contentView • UIView.lens.layoutMargins) %~~ { _, cell in
+      |> (NoRewardCell.lens.contentView..UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(1), left: Styles.grid(16), bottom: Styles.grid(2), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
-    }
+      }
+      |> NoRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.cardView
       |> dropShadowStyle()

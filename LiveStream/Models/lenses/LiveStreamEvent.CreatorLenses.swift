@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import Prelude
 
 extension LiveStreamEvent.Creator {
@@ -15,11 +14,11 @@ extension LiveStreamEvent.Creator {
   }
 }
 
-extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.Creator {
+extension Lens where Whole == LiveStreamEvent, Part == LiveStreamEvent.Creator {
   public var avatar: Lens<Whole, String> {
-    return LiveStreamEvent.lens.creator • LiveStreamEvent.Creator.lens.avatar
+    return LiveStreamEvent.lens.creator..LiveStreamEvent.Creator.lens.avatar
   }
   public var name: Lens<Whole, String> {
-    return LiveStreamEvent.lens.creator • LiveStreamEvent.Creator.lens.name
+    return LiveStreamEvent.lens.creator..LiveStreamEvent.Creator.lens.name
   }
 }

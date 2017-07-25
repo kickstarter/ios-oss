@@ -37,7 +37,7 @@ public let dashboardColumnTextLabelStyle =
     <> UILabel.lens.font .~ .ksr_caption1()
 
 public let dashboardContextCellStyle = baseTableViewCellStyle()
-  <> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~ {
+  <> (UITableViewCell.lens.contentView..UIView.lens.layoutMargins) %~ {
     .init(topBottom: 32.0, leftRight: $0.left)
 }
 
@@ -155,9 +155,19 @@ public let dashboardStatsRowStackViewStyle =
     <> UIStackView.lens.spacing .~ 15
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-public let dashboardTitleViewTextStyle =
-  UILabel.lens.textColor .~ .ksr_text_navy_700
-  <> UILabel.lens.font .~ .ksr_footnote(size: 14.0)
+public let dashboardTitleViewTextDisabledStyle =
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? UIFont.ksr_body(size: 18)
+      : UIFont.ksr_callout()
+  }
+
+public let dashboardTitleViewTextEnabledStyle =
+  UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular
+      ? UIFont.ksr_body(size: 18).bolded
+      : UIFont.ksr_callout().bolded
+  }
 
 public let dashboardVideoCompletionPercentageLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_navy_500

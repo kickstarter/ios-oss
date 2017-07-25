@@ -1,12 +1,13 @@
 import UIKit
 
-// swiftlint:disable function_body_length
 
 public enum Device {
+  case phone3_5inch
   case phone4inch
   case phone4_7inch
   case phone5_5inch
   case pad
+  case pad12_9inch
 }
 
 public enum Orientation {
@@ -41,15 +42,29 @@ public func playgroundControllers(device: Device = .phone4_7inch,
 
     let traits: UITraitCollection
     switch (device, orientation) {
+    case (.phone3_5inch, .portrait):
+      parent.view.frame = .init(x: 0, y: 0, width: 320, height: 480)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .compact),
+        .init(verticalSizeClass: .regular),
+        .init(userInterfaceIdiom: .phone)
+        ])
+    case (.phone3_5inch, .landscape):
+      parent.view.frame = .init(x: 0, y: 0, width: 480, height: 320)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .compact),
+        .init(verticalSizeClass: .compact),
+        .init(userInterfaceIdiom: .phone)
+        ])
     case (.phone4inch, .portrait):
-      parent.view.frame = .init(x: 0, y: 0, width: 320, height: 575)
+      parent.view.frame = .init(x: 0, y: 0, width: 320, height: 568)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .regular),
         .init(userInterfaceIdiom: .phone)
         ])
     case (.phone4inch, .landscape):
-      parent.view.frame = .init(x: 0, y: 0, width: 575, height: 320)
+      parent.view.frame = .init(x: 0, y: 0, width: 568, height: 320)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .compact),
@@ -97,10 +112,24 @@ public func playgroundControllers(device: Device = .phone4_7inch,
         .init(verticalSizeClass: .regular),
         .init(userInterfaceIdiom: .pad)
         ])
+    case (.pad12_9inch, .portrait):
+      parent.view.frame = .init(x: 0, y: 0, width: 1024, height: 1366)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .regular),
+        .init(userInterfaceIdiom: .pad)
+        ])
+    case (.pad12_9inch, .landscape):
+      parent.view.frame = .init(x: 0, y: 0, width: 1366, height: 1024)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .regular),
+        .init(userInterfaceIdiom: .pad)
+        ])
     }
 
     child.view.frame = parent.view.frame
-
+    parent.preferredContentSize = parent.view.frame.size
     parent.view.backgroundColor = .white
     child.view.backgroundColor = .white
 

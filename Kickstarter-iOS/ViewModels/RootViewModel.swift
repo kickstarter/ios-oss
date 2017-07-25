@@ -82,8 +82,7 @@ internal protocol RootViewModelType {
 
 internal final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  internal init() {
+    internal init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal,
@@ -111,7 +110,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
           user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
           !user.isLoggedIn
             ? LoginToutViewController.configuredWith(loginIntent: .generic) as UIViewController? : nil,
-          user.isLoggedIn  ? ProfileViewController.instantiate() as UIViewController? : nil
+          user.isLoggedIn  ? profileController() : nil
         ]
       }
       .map { $0.compact() }
@@ -138,8 +137,8 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map(first(DiscoveryViewController.self))
       .skipNil()
 
-    self.filterDiscovery =
-      Signal.combineLatest(discovery, self.switchToDiscoveryProperty.signal.skipNil())
+    self.filterDiscovery = discovery
+      .takePairWhen(self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboard = viewControllers
       .map(first(DashboardViewController.self))
@@ -288,4 +287,11 @@ private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewC
       .index { $0 is VC }
       .flatMap { viewControllers[$0] as? VC }
   }
+}
+
+private func profileController() -> UIViewController {
+  let showDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true)
+  return showDash
+    ? BackerDashboardViewController.instantiate()
+    : ProfileViewController.instantiate()
 }

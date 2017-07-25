@@ -474,6 +474,22 @@ public enum Strings {
     )
   }
   /**
+   "Backer has pledged to this project."
+
+   - **es**: "Patrocinó este proyecto."
+   - **de**: "Hat dieses Projekt unterstützt."
+   - **fr**: "Ce contributeur s'est engagé à soutenir ce projet."
+   - **en**: "Backer has pledged to this project."
+  */
+  public static func Backer_has_pledged_to_this_project() -> String {
+    return localizedString(
+      key: "Backer_has_pledged_to_this_project",
+      defaultValue: "Backer has pledged to this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{backers_count}
 backers"
 
@@ -511,17 +527,17 @@ backers"
     )
   }
   /**
-   "Bring new ideas to life."
+   "Bring creative projects to life."
 
-   - **es**: "Nuevas ideas se vuelven realidad - ¡gracias a tu ayuda!"
-   - **de**: "Neue Ideen werden Wirklichkeit."
-   - **fr**: "De nouvelles idées qui voient le jour."
-   - **en**: "Bring new ideas to life."
+   - **es**: "Dale vida a proyectos creativos."
+   - **de**: "Kreative Projekte werden Wirklichkeit!"
+   - **fr**: "Réalisez vos projets créatifs."
+   - **en**: "Bring creative projects to life."
   */
-  public static func Bring_new_ideas_to_life() -> String {
+  public static func Bring_creative_projects_to_life() -> String {
     return localizedString(
-      key: "Bring_new_ideas_to_life",
-      defaultValue: "Bring new ideas to life.",
+      key: "Bring_creative_projects_to_life",
+      defaultValue: "Bring creative projects to life.",
       count: nil,
       substitutions: [:]
     )
@@ -554,6 +570,22 @@ backers"
     return localizedString(
       key: "Change_payment_method",
       defaultValue: "Change payment method",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Chat"
+
+   - **es**: "Chat"
+   - **de**: "Chat"
+   - **fr**: "Chat"
+   - **en**: "Chat"
+  */
+  public static func Chat() -> String {
+    return localizedString(
+      key: "Chat",
+      defaultValue: "Chat",
       count: nil,
       substitutions: [:]
     )
@@ -719,6 +751,22 @@ backers"
     )
   }
   /**
+   "Contact creator"
+
+   - **es**: "Comunicarse con el creador"
+   - **de**: "Projektgründer kontaktieren"
+   - **fr**: "Contacter le créateur"
+   - **en**: "Contact creator"
+  */
+  public static func Contact_creator() -> String {
+    return localizedString(
+      key: "Contact_creator",
+      defaultValue: "Contact creator",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Continue to payment"
 
    - **es**: "Continuar a pago"
@@ -812,6 +860,22 @@ backers"
       defaultValue: "Created projects %{projects_count}",
       count: nil,
       substitutions: ["projects_count": projects_count]
+    )
+  }
+  /**
+   "Creator"
+
+   - **es**: "Creador"
+   - **de**: "Projektgründer"
+   - **fr**: "Créateur"
+   - **en**: "Creator"
+  */
+  public static func Creator() -> String {
+    return localizedString(
+      key: "Creator",
+      defaultValue: "Creator",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -927,6 +991,22 @@ backers"
     )
   }
   /**
+   "Delivered"
+
+   - **es**: "Entregado"
+   - **de**: "Verschickt"
+   - **fr**: "Distribué"
+   - **en**: "Delivered"
+  */
+  public static func Delivered() -> String {
+    return localizedString(
+      key: "Delivered",
+      defaultValue: "Delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
@@ -991,6 +1071,22 @@ backers"
     )
   }
   /**
+   "Either the pledge or the project was canceled before the deadline."
+
+   - **es**: "Se canceló la contribución o el proyecto antes de que el plazo terminara."
+   - **de**: "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war."
+   - **fr**: "Soit l'engagement soit le projet a été annulé avant la date limite."
+   - **en**: "Either the pledge or the project was canceled before the deadline."
+  */
+  public static func Either_the_pledge_or_the_project_was_canceled() -> String {
+    return localizedString(
+      key: "Either_the_pledge_or_the_project_was_canceled",
+      defaultValue: "Either the pledge or the project was canceled before the deadline.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Email notifications"
 
    - **es**: "Notificaciones por correo electrónico"
@@ -1050,6 +1146,22 @@ backers"
     return localizedString(
       key: "Expands_subcategories",
       defaultValue: "Expands subcategories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Explore creative projects"
+
+   - **es**: "Explora proyectos creativos"
+   - **de**: "Erkunde kreative Projekte"
+   - **fr**: "Découvrez des projets créatifs"
+   - **en**: "Explore creative projects"
+  */
+  public static func Explore_creative_projects() -> String {
+    return localizedString(
+      key: "Explore_creative_projects",
+      defaultValue: "Explore creative projects",
       count: nil,
       substitutions: [:]
     )
@@ -1327,6 +1439,22 @@ backers"
     )
   }
   /**
+   "Follow %{friend_name}"
+
+   - **es**: "Seguir a %{friend_name}."
+   - **de**: "%{friend_name} folgen."
+   - **fr**: "Suivre %{friend_name}"
+   - **en**: "Follow %{friend_name}"
+  */
+  public static func Follow_friend_name(friend_name: String) -> String {
+    return localizedString(
+      key: "Follow_friend_name",
+      defaultValue: "Follow %{friend_name}",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
    "Follow friends"
 
    - **es**: "Seguir amigos"
@@ -1386,6 +1514,22 @@ backers"
     return localizedString(
       key: "Follow_your_Facebook_friends_and_keep_up_with_the_projects",
       defaultValue: "Follow your Facebook friends and keep up with the projects they back and launch.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Followed"
+
+   - **es**: "Siguiendo"
+   - **de**: "Abonniert"
+   - **fr**: "Abonné"
+   - **en**: "Followed"
+  */
+  public static func Followed() -> String {
+    return localizedString(
+      key: "Followed",
+      defaultValue: "Followed",
       count: nil,
       substitutions: [:]
     )
@@ -1679,6 +1823,22 @@ backers"
     )
   }
   /**
+   "Funding successful"
+
+   - **es**: "Financiado con éxito"
+   - **de**: "Finanzierung erfolgreich"
+   - **fr**: "Intégralement financé"
+   - **en**: "Funding successful"
+  */
+  public static func Funding_successful() -> String {
+    return localizedString(
+      key: "Funding_successful",
+      defaultValue: "Funding successful",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Get notified about this creator’s live streams"
 
    - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
@@ -1759,6 +1919,22 @@ backers"
     )
   }
   /**
+   "Info"
+
+   - **es**: "Información"
+   - **de**: "Info"
+   - **fr**: "Info"
+   - **en**: "Info"
+  */
+  public static func Info() -> String {
+    return localizedString(
+      key: "Info",
+      defaultValue: "Info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "It’s a way to bring creative projects to life."
 
    - **es**: "Es una plataforma para dar vida a proyectos creativos."
@@ -1788,6 +1964,22 @@ with friends."
     return localizedString(
       key: "Its_better_with_friends",
       defaultValue: "It’s better\nwith friends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Joining the live stream"
+
+   - **es**: "Abriendo conexión a Live Stream"
+   - **de**: "Verbindung zum Live-Stream wird aufgebaut"
+   - **fr**: "Connexion à la diffusion en direct en cours"
+   - **en**: "Joining the live stream"
+  */
+  public static func Joining_the_live_stream() -> String {
+    return localizedString(
+      key: "Joining_the_live_stream",
+      defaultValue: "Joining the live stream",
       count: nil,
       substitutions: [:]
     )
@@ -2049,6 +2241,22 @@ with friends."
     )
   }
   /**
+   "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
+
+   - **es**: "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice."
+   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf eine Benachrichtigung."
+   - **fr**: "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Vous recevrez un rappel 48 heures avant la fin."
+   - **en**: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends."
+  */
+  public static func Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you() -> String {
+    return localizedString(
+      key: "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you",
+      defaultValue: "Log in or sign up to save this project. We’ll remind you 48 hours before it ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Log in or sign up to subscribe"
 
    - **es**: "Para activar la suscripción, por favor inicia sesión o regístrate"
@@ -2076,22 +2284,6 @@ with friends."
     return localizedString(
       key: "Log_in_to_leave_a_comment",
       defaultValue: "Log in to leave a comment.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Log in to save this project and we’ll remind you about it before it ends."
-
-   - **es**: "Inicia sesión para guardar este proyecto y te lo recordamos antes de que finalice."
-   - **de**: "Melde dich an, um dieses Projekt zu speichern. Wir senden dir eine Benachrichtigung vor Ablauf des Projekts."
-   - **fr**: "Connectez-vous pour enregistrer ce projet et nous vous enverrons un rappel avant la fin de sa campagne."
-   - **en**: "Log in to save this project and we’ll remind you about it before it ends."
-  */
-  public static func Log_in_to_save_this_project_and_we_ll_remind_you() -> String {
-    return localizedString(
-      key: "Log_in_to_save_this_project_and_we_ll_remind_you",
-      defaultValue: "Log in to save this project and we’ll remind you about it before it ends.",
       count: nil,
       substitutions: [:]
     )
@@ -2225,6 +2417,22 @@ with friends."
     )
   }
   /**
+   "No messages"
+
+   - **es**: "No hay mensajes"
+   - **de**: "Keine Nachrichten"
+   - **fr**: "Pas de messages"
+   - **en**: "No messages"
+  */
+  public static func No_messages() -> String {
+    return localizedString(
+      key: "No_messages",
+      defaultValue: "No messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No one has posted an update yet."
 
    - **es**: "Todavía no se han publicado actualizaciones."
@@ -2241,20 +2449,20 @@ with friends."
     )
   }
   /**
-   "No pledges 
+   "No pledges
 from friends yet."
 
    - **es**: "Todavía no hay contribuciones de amigos."
    - **de**: "Es gibt noch keine Beiträge von Freunden."
    - **fr**: "Mes amis 
 n'ont rien soutenu."
-   - **en**: "No pledges 
+   - **en**: "No pledges
 from friends yet."
   */
   public static func No_pledges_from_friends_yet() -> String {
     return localizedString(
       key: "No_pledges_from_friends_yet",
-      defaultValue: "No pledges \nfrom friends yet.",
+      defaultValue: "No pledges\nfrom friends yet.",
       count: nil,
       substitutions: [:]
     )
@@ -2271,6 +2479,54 @@ from friends yet."
     return localizedString(
       key: "No_replay_is_available_for_this_live_stream",
       defaultValue: "No replay is available for this live stream.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No unread messages"
+
+   - **es**: "No hay mensajes no leídos"
+   - **de**: "Keine ungelesenen Nachrichten"
+   - **fr**: "Pas de messages non lus"
+   - **en**: "No unread messages"
+  */
+  public static func No_unread_messages() -> String {
+    return localizedString(
+      key: "No_unread_messages",
+      defaultValue: "No unread messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not delivered"
+
+   - **es**: "No entregado"
+   - **de**: "Nicht verschickt"
+   - **fr**: "Non distribué"
+   - **en**: "Not delivered"
+  */
+  public static func Not_delivered() -> String {
+    return localizedString(
+      key: "Not_delivered",
+      defaultValue: "Not delivered",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not followed"
+
+   - **es**: "No siguiendo"
+   - **de**: "Nicht abonniert"
+   - **fr**: "Non abonné"
+   - **en**: "Not followed"
+  */
+  public static func Not_followed() -> String {
+    return localizedString(
+      key: "Not_followed",
+      defaultValue: "Not followed",
       count: nil,
       substitutions: [:]
     )
@@ -2532,6 +2788,22 @@ from friends yet."
     )
   }
   /**
+   "Payment method was successfully charged."
+
+   - **es**: "Cargo efectuado a método de pago indicado."
+   - **de**: "Zahlungsmethode wurde erfolgreich belastet."
+   - **fr**: "Le moyen de paiement a bien été débité."
+   - **en**: "Payment method was successfully charged."
+  */
+  public static func Payment_method_was_successfully_charged() -> String {
+    return localizedString(
+      key: "Payment_method_was_successfully_charged",
+      defaultValue: "Payment method was successfully charged.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Please enter an amount of %{amount} or less."
 
    - **es**: "Ingresa un monto de contribución de %{amount} o menor."
@@ -2564,6 +2836,86 @@ from friends yet."
     )
   }
   /**
+   "Please log in or sign up to back this project."
+
+   - **es**: "Por favor inicia sesión o regístrate para patrocinar este proyecto."
+   - **de**: "Um dieses Projekt zu unterstützen, musst du dich bitte anmelden oder registrieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour soutenir ce projet."
+   - **en**: "Please log in or sign up to back this project."
+  */
+  public static func Please_log_in_or_sign_up_to_back_this_project() -> String {
+    return localizedString(
+      key: "Please_log_in_or_sign_up_to_back_this_project",
+      defaultValue: "Please log in or sign up to back this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Please log in or sign up to message this creator."
+
+   - **es**: "Por favor inicia sesión o regístrate para mandarle un mensaje a este creador."
+   - **de**: "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour écrire à ce créateur."
+   - **en**: "Please log in or sign up to message this creator."
+  */
+  public static func Please_log_in_or_sign_up_to_message_this_creator() -> String {
+    return localizedString(
+      key: "Please_log_in_or_sign_up_to_message_this_creator",
+      defaultValue: "Please log in or sign up to message this creator.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Please log in or sign up to participate in this live stream chat."
+
+   - **es**: "Por favor inicia sesión o regístrate para participar en este Live Stream."
+   - **de**: "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour participer au chat de cette diffusion en direct."
+   - **en**: "Please log in or sign up to participate in this live stream chat."
+  */
+  public static func Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat() -> String {
+    return localizedString(
+      key: "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat",
+      defaultValue: "Please log in or sign up to participate in this live stream chat.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Please log in or sign up to subscribe to this live stream."
+
+   - **es**: "Por favor inicia sesión o regístrate para suscribirte a este Live Stream."
+   - **de**: "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren."
+   - **fr**: "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct."
+   - **en**: "Please log in or sign up to subscribe to this live stream."
+  */
+  public static func Please_log_in_or_sign_up_to_subscribe_to_this_live_stream() -> String {
+    return localizedString(
+      key: "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream",
+      defaultValue: "Please log in or sign up to subscribe to this live stream.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge"
+
+   - **es**: "Contribución:"
+   - **de**: "Beitrag:"
+   - **fr**: "Engagement :"
+   - **en**: "Pledge"
+  */
+  public static func Pledge() -> String {
+    return localizedString(
+      key: "Pledge",
+      defaultValue: "Pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Pledge any amount to help bring this project to life."
 
    - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
@@ -2575,6 +2927,54 @@ from friends yet."
     return localizedString(
       key: "Pledge_any_amount_to_help_bring_this_project_to_life",
       defaultValue: "Pledge any amount to help bring this project to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge to projects and view all your saved and backed projects in one place."
+
+   - **es**: "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar."
+   - **de**: "Unterstütze Projekte und sehe alle deine Projekte auf einen Blick."
+   - **fr**: "Soutenez des projets et consultez la liste de vos projets enregistrés et soutenus."
+   - **en**: "Pledge to projects and view all your saved and backed projects in one place."
+  */
+  public static func Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place() -> String {
+    return localizedString(
+      key: "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place",
+      defaultValue: "Pledge to projects and view all your saved and backed projects in one place.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge to your favorites, then view all the projects you’ve backed here."
+
+   - **es**: "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar."
+   - **de**: "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt."
+   - **fr**: "Engagez-vous à soutenir vos préférés, puis redécouvrez-les tous ici."
+   - **en**: "Pledge to your favorites, then view all the projects you’ve backed here."
+  */
+  public static func Pledge_to_your_favorites_then_view_all_the_projects() -> String {
+    return localizedString(
+      key: "Pledge_to_your_favorites_then_view_all_the_projects",
+      defaultValue: "Pledge to your favorites, then view all the projects you’ve backed here.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Pledge was dropped."
+
+   - **es**: "Contribución fue descartada."
+   - **de**: "Finanzierungsbeitrag wurde nicht übernommen."
+   - **fr**: "Engagement abandonné."
+   - **en**: "Pledge was dropped."
+  */
+  public static func Pledge_was_dropped() -> String {
+    return localizedString(
+      key: "Pledge_was_dropped",
+      defaultValue: "Pledge was dropped.",
       count: nil,
       substitutions: [:]
     )
@@ -2593,6 +2993,22 @@ from friends yet."
       defaultValue: "Pledge without a reward",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "<b>Pledged</b> on %{pledge_date}"
+
+   - **es**: "<b>Contribuido</b> el %{pledge_date}"
+   - **de**: "<b>Beitrag geleistet</b> am %{pledge_date}"
+   - **fr**: "<b>Engagement</b> du %{pledge_date}"
+   - **en**: "<b>Pledged</b> on %{pledge_date}"
+  */
+  public static func Pledged_on_date(pledge_date: String) -> String {
+    return localizedString(
+      key: "Pledged_on_date",
+      defaultValue: "<b>Pledged</b> on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_date": pledge_date]
     )
   }
   /**
@@ -2655,6 +3071,38 @@ from friends yet."
     return localizedString(
       key: "Project_Suspended",
       defaultValue: "Project Suspended.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project cancelled"
+
+   - **es**: "Proyecto cancelado"
+   - **de**: "Projekt abgebrochen"
+   - **fr**: "Projet annulé"
+   - **en**: "Project cancelled"
+  */
+  public static func Project_cancelled() -> String {
+    return localizedString(
+      key: "Project_cancelled",
+      defaultValue: "Project cancelled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project saved."
+
+   - **es**: "Proyecto guardado."
+   - **de**: "Projekt gespeichert."
+   - **fr**: "Projet enregistré."
+   - **en**: "Project saved."
+  */
+  public static func Project_saved() -> String {
+    return localizedString(
+      key: "Project_saved",
+      defaultValue: "Project saved.",
       count: nil,
       substitutions: [:]
     )
@@ -2726,6 +3174,22 @@ daring ideas."
     )
   }
   /**
+   "Rate us in the App Store"
+
+   - **es**: "¡Califícanos en la App Store!"
+   - **de**: "Bewerte uns im App Store!"
+   - **fr**: "Évaluez-nous dans l'App Store"
+   - **en**: "Rate us in the App Store"
+  */
+  public static func Rate_us_in_the_App_Store() -> String {
+    return localizedString(
+      key: "Rate_us_in_the_App_Store",
+      defaultValue: "Rate us in the App Store",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Read more about the campaign  →"
 
    - **es**: "Leer más sobre esta campaña  →"
@@ -2769,6 +3233,22 @@ daring ideas."
     return localizedString(
       key: "Recommended",
       defaultValue: "Recommended",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommended For You"
+
+   - **es**: "Recomendaciones para ti"
+   - **de**: "Empfehlungen für dich"
+   - **fr**: "Rien que pour vous"
+   - **en**: "Recommended For You"
+  */
+  public static func Recommended_For_You() -> String {
+    return localizedString(
+      key: "Recommended_For_You",
+      defaultValue: "Recommended For You",
       count: nil,
       substitutions: [:]
     )
@@ -2886,6 +3366,22 @@ daring ideas."
     )
   }
   /**
+   "Reply to %{user_name}…"
+
+   - **es**: "Responder a %{user_name}…"
+   - **de**: "%{user_name} antworten …"
+   - **fr**: "Répondre à %{user_name}…"
+   - **en**: "Reply to %{user_name}…"
+  */
+  public static func Reply_to_user_name(user_name: String) -> String {
+    return localizedString(
+      key: "Reply_to_user_name",
+      defaultValue: "Reply to %{user_name}…",
+      count: nil,
+      substitutions: ["user_name": user_name]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **es**: "%{reward_survey_count} cuestionarios"
@@ -2899,6 +3395,38 @@ daring ideas."
       defaultValue: "%{reward_survey_count} Reward Surveys",
       count: reward_survey_count,
       substitutions: ["reward_survey_count": Format.wholeNumber(reward_survey_count)]
+    )
+  }
+  /**
+   "<b>Reward</b> estimated for delivery in %{delivery_date}"
+
+   - **es**: "<b>Recompensa</b> estimada para entregarse en %{delivery_date}"
+   - **de**: "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}"
+   - **fr**: "<b>Récompense</b> prévue pour %{delivery_date}"
+   - **en**: "<b>Reward</b> estimated for delivery in %{delivery_date}"
+  */
+  public static func Reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
+    return localizedString(
+      key: "Reward_estimated_for_delivery_in_date",
+      defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
+      count: nil,
+      substitutions: ["delivery_date": delivery_date]
+    )
+  }
+  /**
+   "Reward selected"
+
+   - **es**: "Recompensa seleccionada"
+   - **de**: "Ausgewählte Belohnung"
+   - **fr**: "Récompense sélectionnée"
+   - **en**: "Reward selected"
+  */
+  public static func Reward_selected() -> String {
+    return localizedString(
+      key: "Reward_selected",
+      defaultValue: "Reward selected",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -2945,6 +3473,22 @@ daring ideas."
     return localizedString(
       key: "Save",
       defaultValue: "Save",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Save projects"
+
+   - **es**: "Guardar proyectos"
+   - **de**: "Projekte speichern"
+   - **fr**: "Enregistrer des projets"
+   - **en**: "Save projects"
+  */
+  public static func Save_projects() -> String {
+    return localizedString(
+      key: "Save_projects",
+      defaultValue: "Save projects",
       count: nil,
       substitutions: [:]
     )
@@ -3014,6 +3558,22 @@ daring ideas."
     )
   }
   /**
+   "Say something kind..."
+
+   - **es**: "Di algo amable..."
+   - **de**: "Sag etwas Nettes ..."
+   - **fr**: "Un petit mot sympa..."
+   - **en**: "Say something kind..."
+  */
+  public static func Say_something_kind() -> String {
+    return localizedString(
+      key: "Say_something_kind",
+      defaultValue: "Say something kind...",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this reward"
 
    - **es**: "Seleccionar esta recompensa"
@@ -3041,6 +3601,22 @@ daring ideas."
     return localizedString(
       key: "Select_this_reward_instead",
       defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Send"
+
+   - **es**: "Enviar"
+   - **de**: "Senden"
+   - **fr**: "Envoyer"
+   - **en**: "Send"
+  */
+  public static func Send() -> String {
+    return localizedString(
+      key: "Send",
+      defaultValue: "Send",
       count: nil,
       substitutions: [:]
     )
@@ -3190,19 +3766,35 @@ daring ideas."
     )
   }
   /**
-   "Something 
+   "Something
 catch your eye?"
 
    - **es**: "¿Algo que te haya llamado la atención?"
    - **de**: "Etwas interessantes gefunden?"
    - **fr**: "Quelque chose a retenu votre attention ?"
-   - **en**: "Something 
+   - **en**: "Something
 catch your eye?"
   */
   public static func Something_catch_your_eye() -> String {
     return localizedString(
       key: "Something_catch_your_eye",
-      defaultValue: "Something \ncatch your eye?",
+      defaultValue: "Something\ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something went wrong, please try again."
+
+   - **es**: "Ocurrió un error. Inténtalo nuevamente más tarde."
+   - **de**: "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal."
+   - **fr**: "Un problème est survenu. Veuillez réessayer."
+   - **en**: "Something went wrong, please try again."
+  */
+  public static func Something_went_wrong_please_try_again() -> String {
+    return localizedString(
+      key: "Something_went_wrong_please_try_again",
+      defaultValue: "Something went wrong, please try again.",
       count: nil,
       substitutions: [:]
     )
@@ -3219,6 +3811,22 @@ catch your eye?"
     return localizedString(
       key: "Starting_soon",
       defaultValue: "Starting soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Status"
+
+   - **es**: "Estado:"
+   - **de**: "Status:"
+   - **fr**: "État :"
+   - **en**: "Status"
+  */
+  public static func Status() -> String {
+    return localizedString(
+      key: "Status",
+      defaultValue: "Status",
       count: nil,
       substitutions: [:]
     )
@@ -3288,10 +3896,26 @@ catch your eye?"
     )
   }
   /**
+   "Tap the star icon on a project to get notified 48 hours before it ends."
+
+   - **es**: "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice."
+   - **de**: "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft."
+   - **fr**: "Cliquez sur l'icône en forme d'étoile située à côté du projet pour recevoir une notification 48 avant la fin de sa campagne."
+   - **en**: "Tap the star icon on a project to get notified 48 hours before it ends."
+  */
+  public static func Tap_the_star_on_a_project_to_get_notified() -> String {
+    return localizedString(
+      key: "Tap_the_star_on_a_project_to_get_notified",
+      defaultValue: "Tap the star icon on a project to get notified 48 hours before it ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
 
-   - **es**: "Simplemente márcalo con asterisco, entonces te mandaremos una notificación 48 horas antes de que termine."
-   - **de**: "Klicke einfach auf den Stern, um es zu markieren. Wir werden dir 48 Stunden vor Ablauf des Projekts eine Benachrichtigung schicken."
+   - **es**: "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto."
+   - **de**: "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken."
    - **fr**: "Cliquez sur l'étoile qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne."
    - **en**: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends."
   */
@@ -3416,6 +4040,22 @@ catch your eye?"
     )
   }
   /**
+   "There was a problem with this payment."
+
+   - **es**: "Ocurrió un error con el pago."
+   - **de**: "Es ist ein Problem bei der Zahlung aufgetreten."
+   - **fr**: "Un problème s'est produit lors de ce règlement."
+   - **en**: "There was a problem with this payment."
+  */
+  public static func There_was_a_problem_with_this_payment() -> String {
+    return localizedString(
+      key: "There_was_a_problem_with_this_payment",
+      defaultValue: "There was a problem with this payment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "This Facebook account is already linked to another Kickstarter user."
 
    - **es**: "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter."
@@ -3445,6 +4085,70 @@ catch your eye?"
       defaultValue: "%{time_left} left",
       count: nil,
       substitutions: ["time_left": time_left]
+    )
+  }
+  /**
+   "To access all your favorite categories, tap the explore dropdown at the top of the app."
+
+   - **es**: "Accede a tus categorías favoritas en el menú en la parte superior de la app."
+   - **de**: "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben."
+   - **fr**: "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application."
+   - **en**: "To access all your favorite categories, tap the explore dropdown at the top of the app."
+  */
+  public static func To_access_all_your_favorite_categories_tap_the_explore_dropdown() -> String {
+    return localizedString(
+      key: "To_access_all_your_favorite_categories_tap_the_explore_dropdown",
+      defaultValue: "To access all your favorite categories, tap the explore dropdown at the top of the app.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "To read this project update, you must be a backer. Please log in or sign up to continue."
+
+   - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
+   - **de**: "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich."
+   - **fr**: "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer."
+   - **en**: "To read this project update, you must be a backer. Please log in or sign up to continue."
+  */
+  public static func To_read_this_project_update_you_must_be_a_backer() -> String {
+    return localizedString(
+      key: "To_read_this_project_update_you_must_be_a_backer",
+      defaultValue: "To read this project update, you must be a backer. Please log in or sign up to continue.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Total pledged"
+
+   - **es**: "Contribuciones en total"
+   - **de**: "Anzahl der Beiträge insgesamt"
+   - **fr**: "Total engagé"
+   - **en**: "Total pledged"
+  */
+  public static func Total_pledged() -> String {
+    return localizedString(
+      key: "Total_pledged",
+      defaultValue: "Total pledged",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Unfollow %{friend_name}"
+
+   - **es**: "Dejar de seguir a %{friend_name}"
+   - **de**: "%{friend_name} nicht mehr folgen"
+   - **fr**: "Ne plus suivre %{friend_name}"
+   - **en**: "Unfollow %{friend_name}"
+  */
+  public static func Unfollow_friend_name(friend_name: String) -> String {
+    return localizedString(
+      key: "Unfollow_friend_name",
+      defaultValue: "Unfollow %{friend_name}",
+      count: nil,
+      substitutions: ["friend_name": friend_name]
     )
   }
   /**
@@ -3592,6 +4296,22 @@ catch your eye?"
     )
   }
   /**
+   "Video disabled until the internet connection improves"
+
+   - **es**: "Video desactivado hasta se reestablezca la conexión de internet"
+   - **de**: "Video bis zur Wiederherstellung der Internetverbindung deaktiviert"
+   - **fr**: "Vidéo désactivée en attente d'une meilleure connexion Internet"
+   - **en**: "Video disabled until the internet connection improves"
+  */
+  public static func Video_disabled_until_the_internet_connection_improves() -> String {
+    return localizedString(
+      key: "Video_disabled_until_the_internet_connection_improves",
+      defaultValue: "Video disabled until the internet connection improves",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "View"
 
    - **es**: "Ver"
@@ -3672,6 +4392,22 @@ catch your eye?"
     )
   }
   /**
+   "We were unable to connect to the live stream chat."
+
+   - **es**: "No se pudo conectar al chat de live stream."
+   - **de**: "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden."
+   - **fr**: "Connexion au chat en direct impossible."
+   - **en**: "We were unable to connect to the live stream chat."
+  */
+  public static func We_were_unable_to_connect_to_the_live_stream_chat() -> String {
+    return localizedString(
+      key: "We_were_unable_to_connect_to_the_live_stream_chat",
+      defaultValue: "We were unable to connect to the live stream chat.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We were unable to load the shipping destinations.
 Please try again later."
 
@@ -3688,6 +4424,22 @@ Please try again later."
     return localizedString(
       key: "We_were_unable_to_load_the_shipping_destinations",
       defaultValue: "We were unable to load the shipping destinations.\nPlease try again later.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
+
+   - **es**: "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil."
+   - **de**: "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite."
+   - **fr**: "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil."
+   - **en**: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
+  */
+  public static func Well_remind_you_forty_eight_hours_before_this_project_ends() -> String {
+    return localizedString(
+      key: "Well_remind_you_forty_eight_hours_before_this_project_ends",
+      defaultValue: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.",
       count: nil,
       substitutions: [:]
     )
@@ -3741,6 +4493,22 @@ Please try again later."
     )
   }
   /**
+   "<b>You pledged</b> on %{pledge_date}"
+
+   - **es**: "<b>Contribuiste</b> el %{pledge_date}"
+   - **de**: "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}"
+   - **fr**: "<b>Votre engagement</b> du %{pledge_date}"
+   - **en**: "<b>You pledged</b> on %{pledge_date}"
+  */
+  public static func You_pledged_on_date(pledge_date: String) -> String {
+    return localizedString(
+      key: "You_pledged_on_date",
+      defaultValue: "<b>You pledged</b> on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_date": pledge_date]
+    )
+  }
+  /**
    "You saved this project."
 
    - **es**: "Uno de tus proyectos guardados."
@@ -3757,6 +4525,22 @@ Please try again later."
     )
   }
   /**
+   "Your chat message wasn't sent successfully."
+
+   - **es**: "Tu mensaje no fue enviado."
+   - **de**: "Deine Chat-Nachricht konnte leider nicht gesendet werden."
+   - **fr**: "Votre message n'a pas été envoyé."
+   - **en**: "Your chat message wasn't sent successfully."
+  */
+  public static func Your_chat_message_wasnt_sent_successfully() -> String {
+    return localizedString(
+      key: "Your_chat_message_wasnt_sent_successfully",
+      defaultValue: "Your chat message wasn't sent successfully.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here."
 
    - **es**: "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí."
@@ -3768,6 +4552,22 @@ Please try again later."
     return localizedString(
       key: "Your_friends_havent_backed_any_projects_yet",
       defaultValue: "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your payment method was successfully charged."
+
+   - **es**: "Se efectuó el cargo a tu método de pago."
+   - **de**: "Deine Zahlungsmethode wurde erfolgreich belastet."
+   - **fr**: "Votre moyen de paiement a bien été débité."
+   - **en**: "Your payment method was successfully charged."
+  */
+  public static func Your_payment_method_was_successfully_charged() -> String {
+    return localizedString(
+      key: "Your_payment_method_was_successfully_charged",
+      defaultValue: "Your payment method was successfully charged.",
       count: nil,
       substitutions: [:]
     )
@@ -3805,6 +4605,38 @@ Please try again later."
     )
   }
   /**
+   "Your pledge was canceled or the creator canceled the project before its deadline."
+
+   - **es**: "El patrocinador canceló la contribución o el creador canceló el proyecto antes de que éste llegara al plazo estipulado."
+   - **de**: "Entweder dein Finanzierungsbeitrag wurde zurückgezogen oder das Projekt abgebrochen, bevor die Frist erreicht wurde."
+   - **fr**: "Votre engagement a été annulé ou le créateur a annulé son projet avant la date limite."
+   - **en**: "Your pledge was canceled or the creator canceled the project before its deadline."
+  */
+  public static func Your_pledge_was_canceled_or_the_creator_canceled() -> String {
+    return localizedString(
+      key: "Your_pledge_was_canceled_or_the_creator_canceled",
+      defaultValue: "Your pledge was canceled or the creator canceled the project before its deadline.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge was dropped."
+
+   - **es**: "Tu Contribución fue descartada."
+   - **de**: "Dein Finanzierungsbeitrag wurde nicht übernommen."
+   - **fr**: "Votre engagement a été abandonné."
+   - **en**: "Your pledge was dropped."
+  */
+  public static func Your_pledge_was_dropped() -> String {
+    return localizedString(
+      key: "Your_pledge_was_dropped",
+      defaultValue: "Your pledge was dropped.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Your reward"
 
    - **es**: "Tu recompensa"
@@ -3818,6 +4650,22 @@ Please try again later."
       defaultValue: "Your reward",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+
+   - **es**: "<b>Tu recompensa</b> estimada para entregarse en %{delivery_date}"
+   - **de**: "<b>Deine Belohnung</b> wird voraussichtlich im %{delivery_date} geliefert"
+   - **fr**: "<b>Votre récompense</b> prévue pour %{delivery_date}"
+   - **en**: "<b>Your reward</b> estimated for delivery in %{delivery_date}"
+  */
+  public static func Your_reward_estimated_for_delivery_in_date(delivery_date: String) -> String {
+    return localizedString(
+      key: "Your_reward_estimated_for_delivery_in_date",
+      defaultValue: "<b>Your reward</b> estimated for delivery in %{delivery_date}",
+      count: nil,
+      substitutions: ["delivery_date": delivery_date]
     )
   }
   /**
@@ -3864,6 +4712,22 @@ Please try again later."
     return localizedString(
       key: "Youre_about_to_create_a_new_Kickstarter_account",
       defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You’ve pledged to support this project and it’s currently still funding."
+
+   - **es**: "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado."
+   - **de**: "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen."
+   - **fr**: "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée."
+   - **en**: "You’ve pledged to support this project and it’s currently still funding."
+  */
+  public static func Youve_pledged_to_support_this_project() -> String {
+    return localizedString(
+      key: "Youve_pledged_to_support_this_project",
+      defaultValue: "You’ve pledged to support this project and it’s currently still funding.",
       count: nil,
       substitutions: [:]
     )
@@ -5594,6 +6458,22 @@ Please try again later."
       defaultValue: "Pledged: %{backing_amount}",
       count: nil,
       substitutions: ["backing_amount": backing_amount]
+    )
+  }
+  /**
+   "%{category_name} saved."
+
+   - **es**: "%{category_name} guardado."
+   - **de**: "%{category_name} gespeichert."
+   - **fr**: "Catégorie enregistrée : %{category_name}."
+   - **en**: "%{category_name} saved."
+  */
+  public static func category_name_saved(category_name: String) -> String {
+    return localizedString(
+      key: "category_name_saved",
+      defaultValue: "%{category_name} saved.",
+      count: nil,
+      substitutions: ["category_name": category_name]
     )
   }
   /**
@@ -8064,13 +8944,13 @@ Please try again later."
    "days"
 
    - **es**: "días"
-   - **de**: "Tage"
+   - **de**: "Tg"
    - **fr**: "jours"
    - **en**: "days"
   */
-  public static func days() -> String {
+  public static func days_plural() -> String {
     return localizedString(
-      key: "days",
+      key: "days_plural",
       defaultValue: "days",
       count: nil,
       substitutions: [:]
@@ -8449,7 +9329,7 @@ Please try again later."
 
    - **es**: "Presentado en %{category_name}"
    - **de**: "Vorgestellt in %{category_name}"
-   - **fr**: "Un projet sélectionné de la catégorie %{category_name}"
+   - **fr**: "Un projet %{category_name} sélectionné"
    - **en**: "Featured in %{category_name}"
   */
   public static func discovery_baseball_card_metadata_featured_project(category_name: String) -> String {
@@ -10240,13 +11120,13 @@ Please try again later."
    "hours"
 
    - **es**: "horas"
-   - **de**: "Stunden"
+   - **de**: "Std"
    - **fr**: "heures"
    - **en**: "hours"
   */
-  public static func hours() -> String {
+  public static func hours_plural() -> String {
     return localizedString(
-      key: "hours",
+      key: "hours_plural",
       defaultValue: "hours",
       count: nil,
       substitutions: [:]
@@ -11470,9 +12350,9 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    - **fr**: "minutes"
    - **en**: "minutes"
   */
-  public static func minutes() -> String {
+  public static func minutes_plural() -> String {
     return localizedString(
-      key: "minutes",
+      key: "minutes_plural",
       defaultValue: "minutes",
       count: nil,
       substitutions: [:]
@@ -11492,6 +12372,22 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
       defaultValue: "%{percentage} funded",
       count: nil,
       substitutions: ["percentage": percentage]
+    )
+  }
+  /**
+   "<b>%{pledge_amount}</b> pledged on %{pledge_date}"
+
+   - **es**: "<b>%{pledge_amount}</b> contribuidos el %{pledge_date}"
+   - **de**: "<b>%{pledge_amount}</b> beigetragen am %{pledge_date}"
+   - **fr**: "<b>%{pledge_amount}</b> engagés le %{pledge_date}"
+   - **en**: "<b>%{pledge_amount}</b> pledged on %{pledge_date}"
+  */
+  public static func pledge_amount_pledged_on_pledge_date(pledge_amount: String, pledge_date: String) -> String {
+    return localizedString(
+      key: "pledge_amount_pledged_on_pledge_date",
+      defaultValue: "<b>%{pledge_amount}</b> pledged on %{pledge_date}",
+      count: nil,
+      substitutions: ["pledge_amount": pledge_amount, "pledge_date": pledge_date]
     )
   }
   /**
@@ -11726,7 +12622,7 @@ Let's change that!"
 
    - **es**: "Exitoso"
    - **de**: "Erfolgreich"
-   - **fr**: "Intégralement financé"
+   - **fr**: "Financé"
    - **en**: "Successful"
   */
   public static func profile_projects_status_successful() -> String {
@@ -11758,7 +12654,7 @@ Let's change that!"
 
    - **es**: "Sin éxito"
    - **de**: "Fehlgeschlagen"
-   - **fr**: "Objectif de financement non atteint"
+   - **fr**: "Non financé"
    - **en**: "Unsuccessful"
   */
   public static func profile_projects_status_unsuccessful() -> String {
@@ -12685,7 +13581,7 @@ Thank you for your support!"
    "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
 
    - **es**: "Lamentamos no poder procesar el pago con Android Pay en estos momentos. Por favor inténtalo de nuevo."
-   - **de**: "Der Zahlungsvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
+   - **de**: "Der Zahlvorgang mit Android Pay kann im Moment leider nicht bearbeitet werden. Bitte erneut versuchen."
    - **fr**: "Nous sommes désolés, mais nous ne sommes pas en mesure de traiter votre demande Android Pay pour le moment. Veuillez réessayer ultérieurement."
    - **en**: "We’re sorry but we are unable to process your Android Pay request right now. Please try again."
   */
@@ -14205,6 +15101,48 @@ Thank you for your support!"
     )
   }
   /**
+   "%{projects_count}
+backed"
+
+   - **es**: "%{projects_count}
+patrocinados"
+   - **de**: "%{projects_count}
+unterstützt"
+   - **fr**: "%{projects_count}
+projets soutenus"
+   - **en**: "%{projects_count}
+backed"
+  */
+  public static func projects_count_newline_backed(projects_count: Int) -> String {
+    return localizedString(
+      key: "projects_count_newline_backed",
+      defaultValue: "%{projects_count}\nbacked",
+      count: projects_count,
+      substitutions: ["projects_count": Format.wholeNumber(projects_count)]
+    )
+  }
+  /**
+   "%{projects_count}
+saved"
+
+   - **es**: "%{projects_count}
+guardados"
+   - **de**: "%{projects_count}
+gespeichert"
+   - **fr**: "%{projects_count}
+projets enregistrés"
+   - **en**: "%{projects_count}
+saved"
+  */
+  public static func projects_count_newline_saved(projects_count: Int) -> String {
+    return localizedString(
+      key: "projects_count_newline_saved",
+      defaultValue: "%{projects_count}\nsaved",
+      count: projects_count,
+      substitutions: ["projects_count": Format.wholeNumber(projects_count)]
+    )
+  }
+  /**
    "Close"
 
    - **es**: "Cerrar"
@@ -15225,7 +16163,7 @@ Thank you for your support!"
    "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
 
    - **es**: "Parece que no tienes una cuenta de correo electrónico en tu dispositivo. Contáctanos en app@kickstarter.com."
-   - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter android@kickstarter.com."
+   - **de**: "Es sieht so aus, als hättest du keinen E-Mail-Account auf deinem Gerät. Bitte kontaktiere uns unter app@kickstarter.com."
    - **fr**: "On dirait que vous n'avez pas de compte e-mail sur votre appareil. Veuillez nous contacter à l'adresse android@kickstarter.com."
    - **en**: "Looks like you don’t have an e-mail account on your device. Please contact us at android@kickstarter.com."
   */
@@ -15523,6 +16461,22 @@ Thank you for your support!"
       defaultValue: "Verify",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{unread_count} unread"
+
+   - **es**: "%{unread_count} sin leer"
+   - **de**: "%{unread_count} ungelesen"
+   - **fr**: "%{unread_count} messages non lus"
+   - **en**: "%{unread_count} unread"
+  */
+  public static func unread_count_unread(unread_count: String) -> String {
+    return localizedString(
+      key: "unread_count_unread",
+      defaultValue: "%{unread_count} unread",
+      count: nil,
+      substitutions: ["unread_count": unread_count]
     )
   }
   /**

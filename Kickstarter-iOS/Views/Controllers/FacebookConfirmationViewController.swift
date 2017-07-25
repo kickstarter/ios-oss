@@ -53,7 +53,9 @@ internal final class FacebookConfirmationViewController: UIViewController,
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
+    _ = self
+      |> baseControllerStyle()
+
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
@@ -65,8 +67,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.displayEmail

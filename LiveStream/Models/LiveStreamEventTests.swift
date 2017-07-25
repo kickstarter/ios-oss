@@ -1,4 +1,3 @@
-// swiftlint:disable function_body_length
 import Argo
 import Prelude
 import XCTest
@@ -46,7 +45,12 @@ final class LiveStreamEventTests: XCTestCase {
         "hls_url_path": "events/path",
         "number_people_watching_path": "presence/path",
         "scale_number_people_watching_path": "globalpresence/path",
-        "chat_path": "messages/path"
+        "chat_path": "messages/path",
+        "chat_post_path": "messages/post_path",
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9",
+        "avatar": "https://s3.amazonaws.com/justin-profile.jpg?1467136041",
+        "user_id": "id_18",
+        "user_name": "justin-w"
       ],
       "opentok": [
         "app": "45698472",
@@ -99,6 +103,12 @@ final class LiveStreamEventTests: XCTestCase {
     XCTAssertEqual("presence/path", liveStreamEvent.value?.firebase?.numberPeopleWatchingPath)
     XCTAssertEqual("globalpresence/path", liveStreamEvent.value?.firebase?.scaleNumberPeopleWatchingPath)
     XCTAssertEqual("messages/path", liveStreamEvent.value?.firebase?.chatPath)
+    XCTAssertEqual("messages/post_path", liveStreamEvent.value?.firebase?.chatPostPath)
+    XCTAssertEqual("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9", liveStreamEvent.value?.firebase?.token)
+    XCTAssertEqual("https://s3.amazonaws.com/justin-profile.jpg?1467136041",
+                   liveStreamEvent.value?.firebase?.chatAvatarUrl)
+    XCTAssertEqual("id_18", liveStreamEvent.value?.firebase?.chatUserId)
+    XCTAssertEqual("justin-w", liveStreamEvent.value?.firebase?.chatUserName)
 
     // OpenTok
     XCTAssertEqual("45698472", liveStreamEvent.value?.openTok?.appId)

@@ -32,13 +32,13 @@ internal final class CommentsViewController: UITableViewController {
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    self.viewModel.inputs.viewDidLoad()
-
     self.navigationItem.title = Strings.project_menu_buttons_comments()
 
     if self.traitCollection.userInterfaceIdiom == .pad {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
     }
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +51,6 @@ internal final class CommentsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> CommentsViewController.lens.view.backgroundColor .~ .white
 
     _ = self.commentBarButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
@@ -60,8 +59,7 @@ internal final class CommentsViewController: UITableViewController {
     }
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
 
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
@@ -83,15 +81,12 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.dataSource
       .observeForUI()
-      .observeValues { [weak self] comments, project, user in
-        self?.dataSource.load(comments: comments, project: project, loggedInUser: user)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.emptyStateVisible
-      .observeForControllerAction()
-      .observeValues { [weak self] project, update in
-        self?.dataSource.load(project: project, update: update)
+      .observeValues { [weak self] comments, project, update, user, shouldShowEmptyState in
+        self?.dataSource.load(comments: comments,
+                              project: project,
+                              update: update,
+                              loggedInUser: user,
+                              shouldShowEmptyState: shouldShowEmptyState)
         self?.tableView.reloadData()
     }
 
@@ -162,7 +157,7 @@ extension CommentsViewController: CommentDialogDelegate {
 
 extension CommentsViewController: CommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
-    _ = self.navigationController?.popViewController(animated: true)
+    _ = self.navigationController?.popToRootViewController(animated: true)
   }
 
   internal func commentEmptyStateCellGoToCommentDialog() {

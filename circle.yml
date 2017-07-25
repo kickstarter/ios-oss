@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: 8.2
+    version: 8.3.3
 dependencies:
   cache_directories:
     - "Frameworks/OpenTok"
@@ -12,6 +12,7 @@ dependencies:
     - security find-identity -p codesigning
     - instruments -s devices
     - xcodebuild -showsdks
+    - gem install fastlane -NVv 2.37.0
 test:
   pre:
     - xcrun instruments -w 'iPhone 7 (10.2)' || true
@@ -21,6 +22,7 @@ test:
     - PLATFORM=iOS make test
     - PLATFORM=iOS TARGET=Library make test
     - SCHEME=LiveStream make test
+    - SCHEME=KsApi make test
   post:
     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
 experimental:
@@ -31,56 +33,22 @@ experimental:
         - beta-dist
         - itunes-dist
 deployment:
+  ios_live_stream_beta:
+    branch: live-stream-beta-dist
+    commands:
+      - agvtool new-version -all $(($(date +%s)/100))
+      - fastlane live_stream_beta_gym --verbose
+      - fastlane live_stream_beta_hockey --verbose
   ios_beta:
     branch: beta-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - >
-        gym
-        --output_name               "KickBeta"
-        --export_method             "enterprise"
-        --provisioning_profile_path "circleci-beta-dist.mobileprovision"
-        --scheme                    "Kickstarter-iOS"
-        --configuration             "Hockey"
-      - >
-        ipa distribute:hockeyapp
-        --token                     "$HOCKEY_APP_TOKEN"
-        --identifier                "$HOCKEY_BETA_APP_ID"
-        --file                      "KickBeta.ipa"
-        --dsym                      "KickBeta.app.dSYM.zip"
-        --notes                     "CircleCI build $CIRCLE_BUILD_NUM"
-        --commit-sha                "$CIRCLE_SHA1"
-        --build-server-url          "$CIRCLE_BUILD_URL"
-        --repository-url            "$CIRCLE_REPOSITORY_URL"
-      - >
-        ipa distribute:s3
-        --file                      "KickBeta.ipa"
-        --dsym                      "KickBeta.app.dSYM.zip"
-        --bucket                    "ios-ksr-builds"
-        --path                      "{CFBundleVersion}/"
+      - fastlane beta_gym --verbose
+      - fastlane beta_hockey --verbose
   ios_itc:
     branch: itunes-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - >
-        gym
-        --output_name               "Kickstarter"
-        --provisioning_profile_path "circleci-itunes-dist.mobileprovision"
-        --codesigning_identity      "iPhone Distribution: Kickstarter, Inc. (48YBP49Y5N)"
-        --scheme                    "Kickstarter-iOS"
-        --configuration             "Release"
-      - >
-        ipa distribute:hockeyapp
-        --token                     "$HOCKEY_APP_TOKEN"
-        --identifier                "$HOCKEY_RELEASE_APP_ID"
-        --file                      "Kickstarter.ipa"
-        --dsym                      "Kickstarter.app.dSYM.zip"
-        --notes                     "CircleCI build $CIRCLE_BUILD_NUM"
-        --commit-sha                "$CIRCLE_SHA1"
-        --build-server-url          "$CIRCLE_BUILD_URL"
-        --repository-url            "$CIRCLE_REPOSITORY_URL"
-      - >
-        ipa distribute:itunesconnect
-        --file      "Kickstarter.ipa"
-        --apple-id  "596961532"
-        --warnings
+      - fastlane itunes_gym --verbose
+      - fastlane itunes_hockey --verbose
+      - fastlane itunes_deliver --verbose

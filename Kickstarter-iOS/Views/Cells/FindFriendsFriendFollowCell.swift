@@ -23,9 +23,13 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
+
     self.followButton.rac.enabled = self.viewModel.outputs.enableFollowButton
+    self.followButton.rac.accessibilityLabel = self.viewModel.outputs.followButtonAccessibilityLabel
 
     self.unfollowButton.rac.enabled = self.viewModel.outputs.enableUnfollowButton
+    self.unfollowButton.rac.accessibilityLabel = self.viewModel.outputs.unfollowButtonAccessibilityLabel
 
     self.friendNameLabel.rac.text = self.viewModel.outputs.name
 
@@ -89,6 +93,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .white
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))

@@ -13,6 +13,15 @@ public protocol ProjectDescriptionViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when the webview fails to navigate.
+  func webViewDidFailProvisionalNavigation(withError error: Error)
+
+  /// Call when the webview finishes navigating.
+  func webViewDidFinishNavigation()
+
+  /// Call when the webview starts navigating to a page.
+  func webViewDidStartProvisionalNavigation()
 }
 
 public protocol ProjectDescriptionViewModelOutputs {
@@ -28,8 +37,14 @@ public protocol ProjectDescriptionViewModelOutputs {
   /// Emits when we should open a safari browser with the URL.
   var goToSafariBrowser: Signal<URL, NoError> { get }
 
+  /// Emits when a web request is loading.
+  var isLoading: Signal<Bool, NoError> { get }
+
   /// Emits a url request that should be loaded into the webview.
   var loadWebViewRequest: Signal<URLRequest, NoError> { get }
+
+  /// Emits when an error should be displayed.
+  var showErrorAlert: Signal<Error, NoError> { get }
 }
 
 public protocol ProjectDescriptionViewModelType {
@@ -55,6 +70,14 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
       }
       .skipNil()
 
+    self.isLoading = Signal
+      .merge(
+        self.viewDidLoadProperty.signal.map(const(true)),
+        self.webViewDidStartProvisionalNavigationProperty.signal.map(const(true)),
+        self.webViewDidFinishNavigationProperty.signal.map(const(false))
+      )
+      .skipRepeats()
+
     self.loadWebViewRequest = projectDescriptionRequest
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
@@ -79,7 +102,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
         return project
     }
 
-    self.goBackToProject = possiblyGoBackToProject.skipNil().ignoreValues()
+    self.showErrorAlert = self.webViewDidFailProvisionalNavigationProperty.signal.skipNil()
+
+    self.goBackToProject = Signal.merge(
+      possiblyGoBackToProject.skipNil().ignoreValues(),
+      self.showErrorAlert.ignoreValues()
+    )
 
     self.goToSafariBrowser = Signal.zip(
       navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject
@@ -100,6 +128,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
+
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   public func decidePolicyFor(navigationAction: WKNavigationActionData) {
     self.policyForNavigationActionProperty.value = navigationAction
@@ -114,10 +143,28 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public var decidedPolicyForNavigationAction: WKNavigationActionPolicy {
     return self.policyDecisionProperty.value
   }
+
+  fileprivate let webViewDidFailProvisionalNavigationProperty = MutableProperty(Error?.none)
+  public func webViewDidFailProvisionalNavigation(withError error: Error) {
+    self.webViewDidFailProvisionalNavigationProperty.value = error
+  }
+
+  fileprivate let webViewDidFinishNavigationProperty = MutableProperty()
+  public func webViewDidFinishNavigation() {
+    self.webViewDidFinishNavigationProperty.value = ()
+  }
+
+  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty()
+  public func webViewDidStartProvisionalNavigation() {
+    self.webViewDidStartProvisionalNavigationProperty.value = ()
+  }
+
   public let goBackToProject: Signal<(), NoError>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToSafariBrowser: Signal<URL, NoError>
+  public let isLoading: Signal<Bool, NoError>
   public let loadWebViewRequest: Signal<URLRequest, NoError>
+  public let showErrorAlert: Signal<Error, NoError>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }
   public var outputs: ProjectDescriptionViewModelOutputs { return self }

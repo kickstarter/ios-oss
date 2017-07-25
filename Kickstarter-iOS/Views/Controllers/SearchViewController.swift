@@ -16,13 +16,20 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate weak var searchStackView: UIStackView!
   @IBOutlet fileprivate weak var searchTextField: UITextField!
 
+  private let backgroundView = UIView()
+  private let popularLoaderIndicator = UIActivityIndicatorView()
+  private let searchLoaderIndicator = UIActivityIndicatorView()
+
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.tableView.dataSource = self.dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +61,11 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
-      |> SearchViewController.lens.view.backgroundColor .~ .ksr_grey_200
+
+    _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
+      ||> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+      ||> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      ||> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
@@ -63,7 +74,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchBarContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> UIView.lens.backgroundColor .~ .ksr_grey_300
 
     _ = self.searchIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_navy_500
@@ -79,14 +90,9 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
-
-    _ = self.navigationController
-      ?|> UINavigationController.lens.navigationBar.barTintColor .~ .white
-
-    _ = self.navigationController?.navigationBar
-      ?|> baseNavigationBarStyle
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
 
     self.viewModel.outputs.projects
@@ -102,6 +108,32 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] visible in
         self?.dataSource.popularTitle(isVisible: visible)
         self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.searchLoaderIndicatorIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        guard let _self = self else { return }
+        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator :  nil
+        if let headerView = _self.tableView.tableHeaderView {
+          headerView.frame = CGRect(x: headerView.frame.origin.x,
+                                    y: headerView.frame.origin.y,
+                                    width: headerView.frame.size.width,
+                                    height: Styles.grid(15))
+        }
+    }
+
+    self.viewModel.outputs.popularLoaderIndicatorIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        guard let _self = self else { return }
+        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator :  nil
+        if let headerView = _self.tableView.tableHeaderView {
+          headerView.frame = CGRect(x: headerView.frame.origin.x,
+                                    y: headerView.frame.origin.y,
+                                    width: headerView.frame.size.width,
+                                    height: Styles.grid(15))
+        }
     }
 
     self.viewModel.outputs.showEmptyState
@@ -120,22 +152,18 @@ internal final class SearchViewController: UITableViewController {
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
 
+    self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
+    self.popularLoaderIndicator.rac.animating = self.viewModel.outputs.popularLoaderIndicatorIsAnimating
+
     self.viewModel.outputs.changeSearchFieldFocus
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
     }
 
-    // NB: Currently running a feature on a subset of users to test out if `observeForUI` is still crashing.
-    if AppEnvironment.current.config?.features["ios_scroll_output_observe_for_ui"] == .some(true) {
-      self.viewModel.outputs.scrollToProjectRow
-        .observeForUI()
-        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
-    } else {
-      self.viewModel.outputs.scrollToProjectRow
-        .observeForControllerAction()
-        .observeValues { [weak self] in self?.scrollToProjectRow($0) }
-    }
+    self.viewModel.outputs.scrollToProjectRow
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.scrollToProjectRow($0) }
   }
 
   private func scrollToProjectRow(_ row: Int) {

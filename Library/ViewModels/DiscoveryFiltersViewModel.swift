@@ -16,13 +16,13 @@ public protocol DiscoveryFiltersViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when the view will appear.
-  func viewWillAppear()
+  /// Call when the view did appear.
+  func viewDidAppear()
 }
 
 public protocol DiscoveryFiltersViewModelOutputs {
-  /// Emits a category id to set the background gradient and animate in the view.
-  var animateInView: Signal<Int?, NoError> { get }
+  /// Emits when to animate in the view.
+  var animateInView: Signal<(), NoError> { get }
 
   /// Emits whether the categories are loading for the activity indicator view.
   var loadingIndicatorIsVisible: Signal<Bool, NoError> { get }
@@ -55,8 +55,7 @@ public protocol DiscoveryFiltersViewModelType {
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
 
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(first: 1)
@@ -81,7 +80,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { $0.params.category?.rootId }
 
     let loaderIsVisible = MutableProperty(false)
-    self.loadingIndicatorIsVisible = loaderIsVisible.signal
 
     let cachedCats = self.viewDidLoadProperty.signal
       .map(cachedCategories)
@@ -91,11 +89,15 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { loaderIsVisible.value = true },
-              terminated: { loaderIsVisible.value = false })
+          .on(starting: { loaderIsVisible.value = true })
           .map { $0.categories }
           .materialize()
       }
+
+    self.loadingIndicatorIsVisible = Signal.merge(
+      loaderIsVisible.signal,
+      categoriesEvent.values().mapConst(false)
+    )
 
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
@@ -149,8 +151,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
         .mapConst(false)
     )
 
-    self.animateInView = categoryId
-      .takeWhen(self.viewWillAppearProperty.signal)
+    self.animateInView = self.viewDidAppearProperty.signal
 
     self.viewDidLoadProperty.signal
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModal() }
@@ -179,9 +180,9 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  fileprivate let viewDidAppearProperty = MutableProperty()
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
   }
 
   fileprivate let shouldAnimateSelectableCellProperty = MutableProperty(false)
@@ -189,7 +190,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     return self.shouldAnimateSelectableCellProperty.value
   }
 
-  public let animateInView: Signal<Int?, NoError>
+  public let animateInView: Signal<(), NoError>
   public let loadingIndicatorIsVisible: Signal<Bool, NoError>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
   NoError>

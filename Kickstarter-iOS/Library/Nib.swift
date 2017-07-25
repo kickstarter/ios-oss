@@ -1,6 +1,9 @@
 import UIKit
 
 public enum Nib: String {
+  case BackerDashboardEmptyStateCell
+  case BackerDashboardProjectCell
+  case LiveStreamNavTitleView
   case RewardCell
 }
 

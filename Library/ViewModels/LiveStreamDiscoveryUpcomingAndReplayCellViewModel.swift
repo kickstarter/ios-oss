@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import LiveStream
 import Prelude
 import ReactiveSwift
@@ -46,7 +45,7 @@ LiveStreamDiscoveryUpcomingAndReplayCellViewModelOutputs {
     self.imageOverlayColor = liveStreamEvent
       .map {
         $0.hasReplay == .some(true)
-          ? UIColor.hex(0x353535).withAlphaComponent(0.9)
+          ? UIColor.ksr_navy_700.withAlphaComponent(0.9)
           : UIColor.ksr_navy_900.withAlphaComponent(0.8)
     }
 

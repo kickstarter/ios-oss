@@ -48,8 +48,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 450)
-      |> (UITableViewController.lens.tableView • UITableView.lens.delaysContentTouches) .~ false
-      |> (UITableViewController.lens.tableView • UITableView.lens.canCancelContentTouches) .~ true
+      |> (UITableViewController.lens.tableView..UITableView.lens.delaysContentTouches) .~ false
+      |> (UITableViewController.lens.tableView..UITableView.lens.canCancelContentTouches) .~ true
       |> UITableViewController.lens.view.backgroundColor .~ .clear
   }
 

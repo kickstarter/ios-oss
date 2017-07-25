@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import KsApi
 import Library
@@ -6,6 +5,7 @@ import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
+import UserNotifications
 
 public struct HockeyConfigData {
   public let appIdentifier: String
@@ -20,6 +20,12 @@ public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
     && lhs.disableUpdates == rhs.disableUpdates
     && lhs.userId == rhs.userId
     && lhs.userName == rhs.userName
+}
+
+public enum NotificationAuthorizationStatus {
+  case authorized
+  case denied
+  case notDetermined
 }
 
 public protocol AppDelegateViewModelInputs {
@@ -39,7 +45,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidReceiveMemoryWarning()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application: UIApplication?, url: URL, sourceApplication: String?,
+  func applicationOpenUrl(application: UIApplication?,
+                          url: URL,
+                          sourceApplication: String?,
                           annotation: Any) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
@@ -53,6 +61,16 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
+
+  /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
+  func foundRedirectUrl(_ url: URL)
+
+  /// Call when notification authorization is completed with user permission or denial.
+  func notificationAuthorizationCompleted(isGranted: Bool)
+
+  /// Call when notification authorization status received.
+  @available(iOS 10.0, *)
+  func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus)
 
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
@@ -71,6 +89,9 @@ public protocol AppDelegateViewModelOutputs {
   /// The value to return from the delegate's `application:didFinishLaunchingWithOptions:` method.
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
+  /// Emits when application should request authorizatoin for notifications.
+  var authorizeForRemoteNotifications: Signal<(), NoError> { get }
+
   /// Emits an app identifier that should be used to configure the hockey app manager.
   var configureHockey: Signal<HockeyConfigData, NoError> { get }
 
@@ -80,8 +101,14 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
+  /// Emits when the view needs to figure out the redirect URL for the emitted URL.
+  var findRedirectUrl: Signal<URL, NoError> { get }
+
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), NoError> { get }
+
+  /// Emits when application should call getNotificationSettings() to obtain authorization status.
+  var getNotificationAuthorizationStatus: Signal<(), NoError> { get }
 
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), NoError> { get }
@@ -104,6 +131,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), NoError> { get }
 
+  /// Emits a URL when we should open it in the safari browser.
+  var goToMobileSafari: Signal<URL, NoError> { get }
+
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), NoError> { get }
 
@@ -120,7 +150,7 @@ public protocol AppDelegateViewModelOutputs {
   var pushTokenSuccessfullyRegistered: Signal<(), NoError> { get }
 
   /// Emits when we should attempt registering the user for notifications.
-  var registerUserNotificationSettings: Signal<(), NoError> { get }
+  var registerForRemoteNotifications: Signal<(), NoError> { get }
 
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
@@ -147,8 +177,7 @@ public protocol AppDelegateViewModelType {
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -205,12 +234,33 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
-    self.registerUserNotificationSettings = Signal.merge(
+    let applicationIsReadyForRegisteringNotifications = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal
       )
       .filter { AppEnvironment.current.currentUser != nil }
+
+    if #available(iOS 10.0, *) {
+      self.getNotificationAuthorizationStatus = applicationIsReadyForRegisteringNotifications
+
+      self.registerForRemoteNotifications = self.notificationAuthorizationCompletedProperty.signal
+        .filter(isTrue)
+        .ignoreValues()
+    } else {
+      //Never firing signal in ios 9
+      self.getNotificationAuthorizationStatus = .empty
+
+      self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
+    }
+
+    self.authorizeForRemoteNotifications = Signal.merge(
+      applicationIsReadyForRegisteringNotifications,
+      self.notificationAuthorizationStatusProperty.signal
+        .skipNil()
+        .filter { $0 == .notDetermined }
+        .ignoreValues()
+    )
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -252,7 +302,7 @@ AppDelegateViewModelOutputs {
       .takeWhen(self.openRemoteNotificationTappedOkProperty.signal)
 
     let pushEnvelope = Signal.merge(
-      pushEnvelopeAndIsActive.filter(negate • second),
+      pushEnvelopeAndIsActive.filter(second >>> isFalse),
       explicitlyOpenedNotification
       )
       .map(first)
@@ -262,20 +312,28 @@ AppDelegateViewModelOutputs {
 
     // Deep links
 
-    let continueUserActivity = applicationContinueUserActivityProperty.signal.skipNil()
+    let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
       .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
-      .filter(isNotNil • second)
+      .filter(second >>> isNotNil)
 
     self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
 
-    let deepLinkFromUrl = Signal
+    let deepLinkUrl = Signal
       .merge(
-        openUrl.map { Navigation.match($0.url) },
-        continueUserActivityWithNavigation.map(second)
-      )
+        openUrl.map { $0.url },
+
+        self.foundRedirectUrlProperty.signal.skipNil(),
+
+        continueUserActivity
+          .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
+          .map { $0.webpageURL }
+          .skipNil()
+    )
+
+    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
 
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
@@ -296,6 +354,14 @@ AppDelegateViewModelOutputs {
         deepLinkFromShortcut
       )
       .skipNil()
+
+    self.findRedirectUrl = deepLinkUrl
+      .filter {
+        switch Navigation.match($0) {
+        case .some(.emailClick), .some(.emailLink): return true
+        default:                                    return false
+        }
+    }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
@@ -351,11 +417,14 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
+    self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
+      .filter { Navigation.deepLinkMatch($0) == nil }
+
     let projectLink = deepLink
       .filter { link in
         // NB: have to do this cause we handle the live stream subpage in a different manner than we do
         // the other subpages.
-        if case .project(_, .liveStream(_), _) = link { return false }
+        if case .project(_, .liveStream, _) = link { return false }
         return true
       }
       .map { link -> (Param, Navigation.Project, RefTag?)? in
@@ -390,8 +459,9 @@ AppDelegateViewModelOutputs {
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
-        guard case let .user(_, .survey(surveyResponseId)) = link else { return nil }
-        return surveyResponseId
+        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
+        if case let .project(_, .survey(surveyResponseId), _) = link { return surveyResponseId }
+        return nil
       }
       .skipNil()
       .switchMap { surveyResponseId in
@@ -435,9 +505,9 @@ AppDelegateViewModelOutputs {
 
     let updateCommentsLink = updateLink
       .observeForUI()
-      .map { project, update, subpage, vcs -> [UIViewController]? in
+      .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [CommentsViewController.configuredWith(project: project, update: update)]
+        return vcs + [CommentsViewController.configuredWith(update: update)]
       }
       .skipNil()
 
@@ -480,6 +550,20 @@ AppDelegateViewModelOutputs {
       .map { _, options in options?[UIApplicationLaunchOptionsKey.shortcutItem] == nil }
 
     // Koala
+
+    self.notificationAuthorizationStatusProperty.signal
+      .skipNil()
+      .skip(until: self.notificationAuthorizationCompletedProperty.signal.ignoreValues())
+      .take(first: 1)
+      .observeValues { status in
+        switch status {
+        case .authorized:
+          AppEnvironment.current.koala.trackPushPermissionOptIn()
+        case .denied:
+          AppEnvironment.current.koala.trackPushPermissionOptOut()
+        case .notDetermined: ()
+        }
+      }
 
     Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -587,6 +671,11 @@ AppDelegateViewModelOutputs {
     self.deviceTokenDataProperty.value = data
   }
 
+  private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
+  public func foundRedirectUrl(_ url: URL) {
+    self.foundRedirectUrlProperty.value = url
+  }
+
   fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
   public func crashManagerDidFinishSendingCrashReport() {
     self.crashManagerDidFinishSendingCrashReportProperty.value = ()
@@ -626,10 +715,26 @@ AppDelegateViewModelOutputs {
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
+
+  fileprivate let notificationAuthorizationCompletedProperty = MutableProperty(false)
+  public func notificationAuthorizationCompleted(isGranted: Bool) {
+    self.notificationAuthorizationCompletedProperty.value = isGranted
+  }
+
+  fileprivate let notificationAuthorizationStatusProperty =
+    MutableProperty<NotificationAuthorizationStatus?>(nil)
+  @available(iOS 10.0, *)
+  public func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus) {
+    return self.notificationAuthorizationStatusProperty.value = authStatusType(for: authorizationStatus)
+  }
+
+  public let authorizeForRemoteNotifications: Signal<(), NoError>
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
+  public let findRedirectUrl: Signal<URL, NoError>
   public let forceLogout: Signal<(), NoError>
+  public let getNotificationAuthorizationStatus: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
@@ -637,12 +742,13 @@ AppDelegateViewModelOutputs {
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
+  public let goToMobileSafari: Signal<URL, NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<Notification, NoError>
   public let presentRemoteNotificationAlert: Signal<String, NoError>
   public let presentViewController: Signal<UIViewController, NoError>
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
-  public let registerUserNotificationSettings: Signal<(), NoError>
+  public let registerForRemoteNotifications: Signal<(), NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
@@ -871,7 +977,9 @@ private func liveStreamData(fromNavigation nav: Navigation)
         .demoteErrors(),
 
       AppEnvironment.current.liveStreamService
-        .fetchEvent(eventId: eventId, uid: AppEnvironment.current.currentUser?.id)
+        .fetchEvent(eventId: eventId,
+                    uid: AppEnvironment.current.currentUser?.id,
+                    liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken)
         .demoteErrors()
       )
       .map { project, liveStreamEvent -> (Project, LiveStreamEvent, RefTag?)? in
@@ -909,4 +1017,13 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
+}
+
+@available(iOS 10.0, *)
+private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatus {
+  switch status {
+    case .authorized: return .authorized
+    case .denied: return .denied
+    case .notDetermined: return .notDetermined
+  }
 }

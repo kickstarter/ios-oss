@@ -4,6 +4,7 @@ import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Social
+import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
@@ -24,7 +25,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   internal static func configuredWith(project: Project) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
     vc.viewModel.inputs.project(project)
-    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project))
+    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project), shareContextView: nil)
     return vc
   }
 
@@ -88,8 +89,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
   }
 
-  // swiftlint:disable function_body_length
-  override func bindViewModel() {
+    override func bindViewModel() {
     super.bindViewModel()
 
     self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
@@ -156,7 +156,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet($0) }
+      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
 
     self.shareViewModel.outputs.showShareCompose
       .observeForControllerAction()
@@ -186,18 +186,22 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   }
 
   fileprivate func showRatingAlert() {
-    self.present(
-      UIAlertController.rating(
-        yesHandler: { [weak self] action in
-          self?.viewModel.inputs.rateNowButtonTapped()
-        }, remindHandler: { [weak self] action in
-          self?.viewModel.inputs.rateRemindLaterButtonTapped()
-        }, noHandler: { [weak self] action in
-          self?.viewModel.inputs.rateNoThanksButtonTapped()
-      }),
-      animated: true,
-      completion: nil
-    )
+    if #available(iOS 10.3, *) {
+      SKStoreReviewController.requestReview()
+    } else {
+      self.present(
+        UIAlertController.rating(
+          yesHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateNowButtonTapped()
+          }, remindHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateRemindLaterButtonTapped()
+          }, noHandler: { [weak self] _ in
+            self?.viewModel.inputs.rateNoThanksButtonTapped()
+        }),
+        animated: true,
+        completion: nil
+      )
+    }
   }
 
   fileprivate func showGamesNewsletterAlert() {

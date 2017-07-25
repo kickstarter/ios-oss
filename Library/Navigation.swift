@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import Argo
 import Runes
 import Curry
@@ -7,6 +6,8 @@ import KsApi
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
+  case emailClick(qs: String)
+  case emailLink
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
@@ -75,6 +76,10 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
+  case let (.emailClick(lhs), .emailClick(rhs)):
+    return lhs == rhs
+  case (.emailLink, .emailLink):
+    return true
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
   case (.signup, .signup):
@@ -205,7 +210,14 @@ public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
 
 extension Navigation {
   public static func match(_ url: URL) -> Navigation? {
-    return routes.reduce(nil) { accum, templateAndRoute in
+    return allRoutes.reduce(nil) { accum, templateAndRoute in
+      let (template, route) = templateAndRoute
+      return accum ?? parsedParams(url: url, fromTemplate: template).flatMap(route)?.value
+    }
+  }
+
+  public static func deepLinkMatch(_ url: URL) -> Navigation? {
+    return deepLinkRoutes.reduce(nil) { accum, templateAndRoute in
       let (template, route) = templateAndRoute
       return accum ?? parsedParams(url: url, fromTemplate: template).flatMap(route)?.value
     }
@@ -216,7 +228,9 @@ extension Navigation {
   }
 }
 
-private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
+private let allRoutes: [String:(RouteParams) -> Decoded<Navigation>] = [
+  "/": emailClick,
+  "/mpss/:a/:b/:c/:d/:e/:f/:g": emailLink,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -252,6 +266,27 @@ private let routes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
 
+private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
+  keys: [
+    "/",
+    "/mpss/:a/:b/:c/:d/:e/:f/:g",
+    "/activity",
+    "/discover",
+    "/discover/advanced",
+    "/discover/categories/:category_id",
+    "/discover/categories/:parent_category_id/:category_id",
+    "/messages/:message_thread_id",
+    "/projects/:creator_param/:project_param",
+    "/projects/:creator_param/:project_param/comments",
+    "/projects/:creator_param/:project_param/dashboard",
+    "/projects/:creator_param/:project_param/posts",
+    "/projects/:creator_param/:project_param/posts/:update_param",
+    "/projects/:creator_param/:project_param/posts/:update_param/comments",
+    "/projects/:creator_param/:project_param/surveys/:survey_param",
+    "/users/:user_param/surveys/:survey_response_id"
+  ]
+)
+
 extension Navigation.Project {
   // swiftlint:disable conditional_binding_cascade
   public static func withRequest(_ request: URLRequest) -> (Param, RefTag?)? {
@@ -278,6 +313,15 @@ extension Navigation.Project {
 
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
 public typealias RouteParams = JSON
+
+private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
+  return curry(Navigation.emailClick)
+   <^> params <| "qs"
+}
+
+private func emailLink(_ params: RouteParams) -> Decoded<Navigation> {
+  return .success(.emailLink)
+}
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
   return .success(.tab(.activity))
@@ -353,7 +397,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.root)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
@@ -367,21 +411,21 @@ private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> checkout
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.comments)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.creatorBio)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
@@ -395,70 +439,70 @@ private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.friends)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func messageCreator(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.messageCreator)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeBigPrint(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.bigPrint))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeChangeMethod(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.changeMethod))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeDestroy(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.destroy))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeEdit(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.edit))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.new))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func posts(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
@@ -470,7 +514,7 @@ private func update(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (createUpdate
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.root))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
@@ -479,7 +523,7 @@ private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.comments))
-    <*> params <|? "ref_tag"
+    <*> params <|? "ref"
 }
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
@@ -493,13 +537,22 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
 
   // early out on URL's that are not recognized as kickstarter URL's
-  let isApiURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
 
-  let isWebURL = zip(url.host, AppEnvironment.current.apiService.serverConfig.webBaseUrl.host)
-    .map { $0.hasPrefix($1) } == .some(true)
+  let recognizedHosts = [
+    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
+    "click.e.kickstarter.com",
+    "emails.kickstarter.com",
+    "email.kickstarter.com",
+    "e2.kickstarter.com",
+    "e3.kickstarter.com",
+  ].compact()
 
-  guard isApiURL || isWebURL else { return nil }
+  let isRecognizedHost = recognizedHosts.reduce(false) { accum, host in
+    accum || url.host.map { $0.hasPrefix(host) } == .some(true)
+  }
+
+  guard isRecognizedHost else { return nil }
 
   let templateComponents = template
     .components(separatedBy: "/")
@@ -545,15 +598,14 @@ private func stringToInt(_ string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
 }
 
-/**
- Zips two optionals, returning a tuple of values if both are present and `nil` otherwise. This function
- is analagous to `zip` on sequences if you think of optionals as sequences with at most one element.
-
- - parameter a: An optional.
- - parameter b: An optional.
-
- - returns: An optional tuple.
- */
-private func zip <A, B> (_ x: A?, _ y: @autoclosure () -> B?) -> (A, B)? {
-  return x.flatMap { x_ in y().map { y_ in (x_, y_) } }
+extension Dictionary {
+  fileprivate func restrict(keys: Set<Key>) -> Dictionary {
+    var result = Dictionary()
+    self.forEach { key, value in
+      if keys.contains(key) {
+        result[key] = value
+      }
+    }
+    return result
+  }
 }

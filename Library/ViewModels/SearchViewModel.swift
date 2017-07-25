@@ -24,7 +24,10 @@ public protocol SearchViewModelInputs {
   /// Call when the project navigator has transitioned to a new project with its index.
   func transitionedToProject(at row: Int, outOf totalRows: Int)
 
-  /// Call when the view will appear.
+  /// Call when the view loads.
+  func viewDidLoad()
+
+   /// Call when the view will appear.
   func viewWillAppear(animated: Bool)
 
   /// Call when a project is tapped.
@@ -50,17 +53,23 @@ public protocol SearchViewModelOutputs {
   /// Emits true when the popular title should be shown, and false otherwise.
   var isPopularTitleVisible: Signal<Bool, NoError> { get }
 
-  /// Emits an array of projects when they should be shown on the screen.
+  /// Emits when loading indicator should be animated.
+  var popularLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
+
+   /// Emits an array of projects when they should be shown on the screen.
   var projects: Signal<[Project], NoError> { get }
 
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), NoError> { get }
 
+  /// Emits when should scroll to project with row number.
+  var scrollToProjectRow: Signal<Int, NoError> { get }
+
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, NoError> { get }
 
-  /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, NoError> { get }
+  /// Emits when loading indicator should be hidden.
+  var searchLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), NoError> { get }
@@ -73,8 +82,7 @@ public protocol SearchViewModelType {
 
 public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
 
     let query = Signal
@@ -85,14 +93,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
-    let popular = viewWillAppearNotAnimated
+    let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
           .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
+          .map { $0.projects }
+          .materialize()
       }
-      .map { $0.projects }
+
+    let popular = popularEvent.values()
 
     let clears = query.mapConst([Project]())
 
@@ -134,6 +144,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
 
+    self.searchLoaderIndicatorIsAnimating = isLoading
+
     self.projects = Signal.combineLatest(
       self.isPopularTitleVisible,
       popular,
@@ -166,6 +178,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.cancelButtonPressedProperty.signal
     )
 
+    self.popularLoaderIndicatorIsAnimating = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      popularEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // koala
@@ -174,7 +191,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
-      .filter(negate • second)
+      .filter(second >>> isFalse)
       .map(first)
       .map { !$0.isEmpty }
 
@@ -189,9 +206,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.clearSearchTextProperty.signal
       .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
-    self.goToProject = self.projects
+    self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projects, project in (project, projects, RefTag.search) }
+      .map { projectsAndQuery, tappedProject in
+        let (projects, query) = projectsAndQuery
+
+        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+    }
 
     query.combinePrevious()
       .map(first)
@@ -236,6 +257,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
 
+  fileprivate let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
   fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
@@ -249,12 +275,28 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let isPopularTitleVisible: Signal<Bool, NoError>
+  public let popularLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let projects: Signal<[Project], NoError>
   public let resignFirstResponder: Signal<(), NoError>
-  public let searchFieldText: Signal<String, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
+  public let searchFieldText: Signal<String, NoError>
+  public let searchLoaderIndicatorIsAnimating: Signal<Bool, NoError>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), NoError>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }
+}
+
+/// Calculates a ref tag from the search query, the list of displayed projects, and the project
+/// tapped.
+private func refTag(query: String, projects: [Project], project: Project) -> RefTag {
+  if project == projects.first && query.characters.isEmpty {
+    return RefTag.searchPopularFeatured
+  } else if project == projects.first && !query.characters.isEmpty {
+    return RefTag.searchFeatured
+  } else if query.characters.isEmpty {
+    return RefTag.searchPopular
+  } else {
+    return RefTag.search
+  }
 }

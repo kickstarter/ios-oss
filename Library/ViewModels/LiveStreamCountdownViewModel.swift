@@ -21,16 +21,13 @@ public protocol LiveStreamCountdownViewModelInputs {
                      presentedFromProject: Bool)
 
   /// Call when the project page button is pressed.
-  func goToProjectButtonPressed()
+  func goToProjectButtonTapped()
 
   /// Called when the viewDidLoad
   func viewDidLoad()
 }
 
 public protocol LiveStreamCountdownViewModelOutputs {
-  /// Emits the project's root category ID
-  var categoryId: Signal<Int, NoError> { get }
-
   /// Emits the accessibility label string for the live stream countdown
   var countdownAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -122,7 +119,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
         .prefix(value: nil)
     }
 
-    self.categoryId = project.map { $0.category.rootId }.skipNil()
     self.dismiss = self.closeButtonTappedProperty.signal
     self.viewControllerTitle = viewDidLoadProperty.signal.mapConst(
       Strings.Live_stream_countdown()
@@ -140,7 +136,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
       .map { Strings.Upcoming_with_creator_name(creator_name: $0.creator.name) }
 
     self.goToProject = configData
-      .takeWhen(self.goToProjectButtonPressedProperty.signal)
+      .takeWhen(self.goToProjectButtonTappedProperty.signal)
       .map { project, _, _, _ in (project, RefTag.liveStreamCountdown) }
 
     self.goToProjectButtonContainerHidden = configData
@@ -186,9 +182,9 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let goToProjectButtonPressedProperty = MutableProperty()
-  public func goToProjectButtonPressed() {
-    self.goToProjectButtonPressedProperty.value = ()
+  private let goToProjectButtonTappedProperty = MutableProperty()
+  public func goToProjectButtonTapped() {
+    self.goToProjectButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty()
@@ -196,7 +192,6 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let categoryId: Signal<Int, NoError>
   public let countdownAccessibilityLabel: Signal<String, NoError>
   public let countdownDateLabelText: Signal<String, NoError>
   public let daysString: Signal<String, NoError>

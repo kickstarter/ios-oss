@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import Library
 import LiveStream
@@ -7,6 +6,7 @@ import ReactiveSwift
 import UIKit
 
 public final class LiveStreamCountdownViewController: UIViewController {
+  @IBOutlet private weak var bgView: UIView!
   @IBOutlet private weak var creatorAvatarBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var creatorAvatarImageView: UIImageView!
   @IBOutlet private weak var creatorAvatarWidthConstraint: NSLayoutConstraint!
@@ -21,7 +21,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
   @IBOutlet private weak var detailsStackView: UIStackView!
   @IBOutlet private weak var goToProjectButton: UIButton!
   @IBOutlet private weak var goToProjectButtonContainer: UIView!
-  @IBOutlet private weak var gradientView: GradientView!
   @IBOutlet private weak var hoursSubtitleLabel: UILabel!
   @IBOutlet private weak var hoursTitleLabel: UILabel!
   @IBOutlet private weak var imageOverlayView: UIView!
@@ -51,8 +50,10 @@ public final class LiveStreamCountdownViewController: UIViewController {
                                       liveStreamEvent: liveStreamEvent,
                                       refTag: refTag,
                                       presentedFromProject: presentedFromProject)
-    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent)
-    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent))
+    vc.eventDetailsViewModel.inputs.configureWith(project: project, liveStreamEvent: liveStreamEvent,
+                                                  refTag: refTag, presentedFromProject: presentedFromProject)
+    vc.shareViewModel.inputs.configureWith(shareContext: .liveStream(project, liveStreamEvent),
+                                           shareContextView: nil)
 
     return vc
   }
@@ -65,7 +66,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = self.closeBarButtonItem
     self.navigationItem.rightBarButtonItem = self.shareBarButtonItem
 
-    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonPressed), for: [.touchUpInside])
+    self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -81,8 +82,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      |> LiveStreamCountdownViewController.lens.view.backgroundColor .~ .black
+      |> baseLiveStreamControllerStyle()
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
@@ -132,13 +132,13 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.daysSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.days() }
+      |> UILabel.lens.text %~ { _ in Strings.days_plural() }
 
     _ = self.hoursSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.hours() }
+      |> UILabel.lens.text %~ { _ in Strings.hours_plural() }
 
     _ = self.minutesSubtitleLabel
-      |> UILabel.lens.text %~ { _ in Strings.minutes() }
+      |> UILabel.lens.text %~ { _ in Strings.minutes_plural() }
 
     _ = self.secondsSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.seconds() }
@@ -156,9 +156,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.detailsStackViewBackgroundView
       |> roundedStyle()
-      |> dropShadowStyle()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
-      |> UIView.lens.layer.shadowOpacity .~ 0.2
+      |> dropShadowStyleMedium()
 
     self.creatorAvatarBottomConstraint.constant = -Styles.grid(4)
     self.creatorAvatarWidthConstraint.constant = self.traitCollection.isRegularRegular
@@ -206,9 +204,8 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .gray
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
-    self.gradientView.startPoint = .init(x: 1, y: 0)
-    self.gradientView.endPoint = .init(x: 0, y: 1)
-    _ = self.gradientView
+    _ = self.bgView
+      |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.horizontalSizeClass == .regular
           ? .init(top: 0, left: Styles.grid(12), bottom: Styles.grid(4), right: Styles.grid(12))
@@ -257,13 +254,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
         self?.openLoginTout()
     }
 
-    self.viewModel.outputs.categoryId
-      .observeForUI()
-      .observeValues { [weak self] in
-        let (startColor, endColor) = discoveryGradientColors(forCategoryId: $0)
-        self?.gradientView.setGradient([(startColor, 0.0), (endColor, 1.0)])
-    }
-
     self.viewModel.outputs.dismiss
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -303,7 +293,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareSheet(controller: $0) }
+      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller: controller) }
 
     self.eventDetailsViewModel.outputs.showErrorAlert
       .observeForUI()
@@ -329,10 +319,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     closeBarButtonItem.accessibilityLabel = Strings.Close_live_stream()
 
-    closeBarButtonItem.accessibilityHint = localizedString(
-      key: "Closes_the_live_stream",
-      defaultValue: "Closes the live stream."
-    )
+    closeBarButtonItem.accessibilityHint = Strings.Closes_live_stream()
 
     return closeBarButtonItem
   }()
@@ -391,7 +378,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.inputs.subscribeButtonTapped()
   }
 
-  @objc private func goToProjectButtonPressed() {
-    self.viewModel.inputs.goToProjectButtonPressed()
+  @objc private func goToProjectButtonTapped() {
+    self.viewModel.inputs.goToProjectButtonTapped()
   }
 }

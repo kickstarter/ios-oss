@@ -45,6 +45,8 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.footerStackView.rac.hidden = self.viewModel.outputs.pledgeFooterIsHidden
+
     self.viewModel.outputs.authorImageURL
       .observeForUI()
       .on(event: { [weak self] _ in

@@ -115,7 +115,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(
-          UIAlertController.alert(Strings.signup_error_title(), message: message),
+          UIAlertController.alert(nil, message: message),
           animated: true, completion: nil
         )
     }

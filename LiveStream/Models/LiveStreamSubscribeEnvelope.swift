@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import Argo
 import Curry
 import Prelude
@@ -9,7 +8,7 @@ public struct LiveStreamSubscribeEnvelope {
   public fileprivate(set) var reason: String?
 }
 
-extension LiveStreamSubscribeEnvelope: Decodable {
+extension LiveStreamSubscribeEnvelope: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamSubscribeEnvelope> {
     return curry(LiveStreamSubscribeEnvelope.init)
       <^> json <| "success"

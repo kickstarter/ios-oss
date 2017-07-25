@@ -1,15 +1,14 @@
-// swiftlint:disable file_length
 import KsApi
 import Library
 import Prelude
 import Stripe
 import UIKit
 
-// swiftlint:disable type_body_length
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  @IBOutlet fileprivate weak var applePayButton: UIButton!
+  fileprivate var applePayButton = PKPaymentButton(type: .plain, style: .black)
+  @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
   @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate weak var cardInnerView: UIView!
@@ -40,6 +39,7 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var minimumAndConversionStackView: UIStackView!
   @IBOutlet fileprivate weak var minimumPledgeLabel: UILabel!
   @IBOutlet fileprivate weak var orLabel: UILabel!
+  @IBOutlet fileprivate weak var paddingViewHeightLayoutConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var pledgeButtonsStackView: UIStackView!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeCurrencyLabel: UILabel!
@@ -96,6 +96,8 @@ internal final class RewardPledgeViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
+
     self.applePayButton.addTarget(
       self, action: #selector(applePayButtonTapped), for: .touchUpInside
     )
@@ -147,20 +149,15 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseControllerStyle()
+      |> RewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 4)
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3))
-      |> UIButton.lens.backgroundColor .~ .black
-      |> UIButton.lens.image(forState: .normal) %~ { _ in
-        image(named: "apple-pay-button-content", tintColor: .white)
-      }
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     _ = self.cancelPledgeButton
@@ -439,11 +436,10 @@ internal final class RewardPledgeViewController: UIViewController {
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.applePayButtonContainerView.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.cancelPledgeButton.rac.hidden = self.viewModel.outputs.cancelPledgeButtonHidden
     self.changePaymentMethodButton.rac.hidden = self.viewModel.outputs.changePaymentMethodButtonHidden
     self.continueToPaymentButton.rac.hidden = self.viewModel.outputs.continueToPaymentsButtonHidden
@@ -453,6 +449,8 @@ internal final class RewardPledgeViewController: UIViewController {
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.differentPaymentMethodButton.rac.hidden = self.viewModel.outputs.differentPaymentMethodButtonHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.estimatedFulfillmentStackView.rac.hidden
+      = self.viewModel.outputs.estimatedFulfillmentStackViewHidden
     self.fulfillmentAndShippingFooterStackView.rac.hidden
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
@@ -467,6 +465,8 @@ internal final class RewardPledgeViewController: UIViewController {
     self.shippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmountLabelText
     self.shippingInputStackView.rac.hidden = self.viewModel.outputs.shippingInputStackViewHidden
     self.shippingLocationsLabel.rac.text = self.viewModel.outputs.shippingLocationsLabelText
+    self.shippingStackView.rac.hidden
+      = self.viewModel.outputs.shippingStackViewHidden
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
@@ -528,6 +528,12 @@ internal final class RewardPledgeViewController: UIViewController {
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in self?.goToThanks(project: project) }
+
+    self.viewModel.outputs.paddingViewHeightConstant
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.paddingViewHeightLayoutConstraint.constant = $0
+    }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
@@ -595,11 +601,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    let stack = self.navigationController?.viewControllers
-    guard let root = stack?.first else {
-      fatalError("Unable to find root view controller!")
-    }
-    self.navigationController?.setViewControllers([root, thanksVC], animated: true)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   fileprivate func load(items: [String]) {

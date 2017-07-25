@@ -58,8 +58,7 @@ public protocol FindFriendsFacebookConnectCellViewModelType {
 
 public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookConnectCellViewModelType,
   FindFriendsFacebookConnectCellViewModelInputs, FindFriendsFacebookConnectCellViewModelOutputs {
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
 
     let isLoading = MutableProperty(false)
@@ -114,7 +113,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .map { AlertError.facebookConnectEmailTaken(envelope: $0) }
 
     let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
-      .map { $0 as? NSError }
+      .map { $0 as NSError? }
       .skipNil()
       .map(AlertError.facebookLoginAttemptFail)
 

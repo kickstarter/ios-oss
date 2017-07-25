@@ -1,11 +1,16 @@
 disabled_rules:
   - closure_parameter_position
+  - discarded_notification_center_observer
+  - file_length
+  - function_body_length
   - function_parameter_count
+  - identifier_name
   - large_tuple
   - nesting
-  - variable_name
-  - weak_delegate
+  - type_body_length
+  - type_name
   - trailing_comma
+  - weak_delegate
 opt_in_rules:
   - empty_count
   - force_unwrapping
@@ -25,6 +30,11 @@ reporter: "xcode"
 custom_rules:
   localized_lensing:
     name: "Localized Lensing"
-    regex: "\.~\s+Strings\s*\."
+    regex: '\.~\s+Strings\s*\.'
     message: "Capture calls to `Strings` functions using `%~ { _ in Strings... }`"
+    severity: error
+  record_mode_prohibited:
+    name: "Record Mode Prohibited"
+    regex: "recordMode = true"
+    message: "Do not use `recordMode = true`."
     severity: error

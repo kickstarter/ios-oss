@@ -122,12 +122,15 @@ internal final class DiscoveryViewController: UIViewController {
     self.dataSource = DiscoveryPagesDataSource(sorts: sorts)
 
     self.pageViewController.dataSource = self.dataSource
-    self.pageViewController.setViewControllers(
-      [self.dataSource.controllerFor(index: 0)].compact(),
-      direction: .forward,
-      animated: false,
-      completion: nil
-    )
+
+    DispatchQueue.main.async {
+      self.pageViewController.setViewControllers(
+        [self.dataSource.controllerFor(index: 0)].compact(),
+        direction: .forward,
+        animated: false,
+        completion: nil
+      )
+    }
   }
 }
 

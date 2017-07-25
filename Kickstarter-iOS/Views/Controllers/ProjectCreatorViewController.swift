@@ -38,6 +38,12 @@ internal final class ProjectCreatorViewController: WebViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.goToLoginTout
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToLoginTout($0)
+    }
+
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
       .observeValues { [weak self] in _ = self?.webView.load($0) }
@@ -61,6 +67,14 @@ internal final class ProjectCreatorViewController: WebViewController {
         forNavigationAction: WKNavigationActionData(navigationAction: navigationAction)
       )
     )
+  }
+
+  fileprivate func goToLoginTout(_ loginIntent: LoginIntent) {
+    let vc = LoginToutViewController.configuredWith(loginIntent: loginIntent)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {

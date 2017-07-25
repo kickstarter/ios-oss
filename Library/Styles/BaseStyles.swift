@@ -15,12 +15,19 @@ public enum Styles {
 }
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .ksr_grey_200
+  return VC.lens.view.backgroundColor .~ .white
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
+}
+
+public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
+  return VC.lens.view.backgroundColor .~ .black
+    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
+    <> TVC.lens.view.backgroundColor .~ .ksr_grey_300
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
@@ -30,14 +37,6 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
     return style
   #endif
 }
-
-public let baseNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSForegroundColorAttributeName: UIColor.ksr_text_navy_700,
-    NSFontAttributeName: UIFont.ksr_callout()
-  ]
-  <> UINavigationBar.lens.translucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .ksr_grey_100
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
 
@@ -49,7 +48,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
       <> TVC.lens.backgroundColor .~ .clear
-      <> (TVC.lens.contentView • UIView.lens.preservesSuperviewLayoutMargins) .~ false
+      <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
       <> TVC.lens.selectionStyle .~ .none
@@ -82,6 +81,18 @@ public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
       <> V.lens.layer.shadowOffset .~ offset
 }
 
+public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {
+  return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
+}
+
+public func dropShadowStyleLarge <V: UIViewProtocol> () -> ((V) -> V) {
+  return dropShadowStyle(radius: 6.0, offset: .init(width: 0, height: 3.0))
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
+}
+
 public let feedTableViewCellStyle = baseTableViewCellStyle()
   <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
     cell.traitCollection.isRegularRegular
@@ -101,7 +112,7 @@ public let formFieldStyle =
 
 public let separatorStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_400
-  <> UIView.lens.accessibilityElementsHidden .~ true
+    <> UIView.lens.accessibilityElementsHidden .~ true
 
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.
@@ -113,3 +124,25 @@ public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.c
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
 }
+
+// Just a lil helper lens for getting inside a nav controller's nav bar.
+private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
+  view: { $0?.navigationBar },
+  set: { _, whole in whole }
+)
+
+private let baseNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.black,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ false
+    <> UINavigationBar.lens.barTintColor .~ .white
+
+private let clearNavigationBarStyle =
+  UINavigationBar.lens.titleTextAttributes .~ [
+    NSForegroundColorAttributeName: UIColor.white,
+    NSFontAttributeName: UIFont.ksr_callout()
+    ]
+    <> UINavigationBar.lens.translucent .~ true
+    <> UINavigationBar.lens.shadowImage .~ UIImage()

@@ -1,5 +1,5 @@
 import Library
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Instantiate the Login Tout view controller.
@@ -12,11 +12,11 @@ let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portr
 // Set the device language.
 AppEnvironment.replaceCurrentEnvironment(
   language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework
+  locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 // Render the screen.
 let frame = parent.view.frame
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

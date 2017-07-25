@@ -8,8 +8,7 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rewardsTitleLabel: UILabel!
 
   func configureWith(value project: Project) {
-    self.contentView.backgroundColor = Library.backgroundColor(forCategoryId: project.category.rootId)
-    self.rewardsTitleLabel.textColor = discoveryPrimaryColor(forCategoryId: project.category.rootId)
+    self.rewardsTitleLabel.textColor = discoveryPrimaryColor()
 
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
@@ -38,12 +37,13 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> (UITableViewCell.lens.contentView • UIView.lens.layoutMargins) %~~ { margins, cell in
+      |> (UITableViewCell.lens.contentView..UIView.lens.layoutMargins) %~~ { margins, cell in
         .init(top: Styles.grid(2),
               left: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.left * 2,
               bottom: Styles.grid(1),
               right: cell.traitCollection.isRegularRegular ? Styles.grid(20) : margins.right * 2)
-    }
+      }
+      |> UITableViewCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.rewardsTitleLabel
       |> UILabel.lens.numberOfLines .~ 0

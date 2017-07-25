@@ -25,6 +25,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to animate arrow image down or up.
   var animateArrowToDown: Signal<Bool, NoError> { get }
 
+  /// Emits a Bool to animate the border line when expanded or collapsed.
+  var animateBorderLineViewAndIsExpanded: Signal<Bool, NoError> { get }
+
   /// Emits opacity for arrow and whether to animate the change, used for launch transition.
   var arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
 
@@ -42,9 +45,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits whether the favorite container view is hidden.
   var favoriteViewIsHidden: Signal<Bool, NoError> { get }
-
-  /// Emits a category id to set gradient view color and whether the view is fullscreen.
-  var gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError> { get }
 
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
@@ -70,9 +70,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to show an onboarding alert for first time tapping the favorite button with the category name.
   var showFavoriteOnboardingAlert: Signal<String, NoError> { get }
 
-  /// Emits a color for all subviews.
-  var subviewColor: Signal<UIColor, NoError> { get }
-
   /// Emits a11y hint for title button.
   var titleButtonAccessibilityHint: Signal<String, NoError> { get }
 
@@ -91,8 +88,7 @@ public protocol DiscoveryNavigationHeaderViewModelType {
 public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeaderViewModelType,
   DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
@@ -112,7 +108,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
     let categoryId = paramsAndFiltersAreHidden.map(first).map { $0.category?.root?.id }
     let filtersAreHidden = paramsAndFiltersAreHidden.map(second)
-    let primaryColor = categoryId.map { discoveryPrimaryColor(forCategoryId: $0) }
 
     self.animateArrowToDown = filtersAreHidden
 
@@ -173,16 +168,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.showDiscoveryFilters = rowForFilters
       .takeWhen(paramsAndFiltersAreHidden.filter { !$0.filtersAreHidden })
 
-    self.subviewColor = primaryColor
-
-    let isFullScreen = Signal.merge(
+    self.animateBorderLineViewAndIsExpanded = Signal.merge(
       self.paramsProperty.signal.skipNil().mapConst(false),
       self.showDiscoveryFilters.mapConst(true),
       dismissFiltersSignal.mapConst(false)
     )
-
-    self.gradientViewCategoryIdForColor = Signal.combineLatest(categoryId, isFullScreen)
-      .map { (categoryId: $0, isFullScreen: $1) }
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
       .map { $0 ? Strings.Opens_filters() : Strings.Closes_filters()
@@ -207,10 +197,14 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { id, animated in (selected: isFavoriteCategoryStored(withId: id), animated: animated) }
 
     self.favoriteButtonAccessibilityLabel = self.updateFavoriteButton
-      .map { $0.selected ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label() :
-        Strings.discovery_favorite_categories_buttons_favorite_a11y_label() }
+      .map {
+        $0.selected
+          ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
+          : Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
+    }
 
-    self.showFavoriteOnboardingAlert = strings.map { $0.subcategory ?? $0.filter }
+    self.showFavoriteOnboardingAlert = strings
+      .map { Strings.category_name_saved(category_name: $0.subcategory ?? $0.filter) }
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
@@ -257,13 +251,13 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   }
 
   public let animateArrowToDown: Signal<Bool, NoError>
+  public let animateBorderLineViewAndIsExpanded: Signal<Bool, NoError>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
-  public let gradientViewCategoryIdForColor: Signal<(categoryId: Int?, isFullScreen: Bool), NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<Bool, NoError>
   public let primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError>
@@ -272,7 +266,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let secondaryLabelText: Signal<String, NoError>
   public let showDiscoveryFilters: Signal<SelectableRow, NoError>
   public let showFavoriteOnboardingAlert: Signal<String, NoError>
-  public let subviewColor: Signal<UIColor, NoError>
   public let titleButtonAccessibilityHint: Signal<String, NoError>
   public let titleButtonAccessibilityLabel: Signal<String, NoError>
   public let updateFavoriteButton: Signal<(selected: Bool, animated: Bool), NoError>
@@ -297,7 +290,7 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
     filterText = category.isRoot ? string(forCategoryId: category.id) : category.root?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
   } else if params.recommended == true {
-    filterText = Strings.discovery_recommended_for_you()
+    filterText = Strings.Recommended_For_You()
   } else {
     filterText = Strings.All_Projects()
   }

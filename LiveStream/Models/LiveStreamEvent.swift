@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import Argo
 import Curry
 import Prelude
@@ -37,12 +36,17 @@ public struct LiveStreamEvent: Equatable {
 
   public struct Firebase {
     public fileprivate(set) var apiKey: String
+    public fileprivate(set) var chatAvatarUrl: String?
     public fileprivate(set) var chatPath: String
+    public fileprivate(set) var chatPostPath: String?
+    public fileprivate(set) var chatUserId: String?
+    public fileprivate(set) var chatUserName: String?
     public fileprivate(set) var greenRoomPath: String
     public fileprivate(set) var hlsUrlPath: String
     public fileprivate(set) var numberPeopleWatchingPath: String
     public fileprivate(set) var project: String
     public fileprivate(set) var scaleNumberPeopleWatchingPath: String
+    public fileprivate(set) var token: String?
   }
 
   public struct OpenTok {
@@ -105,7 +109,7 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension LiveStreamEvent: Decodable {
+extension LiveStreamEvent: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
     let create = curry(LiveStreamEvent.init)
 
@@ -141,7 +145,7 @@ extension LiveStreamEvent: Decodable {
   }
 }
 
-extension LiveStreamEvent.BackgroundImage: Decodable {
+extension LiveStreamEvent.BackgroundImage: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<LiveStreamEvent.BackgroundImage> {
     return curry(LiveStreamEvent.BackgroundImage.init)
       <^> json <| "medium"
@@ -149,7 +153,7 @@ extension LiveStreamEvent.BackgroundImage: Decodable {
   }
 }
 
-extension LiveStreamEvent.Creator: Decodable {
+extension LiveStreamEvent.Creator: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Creator> {
     return curry(LiveStreamEvent.Creator.init)
       <^> json <| "creator_avatar"
@@ -157,22 +161,27 @@ extension LiveStreamEvent.Creator: Decodable {
   }
 }
 
-extension LiveStreamEvent.Firebase: Decodable {
+extension LiveStreamEvent.Firebase: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
     let create = curry(LiveStreamEvent.Firebase.init)
     let tmp = create
       <^> json <| "firebase_api_key"
+      <*> json <|? "avatar"
       <*> json <| "chat_path"
-      <*> json <| "green_room_path"
+      <*> json <|? "chat_post_path"
+      <*> json <|? "user_id"
+      <*> json <|? "user_name"
     return tmp
+      <*> json <| "green_room_path"
       <*> json <| "hls_url_path"
       <*> json <| "number_people_watching_path"
       <*> json <| "firebase_project"
       <*> json <| "scale_number_people_watching_path"
+      <*> json <|? "token"
   }
 }
 
-extension LiveStreamEvent.OpenTok: Decodable {
+extension LiveStreamEvent.OpenTok: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.OpenTok> {
     return curry(LiveStreamEvent.OpenTok.init)
       <^> json <| "app"
@@ -181,7 +190,7 @@ extension LiveStreamEvent.OpenTok: Decodable {
   }
 }
 
-extension LiveStreamEvent.Project: Decodable {
+extension LiveStreamEvent.Project: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Project> {
 
     // Sometimes the project id doesn't come back, and sometimes it comes back as `uid` even though it should
@@ -197,7 +206,7 @@ extension LiveStreamEvent.Project: Decodable {
   }
 }
 
-extension LiveStreamEvent.User: Decodable {
+extension LiveStreamEvent.User: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.User> {
     return curry(LiveStreamEvent.User.init)
       <^> json <| "is_subscribed"
@@ -232,6 +241,10 @@ extension LiveStreamEvent {
     public static let description = Lens<LiveStreamEvent, String>(
       view: { $0.description },
       set: { var new = $1; new.description = $0; return new }
+    )
+    public static let firebase = Lens<LiveStreamEvent, LiveStreamEvent.Firebase?>(
+      view: { $0.firebase },
+      set: { var new = $1; new.firebase = $0; return new }
     )
     public static let hasReplay = Lens<LiveStreamEvent, Bool>(
       view: { $0.hasReplay },
@@ -284,6 +297,59 @@ extension LiveStreamEvent {
     public static let webUrl = Lens<LiveStreamEvent, String>(
       view: { $0.webUrl },
       set: { var new = $1; new.webUrl = $0; return new }
+    )
+  }
+}
+
+extension LiveStreamEvent.Firebase {
+  public enum lens {
+    public static let apiKey = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.apiKey },
+      set: { var new = $1; new.apiKey = $0; return new }
+    )
+    public static let chatAvatarUrl = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatAvatarUrl },
+      set: { var new = $1; new.chatAvatarUrl = $0; return new }
+    )
+    public static let chatPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.chatPath },
+      set: { var new = $1; new.chatPath = $0; return new }
+    )
+    public static let chatPostPath = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatPostPath },
+      set: { var new = $1; new.chatPostPath = $0; return new }
+    )
+    public static let chatUserId = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatUserId },
+      set: { var new = $1; new.chatUserId = $0; return new }
+    )
+    public static let chatUserName = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.chatUserName },
+      set: { var new = $1; new.chatUserName = $0; return new }
+    )
+    public static let greenRoomPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.greenRoomPath },
+      set: { var new = $1; new.greenRoomPath = $0; return new }
+    )
+    public static let hlsUrlPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.hlsUrlPath },
+      set: { var new = $1; new.hlsUrlPath = $0; return new }
+    )
+    public static let numberPeopleWatchingPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.numberPeopleWatchingPath },
+      set: { var new = $1; new.numberPeopleWatchingPath = $0; return new }
+    )
+    public static let project = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.project },
+      set: { var new = $1; new.project = $0; return new }
+    )
+    public static let scaleNumberPeopleWatchingPath = Lens<LiveStreamEvent.Firebase, String>(
+      view: { $0.scaleNumberPeopleWatchingPath },
+      set: { var new = $1; new.scaleNumberPeopleWatchingPath = $0; return new }
+    )
+    public static let token = Lens<LiveStreamEvent.Firebase, String?>(
+      view: { $0.token },
+      set: { var new = $1; new.token = $0; return new }
     )
   }
 }

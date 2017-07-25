@@ -4,13 +4,13 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
-OS ?= 10.2
+OS ?= 10.3.1
 RELEASE ?= beta
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 7,OS=10.2'
+	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 7,OS=$(OS)'
 endif
 
 XCPRETTY :=
@@ -91,20 +91,20 @@ lint:
 	swiftlint lint --reporter json --strict
 
 strings:
-	cat Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
+	cat Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
 		| xcrun -sdk macosx swift -
 
 secrets:
-	-@rm -rf Frameworks/ios-ksapi/Frameworks/native-secrets
-	-@git clone https://github.com/kickstarter/native-secrets Frameworks/ios-ksapi/Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
-	if [ ! -d Frameworks/ios-ksapi/Frameworks/native-secrets ]; \
+	-@rm -rf Frameworks/native-secrets
+	-@git clone https://github.com/kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
+	if [ ! -d Frameworks/native-secrets ]; \
 	then \
-		mkdir -p Frameworks/ios-ksapi/Frameworks/native-secrets/ios \
-		&& cp -n Configs/Secrets.swift.example Frameworks/ios-ksapi/Frameworks/native-secrets/ios/Secrets.swift \
+		mkdir -p Frameworks/native-secrets/ios \
+		&& cp -n Configs/Secrets.swift.example Frameworks/native-secrets/ios/Secrets.swift \
 		|| true; \
 	fi
 
-OPENTOK_VERSION = 2.10.0
+OPENTOK_VERSION = 2.10.2
 VERSION_FILE = Frameworks/OpenTok/version
 CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
 ifeq ($(CURRENT_OPENTOK_VERSION),)

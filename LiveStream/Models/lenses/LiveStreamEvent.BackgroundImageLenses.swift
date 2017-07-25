@@ -1,4 +1,3 @@
-// swiftlint:disable type_name
 import Prelude
 
 extension LiveStreamEvent.BackgroundImage {
@@ -10,8 +9,8 @@ extension LiveStreamEvent.BackgroundImage {
   }
 }
 
-extension LensType where Whole == LiveStreamEvent, Part == LiveStreamEvent.BackgroundImage {
+extension Lens where Whole == LiveStreamEvent, Part == LiveStreamEvent.BackgroundImage {
   public var smallCropped: Lens<Whole, String> {
-    return LiveStreamEvent.lens.backgroundImage • LiveStreamEvent.BackgroundImage.lens.smallCropped
+    return LiveStreamEvent.lens.backgroundImage..LiveStreamEvent.BackgroundImage.lens.smallCropped
   }
 }

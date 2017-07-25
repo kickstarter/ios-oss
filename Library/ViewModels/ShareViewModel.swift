@@ -31,7 +31,7 @@ private let firstPartyShareTypes: [UIActivityType] = [.postToFacebook, .postToTw
 
 public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
-  func configureWith(shareContext: ShareContext)
+  func configureWith(shareContext: ShareContext, shareContextView: UIView?)
 
   /// Call when the direct-share facebook button is pressed.
   func facebookButtonTapped()
@@ -54,7 +54,7 @@ public protocol ShareViewModelOutputs {
   var showShareCompose: Signal<SLComposeViewController, NoError> { get }
 
   /// Emits when the share sheet should be presented.
-  var showShareSheet: Signal<UIActivityViewController, NoError> { get }
+  var showShareSheet: Signal<(UIActivityViewController, UIView?), NoError> { get }
 }
 
 public protocol ShareViewModelType {
@@ -64,13 +64,16 @@ public protocol ShareViewModelType {
 
 public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, ShareViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
-    let shareContext = self.shareContextProperty.signal.skipNil()
+    public init() {
+    let shareContextAndView = self.shareContextProperty.signal.skipNil()
+    let shareContext = self.shareContextProperty.signal.skipNil().map(first)
 
-    self.showShareSheet = shareContext
+    self.showShareSheet = shareContextAndView
       .takeWhen(self.shareButtonTappedProperty.signal)
-      .map(activityController(forShareContext:))
+      .map { (context, view) -> (UIActivityViewController, UIView?)? in
+        guard let controller = activityController(forShareContext: context) else { return nil }
+        return (controller, view)
+      }
       .skipNil()
 
     let directShareService = Signal.merge(
@@ -78,7 +81,8 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       self.twitterButtonTappedProperty.signal.mapConst(SLServiceTypeTwitter)
       )
 
-    self.showShareCompose = Signal.combineLatest(shareContext, directShareService)
+    self.showShareCompose = shareContext
+      .takePairWhen(directShareService)
       .map(shareComposeController(forShareContext:serviceType:))
       .skipNil()
 
@@ -152,9 +156,9 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let shareContextProperty = MutableProperty<ShareContext?>(nil)
-  public func configureWith(shareContext: ShareContext) {
-    self.shareContextProperty.value = shareContext
+  fileprivate let shareContextProperty = MutableProperty<(ShareContext, UIView?)?>(nil)
+  public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {
+    self.shareContextProperty.value = (shareContext, shareContextView)
   }
   fileprivate let facebookButtonTappedProperty = MutableProperty()
   public func facebookButtonTapped() {
@@ -178,7 +182,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   }
 
   public let showShareCompose: Signal<SLComposeViewController, NoError>
-  public let showShareSheet: Signal<UIActivityViewController, NoError>
+  public let showShareSheet: Signal<(UIActivityViewController, UIView?), NoError>
 
   public var inputs: ShareViewModelInputs { return self }
   public var outputs: ShareViewModelOutputs { return self }
@@ -188,6 +192,8 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
 
   switch shareContext {
   case let .creatorDashboard(project):
+    return ProjectActivityItemProvider(project: project)
+  case let .discovery(project):
     return ProjectActivityItemProvider(project: project)
   case let .liveStream(_, liveStreamEvent):
     return LiveStreamActivityItemProvider(liveStreamEvent: liveStreamEvent)
@@ -204,6 +210,8 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
 
   switch shareContext {
   case let .creatorDashboard(project):
+    return URL(string: project.urls.web.project)
+  case let .discovery(project):
     return URL(string: project.urls.web.project)
   case let .project(project):
     return URL(string: project.urls.web.project)
@@ -243,6 +251,8 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
 
   switch shareContext {
   case let .creatorDashboard(project):
+    return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
+  case let .discovery(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .liveStream(_, liveStreamEvent):
     return twitterInitialText(forLiveStreamEvent: liveStreamEvent)

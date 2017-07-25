@@ -19,9 +19,6 @@ public protocol ProjectNavBarViewModelInputs {
 public protocol ProjectNavBarViewModelOutputs {
   var backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError> { get }
 
-  /// Emits the color of the category button's background.
-  var categoryButtonBackgroundColor: Signal<UIColor, NoError> { get }
-
   /// Emits the category button's title text.
   var categoryButtonText: Signal<String, NoError> { get }
 
@@ -63,8 +60,7 @@ public protocol ProjectNavBarViewModelType {
 public final class ProjectNavBarViewModel: ProjectNavBarViewModelType,
 ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
-  // swiftlint:disable function_body_length
-  public init() {
+    public init() {
     let configuredProjectAndRefTag = Signal.combineLatest(
       self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
@@ -120,24 +116,16 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map(first)
 
     let revertStarToggle = projectOnStarToggle
-      .takeWhen(projectOnStarToggleAndSuccess.filter(negate • second))
+      .takeWhen(projectOnStarToggleAndSuccess.filter(second >>> isFalse))
       .map(toggleStarLens)
 
     let project = Signal
       .merge(configuredProject, projectOnStarToggle, projectOnStarToggleSuccess, revertStarToggle)
 
-    self.categoryButtonBackgroundColor = configuredProject.map {
-        discoveryGradientColors(forCategoryId: $0.category.rootId).0.withAlphaComponent(0.8)
-      }
-      .skipRepeats()
-
     self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
       .skipRepeats()
 
-    self.categoryButtonTintColor = configuredProject.map {
-      discoveryPrimaryColor(forCategoryId: $0.category.rootId)
-      }
-      .skipRepeats()
+    self.categoryButtonTintColor = configuredProject.mapConst(discoveryPrimaryColor())
 
     self.categoryButtonTitleColor = self.categoryButtonTintColor
 
@@ -254,7 +242,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   }
 
   public let backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError>
-  public let categoryButtonBackgroundColor: Signal<UIColor, NoError>
   public let categoryButtonText: Signal<String, NoError>
   public let categoryButtonTintColor: Signal<UIColor, NoError>
   public let categoryButtonTitleColor: Signal<UIColor, NoError>

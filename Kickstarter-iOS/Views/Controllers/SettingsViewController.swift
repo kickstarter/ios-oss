@@ -5,8 +5,6 @@ import Prelude
 import SafariServices
 import UIKit
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
@@ -67,7 +65,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
   @IBOutlet fileprivate weak var updatesButton: UIButton!
   @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var wereAllEarsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
 
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
@@ -84,7 +81,7 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.configureWith(helpContext: .settings)
     self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
 
-    if let _ = self.presentingViewController {
+    if self.presentingViewController != nil {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
 
@@ -131,8 +128,7 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindStyles() {
+    internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -289,7 +285,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.rateUsLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_rate_us() }
+      |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -310,15 +306,10 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.numberOfLines .~ 0
-
-    _ = self.wereAllEarsTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_rating_title() }
   }
   // swiftlint:enable function_body_length
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.goToAppStoreRating

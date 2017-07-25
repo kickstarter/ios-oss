@@ -38,9 +38,8 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar ?|> baseNavigationBarStyle
+    _ = self
+      |> baseControllerStyle()
 
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
 
@@ -59,8 +58,7 @@ internal final class UpdateDraftViewController: UIViewController {
     _ = self.separatorViews ||> separatorStyle
   }
 
-  // swiftlint:disable function_body_length
-  internal override func bindViewModel() {
+    internal override func bindViewModel() {
     super.bindViewModel()
 
     self.addAttachmentExpandedButton.rac.hidden =

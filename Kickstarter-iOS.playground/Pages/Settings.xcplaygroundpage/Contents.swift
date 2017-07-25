@@ -3,7 +3,7 @@ import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Set the user's backed project count stats.
@@ -13,13 +13,13 @@ let user = .template
 
 // Set the device language and environment.
 AppEnvironment.replaceCurrentEnvironment(
-  language: .en,
-  locale: NSLocale(localeIdentifier: "en"),
-  mainBundle: NSBundle.framework,
   apiService: MockService(
-    fetchUserSelfResponse: user,
-    oauthToken: OauthToken(token: "deadbeef")
-  )
+    oauthToken: OauthToken(token: "deadbeef"),
+    fetchUserSelfResponse: user
+    ),
+  language: .en,
+  locale: Locale(identifier: "en") as Locale,
+  mainBundle: Bundle(for: RootViewModel.self)
 )
 
 // Instantiate the Settings view controller.
@@ -31,5 +31,5 @@ let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .por
 
 // Render the screen.
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
-XCPlaygroundPage.currentPage.liveView = parent
+PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
