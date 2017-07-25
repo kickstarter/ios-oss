@@ -597,7 +597,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([true])
     self.titleLabelText.assertValues([""])
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_500])
+    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
   }
 
   func testTitleLabel_WithTitle_NotAllGone() {
@@ -612,7 +612,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([false])
     self.titleLabelText.assertValues(["The thing"])
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_500])
+    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
   }
 
   func testTitleLabel_WithTitle_AllGone() {
@@ -627,7 +627,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([false])
     self.titleLabelText.assertValues(["The thing"])
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_400])
+    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_500])
   }
 
   func testTitleLabelColor_WithTitle_AllGone_NonLive() {
@@ -640,7 +640,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_500])
+    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
   }
 
   func testYoureABacker_WhenYoureABacker() {
@@ -780,6 +780,6 @@ final class RewardCellViewModelTests: TestCase {
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_500])
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_900])
   }
 }

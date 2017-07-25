@@ -256,7 +256,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_400])
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
   func testPledgedLabels_WhenConversionNotNeeded() {
@@ -354,7 +354,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .failed
     self.vm.inputs.configureWith(project: project)
 
-    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_400])
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
   func testProjectUnsuccessfulLabelTextColor_UnsuccessfulProjects() {
@@ -362,7 +362,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .failed
     self.vm.inputs.configureWith(project: project)
 
-    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_400])
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
   func testStateLabelHidden_LiveProject() {

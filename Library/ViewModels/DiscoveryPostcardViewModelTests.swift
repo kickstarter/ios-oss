@@ -287,7 +287,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let suspended = .template |> Project.lens.state .~ .suspended
 
     let greenColor = UIColor.ksr_text_green_700
-    let navyColor = UIColor.ksr_text_dark_grey_500
+    let navyColor = UIColor.ksr_text_dark_grey_900
 
     self.vm.inputs.configureWith(project: live)
     self.projectStateStackViewHidden.assertValues([true])
