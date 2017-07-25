@@ -110,8 +110,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { $0.projects }
+          .prefix(value: [])
       }
-      .skipRepeats(==)
       //boris-fixme delete
       .logEvents(identifier: ">>>> projects")
 
