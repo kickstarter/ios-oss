@@ -46,7 +46,7 @@ extension DispatchTimeInterval {
       case .nanoseconds(let ns):
         return Int64(ns)
       case .never:
-        return .infinity
+        return Int64(0)
       }
     #else
       switch self {
