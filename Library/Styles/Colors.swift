@@ -137,6 +137,11 @@ extension UIColor {
     return .hex(0x122C49)
   }
 
+  /// 0x00C88A
+  public static var ksr_green: UIColor {
+    return .hex(0x00C88A)
+  }
+
   /// 0x2BDE73
   public static var ksr_green_400: UIColor {
     return .hex(0x2BDE73)
