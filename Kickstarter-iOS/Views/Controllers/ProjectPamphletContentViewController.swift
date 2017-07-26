@@ -50,7 +50,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 450)
       |> (UITableViewController.lens.tableView..UITableView.lens.delaysContentTouches) .~ false
       |> (UITableViewController.lens.tableView..UITableView.lens.canCancelContentTouches) .~ true
-      |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
   public override func bindViewModel() {

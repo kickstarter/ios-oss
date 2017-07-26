@@ -110,6 +110,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.cardView
       |> rewardDropShadowStyle()
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.minimumLabel
       |> UILabel.lens.font .~ .ksr_title2(size: 24)
@@ -194,7 +195,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
-    self.cardView.rac.backgroundColor = self.viewModel.outputs.cardViewBackgroundColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor

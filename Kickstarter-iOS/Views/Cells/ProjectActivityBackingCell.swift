@@ -144,7 +144,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       |> projectActivityBulletSeparatorViewStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.footerDividerView
       |> projectActivityDividerViewStyle

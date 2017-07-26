@@ -11,7 +11,6 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
 
   fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
-  fileprivate let cardViewBackgroundColor = TestObserver<UIColor, NoError>()
   fileprivate let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelText = TestObserver<String, NoError>()
@@ -39,7 +38,6 @@ final class RewardCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.allGoneHidden.observe(self.allGoneHidden.observer)
-    self.vm.outputs.cardViewBackgroundColor.observe(self.cardViewBackgroundColor.observer)
     self.vm.outputs.cardViewDropShadowHidden.observe(self.cardViewDropShadowHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
@@ -94,17 +92,6 @@ final class RewardCellViewModelTests: TestCase {
 
     self.allGoneHidden.assertValues([true, false, true, false],
                                     "All gone indicator visible when none remaining and project over.")
-  }
-
-  func testCardViewBackgroundColor() {
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewBackgroundColor.assertValues([UIColor.white])
-
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
-    self.cardViewBackgroundColor.assertValues([UIColor.white, UIColor.white])
   }
 
   func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {

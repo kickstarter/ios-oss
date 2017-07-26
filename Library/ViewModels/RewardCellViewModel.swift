@@ -11,7 +11,6 @@ public protocol RewardCellViewModelInputs {
 
 public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
-  var cardViewBackgroundColor: Signal<UIColor, NoError> { get }
   var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
@@ -215,10 +214,6 @@ RewardCellViewModelOutputs {
       )
       .map(first)
 
-    self.cardViewBackgroundColor = Signal.combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
-      .map(first)
-      .map { _ in .white }
-
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
       .filter(isTrue)
@@ -256,7 +251,6 @@ RewardCellViewModelOutputs {
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
-  public let cardViewBackgroundColor: Signal<UIColor, NoError>
   public let cardViewDropShadowHidden: Signal<Bool, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
