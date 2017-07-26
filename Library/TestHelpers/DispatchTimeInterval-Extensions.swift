@@ -12,8 +12,10 @@ extension DispatchTimeInterval {
       return .nanoseconds(Int(Float(interval * 1_000) * scale))
     case let .nanoseconds(interval):
       return .nanoseconds(Int(Float(interval) * scale))
+      #if swift(>=3.2)
     case .never:
       return .never
+      #endif
     }
   }
 
@@ -31,8 +33,10 @@ extension DispatchTimeInterval {
       return Int64(us) * Int64(NSEC_PER_USEC)
     case .nanoseconds(let ns):
       return Int64(ns)
+      #if swift(>=3.2)
     case .never:
       return Int64(0)
+      #endif
     }
   }
 
