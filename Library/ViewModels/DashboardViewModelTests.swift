@@ -8,6 +8,12 @@ import XCTest
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
+typealias ProjectMessageThread = (Project, MessageThread)
+
+func ==(lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
+  return lhs.0 == rhs.0 && lhs.1 == rhs.1
+}
+
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
   internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
@@ -21,6 +27,7 @@ internal final class DashboardViewModelTests: TestCase {
   internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], NoError>()
   internal let updateTitleViewData = TestObserver<DashboardTitleViewData, NoError>()
   internal let focusScreenReaderOnTitleView = TestObserver<(), NoError>()
+  internal let goToMessageThread = TestObserver<Project, NoError>()
 
   let project1 = Project.template
   let project2 = .template |> Project.lens.id .~ 4
@@ -40,6 +47,7 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.animateOutProjectsDrawer.observe(self.animateOutProjectsDrawer.observer)
     self.vm.outputs.updateTitleViewData.observe(self.updateTitleViewData.observer)
     self.vm.outputs.focusScreenReaderOnTitleView.observe(self.focusScreenReaderOnTitleView.observer)
+    self.vm.outputs.goToMessageThread.map { $0.0 }.observe(self.goToMessageThread.observer)
   }
 
   func testDashboardTracking() {
@@ -323,6 +331,37 @@ internal final class DashboardViewModelTests: TestCase {
     }
   }
 
+  func testGoToThread() {
+    let projects = (0...4).map { .template |> Project.lens.id .~ $0 }
+    let thread = MessageThread.template
+
+    let threadProj = projects[1]
+    let otherProj = projects[2]
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      self.project.assertValues([])
+
+      self.vm.inputs.goToProjectMessageThread(projectId: .id(threadProj.id), messageThread: thread)
+      self.project.assertValues([])
+
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      self.goToMessageThread.assertValues([threadProj], "Go to message thread emitted")
+      self.project.assertValues([threadProj], "Thread project is selected")
+
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      self.goToMessageThread.assertValues([threadProj], "Go to message thread not emitted again when view appears")
+
+      self.project.assertValues([threadProj], "Keep previeiosly selected when view Appers")
+
+    }
+  }
+
+
+
   func testProjectsDrawer_OpenClose() {
     let project1 = Project.template
     let project2 = .template |> Project.lens.id .~ 4
@@ -427,6 +466,5 @@ internal final class DashboardViewModelTests: TestCase {
                      self.trackingClient.properties(forKey: "project_pid", as: Int.self))
     }
   }
-
 
 }
