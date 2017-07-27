@@ -128,14 +128,16 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { (projects, $0) }
       }
 
-      let messageTreadReseaved = SignalProducer.merge(
-        self.viewWillDisappearProperty.producer.mapConst(nil),
-        self.goToProjectMessageThreadProperty.producer
+      let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+
+      messageThreadReceived <~ Signal.merge(
+        self.viewWillDisappearProperty.signal.mapConst(nil),
+        self.goToProjectMessageThreadProperty.signal
       )
 
     let projectAndThreadFromPush = projects
-      .switchMap { [messageTreadReseaved] projects in
-        messageTreadReseaved
+      .switchMap { projects in
+        messageThreadReceived.producer
           .skipNil()
           .map { paramThreadPair -> ([Project], Project, MessageThread)? in
             guard let project = find(projectForParam: paramThreadPair.0, in: projects) else {
