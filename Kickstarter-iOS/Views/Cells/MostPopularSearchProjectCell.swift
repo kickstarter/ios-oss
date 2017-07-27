@@ -8,19 +8,18 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: SearchProjectCellViewModelType = SearchProjectCellViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var metadataLabel: UILabel!
+  @IBOutlet fileprivate weak var percentFundedLabel: UILabel!
+  @IBOutlet fileprivate weak var progressBarView: UIView!
+  @IBOutlet fileprivate weak var progressStaticView: UIView!
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
   @IBOutlet fileprivate weak var projectInfoOverlayView: UIView!
   @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
   @IBOutlet fileprivate weak var projectNameLabel: UILabel!
   @IBOutlet fileprivate weak var separateView: UIView!
-
-  @IBOutlet fileprivate weak var progressStaticView: UIView!
-  @IBOutlet fileprivate weak var progressBarView: UIView!
-  @IBOutlet fileprivate weak var percentFundedLabel: UILabel!
-  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
-  @IBOutlet fileprivate weak var metadataLabel: UILabel!
-  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var statsStackView: UIStackView!
 
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
@@ -41,7 +40,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyleLarge()
 
-    _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(1)
+    _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(6)
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
@@ -68,6 +67,9 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.metadataIconImageView
       |> UIImageView.lens.tintColor .~ .white
 
+    _ = self.percentFundedLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
@@ -92,13 +94,12 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
     self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
-    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlFull
-
-    self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
+    self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
     self.percentFundedLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
+    self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlFull
+    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
 
     self.viewModel.outputs.progress
       .observeForUI()
@@ -107,6 +108,5 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
         element?.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
         element?.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
     }
-
   }
 }
