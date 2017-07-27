@@ -10,7 +10,7 @@ import XCTest
 
 typealias ProjectMessageThread = (Project, MessageThread)
 
-func ==(lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
+func == (lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
   return lhs.0 == rhs.0 && lhs.1 == rhs.1
 }
 
@@ -353,14 +353,13 @@ internal final class DashboardViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
-      self.goToMessageThread.assertValues([threadProj], "Go to message thread not emitted again when view appears")
+      self.goToMessageThread.assertValues([threadProj],
+                                          "Go to message thread not emitted again when view appears")
 
       self.project.assertValues([threadProj], "Keep previeiosly selected when view Appers")
 
     }
   }
-
-
 
   func testProjectsDrawer_OpenClose() {
     let project1 = Project.template
