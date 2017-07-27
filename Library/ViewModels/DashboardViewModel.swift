@@ -27,14 +27,14 @@ public struct ProjectsDrawerData {
 
 public protocol DashboardViewModelInputs {
 
-  /// Call to open message thread for specific project
-  func goToProjectMessageThread(projectId: Param, messageThread: MessageThread)
-
   /// Call to switch display to another project from the drawer.
   func `switch`(toProject param: Param)
 
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
+
+  /// Call to open message thread for specific project
+  func messageThreadNavigated(projectId: Param, messageThread: MessageThread)
 
   /// Call to open project messages thread
   func openMessageThreadRequested()
@@ -106,8 +106,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     public init() {
 
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
-      //boris-fixme delete
-      .logEvents(identifier: ">>>> viewWillAppearAnimatedProperty")
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -115,8 +113,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { $0.projects }
           .prefix(value: [])
       }
-      //boris-fixme delete
-      .logEvents(identifier: ">>>> projects")
 
     let projectsAndSelectedDirectly = projects
       .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
@@ -132,7 +128,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
       messageThreadReceived <~ Signal.merge(
         self.viewWillDisappearProperty.signal.mapConst(nil),
-        self.goToProjectMessageThreadProperty.signal
+        self.messageThreadNavigatedProperty.signal
       )
 
     let projectAndThreadFromPush = projects
@@ -148,8 +144,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           }
           .skipNil()
       }
-      //boris-fixme delete
-      .logEvents(identifier: ">>>> projectAndThreadFromPush")
 
     let projectsAndSelected = Signal.merge(
       projectsAndSelectedDirectly.map { ($0.0, $0.1, nil) },
@@ -158,8 +152,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     self.project = projectsAndSelected.map(second)
 
     self.goToMessageThread = projectAndThreadFromPush.map { ($0.1, $0.2) }
-      //boris-fixme delete
-      .logEvents(identifier: ">>>> Go to message thread")
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
@@ -293,13 +285,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   }
   fileprivate let switchToProjectProperty = MutableProperty<Param?>(nil)
   public func `switch`(toProject param: Param) {
-    //boris-fixme delete
-    print(">>>>> About to set project param \(param)")
     self.switchToProjectProperty.value = param
   }
-  fileprivate let goToProjectMessageThreadProperty = MutableProperty<(Param, MessageThread)?>(nil)
-  public func goToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
-    self.goToProjectMessageThreadProperty.value = (projectId, messageThread)
+  fileprivate let messageThreadNavigatedProperty = MutableProperty<(Param, MessageThread)?>(nil)
+  public func messageThreadNavigated(projectId: Param, messageThread: MessageThread) {
+    self.messageThreadNavigatedProperty.value = (projectId, messageThread)
   }
   fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty()
   public func dashboardProjectsDrawerDidAnimateOut() {

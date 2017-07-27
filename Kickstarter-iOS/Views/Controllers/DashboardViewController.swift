@@ -240,8 +240,8 @@ internal final class DashboardViewController: UITableViewController {
     self.navigationController?.setViewControllers([self, threadsVC, messageThreadVC], animated: true)
   }
 
-  public func goToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
-    self.viewModel.inputs.goToProjectMessageThread(projectId: projectId, messageThread: messageThread)
+  public func navigateToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
+    self.viewModel.inputs.messageThreadNavigated(projectId: projectId, messageThread: messageThread)
   }
 }
 

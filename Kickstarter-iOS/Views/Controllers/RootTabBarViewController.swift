@@ -66,7 +66,6 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.outputs.switchDashboardProject
       .observeForControllerAction()
       .observeValues { $0.`switch`(toProject: $1) }
-
   }
 
   public func switchToActivities() {
@@ -113,11 +112,7 @@ public final class RootTabBarViewController: UITabBarController {
           let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
       else { return }
 
-    //boris-fixme remove
-    print(">>>>> Dashboard nav on top")
-
-    dashboardVC.goToProjectMessageThread(projectId: projectId, messageThread: messageThread)
-
+     dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
   // swiftlint:disable:next cyclomatic_complexity

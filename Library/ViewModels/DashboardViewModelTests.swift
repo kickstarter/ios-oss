@@ -341,7 +341,7 @@ internal final class DashboardViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
       self.project.assertValues([])
 
-      self.vm.inputs.goToProjectMessageThread(projectId: .id(threadProj.id), messageThread: thread)
+      self.vm.inputs.messageThreadNavigated(projectId: .id(threadProj.id), messageThread: thread)
       self.project.assertValues([])
 
       self.vm.inputs.viewWillAppear(animated: false)

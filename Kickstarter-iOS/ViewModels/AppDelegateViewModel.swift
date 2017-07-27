@@ -312,8 +312,6 @@ AppDelegateViewModelOutputs {
 
     let deepLinkFromNotification = pushEnvelope
       .map(navigation(fromPushEnvelope:))
-      //boris-fixme: remove do
-      .logEvents(identifier: "✨deepLinkFromNotification✨")
 
     // Deep links
 
@@ -412,15 +410,13 @@ AppDelegateViewModelOutputs {
         return .some((projectId, messageThreadId: messageThreadId))
       }
       .skipNil()
-      .map { ($0.0, MessageThread.template) }
-      //boris-fixme uncomment this code
-//      .switchMap { projectId, messageThreadId in
-//        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
-//          .demoteErrors()
-//          .map { (env:MessageThreadEnvelope) in
-//            return (projectId, env.messageThread)
-//          }
-//      }
+      .switchMap { projectId, messageThreadId in
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
+          .demoteErrors()
+          .map { (env:MessageThreadEnvelope) in
+            return (projectId, env.messageThread)
+          }
+      }
 
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
@@ -428,17 +424,13 @@ AppDelegateViewModelOutputs {
         return .some(messageThreadId)
       }
       .skipNil()
-      .map { _ in MessageThread.template }
-      //boris-fixme uncomment this
-//      .switchMap {
-//        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
-//          .demoteErrors()
-//          .map { (env:MessageThreadEnvelope) in
-//            //boris-fixme delete these changes
-//            print("Env: \(env)")
-//            return env.messageThread
-//          }
-//    }
+      .switchMap {
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
+          .demoteErrors()
+          .map { (env:MessageThreadEnvelope) in
+            return env.messageThread
+          }
+     }
 
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
