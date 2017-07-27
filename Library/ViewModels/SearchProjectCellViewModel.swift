@@ -173,6 +173,3 @@ private func stateString(for project: Project) -> String {
     return ""
   }
 }
-
-
-

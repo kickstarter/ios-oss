@@ -65,7 +65,6 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
     self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlMed
     self.projectLabel.rac.attributedText = self.viewModel.outputs.projectNameLabelText
 
-
     self.viewModel.outputs.progress
       .observeForUI()
       .observeValues { [weak element = progressBarView] progress in
