@@ -46,6 +46,12 @@ internal final class DashboardViewController: UITableViewController {
       |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.viewModel.inputs.viewWillDisappear()
+  }
+
   internal override func bindViewModel() {
     super.bindViewModel()
 

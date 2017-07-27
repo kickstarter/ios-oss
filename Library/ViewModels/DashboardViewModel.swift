@@ -47,6 +47,9 @@ public protocol DashboardViewModelInputs {
 
   /// Call when the view will appear.
   func viewWillAppear(animated: Bool)
+
+  /// Call when the view will disappear
+  func viewWillDisappear()
 }
 
 public protocol DashboardViewModelOutputs {
@@ -125,9 +128,14 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { (projects, $0) }
       }
 
+      let messageTreadReseaved = SignalProducer.merge(
+        self.viewWillDisappearProperty.producer.mapConst(nil),
+        self.goToProjectMessageThreadProperty.producer
+      )
+
     let projectAndThreadFromPush = projects
-      .switchMap { [switchToProjectThread = self.goToProjectMessageThreadProperty.producer] projects in
-        switchToProjectThread
+      .switchMap { [messageTreadReseaved] projects in
+        messageTreadReseaved
           .skipNil()
           .map { paramThreadPair -> ([Project], Project, MessageThread)? in
             guard let project = find(projectForParam: paramThreadPair.0, in: projects) else {
@@ -298,6 +306,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
+  }
+  fileprivate let viewWillDisappearProperty = MutableProperty()
+  public func viewWillDisappear() {
+    self.viewWillDisappearProperty.value = ()
   }
   fileprivate let openMessageThreadRequestedProperty = MutableProperty()
   public func openMessageThreadRequested() {
