@@ -32,7 +32,7 @@ internal final class SearchDataSource: ValueCellDataSource {
 
     if !projects.isEmpty {
       projects.suffix(from: 1).forEach {
-        self.appendRow(value: $0, cellClass: SearchProjectCell.self, toSection: Section.projects.rawValue)
+        self.appendRow(value: $0, cellClass: BackerDashboardProjectCell.self, toSection: Section.projects.rawValue)
       }
     }
   }
@@ -43,7 +43,7 @@ internal final class SearchDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SearchProjectCell, value as Project):
+    case let (cell as BackerDashboardProjectCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as MostPopularSearchProjectCell, value as Project):
       cell.configureWith(value: value)
