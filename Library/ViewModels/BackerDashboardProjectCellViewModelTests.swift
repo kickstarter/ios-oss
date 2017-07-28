@@ -21,7 +21,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     self.vm.outputs.metadataIconIsHidden.observe(self.metadataIconIsHidden.observer)
     self.vm.outputs.metadataText.observe(self.metadataText.observer)
     self.vm.outputs.percentFundedText.map { $0.string }.observe(self.percentFundedText.observer)
