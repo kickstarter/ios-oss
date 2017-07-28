@@ -42,7 +42,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
-    self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
+    self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)

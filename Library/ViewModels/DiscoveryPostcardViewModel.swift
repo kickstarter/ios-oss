@@ -76,11 +76,24 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
+  //fixme remove metadataData and PostcardMetadataData if not used
   /// Emits the disparate data to be displayed on the metadata view label.
-  var metadataData: Signal<PostcardMetadataData, NoError> { get }
+  // var metadataData: Signal<PostcardMetadataData, NoError> { get }
+
+  /// Emits matadata label text
+  var metadataLabelText: Signal<String, NoError> { get }
+
+  /// Emits metadata icon name
+  var metadataIcon: Signal<UIImage?, NoError> { get }
+
+  /// Emits metadata icon and text color
+  var metadataIconAndTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits a boolean to determine if metadata icon should be hidden
   var metadataIconHidden: Signal<Bool, NoError> { get }
+
+  /// Emits icon image tint color
+  var metadataIconImageViewTintColor: Signal<UIColor, NoError> { get }
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
@@ -136,7 +149,7 @@ public protocol DiscoveryPostcardViewModelType {
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
 
-    public init() {
+  public init() {
     let project = self.projectProperty.signal.skipNil()
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
@@ -169,7 +182,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.metadataData = project.map(postcardMetadata(forProject:)).skipNil()
+
+    let metadataData = project.map(postcardMetadata(forProject:)).skipNil()
+
+    self.metadataIcon = metadataData.map { $0.iconImage }
+    self.metadataLabelText = metadataData.map { $0.labelText }
+    self.metadataIconAndTextColor = metadataData.map { $0.iconAndTextColor }
+    self.metadataIconImageViewTintColor = metadataData.map { $0.iconAndTextColor }
 
     self.metadataIconHidden = project.map { p in
       let today = AppEnvironment.current.dateType.init().date
@@ -260,8 +279,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
-  public let metadataData: Signal<PostcardMetadataData, NoError>
+  public let metadataLabelText: Signal<String, NoError>
+  public let metadataIcon: Signal<UIImage?, NoError>
+  public let metadataIconAndTextColor: Signal<UIColor, NoError>
   public let metadataIconHidden: Signal<Bool, NoError>
+  public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
