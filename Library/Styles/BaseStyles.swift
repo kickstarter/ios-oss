@@ -81,12 +81,6 @@ public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
       <> V.lens.layer.shadowOffset .~ offset
 }
 
-public func rewardDropShadowStyle <V: UIViewProtocol> () -> ((V) -> V) {
-  return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
-    <> V.lens.layer.shadowOpacity .~ 0.17
-    <> V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
-}
-
 public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {
   return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
     <> V.lens.layer.shadowOpacity .~ 0.17
