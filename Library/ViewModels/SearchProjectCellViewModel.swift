@@ -125,7 +125,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
   case .live, .successful:
     return NSAttributedString(string: percentage, attributes: [
       NSFontAttributeName: UIFont.ksr_caption1().bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_green
+      NSForegroundColorAttributeName: UIColor.ksr_text_green_700
       ])
   default:
     return NSAttributedString(string: percentage, attributes: [
@@ -138,7 +138,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
 private func progressBarColor(for project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
-    return .ksr_green
+    return .ksr_green_400
   default:
     return .ksr_navy_500
   }
