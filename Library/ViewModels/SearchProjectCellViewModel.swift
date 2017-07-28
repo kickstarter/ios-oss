@@ -10,14 +10,12 @@ public protocol SearchProjectCellViewModelInputs {
 public protocol SearchProjectCellViewModelOutputs {
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
-  var fundingLargeLabelText: Signal<NSAttributedString, NoError> { get }
   var fundingSmallLabelText: Signal<NSAttributedString, NoError> { get }
-  var projectImageUrlMed: Signal<URL?, NoError> { get }
+  var fundingLargeLabelText: Signal<NSAttributedString, NoError> { get }
   var projectImageUrlFull: Signal<URL?, NoError> { get }
-  var projectNameLabelText: Signal<NSAttributedString, NoError> { get }
-
+  var projectImageUrlMed: Signal<URL?, NoError> { get }
   var projectName: Signal<String, NoError> { get }
-
+  var projectNameLabelText: Signal<NSAttributedString, NoError> { get }
   var progress: Signal<Float, NoError> { get }
   var progressBarColor: Signal<UIColor, NoError> { get }
   var percentFundedText: Signal<NSAttributedString, NoError> { get }
@@ -138,7 +136,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
 private func progressBarColor(for project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
-    return .ksr_green_400
+    return .ksr_green_500
   default:
     return .ksr_navy_500
   }

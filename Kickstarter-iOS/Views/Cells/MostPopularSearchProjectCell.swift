@@ -40,7 +40,8 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> dropShadowStyleLarge()
 
-    _ = self.statsStackView |> UIStackView.lens.spacing .~ Styles.grid(6)
+    _ = self.statsStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(6)
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill

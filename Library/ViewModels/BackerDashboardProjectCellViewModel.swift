@@ -110,7 +110,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
 private func progressBarColor(for project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
-    return .ksr_green_400
+    return .ksr_green_500
   default:
     return .ksr_navy_500
   }
