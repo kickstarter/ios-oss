@@ -199,18 +199,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
           self?.metadataIconImageView.image = icon
     }
 
-    //fixme remove
-    /*
-    self.viewModel.outputs.metadataData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.metadataIconImageView.image = data.iconImage
-        self?.metadataLabel.text = data.labelText
-        self?.metadataIconImageView.tintColor = data.iconAndTextColor
-        self?.metadataLabel.textColor = data.iconAndTextColor
-    }
- */
-
     self.viewModel.outputs.progressPercentage
       .observeForUI()
       .observeValues { [weak self] progress in

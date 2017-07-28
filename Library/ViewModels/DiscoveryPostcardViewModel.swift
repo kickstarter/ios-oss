@@ -76,10 +76,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
-  //fixme remove metadataData and PostcardMetadataData if not used
-  /// Emits the disparate data to be displayed on the metadata view label.
-  // var metadataData: Signal<PostcardMetadataData, NoError> { get }
-
   /// Emits matadata label text
   var metadataLabelText: Signal<String, NoError> { get }
 
@@ -181,7 +177,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         return noMetadata
       }
       .skipRepeats()
-
 
     let metadataData = project.map(postcardMetadata(forProject:)).skipNil()
 

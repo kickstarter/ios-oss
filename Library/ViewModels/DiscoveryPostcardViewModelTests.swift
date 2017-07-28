@@ -14,8 +14,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
-  internal let metadataLabelText = TestObserver<String, NoError>()
+  internal let metadataIcon = TestObserver<UIImage?, NoError>()
+  internal let metadataIconAndTextColor = TestObserver<UIColor, NoError>()
   internal let metadataIconHidden = TestObserver<Bool, NoError>()
+  internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
@@ -42,8 +44,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
-    self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
+    self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
+    self.vm.outputs.metadataIconAndTextColor.observe(self.metadataIconAndTextColor.observer)
     self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
+    self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
@@ -116,6 +120,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.dates.potdAt .~ potdAt
       |> Project.lens.dates.featuredAt .~ featuredAt
 
+    let backedColor: UIColor = .ksr_text_green_700
+    let featuredColor: UIColor = .ksr_text_navy_700
+    let potdColor: UIColor = .ksr_text_navy_700
+    let starredColor: UIColor = .ksr_text_navy_700
+
+    let backedImage = image(named: "metadata-backing")
+    let featuredImage = image(named: "metadata-featured")
+    let starredImage = image(named: "metadata-starred")
+
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: Project.template)
 
@@ -129,6 +142,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
       self.metadataIconHidden.assertValues([false, false])
+      self.metadataIcon.assertValues([backedImage])
+      self.metadataIconAndTextColor.assertValues([backedColor])
 
       self.vm.inputs.configureWith(project: starredAndPotdProject)
 
@@ -139,6 +154,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         ], "Starred metadata takes precedence.")
 
       self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
+      self.metadataIcon.assertValues([backedImage, starredImage])
+      self.metadataIconAndTextColor.assertValues([backedColor, starredColor])
 
       self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
       self.metadataLabelText.assertValues(
@@ -149,6 +166,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         ], "Backed metadata takes precedence.")
 
       self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
+      self.metadataIcon.assertValues([backedImage, starredImage, backedImage])
+      self.metadataIconAndTextColor.assertValues([backedColor, starredColor, backedColor])
 
       self.vm.inputs.configureWith(project: featuredProject)
       self.metadataLabelText.assertValues(
@@ -163,6 +182,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.metadataIconHidden.assertValues([false, false, true, true, false],
         "Icon shown for the featured project")
+      self.metadataIcon.assertValues([backedImage, starredImage, backedImage, featuredImage])
+      self.metadataIconAndTextColor.assertValues([backedColor, starredColor, backedColor, featuredColor])
 
       self.vm.inputs.configureWith(project: potdAndFeaturedProject)
       self.metadataLabelText.assertValues(
@@ -178,6 +199,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.metadataIconHidden.assertValues([false, false, true, true, false, true],
         "No Icon shown for the potd project")
+      self.metadataIcon.assertValues(
+        [backedImage, starredImage, backedImage, featuredImage, nil])
+      self.metadataIconAndTextColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
 
       AppEnvironment.logout()
 
