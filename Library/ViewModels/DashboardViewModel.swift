@@ -103,8 +103,7 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-    public init() {
-
+  public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
@@ -112,24 +111,35 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .demoteErrors()
           .map { $0.projects }
           .prefix(value: [])
-      }
+    }
+
+    let projectsAndSelectedDirectlyProperty = MutableProperty<Param?>(nil)
+
+    projectsAndSelectedDirectlyProperty <~ Signal.merge(
+      self.viewWillAppearAnimatedProperty.signal.take(first: 1).mapConst(nil),
+      self.switchToProjectProperty.signal
+    )
 
     let projectsAndSelectedDirectly = projects
-      .switchMap { [switchToProject = self.switchToProjectProperty.producer] projects in
+      .switchMap { [switchToProject = projectsAndSelectedDirectlyProperty.producer] projects in
         switchToProject
           .map { param -> Project? in
-            find(projectForParam: param, in: projects) ?? projects.first
+            guard let param = param else {
+              return projects.first
+            }
+
+            return find(projectForParam: param, in: projects) ?? projects.first
           }
           .skipNil()
           .map { (projects, $0) }
-      }
+    }
 
-      let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+    let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
 
-      messageThreadReceived <~ Signal.merge(
-        self.viewWillDisappearProperty.signal.mapConst(nil),
-        self.messageThreadNavigatedProperty.signal
-      )
+    messageThreadReceived <~ Signal.merge(
+      self.viewWillDisappearProperty.signal.mapConst(nil),
+      self.messageThreadNavigatedProperty.signal
+    )
 
     let projectAndThreadFromPush = projects
       .switchMap { projects in
@@ -143,7 +153,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
             return (projects, project, paramThreadPair.1)
           }
           .skipNil()
-      }
+    }
 
     let projectsAndSelected = Signal.merge(
       projectsAndSelectedDirectly.map { ($0.0, $0.1, nil) },
@@ -159,7 +169,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (project, $0) }
           .materialize()
-      }
+    }
 
     let selectedProjectAndStats = selectedProjectAndStatsEvent.values()
 
@@ -185,16 +195,16 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       projectsAndSelected
         .map { ($0.0, $0.1) }
         .takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) })
-        .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
-          let (projects, project, toggle) = projectsProjectToggle
+      .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
+        let (projects, project, toggle) = projectsProjectToggle
 
-          return (
-            toggle ? (data?.0.toggled ?? DrawerState.closed) : DrawerState.closed,
-            projects,
-            project
-          )
-        }
-        .skipNil()
+        return (
+          toggle ? (data?.0.toggled ?? DrawerState.closed) : DrawerState.closed,
+          projects,
+          project
+        )
+      }
+      .skipNil()
 
     self.updateTitleViewData = drawerStateProjectsAndSelectedProject
       .map { drawerState, projects, selectedProject in
@@ -252,7 +262,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let drawerHasClosedAndShouldTrack = Signal.merge(
       self.showHideProjectsDrawerProperty.signal.map { (drawerState: true, shouldTrack: true) },
       self.project.signal.map { _ in (drawerState: true, shouldTrack: false) }
-    )
+      )
       .scan(nil) { (data, toggledStateAndShouldTrack) -> (DrawerState, Bool)? in
         let (drawerState, shouldTrack) = toggledStateAndShouldTrack
         return drawerState
