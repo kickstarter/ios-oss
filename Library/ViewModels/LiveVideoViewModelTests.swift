@@ -59,7 +59,7 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.vm.inputs.configureWith(liveStreamType: .hlsStream(hlsStreamUrl: streamUrl))
     self.vm.inputs.viewDidLoad()
 
-    self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
+    self.addAndConfigureHLSPlayerWithStreamUrl.assertValues([streamUrl])
 
     // Step 2: Test state changes
     self.notifyDelegateOfPlaybackStateChange.assertValues([.loading])
@@ -169,7 +169,7 @@ internal final class LiveVideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
 
-    self.addAndConfigureHLSPlayerWithStreamUrl.assertValue(streamUrl)
+    self.addAndConfigureHLSPlayerWithStreamUrl.assertValues([streamUrl])
     self.resubscribeAllSubscribersToSession.assertValueCount(0)
     self.shouldPauseHlsPlayer.assertValueCount(0)
     self.unsubscribeAllSubscribersFromSession.assertValueCount(0)
