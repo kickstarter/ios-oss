@@ -67,10 +67,10 @@ internal final class SearchProjectCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.progress
       .observeForUI()
-      .observeValues { [weak element = progressBarView] progress in
+      .observeValues { [weak self] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
-        element?.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
-        element?.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
+        self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
+        self?.progressBarView.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
     }
   }
 }

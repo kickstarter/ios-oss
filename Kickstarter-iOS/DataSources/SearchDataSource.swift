@@ -31,7 +31,7 @@ internal final class SearchDataSource: ValueCellDataSource {
     }
 
     if !projects.isEmpty {
-      projects.suffix(from: 1).forEach {
+      projects.dropFirst().forEach {
         self.appendRow(value: $0,
                        cellClass: BackerDashboardProjectCell.self,
                        toSection: Section.projects.rawValue)
