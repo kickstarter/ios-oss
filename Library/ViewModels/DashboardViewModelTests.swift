@@ -335,8 +335,8 @@ internal final class DashboardViewModelTests: TestCase {
     let projects = (0...4).map { .template |> Project.lens.id .~ $0 }
     let thread = MessageThread.template
 
+    let firstProject = projects[0]
     let threadProj = projects[1]
-    let otherProj = projects[2]
 
     withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
       self.project.assertValues([])
@@ -348,7 +348,10 @@ internal final class DashboardViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.goToMessageThread.assertValues([threadProj], "Go to message thread emitted")
-      self.project.assertValues([threadProj], "Thread project is selected")
+      self.project.assertValues([firstProject, threadProj], "Thread project is selected")
+
+      self.vm.inputs.viewWillDisappear()
+      self.scheduler.advance()
 
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
@@ -356,7 +359,7 @@ internal final class DashboardViewModelTests: TestCase {
       self.goToMessageThread.assertValues([threadProj],
                                           "Go to message thread not emitted again when view appears")
 
-      self.project.assertValues([threadProj], "Keep previeiosly selected when view Appers")
+      self.project.assertValues([firstProject, threadProj, firstProject, threadProj], "Keep previeiosly selected project when view Appers")
 
     }
   }
