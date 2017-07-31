@@ -56,8 +56,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.metadataBackgroundView
-      |> dropShadowStyleLarge()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
+      |> dropShadowStyleMedium()
       |> UIView.lens.layer.shadowOpacity .~ 0.3
       |> UIView.lens.layer.cornerRadius .~ 2.0
 
@@ -104,10 +103,10 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.progress
       .observeForUI()
-      .observeValues { [weak self] progress in
+      .observeValues { [weak element = progressBarView] progress in
         let anchorX = progress == 0 ? 0 : 0.5 / progress
-        self?.progressBarView.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
-        self?.progressBarView.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
+        element?.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
+        element?.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
     }
   }
 }

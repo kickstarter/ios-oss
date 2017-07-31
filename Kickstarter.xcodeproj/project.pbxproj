@@ -312,7 +312,6 @@
 		A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C81251D210F1F00B5AD03 /* ShareContext.swift */; };
 		A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */; };
 		A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */; };
-		A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */; };
 		A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */; };
 		A75F71631D897E4C0091258A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75F71621D897E4C0091258A /* Stripe.framework */; };
 		A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */; };
@@ -1822,7 +1821,6 @@
 		A75C81251D210F1F00B5AD03 /* ShareContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareContext.swift; sourceTree = "<group>"; };
 		A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDataSource.swift; sourceTree = "<group>"; };
-		A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProjectCell.swift; sourceTree = "<group>"; };
 		A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableViewCell.swift; sourceTree = "<group>"; };
 		A75F71621D897E4C0091258A /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Frameworks/Stripe/Stripe.framework; sourceTree = "<group>"; };
 		A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsValidEmail.swift; sourceTree = "<group>"; };
@@ -2846,7 +2844,6 @@
 				A747A8ED1D45899F00AF199A /* RewardCell.swift */,
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
-				A75CFA7C1CCE56C4004CD5FA /* SearchProjectCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
 			);
@@ -5263,7 +5260,6 @@
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
 				A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */,
-				A75CFA7E1CCE56C4004CD5FA /* SearchProjectCell.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
