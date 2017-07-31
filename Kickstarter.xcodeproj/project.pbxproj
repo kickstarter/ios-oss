@@ -2953,13 +2953,6 @@
 			path = Locales;
 			sourceTree = "<group>";
 		};
-		A7B693F31C8778A900C49A4F /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Configs;
-			sourceTree = "<group>";
-		};
 		A7B694261C87A04C00C49A4F /* HockeySDK.embeddedframework */ = {
 			isa = PBXGroup;
 			children = (
@@ -3222,7 +3215,6 @@
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
-				A7B693F31C8778A900C49A4F /* Configs */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
