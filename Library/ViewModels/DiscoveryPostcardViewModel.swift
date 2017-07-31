@@ -76,20 +76,20 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits matadata label text
+  /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
 
-  /// Emits metadata icon name
+  /// Emits metadata icon image
   var metadataIcon: Signal<UIImage?, NoError> { get }
-
-  /// Emits metadata icon and text color
-  var metadataIconAndTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits a boolean to determine if metadata icon should be hidden
   var metadataIconHidden: Signal<Bool, NoError> { get }
 
   /// Emits icon image tint color
   var metadataIconImageViewTintColor: Signal<UIColor, NoError> { get }
+
+  /// Emits metadata text color
+  var metadataTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
@@ -182,7 +182,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.metadataIcon = metadataData.map { $0.iconImage }
     self.metadataLabelText = metadataData.map { $0.labelText }
-    self.metadataIconAndTextColor = metadataData.map { $0.iconAndTextColor }
+    self.metadataTextColor = metadataData.map { $0.iconAndTextColor }
     self.metadataIconImageViewTintColor = metadataData.map { $0.iconAndTextColor }
 
     self.metadataIconHidden = project.map { p in
@@ -276,9 +276,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
-  public let metadataIconAndTextColor: Signal<UIColor, NoError>
   public let metadataIconHidden: Signal<Bool, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
+  public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>

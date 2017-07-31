@@ -177,7 +177,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataLabelText
-    self.metadataLabel.rac.textColor = self.viewModel.outputs.metadataIconAndTextColor
+    self.metadataLabel.rac.textColor = self.viewModel.outputs.metadataTextColor
     self.metadataIconImageView.rac.tintColor = self.viewModel.outputs.metadataIconImageViewTintColor
     self.metadataIconImageView.rac.hidden = self.viewModel.outputs.metadataIconHidden
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
