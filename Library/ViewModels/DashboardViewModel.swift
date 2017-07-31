@@ -113,15 +113,26 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .prefix(value: [])
     }
 
-    let projectsAndSelectedDirectlyProperty = MutableProperty<Param?>(nil)
-
-    projectsAndSelectedDirectlyProperty <~ Signal.merge(
-      self.viewWillAppearAnimatedProperty.signal.take(first: 1).mapConst(nil),
-      self.switchToProjectProperty.signal
+    let selectedProjectProperty: Signal<Param?, NoError> = Signal.merge(
+      self.switchToProjectProperty.signal,
+      self.messageThreadNavigatedProperty.signal.skipNil().map { $0.0 }
     )
+      //fixme
+      .logEvents(identifier:">>>> selectedProjectProperty")
 
-    let projectsAndSelectedDirectly = projects
-      .switchMap { [switchToProject = projectsAndSelectedDirectlyProperty.producer] projects in
+
+    let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+
+    selectProjectPropertyOrFirst <~ Signal.combineLatest(
+      selectedProjectProperty,
+      self.viewWillAppearAnimatedProperty.signal.ignoreValues()
+    )
+    .map { $0.0 }
+    //fixme
+    .logEvents(identifier:">>>> selectProjectPropertyOrFirst")
+
+    let projectsAndSelected = projects
+      .switchMap { [switchToProject = selectProjectPropertyOrFirst.producer] projects in
         switchToProject
           .map { param -> Project? in
             guard let param = param else {
@@ -141,6 +152,19 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.messageThreadNavigatedProperty.signal
     )
 
+    self.goToMessageThread = projectsAndSelected
+      .map { $0.1 }
+      .switchMap { project in
+        messageThreadReceived.producer
+          .skipNil()
+          .filter { $0.0 == .id(project.id) }
+          .map { (measgaThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
+            return (project, measgaThreadPair.1)
+          }
+      }
+
+
+/*
     let projectAndThreadFromPush = projects
       .switchMap { projects in
         messageThreadReceived.producer
@@ -158,10 +182,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     let projectsAndSelected = Signal.merge(
       projectsAndSelectedDirectly.map { ($0.0, $0.1, nil) },
       projectAndThreadFromPush.map { ($0.0, $0.1, $0.2) })
-
+*/
     self.project = projectsAndSelected.map(second)
 
-    self.goToMessageThread = projectAndThreadFromPush.map { ($0.1, $0.2) }
+    //self.goToMessageThread = projectAndThreadFromPush.map { ($0.1, $0.2) }
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
