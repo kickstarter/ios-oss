@@ -413,7 +413,7 @@ AppDelegateViewModelOutputs {
       .switchMap { projectId, messageThreadId in
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
           .demoteErrors()
-          .map { (env:MessageThreadEnvelope) in
+          .map { (env: MessageThreadEnvelope) in
             return (projectId, env.messageThread)
           }
       }
@@ -427,7 +427,7 @@ AppDelegateViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
-          .map { (env:MessageThreadEnvelope) in
+          .map { (env: MessageThreadEnvelope) in
             return env.messageThread
           }
      }
