@@ -116,7 +116,6 @@ internal final class BackingViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
-     // |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_300
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
     _ = self.contentView

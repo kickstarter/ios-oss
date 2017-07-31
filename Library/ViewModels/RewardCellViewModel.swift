@@ -11,7 +11,7 @@ public protocol RewardCellViewModelInputs {
 
 public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
-  var cardViewBorder: Signal<Bool, NoError> { get }
+  var cardViewBorderIsVisible: Signal<Bool, NoError> { get }
   var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
@@ -214,8 +214,8 @@ RewardCellViewModelOutputs {
       )
       .map(first)
 
-    self.cardViewBorder = Signal.zip(project, reward, youreABacker)
-      .map { project, reward, _ in project.state != .live && reward.remaining != 0 }
+    self.cardViewBorderIsVisible = Signal.zip(project, reward)
+      .map { project, reward in project.state != .live && reward.remaining != 0 }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
@@ -254,7 +254,7 @@ RewardCellViewModelOutputs {
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
-  public let cardViewBorder: Signal<Bool, NoError>
+  public let cardViewBorderIsVisible: Signal<Bool, NoError>
   public let cardViewDropShadowHidden: Signal<Bool, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
