@@ -103,6 +103,12 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
+  let selectedProjectProperty: SignalProducer<Param?, NoError>
+
+  let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+
+  let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+
   public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
@@ -113,19 +119,17 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .prefix(value: [])
     }
 
-    let selectedProjectProperty: Signal<Param?, NoError> = Signal.merge(
-      self.switchToProjectProperty.signal,
-      self.messageThreadNavigatedProperty.signal.skipNil().map { $0.0 }
+    self.selectedProjectProperty = SignalProducer.merge(
+      self.switchToProjectProperty.producer,
+      self.messageThreadNavigatedProperty.producer.skipNil().map { $0.0 }
     )
       //fixme
       .logEvents(identifier:">>>> selectedProjectProperty")
 
 
-    let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
-
-    selectProjectPropertyOrFirst <~ Signal.combineLatest(
+    self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
       selectedProjectProperty,
-      self.viewWillAppearAnimatedProperty.signal.ignoreValues()
+      self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
     .map { $0.0 }
     //fixme
@@ -144,24 +148,27 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .skipNil()
           .map { (projects, $0) }
     }
+      //fixme
+      .logEvents(identifier:">>>> projectsAndSelected")
 
-    let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
-
-    messageThreadReceived <~ Signal.merge(
+    self.messageThreadReceived <~ Signal.merge(
       self.viewWillDisappearProperty.signal.mapConst(nil),
       self.messageThreadNavigatedProperty.signal
     )
 
     self.goToMessageThread = projectsAndSelected
       .map { $0.1 }
-      .switchMap { project in
-        messageThreadReceived.producer
+      .switchMap { [messageThreadReceived = messageThreadReceived.producer] project in
+        messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
           .map { (measgaThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
             return (project, measgaThreadPair.1)
           }
       }
+      //fixme
+      .logEvents(identifier:">>>> goToMessageThread")
+
 
 
 /*
