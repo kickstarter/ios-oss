@@ -25,6 +25,8 @@ internal final class SearchViewContollerTests: TestCase {
         |> Project.lens.id .~ $0
         |> Project.lens.photo.full .~ ""
         |> Project.lens.photo.med .~ ""
+        |> Project.lens.stats.goal .~ 10_000
+        |> Project.lens.stats.pledged .~ 3_400
     }
 
     let discoveryResponse = .template
