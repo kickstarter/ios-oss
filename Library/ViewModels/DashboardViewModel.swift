@@ -103,11 +103,9 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  let selectedProjectProperty: SignalProducer<Param?, NoError>
-
-  let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
-
-  let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+  private let selectedProjectProperty: SignalProducer<Param?, NoError>
+  private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+  private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
 
   public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
@@ -123,20 +121,15 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.switchToProjectProperty.producer,
       self.messageThreadNavigatedProperty.producer.skipNil().map { $0.0 }
     )
-      //fixme
-      .logEvents(identifier:">>>> selectedProjectProperty")
-
 
     self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
-      selectedProjectProperty,
+      self.selectedProjectProperty,
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
     .map { $0.0 }
-    //fixme
-    .logEvents(identifier:">>>> selectProjectPropertyOrFirst")
 
     let projectsAndSelected = projects
-      .switchMap { [switchToProject = selectProjectPropertyOrFirst.producer] projects in
+      .switchMap { [switchToProject = self.selectProjectPropertyOrFirst.producer] projects in
         switchToProject
           .map { param -> Project? in
             guard let param = param else {
@@ -148,8 +141,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .skipNil()
           .map { (projects, $0) }
     }
-      //fixme
-      .logEvents(identifier:">>>> projectsAndSelected")
 
     self.messageThreadReceived <~ Signal.merge(
       self.viewWillDisappearProperty.signal.mapConst(nil),
@@ -158,7 +149,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.goToMessageThread = projectsAndSelected
       .map { $0.1 }
-      .switchMap { [messageThreadReceived = messageThreadReceived.producer] project in
+      .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
@@ -166,33 +157,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
             return (project, measgaThreadPair.1)
           }
       }
-      //fixme
-      .logEvents(identifier:">>>> goToMessageThread")
 
-
-
-/*
-    let projectAndThreadFromPush = projects
-      .switchMap { projects in
-        messageThreadReceived.producer
-          .skipNil()
-          .map { paramThreadPair -> ([Project], Project, MessageThread)? in
-            guard let project = find(projectForParam: paramThreadPair.0, in: projects) else {
-              return nil
-            }
-
-            return (projects, project, paramThreadPair.1)
-          }
-          .skipNil()
-    }
-
-    let projectsAndSelected = Signal.merge(
-      projectsAndSelectedDirectly.map { ($0.0, $0.1, nil) },
-      projectAndThreadFromPush.map { ($0.0, $0.1, $0.2) })
-*/
     self.project = projectsAndSelected.map(second)
-
-    //self.goToMessageThread = projectAndThreadFromPush.map { ($0.1, $0.2) }
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
