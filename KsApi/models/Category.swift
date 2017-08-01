@@ -101,7 +101,7 @@ extension Category: CustomStringConvertible, CustomDebugStringConvertible {
   }
 }
 
-extension Category: Decodable {
+extension Category: Argo.Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<Category> {
     let create = curry(Category.init)

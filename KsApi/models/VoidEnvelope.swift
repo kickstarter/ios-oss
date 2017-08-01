@@ -3,7 +3,7 @@ import Argo
 public struct VoidEnvelope {
 }
 
-extension VoidEnvelope: Decodable {
+extension VoidEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<VoidEnvelope> {
     return .success(VoidEnvelope())
   }

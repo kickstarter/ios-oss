@@ -233,7 +233,7 @@ internal final class LiveStreamCountdownViewModelTests: TestCase {
                                  presentedFromProject: true)
     self.vm.inputs.viewDidLoad()
 
-    self.viewControllerTitle.assertValue("Live stream countdown")
+    self.viewControllerTitle.assertValues(["Live stream countdown"])
   }
 
   func testGoToProjectButtonContainerHidden_WhenPresentedFromProject() {

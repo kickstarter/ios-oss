@@ -266,7 +266,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: Project.template)
 
-      self.metadataLabelText.assertValues([], "No metadata shown for logged out user.")
+      self.metadataLabelText.assertValueCount(0, "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "dadbeeef", user: User.template))

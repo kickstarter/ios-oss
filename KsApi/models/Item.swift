@@ -9,7 +9,7 @@ public struct Item {
   public let projectId: Int
 }
 
-extension Item: Decodable {
+extension Item: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Item> {
     let create = curry(Item.init)
     return create

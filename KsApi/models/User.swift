@@ -68,7 +68,7 @@ extension User: CustomDebugStringConvertible {
   }
 }
 
-extension User: Decodable {
+extension User: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
     let create = curry(User.init)
     let tmp1 = pure(create)
@@ -107,7 +107,7 @@ extension User: EncodableType {
   }
 }
 
-extension User.Avatar: Decodable {
+extension User.Avatar: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Avatar> {
     return curry(User.Avatar.init)
       <^> json <|? "large"
@@ -129,7 +129,7 @@ extension User.Avatar: EncodableType {
   }
 }
 
-extension User.NewsletterSubscriptions: Decodable {
+extension User.NewsletterSubscriptions: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
     return curry(User.NewsletterSubscriptions.init)
       <^> json <|? "games_newsletter"
@@ -158,7 +158,7 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
     lhs.weekly == rhs.weekly
 }
 
-extension User.Notifications: Decodable {
+extension User.Notifications: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
     let create = curry(User.Notifications.init)
     let tmp1 = create
@@ -214,7 +214,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.updates == rhs.updates
 }
 
-extension User.Stats: Decodable {
+extension User.Stats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Stats> {
     let create = curry(User.Stats.init)
     return create

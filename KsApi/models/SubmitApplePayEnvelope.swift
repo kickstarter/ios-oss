@@ -7,7 +7,7 @@ public struct SubmitApplePayEnvelope {
   public let status: Int
 }
 
-extension SubmitApplePayEnvelope: Decodable {
+extension SubmitApplePayEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<SubmitApplePayEnvelope> {
     return curry(SubmitApplePayEnvelope.init)
       <^> json <| ["data", "thankyou_url"]

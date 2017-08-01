@@ -108,7 +108,7 @@ public struct ErrorEnvelope {
 
 extension ErrorEnvelope: Error {}
 
-extension ErrorEnvelope: Decodable {
+extension ErrorEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
     let create = curry(ErrorEnvelope.init)
 
@@ -137,7 +137,7 @@ extension ErrorEnvelope: Decodable {
   }
 }
 
-extension ErrorEnvelope.Exception: Decodable {
+extension ErrorEnvelope.Exception: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.Exception> {
     return curry(ErrorEnvelope.Exception.init)
       <^> json <||? "backtrace"
@@ -145,7 +145,7 @@ extension ErrorEnvelope.Exception: Decodable {
   }
 }
 
-extension ErrorEnvelope.KsrCode: Decodable {
+extension ErrorEnvelope.KsrCode: Argo.Decodable {
   public static func decode(_ j: JSON) -> Decoded<ErrorEnvelope.KsrCode> {
     switch j {
     case let .string(s):
@@ -156,7 +156,7 @@ extension ErrorEnvelope.KsrCode: Decodable {
   }
 }
 
-extension ErrorEnvelope.FacebookUser: Decodable {
+extension ErrorEnvelope.FacebookUser: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.FacebookUser> {
     return curry(ErrorEnvelope.FacebookUser.init)
       <^> json <| "id"

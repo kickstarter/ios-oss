@@ -6,7 +6,7 @@ public struct CategoriesEnvelope {
   public let categories: [Category]
 }
 
-extension CategoriesEnvelope: Decodable {
+extension CategoriesEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CategoriesEnvelope> {
     return curry(CategoriesEnvelope.init)
       <^> json <|| "categories"
