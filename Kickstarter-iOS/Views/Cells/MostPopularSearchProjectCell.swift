@@ -5,7 +5,8 @@ import Prelude_UIKit
 import UIKit
 
 internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: SearchProjectCellViewModelType = SearchProjectCellViewModel()
+  fileprivate let viewModel: MostPopularSearchProjectCellViewModelType =
+    MostPopularSearchProjectCellViewModel()
 
   @IBOutlet fileprivate weak var cardView: UIView!
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!

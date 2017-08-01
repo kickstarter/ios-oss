@@ -3,11 +3,11 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public protocol SearchProjectCellViewModelInputs {
+public protocol MostPopularSearchProjectCellViewModelInputs {
   func configureWith(project: Project)
 }
 
-public protocol SearchProjectCellViewModelOutputs {
+public protocol MostPopularSearchProjectCellViewModelOutputs {
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
   var deadlineTitleLabelText: Signal<String, NoError> { get }
   var fundingSmallLabelText: Signal<NSAttributedString, NoError> { get }
@@ -22,13 +22,13 @@ public protocol SearchProjectCellViewModelOutputs {
   var metadataText: Signal<String, NoError> { get }
 }
 
-public protocol SearchProjectCellViewModelType {
-  var inputs: SearchProjectCellViewModelInputs { get }
-  var outputs: SearchProjectCellViewModelOutputs { get }
+public protocol MostPopularSearchProjectCellViewModelType {
+  var inputs: MostPopularSearchProjectCellViewModelInputs { get }
+  var outputs: MostPopularSearchProjectCellViewModelOutputs { get }
 }
 
-public final class SearchProjectCellViewModel: SearchProjectCellViewModelType,
-SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
+public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProjectCellViewModelType,
+MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
 
   public init() {
     let project = self.projectProperty.signal.skipNil()
@@ -102,8 +102,8 @@ SearchProjectCellViewModelInputs, SearchProjectCellViewModelOutputs {
   public let projectName: Signal<String, NoError>
   public let metadataText: Signal<String, NoError>
 
-  public var inputs: SearchProjectCellViewModelInputs { return self }
-  public var outputs: SearchProjectCellViewModelOutputs { return self }
+  public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }
+  public var outputs: MostPopularSearchProjectCellViewModelOutputs { return self }
 }
 
 private func metadataString(for project: Project) -> String {
