@@ -127,6 +127,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
     .map { $0.0 }
+    .skipRepeats { lhs, rhs in lhs == rhs }
 
     let projectsAndSelected = projects
       .switchMap { [switchToProject = self.selectProjectPropertyOrFirst.producer] projects in
@@ -277,7 +278,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: project)
     }
 
-    self.project
+    projects
+      .takePairWhen(self.selectProjectPropertyOrFirst.signal)
+      .map { projects, param in find(projectForParam: param, in: projects) }
+      .skipNil()
       .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
 
