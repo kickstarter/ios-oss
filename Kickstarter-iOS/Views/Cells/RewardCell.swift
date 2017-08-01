@@ -222,7 +222,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
         self?.cardView.layer.shadowOpacity = hidden ? 0 : 0.17
     }
 
-    self.viewModel.outputs.cardViewBorder
+    self.viewModel.outputs.cardViewBorderIsVisible
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.cardView.layer.borderColor = UIColor.ksr_grey_400.cgColor

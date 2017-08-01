@@ -11,7 +11,7 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
 
   fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
-  fileprivate let cardViewBorder = TestObserver<Bool, NoError>()
+  fileprivate let cardViewBorderIsVisible = TestObserver<Bool, NoError>()
   fileprivate let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelText = TestObserver<String, NoError>()
@@ -39,7 +39,7 @@ final class RewardCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.allGoneHidden.observe(self.allGoneHidden.observer)
-    self.vm.outputs.cardViewBorder.observe(self.cardViewBorder.observer)
+    self.vm.outputs.cardViewBorderIsVisible.observe(self.cardViewBorderIsVisible.observer)
     self.vm.outputs.cardViewDropShadowHidden.observe(self.cardViewDropShadowHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
@@ -96,19 +96,19 @@ final class RewardCellViewModelTests: TestCase {
                                     "All gone indicator visible when none remaining and project over.")
   }
 
-  func testCardViewBorder_LiveProject_NonBacker_NotAllGone() {
+  func testCardViewBorderIsVisible_LiveProject_NonBacker_NotAllGone() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
     self.vm.inputs.boundStyles()
 
-    self.cardViewBorder.assertValues([false])
+    self.cardViewBorderIsVisible.assertValues([false])
   }
 
-  func testCardViewBorder_SuccessfulProject_NonBacker_NotAllGone() {
+  func testCardViewBorderIsVisible_SuccessfulProject_NonBacker_NotAllGone() {
     self.vm.inputs.configureWith(project: .template |> Project.lens.state .~ .successful,
                                  rewardOrBacking: .left(.template))
     self.vm.inputs.boundStyles()
 
-    self.cardViewBorder.assertValues([true])
+    self.cardViewBorderIsVisible.assertValues([true])
   }
 
   func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {
