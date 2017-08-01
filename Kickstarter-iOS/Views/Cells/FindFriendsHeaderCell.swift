@@ -56,7 +56,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.Follow_your_Facebook_friends_and_get_notified() }
 
     _ = self.closeButton

@@ -70,7 +70,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
             NSFontAttributeName: UIFont.ksr_subhead(size: 14),
             NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
           ])
-          ?? NSAttributedString(string: "")
+          ?? .init()
     }
 
     self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
@@ -112,9 +112,9 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
   case .cancellation, .failure, .suspension:
     return .ksr_dark_grey_400
   case .launch, .success:
-    return .ksr_green_400
+    return .ksr_green_700
   default:
-    return .ksr_green_400
+    return .ksr_green_700
   }
 }
 
@@ -161,7 +161,7 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
       NSForegroundColorAttributeName:
         (activity.category == .cancellation
           || activity.category == .failure
-          || activity.category == .suspension) ? UIColor.ksr_text_dark_grey_400 : UIColor.ksr_green_500
+          || activity.category == .suspension) ? UIColor.ksr_text_dark_grey_400 : UIColor.ksr_text_green_700
       ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
   }
 

@@ -86,7 +86,11 @@ internal final class SearchViewController: UITableViewController {
     _ = self.searchTextField
       |> UITextField.lens.font .~ .ksr_body(size: 14)
       |> UITextField.lens.textColor .~ .ksr_text_dark_grey_500
-      |> UITextField.lens.placeholder %~ { _ in Strings.tabbar_search() }
+
+    self.searchTextField.attributedPlaceholder = NSAttributedString(
+      string: Strings.tabbar_search(),
+      attributes: [NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500]
+    )
 
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag

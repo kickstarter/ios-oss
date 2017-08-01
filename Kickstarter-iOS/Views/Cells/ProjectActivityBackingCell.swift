@@ -114,12 +114,18 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
-        titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),
-          bold: UIFont.ksr_title3(size: 14).bolded,
+        titleLabel.attributedText = title.simpleHtmlAttributedString(
+          base: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+          ],
+          bold: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14).bolded,
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+          ],
           italic: nil
-        )
-
-        _ = titleLabel |> projectActivityTitleLabelStyle
+          )
+          ?? .init()
     }
   }
   // swiftlint:enable function_body_length

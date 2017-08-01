@@ -188,7 +188,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.font %~~ { _, v in
         v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3(size: 18)
       }
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel

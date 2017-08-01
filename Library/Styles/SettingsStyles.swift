@@ -6,12 +6,12 @@ public let settingsSectionButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
 
 public let settingsSectionLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
     <> UILabel.lens.font .~ .ksr_body()
     <> UILabel.lens.numberOfLines .~ 2
 
 public let settingsTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let settingsLogoutButtonStyle = borderButtonStyle

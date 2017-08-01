@@ -209,7 +209,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
@@ -384,7 +384,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
     _ = self.shippingInputStackView
@@ -612,7 +612,7 @@ internal final class RewardPledgeViewController: UIViewController {
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
         |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400)
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_900 : .ksr_text_dark_grey_500)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 
