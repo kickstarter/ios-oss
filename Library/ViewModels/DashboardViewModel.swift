@@ -259,7 +259,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     let drawerHasClosedAndShouldTrack = Signal.merge(
       self.showHideProjectsDrawerProperty.signal.map { (drawerState: true, shouldTrack: true) },
-      self.project.signal.map { _ in (drawerState: true, shouldTrack: false) }
+      self.switchToProjectProperty.signal.map { _ in (drawerState: true, shouldTrack: false) }
       )
       .scan(nil) { (data, toggledStateAndShouldTrack) -> (DrawerState, Bool)? in
         let (drawerState, shouldTrack) = toggledStateAndShouldTrack
