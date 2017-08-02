@@ -164,7 +164,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
     self.leaveACommentButtonHidden.assertValues([false])
     self.loginButtonHidden.assertValues([true])
     self.subtitleIsHidden.assertValues([true])
-    self.subtitleText.assertValues([])
+    self.subtitleText.assertValueCount(0)
   }
 
   internal func testLoggedInBackingUpdate() {
@@ -179,7 +179,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
     self.leaveACommentButtonHidden.assertValues([false])
     self.loginButtonHidden.assertValues([true])
     self.subtitleIsHidden.assertValues([true])
-    self.subtitleText.assertValues([])
+    self.subtitleText.assertValueCount(0)
   }
 
   internal func testLoggedOut() {
@@ -208,6 +208,6 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
     self.leaveACommentButtonHidden.assertValues([true])
     self.loginButtonHidden.assertValues([true])
     self.subtitleIsHidden.assertValues([true])
-    self.subtitleText.assertValues([])
+    self.subtitleText.assertValueCount(0)
   }
 }

@@ -901,6 +901,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		80388E201F21429100B2EE88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7BA54281E1E493500E54377;
+			remoteInfo = LiveStream;
+		};
+		80388E581F2142A200B2EE88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D04277F71EEB08E900600E9C /* Prelude.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A727E0211D0796D600D8FE43;
+			remoteInfo = "Prelude-UIKit-iOS";
+		};
 		805F304E1D91CEB80010B3D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A73778921D819736004C2A9B /* FBSnapshotTestCase.xcodeproj */;
@@ -2939,13 +2953,6 @@
 			path = Locales;
 			sourceTree = "<group>";
 		};
-		A7B693F31C8778A900C49A4F /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Configs;
-			sourceTree = "<group>";
-		};
 		A7B694261C87A04C00C49A4F /* HockeySDK.embeddedframework */ = {
 			isa = PBXGroup;
 			children = (
@@ -3208,7 +3215,6 @@
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
-				A7B693F31C8778A900C49A4F /* Configs */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -3948,6 +3954,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				80388E591F2142A200B2EE88 /* PBXTargetDependency */,
+				80388E211F21429100B2EE88 /* PBXTargetDependency */,
 				D0B45D031EF869850020A8DA /* PBXTargetDependency */,
 			);
 			name = "Library-iOS";
@@ -5646,6 +5654,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		80388E211F21429100B2EE88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7BA54281E1E493500E54377 /* LiveStream */;
+			targetProxy = 80388E201F21429100B2EE88 /* PBXContainerItemProxy */;
+		};
+		80388E591F2142A200B2EE88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Prelude-UIKit-iOS";
+			targetProxy = 80388E581F2142A200B2EE88 /* PBXContainerItemProxy */;
+		};
 		805F304F1D91CEB80010B3D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "FBSnapshotTestCase iOS";

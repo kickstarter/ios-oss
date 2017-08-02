@@ -1897,7 +1897,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.setStripeAppleMerchantIdentifier.assertValues([])
+    self.setStripeAppleMerchantIdentifier.assertValueCount(0)
   }
 
   func testSetStripeAppleMerchantIdentifier_ApplePayCapable() {
@@ -1914,7 +1914,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
-      self.setStripePublishableKey.assertValues([])
+      self.setStripePublishableKey.assertValueCount(0)
     }
   }
 

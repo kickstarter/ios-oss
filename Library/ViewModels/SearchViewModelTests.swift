@@ -497,11 +497,11 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.searchFieldDidBeginEditing()
 
-    self.searchFieldText.assertValues([])
+    self.searchFieldText.assertValueCount(0)
 
     self.vm.inputs.searchTextChanged("HELLO")
 
-    self.searchFieldText.assertValues([])
+    self.searchFieldText.assertValueCount(0)
 
     self.vm.inputs.cancelButtonPressed()
 
