@@ -1181,7 +1181,7 @@ private func navigationTitle(forProject project: Project, reward: Reward) -> Str
   )
 }
 
-fileprivate enum PledgeError: Error {
+private enum PledgeError: Error {
   case maximumAmount(ErrorEnvelope)
   case minimumAmount(ErrorEnvelope)
   case other(ErrorEnvelope)

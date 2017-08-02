@@ -35,7 +35,7 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
 
-    self.bodyTextViewText.assertValues([])
+    self.bodyTextViewText.assertValueCount(0)
   }
 
   func testBodyTextViewText_WithRecipient() {

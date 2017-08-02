@@ -55,7 +55,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
     self.vm.inputs.project(failedProject)
 
     self.metadataIsHidden.assertValues([true])
-    self.metadataText.assertValues([])
+    self.metadataText.assertValueCount(0)
     self.progressHidden.assertValues([true], "Progress bar is hidden for failed project.")
     self.stateLabelText.assertValues([Strings.profile_projects_status_unsuccessful()])
     self.stateBackgroundColor.assertValues([.ksr_navy_600])
@@ -68,7 +68,7 @@ internal final class ProfileProjectCellViewModelTests: TestCase {
     self.vm.inputs.project(successfulProject)
 
     self.metadataIsHidden.assertValues([true])
-    self.metadataText.assertValues([])
+    self.metadataText.assertValueCount(0)
     self.progressHidden.assertValues([true], "Progress bar is hidden for successful project.")
     self.stateLabelText.assertValues([Strings.profile_projects_status_successful()])
     self.stateBackgroundColor.assertValues([.ksr_green_400])

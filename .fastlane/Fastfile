@@ -4,6 +4,7 @@ default_platform :ios
 
 platform :ios do
   before_all do
+    xcversion(version: "8.3.3")
   end
 
   ### BETA

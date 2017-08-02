@@ -76,7 +76,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()
 
-      self.showPublishConfirmation.assertValues([])
+      self.showPublishConfirmation.assertValueCount(0)
       self.vm.inputs.publishButtonTapped()
       let confirmation =
       "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
@@ -115,7 +115,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()
 
-      self.showPublishConfirmation.assertValues([])
+      self.showPublishConfirmation.assertValueCount(0)
       self.vm.inputs.publishButtonTapped()
       let confirmation =
       "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"

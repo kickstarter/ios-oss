@@ -225,7 +225,7 @@ final class RewardCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([true], "US user viewing US project does not see conversion.")
-      self.conversionLabelText.assertValues([])
+      self.conversionLabelText.assertValueCount(0)
     }
   }
 
@@ -241,7 +241,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([true],
                                               "US user viewing US project does not see conversion.")
-      self.conversionLabelText.assertValues([])
+      self.conversionLabelText.assertValueCount(0)
     }
   }
 
@@ -286,7 +286,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([true],
                                               "Non-US user viewing US project does not see conversion.")
-      self.conversionLabelText.assertValues([])
+      self.conversionLabelText.assertValueCount(0)
     }
   }
 
@@ -299,7 +299,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([true],
                                               "Non-US user viewing non-US project does not see conversion.")
-      self.conversionLabelText.assertValues([])
+      self.conversionLabelText.assertValueCount(0)
     }
   }
 
