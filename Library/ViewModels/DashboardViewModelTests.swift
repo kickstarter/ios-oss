@@ -10,7 +10,7 @@ import XCTest
 
 typealias ProjectMessageThread = (Project, MessageThread)
 
-fileprivate func == (lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
+private func == (lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
   return lhs.0 == rhs.0 && lhs.1 == rhs.1
 }
 
