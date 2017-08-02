@@ -70,9 +70,43 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Card_Project_TodaySpecial() {
+    let featuredProj = anomalisaNoPhoto
+        |> Project.lens.category.parent .~ Category.art
+        |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
+
+    let potdProj = anomalisaNoPhoto
+      |> Project.lens.dates.potdAt .~ self.dateType.init().timeIntervalSince1970
+
+    let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+
+    combos(Language.allLanguages, devices, [("featured", featuredProj), ("potd", potdProj)])
+      .forEach { language, device, labeledProj in
+        let discoveryResponse = .template
+          |> DiscoveryEnvelope.lens.projects .~ [labeledProj.1]
+
+        let apiService =  MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+        withEnvironment(apiService: apiService, currentUser: User.template, language: language) {
+
+          let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = device == .pad ? 500 : 450
+
+          controller.change(filter: magicParams)
+
+          self.scheduler.run()
+
+          controller.tableView.layoutIfNeeded()
+          controller.tableView.reloadData()
+
+          FBSnapshotVerifyView(parent.view,
+                               identifier: "\(labeledProj.0)_lang_\(language)_device_\(device)")
+        }
+    }
+  }
+
   func testView_Card_Project() {
     let projectTemplate = anomalisaNoPhoto
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
     let starredParams = .defaults
       |> DiscoveryParams.lens.starred .~ true

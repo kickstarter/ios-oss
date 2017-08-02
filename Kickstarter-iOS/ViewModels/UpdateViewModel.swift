@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 import Result
 
-fileprivate struct UpdateData {
+private struct UpdateData {
   fileprivate let project: Project
   fileprivate let update: Update
 }
