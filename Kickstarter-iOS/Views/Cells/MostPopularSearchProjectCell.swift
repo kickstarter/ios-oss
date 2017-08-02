@@ -99,8 +99,8 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
     self.percentFundedLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
     self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
-    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrlFull
-    self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.projectImageView.rac.imageUrl = self.viewModel.outputs.projectImageUrl
+    self.projectNameLabel.rac.attributedText = self.viewModel.outputs.projectName
 
     self.viewModel.outputs.progress
       .observeForUI()
