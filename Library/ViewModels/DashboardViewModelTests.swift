@@ -358,10 +358,8 @@ internal final class DashboardViewModelTests: TestCase {
       self.goToMessageThread.assertValues([threadProj],
                                           "Go to message thread not emitted again when view appears")
 
-      self.project.assertValues(
-        [threadProj, threadProj],
+      self.project.assertValues([threadProj, threadProj],
         "Keep previeiosly selected project when view Appers")
-
     }
   }
 
