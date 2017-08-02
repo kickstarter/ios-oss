@@ -215,7 +215,7 @@ RewardCellViewModelOutputs {
       .map(first)
 
     self.cardViewBorderIsVisible = Signal.zip(project, reward)
-      .map { project, reward in project.state != .live && reward.remaining != 0 }
+      .map { project, reward in project.state != .live || reward.remaining == 0 }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)

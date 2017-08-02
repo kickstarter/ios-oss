@@ -62,7 +62,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-
       // Future: the top should adjust to grid(4) when there is metadata present.
       |> DiscoveryPostcardCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

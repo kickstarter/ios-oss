@@ -224,9 +224,9 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.cardViewBorderIsVisible
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] visible in
         self?.cardView.layer.borderColor = UIColor.ksr_grey_400.cgColor
-        self?.cardView.layer.borderWidth = 1.0
+        self?.cardView.layer.borderWidth = visible ? 1.0 : 0.0
         self?.cardView.layer.cornerRadius = 2.0
     }
 
