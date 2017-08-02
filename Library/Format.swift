@@ -258,9 +258,9 @@ public enum Format {
   }
 }
 
-fileprivate let defaultThresholdInDays = 30 // days
+private let defaultThresholdInDays = 30 // days
 
-fileprivate struct DateFormatterConfig {
+private struct DateFormatterConfig {
   fileprivate let dateFormat: String?
   fileprivate let dateStyle: DateFormatter.Style?
   fileprivate let locale: Locale
@@ -303,7 +303,7 @@ extension DateFormatterConfig: Hashable {
   }
 }
 
-fileprivate func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
+private func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
   return
     lhs.dateFormat == rhs.dateFormat
       && lhs.dateStyle == rhs.dateStyle
@@ -312,7 +312,7 @@ fileprivate func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool
       && lhs.timeZone == rhs.timeZone
 }
 
-fileprivate struct NumberFormatterConfig {
+private struct NumberFormatterConfig {
   fileprivate let numberStyle: NumberFormatter.Style
   fileprivate let roundingMode: NumberFormatter.RoundingMode
   fileprivate let maximumFractionDigits: Int
@@ -373,7 +373,7 @@ extension NumberFormatterConfig: Hashable {
   }
 }
 
-fileprivate func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
+private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
   return
     lhs.numberStyle == rhs.numberStyle
       && lhs.roundingMode == rhs.roundingMode
