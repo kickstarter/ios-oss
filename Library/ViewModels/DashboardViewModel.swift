@@ -26,7 +26,6 @@ public struct ProjectsDrawerData {
 }
 
 public protocol DashboardViewModelInputs {
-
   /// Call to switch display to another project from the drawer.
   func `switch`(toProject param: Param)
 
