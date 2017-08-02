@@ -29,9 +29,6 @@ internal protocol RootViewModelInputs {
   /// Call when we should switch to the activities tab.
   func switchToActivities()
 
-  /// Call when we should switch to creator's message thread
-  func switchToCreatorMessageThread(_ projectId: Param, _ messageThreadId: Int)
-
   /// Call when we should switch to the creator dashboard tab.
   func switchToDashboard(project param: Param?)
 
@@ -197,10 +194,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   fileprivate let switchToActivitiesProperty = MutableProperty()
   internal func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
-  }
-  fileprivate let switchToCreatorMessageThreadProperty = MutableProperty<(Param, Int)?>(nil)
-  internal func switchToCreatorMessageThread(_ projectId: Param, _ messageThreadId: Int) {
-    self.switchToCreatorMessageThreadProperty.value = (projectId, messageThreadId)
   }
   fileprivate let switchToDashboardProperty = MutableProperty<Param?>(nil)
   internal func switchToDashboard(project param: Param?) {

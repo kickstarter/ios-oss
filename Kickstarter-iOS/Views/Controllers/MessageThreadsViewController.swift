@@ -134,5 +134,4 @@ internal final class MessageThreadsViewController: UITableViewController {
 
     self.navigationController?.pushViewController(search, animated: true)
   }
-
 }

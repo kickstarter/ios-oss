@@ -1,5 +1,5 @@
 extension MessageThread {
-  static let template = MessageThread(
+  internal static let template = MessageThread(
     backing: nil,
     closed: false,
     id: 1,
