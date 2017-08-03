@@ -315,7 +315,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 
-extension AppDelegate : BITHockeyManagerDelegate {
+extension AppDelegate: BITHockeyManagerDelegate {
   func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }

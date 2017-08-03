@@ -1,3 +1,4 @@
+import HockeySDK
 import KsApi
 import Prelude
 import Result
@@ -58,6 +59,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     #endif
 
     self.queue.async {
+      BITHockeyManager.shared().metricsManager.trackEvent(withName: event)
       self.buffer.append(["event": event, "properties": properties])
     }
   }
