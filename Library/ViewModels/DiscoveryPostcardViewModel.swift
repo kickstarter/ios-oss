@@ -285,7 +285,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       loggedOutUserTappedSaveButton
       )
       .ignoreValues()
-      //.take(first: 1)
 
     let isLoading = MutableProperty(false)
 

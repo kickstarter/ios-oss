@@ -165,10 +165,7 @@ public final class Koala {
     case project
 
     fileprivate var trackingString: String {
-      switch self {
-      case .discovery:  return "discovery"
-      case .project:    return "project"
-      }
+      return self.rawValue
     }
   }
 
