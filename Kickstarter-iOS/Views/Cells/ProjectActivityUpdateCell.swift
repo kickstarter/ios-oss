@@ -69,7 +69,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_update() }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.bodyLabel
       |> UILabel.lens.numberOfLines .~ 4

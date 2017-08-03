@@ -68,7 +68,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))

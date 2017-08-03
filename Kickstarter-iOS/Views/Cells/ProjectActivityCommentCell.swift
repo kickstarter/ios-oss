@@ -128,7 +128,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       |> projectActivityBulletSeparatorViewStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.footerDividerView
       |> projectActivityDividerViewStyle

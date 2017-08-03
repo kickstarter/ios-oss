@@ -27,7 +27,7 @@ public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> (
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
-    <> TVC.lens.view.backgroundColor .~ .ksr_grey_300
+    <> TVC.lens.view.backgroundColor .~ .white
     <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
@@ -47,7 +47,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
-      <> TVC.lens.backgroundColor .~ .clear
+      <> TVC.lens.backgroundColor .~ .white
       <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
       <> TVC.lens.layoutMargins .~ .init(all: 0.0)
       <> TVC.lens.preservesSuperviewLayoutMargins .~ false
@@ -73,8 +73,8 @@ public let containerViewBackgroundStyle =
 public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
                                                  offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
   return
-    V.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
-      <> V.lens.layer.shadowOpacity .~ 1
+    V.lens.layer.shadowColor .~ UIColor.black.cgColor
+      <> V.lens.layer.shadowOpacity .~ 0.17
       <> V.lens.layer.shadowRadius .~ radius
       <> V.lens.layer.masksToBounds .~ false
       <> V.lens.layer.shouldRasterize .~ true
@@ -83,14 +83,10 @@ public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
 
 public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {
   return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
-    <> V.lens.layer.shadowOpacity .~ 0.17
-    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
 }
 
 public func dropShadowStyleLarge <V: UIViewProtocol> () -> ((V) -> V) {
   return dropShadowStyle(radius: 6.0, offset: .init(width: 0, height: 3.0))
-    <> V.lens.layer.shadowOpacity .~ 0.17
-    <> V.lens.layer.shadowColor .~ UIColor.black.cgColor
 }
 
 public let feedTableViewCellStyle = baseTableViewCellStyle()

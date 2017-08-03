@@ -49,7 +49,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
 
     _ = self.cardView
       |> cardStyle()
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_dark_grey_400.cgColor
   }
 }

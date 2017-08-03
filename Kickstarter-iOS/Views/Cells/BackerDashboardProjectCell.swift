@@ -52,7 +52,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white
@@ -63,7 +63,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
 
     _ = self.metadataBackgroundView
       |> dropShadowStyle()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
       |> UIView.lens.layer.shadowOpacity .~ 0.3
       |> UIView.lens.layer.cornerRadius .~ 2.0
 

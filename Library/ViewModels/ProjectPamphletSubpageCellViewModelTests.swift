@@ -45,6 +45,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.liveNowImageViewHidden.assertValue(true)
     self.labelText.assertValue("Comments")
     self.labelTextColor.assertValue(.ksr_text_dark_grey_900)
+
     self.topGradientViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(false)
   }
@@ -56,11 +57,11 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
     self.countLabelTextColor.assertValue(.ksr_text_green_700)
-    self.countLabelText.assertValue("Watch live")
+    self.countLabelText.assertValues(["Watch live"])
     self.countLabelBorderColor.assertValue(.ksr_green_500)
     self.countLabelBackgroundColor.assertValue(.white)
     self.liveNowImageViewHidden.assertValue(false)
-    self.labelText.assertValue("Live streaming now")
+    self.labelText.assertValues(["Live streaming now"])
     self.labelTextColor.assertValue(.ksr_text_green_700)
     self.topGradientViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)

@@ -80,7 +80,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       |> feedTableViewCellStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))

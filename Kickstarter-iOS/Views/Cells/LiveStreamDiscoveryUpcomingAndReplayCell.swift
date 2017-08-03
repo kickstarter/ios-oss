@@ -38,7 +38,7 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
 
     _ = self.cardView
       |> cardStyle()
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .center

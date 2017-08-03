@@ -62,7 +62,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> DiscoveryPostcardCell.lens.backgroundColor .~ .clear
       // Future: the top should adjust to grid(4) when there is metadata present.
       |> DiscoveryPostcardCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
@@ -95,7 +94,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
@@ -113,7 +112,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> postcardMetadataStackViewStyle
 
     _ = self.metadataBackgroundView
-      |> dropShadowStyle(radius: 0.5)
+      |> dropShadowStyleMedium()
 
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
@@ -164,7 +163,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
   // swiftlint:enable function_body_length
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
@@ -176,6 +175,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.fundingProgressContainerView.rac.hidden = self.viewModel.outputs.fundingProgressContainerViewHidden
     self.fundingProgressBarView.rac.hidden = self.viewModel.outputs.fundingProgressBarViewHidden
     self.fundingTitleLabel.rac.text = self.viewModel.outputs.percentFundedTitleLabelText
+    self.metadataLabel.rac.text = self.viewModel.outputs.metadataLabelText
+    self.metadataLabel.rac.textColor = self.viewModel.outputs.metadataTextColor
+    self.metadataIconImageView.rac.tintColor = self.viewModel.outputs.metadataIconImageViewTintColor
+    self.metadataIconImageView.rac.hidden = self.viewModel.outputs.metadataIconHidden
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText
@@ -186,13 +189,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
 
-    self.viewModel.outputs.metadataData
+    self.viewModel.outputs.metadataIcon
       .observeForUI()
-      .observeValues { [weak self] data in
-        self?.metadataIconImageView.image = data.iconImage
-        self?.metadataLabel.text = data.labelText
-        self?.metadataIconImageView.tintColor = data.iconAndTextColor
-        self?.metadataLabel.textColor = data.iconAndTextColor
+      .observeValues { [weak self] icon in
+          self?.metadataIconImageView.image = icon
     }
 
     self.viewModel.outputs.progressPercentage
