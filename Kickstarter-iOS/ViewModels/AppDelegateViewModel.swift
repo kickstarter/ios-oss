@@ -413,9 +413,7 @@ AppDelegateViewModelOutputs {
       .switchMap { projectId, messageThreadId in
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
           .demoteErrors()
-          .map { (env: MessageThreadEnvelope) in
-            return (projectId, env.messageThread)
-          }
+          .map { env in return (projectId, env.messageThread) }
       }
 
     self.goToMessageThread = deepLink
@@ -427,9 +425,7 @@ AppDelegateViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
-          .map { (env: MessageThreadEnvelope) in
-            return env.messageThread
-          }
+          .map { env in return env.messageThread }
      }
 
     self.goToProfile = deepLink
@@ -790,7 +786,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     switch activity.category {
     case .backing, .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == true {
+      if envelope.forCreator == .some(true) {
         return .tab(.dashboard(project: .id(projectId)))
       }
       return .project(.id(projectId), .root, refTag: .push)
@@ -824,14 +820,14 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let project = envelope.project {
-    if envelope.forCreator == true {
+    if envelope.forCreator == .some(true) {
       return .tab(.dashboard(project: .id(project.id)))
     }
     return .project(.id(project.id), .root, refTag: .push)
   }
 
   if let message = envelope.message {
-    if envelope.forCreator == true {
+    if envelope.forCreator == .some(true) {
       return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
     } else {
       return .messages(messageThreadId: message.messageThreadId)

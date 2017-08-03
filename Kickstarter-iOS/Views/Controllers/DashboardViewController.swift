@@ -176,7 +176,7 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func goToMessages(project: Project) {
+  private func goToMessages(project: Project) {
     let vc = MessageThreadsViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -191,19 +191,19 @@ internal final class DashboardViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goToProject(_ project: Project, refTag: RefTag) {
+  private func goToProject(_ project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func presentProjectsDrawer(data: [ProjectsDrawerData]) {
+  private func presentProjectsDrawer(data: [ProjectsDrawerData]) {
     let vc = DashboardProjectsDrawerViewController.configuredWith(data: data)
     vc.delegate = self
     self.modalPresentationStyle = .overCurrentContext
     self.present(vc, animated: false, completion: nil)
   }
 
-  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
+  private func showShareSheet(_ controller: UIActivityViewController) {
 
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
@@ -225,7 +225,7 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func accessibilityFocusOnTitleView() {
+  private func accessibilityFocusOnTitleView() {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleView)
   }
 
@@ -233,7 +233,7 @@ internal final class DashboardViewController: UITableViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  fileprivate func goToMessageThread(project: Project, messageThread: MessageThread) {
+  private func goToMessageThread(project: Project, messageThread: MessageThread) {
     let threadsVC = MessageThreadsViewController.configuredWith(project: project)
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
@@ -251,7 +251,7 @@ extension DashboardViewController: DashboardActionCellDelegate {
   }
 
   internal func goToMessages(_ cell: DashboardActionCell?) {
-    self.viewModel.inputs.openMessageThreadRequested()
+    self.viewModel.inputs.messagesCellTapped()
   }
 
   internal func goToPostUpdate(_ cell: DashboardActionCell?, project: Project) {

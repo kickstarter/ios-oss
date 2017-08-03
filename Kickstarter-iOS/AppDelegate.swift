@@ -100,14 +100,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToCreatorMessageThread
       .observeForUI()
       .observeValues { [weak self] in
-        self?.goToCreatorMessageThread($0.0, $0.1)
+        self?.goToCreatorMessageThread($0, $1)
       }
 
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.goToMessageThread($0)
-      }
+      .observeValues { [weak self] in self?.goToMessageThread($0) }
 
     self.viewModel.outputs.goToSearch
       .observeForUI()

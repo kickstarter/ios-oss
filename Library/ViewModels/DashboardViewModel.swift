@@ -32,11 +32,11 @@ public protocol DashboardViewModelInputs {
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
 
+  /// Call to open project messages thread
+  func messagesCellTapped()
+
   /// Call to open message thread for specific project
   func messageThreadNavigated(projectId: Param, messageThread: MessageThread)
-
-  /// Call to open project messages thread
-  func openMessageThreadRequested()
 
   /// Call when the project context cell is tapped.
   func projectContextCellTapped()
@@ -242,7 +242,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .map { ($0, RefTag.dashboard) }
 
     self.goToMessages = self.project
-      .takeWhen(self.openMessageThreadRequestedProperty.signal)
+      .takeWhen(self.messagesCellTappedProperty.signal)
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
@@ -316,9 +316,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }
-  fileprivate let openMessageThreadRequestedProperty = MutableProperty()
-  public func openMessageThreadRequested() {
-    self.openMessageThreadRequestedProperty.value = ()
+  fileprivate let messagesCellTappedProperty = MutableProperty()
+  public func messagesCellTapped() {
+    self.messagesCellTappedProperty.value = ()
   }
 
   public let animateOutProjectsDrawer: Signal<(), NoError>
