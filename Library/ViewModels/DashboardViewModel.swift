@@ -26,6 +26,9 @@ public struct ProjectsDrawerData {
 }
 
 public protocol DashboardViewModelInputs {
+  /// Call to navigate to activities for project with id
+  func activitiesNavigated(projectId: Param)
+
   /// Call to switch display to another project from the drawer.
   func `switch`(toProject param: Param)
 
@@ -64,6 +67,9 @@ public protocol DashboardViewModelOutputs {
   /// Emits the funding stats and project to be displayed in the funding cell.
   var fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
                            project: Project), NoError> { get }
+
+  /// Emits when navigating to project activities
+  var goToActivities: Signal<Project, NoError> { get }
 
   /// Emits when to go to project messages thread
   var goToMessages: Signal<Project, NoError> { get }
@@ -108,6 +114,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   private let selectedProjectProperty: SignalProducer<Param?, NoError>
   private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
   private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+  private let navigateToActivitiesReceived =  MutableProperty<Param?>(nil)
 
   public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
@@ -145,13 +152,14 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { (projects, $0) }
     }
 
+    self.project = projectsAndSelected.map(second)
+
     self.messageThreadReceived <~ Signal.merge(
       self.viewWillDisappearProperty.signal.mapConst(nil),
       self.messageThreadNavigatedProperty.signal
     )
 
-    self.goToMessageThread = projectsAndSelected
-      .map { $0.1 }
+    self.goToMessageThread = project
       .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
         messageThreadReceived
           .skipNil()
@@ -161,7 +169,20 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           }
       }
 
-    self.project = projectsAndSelected.map(second)
+    self.navigateToActivitiesReceived <~ Signal.merge(
+      self.viewWillDisappearProperty.signal.mapConst(nil),
+      self.activitiesNavigatedProperty.signal
+    )
+
+    self.goToActivities = project
+      .switchMap { [navigateToActivitiesReceived = self.navigateToActivitiesReceived.producer] project in
+        navigateToActivitiesReceived
+          .skipNil()
+          .filter { $0 == .id(project.id) }
+          .map { _ in project }
+    }
+
+
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
@@ -300,6 +321,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func `switch`(toProject param: Param) {
     self.switchToProjectProperty.value = param
   }
+  fileprivate let activitiesNavigatedProperty = MutableProperty<Param?>(nil)
+  public func activitiesNavigated(projectId: Param) {
+    self.activitiesNavigatedProperty.value = projectId
+  }
   fileprivate let messageThreadNavigatedProperty = MutableProperty<(Param, MessageThread)?>(nil)
   public func messageThreadNavigated(projectId: Param, messageThread: MessageThread) {
     self.messageThreadNavigatedProperty.value = (projectId, messageThread)
@@ -326,6 +351,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public let focusScreenReaderOnTitleView: Signal<(), NoError>
   public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
     project: Project), NoError>
+  public let goToActivities: Signal<Project, NoError>
   public let goToMessages: Signal<Project, NoError>
   public let goToMessageThread: Signal<(Project, MessageThread), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>

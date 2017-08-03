@@ -147,6 +147,12 @@ internal final class DashboardViewController: UITableViewController {
       .observeValues { [weak self] project, messageThread in
         self?.goToMessageThread(project: project, messageThread: messageThread)
       }
+
+    self.viewModel.outputs.goToActivities
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToActivity(project)
+    }
   }
   // swiftlint:enable function_body_length
 
@@ -242,6 +248,10 @@ internal final class DashboardViewController: UITableViewController {
 
   public func navigateToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
     self.viewModel.inputs.messageThreadNavigated(projectId: projectId, messageThread: messageThread)
+  }
+
+  public func navigateToProjectActivities(projectId: Param) {
+    self.viewModel.inputs.activitiesNavigated(projectId: projectId)
   }
 }
 

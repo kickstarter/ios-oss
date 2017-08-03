@@ -115,6 +115,16 @@ public final class RootTabBarViewController: UITabBarController {
      dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
+  public func swithchToProjectActivities(projectId: Param) {
+    self.switchToDashboard(project: nil)
+
+    guard let dashboardNav = self.selectedViewController as? UINavigationController,
+    let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
+    else { return }
+
+    dashboardVC.navigateToProjectActivities(projectId: projectId)
+  }
+
   // swiftlint:disable:next cyclomatic_complexity
   // swiftlint:disable:next function_body_length
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
