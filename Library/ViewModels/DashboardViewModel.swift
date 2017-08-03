@@ -121,25 +121,21 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.selectedProjectProperty = SignalProducer.merge(
       self.switchToProjectProperty.producer,
-      self.messageThreadNavigatedProperty.producer.skipNil().map { $0.0 }
+      self.messageThreadNavigatedProperty.producer.skipNil().map(first)
     )
 
     self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
       self.selectedProjectProperty,
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
-    .map { $0.0 }
+    .map(first)
     .skipRepeats { lhs, rhs in lhs == rhs }
 
     let projectsAndSelected = projects
       .switchMap { [switchToProject = self.selectProjectPropertyOrFirst.producer] projects in
         switchToProject
           .map { param -> Project? in
-            guard let param = param else {
-              return projects.first
-            }
-
-            return find(projectForParam: param, in: projects) ?? projects.first
+            param.flatMap { find(projectForParam: $0, in: projects) } ?? projects.first
           }
           .skipNil()
           .map { (projects, $0) }
@@ -151,13 +147,13 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     )
 
     self.goToMessageThread = projectsAndSelected
-      .map { $0.1 }
+      .map(second)
       .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
-          .map { (messgeThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
-            return (project, messgeThreadPair.1)
+          .map { (messageThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
+            (project, messageThreadPair.1)
           }
       }
 
@@ -191,9 +187,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
 
     let drawerStateProjectsAndSelectedProject = Signal.merge(
-      projectsAndSelected.map { ($0.0, $0.1, false) },
+      projectsAndSelected.map { ($0, $1, false) },
       projectsAndSelected
-        .map { ($0.0, $0.1) }
         .takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) })
       .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
         let (projects, project, toggle) = projectsProjectToggle

@@ -74,9 +74,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.goToMessages
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.delegate?.goToMessages(self)
-    }
+      .observeValues { [weak self] in self?.delegate?.goToMessages(self) }
 
     self.viewModel.outputs.goToPostUpdate
       .observeForUI()
