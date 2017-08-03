@@ -199,7 +199,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
-    self.metadataViewHidden = project
+    self.metadataViewHidden = configuredProject
       .map { p in
         let today = AppEnvironment.current.dateType.init().date
         let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
@@ -210,14 +210,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
       .skipRepeats()
 
-    self.metadataData = configuredProject.map(postcardMetadata(forProject:)).skipNil()
+    let metadataData = configuredProject.map(postcardMetadata(forProject:)).skipNil()
 
     self.metadataIcon = metadataData.map { $0.iconImage }
     self.metadataLabelText = metadataData.map { $0.labelText }
     self.metadataTextColor = metadataData.map { $0.iconAndTextColor }
     self.metadataIconImageViewTintColor = metadataData.map { $0.iconAndTextColor }
 
-    self.metadataIconHidden = project.map { p in
+    self.metadataIconHidden = configuredProject.map { p in
       let today = AppEnvironment.current.dateType.init().date
       return p.isPotdToday(today: today)
     }
@@ -334,16 +334,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.saveButtonEnabled = isLoading.signal.map(negate)
       .skipRepeats()
 
-    self.metadataViewHidden = configuredProject
-      .map { p in
-        let today = AppEnvironment.current.dateType.init().date
-        let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
-          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
-
-        return noMetadata
-      }
-      .skipRepeats()
-
     self.notifyDelegateShowLoginTout = loggedOutUserTappedSaveButton
 
     self.notifyDelegateShowSaveAlert = project
@@ -416,7 +406,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
-  public var notifyDelegateShowLoginTout: Signal<Void, NoError>
+  public let notifyDelegateShowLoginTout: Signal<Void, NoError>
   public let notifyDelegateShowSaveAlert: Signal<Void, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
