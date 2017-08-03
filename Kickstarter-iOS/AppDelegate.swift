@@ -312,11 +312,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  fileprivate func goToMessageThread(_ messageThread: MessageThread) {
+  private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 
-  fileprivate func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
+  private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
     self.rootTabBarController?
       .switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
   }

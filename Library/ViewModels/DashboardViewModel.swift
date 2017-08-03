@@ -102,6 +102,9 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
+  //We use producers ot this properties during view appearance and projects retreaval process 
+  //to avoid any race condisions and keep last selected project param "handy" 
+  //for the moment projects are reteaved
   private let selectedProjectProperty: SignalProducer<Param?, NoError>
   private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
   private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
@@ -153,8 +156,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
-          .map { (measgaThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
-            return (project, measgaThreadPair.1)
+          .map { (messgeThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
+            return (project, messgeThreadPair.1)
           }
       }
 
