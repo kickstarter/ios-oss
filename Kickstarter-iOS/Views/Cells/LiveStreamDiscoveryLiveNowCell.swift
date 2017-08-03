@@ -48,7 +48,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     _ = self.cardView
       |> cardStyle()
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.creatorLabel
       |> SimpleHTMLLabel.lens.boldFont .~ UIFont.ksr_title3(size: 14).bolded

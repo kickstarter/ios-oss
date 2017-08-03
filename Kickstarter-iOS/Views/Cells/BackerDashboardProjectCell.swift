@@ -50,9 +50,14 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.isAccessibilityElement .~ true
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white

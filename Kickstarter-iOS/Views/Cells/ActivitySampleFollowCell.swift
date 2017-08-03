@@ -43,7 +43,7 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
       |> activitySampleTitleLabelStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.friendFollowLabel
       |> activitySampleFriendFollowLabelStyle
