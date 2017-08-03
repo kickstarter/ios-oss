@@ -9,7 +9,6 @@ internal final class ProjectActivityViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(
       apiService: MockService(
         oauthToken: OauthToken(token: "deadbeef"),

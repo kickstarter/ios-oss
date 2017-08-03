@@ -57,7 +57,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white

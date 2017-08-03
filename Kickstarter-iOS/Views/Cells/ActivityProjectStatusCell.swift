@@ -66,7 +66,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
