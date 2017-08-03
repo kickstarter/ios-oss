@@ -11,7 +11,7 @@ public protocol RewardCellViewModelInputs {
 
 public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
-  var cardViewBackgroundColor: Signal<UIColor, NoError> { get }
+  var cardViewBorderIsVisible: Signal<Bool, NoError> { get }
   var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
@@ -204,7 +204,8 @@ RewardCellViewModelOutputs {
 
     let tappable = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
-        (project.state == .live && reward.remaining != 0) || youreABacker
+        (project.state == .live && reward.remaining != 0)
+        || youreABacker
     }
 
     self.cardViewDropShadowHidden = Signal.combineLatest(
@@ -213,9 +214,8 @@ RewardCellViewModelOutputs {
       )
       .map(first)
 
-    self.cardViewBackgroundColor = Signal.combineLatest(allGoneAndNotABacker, self.boundStylesProperty.signal)
-      .map(first)
-      .map { $0 ? .ksr_grey_100 : .white }
+    self.cardViewBorderIsVisible = Signal.zip(project, reward)
+      .map { project, reward in project.state != .live || reward.remaining == 0 }
 
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
@@ -254,7 +254,7 @@ RewardCellViewModelOutputs {
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
-  public let cardViewBackgroundColor: Signal<UIColor, NoError>
+  public let cardViewBorderIsVisible: Signal<Bool, NoError>
   public let cardViewDropShadowHidden: Signal<Bool, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>

@@ -47,7 +47,7 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
 
     _ = self.cardView
       |> cardStyle()
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_navy_700.cgColor
   }
 }

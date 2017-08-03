@@ -36,7 +36,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.dateStackView |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
