@@ -14,7 +14,6 @@ private enum PostcardMetadataType {
   case backing
   case featured
   case potd
-  case starred
 
   fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
@@ -32,10 +31,6 @@ private enum PostcardMetadataType {
     case .potd:
       return PostcardMetadataData(iconImage: nil,
                                   labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-                                  iconAndTextColor: .ksr_text_navy_700)
-    case .starred:
-      return PostcardMetadataData(iconImage: image(named: "metadata-starred"),
-                                  labelText: Strings.You_saved_this_project(),
                                   iconAndTextColor: .ksr_text_navy_700)
     }
   }
@@ -491,8 +486,6 @@ private func postcardMetadata(forProject project: Project) -> PostcardMetadataDa
 
   if project.personalization.isBacking == true {
     return PostcardMetadataType.backing.data(forProject: project)
-  } else if project.personalization.isStarred == true {
-    return PostcardMetadataType.starred.data(forProject: project)
   } else if project.isPotdToday(today: today) {
     return PostcardMetadataType.potd.data(forProject: project)
   } else if project.isFeaturedToday(today: today) {
