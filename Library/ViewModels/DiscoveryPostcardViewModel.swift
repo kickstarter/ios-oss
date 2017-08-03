@@ -14,6 +14,7 @@ private enum PostcardMetadataType {
   case backing
   case featured
   case potd
+  case starred
 
   fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
@@ -29,8 +30,12 @@ private enum PostcardMetadataType {
                                     iconAndTextColor: .ksr_text_navy_700)
       } else { return nil }
     case .potd:
-      return PostcardMetadataData(iconImage: image(named: "metadata-potd"),
+      return PostcardMetadataData(iconImage: nil,
                                   labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
+                                  iconAndTextColor: .ksr_text_navy_700)
+    case .starred:
+      return PostcardMetadataData(iconImage: image(named: "metadata-starred"),
+                                  labelText: Strings.You_saved_this_project(),
                                   iconAndTextColor: .ksr_text_navy_700)
     }
   }
@@ -81,8 +86,20 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits the disparate data to be displayed on the metadata view label.
-  var metadataData: Signal<PostcardMetadataData, NoError> { get }
+  /// Emits metadata label text
+  var metadataLabelText: Signal<String, NoError> { get }
+
+  /// Emits metadata icon image
+  var metadataIcon: Signal<UIImage?, NoError> { get }
+
+  /// Emits a boolean to determine if metadata icon should be hidden
+  var metadataIconHidden: Signal<Bool, NoError> { get }
+
+  /// Emits icon image tint color
+  var metadataIconImageViewTintColor: Signal<UIColor, NoError> { get }
+
+  /// Emits metadata text color
+  var metadataTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
@@ -182,7 +199,28 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
+    self.metadataViewHidden = project
+      .map { p in
+        let today = AppEnvironment.current.dateType.init().date
+        let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
+                         (p.personalization.isStarred == nil || p.personalization.isStarred == false) &&
+          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
+
+        return noMetadata
+      }
+      .skipRepeats()
+
     self.metadataData = configuredProject.map(postcardMetadata(forProject:)).skipNil()
+
+    self.metadataIcon = metadataData.map { $0.iconImage }
+    self.metadataLabelText = metadataData.map { $0.labelText }
+    self.metadataTextColor = metadataData.map { $0.iconAndTextColor }
+    self.metadataIconImageViewTintColor = metadataData.map { $0.iconAndTextColor }
+
+    self.metadataIconHidden = project.map { p in
+      let today = AppEnvironment.current.dateType.init().date
+      return p.isPotdToday(today: today)
+    }
 
     self.percentFundedTitleLabelText = configuredProject
       .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
@@ -332,6 +370,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
   // swiftlint:enable function_body_length
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
@@ -370,7 +409,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
-  public let metadataData: Signal<PostcardMetadataData, NoError>
+  public let metadataLabelText: Signal<String, NoError>
+  public let metadataIcon: Signal<UIImage?, NoError>
+  public let metadataIconHidden: Signal<Bool, NoError>
+  public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
+  public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
   public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public var notifyDelegateShowLoginTout: Signal<Void, NoError>
@@ -458,6 +501,8 @@ private func postcardMetadata(forProject project: Project) -> PostcardMetadataDa
 
   if project.personalization.isBacking == true {
     return PostcardMetadataType.backing.data(forProject: project)
+  } else if project.personalization.isStarred == true {
+    return PostcardMetadataType.starred.data(forProject: project)
   } else if project.isPotdToday(today: today) {
     return PostcardMetadataType.potd.data(forProject: project)
   } else if project.isFeaturedToday(today: today) {

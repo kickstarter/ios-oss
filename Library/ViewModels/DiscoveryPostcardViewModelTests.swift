@@ -14,6 +14,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
+  internal let metadataIcon = TestObserver<UIImage?, NoError>()
+  internal let metadataIconHidden = TestObserver<Bool, NoError>()
+  internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
+  internal let metadataTextColor = TestObserver<UIColor, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShowLoginTout = TestObserver<Void, NoError>()
@@ -45,7 +49,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
-    self.vm.outputs.metadataData.map { $0.labelText }.observe(self.metadataLabelText.observer)
+    self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
+    self.vm.outputs.metadataTextColor.observe(self.metadataTextColor.observer)
+    self.vm.outputs.metadataIconImageViewTintColor.observe(self.metadataIconTintColor.observer)
+    self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
+    self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
@@ -263,17 +271,31 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.dates.potdAt .~ potdAt
       |> Project.lens.dates.featuredAt .~ featuredAt
 
+    let backedColor: UIColor = .ksr_text_green_700
+    let featuredColor: UIColor = .ksr_text_navy_700
+    let potdColor: UIColor = .ksr_text_navy_700
+    let starredColor: UIColor = .ksr_text_navy_700
+
+    let backedImage = image(named: "metadata-backing")
+    let featuredImage = image(named: "metadata-featured")
+    let starredImage = image(named: "metadata-starred")
+
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: Project.template)
 
       self.metadataLabelText.assertValueCount(0, "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
+      self.metadataIconHidden.assertValues([false])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "dadbeeef", user: User.template))
       self.vm.inputs.configureWith(project: backedProject)
 
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
+      self.metadataIconHidden.assertValues([false, false])
+      self.metadataIcon.assertValues([backedImage])
+      self.metadataTextColor.assertValues([backedColor])
+      self.metadataIconTintColor.assertValues([backedColor])
 
       self.vm.inputs.configureWith(project: starredAndPotdProject)
 
@@ -283,6 +305,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Starred metadata takes precedence.")
 
+      self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
+      self.metadataIcon.assertValues([backedImage, starredImage])
+      self.metadataTextColor.assertValues([backedColor, starredColor])
+      self.metadataIconTintColor.assertValues([backedColor, starredColor])
+
       self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
       self.metadataLabelText.assertValues(
         [
@@ -290,6 +317,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
+
+      self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
+      self.metadataIcon.assertValues([backedImage, starredImage, backedImage])
+      self.metadataTextColor.assertValues([backedColor, starredColor, backedColor])
+      self.metadataIconTintColor.assertValues([backedColor, starredColor, backedColor])
 
       self.vm.inputs.configureWith(project: featuredProject)
       self.metadataLabelText.assertValues(
@@ -302,6 +334,12 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           )
         ], "Featured metadata emits.")
 
+      self.metadataIconHidden.assertValues([false, false, true, true, false],
+        "Icon shown for the featured project")
+      self.metadataIcon.assertValues([backedImage, starredImage, backedImage, featuredImage])
+      self.metadataTextColor.assertValues([backedColor, starredColor, backedColor, featuredColor])
+      self.metadataIconTintColor.assertValues([backedColor, starredColor, backedColor, featuredColor])
+
       self.vm.inputs.configureWith(project: potdAndFeaturedProject)
       self.metadataLabelText.assertValues(
         [
@@ -313,6 +351,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           ),
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Potd metadata takes precedence.")
+
+      self.metadataIconHidden.assertValues([false, false, true, true, false, true],
+        "No Icon shown for the potd project")
+      self.metadataIcon.assertValues(
+        [backedImage, starredImage, backedImage, featuredImage, nil])
+      self.metadataTextColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+      self.metadataIconTintColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
 
       AppEnvironment.logout()
 

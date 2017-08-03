@@ -440,20 +440,20 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNM-IW-eI1">
-                                            <rect key="frame" x="30" y="8.5" width="149.5" height="20.5"/>
+                                            <rect key="frame" x="30" y="8.5" width="146.5" height="20.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8v0-Ix-KPn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="149.5" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="146.5" height="20.5"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CkF-a8-1fi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="149.5" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="146.5" height="20.5"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="metadata-potd" translatesAutoresizingMaskIntoConstraints="NO" id="muw-ic-gpV">
-                                                            <rect key="frame" x="0.0" y="4.5" width="14" height="12"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="metadata-featured" translatesAutoresizingMaskIntoConstraints="NO" id="muw-ic-gpV">
+                                                            <rect key="frame" x="0.0" y="4.5" width="11" height="12"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project of the day" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWM-jg-i8M">
-                                                            <rect key="frame" x="14" y="0.0" width="135.5" height="20.5"/>
+                                                            <rect key="frame" x="11" y="0.0" width="135.5" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -564,7 +564,7 @@
     <resources>
         <image name="cosmic-surgery" width="800" height="600"/>
         <image name="kickstarter-logo" width="149" height="29"/>
-        <image name="metadata-potd" width="14" height="12"/>
+        <image name="metadata-featured" width="11" height="12"/>
         <image name="zack-sears" width="160" height="160"/>
     </resources>
 </document>

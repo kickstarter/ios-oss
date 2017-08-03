@@ -2138,7 +2138,7 @@ private func prioritizedLiveStreamState(fromLiveStreamEvents liveStreamEvents: [
 }
 
 // Simple enum to map states on LiveStreamEvent
-fileprivate enum LiveStreamStateContext: Comparable {
+private enum LiveStreamStateContext: Comparable {
   case countdown
   case live
   case replay
