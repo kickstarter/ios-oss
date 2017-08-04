@@ -35,11 +35,11 @@ public protocol DashboardViewModelInputs {
   /// Call when the projects drawer has animated out.
   func dashboardProjectsDrawerDidAnimateOut()
 
+  /// Call to open project messages thread
+  func messagesCellTapped()
+
   /// Call to open message thread for specific project
   func messageThreadNavigated(projectId: Param, messageThread: MessageThread)
-
-  /// Call to open project messages thread
-  func openMessageThreadRequested()
 
   /// Call when the project context cell is tapped.
   func projectContextCellTapped()
@@ -108,12 +108,13 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  //We use producers ot this properties during view appearance and projects retreaval process 
-  //to avoid any race condisions and keep last selected project param "handy" 
-  //for the moment projects are reteaved
+  //Project selected by user in the drawer ot by pysh for the project message thread
   private let selectedProjectProperty: SignalProducer<Param?, NoError>
+  //Selected project or the first project in the projects collection if no project was selected
   private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+  //Push for project message or nil if view is about to disappear
   private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+  //Navigate to Project activities or nil if view is about to disappear
   private let navigateToActivitiesReceived =  MutableProperty<Param?>(nil)
 
   public init() {
@@ -128,25 +129,21 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.selectedProjectProperty = SignalProducer.merge(
       self.switchToProjectProperty.producer,
-      self.messageThreadNavigatedProperty.producer.skipNil().map { $0.0 }
+      self.messageThreadNavigatedProperty.producer.skipNil().map(first)
     )
 
     self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
       self.selectedProjectProperty,
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
-    .map { $0.0 }
+    .map(first)
     .skipRepeats { lhs, rhs in lhs == rhs }
 
     let projectsAndSelected = projects
       .switchMap { [switchToProject = self.selectProjectPropertyOrFirst.producer] projects in
         switchToProject
           .map { param -> Project? in
-            guard let param = param else {
-              return projects.first
-            }
-
-            return find(projectForParam: param, in: projects) ?? projects.first
+            param.flatMap { find(projectForParam: $0, in: projects) } ?? projects.first
           }
           .skipNil()
           .map { (projects, $0) }
@@ -159,14 +156,12 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.messageThreadNavigatedProperty.signal
     )
 
-    self.goToMessageThread = project
+    self.goToMessageThread = self.project
       .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
-          .map { (messgeThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
-            return (project, messgeThreadPair.1)
-          }
+          .map { (project, $1) }
       }
 
     self.navigateToActivitiesReceived <~ Signal.merge(
@@ -181,8 +176,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .filter { $0 == .id(project.id) }
           .map { _ in project }
     }
-
-
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
@@ -212,9 +205,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
 
     let drawerStateProjectsAndSelectedProject = Signal.merge(
-      projectsAndSelected.map { ($0.0, $0.1, false) },
+      projectsAndSelected.map { ($0, $1, false) },
       projectsAndSelected
-        .map { ($0.0, $0.1) }
         .takeWhen(self.showHideProjectsDrawerProperty.signal).map { ($0, $1, true) })
       .scan(nil) { (data, projectsProjectToggle) -> (DrawerState, [Project], Project)? in
         let (projects, project, toggle) = projectsProjectToggle
@@ -263,7 +255,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .map { ($0, RefTag.dashboard) }
 
     self.goToMessages = self.project
-      .takeWhen(self.openMessageThreadRequestedProperty.signal)
+      .takeWhen(self.messagesCellTappedProperty.signal)
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
 
@@ -341,9 +333,9 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }
-  fileprivate let openMessageThreadRequestedProperty = MutableProperty()
-  public func openMessageThreadRequested() {
-    self.openMessageThreadRequestedProperty.value = ()
+  fileprivate let messagesCellTappedProperty = MutableProperty()
+  public func messagesCellTapped() {
+    self.messagesCellTappedProperty.value = ()
   }
 
   public let animateOutProjectsDrawer: Signal<(), NoError>

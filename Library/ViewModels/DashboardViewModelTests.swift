@@ -8,12 +8,6 @@ import XCTest
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 
-typealias ProjectMessageThread = (Project, MessageThread)
-
-private func == (lhs: ProjectMessageThread, rhs: ProjectMessageThread) -> Bool {
-  return lhs.0 == rhs.0 && lhs.1 == rhs.1
-}
-
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
   internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
@@ -359,7 +353,7 @@ internal final class DashboardViewModelTests: TestCase {
                                           "Go to message thread not emitted again when view appears")
 
       self.project.assertValues([threadProj, threadProj],
-        "Keep previeiosly selected project when view Appers")
+        "Keep previously selected project when view Appears")
     }
   }
 
