@@ -152,9 +152,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
-          .map { (messageThreadPair: (Param, MessageThread)) -> (Project, MessageThread) in
-            (project, messageThreadPair.1)
-          }
+          .map { (project, $1) }
       }
 
     self.project = projectsAndSelected.map(second)

@@ -124,7 +124,7 @@ internal final class DashboardViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToMessages(project: project)
-      }
+    }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()

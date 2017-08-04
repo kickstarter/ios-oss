@@ -413,7 +413,7 @@ AppDelegateViewModelOutputs {
       .switchMap { projectId, messageThreadId in
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
           .demoteErrors()
-          .map { env in return (projectId, env.messageThread) }
+          .map { (projectId, $0.messageThread) }
       }
 
     self.goToMessageThread = deepLink
@@ -425,7 +425,7 @@ AppDelegateViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
-          .map { env in return env.messageThread }
+          .map { $0.messageThread }
      }
 
     self.goToProfile = deepLink
