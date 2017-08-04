@@ -19,9 +19,10 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let dismissViewController = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<(), NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let showProjectStarredPrompt = TestObserver<String, NoError>()
-  fileprivate let starButtonAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let starButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let saveButtonEnabled = TestObserver<Bool, NoError>()
+  fileprivate let saveButtonSelected = TestObserver<Bool, NoError>()
+  fileprivate let showProjectSavedPrompt = TestObserver<Void, NoError>()
+  fileprivate let saveButtonAccessibilityValue = TestObserver<String, NoError>()
   fileprivate let titleAnimate = TestObserver<Bool, NoError>()
   fileprivate let titleHidden = TestObserver<Bool, NoError>()
 
@@ -37,9 +38,10 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.projectName.observe(self.projectName.observer)
-    self.vm.outputs.showProjectStarredPrompt.observe(self.showProjectStarredPrompt.observer)
-    self.vm.outputs.starButtonSelected.observe(self.starButtonSelected.observer)
-    self.vm.outputs.starButtonAccessibilityHint.observe(self.starButtonAccessibilityHint.observer)
+    self.vm.outputs.showProjectSavedPrompt.observe(self.showProjectSavedPrompt.observer)
+    self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
+    self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
+    self.vm.outputs.saveButtonAccessibilityValue.observe(self.saveButtonAccessibilityValue.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(second).observe(self.titleAnimate.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(first).observe(self.titleHidden.observer)
   }
@@ -171,150 +173,184 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  // Tests the flow of a logged out user trying to star a project, and then going through the login flow.
-  func testLoggedOutUser_StarsProject() {
+  // Tests the flow of a logged out user trying to save a project, and then going through the login flow.
+  func testLoggedOutUser_SavesProject() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
-    let toggleStarResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
-      self.starButtonSelected.assertDidNotEmitValue("No values emitted at first.")
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
+      self.saveButtonEnabled.assertDidNotEmitValue()
+      self.saveButtonSelected.assertDidNotEmitValue("No values emitted at first.")
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.starButtonSelected.assertValues([false], "Star button is not selected at first")
+      self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
+      self.saveButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.saveButtonTapped()
 
-      self.starButtonSelected.assertValues([false], "Nothing is emitted when starring while logged out.")
-      self.goToLoginTout.assertValueCount(1, "Prompt to login when starring while logged out.")
+      self.saveButtonSelected.assertValues([false],
+                                            "Nothing is emitted when save button tapped while logged out.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
+
+      self.saveButtonEnabled.assertDidNotEmitValue()
+
+      self.goToLoginTout.assertValueCount(1, "Prompt to login when saving while logged out.")
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.starButtonSelected.assertValues([false, true], "Once logged in, the project stars immediately.")
+      self.saveButtonSelected.assertValues([false, true],
+                                            "Once logged in, the save button selects immediately.")
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
       self.scheduler.advance()
 
-      self.starButtonSelected.assertValues([false, true],
-                                           "Star stays selected after API request.")
-      self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
-      XCTAssertEqual(["Project Star", "Starred Project"],
+      self.saveButtonSelected.assertValues([false, true],
+                                           "Save button stays selected after API request.")
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+      self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
     }
   }
 
-  // Tests a logged in user starring a project.
-  func testLoggedInUser_StarsAndUnstarsProject() {
+  // Tests a logged in user saving a project.
+  func testLoggedInUser_SavesAndUnsavesProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = Project.template
-    let toggleStarResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.starButtonSelected.assertValues([false], "Star button is not selected at first")
+      self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
+      self.saveButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.saveButtonTapped()
 
-      self.starButtonSelected.assertValues([false, true], "Star button selects immediately.")
+      self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request." )
+
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(1, "The star prompt shows.")
-      XCTAssertEqual(["Project Star", "Starred Project"],
+      self.saveButtonSelected.assertValues([false, true],
+                                           "Save button remains selected.")
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+
+      self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
 
-      let untoggleStarResponse = .template
+      let untoggleSaveResponse = .template
         |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
-      withEnvironment(apiService: MockService(toggleStarResponse: untoggleStarResponse)) {
-        self.vm.inputs.starButtonTapped()
+      withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
+        self.vm.inputs.saveButtonTapped()
 
-        self.starButtonSelected.assertValues([false, true, false],
-                                             "The project unstars immediately.")
+        self.saveButtonSelected.assertValues([false, true, false],
+                                             "Save button deselects immediately.")
+        self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
+        self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request")
 
         self.scheduler.advance()
 
-        self.starButtonSelected.assertValues([false, true, false],
-                                             "The star button stays unselected.")
+        self.saveButtonSelected.assertValues([false, true, false],
+                                             "The save button remains unselected.")
+          self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
+        self.saveButtonEnabled.assertValues([false, true, false, true],
+                                            "Save button is enabled after request")
 
-        self.showProjectStarredPrompt.assertValueCount(1, "The star prompt only showed for starring.")
-        XCTAssertEqual(["Project Star", "Starred Project", "Project Unstar", "Unstarred Project"],
-                       self.trackingClient.events,
-                       "An unstar koala event is tracked.")
+        self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt only showed for starring.")
+        XCTAssertEqual(["Project Star", "Starred Project", "Saved Project", "Project Unstar",
+                        "Unstarred Project", "Unsaved Project"],
+                       self.trackingClient.events, "An unstar koala event is tracked.")
       }
     }
   }
 
-  // Tests a logged in user starring a project that ends soon.
-  func testLoggedInUser_StarsEndingSoonProject() {
+  // Tests a logged in user saving a project that ends soon.
+  func testLoggedInUser_SaveEndingSoonProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = .template
       |> Project.lens.personalization.isStarred .~ false
       |> Project.lens.dates.deadline .~ (MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
-    let toggleStarResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(
-        0, "The star prompt doesn't show cause it's less than 48hrs."
+      self.showProjectSavedPrompt.assertValueCount(
+        0, "The save project prompt doesn't show cause it's less than 48hrs."
       )
 
-      XCTAssertEqual(["Project Star", "Starred Project"], self.trackingClient.events,
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"], self.trackingClient.events,
                      "A star koala event is tracked.")
     }
   }
 
-  // Tests a user unstarring a project.
-  func testLoggedInUser_UnstarsProject() {
+  // Tests a user unsaving a project.
+  func testLoggedInUser_UnsavesProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = .template |> Project.lens.personalization.isStarred .~ true
-    let toggleStarResponse = .template
+    let toggleSaveResponse = .template
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleStarResponse)) {
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.starButtonTapped()
+      self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
-      self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
+      self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
 
-      XCTAssertEqual(["Project Unstar", "Unstarred Project"], self.trackingClient.events,
+      XCTAssertEqual(["Project Unstar", "Unstarred Project", "Unsaved Project"], self.trackingClient.events,
                      "An unstar koala event is tracked.")
     }
   }
 
-  func testLoggedInStarFailure() {
-    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+  func testLoggedInSaveFailure() {
+    /// CHECK THIS
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: .UnknownCode,
+      httpCode: 404,
+      exception: nil
+    )
 
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
-    self.vm.inputs.configureWith(project: project, refTag: nil)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.starButtonTapped()
+    withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, refTag: nil)
 
-    self.starButtonSelected.assertValues([false, true])
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.saveButtonTapped()
 
-    self.scheduler.advance()
+      self.saveButtonSelected.assertValues([false, true])
 
-    self.starButtonSelected.assertValues([false, true, false])
+      self.scheduler.advance()
 
-    self.showProjectStarredPrompt.assertValueCount(0, "The star prompt does not show.")
-    XCTAssertEqual([], trackingClient.events, "The star event does not track.")
+      self.saveButtonSelected.assertValues([false, true, false])
 
-    self.vm.inputs.starButtonTapped()
+      self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
+      XCTAssertEqual([], trackingClient.events, "The star event does not track.")
+
+      self.vm.inputs.saveButtonTapped()
+    }
 
     // fix:
     //    self.starButtonSelected.assertValues([false, true, false, true])

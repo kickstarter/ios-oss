@@ -4,10 +4,16 @@ import Library
 import Prelude
 import UIKit
 
-// Called when the share button is tapped
 internal protocol DiscoveryPostcardCellDelegate: class {
+  /// Called when the share button is tapped
   func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
                          fromSourceView: UIView)
+
+  /// Called when the heart/save button is tapped
+  func discoveryPostcardCellProjectSaveAlert()
+
+  /// Called when logged out user taps heart/save button
+  func discoveryPostcardCellGoToLoginTout()
 }
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
@@ -36,18 +42,34 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
-  @IBOutlet fileprivate weak var shareAndStarStackView: UIStackView!
+  @IBOutlet fileprivate weak var saveButton: UIButton!
+  @IBOutlet fileprivate weak var shareAndSaveStackView: UIStackView!
   @IBOutlet fileprivate weak var shareButton: UIButton!
   @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
-  @IBOutlet fileprivate weak var starButton: UIButton!
 
     internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionEnded()
+    }
+
+    NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
+        notification in
+        self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
+      }
   }
 
   internal override func bindStyles() {
@@ -136,8 +158,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
-    _ = self.shareAndStarStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(5)
+    _ = self.shareAndSaveStackView
+      |> UIStackView.lens.alignment .~ .center
 
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
@@ -154,9 +176,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
-    _ = self.starButton
+    _ = self.saveButton
       |> saveButtonStyle
-      |> UIButton.lens.hidden .~ true
 
     _ = self.shareButton
       |> shareButtonStyle
@@ -188,6 +209,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
+    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
     self.viewModel.outputs.metadataIcon
       .observeForUI()
@@ -232,6 +255,21 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         _self.delegate?.discoveryPostcard(cell: _self, tappedShare: context,
                                           fromSourceView: _self.shareButton)
     }
+
+    self.viewModel.outputs.notifyDelegateShowSaveAlert
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.delegate?.discoveryPostcardCellProjectSaveAlert()
+    }
+
+    self.viewModel.outputs.notifyDelegateShowLoginTout
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        _self.delegate?.discoveryPostcardCellGoToLoginTout()
+    }
+
   }
   // swiftlint:enable function_body_length
 
@@ -249,8 +287,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  @objc fileprivate func starButtonTapped() {
-    self.viewModel.inputs.starButtonTapped()
+  @objc fileprivate func saveButtonTapped() {
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @objc fileprivate func shareButtonTapped() {

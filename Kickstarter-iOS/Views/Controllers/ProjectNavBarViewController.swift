@@ -19,7 +19,7 @@ public final class ProjectNavBarViewController: UIViewController {
   @IBOutlet fileprivate weak var navContainerView: UIView!
   @IBOutlet fileprivate weak var projectNameLabel: UILabel!
   @IBOutlet fileprivate weak var shareButton: UIButton!
-  @IBOutlet fileprivate weak var starButton: UIButton!
+  @IBOutlet fileprivate weak var saveButton: UIButton!
 
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
@@ -43,7 +43,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-    self.starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     self.projectNameLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
@@ -108,9 +108,11 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-    _ = self.starButton
+    _ = self.saveButton
       |> saveButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
   // swiftlint:enable function_body_length
 
@@ -123,13 +125,14 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeValues { [weak self] in self?.categoryButton.setTitleColor($0, for: .normal) }
     self.categoryButton.rac.title = self.viewModel.outputs.categoryButtonText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.starButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint
-    self.starButton.rac.selected = self.viewModel.outputs.starButtonSelected
+    self.saveButton.rac.accessibilityValue = self.viewModel.outputs.saveButtonAccessibilityValue
+    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
-    self.viewModel.outputs.showProjectStarredPrompt
+    self.viewModel.outputs.showProjectSavedPrompt
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.showProjectStarredPrompt(message: $0)
+        self?.showProjectStarredPrompt()
     }
 
     self.viewModel.outputs.goToLoginTout
@@ -160,7 +163,7 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.closeButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
           self?.shareButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
-          self?.starButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
+          self?.saveButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }
@@ -171,14 +174,33 @@ public final class ProjectNavBarViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
+    self.viewModel.outputs.postNotificationWithProject
+      .observeForUI()
+      .observeValues { project in
+        NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved,
+                                        object: nil,
+                                        userInfo: ["project": project])
+    }
+
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
   // swiftlint:enable function_body_length
 
-  fileprivate func showProjectStarredPrompt(message: String) {
-    let alert = UIAlertController.alert(nil, message: message, handler: nil)
+  fileprivate func showProjectStarredPrompt() {
+    let alert = UIAlertController(
+      title: Strings.Project_saved(),
+      message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
+      preferredStyle: .alert)
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
     self.present(alert, animated: true, completion: nil)
   }
 
@@ -219,8 +241,8 @@ public final class ProjectNavBarViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func starButtonTapped() {
-    self.viewModel.inputs.starButtonTapped()
+  @objc fileprivate func saveButtonTapped() {
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @objc fileprivate func projectNameTapped() {
