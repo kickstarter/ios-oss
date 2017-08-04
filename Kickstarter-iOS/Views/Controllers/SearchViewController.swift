@@ -29,6 +29,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
+    self.tableView.register(nib: .BackerDashboardProjectCell)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
