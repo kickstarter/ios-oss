@@ -22,7 +22,7 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let saveButtonEnabled = TestObserver<Bool, NoError>()
   fileprivate let saveButtonSelected = TestObserver<Bool, NoError>()
   fileprivate let showProjectSavedPrompt = TestObserver<Void, NoError>()
-  fileprivate let starButtonAccessibilityHint = TestObserver<String, NoError>()
+  fileprivate let saveButtonAccessibilityValue = TestObserver<String, NoError>()
   fileprivate let titleAnimate = TestObserver<Bool, NoError>()
   fileprivate let titleHidden = TestObserver<Bool, NoError>()
 
@@ -41,7 +41,7 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.showProjectSavedPrompt.observe(self.showProjectSavedPrompt.observer)
     self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
     self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
-    self.vm.outputs.starButtonAccessibilityHint.observe(self.starButtonAccessibilityHint.observer)
+    self.vm.outputs.saveButtonAccessibilityValue.observe(self.saveButtonAccessibilityValue.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(second).observe(self.titleAnimate.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(first).observe(self.titleHidden.observer)
   }
@@ -192,6 +192,8 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.saveButtonSelected.assertValues([false],
                                             "Nothing is emitted when save button tapped while logged out.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
+
       self.saveButtonEnabled.assertDidNotEmitValue()
 
       self.goToLoginTout.assertValueCount(1, "Prompt to login when saving while logged out.")
@@ -202,6 +204,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false, true],
                                             "Once logged in, the save button selects immediately.")
       self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
       self.scheduler.advance()
 
@@ -227,11 +230,13 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
       self.saveButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.saveButtonTapped()
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
       self.saveButtonEnabled.assertValues([false], "Save button is disabled during request." )
 
       self.scheduler.advance()
@@ -252,12 +257,14 @@ final class ProjectNavBarViewModelTests: TestCase {
 
         self.saveButtonSelected.assertValues([false, true, false],
                                              "Save button deselects immediately.")
+        self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
         self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request")
 
         self.scheduler.advance()
 
         self.saveButtonSelected.assertValues([false, true, false],
                                              "The save button remains unselected.")
+          self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
         self.saveButtonEnabled.assertValues([false, true, false, true],
                                             "Save button is enabled after request")
 

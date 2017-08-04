@@ -1873,9 +1873,9 @@ backers"
   /**
    "Got it."
 
-   - **es**: "Got it."
-   - **de**: "Got it."
-   - **fr**: "Got it."
+   - **es**: "¡Listo!"
+   - **de**: "Alles klar!"
+   - **fr**: "Super."
    - **en**: "Got it."
   */
   public static func Got_it() -> String {
@@ -2398,6 +2398,22 @@ with friends."
       defaultValue: "Message creator",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Message %{user_name}…"
+
+   - **es**: "Mensaje a %{user_name}…"
+   - **de**: "Nachricht senden an %{user_name}…"
+   - **fr**: "Envoyer un message à %{user_name}"
+   - **en**: "Message %{user_name}…"
+  */
+  public static func Message_user_name(user_name: String) -> String {
+    return localizedString(
+      key: "Message_user_name",
+      defaultValue: "Message %{user_name}…",
+      count: nil,
+      substitutions: ["user_name": user_name]
     )
   }
   /**
@@ -4168,6 +4184,22 @@ catch your eye?"
     )
   }
   /**
+   "Toggle saving this project"
+
+   - **es**: "Guardar/No guardar este proyecto"
+   - **de**: "Umschalten zu Projekt speichern"
+   - **fr**: "Enregistrer / ne pas enregistrer ce projet"
+   - **en**: "Toggle saving this project"
+  */
+  public static func Toggle_saving_this_project() -> String {
+    return localizedString(
+      key: "Toggle_saving_this_project",
+      defaultValue: "Toggle saving this project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Total pledged"
 
    - **es**: "Contribuciones en total"
@@ -4213,6 +4245,22 @@ catch your eye?"
       defaultValue: "Unfollows %{friend_name}.",
       count: nil,
       substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "Unsaved"
+
+   - **es**: "Sin guardar"
+   - **de**: "Speichern wurde rückgängig gemacht"
+   - **fr**: "Non enregistré"
+   - **en**: "Unsaved"
+  */
+  public static func Unsaved() -> String {
+    return localizedString(
+      key: "Unsaved",
+      defaultValue: "Unsaved",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**

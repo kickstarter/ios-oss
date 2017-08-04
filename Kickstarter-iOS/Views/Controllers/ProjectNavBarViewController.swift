@@ -112,7 +112,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.saveButton
       |> saveButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
   // swiftlint:enable function_body_length
 
@@ -125,7 +125,7 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeValues { [weak self] in self?.categoryButton.setTitleColor($0, for: .normal) }
     self.categoryButton.rac.title = self.viewModel.outputs.categoryButtonText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.saveButton.rac.accessibilityHint = self.viewModel.outputs.starButtonAccessibilityHint
+    self.saveButton.rac.accessibilityValue = self.viewModel.outputs.saveButtonAccessibilityValue
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 

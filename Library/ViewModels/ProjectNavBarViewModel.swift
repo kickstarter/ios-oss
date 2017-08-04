@@ -53,7 +53,7 @@ public protocol ProjectNavBarViewModelOutputs {
   var showProjectSavedPrompt: Signal<Void, NoError> { get }
 
   /// Emits the accessibility hint for the star button.
-  var starButtonAccessibilityHint: Signal<String, NoError> { get }
+  var saveButtonAccessibilityValue: Signal<String, NoError> { get }
 
   var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
 }
@@ -164,8 +164,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
-    self.starButtonAccessibilityHint = self.saveButtonSelected
-      .map { starred in starred ? Strings.Unsaves_project() : Strings.Saves_project() }
+    self.saveButtonAccessibilityValue = self.saveButtonSelected
+      .map { starred in starred ? Strings.Saved() : Strings.Unsaved() }
 
     self.projectName = project.map(Project.lens.name.view)
 
@@ -283,7 +283,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let saveButtonEnabled: Signal<Bool, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>
   public let showProjectSavedPrompt: Signal<Void, NoError>
-  public let starButtonAccessibilityHint: Signal<String, NoError>
+  public let saveButtonAccessibilityValue: Signal<String, NoError>
   public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
 
   public var inputs: ProjectNavBarViewModelInputs { return self }

@@ -122,7 +122,7 @@
 "Funding_successful" = "Intégralement financé";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
 "Go_to_project_page" = "Accéder à la page de projet";
-"Got_it" = "Got it.";
+"Got_it" = "Super.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -159,6 +159,7 @@
 "Manage_your_reward" = "Gérer votre récompense";
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
+"Message_user_name" = "Envoyer un message à %{user_name}";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
 "No_messages" = "Pas de messages";
@@ -281,9 +282,11 @@
 "Time_left_left" = "Plus que %{time_left}";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application.";
 "To_read_this_project_update_you_must_be_a_backer" = "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer.";
+"Toggle_saving_this_project" = "Enregistrer / ne pas enregistrer ce projet";
 "Total_pledged" = "Total engagé";
 "Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
+"Unsaved" = "Non enregistré";
 "Unsaves_project" = "Annule l'enregistrement du projet.";
 "Unsubscribe" = "Se désabonner";
 "Unsubscribes_from_upcoming_lives_streams" = "Désabonnement des diffusions en direct à venir.";
