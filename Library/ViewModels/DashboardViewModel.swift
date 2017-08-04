@@ -102,10 +102,12 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  //Project selected by user in the drawer ot by pysh for the project message thread
+  //Project selected by user in the drawer or by push for the project message thread
   private let selectedProjectProperty: SignalProducer<Param?, NoError>
+
   //Selected project or the first project in the projects collection if no project was selected
   private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+
   //Last recieved push for message or nil if view is about to disappear
   private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
 
