@@ -141,21 +141,20 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .map { (projects, $0) }
     }
 
+    self.project = projectsAndSelected.map(second)
+
     self.messageThreadReceived <~ Signal.merge(
       self.viewWillDisappearProperty.signal.mapConst(nil),
       self.messageThreadNavigatedProperty.signal
     )
 
-    self.goToMessageThread = projectsAndSelected
-      .map(second)
+    self.goToMessageThread = self.project
       .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
         messageThreadReceived
           .skipNil()
           .filter { $0.0 == .id(project.id) }
           .map { (project, $1) }
       }
-
-    self.project = projectsAndSelected.map(second)
 
     let selectedProjectAndStatsEvent = self.project
       .switchMap { project in
