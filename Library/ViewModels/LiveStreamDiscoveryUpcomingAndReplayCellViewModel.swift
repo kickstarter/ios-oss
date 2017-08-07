@@ -45,8 +45,8 @@ LiveStreamDiscoveryUpcomingAndReplayCellViewModelOutputs {
     self.imageOverlayColor = liveStreamEvent
       .map {
         $0.hasReplay == .some(true)
-          ? UIColor.ksr_navy_700.withAlphaComponent(0.9)
-          : UIColor.ksr_navy_900.withAlphaComponent(0.8)
+          ? UIColor.ksr_dark_grey_500.withAlphaComponent(0.9)
+          : UIColor.ksr_dark_grey_900.withAlphaComponent(0.8)
     }
 
     self.creatorLabelText = liveStreamEvent

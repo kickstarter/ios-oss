@@ -38,7 +38,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
     _ = self.projectNameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_callout(size: 15)
 
     _ = self.stateLabel

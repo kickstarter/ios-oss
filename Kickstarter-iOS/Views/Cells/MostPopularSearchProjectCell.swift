@@ -80,7 +80,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
           ? UIFont.ksr_title2()
           : UIFont.ksr_title1(size: 18)
       }
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 

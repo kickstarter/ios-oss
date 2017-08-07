@@ -82,12 +82,18 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
-        titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),
-          bold: UIFont.ksr_title3(size: 14).bolded,
+        titleLabel.attributedText = title.simpleHtmlAttributedString(
+          base: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+          ],
+          bold: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+          ],
           italic: nil
-        )
-
-        _ = titleLabel |> projectActivityTitleLabelStyle
+          )
+          ?? .init()
     }
   }
 
@@ -108,7 +114,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bodyLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font %~~ { _, label in
           label.traitCollection.isRegularRegular
             ? UIFont.ksr_body()
@@ -140,6 +146,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     _ = self.replyButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_reply() }
+
+    _ = titleLabel
+      |> UILabel.lens.numberOfLines .~ 2
   }
 
   @objc fileprivate func backingButtonPressed(_ button: UIButton) {

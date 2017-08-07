@@ -99,7 +99,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
@@ -161,9 +161,9 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] opaque, animate in
         UIView.animate(withDuration: animate ? 0.2 : 0) {
-          self?.closeButton.tintColor = opaque ? .ksr_text_navy_700 : .white
-          self?.shareButton.tintColor = opaque ? .ksr_text_navy_700 : .white
-          self?.saveButton.tintColor = opaque ? .ksr_text_navy_700 : .white
+          self?.closeButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
+          self?.shareButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
+          self?.saveButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .white
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }

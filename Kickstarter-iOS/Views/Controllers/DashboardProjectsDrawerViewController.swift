@@ -87,7 +87,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
 
     _ = self.tableView |> UITableView.lens.backgroundView .~ (
       UIView()
-        |> UIView.lens.backgroundColor .~ .black
+        |> UIView.lens.backgroundColor .~ .ksr_dark_grey_900
         |> UIView.lens.alpha .~ 0.0
     )
 

@@ -10,7 +10,7 @@ internal final class MessagesEmptyStateCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: String) {
     _ = self.subTitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 16.0)
       |> UILabel.lens.text .~ value
   }
@@ -27,7 +27,7 @@ internal final class MessagesEmptyStateCell: UITableViewCell, ValueCell {
     }
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 18.0)
       |> UILabel.lens.text %~ { _ in Strings.messages_empty_state_title() }
   }

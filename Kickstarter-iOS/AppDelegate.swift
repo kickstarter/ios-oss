@@ -192,7 +192,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
     }
 
-    self.window?.tintColor = .ksr_navy_700
+    self.window?.tintColor = .ksr_dark_grey_500
 
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)

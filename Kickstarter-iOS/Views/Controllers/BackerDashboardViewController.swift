@@ -185,7 +185,7 @@ internal final class BackerDashboardViewController: UIViewController {
     }
 
     _ = self.backerNameLabel
-      |> UILabel.lens.textColor .~ .black
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
 
     _ = self.backerLocationLabel
@@ -210,14 +210,14 @@ internal final class BackerDashboardViewController: UIViewController {
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
       ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
       NSFontAttributeName: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
       ])
 
     _ = button

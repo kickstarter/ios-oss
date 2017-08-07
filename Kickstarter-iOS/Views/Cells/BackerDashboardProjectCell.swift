@@ -68,7 +68,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
 
     _ = self.metadataBackgroundView
       |> dropShadowStyle()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
       |> UIView.lens.layer.shadowOpacity .~ 0.3
       |> UIView.lens.layer.cornerRadius .~ 2.0
 
@@ -80,7 +79,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .black
+      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_900
       |> UIView.lens.alpha .~ 0.15
 
     _ = self.savedIconImageView

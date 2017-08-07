@@ -97,7 +97,7 @@ internal final class FindFriendsViewController: UITableViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
   }
 
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,

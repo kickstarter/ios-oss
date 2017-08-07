@@ -64,7 +64,7 @@ internal final class MessageDialogViewController: UIViewController {
     super.bindStyles()
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.postButton

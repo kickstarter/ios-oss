@@ -8,22 +8,15 @@ import UIKit
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
-      "Beige": [
-        400: .ksr_beige_400
-      ],
-
-      "Blue": [
-        500: .ksr_blue_500,
-        600: .ksr_blue_600
-      ],
-
-      "Forest": [
-        500: .ksr_forest_500,
-        600: .ksr_forest_600,
-        700: .ksr_forest_700
+      "Dark Grey": [
+        400: .ksr_dark_grey_400,
+        500: .ksr_dark_grey_500,
+        900: .ksr_dark_grey_900
       ],
 
       "Green": [
@@ -41,35 +34,26 @@ extension UIColor {
         500: .ksr_grey_500
       ],
 
-      "Magenta": [
-        400: .ksr_magenta_400,
-        500: .ksr_magenta_500
-      ],
-
       "Navy": [
         200: .ksr_navy_200,
         300: .ksr_navy_300,
         400: .ksr_navy_400,
-        500: .ksr_navy_500,
-        600: .ksr_navy_600,
-        700: .ksr_navy_700,
-        900: .ksr_navy_900
+        600: .ksr_navy_600
       ],
 
       "Orange": [
-        300: .ksr_orange_300,
         400: .ksr_orange_400,
         600: .ksr_orange_600
       ],
 
       "Red": [
-        100: .ksr_red_100,
-        400: .ksr_red_400,
-        500: .ksr_red_500
+        400: .ksr_red_400
       ],
 
-      "Text Blue": [
-        600: .ksr_text_blue_600
+      "Text Dark Grey": [
+        400: .ksr_text_dark_grey_400,
+        500: .ksr_text_dark_grey_500,
+        900: .ksr_text_dark_grey_900
       ],
 
       "Text Green": [
@@ -78,38 +62,28 @@ extension UIColor {
       ],
 
       "Text Navy": [
-        500: .ksr_text_navy_500,
-        600: .ksr_text_navy_600,
-        700: .ksr_text_navy_700,
-        900: .ksr_text_navy_900
-      ],
-
-      "Text Red": [
-        500: .ksr_text_red_500
+        600: .ksr_text_navy_600
       ],
 
       "Violet": [
-        200: .ksr_violet_200,
-        500: .ksr_violet_500,
-        600: .ksr_violet_600,
-        700: .ksr_violet_700
+        500: .ksr_violet_500
       ]
     ]
   }
 
-  /// 0xECEDE1
-  public static var ksr_beige_400: UIColor {
-    return .hex(0xECEDE1)
+  /// 0x9B9E9E
+  public static var ksr_dark_grey_400: UIColor {
+    return .hex(0x9B9E9E)
   }
 
-  /// 0x2575E6
-  public static var ksr_blue_500: UIColor {
-    return .hex(0x2575E6)
+  /// 0x656868
+  public static var ksr_dark_grey_500: UIColor {
+    return .hex(0x656868)
   }
 
-  /// 0x1561CB
-  public static var ksr_blue_600: UIColor {
-    return .hex(0x1561CB)
+  /// 0x282828
+  public static var ksr_dark_grey_900: UIColor {
+    return .hex(0x282828)
   }
 
   /// 0xD6D6D6
@@ -120,21 +94,6 @@ extension UIColor {
   /// 0x3B5998
   public static var ksr_facebookBlue: UIColor {
     return .hex(0x3B5998)
-  }
-
-  /// 0x0A717D
-  public static var ksr_forest_500: UIColor {
-    return .hex(0x0A717D)
-  }
-
-  /// 0x07565F
-  public static var ksr_forest_600: UIColor {
-    return .hex(0x07565F)
-  }
-
-  /// 0x122C49
-  public static var ksr_forest_700: UIColor {
-    return .hex(0x122C49)
   }
 
   /// 0x2BDE73
@@ -172,34 +131,14 @@ extension UIColor {
     return .hex(0xF2F2F2)
   }
 
-  /// 0xEDEDED
+  /// 0xE8E8E8
   public static var ksr_grey_400: UIColor {
-    return .hex(0xEDEDED)
+    return .hex(0xE8E8E8)
   }
 
   /// 0xDCDEDD
   public static var ksr_grey_500: UIColor {
     return .hex(0xDCDEDD)
-  }
-
-  /// 0xE3ECFA
-  public static var ksr_lavenderToPowderGradientEnd: UIColor {
-    return .hex(0xE3ECFA)
-  }
-
-  /// 0xEEE9F0
-  public static var ksr_lavenderToPowderGradientStart: UIColor {
-    return .hex(0xEEE9F0)
-  }
-
-  /// 0xF03C63
-  public static var ksr_magenta_400: UIColor {
-    return .hex(0xF03C63)
-  }
-
-  /// 0xD4294E
-  public static var ksr_magenta_500: UIColor {
-    return .hex(0xD4294E)
   }
 
   /// 0xF7F7F9
@@ -217,34 +156,14 @@ extension UIColor {
     return .hex(0xDBDEE7)
   }
 
-  /// 0x95959E
-  public static var ksr_navy_500: UIColor {
-    return .hex(0x95959E)
-  }
-
   /// 0x626369
   public static var ksr_navy_600: UIColor {
     return .hex(0x626369)
   }
 
-  /// 0x353535
-  public static var ksr_navy_700: UIColor {
-    return .hex(0x353535)
-  }
-
-  /// 0x020621
-  public static var ksr_navy_900: UIColor {
-    return .hex(0x020621)
-  }
-
   /// 0x1A8CFF
   public static var ksr_onePasswordBlue: UIColor {
     return .hex(0x1A8CFF)
-  }
-
-  /// 0xE8E1CE
-  public static var ksr_orange_300: UIColor {
-    return .hex(0xE8E1CE)
   }
 
   /// 0xF7AA1A
@@ -257,44 +176,24 @@ extension UIColor {
     return .hex(0xE58111)
   }
 
-  /// 0xF6E1D5
-  public static var ksr_peachToBlushGradientEnd: UIColor {
-    return .hex(0xF6E1D5)
-  }
-
-  /// 0xF3E8D6
-  public static var ksr_peachToBlushGradientStart: UIColor {
-    return .hex(0xF3E8D6)
-  }
-
-  /// 0xF4E9D8
-  public static var ksr_red_100: UIColor {
-    return .hex(0xF4E9D8)
-  }
-
   /// 0xFF5340
   public static var ksr_red_400: UIColor {
     return .hex(0xFF5340)
   }
 
-  /// 0xEF0707
-  public static var ksr_red_500: UIColor {
-    return .hex(0xEF0707)
+  /// 0x9B9E9E
+  public static var ksr_text_dark_grey_400: UIColor {
+    return .hex(0x9B9E9E)
   }
 
-  /// 0xD9E8E3
-  public static var ksr_sandToSageGradientEnd: UIColor {
-    return .hex(0xD9E8E3)
+  /// 0x656868
+  public static var ksr_text_dark_grey_500: UIColor {
+    return .hex(0x656868)
   }
 
-  /// 0xEBE5D6
-  public static var ksr_sandToSageGradientStart: UIColor {
-    return .hex(0xEBE5D6)
-  }
-
-  /// 0x1561CB
-  public static var ksr_text_blue_600: UIColor {
-    return .hex(0x1561CB)
+  /// 0x282828
+  public static var ksr_text_dark_grey_900: UIColor {
+    return .hex(0x282828)
   }
 
   /// 0x05AF3C
@@ -307,29 +206,9 @@ extension UIColor {
     return .hex(0x098530)
   }
 
-  /// 0x95959E
-  public static var ksr_text_navy_500: UIColor {
-    return .hex(0x95959E)
-  }
-
   /// 0x626369
   public static var ksr_text_navy_600: UIColor {
     return .hex(0x626369)
-  }
-
-  /// 0x353535
-  public static var ksr_text_navy_700: UIColor {
-    return .hex(0x353535)
-  }
-
-  /// 0x020621
-  public static var ksr_text_navy_900: UIColor {
-    return .hex(0x020621)
-  }
-
-  /// 0xEF0707
-  public static var ksr_text_red_500: UIColor {
-    return .hex(0xEF0707)
   }
 
   /// 0x00ACED
@@ -337,23 +216,8 @@ extension UIColor {
     return .hex(0x00ACED)
   }
 
-  /// 0xEBEDF7
-  public static var ksr_violet_200: UIColor {
-    return .hex(0xEBEDF7)
-  }
-
   /// 0x3A328E
   public static var ksr_violet_500: UIColor {
     return .hex(0x3A328E)
-  }
-
-  /// 0x212E63
-  public static var ksr_violet_600: UIColor {
-    return .hex(0x212E63)
-  }
-
-  /// 0x141F4A
-  public static var ksr_violet_700: UIColor {
-    return .hex(0x141F4A)
   }
 }

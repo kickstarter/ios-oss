@@ -81,7 +81,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.textBackgroundView
       |> UIView.lens.alpha .~ 0.96

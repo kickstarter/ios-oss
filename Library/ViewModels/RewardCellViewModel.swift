@@ -106,8 +106,8 @@ RewardCellViewModelOutputs {
     self.titleLabelTextColor = projectAndReward
       .map { project, reward in
         reward.remaining != 0 || userIsBacking(reward: reward, inProject: project) || project.state != .live
-          ? .ksr_text_navy_700
-          : .ksr_text_navy_500
+          ? .ksr_text_dark_grey_900
+          : .ksr_text_dark_grey_500
     }
 
     let youreABacker = projectAndReward
@@ -285,22 +285,22 @@ RewardCellViewModelOutputs {
 
 private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> UIColor {
   if project.state != .successful && project.state != .live && reward.remaining == 0 {
-    return .ksr_text_navy_700
+    return .ksr_text_dark_grey_500
   } else if (project.state == .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
     return .ksr_text_green_700
   } else if (project.state != .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
-    return .ksr_text_navy_700
+    return .ksr_text_dark_grey_500
   } else if (project.state == .live && reward.remaining == 0) ||
     (project.state != .live && reward.remaining == 0) {
-    return .ksr_text_navy_500
+    return .ksr_text_dark_grey_400
   } else if project.state == .live {
     return .ksr_text_green_700
   } else if project.state != .live {
-    return .ksr_text_navy_700
+    return .ksr_text_dark_grey_900
   } else {
-    return .ksr_text_navy_700
+    return .ksr_text_dark_grey_900
   }
 }
 
