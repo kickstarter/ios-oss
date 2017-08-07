@@ -1,4 +1,5 @@
 disabled_rules:
+  - block_based_kvo # swift 3.2
   - closure_parameter_position
   - discarded_notification_center_observer
   - file_length
