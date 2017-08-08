@@ -116,6 +116,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   //Push for project message or nil if view is about to disappear
   private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+
   //Navigate to Project activities or nil if view is about to disappear
   private let navigateToActivitiesReceived =  MutableProperty<Param?>(nil)
 
@@ -131,6 +132,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.selectedProjectProperty = SignalProducer.merge(
       self.switchToProjectProperty.producer,
+      self.activitiesNavigatedProperty.producer,
       self.messageThreadNavigatedProperty.producer.skipNil().map(first)
     )
 
@@ -171,7 +173,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.activitiesNavigatedProperty.signal
     )
 
-    self.goToActivities = project
+    self.goToActivities = self.project
       .switchMap { [navigateToActivitiesReceived = self.navigateToActivitiesReceived.producer] project in
         navigateToActivitiesReceived
           .skipNil()
