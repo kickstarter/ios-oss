@@ -102,12 +102,6 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  //Selected project or the first project in the projects collection if no project was selected
-  private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
-
-  //Last recieved push for message or nil if view is about to disappear
-  private let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
-
   public init() {
     let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
       .switchMap {
@@ -123,7 +117,12 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       self.messageThreadNavigatedProperty.producer.skipNil().map(first)
     )
 
-    self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
+    /* Interim MutableProperty used to default to first project on viewWillAppear
+     * and to subsequently switch to the selected project.
+     */
+    let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
+
+    selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
       selectedProjectProducer,
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
@@ -131,8 +130,8 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     .skipRepeats { lhs, rhs in lhs == rhs }
 
     let projectsAndSelected = projects
-      .switchMap { [switchToProject = self.selectProjectPropertyOrFirst.producer] projects in
-        switchToProject
+      .switchMap { projects in
+        selectProjectPropertyOrFirst.producer
           .map { param -> Project? in
             param.flatMap { find(projectForParam: $0, in: projects) } ?? projects.first
           }
@@ -142,14 +141,20 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.project = projectsAndSelected.map(second)
 
-    self.messageThreadReceived <~ Signal.merge(
+    /* Interim MutableProperty used to inject nil on viewWillDisappear
+     * in order to ensure that same MessageThread is not navigated to again
+     * on viewWillAppear as projects will refresh each time.
+     */
+    let messageThreadReceived = MutableProperty<(Param, MessageThread)?>(nil)
+
+    messageThreadReceived <~ Signal.merge(
       self.viewWillDisappearProperty.signal.mapConst(nil),
       self.messageThreadNavigatedProperty.signal
     )
 
     self.goToMessageThread = self.project
-      .switchMap { [messageThreadReceived = self.messageThreadReceived.producer] project in
-        messageThreadReceived
+      .switchMap { project in
+        messageThreadReceived.producer
           .skipNil()
           .filter { $0.0 == .id(project.id) }
           .map { (project, $1) }
@@ -272,7 +277,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
 
     projects
-      .takePairWhen(self.selectProjectPropertyOrFirst.signal)
+      .takePairWhen(selectProjectPropertyOrFirst.signal)
       .map { projects, param in find(projectForParam: param, in: projects) }
       .skipNil()
       .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
