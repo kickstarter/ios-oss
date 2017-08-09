@@ -193,18 +193,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
 
-    self.metadataViewHidden = configuredProject
-      .map { p in
-        let today = AppEnvironment.current.dateType.init().date
-        let noMetadata = (p.personalization.isBacking == nil || p.personalization.isBacking == false) &&
-                         (p.personalization.isStarred == nil || p.personalization.isStarred == false) &&
-          !p.isPotdToday(today: today) && !p.isFeaturedToday(today: today)
+    let possibleMetadataData = configuredProject.map(postcardMetadata(forProject:))
 
-        return noMetadata
-      }
-      .skipRepeats()
+    self.metadataViewHidden = possibleMetadataData.map { $0 == nil }
 
-    let metadataData = configuredProject.map(postcardMetadata(forProject:)).skipNil()
+    let metadataData = possibleMetadataData.skipNil()
 
     self.metadataIcon = metadataData.map { $0.iconImage }
     self.metadataLabelText = metadataData.map { $0.labelText }
