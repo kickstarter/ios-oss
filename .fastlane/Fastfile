@@ -14,7 +14,7 @@ platform :ios do
     build_app(
       output_name: "KickBeta",
       export_method: "enterprise",
-      configuration: "Hockey"
+      configuration: "Hockey Beta"
     )
   end
 
@@ -70,23 +70,23 @@ platform :ios do
     )
   end
 
-  ### LIVE STREAM BETA
+  ### ALPHA
 
-  desc "Build Live Stream Beta"
-  lane :live_stream_beta_gym do
+  desc "Build Alpha"
+  lane :alpha_gym do
     build_app(
-      output_name: "KickBeta",
+      output_name: "KickAlpha",
       export_method: "enterprise",
-      configuration: "Hockey"
+      configuration: "Hockey Alpha"
     )
   end
 
-  desc "Upload Live Stream Beta to HockeyApp"
-  lane :live_stream_beta_hockey do
+  desc "Upload Alpha to HockeyApp"
+  lane :alpha_hockey do
     upload_hockey(
-      ipa: "KickBeta.ipa",
-      dsym: "KickBeta.app.dSYM.zip",
-      public_identifier: ENV["HOCKEY_LIVE_APP_ID"]
+      ipa: "KickAlpha.ipa",
+      dsym: "KickAlpha.app.dSYM.zip",
+      public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
   end
 
