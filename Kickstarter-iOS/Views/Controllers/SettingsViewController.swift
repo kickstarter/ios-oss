@@ -172,9 +172,9 @@ internal final class SettingsViewController: UIViewController {
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
       ||> UIButton.lens.image(forState: .normal)
-        .~ UIImage(named: "email-icon", in: .framework, compatibleWith: nil)
+        .~ UIImage(named: "icon--mail", in: .framework, compatibleWith: nil)
       ||> UIButton.lens.image(forState: .selected)
-        .~ image(named: "email-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
+        .~ image(named: "icon--mail", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     _ = self.faqButton
@@ -274,9 +274,9 @@ internal final class SettingsViewController: UIViewController {
     _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
       ||> UIButton.lens.image(forState: .normal)
-        .~ UIImage(named: "phone-icon", in: .framework, compatibleWith: nil)
+        .~ UIImage(named: "icon--mobile", in: .framework, compatibleWith: nil)
       ||> UIButton.lens.image(forState: .selected)
-        .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
+        .~ image(named: "icon--mobile", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     _ = self.rateUsButton
