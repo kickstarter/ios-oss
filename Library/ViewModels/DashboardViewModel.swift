@@ -108,9 +108,6 @@ public protocol DashboardViewModelType {
 public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewModelOutputs,
   DashboardViewModelType {
 
-  //Project selected by user in the drawer or by push for the project message thread
-  private let selectedProjectProperty: SignalProducer<Param?, NoError>
-
   //Selected project or the first project in the projects collection if no project was selected
   private let selectProjectPropertyOrFirst = MutableProperty<Param?>(nil)
 
@@ -130,14 +127,14 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
           .prefix(value: [])
     }
 
-    self.selectedProjectProperty = SignalProducer.merge(
+    let selectedProjectProducer = SignalProducer.merge(
       self.switchToProjectProperty.producer,
       self.activitiesNavigatedProperty.producer,
       self.messageThreadNavigatedProperty.producer.skipNil().map(first)
     )
 
     self.selectProjectPropertyOrFirst <~ SignalProducer.combineLatest(
-      self.selectedProjectProperty,
+      selectedProjectProducer,
       self.viewWillAppearAnimatedProperty.producer.ignoreValues()
     )
     .map(first)
