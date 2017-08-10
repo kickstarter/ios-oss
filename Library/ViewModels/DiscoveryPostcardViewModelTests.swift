@@ -258,6 +258,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.category.parent .~ Category.art
       |> Project.lens.dates.featuredAt .~ featuredAt
 
+    let starred = .template
+      |> Project.lens.personalization.isStarred .~ true
+
     let starredAndPotdProject = .template
       |> Project.lens.dates.potdAt .~ potdAt
       |> Project.lens.personalization.isStarred .~ true
@@ -305,6 +308,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Starred metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false])
       self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
       self.metadataIcon.assertValues([backedImage, starredImage])
       self.metadataTextColor.assertValues([backedColor, starredColor])
@@ -318,6 +322,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
       self.metadataIcon.assertValues([backedImage, starredImage, backedImage])
       self.metadataTextColor.assertValues([backedColor, starredColor, backedColor])
@@ -334,6 +339,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           )
         ], "Featured metadata emits.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true, false],
         "Icon shown for the featured project")
       self.metadataIcon.assertValues([backedImage, starredImage, backedImage, featuredImage])
@@ -352,8 +358,30 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Potd metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true, false, true],
         "No Icon shown for the potd project")
+      self.metadataIcon.assertValues(
+        [backedImage, starredImage, backedImage, featuredImage, nil])
+      self.metadataTextColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+      self.metadataIconTintColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+
+      self.vm.inputs.configureWith(project: starred)
+      self.metadataLabelText.assertValues(
+        [
+          Strings.discovery_baseball_card_metadata_backer(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
+          Strings.discovery_baseball_card_metadata_backer(),
+          Strings.discovery_baseball_card_metadata_featured_project(
+            category_name: featuredProject.category.name
+          ),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day()
+        ], "Potd metadata takes precedence.")
+
+      self.metadataViewHidden.assertValues([true, false, false, false, false, false, true])
+      self.metadataIconHidden.assertValues([false, false, true, true, false, true, false])
       self.metadataIcon.assertValues(
         [backedImage, starredImage, backedImage, featuredImage, nil])
       self.metadataTextColor.assertValues(
