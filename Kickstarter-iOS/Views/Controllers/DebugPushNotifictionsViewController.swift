@@ -166,8 +166,8 @@ private let messagePushData: [String:Any] = [
     "alert": "Chinati Foundation sent you a message about Robert Irwin Project."
   ],
   "message": [
-    "message_thread_id": 15112157,
-    "project_id": 684720856
+    "message_thread_id": 17848074,
+    "project_id": 820501933
   ]
 ]
 
