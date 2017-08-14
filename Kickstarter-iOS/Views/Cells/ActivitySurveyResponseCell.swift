@@ -57,7 +57,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
       |> UIButton.lens.tintColor .~ .ksr_green_700
       |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
-      |> UIButton.lens.image(forState: .normal) %~ { _ in Library.image(named: "icon--pencil") }
+      |> UIButton.lens.image(forState: .normal) %~ { _ in Library.image(named: "respond-icon") }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
                                                   right: 0)
 
