@@ -12,7 +12,7 @@ public let updateTitleTextFieldStyle = formFieldStyle
   <> UITextField.lens.font %~ { _ in .ksr_title1(size: 22) }
   <> UITextField.lens.placeholder %~ { _ in Strings.dashboard_post_update_compose_placeholder_title() }
   <> UITextField.lens.returnKeyType .~ .next
-  <> UITextField.lens.textColor .~ .ksr_text_navy_700
+  <> UITextField.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clear
   <> UITextView.lens.font %~ { _ in .ksr_callout() }
@@ -23,7 +23,7 @@ public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clear
 
 public let updateBodyPlaceholderTextViewStyle = updateBodyTextViewStyle
   <> UITextView.lens.text %~ { _ in Strings.Share_an_update_about_your_project() }
-  <> UITextView.lens.textColor .~ .ksr_text_navy_500
+  <> UITextView.lens.textColor .~ .ksr_text_dark_grey_400
   <> UITextView.lens.userInteractionEnabled .~ false
 
 public let updateBackersOnlyButtonStyle =
@@ -54,7 +54,7 @@ public let updateAddAttachmentButtonStyle =
     <> UIButton.lens.title(forState: .normal) .~ nil
 
 public let updateAddAttachmentExpandedButtonStyle =
-  UIButton.lens.tintColor .~ .ksr_text_navy_500
+  UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
     <> UIButton.lens.title(forState: .normal) %~ { _ in
       Strings.dashboard_post_update_compose_attachment_buttons_add_attachment()
     }

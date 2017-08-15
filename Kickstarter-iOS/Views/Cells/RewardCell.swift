@@ -100,7 +100,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_navy_700
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.allGoneLabel
@@ -109,7 +109,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.minimumLabel
       |> UILabel.lens.font .~ .ksr_title2(size: 24)
@@ -123,25 +124,25 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.descriptionLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_includes() }
 
     _ = self.youreABackerCheckmarkImageView
-      |> UIImageView.lens.tintColor .~ .ksr_text_navy_700
+      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
       |> UIImageView.lens.image %~ { _ in
         UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
     }
@@ -164,7 +165,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.footerLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -194,7 +195,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
-    self.cardView.rac.backgroundColor = self.viewModel.outputs.cardViewBackgroundColor
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
@@ -219,7 +219,16 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.cardViewDropShadowHidden
       .observeForUI()
       .observeValues { [weak self] hidden in
-        self?.cardView.layer.shadowOpacity = hidden ? 0 : 1
+        let opacity = 0.17
+        self?.cardView.layer.shadowOpacity = Float(hidden ? 0.0 : opacity)
+    }
+
+    self.viewModel.outputs.cardViewBorderIsVisible
+      .observeForUI()
+      .observeValues { [weak self] visible in
+        self?.cardView.layer.borderColor = UIColor.ksr_grey_400.cgColor
+        self?.cardView.layer.borderWidth = visible ? 1.0 : 0.0
+        self?.cardView.layer.cornerRadius = 2.0
     }
 
     self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion
@@ -246,7 +255,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     for item in items {
       let label = UILabel()
         |> UILabel.lens.font .~ .ksr_body(size: 14)
-        |> UILabel.lens.textColor .~ .ksr_text_navy_600
+        |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 

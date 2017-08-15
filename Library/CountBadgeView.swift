@@ -33,7 +33,7 @@ public final class CountBadgeView: UIView {
 
     _ = self.label
       |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.contentHuggingPriorityForAxis(.horizontal) .~ required
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ required
       |> UILabel.lens.translatesAutoresizingMaskIntoConstraints .~ false

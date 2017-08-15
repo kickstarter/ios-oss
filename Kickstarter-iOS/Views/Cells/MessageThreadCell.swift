@@ -39,22 +39,22 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
     }
 
     _ = self.bodyLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
 
     _ = self.dateLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_caption1()
 
     _ = self.dividerView
       |> separatorStyle
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.projectNameLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 15.0)
   }
 

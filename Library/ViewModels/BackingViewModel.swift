@@ -307,7 +307,7 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
   } else {
     return NSAttributedString(string: string, attributes: [
       NSFontAttributeName: UIFont.ksr_subhead(size: 13),
-      NSForegroundColorAttributeName: UIColor.ksr_text_navy_500
+      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
     ])
   }
 }
@@ -324,11 +324,11 @@ private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrent
   return titleString.simpleHtmlAttributedString(
     base: [
       NSFontAttributeName: UIFont.ksr_subhead(size: 13),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
     ],
     bold: [
       NSFontAttributeName: UIFont.ksr_headline(size: 15),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
     ])
     ?? .init()
 }
@@ -349,11 +349,11 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
   return titleString.simpleHtmlAttributedString(
     base: [
       NSFontAttributeName: UIFont.ksr_subhead(size: 13),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
     ],
     bold: [
       NSFontAttributeName: UIFont.ksr_headline(size: 15),
-      NSForegroundColorAttributeName: UIColor.black
+      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
     ])
     ?? .init()
 }

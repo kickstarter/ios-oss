@@ -52,7 +52,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_friends() }
 
     _ = self.friendsCountLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_900
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_title2()
 
     _ = self.backedProjectsLabel
@@ -61,7 +61,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_backed_projects() }
 
     _ = self.self.backedProjectsCountLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_title2()
 
     _ = self.followAllButton

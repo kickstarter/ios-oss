@@ -67,6 +67,6 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
     _ = self.dropShadowView
       |> roundedStyle()
       |> UIView.lens.backgroundColor .~ .white
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
   }
 }

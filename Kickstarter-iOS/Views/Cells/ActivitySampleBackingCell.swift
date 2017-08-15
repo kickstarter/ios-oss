@@ -52,7 +52,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
       |> activitySampleBackingTitleLabelStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle

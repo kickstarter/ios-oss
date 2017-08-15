@@ -64,10 +64,10 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self
       |> baseLiveStreamControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .ksr_navy_700
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_dark_grey_900
 
     _ = self.tableView
-      |> UITableView.lens.backgroundColor .~ .ksr_navy_700
+      |> UITableView.lens.backgroundColor .~ .ksr_dark_grey_900
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 200
@@ -75,7 +75,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.tableView.contentInset = .init(topBottom: Styles.grid(1))
 
     _ = self.chatInputView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_700
+      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_900
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)
@@ -93,7 +93,7 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.textField
-      |> UITextField.lens.backgroundColor .~ .ksr_navy_700
+      |> UITextField.lens.backgroundColor .~ .ksr_dark_grey_900
       |> UITextField.lens.tintColor .~ .white
       |> UITextField.lens.textColor .~ .white
       |> UITextField.lens.font .~ .ksr_body(size: 14)

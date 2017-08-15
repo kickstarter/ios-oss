@@ -204,7 +204,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
     }
 
-    self.window?.tintColor = .ksr_navy_700
+    self.window?.tintColor = .ksr_dark_grey_500
 
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
@@ -338,7 +338,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 
-extension AppDelegate : BITHockeyManagerDelegate {
+extension AppDelegate: BITHockeyManagerDelegate {
   func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }

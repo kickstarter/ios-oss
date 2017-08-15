@@ -37,7 +37,12 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.pageViewController = self.childViewControllers
       .flatMap { $0 as? UIPageViewController }
       .first
-
+    self.pageViewController?.setViewControllers(
+      [.init()],
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
     self.pageViewController?.dataSource = self.pagesDataSource
     self.pageViewController?.delegate = self
 
@@ -49,7 +54,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
     _ = self
       |> baseLiveStreamControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .ksr_navy_700
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_dark_grey_900
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)

@@ -87,6 +87,15 @@ deploy:
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
+alpha:
+	@echo "Deploying private/alpha-dist..."
+
+	@git branch -f alpha-dist private/alpha-dist
+	@git push -f private alpha-dist
+	@git branch -d alpha-dist
+
+	@echo "Deploy has been kicked off to CircleCI!"
+
 lint:
 	swiftlint lint --reporter json --strict
 

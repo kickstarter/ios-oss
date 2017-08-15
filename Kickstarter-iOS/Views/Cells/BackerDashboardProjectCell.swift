@@ -50,9 +50,14 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.isAccessibilityElement .~ true
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    }
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.mainContentContainerView
       |> UIView.lens.backgroundColor .~ .white
@@ -63,7 +68,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
 
     _ = self.metadataBackgroundView
       |> dropShadowStyle()
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
       |> UIView.lens.layer.shadowOpacity .~ 0.3
       |> UIView.lens.layer.cornerRadius .~ 2.0
 
@@ -75,7 +79,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .black
+      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_900
       |> UIView.lens.alpha .~ 0.15
 
     _ = self.savedIconImageView

@@ -47,7 +47,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
     _ = self.loadingIndicator
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       <> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      <> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      <> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
   }
 
   override func bindViewModel() {

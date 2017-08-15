@@ -136,7 +136,7 @@ internal final class SettingsViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_navy_700
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
 
@@ -274,9 +274,9 @@ internal final class SettingsViewController: UIViewController {
     _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
       ||> UIButton.lens.image(forState: .normal)
-        .~ UIImage(named: "phone-icon", in: .framework, compatibleWith: nil)
+        .~ UIImage(named: "mobile-icon", in: .framework, compatibleWith: nil)
       ||> UIButton.lens.image(forState: .selected)
-        .~ image(named: "phone-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
+        .~ image(named: "mobile-icon", tintColor: .ksr_green_400, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     _ = self.rateUsButton
