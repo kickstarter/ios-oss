@@ -46,7 +46,13 @@ internal final class DashboardViewController: UITableViewController {
       |> UITableViewController.lens.view.backgroundColor .~ .white
   }
 
-    internal override func bindViewModel() {
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.viewModel.inputs.viewWillDisappear()
+  }
+
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.fundingData
@@ -114,6 +120,12 @@ internal final class DashboardViewController: UITableViewController {
         element?.updateData(data)
     }
 
+    self.viewModel.outputs.goToMessages
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToMessages(project: project)
+    }
+
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, reftag in
@@ -129,6 +141,12 @@ internal final class DashboardViewController: UITableViewController {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
+
+    self.viewModel.outputs.goToMessageThread
+      .observeForControllerAction()
+      .observeValues { [weak self] project, messageThread in
+        self?.goToMessageThread(project: project, messageThread: messageThread)
+      }
   }
   // swiftlint:enable function_body_length
 
@@ -158,7 +176,7 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func goToMessages(_ project: Project) {
+  private func goToMessages(project: Project) {
     let vc = MessageThreadsViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -173,19 +191,19 @@ internal final class DashboardViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goToProject(_ project: Project, refTag: RefTag) {
+  private func goToProject(_ project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func presentProjectsDrawer(data: [ProjectsDrawerData]) {
+  private func presentProjectsDrawer(data: [ProjectsDrawerData]) {
     let vc = DashboardProjectsDrawerViewController.configuredWith(data: data)
     vc.delegate = self
     self.modalPresentationStyle = .overCurrentContext
     self.present(vc, animated: false, completion: nil)
   }
 
-  fileprivate func showShareSheet(_ controller: UIActivityViewController) {
+  private func showShareSheet(_ controller: UIActivityViewController) {
 
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
@@ -207,12 +225,23 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func accessibilityFocusOnTitleView() {
+  private func accessibilityFocusOnTitleView() {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleView)
   }
 
   @objc fileprivate func shareButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
+  }
+
+  private func goToMessageThread(project: Project, messageThread: MessageThread) {
+    let threadsVC = MessageThreadsViewController.configuredWith(project: project)
+    let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
+
+    self.navigationController?.setViewControllers([self, threadsVC, messageThreadVC], animated: true)
+  }
+
+  public func navigateToProjectMessageThread(projectId: Param, messageThread: MessageThread) {
+    self.viewModel.inputs.messageThreadNavigated(projectId: projectId, messageThread: messageThread)
   }
 }
 
@@ -221,8 +250,8 @@ extension DashboardViewController: DashboardActionCellDelegate {
     self.goToActivity(project)
   }
 
-  internal func goToMessages(_ cell: DashboardActionCell?, project: Project) {
-    self.goToMessages(project)
+  internal func goToMessages(_ cell: DashboardActionCell?) {
+    self.viewModel.inputs.messagesCellTapped()
   }
 
   internal func goToPostUpdate(_ cell: DashboardActionCell?, project: Project) {

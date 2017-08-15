@@ -105,6 +105,16 @@ public final class RootTabBarViewController: UITabBarController {
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
 
+  public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
+    self.switchToDashboard(project: nil)
+
+    guard let dashboardNav = self.selectedViewController as? UINavigationController,
+          let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
+      else { return }
+
+     dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
+  }
+
   // swiftlint:disable:next cyclomatic_complexity
   // swiftlint:disable:next function_body_length
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {

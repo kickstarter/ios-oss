@@ -97,6 +97,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.goToLiveStream(project: $0, liveStreamEvent: $1, refTag: $2)
     }
 
+    self.viewModel.outputs.goToCreatorMessageThread
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.goToCreatorMessageThread($0, $1)
+      }
+
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
       .observeValues { [weak self] in self?.goToMessageThread($0) }
@@ -304,8 +310,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  fileprivate func goToMessageThread(_ messageThread: MessageThread) {
+  private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
+  }
+
+  private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
+    self.rootTabBarController?
+      .switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
   private func findRedirectUrl(_ url: URL) {

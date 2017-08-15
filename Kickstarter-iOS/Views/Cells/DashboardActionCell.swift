@@ -9,7 +9,7 @@ internal protocol DashboardActionCellDelegate: class {
   func goToActivity(_ cell: DashboardActionCell?, project: Project)
 
   /// Call with project value when navigating to messages screen.
-  func goToMessages(_ cell: DashboardActionCell?, project: Project)
+  func goToMessages(_ cell: DashboardActionCell?)
 
   /// Call with project value when navigating to post update screen.
   func goToPostUpdate(_ cell: DashboardActionCell?, project: Project)
@@ -74,9 +74,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.goToMessages
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.delegate?.goToMessages(self, project: project)
-    }
+      .observeValues { [weak self] in self?.delegate?.goToMessages(self) }
 
     self.viewModel.outputs.goToPostUpdate
       .observeForUI()

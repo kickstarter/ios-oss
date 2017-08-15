@@ -113,6 +113,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), NoError> { get }
 
+  /// Emits when application should navigate to the creator's message thread
+  var goToCreatorMessageThread: Signal<(Param, MessageThread), NoError> { get }
+
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDashboard: Signal<Param?, NoError> { get }
 
@@ -401,6 +404,18 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.login) }
       .ignoreValues()
 
+    self.goToCreatorMessageThread = deepLink
+      .map { navigation -> (Param, Int)? in
+        guard case let .creatorMessages(projectId, messageThreadId) = navigation else { return nil }
+        return .some((projectId, messageThreadId: messageThreadId))
+      }
+      .skipNil()
+      .switchMap { projectId, messageThreadId in
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
+          .demoteErrors()
+          .map { (projectId, $0.messageThread) }
+      }
+
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
@@ -410,8 +425,8 @@ AppDelegateViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
-          .map { env in env.messageThread }
-    }
+          .map { $0.messageThread }
+     }
 
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
@@ -736,6 +751,7 @@ AppDelegateViewModelOutputs {
   public let forceLogout: Signal<(), NoError>
   public let getNotificationAuthorizationStatus: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
+  public let goToCreatorMessageThread: Signal<(Param, MessageThread), NoError>
   public let goToDashboard: Signal<Param?, NoError>
   public let goToDiscovery: Signal<DiscoveryParams?, NoError>
   public let goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError>
@@ -770,7 +786,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     switch activity.category {
     case .backing, .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == true {
+      if envelope.forCreator == .some(true) {
         return .tab(.dashboard(project: .id(projectId)))
       }
       return .project(.id(projectId), .root, refTag: .push)
@@ -804,14 +820,18 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let project = envelope.project {
-    if envelope.forCreator == true {
+    if envelope.forCreator == .some(true) {
       return .tab(.dashboard(project: .id(project.id)))
     }
     return .project(.id(project.id), .root, refTag: .push)
   }
 
   if let message = envelope.message {
-    return .messages(messageThreadId: message.messageThreadId)
+    if envelope.forCreator == .some(true) {
+      return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
+    } else {
+      return .messages(messageThreadId: message.messageThreadId)
+    }
   }
 
   if let survey = envelope.survey {

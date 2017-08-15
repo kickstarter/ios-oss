@@ -198,7 +198,7 @@ private let messageForCreatorPushData: [String:Any] = [
     "alert": "Blob McBlobby sent you a message about Help Me Transform This Pile Of Wood."
   ],
   "message": [
-    "message_thread_id": 1,
+    "message_thread_id": 17848074,
     "project_id": 820501933
   ],
   "for_creator": true

@@ -13,7 +13,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   fileprivate let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let activityRowHidden = TestObserver<Bool, NoError>()
   fileprivate let goToActivity = TestObserver<Project, NoError>()
-  fileprivate let goToMessages = TestObserver<Project, NoError>()
+  fileprivate let goToMessages = TestObserver<(), NoError>()
   fileprivate let goToPostUpdate = TestObserver<Project, NoError>()
   fileprivate let lastUpdatePublishedAt = TestObserver<String, NoError>()
   fileprivate let lastUpdatePublishedLabelHidden = TestObserver<Bool, NoError>()
@@ -78,7 +78,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
     self.goToActivity.assertValues([project], "Go to activity screen.")
 
     self.vm.inputs.messagesTapped()
-    self.goToMessages.assertValues([project], "Go to messages screen.")
+    self.goToMessages.assertValueCount(1, "Go to messages screen.")
 
     self.vm.inputs.postUpdateTapped()
     self.goToPostUpdate.assertValues([project], "Go to post update screen.")
