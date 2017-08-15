@@ -103,7 +103,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   DashboardViewModelType {
 
   public init() {
-    let projects = self.viewWillAppearAnimatedProperty.signal.filter(isFalse).ignoreValues()
+    let projects = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
       .switchMap {
         AppEnvironment.current.apiService.fetchProjects(member: true)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
