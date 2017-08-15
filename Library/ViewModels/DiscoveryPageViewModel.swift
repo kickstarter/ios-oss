@@ -132,7 +132,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: false,
+      clearOnNewRequest: true,
       skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
@@ -153,6 +153,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takeWhen(paginatedProjects.filter { $0.isEmpty })
       .map(emptyState(forParams:))
       .skipNil()
+      .skipRepeats()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),

@@ -40,13 +40,13 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> feedTableViewCellStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     _ = self.friendLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.followButton
       |> navyButtonStyle

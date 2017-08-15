@@ -64,14 +64,14 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
     _ = self.bodyLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -79,7 +79,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   }
 
   @IBAction internal func tappedProjectImage() {

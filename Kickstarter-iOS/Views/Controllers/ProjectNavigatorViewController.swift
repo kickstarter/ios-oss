@@ -36,6 +36,12 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       refTag: refTag,
       navigatorDelegate: navigatorDelegate
     )
+    vc.setViewControllers(
+      [.init()],
+      direction: .forward,
+      animated: true,
+      completion: nil
+    )
     vc.transitioningDelegate = vc
     return vc
   }

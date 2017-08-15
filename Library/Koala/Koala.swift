@@ -76,7 +76,7 @@ public final class Koala {
     case projectPage = "project_page"
   }
 
-  /**
+   /**
    Determines the place from which the comments dialog was presented.
 
    - projectActivity: The creator's project activity screen.
@@ -156,6 +156,16 @@ public final class Koala {
       case .next:     return "next"
       case .previous: return "previous"
       }
+    }
+  }
+
+  /// Determines the place from which the project was saved.
+  public enum SaveContext: String {
+    case discovery
+    case project
+
+    fileprivate var trackingString: String {
+      return self.rawValue
     }
   }
 
@@ -1186,17 +1196,22 @@ public final class Koala {
     self.track(event: "Closed Project Page", properties: props)
   }
 
-  public func trackProjectStar(_ project: Project) {
+  public func trackProjectSave(_ project: Project, context: SaveContext) {
     guard let isStarred = project.personalization.isStarred else { return }
 
     let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["context": context.trackingString])
 
     // Deprecated event
     self.track(event: isStarred ? "Project Star" : "Project Unstar",
                properties: props.withAllValuesFrom(deprecatedProps))
 
     self.track(event: isStarred ? "Starred Project" : "Unstarred Project",
+               properties: props.withAllValuesFrom(deprecatedProps))
+
+    self.track(event: isStarred ? "Saved Project" : "Unsaved Project",
                properties: props)
+
   }
 
   public func trackOpenedExternalLink(project: Project, context: ExternalLinkContext ) {

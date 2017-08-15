@@ -807,6 +807,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
         return .tab(.dashboard(project: .id(projectId)))
       }
       return .project(.id(projectId), .root, refTag: .push)
+
     case .update:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
       return .project(.id(projectId), .update(updateId, .root), refTag: .push)

@@ -60,10 +60,10 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_navy_900
+    _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.recommendationsLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_900
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_looking_for_more_projects_check_these_out() }
 

@@ -70,7 +70,8 @@ internal final class LiveStreamNavTitleViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(liveStreamEvent: liveStreamEvent)
 
-    self.playbackStateContainerBackgroundColor.assertValues([UIColor.black.withAlphaComponent(0.4)])
+    self.playbackStateContainerBackgroundColor
+      .assertValues([UIColor.ksr_dark_grey_900.withAlphaComponent(0.4)])
   }
 
   func testNumberOfPeopleWatchingContainerHidden_Live() {

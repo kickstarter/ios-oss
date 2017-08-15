@@ -114,12 +114,18 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
-        titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_title3(size: 14),
-          bold: UIFont.ksr_title3(size: 14).bolded,
+        titleLabel.attributedText = title.simpleHtmlAttributedString(
+          base: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+          ],
+          bold: [
+            NSFontAttributeName: UIFont.ksr_title3(size: 14),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+          ],
           italic: nil
-        )
-
-        _ = titleLabel |> projectActivityTitleLabelStyle
+          )
+          ?? .init()
     }
   }
   // swiftlint:enable function_body_length
@@ -144,7 +150,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       |> projectActivityBulletSeparatorViewStyle
 
     _ = self.cardView
-      |> dropShadowStyle()
+      |> dropShadowStyleMedium()
 
     _ = self.footerDividerView
       |> projectActivityDividerViewStyle
@@ -172,10 +178,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
-      |> UILabel.lens.textColor .~ .ksr_navy_500
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_400
 
     _ = self.previousPledgeStrikethroughView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_500
+      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_400
 
     _ = self.sendMessageButton
       |> projectActivityFooterButton

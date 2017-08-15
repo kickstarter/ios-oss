@@ -86,7 +86,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
   }
 
     internal override func bindViewModel() {
@@ -303,7 +303,31 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
     self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: fromSourceView)
     self.shareViewModel.inputs.shareButtonTapped()
   }
-}
+
+  internal func discoveryPostcardCellProjectSaveAlert() {
+    let alertController = UIAlertController(
+      title: Strings.Project_saved(),
+      message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
+  }
+
+  internal func discoveryPostcardCellGoToLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
+ }
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {

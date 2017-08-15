@@ -33,12 +33,12 @@ experimental:
         - beta-dist
         - itunes-dist
 deployment:
-  ios_live_stream_beta:
-    branch: live-stream-beta-dist
+  ios_alpha:
+    branch: alpha-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane live_stream_beta_gym --verbose
-      - fastlane live_stream_beta_hockey --verbose
+      - fastlane alpha_gym --verbose
+      - fastlane alpha_hockey --verbose
   ios_beta:
     branch: beta-dist
     commands:

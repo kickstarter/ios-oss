@@ -20,7 +20,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let metadataTextColor = TestObserver<UIColor, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
+  internal let notifyDelegateShowLoginTout = TestObserver<Void, NoError>()
   internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
+  internal let notifyDelegateShowSaveAlert = TestObserver<Void, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
@@ -31,6 +33,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let projectStateTitleLabelColor = TestObserver<UIColor, NoError>()
   internal let projectStateTitleLabelText = TestObserver<String, NoError>()
   internal let projectStatsStackViewHidden = TestObserver<Bool, NoError>()
+  internal let saveButtonEnabled = TestObserver<Bool, NoError>()
+  internal let saveButtonSelected = TestObserver<Bool, NoError>()
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
@@ -51,7 +55,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
     self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
+    self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
     self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
+    self.vm.notifyDelegateShowSaveAlert.observe(self.notifyDelegateShowSaveAlert.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
@@ -63,6 +69,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.projectStateTitleLabelColor.observe(self.projectStateTitleLabelColor.observer)
     self.vm.outputs.projectStateTitleLabelText.observe(self.projectStateTitleLabelText.observer)
     self.vm.outputs.projectStatsStackViewHidden.observe(self.projectStatsStackViewHidden.observer)
+    self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
+    self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
@@ -98,6 +106,147 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.notifyDelegateShareButtonTapped.assertValues([discoveryContext])
   }
 
+  func testSaveAlertNotification() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.saveButtonTapped()
+    self.scheduler.advance()
+    self.notifyDelegateShowSaveAlert.assertValueCount(1)
+  }
+
+  func testSaveProject_WithError() {
+    let error = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: .UnknownCode,
+      httpCode: 404,
+      exception: nil
+    )
+
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
+
+      self.vm.inputs.configureWith(project: project)
+
+      self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
+      self.saveButtonEnabled.assertValueCount(0)
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.saveButtonSelected.assertValues([false, false],
+                                           "Emits false because the project personalization value is nil.")
+      self.saveButtonEnabled.assertValues([false], "Save button is disabled while request is being made.")
+
+      self.scheduler.advance()
+
+      self.saveButtonSelected.assertValues([false, false, false], "Emits again with error.")
+      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+
+    }
+  }
+
+  func testTappedSaveButton_LoggedIn_User() {
+    let project = Project.template
+      |> Project.lens.personalization.isStarred .~ true
+    let toggleSaveResponse = .template
+      |> StarEnvelope.lens.project .~ project
+
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse),
+                    currentUser: .template) {
+
+        self.vm.inputs.configureWith(project: project)
+
+        self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
+        self.saveButtonEnabled.assertValueCount(0)
+
+        self.vm.inputs.saveButtonTapped()
+
+        self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
+        self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
+
+        self.scheduler.advance()
+
+        self.saveButtonSelected.assertValues([true, false], "Save button remains deselected after request.")
+        self.saveButtonEnabled.assertValues([false, true], "Save is enabled after request.")
+    }
+  }
+
+  func testTappedSaveButton_LoggedOut_User() {
+    let project = Project.template
+      |> Project.lens.personalization.isStarred .~ false
+    let toggleSaveResponse = .template
+      |> StarEnvelope.lens.project .~ project
+
+      withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
+
+        self.vm.inputs.configureWith(project: project)
+
+        self.saveButtonSelected.assertValues([false], "Save button is not selected for logged out user.")
+        self.saveButtonEnabled.assertValueCount(0)
+
+        self.vm.inputs.saveButtonTapped()
+
+        self.saveButtonSelected.assertValues([false],
+                                              "Nothing is emitted when save button tapped while logged out.")
+        self.saveButtonEnabled.assertValueCount(0)
+
+        self.notifyDelegateShowLoginTout.assertValueCount(1,
+                                                "Prompt to login when save button tapped while logged out.")
+
+        AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+        self.vm.inputs.userSessionStarted()
+
+        self.saveButtonSelected.assertValues([false, true],
+                                              "Once logged in, the save button is selected immediately.")
+        self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
+
+        self.scheduler.advance()
+
+        self.saveButtonSelected.assertValues([false, true],
+                                             "Save button stays selected after API request.")
+        self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
+
+        let untoggleSaveResponse = .template
+          |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
+
+        withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
+          self.vm.inputs.saveButtonTapped()
+
+          self.saveButtonSelected.assertValues([false, true, false],
+                                               "Save button is deselected.")
+          self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request.")
+
+          self.scheduler.advance()
+
+          self.saveButtonSelected.assertValues([false, true, false],
+                                               "The save button remains unselected.")
+          self.saveButtonEnabled.assertValues([false, true, false, true],
+                                              "Save button is enabled after request.")
+
+      }
+    }
+  }
+
+  func testSaveProjectFromPamphlet() {
+    let project = Project.template
+      |> Project.lens.personalization.isStarred .~ false
+    let toggleSaveResponse = .template
+      |> StarEnvelope.lens.project .~ project
+    let projectUpdated = project
+      |> Project.lens.personalization.isStarred .~ true
+
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
+      self.vm.inputs.configureWith(project: project)
+
+      self.saveButtonSelected.assertValues([false])
+
+      self.vm.inputs.projectFromNotification(project: projectUpdated)
+
+      self.saveButtonSelected.assertValues([false, true])
+    }
+  }
+
   func testMetadata() {
     let featuredAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
     let potdAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
@@ -108,6 +257,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let featuredProject = .template
       |> Project.lens.category.parent .~ Category.art
       |> Project.lens.dates.featuredAt .~ featuredAt
+
+    let starred = .template
+      |> Project.lens.personalization.isStarred .~ true
 
     let starredAndPotdProject = .template
       |> Project.lens.dates.potdAt .~ potdAt
@@ -123,9 +275,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = .ksr_text_green_700
-    let featuredColor: UIColor = .ksr_text_navy_700
-    let potdColor: UIColor = .ksr_text_navy_700
-    let starredColor: UIColor = .ksr_text_navy_700
+    let featuredColor: UIColor = .ksr_dark_grey_900
+    let potdColor: UIColor = .ksr_dark_grey_900
+    let starredColor: UIColor = .ksr_dark_grey_900
 
     let backedImage = image(named: "metadata-backing")
     let featuredImage = image(named: "metadata-featured")
@@ -153,9 +305,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project()
+          Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Starred metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false])
       self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
       self.metadataIcon.assertValues([backedImage, starredImage])
       self.metadataTextColor.assertValues([backedColor, starredColor])
@@ -165,10 +318,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer()
         ], "Backed metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
       self.metadataIcon.assertValues([backedImage, starredImage, backedImage])
       self.metadataTextColor.assertValues([backedColor, starredColor, backedColor])
@@ -178,13 +332,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
           )
         ], "Featured metadata emits.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true, false],
         "Icon shown for the featured project")
       self.metadataIcon.assertValues([backedImage, starredImage, backedImage, featuredImage])
@@ -195,7 +350,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.You_saved_this_project(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
@@ -203,8 +358,30 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Potd metadata takes precedence.")
 
+      self.metadataViewHidden.assertValues([true, false, false, false, false, false])
       self.metadataIconHidden.assertValues([false, false, true, true, false, true],
         "No Icon shown for the potd project")
+      self.metadataIcon.assertValues(
+        [backedImage, starredImage, backedImage, featuredImage, nil])
+      self.metadataTextColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+      self.metadataIconTintColor.assertValues(
+        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+
+      self.vm.inputs.configureWith(project: starred)
+      self.metadataLabelText.assertValues(
+        [
+          Strings.discovery_baseball_card_metadata_backer(),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
+          Strings.discovery_baseball_card_metadata_backer(),
+          Strings.discovery_baseball_card_metadata_featured_project(
+            category_name: featuredProject.category.name
+          ),
+          Strings.discovery_baseball_card_metadata_project_of_the_Day()
+        ], "Potd metadata takes precedence.")
+
+      self.metadataViewHidden.assertValues([true, false, false, false, false, false, true])
+      self.metadataIconHidden.assertValues([false, false, true, true, false, true, false])
       self.metadataIcon.assertValues(
         [backedImage, starredImage, backedImage, featuredImage, nil])
       self.metadataTextColor.assertValues(
@@ -334,7 +511,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let suspended = .template |> Project.lens.state .~ .suspended
 
     let greenColor = UIColor.ksr_text_green_700
-    let navyColor = UIColor.ksr_text_navy_700
+    let navyColor = UIColor.ksr_text_dark_grey_900
 
     self.vm.inputs.configureWith(project: live)
     self.projectStateStackViewHidden.assertValues([true])

@@ -209,12 +209,12 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.userInteractionEnabled .~ true
@@ -239,21 +239,21 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.disclaimerPrimaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12).bolded
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
 
     _ = self.disclaimerSecondaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_500
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
 
     _ = self.disclaimerTertiaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.attributedText %~ { _ in
@@ -266,11 +266,11 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.estimatedToFulfillLabel
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.estimatedFulfillmentStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -284,7 +284,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
 
     _ = self.loadingOverlayView
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
@@ -304,7 +304,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.orLabel
       |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .ksr_navy_700
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
@@ -320,7 +320,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.readMoreLabel
       |> UILabel.lens.backgroundColor .~ .ksr_grey_100
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
 
@@ -375,16 +375,16 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingActivityIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_navy_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
 
     _ = self.shipsToLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
 
     _ = self.shippingInputStackView
@@ -392,12 +392,12 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.shippingInputTitleLabel
       |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_600
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
     _ = self.shippingLocationsLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_700
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -422,7 +422,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_900
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.userInteractionEnabled .~ true
 
@@ -612,7 +612,7 @@ internal final class RewardPledgeViewController: UIViewController {
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
         |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_navy_700 : .ksr_text_navy_600)
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_900 : .ksr_text_dark_grey_500)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 

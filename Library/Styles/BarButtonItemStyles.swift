@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let baseBarButtonItemStyle =
-  UIBarButtonItem.lens.tintColor .~ .ksr_navy_700
+  UIBarButtonItem.lens.tintColor .~ .ksr_dark_grey_500
 
 public let plainBarButtonItemStyle = baseBarButtonItemStyle
   <> UIBarButtonItem.lens.style .~ .plain

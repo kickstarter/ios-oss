@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 2.0)
-  <> UIView.lens.backgroundColor .~ .ksr_text_navy_500
+  <> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_400
 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
@@ -32,5 +32,5 @@ public let projectActivityStateChangeLabelStyle = UILabel.lens.numberOfLines .~ 
   <> UILabel.lens.textAlignment .~ .center
 
 // Use `.ksr_title3(size: 14)` for font.
-public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_navy_500
+public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   <> UILabel.lens.numberOfLines .~ 2

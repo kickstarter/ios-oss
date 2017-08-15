@@ -21,7 +21,6 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     self.vm.outputs.metadataIconIsHidden.observe(self.metadataIconIsHidden.observer)
     self.vm.outputs.metadataText.observe(self.metadataText.observer)
     self.vm.outputs.percentFundedText.map { $0.string }.observe(self.percentFundedText.observer)
@@ -86,7 +85,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.percentFundedText.assertValues(["20%"])
     self.photoURL.assertValues(["http://www.lazybathtubcat.com/vespa.jpg"])
     self.progress.assertValues([0.2])
-    self.progressBarColor.assertValues([UIColor.ksr_navy_500])
+    self.progressBarColor.assertValues([UIColor.ksr_dark_grey_400])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([true])
   }

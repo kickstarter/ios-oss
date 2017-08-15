@@ -21,6 +21,12 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.pageViewController = self.childViewControllers
       .flatMap { $0 as? UIPageViewController }.first
+    self.pageViewController.setViewControllers(
+      [.init()],
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
     self.pageViewController.delegate = self
 
     self.sortPagerViewController = self.childViewControllers

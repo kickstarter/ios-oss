@@ -442,10 +442,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
 
       self.scheduler.advance()
-      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
     }
   }
 
@@ -469,11 +469,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
 
       self.scheduler.advance()
 
-      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
     }
   }
 
@@ -568,7 +568,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.starred, .recommended, .starred])
+          self.showEmptyState.assertValues([.starred, .recommended, .socialDisabled, .starred])
         }
       }
     }
