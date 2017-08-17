@@ -107,6 +107,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.goToMessageThread($0) }
 
+    self.viewModel.outputs.goToProjectActivities
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.goToProjectActivities($0)
+    }
+
     self.viewModel.outputs.goToSearch
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToSearch() }
@@ -317,6 +323,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
     self.rootTabBarController?
       .switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
+  }
+
+  private func goToProjectActivities(_ projectId: Param) {
+    self.rootTabBarController?.switchToProjectActivities(projectId: projectId)
   }
 
   private func findRedirectUrl(_ url: URL) {

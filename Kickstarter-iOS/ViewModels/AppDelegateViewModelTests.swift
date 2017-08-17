@@ -23,6 +23,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
+  private let goToProjectActivities = TestObserver<Param, NoError>()
   private let goToLiveStreamProject = TestObserver<Project, NoError>()
   private let goToLiveStreamLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
   private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
@@ -58,6 +59,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
+    self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
@@ -772,7 +774,7 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: backingForCreatorPushData]
     )
 
-    self.goToDashboard.assertValues([param])
+    self.goToProjectActivities.assertValues([param])
   }
 
   func testOpenNotification_NewBacking_ForCreator_WithBadData() {

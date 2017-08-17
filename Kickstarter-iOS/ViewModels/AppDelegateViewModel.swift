@@ -134,6 +134,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), NoError> { get }
 
+  /// Emits when should navigate to the project activities view
+  var goToProjectActivities: Signal<Param, NoError> { get }
+
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, NoError> { get }
 
@@ -427,6 +430,13 @@ AppDelegateViewModelOutputs {
           .demoteErrors()
           .map { $0.messageThread }
      }
+
+    self.goToProjectActivities = deepLink
+      .map { navigation -> Param? in
+        guard case let .projectActivity(projectId) = navigation else { return nil }
+        return .some(projectId)
+      }
+      .skipNil()
 
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
@@ -758,6 +768,7 @@ AppDelegateViewModelOutputs {
   public let goToLogin: Signal<(), NoError>
   public let goToMessageThread: Signal<MessageThread, NoError>
   public let goToProfile: Signal<(), NoError>
+  public let goToProjectActivities: Signal<Param, NoError>
   public let goToMobileSafari: Signal<URL, NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<Notification, NoError>
@@ -784,7 +795,13 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
   if let activity = envelope.activity {
     switch activity.category {
-    case .backing, .failure, .launch, .success, .cancellation, .suspension:
+    case .backing:
+      guard let projectId = activity.projectId else { return nil }
+      if envelope.forCreator == true {
+        return .projectActivity(.id(projectId))
+      }
+      return .project(.id(projectId), .root, refTag: .push)
+    case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
       if envelope.forCreator == .some(true) {
         return .tab(.dashboard(project: .id(projectId)))

@@ -7,6 +7,7 @@ import KsApi
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)
+  case projectActivity(Param)
   case emailClick(qs: String)
   case emailLink
   case messages(messageThreadId: Int)
