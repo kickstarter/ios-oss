@@ -326,9 +326,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func goToProjectActivities(_ projectId: Param) {
-    self.rootTabBarController?
-      .swithchToProjectActivities(projectId: projectId)
-
+    self.rootTabBarController?.switchToProjectActivities(projectId: projectId)
   }
 
   private func findRedirectUrl(_ url: URL) {
