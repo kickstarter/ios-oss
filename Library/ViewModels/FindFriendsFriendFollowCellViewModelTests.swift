@@ -90,7 +90,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     friendName.assertValues(["Ned"])
     projectsBackedText.assertValues(["0 backed"], "Projects text emits")
     projectsCreatedText.assertValueCount(0, "Created projects does not emit")
-    hideProjectsCreated.assertValues([false], "Hide projects created text")
+    hideProjectsCreated.assertValues([true], "Hide projects created text")
   }
 
   func testFollowing_Friend() {
