@@ -2554,4 +2554,13 @@ internal final class RewardPledgeViewModelTests: TestCase {
         }
     }
   }
+
+  func testNilShippingSummaryEmitsEmpty() {
+    let reward = .template
+      |> Reward.lens.shipping.summary .~ nil
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationsLabelText.assertValues([""])
+  }
 }

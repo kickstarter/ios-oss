@@ -362,8 +362,7 @@ RewardPledgeViewModelOutputs {
     self.expandRewardDescription = self.expandDescriptionTappedProperty.signal
 
     self.shippingLocationsLabelText = reward
-      .map { $0.shipping.summary }
-      .skipNil()
+      .map { $0.shipping.summary ?? "" }
 
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in

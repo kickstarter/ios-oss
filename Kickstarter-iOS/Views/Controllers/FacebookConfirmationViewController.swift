@@ -67,17 +67,17 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 
-    override func bindViewModel() {
+  override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.displayEmail
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] email in
         self?.emailLabel.text = email
     }
 
     self.viewModel.outputs.sendNewsletters
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] send in self?.newsletterSwitch.setOn(send, animated: false)
     }
 

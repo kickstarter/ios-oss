@@ -78,10 +78,10 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .map { $0.stats.backedProjectsCount ?? 0 }
       .map(Strings.social_following_friend_projects_count_backed(backed_count:))
 
-    self.hideProjectsCreated = friend.map { $0.stats.createdProjectsCount == 0 }
+    let projectsCreatedCount = friend.map { $0.stats.createdProjectsCount ?? 0 }
+    self.hideProjectsCreated = projectsCreatedCount.map { $0 == 0 }
 
-    self.projectsCreatedText = friend
-      .map { $0.stats.createdProjectsCount ?? 0 }
+    self.projectsCreatedText = projectsCreatedCount
       .filter { $0 > 0 }
       .map(Strings.social_following_friend_projects_count_created(created_count:))
 
