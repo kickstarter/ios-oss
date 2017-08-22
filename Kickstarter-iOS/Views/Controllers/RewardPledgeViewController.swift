@@ -305,7 +305,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.orLabel
       |> UILabel.lens.font .~ .ksr_footnote()
       |> UILabel.lens.textColor .~ .ksr_dark_grey_500
-      |> UILabel.lens.text %~ { _ in "– or –" }
+      |> UILabel.lens.text %~ { _ in localizedString(key: "Reward_pledge_or", defaultValue: "– or –") }
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
