@@ -391,4 +391,15 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
         self.trackingClient.properties.map { $0["source"] as! String? })
     }
   }
+
+  func testFriendDetails_NilCreatedProjectsCount() {
+    let friend = User.template
+      |> User.lens.stats.createdProjectsCount .~ nil
+
+    hideProjectsCreated.assertValues([])
+
+    vm.inputs.configureWith(friend: friend, source: FriendsSource.settings)
+
+    hideProjectsCreated.assertValues([true])
+  }
 }
