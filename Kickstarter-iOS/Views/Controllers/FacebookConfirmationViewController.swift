@@ -23,10 +23,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
   private let helpViewModel = HelpViewModel()
   fileprivate let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
 
-  internal static func instantiate() -> FacebookConfirmationViewController {
-    return Storyboard.Login.instantiate(FacebookConfirmationViewController.self)
-  }
-
   internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
     -> FacebookConfirmationViewController {
 
