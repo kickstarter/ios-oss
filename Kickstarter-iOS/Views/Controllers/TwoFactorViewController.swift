@@ -48,13 +48,16 @@ internal final class TwoFactorViewController: UIViewController {
 
     _ = self.resendButton
       |> borderButtonStyle
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.two_factor_buttons_resend() }
 
     _ = self.submitButton
       |> greenButtonStyle
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
 
     _ = self.titleLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_body()
+      |> UILabel.lens.text %~ { _ in Strings.two_factor_message() }
   }
 
   internal override func bindViewModel() {

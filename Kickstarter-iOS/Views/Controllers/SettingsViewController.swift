@@ -139,6 +139,7 @@ internal final class SettingsViewController: UIViewController {
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
+      |> UIButton.lens.title(forState: .normal) .~ "Debug push notifications"
 
     _ = self.betaFeedbackButton
       |> greenButtonStyle
