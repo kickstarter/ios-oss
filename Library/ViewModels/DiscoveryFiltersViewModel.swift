@@ -55,8 +55,7 @@ public protocol DiscoveryFiltersViewModelType {
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
-    public init() {
-
+  public init() {
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(first: 1)
       .map { topFilters(forUser: AppEnvironment.current.currentUser) }
@@ -215,9 +214,17 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [KsApi.Category]) -> [ExpandableRow] {
 
-  let expandableRows = categories
+  var grouped: [KsApi.Category:[KsApi.Category]] = [:]
+
+  categories
     .sorted { lhs, _ in !lhs.isRoot }
-    .groupedBy { $0.parent ?? $0 }
+    .forEach {
+      let key = $0.parent ?? $0
+      grouped[key] = grouped[key] ?? []
+      grouped[key]?.append($0)
+  }
+
+  let expandableRows = grouped
     .map { rootCategory, rootWithChildren in
       ExpandableRow(
         isExpanded: false,
