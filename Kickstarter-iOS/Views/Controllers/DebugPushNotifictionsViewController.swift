@@ -181,6 +181,17 @@ private let surveyPushData: [String:Any] = [
   ]
 ]
 
+private let reminderPushData: [String:Any] = [
+  "aps": [
+    "alert": "Reminder! This Pile of Wood is ending soon.",
+  ],
+  "activity": [
+    "category": "backing",
+    "id": 1,
+    "project_id": 820501933
+  ]
+]
+
 private let backingForCreatorPushData: [String:Any] = [
   "aps": [
     "alert": "New backer! Blob has pledged $50 to Help Me Transform This Pile Of Wood."
@@ -285,6 +296,7 @@ private let allPushData: [[String:Any]] = [
   followPushData,
   messagePushData,
   surveyPushData,
+  reminderPushData,
   backingForCreatorPushData,
   messageForCreatorPushData,
   failureForCreatorPushData,
