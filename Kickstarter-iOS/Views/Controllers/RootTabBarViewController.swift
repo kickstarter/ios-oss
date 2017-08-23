@@ -103,6 +103,8 @@ public final class RootTabBarViewController: UITabBarController {
     let threadsVC = MessageThreadsViewController.configuredWith(project: nil)
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
+    self.presentedViewController?.dismiss(animated: false, completion: nil)
+
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
 
@@ -114,6 +116,8 @@ public final class RootTabBarViewController: UITabBarController {
       let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
     else { return }
 
+    self.presentedViewController?.dismiss(animated: false, completion: nil)
+
      dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
@@ -124,6 +128,8 @@ public final class RootTabBarViewController: UITabBarController {
       let dashboardNav = self.selectedViewController as? UINavigationController,
       let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
     else { return }
+
+    self.presentedViewController?.dismiss(animated: false, completion: nil)
 
     dashboardVC.navigateToProjectActivities(projectId: projectId)
   }
