@@ -38,7 +38,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
 
     self.pledgedText = countryReferrer
       .map { country, referrer in
-        Format.currency(referrer.pledged, country: country) + " ("
+        Format.currency(Int(referrer.pledged), country: country) + " ("
           + Format.percentage(referrer.percentageOfDollars) + ")"
     }
 
@@ -46,7 +46,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
 
     self.textColor = countryReferrer.map { _, referrer in
       switch referrer.referrerType {
-      case .`internal`:
+      case .internal:
         return .ksr_green_700
       case .external:
         return .ksr_orange_400

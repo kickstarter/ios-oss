@@ -39,15 +39,15 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let referrers = [
       .template
         |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.5
-        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 500
+        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 500.5
         |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`,
       .template
         |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.2
-        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 200
+        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 200.5
         |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`,
       .template
         |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.3
-        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 300
+        |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 300.5
         |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .external,
       ]
 
@@ -56,7 +56,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.externalPercentText.assertValues(["30%"])
     self.externalPledgedText.assertValues(["$300"])
     self.internalPercentText.assertValues(["70%"])
-    self.internalPledgedText.assertValues(["$700"])
+    self.internalPledgedText.assertValues(["$701"])
   }
 
   func testCumulativeDataEmits() {
