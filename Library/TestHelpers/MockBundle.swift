@@ -38,6 +38,9 @@ private let stores = [
   ],
   "es": [
     "placeholder_password": "el secreto",
+  ],
+  "ja": [
+    "dates.time_days.two": "2日"
   ]
 ]
 

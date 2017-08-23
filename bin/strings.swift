@@ -1,7 +1,9 @@
 import Foundation
 
+let oauthToken: String = ProcessInfo.processInfo.environment["KICKSTARTER_API_IOS_OAUTH_TOKEN"] ?? ""
+
 let endpoint: String? =
-  "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true"
+  "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
 
 extension Dictionary {
   public func withAllValuesFrom(_ other: Dictionary) -> Dictionary {

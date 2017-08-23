@@ -178,7 +178,10 @@ public enum Format {
       string = ""
     }
 
-    let split = string.components(separatedBy: " ")
+    let split = string
+      .replacingOccurrences(of: "(\\d+) *", with: "$1 ", options: .regularExpression)
+      .components(separatedBy: " ")
+
     guard split.count >= 1 else { return ("", "") }
 
     let result = (
