@@ -23,7 +23,7 @@ extension ProjectStatsEnvelope.ReferrerStats {
         referrerType: $1.referrerType) }
     )
 
-    public static let pledged = Lens<ProjectStatsEnvelope.ReferrerStats, Int>(
+    public static let pledged = Lens<ProjectStatsEnvelope.ReferrerStats, Double>(
       view: { $0.pledged },
       set: { ProjectStatsEnvelope.ReferrerStats(backersCount: $1.backersCount, code: $1.code,
         percentageOfDollars: $1.percentageOfDollars, pledged: $0, referrerName: $1.referrerName,

@@ -29,7 +29,7 @@ public struct ProjectStatsEnvelope {
     public let backersCount: Int
     public let code: String
     public let percentageOfDollars: Double
-    public let pledged: Int
+    public let pledged: Double
     public let referrerName: String
     public let referrerType: ReferrerType
 
@@ -113,7 +113,7 @@ extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
       <*> json <| "code"
       <*> (json <| "percentage_of_dollars" >>- stringToDouble)
     return tmp
-      <*> (json <| "pledged" >>- stringToIntOrZero)
+      <*> (json <| "pledged" >>- stringToDouble)
       <*> json <| "referrer_name"
       <*> json <| "referrer_type"
   }
