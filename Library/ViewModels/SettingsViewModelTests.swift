@@ -220,8 +220,8 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.gamesNewsletterTapped(on: true)
     self.gamesNewsletterOn.assertValues([false, true], "Games newsletter toggled on.")
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter", "Subscribed To Newsletter"],
-                   self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
+                "Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.happeningNewsletterTapped(on: true)
     self.happeningNewsletterOn.assertValues([false, true], "Happening newsletter toggled on.")
@@ -252,10 +252,11 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.weeklyNewsletterTapped(on: false)
     self.weeklyNewsletterOn.assertValues([false, true, false], "Weekly newsletter toggled off.")
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter", "Subscribed To Newsletter",
-      "Subscribed To Newsletter", "Subscribed To Newsletter", "Subscribed To Newsletter", "Subscribed To Newsletter",
-      "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter",
-      "Unsubscribed From Newsletter"], self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
+      "Subscribed To Newsletter","Subscribed To Newsletter", "Subscribed To Newsletter",
+      "Subscribed To Newsletter", "Subscribed To Newsletter","Unsubscribed From Newsletter",
+      "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter",
+      "Unsubscribed From Newsletter", "Unsubscribed From Newsletter"], self.trackingClient.events)
   }
 
   func testOptInPromptNotShown() {
