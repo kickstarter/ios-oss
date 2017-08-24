@@ -22,8 +22,10 @@ public struct User {
   }
 
   public struct NewsletterSubscriptions {
+    public let arts: Bool?
     public let games: Bool?
     public let happening: Bool?
+    public let invent: Bool?
     public let promo: Bool?
     public let weekly: Bool?
   }
@@ -132,8 +134,10 @@ extension User.Avatar: EncodableType {
 extension User.NewsletterSubscriptions: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
     return curry(User.NewsletterSubscriptions.init)
-      <^> json <|? "games_newsletter"
+      <^> json <|? "arts_culture_newsletter"
+      <*> json <|? "games_newsletter"
       <*> json <|? "happening_newsletter"
+      <*> json <|? "invent_newsletter"
       <*> json <|? "promo_newsletter"
       <*> json <|? "weekly_newsletter"
   }
@@ -142,8 +146,10 @@ extension User.NewsletterSubscriptions: Argo.Decodable {
 extension User.NewsletterSubscriptions: EncodableType {
   public func encode() -> [String:Any] {
     var result: [String:Any] = [:]
+    result["arts_culture_newsletter"] = self.arts
     result["games_newsletter"] = self.games
     result["happening_newsletter"] = self.happening
+    result["invent_newsletter"] = self.invent
     result["promo_newsletter"] = self.promo
     result["weekly_newsletter"] = self.weekly
     return result
@@ -152,8 +158,10 @@ extension User.NewsletterSubscriptions: EncodableType {
 
 extension User.NewsletterSubscriptions: Equatable {}
 public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscriptions) -> Bool {
-  return lhs.games == rhs.games &&
+  return lhs.arts == rhs.arts &&
+    lhs.games == rhs.games &&
     lhs.happening == rhs.happening &&
+    lhs.invent == rhs.invent &&
     lhs.promo == rhs.promo &&
     lhs.weekly == rhs.weekly
 }
