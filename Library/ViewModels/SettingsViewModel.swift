@@ -184,7 +184,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.skipNil().skipRepeats()
     self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
     self.inventNewsletterOn = self.updateCurrentUser.map { $0.newsletters.invent }.skipNil().skipRepeats()
-    self.artsAndCultureNewsletterOn = self.updateCurrentUser.map { $0.newsletters.arts}.skipNil().skipRepeats()
+    self.artsAndCultureNewsletterOn = self.updateCurrentUser
+      .map { $0.newsletters.arts}.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser

@@ -253,8 +253,8 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.inputs.weeklyNewsletterTapped(on: false)
     self.weeklyNewsletterOn.assertValues([false, true, false], "Weekly newsletter toggled off.")
     XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
-      "Subscribed To Newsletter","Subscribed To Newsletter", "Subscribed To Newsletter",
-      "Subscribed To Newsletter", "Subscribed To Newsletter","Unsubscribed From Newsletter",
+      "Subscribed To Newsletter", "Subscribed To Newsletter", "Subscribed To Newsletter",
+      "Subscribed To Newsletter", "Subscribed To Newsletter", "Unsubscribed From Newsletter",
       "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter",
       "Unsubscribed From Newsletter", "Unsubscribed From Newsletter"], self.trackingClient.events)
   }
