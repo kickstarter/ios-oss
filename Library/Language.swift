@@ -6,8 +6,9 @@ public enum Language: String {
   case en
   case es
   case fr
+  case ja
 
-  public static let allLanguages: [Language] = [.de, .en, .es, .fr]
+  public static let allLanguages: [Language] = [.de, .en, .es, .fr, .ja]
 
   public init?(languageString language: String) {
     switch language.lowercased() {
@@ -15,6 +16,7 @@ public enum Language: String {
     case "en":  self = .en
     case "es":  self = .es
     case "fr":  self = .fr
+    case "ja":  self = .ja
     default:    return nil
     }
   }
@@ -35,7 +37,7 @@ public enum Language: String {
 extension Language: Equatable {}
 public func == (lhs: Language, rhs: Language) -> Bool {
   switch (lhs, rhs) {
-  case (.en, .en), (.es, .es), (.fr, .fr), (.de, .de):
+  case (.en, .en), (.es, .es), (.fr, .fr), (.de, .de), (.ja, .ja):
     return true
   default:
     return false

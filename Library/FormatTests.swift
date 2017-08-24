@@ -310,6 +310,7 @@ final class FormatTests: TestCase {
     let now = self.dateType.init()
     let thirtyMins = now.timeIntervalSince1970 + 60 * 30
     let oneDay = now.timeIntervalSince1970 + 60 * 60 * 24
+    let twoDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 2
     let oneAndAHalfDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 1.5
     let sixDays = now.timeIntervalSince1970 + 60 * 60 * 24 * 6
     let sixDaysPast = now.timeIntervalSince1970 - 60 * 60 * 24 * 6
@@ -328,6 +329,11 @@ final class FormatTests: TestCase {
 
     XCTAssertEqual("0", Format.duration(secondsInUTC: sixDaysPast).time)
     XCTAssertEqual("secs", Format.duration(secondsInUTC: sixDaysPast).unit)
+
+    withEnvironment(language: .ja, locale: Locale(identifier: "ja"), mainBundle: MockBundle()) {
+      XCTAssertEqual("2", Format.duration(secondsInUTC: twoDays).time)
+      XCTAssertEqual("日", Format.duration(secondsInUTC: twoDays).unit)
+    }
   }
 
   func testDurationAbbreviated() {
