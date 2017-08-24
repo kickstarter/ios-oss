@@ -320,5 +320,5 @@ private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -
 }
 
 private func removeLegacyOauthToken(fromUserDefaults userDefaults: KeyValueStoreType) {
-  userDefaults.removeObjectForKey("com.kickstarter.access_token")
+  userDefaults.removeObject(forKey: "com.kickstarter.access_token")
 }
