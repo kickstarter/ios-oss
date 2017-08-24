@@ -82,7 +82,7 @@ internal protocol RootViewModelType {
 
 internal final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
 
-    internal init() {
+  internal init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal,
@@ -125,7 +125,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let switchToLogin = Signal.combineLatest(vcCount, loginState)
       .takeWhen(self.switchToLoginProperty.signal)
-      .filter { isFalse($1) }
+      .filter(second >>> isFalse)
       .map(first)
 
     let switchToProfile = Signal.combineLatest(vcCount, loginState)

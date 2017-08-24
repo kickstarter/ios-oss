@@ -45,26 +45,26 @@ public protocol ThanksViewModelInputs {
 }
 
 public protocol ThanksViewModelOutputs {
-  /// Emits when view controller should dismiss
-  var dismissToRootViewController: Signal<(), NoError> { get }
-
-  /// Emits DiscoveryParams when should go to Discovery
-  var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
-
-  /// Emits iTunes link when should go to App Store
-  var goToAppStoreRating: Signal<String, NoError> { get }
-
   /// Emits backed project subheader text to display
   var backedProjectText: Signal<NSAttributedString, NoError> { get }
+
+  /// Emits when view controller should dismiss
+  var dismissToRootViewController: Signal<(), NoError> { get }
 
   /// Emits a bool determining whether or not the facebook button is hidden.
   var facebookButtonIsHidden: Signal<Bool, NoError> { get }
 
+  /// Emits iTunes link when should go to App Store
+  var goToAppStoreRating: Signal<String, NoError> { get }
+
+  /// Emits DiscoveryParams when should go to Discovery
+  var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
+
   /// Emits project when should go to Project page
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
-  /// Emits when should show rating alert
-  var showRatingAlert: Signal <(), NoError> { get }
+  /// Emits when a user updated notification should be posted
+  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
   /// Emits when should show games newsletter alert
   var showGamesNewsletterAlert: Signal <(), NoError> { get }
@@ -72,17 +72,17 @@ public protocol ThanksViewModelOutputs {
   /// Emits newsletter title when should show games newsletter opt-in alert
   var showGamesNewsletterOptInAlert: Signal <String, NoError> { get }
 
+  /// Emits when should show rating alert
+  var showRatingAlert: Signal <(), NoError> { get }
+
   /// Emits array of projects and a category when should show recommendations
   var showRecommendations: Signal <([Project], KsApi.Category), NoError> { get }
 
-  /// Emits a User that can be used to replace the current user in the environment
-  var updateUserInEnvironment: Signal<User, NoError> { get }
-
-  /// Emits when a user updated notification should be posted
-  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
-
   /// Emits a bool determining whether or not the twitter button is hidden.
   var twitterButtonIsHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a User that can be used to replace the current user in the environment
+  var updateUserInEnvironment: Signal<User, NoError> { get }
 }
 
 public protocol ThanksViewModelType {
@@ -92,7 +92,7 @@ public protocol ThanksViewModelType {
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
 
-    public init() {
+  public init() {
     let project = self.projectProperty.signal.skipNil()
 
     self.backedProjectText = project.map {
@@ -142,10 +142,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let rootCategory = project
       .map { $0.category.rootId }
       .skipNil()
-      .flatMap {
-        return AppEnvironment.current.apiService.fetchCategory(param: .id($0))
+      .flatMap { (id: Int) -> SignalProducer<KsApi.Category, NoError> in
+        return AppEnvironment.current.apiService.fetchCategory(param: .id(id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.root ?? $0 }
+          .map { (category: KsApi.Category) -> KsApi.Category in category.root ?? category }
           .demoteErrors()
     }
 

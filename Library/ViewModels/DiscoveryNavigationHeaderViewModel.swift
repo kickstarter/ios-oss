@@ -106,7 +106,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .skipNil()
 
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
-    let categoryId = paramsAndFiltersAreHidden.map(first).map { $0.category?.root?.id }
     let filtersAreHidden = paramsAndFiltersAreHidden.map(second)
 
     self.animateArrowToDown = filtersAreHidden
