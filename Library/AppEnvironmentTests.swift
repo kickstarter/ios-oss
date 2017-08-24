@@ -157,7 +157,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("en", result["apiService.language"] as? String)
     XCTAssertEqual(User.template.id, (result["currentUser"] as? [String:AnyObject])?["id"] as? Int)
 
-    XCTAssertEqual(nil, ubiquitousStore.stringForKey(AppEnvironment.oauthTokenStorageKey), "No token stored.")
+    XCTAssertEqual(nil, ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey), "No token stored.")
   }
 
   func testPushPopSave() {
