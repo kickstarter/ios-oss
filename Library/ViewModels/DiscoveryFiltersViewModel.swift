@@ -214,17 +214,11 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [KsApi.Category]) -> [ExpandableRow] {
 
-  var grouped: [KsApi.Category:[KsApi.Category]] = [:]
-
-  categories
+  let expandableRows = categories
     .sorted { lhs, _ in !lhs.isRoot }
-    .forEach {
-      let key = $0.parent ?? $0
-      grouped[key] = grouped[key] ?? []
-      grouped[key]?.append($0)
-  }
-
-  let expandableRows = grouped
+    .groupedBy { (category: KsApi.Category) -> KsApi.Category in
+      category.parent ?? category
+    }
     .map { rootCategory, rootWithChildren in
       ExpandableRow(
         isExpanded: false,

@@ -32,7 +32,6 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .takeWhen(self.willDisplayProperty.signal)
 
     let expandableRow = expandableRowAndCategoryId.map(first)
-    let categoryId = expandableRowAndCategoryId.map(second)
 
     self.expandCategoryStyle = expandableRowAndCategoryId
 
