@@ -2,6 +2,7 @@ import Library
 import Prelude
 import UIKit
 
+// swiftlint:disable line_length
 internal final class DebugPushNotificationsViewController: UIViewController {
 
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
