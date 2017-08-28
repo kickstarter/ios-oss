@@ -1004,8 +1004,10 @@
 "profile.settings.logout_alert.title" = "Abmelden";
 "profile.settings.navbar_title" = "Einstellungen";
 "profile.settings.navbar_title_notifications" = "Benachrichtigungen";
+"profile.settings.newsletter.arts" = "Kunst & Kultur News";
 "profile.settings.newsletter.games" = "Wir lieben Spiele";
 "profile.settings.newsletter.happening" = "Happening Now";
+"profile.settings.newsletter.invent" = "Kreativ & Erfinderisch";
 "profile.settings.newsletter.opt_in.message" = "Wir haben eine Bestätigung an die mit deinem Konto verbundene E-Mail-Adresse geschickt! Bitte sieh in deinem Posteingang nach und bestätige dein Abo von %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "Nur noch ein letzter Schritt!";
 "profile.settings.newsletter.promo" = "Kickstarter Neuigkeiten und Events";

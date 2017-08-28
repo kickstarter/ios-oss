@@ -9,13 +9,13 @@ public enum Newsletter {
   public var displayableName: String {
     switch self {
     case .arts:
-      return "Arts & Culture News"
+      return Strings.profile_settings_newsletter_arts()
     case .games:
       return Strings.profile_settings_newsletter_games()
     case .happening:
       return Strings.profile_settings_newsletter_happening()
     case .invent:
-      return "Invent"
+      return Strings.profile_settings_newsletter_invent()
     case .promo:
       return Strings.profile_settings_newsletter_promo()
     case .weekly:

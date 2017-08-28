@@ -13210,6 +13210,22 @@ Let's change that!"
     )
   }
   /**
+   "Arts & Culture News"
+
+   - **es**: "Novedades sobre Arte & Cultura"
+   - **de**: "Kunst & Kultur News"
+   - **fr**: "Arts & Culture News"
+   - **en**: "Arts & Culture News"
+  */
+  public static func profile_settings_newsletter_arts() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.arts",
+      defaultValue: "Arts & Culture News",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Kickstarter Loves Games"
 
    - **es**: "Nos encantan los juegos"
@@ -13237,6 +13253,22 @@ Let's change that!"
     return localizedString(
       key: "profile.settings.newsletter.happening",
       defaultValue: "Happening Now",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Invent"
+
+   - **es**: "Invenciones"
+   - **de**: "Kreativ & Erfinderisch"
+   - **fr**: "Invent"
+   - **en**: "Invent"
+  */
+  public static func profile_settings_newsletter_invent() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.invent",
+      defaultValue: "Invent",
       count: nil,
       substitutions: [:]
     )

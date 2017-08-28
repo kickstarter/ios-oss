@@ -141,6 +141,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.artsAndCultureNewsLabel
       |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
 
     _ = self.betaDebugPushNotificationsButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
@@ -223,6 +224,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.inventLabel
       |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_invent() }
 
     _ = self.ksrLovesGamesLabel
       |> settingsSectionLabelStyle

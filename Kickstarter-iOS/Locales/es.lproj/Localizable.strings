@@ -1004,8 +1004,10 @@
 "profile.settings.logout_alert.title" = "Cerrar sesión";
 "profile.settings.navbar_title" = "Configuración";
 "profile.settings.navbar_title_notifications" = "Notificaciones";
+"profile.settings.newsletter.arts" = "Novedades sobre Arte & Cultura";
 "profile.settings.newsletter.games" = "Nos encantan los juegos";
 "profile.settings.newsletter.happening" = "Eventos";
+"profile.settings.newsletter.invent" = "Invenciones";
 "profile.settings.newsletter.opt_in.message" = "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor checa tu bandeja de entrada y confirma la subscripción a %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "¡Sólo un último paso!";
 "profile.settings.newsletter.promo" = "Novedades y eventos de Kickstarter";
