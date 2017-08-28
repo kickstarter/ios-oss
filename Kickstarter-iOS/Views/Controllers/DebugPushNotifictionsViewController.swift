@@ -185,10 +185,9 @@ private let reminderPushData: [String:Any] = [
   "aps": [
     "alert": "Reminder! This Pile of Wood is ending soon.",
   ],
-  "activity": [
-    "category": "backing",
-    "id": 1,
-    "project_id": 820501933
+  "project": [
+    "photo": "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27",
+    "id": 820501933,
   ]
 ]
 

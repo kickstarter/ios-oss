@@ -295,10 +295,11 @@ AppDelegateViewModelOutputs {
     )
 
     let pushEnvelopeAndIsActive = notificationAndIsActive
-      .flatMap { (notification, isActive) -> SignalProducer<(PushEnvelope, Bool), NoError> in
-        guard let envelope = (decode(notification) as Decoded<PushEnvelope>).value else { return .empty }
-        return SignalProducer(value: (envelope, isActive))
-    }
+      .map { (notification, isActive) -> (PushEnvelope, Bool)? in
+        guard let envelope = (decode(notification) as Decoded<PushEnvelope>).value else { return nil }
+        return (envelope, isActive)
+      }
+      .skipNil()
 
     self.presentRemoteNotificationAlert = pushEnvelopeAndIsActive
       .filter(second)
