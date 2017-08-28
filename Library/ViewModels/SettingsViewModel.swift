@@ -6,6 +6,7 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsViewModelInputs {
+  func artsAndCultureNewsletterTapped(on: Bool)
   func backingsTapped(selected: Bool)
   func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
@@ -14,6 +15,7 @@ public protocol SettingsViewModelInputs {
   func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
+  func inventNewsletterTapped(on: Bool)
   func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
@@ -33,6 +35,7 @@ public protocol SettingsViewModelInputs {
 }
 
 public protocol SettingsViewModelOutputs {
+  var artsAndCultureNewsletterOn: Signal<Bool, NoError> { get }
   var backingsSelected: Signal<Bool, NoError> { get }
   var betaToolsHidden: Signal<Bool, NoError> { get }
   var commentsSelected: Signal<Bool, NoError> { get }
@@ -45,6 +48,7 @@ public protocol SettingsViewModelOutputs {
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
+  var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
@@ -84,15 +88,19 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .skipNil()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
+      self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
       self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
       self.happeningNewsletterTappedProperty.signal.map { (.happening, $0) },
+      self.inventNewsletterTappedProperty.signal.map { (.invent, $0) },
       self.promoNewsletterTappedProperty.signal.map { (.promo, $0) },
       self.weeklyNewsletterTappedProperty.signal.map { (.weekly, $0) }
     )
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
+      self.artsAndCultureNewsletterTappedProperty.signal.map { (.newsletter(.arts), $0) },
       self.gamesNewsletterTappedProperty.signal.map { (.newsletter(.games), $0) },
       self.happeningNewsletterTappedProperty.signal.map { (.newsletter(.happening), $0) },
+      self.inventNewsletterTappedProperty.signal.map { (.newsletter(.invent), $0) },
       self.promoNewsletterTappedProperty.signal.map { (.newsletter(.promo), $0) },
       self.weeklyNewsletterTappedProperty.signal.map { (.newsletter(.weekly), $0)},
 
@@ -175,6 +183,9 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { $0.newsletters.happening }.skipNil().skipRepeats()
     self.promoNewsletterOn = self.updateCurrentUser.map { $0.newsletters.promo }.skipNil().skipRepeats()
     self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
+    self.inventNewsletterOn = self.updateCurrentUser.map { $0.newsletters.invent }.skipNil().skipRepeats()
+    self.artsAndCultureNewsletterOn = self.updateCurrentUser
+      .map { $0.newsletters.arts}.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
@@ -256,6 +267,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   // swiftlint:enable function_body_length
   // swiftlint:enable cyclomatic_complexity
 
+  fileprivate let artsAndCultureNewsletterTappedProperty = MutableProperty(false)
+  public func artsAndCultureNewsletterTapped(on: Bool) {
+    self.artsAndCultureNewsletterTappedProperty.value = on
+  }
   fileprivate let backingsTappedProperty = MutableProperty(false)
   public func backingsTapped(selected: Bool) {
     self.backingsTappedProperty.value = selected
@@ -287,6 +302,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   fileprivate let happeningNewsletterTappedProperty = MutableProperty(false)
   public func happeningNewsletterTapped(on: Bool) {
     self.happeningNewsletterTappedProperty.value = on
+  }
+  fileprivate let inventNewsletterTappedProperty = MutableProperty(false)
+  public func inventNewsletterTapped(on: Bool) {
+    self.inventNewsletterTappedProperty.value = on
   }
   fileprivate let logoutCanceledProperty = MutableProperty()
   public func logoutCanceled() {
@@ -353,6 +372,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     self.weeklyNewsletterTappedProperty.value = on
   }
 
+  public let artsAndCultureNewsletterOn: Signal<Bool, NoError>
   public let backingsSelected: Signal<Bool, NoError>
   public let betaToolsHidden: Signal<Bool, NoError>
   public let commentsSelected: Signal<Bool, NoError>
@@ -365,6 +385,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
+  public let inventNewsletterOn: Signal<Bool, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
@@ -396,8 +417,10 @@ private enum UserAttribute {
     switch self {
     case let .newsletter(newsletter):
       switch newsletter {
+      case .arts:       return User.lens.newsletters.arts
       case .games:      return User.lens.newsletters.games
       case .happening:  return User.lens.newsletters.happening
+      case .invent:     return User.lens.newsletters.invent
       case .promo:      return User.lens.newsletters.promo
       case .weekly:     return User.lens.newsletters.weekly
       }

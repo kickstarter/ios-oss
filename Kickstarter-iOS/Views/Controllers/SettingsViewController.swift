@@ -9,6 +9,8 @@ internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
+  @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
+  @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var backingsButton: UIButton!
   @IBOutlet fileprivate weak var betaDebugPushNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
@@ -34,6 +36,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
+  @IBOutlet fileprivate weak var inventLabel: UILabel!
+  @IBOutlet fileprivate weak var inventNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
   @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
   @IBOutlet fileprivate weak var logoutButton: UIButton!
@@ -135,6 +139,10 @@ internal final class SettingsViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
+    _ = self.artsAndCultureNewsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
+
     _ = self.betaDebugPushNotificationsButton
       |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
@@ -213,6 +221,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.howKsrWorksLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_how_it_works() }
+
+    _ = self.inventLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_invent() }
 
     _ = self.ksrLovesGamesLabel
       |> settingsSectionLabelStyle
@@ -376,6 +388,7 @@ internal final class SettingsViewController: UIViewController {
         self?.goToHelpType(helpType)
     }
 
+    self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
@@ -384,6 +397,7 @@ internal final class SettingsViewController: UIViewController {
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
+    self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
     self.manageProjectNotificationsButton.rac.accessibilityHint =
       self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
@@ -494,6 +508,10 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.logoutTapped()
   }
 
+  @IBAction fileprivate func artsAndCultureNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.artsAndCultureNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
   @IBAction fileprivate func backingsTapped(_ button: UIButton) {
     self.viewModel.inputs.backingsTapped(selected: !button.isSelected)
   }
@@ -532,6 +550,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func happeningNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
+  @IBAction fileprivate func inventNewsletterTapped(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.inventNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
   @objc fileprivate func howKickstarterWorksTapped() {

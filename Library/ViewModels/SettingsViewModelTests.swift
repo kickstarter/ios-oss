@@ -10,6 +10,7 @@ import Prelude
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel()
 
+  let artsAndCultureNewsletterOn = TestObserver<Bool, NoError>()
   let backingsSelected = TestObserver<Bool, NoError>()
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
@@ -22,6 +23,7 @@ internal final class SettingsViewModelTests: TestCase {
   let goToFindFriends = TestObserver<Void, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
+  let inventNewsletterOn = TestObserver<Bool, NoError>()
   let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
   let mobileBackingsSelected = TestObserver<Bool, NoError>()
   let mobileCommentsSelected = TestObserver<Bool, NoError>()
@@ -42,6 +44,7 @@ internal final class SettingsViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.artsAndCultureNewsletterOn.observe(self.artsAndCultureNewsletterOn.observer)
     self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
@@ -54,6 +57,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
+    self.vm.outputs.inventNewsletterOn.observe(self.inventNewsletterOn.observer)
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.mobileBackingsSelected.observe(self.mobileBackingsSelected.observer)
     self.vm.outputs.mobileCommentsSelected.observe(self.mobileCommentsSelected.observer)
@@ -203,19 +207,27 @@ internal final class SettingsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
 
+    self.artsAndCultureNewsletterOn.assertValues([false])
     self.gamesNewsletterOn.assertValues([false])
     self.happeningNewsletterOn.assertValues([false])
+    self.inventNewsletterOn.assertValues([false])
     self.promoNewsletterOn.assertValues([false])
     self.weeklyNewsletterOn.assertValues([false])
     XCTAssertEqual(["Settings View", "Viewed Settings"], self.trackingClient.events)
 
+    self.vm.inputs.artsAndCultureNewsletterTapped(on: true)
+    self.artsAndCultureNewsletterOn.assertValues([false, true], "Arts newwsletter toggled on.")
+
     self.vm.inputs.gamesNewsletterTapped(on: true)
     self.gamesNewsletterOn.assertValues([false, true], "Games newsletter toggled on.")
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter"],
-                   self.trackingClient.events)
+    XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
+                "Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.happeningNewsletterTapped(on: true)
     self.happeningNewsletterOn.assertValues([false, true], "Happening newsletter toggled on.")
+
+    self.vm.inputs.inventNewsletterTapped(on: true)
+    self.inventNewsletterOn.assertValues([false, true], "Invent newsletter toggled on.")
 
     self.vm.inputs.promoNewsletterTapped(on: true)
     self.promoNewsletterOn.assertValues([false, true], "Promo newsletter toggled on.")
@@ -223,11 +235,17 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.inputs.weeklyNewsletterTapped(on: true)
     self.weeklyNewsletterOn.assertValues([false, true], "Weekly newsletter toggled on.")
 
+    self.vm.inputs.artsAndCultureNewsletterTapped(on: false)
+    self.artsAndCultureNewsletterOn.assertValues([false, true, false], "Arts newsletter toggled off.")
+
     self.vm.inputs.gamesNewsletterTapped(on: false)
     self.gamesNewsletterOn.assertValues([false, true, false], "Games newsletter toggled off.")
 
     self.vm.inputs.happeningNewsletterTapped(on: false)
     self.happeningNewsletterOn.assertValues([false, true, false], "Happening newsletter toggled off.")
+
+    self.vm.inputs.inventNewsletterTapped(on: false)
+    self.inventNewsletterOn.assertValues([false, true, false])
 
     self.vm.inputs.promoNewsletterTapped(on: false)
     self.promoNewsletterOn.assertValues([false, true, false], "Promo newsletter toggled off.")
@@ -236,8 +254,9 @@ internal final class SettingsViewModelTests: TestCase {
     self.weeklyNewsletterOn.assertValues([false, true, false], "Weekly newsletter toggled off.")
     XCTAssertEqual(["Settings View", "Viewed Settings", "Subscribed To Newsletter",
       "Subscribed To Newsletter", "Subscribed To Newsletter", "Subscribed To Newsletter",
+      "Subscribed To Newsletter", "Subscribed To Newsletter", "Unsubscribed From Newsletter",
       "Unsubscribed From Newsletter", "Unsubscribed From Newsletter", "Unsubscribed From Newsletter",
-      "Unsubscribed From Newsletter"], self.trackingClient.events)
+      "Unsubscribed From Newsletter", "Unsubscribed From Newsletter"], self.trackingClient.events)
   }
 
   func testOptInPromptNotShown() {
