@@ -18,18 +18,21 @@ public struct Service: ServiceType {
   public let serverConfig: ServerConfigType
   public let oauthToken: OauthTokenAuthType?
   public let language: String
+  public let currency: String
   public let buildVersion: String
 
   public init(appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
               serverConfig: ServerConfigType = ServerConfig.production,
               oauthToken: OauthTokenAuthType? = nil,
               language: String = "en",
+              currency: String = "USD",
               buildVersion: String = Bundle.main._buildVersion) {
 
     self.appId = appId
     self.serverConfig = serverConfig
     self.oauthToken = oauthToken
     self.language = language
+    self.currency = currency
     self.buildVersion = buildVersion
   }
 

@@ -9,6 +9,7 @@ internal struct MockService: ServiceType {
   internal let serverConfig: ServerConfigType
   internal let oauthToken: OauthTokenAuthType?
   internal let language: String
+  internal let currency: String
   internal let buildVersion: String
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
@@ -129,6 +130,7 @@ internal struct MockService: ServiceType {
                 serverConfig: ServerConfigType,
                 oauthToken: OauthTokenAuthType?,
                 language: String,
+                currency: String,
                 buildVersion: String = "1") {
 
     self.init(
@@ -136,6 +138,7 @@ internal struct MockService: ServiceType {
       serverConfig: serverConfig,
       oauthToken: oauthToken,
       language: language,
+      currency: currency,
       buildVersion: buildVersion,
       fetchActivitiesResponse: nil
     )
@@ -145,6 +148,7 @@ internal struct MockService: ServiceType {
                 serverConfig: ServerConfigType = ServerConfig.production,
                 oauthToken: OauthTokenAuthType? = nil,
                 language: String = "en",
+                currency: String = "USD",
                 buildVersion: String = "1",
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -222,6 +226,7 @@ internal struct MockService: ServiceType {
     self.serverConfig = serverConfig
     self.oauthToken = oauthToken
     self.language = language
+    self.currency = currency
     self.buildVersion = buildVersion
 
     self.changePaymentMethodResult = changePaymentMethodResult
