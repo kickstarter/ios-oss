@@ -47,6 +47,9 @@ public protocol DashboardViewModelInputs {
   /// Call when to show or hide the projects drawer.
   func showHideProjectsDrawer()
 
+  /// Call when the view loads.
+  func viewDidLoad()
+
   /// Call when the view will appear.
   func viewWillAppear(animated: Bool)
 
@@ -85,6 +88,9 @@ public protocol DashboardViewModelOutputs {
 
   /// Emits the currently selected project to display in the context and action cells.
   var project: Signal<Project, NoError> { get }
+
+  /// Emits a boolean that determines if projects are currently loading.
+  var loaderIsAnimating: Signal<Bool, NoError> { get }
 
   /// Emits the cumulative, project, and referreral distribution data to display in the referrers cell.
   var referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,
@@ -147,6 +153,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     }
 
     self.project = projectsAndSelected.map(second)
+
+    self.loaderIsAnimating = Signal.merge(
+    //  self.viewDidLoadProperty.signal.map(const(true)),
+      projects.map(const(true))
+    ).skipRepeats()
 
     /* Interim MutableProperty used to inject nil on viewWillDisappear
      * in order to ensure that same MessageThread is not navigated to again
@@ -334,6 +345,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
+  fileprivate let viewDidLoadProperty = MutableProperty()
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
   fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
@@ -357,6 +372,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public let goToMessageThread: Signal<(Project, MessageThread), NoError>
   public let goToProject: Signal<(Project, RefTag), NoError>
   public let project: Signal<Project, NoError>
+  public let loaderIsAnimating: Signal<Bool, NoError>
   public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
   public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project,
     stats: [ProjectStatsEnvelope.ReferrerStats]), NoError>
