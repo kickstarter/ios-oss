@@ -258,7 +258,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([false],
                                               "Mexican user viewing non-Mexican project sees conversion.")
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
     }
   }
 
@@ -294,7 +294,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([false],
                                               "Mexican user viewing non-Mexican project sees conversion.")
-      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
     }
   }
 
