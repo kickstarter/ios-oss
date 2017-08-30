@@ -208,7 +208,7 @@ extension Project.Stats: Argo.Decodable {
     let tmp1 = create
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
-      <*> json <|? "default_currency"
+      <*> json <|? "current_currency"
       <*> json <|? "fx_rate"
     return tmp1
       <*> json <| "goal"
