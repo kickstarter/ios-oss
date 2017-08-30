@@ -253,7 +253,9 @@ final class RewardCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = .template |> Reward.lens.minimum .~ 1
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "MX") {
+    withEnvironment(apiService: MockService(currency: "MXN"),
+                    config: .template |> Config.lens.countryCode .~ "MX")
+    {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false],
@@ -289,7 +291,9 @@ final class RewardCellViewModelTests: TestCase {
       |> Backing.lens.amount .~ 2
       |> Backing.lens.reward .~ reward
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "MX") {
+    withEnvironment(apiService: MockService(currency: "MXN"),
+                    config: .template |> Config.lens.countryCode .~ "MX")
+    {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
       self.conversionLabelHidden.assertValues([false],
