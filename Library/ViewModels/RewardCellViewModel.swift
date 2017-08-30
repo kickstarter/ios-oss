@@ -57,20 +57,9 @@ RewardCellViewModelOutputs {
     }
     let projectAndReward = Signal.zip(project, reward)
 
-    self.conversionLabelHidden = project.map { p in
-      p.stats.currentCurrency
-        .map { !needsConversion(projectCountry: p.country, currentCurrency: $0) }
-        ?? !needsConversion(projectCountry: p.country,
-                            userCountry: AppEnvironment.current.config?.countryCode)
-    }
-
+    self.conversionLabelHidden = project.map(needsConversion(project:) >>> negate)
     self.conversionLabelText = projectAndRewardOrBacking
-      .filter { p, _ in
-        p.stats.currentCurrency
-          .map { needsConversion(projectCountry: p.country, currentCurrency: $0) }
-          ?? needsConversion(projectCountry: p.country,
-                             userCountry: AppEnvironment.current.config?.countryCode)
-      }
+      .filter(first >>> needsConversion(project:))
       .map { project, rewardOrBacking in
         let (country, rate) = zip(
           project.stats.currentCurrency.flatMap(Project.Country.init(currencyCode:)),
@@ -312,6 +301,17 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
   } else {
     return .ksr_text_dark_grey_900
   }
+}
+
+private func needsConversion(project: Project) -> Bool {
+  guard
+    let currentCurrency = project.stats.currentCurrency,
+    currentCurrency == AppEnvironment.current.apiService.currency
+    else {
+      return !needsConversion(projectCountry: project.country,
+                              userCountry: AppEnvironment.current.config?.countryCode)
+  }
+  return !needsConversion(projectCountry: project.country, currentCurrency: currentCurrency)
 }
 
 private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
