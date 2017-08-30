@@ -306,12 +306,12 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
 private func needsConversion(project: Project) -> Bool {
   guard
     let currentCurrency = project.stats.currentCurrency,
-    currentCurrency == AppEnvironment.current.apiService.currency
+    currentCurrency != AppEnvironment.current.apiService.currency
     else {
-      return !needsConversion(projectCountry: project.country,
-                              userCountry: AppEnvironment.current.config?.countryCode)
+      return needsConversion(projectCountry: project.country,
+                             userCountry: AppEnvironment.current.config?.countryCode)
   }
-  return !needsConversion(projectCountry: project.country, currentCurrency: currentCurrency)
+  return needsConversion(projectCountry: project.country, currentCurrency: currentCurrency)
 }
 
 private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
