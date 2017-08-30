@@ -140,7 +140,6 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
             pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
         )
     }
-    // swiftlint:enable function_body_length
   }
 
   private let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)

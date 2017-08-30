@@ -42,7 +42,6 @@ public protocol ActivityFriendBackingViewModelType {
 public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewModelType,
 ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()

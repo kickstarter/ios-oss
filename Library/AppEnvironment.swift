@@ -293,7 +293,6 @@ public struct AppEnvironment {
       koala: current.koala |> Koala.lens.loggedInUser .~ currentUser
     )
   }
-  // swiftlint:enable function_body_length
 
   // Saves some key data for the current environment
   internal static func saveEnvironment(environment env: Environment = AppEnvironment.current,

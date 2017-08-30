@@ -60,7 +60,6 @@ internal final class BackingViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
-  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
     self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
@@ -110,7 +109,6 @@ internal final class BackingViewController: UIViewController {
   }
   }
 
-  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

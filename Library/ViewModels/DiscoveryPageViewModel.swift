@@ -237,7 +237,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func configureWith(sort: DiscoveryParams.Sort) {

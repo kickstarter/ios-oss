@@ -220,7 +220,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { !$0.isEmpty }
       .observeValues { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let cancelButtonPressedProperty = MutableProperty()
   public func cancelButtonPressed() {

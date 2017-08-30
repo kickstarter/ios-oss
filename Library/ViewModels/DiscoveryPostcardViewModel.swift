@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -161,7 +160,6 @@ public protocol DiscoveryPostcardViewModelType {
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
 
-  // swiftlint:disable function_body_length
   public init() {
     let configuredProject = self.projectProperty.signal.skipNil()
       .map(cached(project:))
@@ -345,7 +343,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.cellAccessibilityValue = Signal.zip(configuredProject, self.projectStateTitleLabelText)
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {

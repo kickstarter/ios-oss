@@ -159,7 +159,6 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .takeWhen(self.unfollowButtonTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackFriendUnfollow(source: $0) }
   }
-  // swiftlint:enable function_body_length
 
   public var inputs: FindFriendsFriendFollowCellViewModelInputs { return self }
   public var outputs: FindFriendsFriendFollowCellViewModelOutputs { return self }

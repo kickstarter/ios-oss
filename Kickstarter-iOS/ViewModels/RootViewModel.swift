@@ -181,7 +181,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map(first)
       .map(tabData(forUser:))
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
   internal func currentUserUpdated() {
@@ -254,31 +253,31 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
                          isMember: isMember)
 }
 
-extension TabBarItemsData: Equatable {}
-func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
-  return lhs.items == rhs.items &&
-         lhs.isLoggedIn == rhs.isLoggedIn &&
-         lhs.isMember == rhs.isMember
-}
-
-// swiftlint:disable cyclomatic_complexity
-extension TabBarItem: Equatable {}
-func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
-  switch (lhs, rhs) {
-  case let (.activity(lhs), .activity(rhs)):
-    return lhs == rhs
-  case let (.dashboard(lhs), .dashboard(rhs)):
-    return lhs == rhs
-  case let (.home(lhs), .home(rhs)):
-    return lhs == rhs
-  case let (.profile(lhs), .profile(rhs)):
-    return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
-  case let (.search(lhs), .search(rhs)):
-    return lhs == rhs
-  default: return false
+extension TabBarItemsData: Equatable {
+  static func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
+    return lhs.items == rhs.items
+      && lhs.isLoggedIn == rhs.isLoggedIn
+      && lhs.isMember == rhs.isMember
   }
 }
-// swiftlint:enable cyclomatic_complexity
+
+extension TabBarItem: Equatable {
+  static func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
+    switch (lhs, rhs) {
+    case let (.activity(lhs), .activity(rhs)):
+      return lhs == rhs
+    case let (.dashboard(lhs), .dashboard(rhs)):
+      return lhs == rhs
+    case let (.home(lhs), .home(rhs)):
+      return lhs == rhs
+    case let (.profile(lhs), .profile(rhs)):
+      return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
+    case let (.search(lhs), .search(rhs)):
+      return lhs == rhs
+    default: return false
+    }
+  }
+}
 
 private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewController]) -> VC? {
 

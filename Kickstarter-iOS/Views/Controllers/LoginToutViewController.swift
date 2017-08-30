@@ -180,7 +180,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
   }
-  // swiftlint:enable function_body_length
 
   @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
                                             didFinishWith result: MFMailComposeResult,

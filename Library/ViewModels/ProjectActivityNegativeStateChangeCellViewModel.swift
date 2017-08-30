@@ -63,4 +63,3 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
   public var inputs: ProjectActivityNegativeStateChangeCellViewModelInputs { return self }
   public var outputs: ProjectActivityNegativeStateChangeCellViewModelOutputs { return self }
 }
-// swiftlint:enable type_name

@@ -157,7 +157,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
       .observeValues { AppEnvironment.current.koala.loadedMoreFriends(source: $0, pageCount: $1) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
   public func configureWith(source: FriendsSource) {

@@ -163,7 +163,6 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.goToUpdate(project: project, update: update)
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func tableView(_ tableView: UITableView,
                                    willDisplay cell: UITableViewCell,

@@ -182,7 +182,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
   }
-  // swiftlint:enable function_body_length
 
     internal override func bindViewModel() {
     super.bindViewModel()
@@ -259,7 +258,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func configureVideoPlayerController(forProject project: Project) {
     let vc = VideoViewController.configuredWith(project: project)

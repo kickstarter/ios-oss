@@ -30,7 +30,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
   }
 
-  // swiftlint:disable function_body_length
   func testProjects() {
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
     let projectsWithNewProject = (1...4).map { .template |> Project.lens.id .~ $0 }
@@ -96,7 +95,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       }
     }
   }
-  // swiftlint:enable function_body_length
 
   func testNoProjects() {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ []

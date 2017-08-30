@@ -74,7 +74,6 @@ internal final class BackerDashboardViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear(animated)
   }
 
-  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

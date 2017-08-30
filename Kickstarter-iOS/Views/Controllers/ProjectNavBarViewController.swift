@@ -114,7 +114,6 @@ public final class ProjectNavBarViewController: UIViewController {
       |> saveButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
-  // swiftlint:enable function_body_length
 
     public override func bindViewModel() {
     super.bindViewModel()
@@ -186,7 +185,6 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func showProjectStarredPrompt() {
     let alert = UIAlertController(

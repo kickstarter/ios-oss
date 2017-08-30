@@ -73,7 +73,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 DiscoveryViewModelOutputs {
   fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
-  // swiftlint:disable:next function_body_length
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
 

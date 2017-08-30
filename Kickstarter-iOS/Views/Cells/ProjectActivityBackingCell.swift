@@ -128,7 +128,6 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
           ?? .init()
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func bindStyles() {
     super.bindStyles()

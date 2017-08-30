@@ -63,7 +63,6 @@ final class FindFriendsEnvelopeTests: XCTestCase {
     XCTAssertEqual(false, users[0].isFriend)
     XCTAssertEqual(true, users[1].isFriend)
   }
-  // swiftlint:enable function_body_length
 
   func testJsonDecoding_MissingData() {
     let json: [String:Any] = [

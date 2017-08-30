@@ -1,5 +1,4 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
 @testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi

@@ -280,7 +280,6 @@ ActivitiesViewModelOutputs {
       .observeValues { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
   }
 
-  // swiftlint:enable function_body_length
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty()
   public func findFriendsFacebookConnectCellDidDismissHeader() {
     dismissFacebookConnectSectionProperty.value = ()

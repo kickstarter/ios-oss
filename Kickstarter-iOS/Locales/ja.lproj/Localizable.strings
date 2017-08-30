@@ -70,7 +70,7 @@
 "Earth" = "全世界";
 "Either_the_pledge_or_the_project_was_canceled" = "プレッジもプロジェクトも期限前にキャンセル済";
 "Email_notifications" = "メール通知設定";
-"Ending_soon" = "残り時間";
+"Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
@@ -81,7 +81,7 @@
 "Filter_by_category_name" = "%{category_name} に絞る";
 "Filter_by_projects_backed_by_friends" = "友達がバックしてるプロジェクトに絞る";
 "Filter_by_projects_recommended_for_you" = "オススメの人気プロジェクトに絞る";
-"Filter_by_projects_we_love" = "イケてるプロジェクトに絞る";
+"Filter_by_projects_we_love" = "素敵なプロジェクトに絞る";
 "Filter_by_saved_projects" = "保存済みプロジェクトで絞る";
 "Filter_by_subcategory_name_in_category_name" = "%{category_name} の%{subcategory_name} で絞る";
 "Filter_name_project_count_live_projects.few" = "%{filter_name}：%{project_count} の進行中プロジェクト";
@@ -205,7 +205,7 @@
 "Project_Suspended" = "中止プロジェクト";
 "Project_cancelled" = "プロジェクトが取り消されました。";
 "Project_saved" = "プロジェクトを保存しました。";
-"Projects_We_Love" = "イケてるプロジェクト";
+"Projects_We_Love" = "素敵なプロジェクト";
 "Public_comment" = "公開コメント";
 "Pursue_daring_ideas" = "大胆な\nアイディアを。";
 "Push_notifications" = "プッシュ通知設定";
@@ -493,7 +493,7 @@
 "dashboard.graphs.funding.one_hundred_percent" = "100%";
 "dashboard.graphs.funding.pledged" = "プレッジ";
 "dashboard.graphs.funding.title" = "動向";
-"dashboard.graphs.funding.title_funding_progress" = "資金用達の進捗";
+"dashboard.graphs.funding.title_funding_progress" = "ファンディングの進捗";
 "dashboard.graphs.funding.today" = "今日";
 "dashboard.graphs.funding.total" = "合計";
 "dashboard.graphs.funding.yesterday" = "昨日";
@@ -510,7 +510,7 @@
 "dashboard.graphs.referrers.source" = "ソース";
 "dashboard.graphs.referrers.title" = "リファラー";
 "dashboard.graphs.referrers.title_referrers" = "リファラー";
-"dashboard.graphs.referrers.view_more_referrer_stats" = "お気に入りをもっとみる";
+"dashboard.graphs.referrers.view_more_referrer_stats" = "リファラーログをもっとみる";
 "dashboard.graphs.rewards.backers" = "バッカー";
 "dashboard.graphs.rewards.no_reward" = "リワード無";
 "dashboard.graphs.rewards.percent" = "パーセント";
@@ -806,7 +806,7 @@
 "discovery.sort_types.end_date" = "終了日";
 "discovery.sort_types.magic" = "マジック";
 "discovery.sort_types.most_backed" = "バッカー最多数";
-"discovery.sort_types.most_funded" = "達成額";
+"discovery.sort_types.most_funded" = "達成額順";
 "discovery.sort_types.newest" = "最新";
 "discovery.sort_types.popularity" = "人気";
 "discovery.sorted_by" = "並び順";
@@ -1012,16 +1012,16 @@
 "profile.settings.newsletter.opt_in.title" = "あと少し！";
 "profile.settings.newsletter.promo" = "Kickstarterのニュースとイベント";
 "profile.settings.newsletter.title" = "ニュースレター";
-"profile.settings.newsletter.weekly" = "イケてるプロジェクト";
-"profile.settings.rating.message" = "Kickstarterアプリをお使いいただき\nありがとうございます。ぜひ評価を\nお願いいたします！";
+"profile.settings.newsletter.weekly" = "素敵なプロジェクト";
+"profile.settings.rating.message" = "Kickstarterアプリの使い心地はいかがですか？\nぜひ評価をお聞かせください！";
 "profile.settings.rating.option.message_if_you_enjoy_using_Kickstarter" = "Play storeでぜひ評価してください！";
-"profile.settings.rating.option.no_thanks" = "結構です";
-"profile.settings.rating.option.rate_now" = "ぜひ評価してください";
-"profile.settings.rating.option.remind_later" = "リマインドしてください";
+"profile.settings.rating.option.no_thanks" = "評価しない";
+"profile.settings.rating.option.rate_now" = "評価する";
+"profile.settings.rating.option.remind_later" = "あとでする";
 "profile.settings.rating.option.title_show_us_some_love" = "愛を見せて";
 "profile.settings.rating.rate_us" = "App Storeで評価してください！";
 "profile.settings.rating.rate_us_play_store" = "Play Storeで評価してください！";
-"profile.settings.rating.title" = "質問しましょう！";
+"profile.settings.rating.title" = "ありがとうございます！";
 "profile.settings.social.find_friends" = "Facebook の友達をさがす";
 "profile.settings.social.followers" = "Newフォロワー";
 "profile.settings.social.friend_backs" = "友人がバックしています";
@@ -1060,7 +1060,7 @@
 "project.checkout.share.buttons.more_share_options" = "他のシェアを選択";
 "project.checkout.share.buttons.share" = "シェア";
 "project.checkout.share.buttons.tweet" = "ツイート";
-"project.checkout.share.exclamation" = "やったー！";
+"project.checkout.share.exclamation" = "ありがとうございます。";
 "project.checkout.share.link.OK" = "OK";
 "project.checkout.share.link.the_project_url_has_been_copied_to_your_clipboard" = "プロジェクトのURLをコピーしました：\n\n%{project_url}";
 "project.checkout.share.link.the_update_url_has_been_copied_to_your_clipboard" = "更新したURLをコピーしました：\n\n%{update_url}";

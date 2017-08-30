@@ -68,7 +68,6 @@ public protocol BackerDashboardProjectsViewModelType {
 public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType,
   BackerDashboardProjectsViewModelInputs, BackerDashboardProjectsViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)

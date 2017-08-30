@@ -159,7 +159,6 @@ internal final class UpdateDraftViewController: UIViewController {
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateBottomConstraint($0) }
   }
-  // swiftlint:enable function_body_length
 
   internal override func viewDidLoad() {
     super.viewDidLoad()

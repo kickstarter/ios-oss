@@ -92,7 +92,6 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
   fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
-    // swiftlint:disable cyclomatic_complexity
   public init() {
     let configData = self.configDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -325,8 +324,6 @@ public final class CheckoutViewModel: CheckoutViewModelType {
         )
     }
   }
-  // swiftlint:enable cyclomatic_complexity
-  // swiftlint:enable function_body_length
 
   fileprivate let cancelButtonTappedProperty = MutableProperty()
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }

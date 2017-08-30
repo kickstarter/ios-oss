@@ -108,7 +108,6 @@ public enum RefTag {
     }
   }
   // swiftlint:enable cyclomatic_complexity
-  // swiftlint:enable function_body_length
 
   /// A string representation of the ref tag that can be used in analytics tracking, cookies, etc...
   public var stringTag: String {

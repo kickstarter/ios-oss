@@ -129,7 +129,6 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
         AppEnvironment.current.koala.trackPublishedUpdate(forProject: $0, isPublic: $1.isPublic)
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)

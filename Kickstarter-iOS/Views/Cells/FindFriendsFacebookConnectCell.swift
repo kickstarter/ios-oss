@@ -71,7 +71,6 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
         self?.viewModel.inputs.userUpdated()
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func bindStyles() {
     super.bindStyles()

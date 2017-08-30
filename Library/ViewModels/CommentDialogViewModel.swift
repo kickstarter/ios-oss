@@ -215,7 +215,6 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
         )
     }
   }
-  // swiftlint:enable function_body_length
 }
 
 private func postComment(_ body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)

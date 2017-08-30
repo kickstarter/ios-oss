@@ -6,8 +6,6 @@
 
 // swiftlint:disable valid_docs
 // swiftlint:disable line_length
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 public enum Strings {
   /**
    "About %{reward_amount}"
@@ -1175,7 +1173,7 @@ backers"
    "Ending Soon"
 
    - **es**: "Finaliza pronto"
-   - **ja**: "残り時間"
+   - **ja**: "終了直前"
    - **de**: "Endet bald"
    - **fr**: "Campagnes bientôt terminées"
    - **en**: "Ending Soon"
@@ -1362,7 +1360,7 @@ backers"
    "Filter by projects we love"
 
    - **es**: "Filtro: Nuestros favoritos"
-   - **ja**: "イケてるプロジェクトに絞る"
+   - **ja**: "素敵なプロジェクトに絞る"
    - **de**: "Filter: Team-Favoriten"
    - **fr**: "Filtrer : Coups de cœur"
    - **en**: "Filter by projects we love"
@@ -3339,7 +3337,7 @@ from friends yet."
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "イケてるプロジェクト"
+   - **ja**: "素敵なプロジェクト"
    - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -7838,7 +7836,7 @@ Please try again later."
    "Funding Progress"
 
    - **es**: "Progreso del financiamiento"
-   - **ja**: "資金用達の進捗"
+   - **ja**: "ファンディングの進捗"
    - **de**: "Finanzierungsfortschritt"
    - **fr**: "Évolution du financement"
    - **en**: "Funding Progress"
@@ -8127,7 +8125,7 @@ Please try again later."
    "View more referrer stats"
 
    - **es**: "Mostrar más"
-   - **ja**: "お気に入りをもっとみる"
+   - **ja**: "リファラーログをもっとみる"
    - **de**: "Mehr ansehen"
    - **fr**: "Plus de statistiques sur les référents"
    - **en**: "View more referrer stats"
@@ -11103,7 +11101,7 @@ Please try again later."
    "Most Funded"
 
    - **es**: "Más financiados"
-   - **ja**: "達成額"
+   - **ja**: "達成額順"
    - **de**: "Meist finanziert"
    - **fr**: "Financement"
    - **en**: "Most Funded"
@@ -14179,7 +14177,7 @@ Let's change that!"
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "イケてるプロジェクト"
+   - **ja**: "素敵なプロジェクト"
    - **de**: "Unsere Lieblingsprojekte"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -14200,9 +14198,8 @@ We'd appreciate it!"
    - **es**: "Gracias por usar la aplicación de Kickstarter.
 Si tienes un momento, ¿podrías calificar tu experiencia?
 ¡Te lo agradeceríamos!"
-   - **ja**: "Kickstarterアプリをお使いいただき
-ありがとうございます。ぜひ評価を
-お願いいたします！"
+   - **ja**: "Kickstarterアプリの使い心地はいかがですか？
+ぜひ評価をお聞かせください！"
    - **de**: "Danke für die Nutzung der Kickstarter App.
 Falls du einen Moment Zeit hast, könntest du deine Erfahrung bewerten?
 Wir würden uns sehr darüber freuen!"
@@ -14248,7 +14245,7 @@ Thank you for your support!"
    "No, Thanks"
 
    - **es**: "No, gracias"
-   - **ja**: "結構です"
+   - **ja**: "評価しない"
    - **de**: "Nein, Danke"
    - **fr**: "Non, merci"
    - **en**: "No, Thanks"
@@ -14265,7 +14262,7 @@ Thank you for your support!"
    "Rate It Now"
 
    - **es**: "Califícala ahora"
-   - **ja**: "ぜひ評価してください"
+   - **ja**: "評価する"
    - **de**: "Jetzt bewerten"
    - **fr**: "Évaluez l'application"
    - **en**: "Rate It Now"
@@ -14282,7 +14279,7 @@ Thank you for your support!"
    "Remind Me Later"
 
    - **es**: "Recordarme más tarde"
-   - **ja**: "リマインドしてください"
+   - **ja**: "あとでする"
    - **de**: "Später"
    - **fr**: "Rappelez-moi plus tard"
    - **en**: "Remind Me Later"
@@ -14350,7 +14347,7 @@ Thank you for your support!"
    "We’re all ears!"
 
    - **es**: "¡Somos todo oídos!"
-   - **ja**: "質問しましょう！"
+   - **ja**: "ありがとうございます！"
    - **de**: "Wir sind ganz Ohr!"
    - **fr**: "Nous sommes tout ouïe !"
    - **en**: "We’re all ears!"
@@ -15013,7 +15010,7 @@ Thank you for your support!"
    "Woo-hoo!"
 
    - **es**: "Yu-Juu!"
-   - **ja**: "やったー！"
+   - **ja**: "ありがとうございます。"
    - **de**: "Super!"
    - **fr**: "Félicitations !"
    - **en**: "Woo-hoo!"

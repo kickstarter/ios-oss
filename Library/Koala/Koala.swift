@@ -2100,7 +2100,6 @@ extension Koala {
     )
   }
 }
-// swiftlint:enable type_name
 
 extension Reward.Shipping.Preference {
   fileprivate var trackingString: String {

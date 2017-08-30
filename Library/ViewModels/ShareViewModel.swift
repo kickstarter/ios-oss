@@ -154,7 +154,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         )
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let shareContextProperty = MutableProperty<(ShareContext, UIView?)?>(nil)
   public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {

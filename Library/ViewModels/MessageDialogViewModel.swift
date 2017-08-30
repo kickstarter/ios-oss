@@ -133,7 +133,6 @@ MessageDialogViewModelOutputs {
       .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
       .observeValues { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let bodyTextChangedProperty = MutableProperty<String?>(nil)
   public func bodyTextChanged(_ body: String) {

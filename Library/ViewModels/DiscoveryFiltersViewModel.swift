@@ -161,7 +161,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     self.tappedExpandableRowProperty.signal.skipNil()
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModalExpandedFilter(params: $0.params) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
   public func configureWith(selectedRow: SelectableRow) {

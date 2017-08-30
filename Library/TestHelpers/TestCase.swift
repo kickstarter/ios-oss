@@ -1,6 +1,7 @@
 // swiftlint:disable force_unwrapping
 import AVFoundation
 import FBSnapshotTestCase
+import Prelude
 import ReactiveSwift
 import Result
 import XCTest
@@ -47,7 +48,7 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
-      isVoiceOverRunning: { false },
+      isVoiceOverRunning: const(false),
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),

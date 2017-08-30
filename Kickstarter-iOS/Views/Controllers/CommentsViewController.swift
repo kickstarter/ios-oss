@@ -100,7 +100,6 @@ internal final class CommentsViewController: UITableViewController {
         self?.presentCommentDialog(project: project, update: update)
     }
   }
-  // swiftlint:enable function_body_length
 
   override func tableView(_ tableView: UITableView,
                           willDisplay cell: UITableViewCell,

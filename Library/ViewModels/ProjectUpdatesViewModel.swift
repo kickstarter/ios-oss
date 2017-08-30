@@ -38,7 +38,6 @@ public protocol ProjectUpdatesViewModelType {
 public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, ProjectUpdatesViewModelInputs,
 ProjectUpdatesViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
 

@@ -115,7 +115,6 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       .takeWhen(self.seeAllTiersButtonTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
   }
-  // swiftlint:enable function_body_length
 
   public var inputs: DashboardRewardsCellViewModelInputs { return self }
   public var outputs: DashboardRewardsCellViewModelOutputs { return self }

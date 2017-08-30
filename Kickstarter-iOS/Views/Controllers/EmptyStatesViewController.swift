@@ -66,7 +66,6 @@ internal final class EmptyStatesViewController: UIViewController {
         self?.delegate?.emptyStatesViewControllerGoToFriends()
     }
   }
-  // swiftlint:enable function_body_length
 
   override func bindStyles() {
     super.bindStyles()

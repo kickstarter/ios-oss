@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Foundation
 import ReactiveSwift
 import Result
