@@ -253,14 +253,15 @@ final class RewardCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = .template |> Reward.lens.minimum .~ 1
 
-    withEnvironment(apiService: MockService(currency: "MXN"),
-                    config: .template |> Config.lens.countryCode .~ "MX")
-    {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    withEnvironment(
+      apiService: MockService(currency: "MXN"),
+      config: .template |> Config.lens.countryCode .~ "MX") {
 
-      self.conversionLabelHidden.assertValues([false],
-                                              "Mexican user viewing non-Mexican project sees conversion.")
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+        self.conversionLabelHidden.assertValues([false],
+                                                "Mexican user viewing non-Mexican project sees conversion.")
+        self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
     }
   }
 
@@ -291,14 +292,15 @@ final class RewardCellViewModelTests: TestCase {
       |> Backing.lens.amount .~ 2
       |> Backing.lens.reward .~ reward
 
-    withEnvironment(apiService: MockService(currency: "MXN"),
-                    config: .template |> Config.lens.countryCode .~ "MX")
-    {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+    withEnvironment(
+      apiService: MockService(currency: "MXN"),
+      config: .template |> Config.lens.countryCode .~ "MX") {
 
-      self.conversionLabelHidden.assertValues([false],
-                                              "Mexican user viewing non-Mexican project sees conversion.")
-      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+        self.conversionLabelHidden.assertValues([false],
+                                                "Mexican user viewing non-Mexican project sees conversion.")
+        self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
     }
   }
 
