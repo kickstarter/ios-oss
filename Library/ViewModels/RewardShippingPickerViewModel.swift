@@ -143,6 +143,6 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 private func shippingRuleTitles(forProject project: Project, shippingRules: [ShippingRule]) -> [String] {
   return shippingRules
     .map {
-      "\($0.location.displayableName) +\(Format.currency(Int($0.cost), country: project.country))"
+      "\($0.location.localizedName) +\(Format.currency(Int($0.cost), country: project.country))"
   }
 }

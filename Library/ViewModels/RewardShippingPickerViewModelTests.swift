@@ -61,6 +61,25 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
     ])
   }
 
+  func testLocalizedDataSource() {
+    let localizedRules =
+      shippingRules ||> ShippingRule.lens.location..Location.lens.localizedName %~ { "Local " + $0 }
+
+    self.vm.inputs.configureWith(project: .template,
+                                 shippingRules: localizedRules,
+                                 selectedShippingRule: localizedRules.first!)
+    self.vm.inputs.viewDidLoad()
+
+    self.dataSource.assertValues([
+      [
+        "Local Australia +$4",
+        "Local Canada +$2",
+        "Local Great Britain +$3",
+        "Local United States +$1"
+      ]
+    ])
+  }
+
   func testDoneButtonAccessibilityHint() {
     let selectedShippingRule = shippingRules.first!
 
