@@ -80,11 +80,10 @@ public protocol LiveStreamContainerViewModelOutputs {
   var videoViewControllerHidden: Signal<Bool, NoError> { get }
 }
 
-//swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
-    //swiftlint:disable cyclomatic_complexity
+  // swiftlint:disable cyclomatic_complexity
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
@@ -477,8 +476,8 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
                                                            refTag: refTag)
     }
   }
-  //swiftlint:enable function_body_length
-  //swiftlint:enable cyclomatic_complexity
+  // swiftlint:enable function_body_length
+  // swiftlint:enable cyclomatic_complexity
 
   private typealias ConfigData = (Project, LiveStreamEvent, RefTag, Bool)
   private let configData = MutableProperty<ConfigData?>(nil)

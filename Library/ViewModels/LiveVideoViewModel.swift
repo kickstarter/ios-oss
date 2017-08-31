@@ -79,7 +79,6 @@ public protocol LiveVideoViewModelType {
 public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewModelInputs,
   LiveVideoViewModelOutputs {
 
-  //swiftlint:disable:next function_body_length
   public init() {
     let liveStreamType = Signal.combineLatest(
       self.liveStreamTypeProperty.signal.skipNil(),

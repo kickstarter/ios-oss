@@ -77,5 +77,4 @@ public final class ReferralChartView: UIView {
     context.closePath()
     context.fillPath()
   }
-  // swiftlint:enable function_body_length
 }

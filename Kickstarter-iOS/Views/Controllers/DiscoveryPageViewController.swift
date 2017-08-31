@@ -172,7 +172,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         }
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func tableView(_ tableView: UITableView,
                                    willDisplay cell: UITableViewCell,

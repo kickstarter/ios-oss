@@ -226,7 +226,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
     }
   }
-  // swiftlint:enable function_body_length
 
   // MARK: ThanksViewModelType
   public var inputs: ThanksViewModelInputs { return self }

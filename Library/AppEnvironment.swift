@@ -240,7 +240,8 @@ public struct AppEnvironment {
           basicHTTPAuth: service.serverConfig.basicHTTPAuth
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue
+        language: current.language.rawValue,
+        currency: current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -258,7 +259,8 @@ public struct AppEnvironment {
           basicHTTPAuth: service.serverConfig.basicHTTPAuth
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue
+        language: current.language.rawValue,
+        currency: current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -274,7 +276,8 @@ public struct AppEnvironment {
           basicHTTPAuth: BasicHTTPAuth(username: username, password: password)
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue
+        language: current.language.rawValue,
+        currency: current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -290,7 +293,6 @@ public struct AppEnvironment {
       koala: current.koala |> Koala.lens.loggedInUser .~ currentUser
     )
   }
-  // swiftlint:enable function_body_length
 
   // Saves some key data for the current environment
   internal static func saveEnvironment(environment env: Environment = AppEnvironment.current,
@@ -308,6 +310,7 @@ public struct AppEnvironment {
     // swiftlint:enable line_length
     data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
     data["apiService.language"] = env.apiService.language
+    data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
 

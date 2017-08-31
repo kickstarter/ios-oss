@@ -20,9 +20,7 @@ extension XCTestCase {
   func withEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
-    // swiftlint:disable line_length
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
-    // swiftlint:enable line_length
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
     config: Config? = AppEnvironment.current.config,

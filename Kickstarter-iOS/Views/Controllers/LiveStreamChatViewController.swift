@@ -106,7 +106,6 @@ internal final class LiveStreamChatViewController: UIViewController {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Send() }
   }
 
-  //swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

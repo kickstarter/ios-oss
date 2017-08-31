@@ -36,6 +36,19 @@ extension Project {
     public static let US = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$",  maxPledge: 10_000, minPledge: 1, trailingCode: true)
     // swiftlint:enable line_length
     // swiftlint:enable comma
+
+    public static let all: [Country] = [
+      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .LU, .MX, .NL, .NO, .NZ, .SE, .SG, .US
+    ]
+  }
+}
+
+extension Project.Country {
+  public init?(currencyCode: String) {
+    guard
+      let country = Project.Country.all.first(where: { $0.currencyCode == currencyCode })
+      else { return nil }
+    self = country
   }
 }
 
@@ -67,10 +80,10 @@ extension Project.Country: EncodableType {
 
 extension Project.Country: Equatable {}
 public func == (lhs: Project.Country, rhs: Project.Country) -> Bool {
-  return lhs.countryCode == rhs.countryCode &&
-    lhs.currencySymbol == rhs.currencySymbol &&
-    lhs.currencyCode == rhs.currencyCode &&
-    lhs.trailingCode == rhs.trailingCode
+  return lhs.countryCode == rhs.countryCode
+    && lhs.currencySymbol == rhs.currencySymbol
+    && lhs.currencyCode == rhs.currencyCode
+    && lhs.trailingCode == rhs.trailingCode
 }
 
 extension Project.Country: CustomStringConvertible {

@@ -24,7 +24,6 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
     self.viewModel.inputs.configureWith(liveStreamEvent: value)
   }
 
-  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

@@ -73,7 +73,6 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     _ = self.separatorViews
       ||> separatorStyle
   }
-  // swiftlint:enable function_body_length
 
   @objc fileprivate func inAppButtonTapped(_ button: UIButton) {
     self.scheduleNotification(forIndex: button.tag, delay: false)

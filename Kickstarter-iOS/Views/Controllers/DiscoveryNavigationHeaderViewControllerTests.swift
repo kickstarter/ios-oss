@@ -5,7 +5,6 @@ import Prelude
 import Result
 import XCTest
 
-// swiftlint:disable:next type_name
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
 
   let initialParams = .defaults

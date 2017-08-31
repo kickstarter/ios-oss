@@ -66,7 +66,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     }
   }
 
-// swiftlint:disable cyclomatic_complexity
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ActivityUpdateCell, activity as Activity):
@@ -89,5 +88,4 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
   }
-// swiftlint:enable cyclomatic_complexity
 }

@@ -22,7 +22,6 @@ public struct ExpandableRow {
       set: { ExpandableRow(isExpanded: $1.isExpanded, params: $1.params, selectableRows: $0) }
     )
   }
-  // swiftlint:enable type_name
 }
 
 public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {

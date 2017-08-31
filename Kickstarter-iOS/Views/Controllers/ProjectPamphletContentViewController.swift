@@ -213,8 +213,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate func scrollingIsAllowed(_ scrollView: UIScrollView) -> Bool {
     return self.presentingViewController?.presentedViewController?.isBeingDismissed != .some(true)
       && (!scrollView.isTracking || scrollView.contentOffset.y >= 0)
-    // swiftlint:disable:previous force_unwrapping
-    // NB: this ^ shouldn't be necessary, looks like a bug in swiftlint.
   }
 }
 

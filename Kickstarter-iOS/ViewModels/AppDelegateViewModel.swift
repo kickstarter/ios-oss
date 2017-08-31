@@ -179,11 +179,10 @@ public protocol AppDelegateViewModelType {
   var outputs: AppDelegateViewModelOutputs { get }
 }
 
-// swiftlint:disable:next type_body_length
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
 AppDelegateViewModelOutputs {
 
-    // swiftlint:disable cyclomatic_complexity
+  // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -638,7 +637,6 @@ AppDelegateViewModelOutputs {
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
   }
-  // swiftlint:enable function_body_length
   // swiftlint:enable cyclomatic_complexity
 
   public var inputs: AppDelegateViewModelInputs { return self }

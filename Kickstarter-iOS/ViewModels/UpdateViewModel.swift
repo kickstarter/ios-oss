@@ -147,7 +147,6 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)
   internal func configureWith(project: Project, update: Update) {

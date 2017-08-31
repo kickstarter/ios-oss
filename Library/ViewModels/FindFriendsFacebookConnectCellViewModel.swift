@@ -141,7 +141,6 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
   }
-  // swiftlint:enable function_body_length
 
   public var inputs: FindFriendsFacebookConnectCellViewModelInputs { return self }
   public var outputs: FindFriendsFacebookConnectCellViewModelOutputs { return self }

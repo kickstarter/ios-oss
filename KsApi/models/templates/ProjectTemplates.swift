@@ -37,6 +37,8 @@ extension Project {
     stats: Project.Stats(
       backersCount: 10,
       commentsCount: 10,
+      currentCurrency: "USD",
+      currentCurrencyRate: 1.5,
       goal: 2_000,
       pledged: 1_000,
       staticUsdRate: 1.0,
@@ -73,6 +75,8 @@ extension Project {
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
     |> Project.lens.stats.staticUsdRate .~ 1.31
+    |> Project.lens.stats.currentCurrency .~ "USD"
+    |> Project.lens.stats.currentCurrencyRate .~ 1.31
     |> (Project.lens.location..Location.lens.displayableName) .~ "Hastings, UK"
     |> Project.lens.rewards .~ [
       .template

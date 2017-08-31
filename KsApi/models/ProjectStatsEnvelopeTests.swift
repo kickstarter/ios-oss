@@ -114,7 +114,6 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
     XCTAssertEqual(5, rewardDistribution[1].minimum)
     XCTAssertEqual(25, rewardDistribution[2].minimum)
   }
-  // swiftlint:enable function_body_length
 
   func testJSONDecoding_MissingData() {
     let json: [String:Any] = [

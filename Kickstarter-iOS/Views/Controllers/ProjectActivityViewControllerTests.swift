@@ -54,7 +54,7 @@ internal final class ProjectActivityViewControllerTests: TestCase {
   }
 
   func testVoiceOverRunning() {
-    withEnvironment(isVoiceOverRunning: { true }) {
+    withEnvironment(isVoiceOverRunning: const(true)) {
       let controller = ProjectActivitiesViewController.configuredWith(project: project)
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
       parent.view.frame.size.height = 2800

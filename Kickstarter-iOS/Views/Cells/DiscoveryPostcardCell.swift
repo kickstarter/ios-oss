@@ -182,7 +182,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.shareButton
       |> shareButtonStyle
   }
-  // swiftlint:enable function_body_length
 
   internal override func bindViewModel() {
     super.bindViewModel()
@@ -271,7 +270,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
 
   }
-  // swiftlint:enable function_body_length
 
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)

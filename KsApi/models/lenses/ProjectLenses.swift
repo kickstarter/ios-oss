@@ -220,6 +220,14 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats..Project.Stats.lens.commentsCount
   }
 
+  public var currentCurrency: Lens<Project, String?> {
+    return Project.lens.stats..Project.Stats.lens.currentCurrency
+  }
+
+  public var currentCurrencyRate: Lens<Project, Float?> {
+    return Project.lens.stats..Project.Stats.lens.currentCurrencyRate
+  }
+
   public var goal: Lens<Project, Int> {
     return Project.lens.stats..Project.Stats.lens.goal
   }

@@ -143,7 +143,6 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
       .map { $0 || $1 }
       .skipRepeats()
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let backingButtonPressedProperty = MutableProperty()
   public func backingButtonPressed() {

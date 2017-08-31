@@ -98,7 +98,6 @@ internal final class SearchViewController: UITableViewController {
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
   }
 
-  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
 
     self.viewModel.outputs.projects

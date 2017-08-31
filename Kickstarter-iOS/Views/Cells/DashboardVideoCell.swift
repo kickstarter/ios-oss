@@ -25,7 +25,6 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var graphStatsContainerView: UIView!
   @IBOutlet fileprivate weak var graphStatsStackView: UIStackView!
 
-  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

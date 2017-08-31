@@ -319,7 +319,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
   func testAmbigiousCurrencies() {
     let project = self.cosmicSurgery
-      |> Project.lens.stats.staticUsdRate .~ 1.2
+      |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
 

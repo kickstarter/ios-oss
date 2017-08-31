@@ -23,7 +23,7 @@ public final class VideoGridView: UIView {
     self.setNeedsLayout()
   }
 
-  //swiftlint:disable:next cyclomatic_complexity
+  // swiftlint:disable:next cyclomatic_complexity
   public override func layoutSubviews() {
     super.layoutSubviews()
 

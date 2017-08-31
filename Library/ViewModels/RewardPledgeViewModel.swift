@@ -938,7 +938,6 @@ RewardPledgeViewModelOutputs {
   public var inputs: RewardPledgeViewModelInputs { return self }
   public var outputs: RewardPledgeViewModelOutputs { return self }
 }
-// swiftlint:enable type_body_length
 
 private func paymentRequest(forProject project: Project,
                             reward: Reward,

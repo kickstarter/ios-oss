@@ -15,12 +15,14 @@ public protocol ServiceType {
   var serverConfig: ServerConfigType { get }
   var oauthToken: OauthTokenAuthType? { get }
   var language: String { get }
+  var currency: String { get }
   var buildVersion: String { get }
 
   init(appId: String,
        serverConfig: ServerConfigType,
        oauthToken: OauthTokenAuthType?,
        language: String,
+       currency: String,
        buildVersion: String)
 
   /// Returns a new service with the oauth token replaced.
@@ -391,6 +393,7 @@ extension ServiceType {
   fileprivate var defaultQueryParams: [String:String] {
     var query: [String:String] = [:]
     query["client_id"] = self.serverConfig.apiClientAuth.clientId
+    query["currency"] = self.currency
     query["oauth_token"] = self.oauthToken?.token
     return query
   }
@@ -413,4 +416,3 @@ extension ServiceType {
     return components
   }
 }
-// swiftlint:enable file_length

@@ -221,7 +221,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     projectOnSaveButtonToggleSuccess
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .project) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
   public func configureWith(project: Project, refTag: RefTag?) {

@@ -16,7 +16,6 @@ public struct SelectableRow {
       set: { SelectableRow(isSelected: $1.isSelected, params: $0) }
     )
   }
-  // swiftlint:enable type_name
 }
 
 public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {

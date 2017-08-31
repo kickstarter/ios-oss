@@ -66,7 +66,6 @@ public protocol LiveStreamContainerPageViewModelOutputs {
 public final class LiveStreamContainerPageViewModel: LiveStreamContainerPageViewModelType,
 LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs {
 
-  //swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),

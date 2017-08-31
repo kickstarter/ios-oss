@@ -83,7 +83,6 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       .takeWhen(self.notificationTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let notificationProperty = MutableProperty<ProjectNotification?>(nil)
   public func configureWith(notification: ProjectNotification) {

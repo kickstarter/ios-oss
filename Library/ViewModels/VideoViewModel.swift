@@ -206,7 +206,6 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .takeWhen(videoStarted)
       .observeValues { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let crossedCompletionThresholdProperty = MutableProperty()
   public func crossedCompletionThreshold() {

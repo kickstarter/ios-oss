@@ -53,7 +53,7 @@ final class CheckoutViewModelTests: TestCase {
         guard let url = request.url else { return nil }
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
         components.queryItems = components.queryItems?.filter {
-          $0.name != "client_id" && $0.name != "oauth_token"
+          $0.name != "client_id" && $0.name != "currency" && $0.name != "oauth_token"
         }
         return components.string?.trimmingCharacters(in: questionMark)
       }

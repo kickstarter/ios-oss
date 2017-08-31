@@ -100,7 +100,6 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       )
       .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let alertButtonTappedProperty = MutableProperty()
   public func alertButtonTapped() { self.alertButtonTappedProperty.value = () }

@@ -180,7 +180,6 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
     }
   }
 
-  //swiftlint:disable:next function_body_length
   func testPlaybackStates() {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.startDate .~ (MockDate().addingTimeInterval(-86_400)).date

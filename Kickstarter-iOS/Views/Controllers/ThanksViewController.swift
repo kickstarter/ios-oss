@@ -162,7 +162,6 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       .observeForControllerAction()
       .observeValues { [weak self] in self?.showShareCompose($0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func goToDiscovery(params: DiscoveryParams) {
     self.view.window?.rootViewController
