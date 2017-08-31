@@ -37,8 +37,9 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
+    let query = "client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)&currency=USD"
     self.webViewLoadRequest.assertValues(
-      ["\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"]
+      ["\(self.update.urls.web.update)?\(query)"]
     )
   }
 
@@ -79,10 +80,11 @@ final class UpdateViewModelTests: TestCase {
 
       self.goToSafariBrowser.assertDidNotEmitValue("New update request should not load in Safari browser.")
 
+      let query = "client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)&currency=USD"
       self.webViewLoadRequest.assertValues(
         [
-          "\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)",
-          "\(prevUpdateUrl.absoluteString)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"
+          "\(self.update.urls.web.update)?\(query)",
+          "\(prevUpdateUrl.absoluteString)?\(query)"
         ]
       )
 
@@ -122,8 +124,9 @@ final class UpdateViewModelTests: TestCase {
       self.goToComments.assertValueCount(0)
     }
 
+    let query = "client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)&currency=USD"
     self.webViewLoadRequest.assertValues(
-      ["\(self.update.urls.web.update)?client_id=\(self.apiService.serverConfig.apiClientAuth.clientId)"]
+      ["\(self.update.urls.web.update)?\(query)"]
     )
   }
 

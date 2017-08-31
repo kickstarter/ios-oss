@@ -211,7 +211,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
-  // swiftlint:enable function_body_length
 
   func applicationWillEnterForeground(_ application: UIApplication) {
     self.viewModel.inputs.applicationWillEnterForeground()

@@ -76,7 +76,7 @@ public protocol SettingsViewModelType {
 
 public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelInputs,
   SettingsViewModelOutputs {
-    // swiftlint:disable cyclomatic_complexity
+
   public init() {
     let initialUser = viewDidLoadProperty.signal
       .flatMap {
@@ -264,8 +264,6 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
   }
-  // swiftlint:enable function_body_length
-  // swiftlint:enable cyclomatic_complexity
 
   fileprivate let artsAndCultureNewsletterTappedProperty = MutableProperty(false)
   public func artsAndCultureNewsletterTapped(on: Bool) {
@@ -468,4 +466,3 @@ private enum Notification {
     }
   }
 }
-// swiftlint:enable file_length

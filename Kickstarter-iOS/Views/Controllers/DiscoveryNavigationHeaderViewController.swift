@@ -142,7 +142,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         completion: nil)
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -289,7 +288,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       )
     }
   }
-  // swiftlint:ensable function_body_length
 
   fileprivate func animateBorderLine(isExpanded: Bool) {
     if isExpanded {

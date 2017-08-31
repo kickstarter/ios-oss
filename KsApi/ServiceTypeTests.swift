@@ -81,8 +81,9 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
     let request = self.service.preparedRequest(forRequest: .init(url: url))
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&key=value&oauth_token=cafebeef",
-                   request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value&oauth_token=cafebeef",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1234567890", "Authorization": "token cafebeef", "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
@@ -95,8 +96,9 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
     let request = self.service.preparedRequest(forURL: url, query: ["extra": "1"])
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&extra=1&key=value&oauth_token=cafebeef",
-                   request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&extra=1&key=value&oauth_token=cafebeef",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1234567890", "Authorization": "token cafebeef", "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
@@ -110,8 +112,9 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
     let request = self.service.preparedRequest(forURL: url, method: .DELETE, query: ["extra": "1"])
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&extra=1&key=value&oauth_token=cafebeef",
-                   request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&extra=1&key=value&oauth_token=cafebeef",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1234567890", "Authorization": "token cafebeef", "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
@@ -125,8 +128,9 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
     let request = self.service.preparedRequest(forURL: url, method: .POST, query: ["extra": "1"])
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&key=value&oauth_token=cafebeef",
-                   request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value&oauth_token=cafebeef",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1234567890", "Authorization": "token cafebeef", "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
@@ -147,8 +151,9 @@ final class ServiceTypeTests: XCTestCase {
     baseRequest.httpMethod = "POST"
     let request = self.service.preparedRequest(forRequest: baseRequest, query: ["extra": "1"])
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&key=value&oauth_token=cafebeef",
-                   request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value&oauth_token=cafebeef",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1234567890", "Authorization": "token cafebeef", "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
@@ -163,7 +168,9 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api-hq.ksr.com/v1/test?key=value")!
     let request = anonAdHocService.preparedRequest(forRequest: .init(url: url))
 
-    XCTAssertEqual("http://api-hq.ksr.com/v1/test?client_id=deadbeef&key=value", request.url?.absoluteString)
+    XCTAssertEqual(
+      "http://api-hq.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value",
+      request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
         "Accept-Language": "en", "Kickstarter-App-Id": "com.kickstarter.test",
@@ -191,7 +198,7 @@ final class ServiceTypeTests: XCTestCase {
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
     let request = anonService.preparedRequest(forRequest: .init(url: url))
 
-    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&key=value",
+    XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value",
                    request.url?.absoluteString)
     XCTAssertEqual(
       ["Kickstarter-iOS-App": "1", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",

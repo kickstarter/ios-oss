@@ -8,7 +8,6 @@ import Prelude
 @testable import ReactiveExtensions_TestHelpers
 
   internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
-  // swiftlint:enable type_name
   let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
 
   let backersText = TestObserver<String, NoError>()

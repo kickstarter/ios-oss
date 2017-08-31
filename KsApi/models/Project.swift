@@ -50,6 +50,8 @@ public struct Project {
   public struct Stats {
     public let backersCount: Int
     public let commentsCount: Int?
+    public let currentCurrency: String?
+    public let currentCurrencyRate: Float?
     public let goal: Int
     public let pledged: Int
     public let staticUsdRate: Float
@@ -74,6 +76,16 @@ public struct Project {
     /// Goal amount converted to USD.
     public var goalUsd: Int {
       return Int(floor(Float(self.goal) * self.staticUsdRate))
+    }
+
+    /// Pledged amount converted to current currency.
+    public var pledgedCurrentCurrency: Int? {
+      return self.currentCurrencyRate.map { Int(floor(Float(self.pledged) * $0)) }
+    }
+
+    /// Goal amount converted to current currency.
+    public var goalCurrentCurrency: Int? {
+      return self.currentCurrencyRate.map { Int(floor(Float(self.goal) * $0)) }
     }
   }
 
@@ -193,9 +205,12 @@ extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
 extension Project.Stats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
     let create = curry(Project.Stats.init)
-    return create
+    let tmp1 = create
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
+      <*> json <|? "current_currency"
+      <*> json <|? "fx_rate"
+    return tmp1
       <*> json <| "goal"
       <*> json <| "pledged"
       <*> (json <| "static_usd_rate" <|> .success(1.0))

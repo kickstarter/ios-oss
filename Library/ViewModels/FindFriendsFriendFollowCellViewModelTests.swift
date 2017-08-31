@@ -10,7 +10,6 @@ import UIKit.UIActivity
 import Prelude
 
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
-  // swiftlint:enable type_name
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
   let cellAccessibilityValue = TestObserver<String, NoError>()

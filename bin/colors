@@ -22,7 +22,7 @@ let colors =
 
 let allColors = colors
   .reduce([String: [Int: String]]()) { accum, pair in
-    let (name, hex) = pair
+    let (name, _) = pair
 
     let components = name.components(separatedBy: "_")
     guard components.count > 1 else { return accum }
@@ -54,9 +54,6 @@ staticStringsLines.append("")
 staticStringsLines.append("import UIKit")
 staticStringsLines.append("")
 staticStringsLines.append("// swiftlint:disable valid_docs")
-staticStringsLines.append("// swiftlint:disable line_length")
-staticStringsLines.append("// swiftlint:disable file_length")
-staticStringsLines.append("// swiftlint:disable type_body_length")
 staticStringsLines.append("extension UIColor {")
 
 staticStringsLines.append("  public static var ksr_allColors: [String: [Int: UIColor]] {")

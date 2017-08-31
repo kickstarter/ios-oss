@@ -170,7 +170,6 @@ CommentsViewModelOutputs {
         )
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let commentButtonPressedProperty = MutableProperty()
   public func commentButtonPressed() {

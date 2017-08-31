@@ -117,5 +117,4 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
   }
-  // swiftlint:enable function_body_length
 }

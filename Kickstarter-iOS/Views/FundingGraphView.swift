@@ -216,7 +216,6 @@ public final class FundingGraphView: UIView {
 
     self.goalLabel.isHidden = projectHasFunded
   }
-  // swiftlint:enable function_body_length
 }
 
 // Calculates the point of intersection of Line 1 and Line 2.

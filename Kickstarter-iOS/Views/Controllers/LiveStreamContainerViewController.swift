@@ -6,7 +6,6 @@ import ReactiveSwift
 import Result
 import UIKit
 
-//swiftlint:disable:next type_body_length
 public final class LiveStreamContainerViewController: UIViewController {
 
   @IBOutlet private weak var gradientView: GradientView!
@@ -70,7 +69,6 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable:next function_body_length
   public override func bindStyles() {
     super.bindStyles()
 
@@ -117,7 +115,6 @@ public final class LiveStreamContainerViewController: UIViewController {
                                    (UIColor.black.withAlphaComponent(0), 1.0)])
   }
 
-  //swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

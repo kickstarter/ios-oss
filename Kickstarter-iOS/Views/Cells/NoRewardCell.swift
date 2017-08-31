@@ -61,5 +61,4 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
   }
-  // swiftlint:enable function_body_length
 }

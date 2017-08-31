@@ -74,7 +74,6 @@ public final class LiveVideoViewController: UIViewController {
     self.videoGridView.frame = self.view.bounds
   }
 
-  //swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

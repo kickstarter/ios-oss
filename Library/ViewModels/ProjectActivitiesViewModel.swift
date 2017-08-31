@@ -172,7 +172,6 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
         AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
     }
   }
-  // swiftlint:enable function_body_length
 
   private let activityAndProjectCellTappedProperty = MutableProperty<(Activity, Project)?>(nil)
   public func activityAndProjectCellTapped(activity: Activity, project: Project) {

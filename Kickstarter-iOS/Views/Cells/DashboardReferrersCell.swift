@@ -149,7 +149,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     self.separatorViews.forEach { _ = $0 |> separatorStyle }
   }
-  // swiftlint:enable function_body_length
 
   internal override func bindViewModel() {
     self.averagePledgeAmountTitleLabel.rac.text = self.viewModel.outputs.averagePledgeText

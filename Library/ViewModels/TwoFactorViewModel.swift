@@ -154,7 +154,6 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       .takeWhen(self.showError)
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let codeProperty = MutableProperty<String?>(nil)
   public func codeChanged(_ code: String?) {

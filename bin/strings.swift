@@ -143,8 +143,6 @@ staticStringsLines.append("//===================================================
 staticStringsLines.append("")
 staticStringsLines.append("// swiftlint:disable valid_docs")
 staticStringsLines.append("// swiftlint:disable line_length")
-staticStringsLines.append("// swiftlint:disable file_length")
-staticStringsLines.append("// swiftlint:disable type_body_length")
 staticStringsLines.append("public enum Strings {")
 
 stringsByLocale?["Base"]?.keys

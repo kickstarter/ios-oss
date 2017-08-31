@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Prelude
 import Result
 import XCTest

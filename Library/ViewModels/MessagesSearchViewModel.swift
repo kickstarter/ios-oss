@@ -115,7 +115,6 @@ MessagesSearchViewModelOutputs {
       .takeWhen(self.clearSearchTextProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let clearSearchTextProperty = MutableProperty()
   public func clearSearchText() {

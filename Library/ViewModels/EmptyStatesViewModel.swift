@@ -89,7 +89,6 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .takeWhen(self.mainButtonTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackEmptyStateButtonTapped(type: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let emptyStateProperty = MutableProperty<EmptyState?>(nil)
   public func configureWith(emptyState: EmptyState?) {

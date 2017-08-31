@@ -120,7 +120,6 @@ SortPagerViewModelOutputs {
         .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
     )
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let didRotateProperty = MutableProperty()
   public func didRotateFromInterfaceOrientation() {

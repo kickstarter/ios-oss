@@ -193,7 +193,6 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
           AppEnvironment.current.koala.trackDashboardSeeMoreReferrers(project: project)
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let backersButtonTappedProperty = MutableProperty()
   public func backersButtonTapped() {

@@ -172,7 +172,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .takeWhen(viewWillAppearProperty.signal.take(first: 1))
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
   }
-  // swiftlint:enable function_body_length
 
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }

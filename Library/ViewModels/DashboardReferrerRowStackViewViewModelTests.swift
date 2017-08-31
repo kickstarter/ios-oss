@@ -8,7 +8,6 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
-  // swiftlint:enable type_name
   internal let vm = DashboardReferrerRowStackViewViewModel()
   internal let backersText = TestObserver<String, NoError>()
   internal let pledgedText = TestObserver<String, NoError>()

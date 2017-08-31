@@ -129,7 +129,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
         self?.goToHelpType(helpType)
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)

@@ -22,5 +22,4 @@ public struct ProjectActivityData {
       set: { ProjectActivityData(activities: $1.activities, project: $1.project, groupedDates: $0) }
     )
   }
-  // swiftlint:enable type_name
 }

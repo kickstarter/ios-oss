@@ -77,7 +77,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.eventDetailsViewModel.inputs.viewDidLoad()
   }
 
-  //swiftlint:disable:next function_body_length
   public override func bindStyles() {
     super.bindStyles()
 
@@ -232,7 +231,6 @@ public final class LiveStreamCountdownViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
   }
 
-  //swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

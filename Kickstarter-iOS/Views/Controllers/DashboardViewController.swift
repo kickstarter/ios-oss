@@ -174,7 +174,6 @@ internal final class DashboardViewController: UITableViewController {
         self?.goToActivity(project)
     }
   }
-  // swiftlint:enable function_body_length
 
   internal override func tableView(_ tableView: UITableView,
                                    willDisplay cell: UITableViewCell,

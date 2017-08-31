@@ -203,6 +203,26 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .GB
       |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.currentCurrency .~ "USD"
+      |> Project.lens.stats.currentCurrencyRate .~ 2
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
+      self.conversionLabelText.assertValues(["About $2,000"])
+    }
+  }
+
+  func testConversionLabel_Shown_WithoutCurrentCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .GB
+      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
 

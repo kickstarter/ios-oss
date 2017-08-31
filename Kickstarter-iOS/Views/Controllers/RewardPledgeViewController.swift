@@ -435,7 +435,6 @@ internal final class RewardPledgeViewController: UIViewController {
     self.navigationItem.leftBarButtonItem?.image = image(named: "close-icon", tintColor: .ksr_navy_600)
     self.navigationItem.leftBarButtonItem?.accessibilityLabel = Strings.general_navigation_buttons_close()
   }
-  // swiftlint:enable function_body_length
 
     internal override func bindViewModel() {
     super.bindViewModel()
@@ -557,7 +556,6 @@ internal final class RewardPledgeViewController: UIViewController {
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func goToCheckout(initialRequest: URLRequest,
                                 project: Project,
@@ -689,7 +687,6 @@ internal final class RewardPledgeViewController: UIViewController {
     }, completion: nil)
   }
 }
-// swiftlint:enable type_body_length
 
 extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 

@@ -320,7 +320,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
 
-  // swiftlint:enable function_body_length
   fileprivate let showHideProjectsDrawerProperty = MutableProperty()
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()

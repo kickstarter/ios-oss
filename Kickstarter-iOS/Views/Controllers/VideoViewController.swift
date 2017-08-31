@@ -149,7 +149,6 @@ public final class VideoViewController: UIViewController {
         self?.playerController.player?.seek(to: kCMTimeZero)
     }
   }
-  // swiftlint:enable function_body_length
 
   func addCompletionObserver(atTime time: CMTime) {
     guard let player = self.playerController.player else { return }

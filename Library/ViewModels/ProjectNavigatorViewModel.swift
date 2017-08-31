@@ -57,7 +57,6 @@ public protocol ProjectNavigatorViewModelType {
 public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
 ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),

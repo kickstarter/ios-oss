@@ -113,7 +113,6 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
         AppEnvironment.current.koala.trackCanceledContactEmail(context: context)
     }
   }
-  // swiftlint:enable function_body_length
 
   public var inputs: HelpViewModelInputs { return self }
   public var outputs: HelpViewModelOutputs { return self }

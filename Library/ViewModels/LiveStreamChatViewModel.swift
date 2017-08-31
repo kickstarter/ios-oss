@@ -69,7 +69,6 @@ public protocol LiveStreamChatViewModelOutputs {
 public final class LiveStreamChatViewModel: LiveStreamChatViewModelType, LiveStreamChatViewModelInputs,
 LiveStreamChatViewModelOutputs {
 
-  //swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),

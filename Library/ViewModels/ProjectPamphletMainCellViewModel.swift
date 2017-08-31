@@ -234,7 +234,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
   }
-  // swiftlint:enable function_body_length
 
   private let awakeFromNibProperty = MutableProperty()
   public func awakeFromNib() {

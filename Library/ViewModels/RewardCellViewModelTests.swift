@@ -249,6 +249,28 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .CA
       |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ "MXN"
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 1
+
+    withEnvironment(
+      apiService: MockService(currency: "MXN"),
+      config: .template |> Config.lens.countryCode .~ "MX") {
+
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+        self.conversionLabelHidden.assertValues([false],
+                                                "Mexican user viewing non-Mexican project sees conversion.")
+        self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward_WithoutCurrentCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .CA
+      |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
@@ -263,6 +285,31 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .CA
       |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ "MXN"
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 1
+    let backing = .template
+      |> Backing.lens.amount .~ 2
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(
+      apiService: MockService(currency: "MXN"),
+      config: .template |> Config.lens.countryCode .~ "MX") {
+
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+        self.conversionLabelHidden.assertValues([false],
+                                                "Mexican user viewing non-Mexican project sees conversion.")
+        self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking_WithoutCurrentCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .CA
+      |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
     let backing = .template
       |> Backing.lens.amount .~ 2
@@ -291,7 +338,11 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testConversionLabel_NonUS_User_NonUS_Project() {
-    let project = .template |> Project.lens.country .~ .GB |> Project.lens.stats.staticUsdRate .~ 2
+    let project = .template
+      |> Project.lens.country .~ .GB
+      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {

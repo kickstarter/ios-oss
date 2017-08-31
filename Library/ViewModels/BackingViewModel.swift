@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -220,7 +219,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let messageCreatorTappedProperty = MutableProperty()
   public func messageCreatorTapped() {
@@ -357,4 +355,3 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
     ])
     ?? .init()
 }
-// swiftlint:enable file_length

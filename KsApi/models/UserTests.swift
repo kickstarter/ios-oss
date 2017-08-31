@@ -2,7 +2,6 @@ import XCTest
 @testable import KsApi
 import Prelude
 
-// swiftlint:disable force_cast
 final class UserTests: XCTestCase {
 
   func testEquatable() {

@@ -9,7 +9,6 @@ import UIKit.UIActivity
 import Prelude
 
 final class ActivityFriendFollowCellViewModelTests: TestCase {
-  // swiftlint:enable type_name
   let vm: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
   let hideFollowButton = TestObserver<Bool, NoError>()
   let friendImageURL = TestObserver<String?, NoError>()

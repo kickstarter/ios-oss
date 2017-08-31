@@ -189,7 +189,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     self.viewModel.inputs.boundStyles()
   }
-  // swiftlint:enable function_body_length
 
     internal override func bindViewModel() {
     super.bindViewModel()
@@ -247,7 +246,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in self?.load(items: $0) }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate func load(items: [String]) {
     self.itemsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

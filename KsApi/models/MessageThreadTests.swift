@@ -96,4 +96,3 @@ internal final class MessageThreadTests: XCTestCase {
     XCTAssertNotNil(result.value)
   }
 }
-// swiftlint:enable function_body_length

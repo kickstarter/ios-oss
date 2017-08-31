@@ -54,7 +54,6 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     self.subscribeButton.layer.cornerRadius = self.subscribeButton.frame.size.height / 2
   }
 
-  //swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
