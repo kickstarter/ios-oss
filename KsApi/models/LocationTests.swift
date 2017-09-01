@@ -23,6 +23,7 @@ final class LocationTests: XCTestCase {
     let location = Location.decodeJSONDictionary([
       "country": "US",
       "id": 1,
+      "localized_name": "Brooklyn, NY",
       "displayable_name": "Brooklyn, NY",
       "name": "Brooklyn"
     ])
@@ -37,6 +38,7 @@ final class LocationTests: XCTestCase {
     let location: [String:Any] = [
       "country": "US",
       "id": 44,
+      "localized_name": "New Amsterdam, NY",
       "displayable_name": "New Amsterdam, NY",
       "name": "New Amsterdam"
     ]

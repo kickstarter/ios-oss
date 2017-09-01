@@ -262,7 +262,7 @@ final class FormatTests: TestCase {
     let date = 434592000.0 // Oct 10 1983 in UTC
     let UTC = TimeZone(abbreviation: "UTC")!
     let EST = TimeZone(abbreviation: "EST")!
-    let format = "MMM yyyy"
+    let format = "MMMyyyy"
     var calUTC = Calendar.current
     calUTC.timeZone = UTC
     var calEST = Calendar.current
@@ -270,38 +270,38 @@ final class FormatTests: TestCase {
 
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(calendar: calUTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Oct 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "Oct 1983")
       }
 
       withEnvironment(calendar: calEST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Oct 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "Oct 1983")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "de")) {
       withEnvironment(calendar: calUTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Okt. 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "Okt. 1983")
       }
       withEnvironment(calendar: calEST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "Okt. 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "Okt. 1983")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(calendar: calUTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "oct 1983")
       }
       withEnvironment(calendar: calEST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "oct 1983")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "fr")) {
       withEnvironment(calendar: calUTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct. 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "oct. 1983")
       }
       withEnvironment(calendar: calEST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date, dateFormat: format), "oct. 1983")
+        XCTAssertEqual(Format.date(secondsInUTC: date, template: format), "oct. 1983")
       }
     }
   }

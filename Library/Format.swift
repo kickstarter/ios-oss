@@ -97,7 +97,7 @@ public enum Format {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
-        dateFormat: nil,
+        template: nil,
         dateStyle: dateStyle,
         locale: env.locale,
         timeStyle: timeStyle,
@@ -112,16 +112,17 @@ public enum Format {
    Format a date into a string.
 
    - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
-   - parameter dateFormat: A format string.
+   - parameter template: A localized template string.
 
    - returns: A formatted string.
    */
   public static func date(secondsInUTC seconds: TimeInterval,
-                          dateFormat: String,
+                          template: String,
                           timeZone: TimeZone? = nil) -> String {
 
     let formatter = DateFormatterConfig.cachedFormatter(
-      forConfig: .init(dateFormat: dateFormat,
+      forConfig: .init(
+        template: template,
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
         timeStyle: nil,
@@ -264,7 +265,7 @@ public enum Format {
 private let defaultThresholdInDays = 30 // days
 
 private struct DateFormatterConfig {
-  fileprivate let dateFormat: String?
+  fileprivate let template: String?
   fileprivate let dateStyle: DateFormatter.Style?
   fileprivate let locale: Locale
   fileprivate let timeStyle: DateFormatter.Style?
@@ -272,8 +273,8 @@ private struct DateFormatterConfig {
 
   fileprivate func formatter() -> DateFormatter {
     let formatter = DateFormatter()
-    if let dateFormat = self.dateFormat {
-      formatter.dateFormat = dateFormat
+    if let template = self.template {
+      formatter.setLocalizedDateFormatFromTemplate(template)
     }
     formatter.timeZone = self.timeZone
     formatter.locale = self.locale
@@ -298,7 +299,7 @@ private struct DateFormatterConfig {
 extension DateFormatterConfig: Hashable {
   fileprivate var hashValue: Int {
     return
-      (self.dateFormat?.hashValue ?? 0)
+      (self.template?.hashValue ?? 0)
         ^ (self.dateStyle?.hashValue ?? 0)
         ^ self.locale.hashValue
         ^ (self.timeStyle?.hashValue ?? 0)
@@ -308,7 +309,7 @@ extension DateFormatterConfig: Hashable {
 
 private func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
   return
-    lhs.dateFormat == rhs.dateFormat
+    lhs.template == rhs.template
       && lhs.dateStyle == rhs.dateStyle
       && lhs.locale == rhs.locale
       && lhs.timeStyle == rhs.timeStyle

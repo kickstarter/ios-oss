@@ -350,7 +350,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.estimatedDeliveryDateLabelText.assertValues([
-      Format.date(secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMM yyyy", timeZone: UTCTimeZone)
+      Format.date(secondsInUTC: reward.estimatedDeliveryOn!, template: "MMMyyyy", timeZone: UTCTimeZone)
     ])
 
     self.estimatedFulfillmentStackViewHidden.assertValues([false])

@@ -219,5 +219,5 @@ private func formattedDateString(date: Date) -> String {
                                         options: 0,
                                         locale: AppEnvironment.current.locale) ?? "MMM d, h:mm a zzz"
 
-  return Format.date(secondsInUTC: date.timeIntervalSince1970, dateFormat: format)
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: format)
 }
