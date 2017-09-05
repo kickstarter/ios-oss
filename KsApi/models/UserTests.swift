@@ -32,6 +32,7 @@ final class UserTests: XCTestCase {
         "country": "US",
         "id": 12,
         "displayable_name": "Brooklyn, NY",
+        "localized_name": "Brooklyn, NY",
         "name": "Brooklyn"
       ],
       "is_friend": false
@@ -74,6 +75,7 @@ final class UserTests: XCTestCase {
         "country": "US",
         "id": 12,
         "displayable_name": "Brooklyn, NY",
+        "localized_name": "Brooklyn, NY",
         "name": "Brooklyn"
       ],
       "is_friend": false

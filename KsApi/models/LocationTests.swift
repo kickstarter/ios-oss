@@ -24,6 +24,7 @@ final class LocationTests: XCTestCase {
       "country": "US",
       "id": 1,
       "displayable_name": "Brooklyn, NY",
+      "localized_name": "Brooklyn, NY",
       "name": "Brooklyn"
     ])
 
@@ -38,6 +39,7 @@ final class LocationTests: XCTestCase {
       "country": "US",
       "id": 44,
       "displayable_name": "New Amsterdam, NY",
+      "localized_name": "New Amsterdam, NY",
       "name": "New Amsterdam"
     ]
 
