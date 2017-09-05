@@ -31,6 +31,7 @@ final class LocationTests: XCTestCase {
     XCTAssertNil(location.error)
     XCTAssertEqual(location.value?.id, 1)
     XCTAssertEqual(location.value?.displayableName, "Brooklyn, NY")
+    XCTAssertEqual(location.value?.localizedName, "Brooklyn, NY")
     XCTAssertEqual(location.value?.name, "Brooklyn")
   }
 

@@ -40,7 +40,7 @@ internal final class BackingCellViewModelTests: TestCase {
     self.delivery.assertValues([
       Strings.backing_info_estimated_delivery_date(delivery_date:
         Format.date(
-          secondsInUTC: reward.estimatedDeliveryOn!, dateFormat: "MMMM yyyy", timeZone: UTCTimeZone
+          secondsInUTC: reward.estimatedDeliveryOn!, template: "MMMMyyyy", timeZone: UTCTimeZone
         )
       )], "Emits the estimated delivery date")
 

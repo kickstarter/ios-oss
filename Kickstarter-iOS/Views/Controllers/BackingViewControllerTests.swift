@@ -45,7 +45,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingCanceled),
                       currentUser: self.brando,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: nil)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -65,7 +66,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingCollected),
                       currentUser: self.brando,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: nil)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -85,7 +87,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingDropped),
                       currentUser: self.brando,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: nil)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -105,7 +108,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingErrored),
                       currentUser: self.brando,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: nil)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -125,7 +129,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: self.backing),
                       currentUser: self.brando,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: projectFailed,
                                                                               backer: nil)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -164,7 +169,8 @@ internal final class BackingViewControllerTests: TestCase {
 
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: self.backing), currentUser: self.creator,
-      language: language) {
+      language: language,
+      locale: .init(identifier: language.rawValue)) {
         let controller = BackingViewController.configuredWith(project: project, backer: .template)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
@@ -181,7 +187,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingCanceled),
                       currentUser: self.creator,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: .template)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -201,7 +208,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingCollected),
                       currentUser: self.creator,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: .template)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -221,7 +229,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingDropped),
                       currentUser: self.creator,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: .template)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -241,7 +250,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: backingErrored),
                       currentUser: self.creator,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
                                                                               backer: .template)
                         let (parent, _) = traitControllers(device: .phone4_7inch,
@@ -261,7 +271,8 @@ internal final class BackingViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchBackingResponse: self.backing),
                       currentUser: self.creator,
-                      language: language) {
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
                         let controller = BackingViewController.configuredWith(project: projectFailed,
                                                                               backer: .template)
                         let (parent, _) = traitControllers(device: .phone4_7inch,

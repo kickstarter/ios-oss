@@ -367,7 +367,7 @@ RewardPledgeViewModelOutputs {
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in
         reward.estimatedDeliveryOn.map {
-          Format.date(secondsInUTC: $0, dateFormat: "MMM yyyy", timeZone: UTCTimeZone)
+          Format.date(secondsInUTC: $0, template: "MMMyyyy", timeZone: UTCTimeZone)
         }
       }
       .skipNil()

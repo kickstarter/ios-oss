@@ -337,7 +337,7 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
   guard let estimatedDate = reward?.estimatedDeliveryOn else { return .init() }
 
   let date = Format.date(secondsInUTC: estimatedDate,
-                         dateFormat: "MMM YYYY",
+                         template: "MMMyyyy",
                          timeZone: UTCTimeZone)
 
   let titleString = backerIsCurrentUser

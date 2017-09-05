@@ -398,7 +398,7 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
     self.estimatedDeliveryDateLabelText.assertValues([Format.date(
       secondsInUTC: estimatedDelivery,
-      dateFormat: "MMMM yyyy",
+      template: "MMMMyyyy",
       timeZone: UTCTimeZone)], "Emits the estimated delivery date")
   }
 
