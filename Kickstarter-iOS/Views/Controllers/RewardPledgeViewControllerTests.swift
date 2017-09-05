@@ -44,7 +44,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
 
         let vc = RewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: applePayCapable
@@ -173,7 +173,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let project = self.cosmicSurgery |> Project.lens.country .~ .US
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: applePayCapable
         )
@@ -199,7 +199,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     )
 
     Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: false
         )
@@ -224,7 +224,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     )
 
     Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: false
         )
@@ -274,7 +274,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     )
 
     combos(Language.allLanguages, [true, false]).forEach { language, applePayCapable in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardPledgeViewController.configuredWith(
           project: project, reward: newReward, applePayCapable: applePayCapable
         )
