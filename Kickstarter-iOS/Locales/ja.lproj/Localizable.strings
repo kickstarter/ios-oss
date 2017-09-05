@@ -833,7 +833,7 @@
 "general.accessibility.kickstarter" = "Kickstarter";
 "general.alert.buttons.ok" = "OK";
 "general.backer_count_backers.few" = "%{backer_count} バッカー";
-"general.backer_count_backers.many" = "%{backers_count} バッカー";
+"general.backer_count_backers.many" = "%{backer_count} バッカー";
 "general.backer_count_backers.one" = "1バッカー";
 "general.backer_count_backers.two" = "2バッカー";
 "general.backer_count_backers.zero" = "0バッカー";
