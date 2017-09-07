@@ -8,8 +8,8 @@ extension Config {
     countryCode: "US",
     features: [:],
     iTunesLink: "http://www.itunes.com",
-    launchedCountries: [.US, .CA, .AU, .NZ, .GB, .NL, .IE, .DE, .ES, .FR, .IT, .AT, .BE, .LU, .SE, .DK, .NO,
-      .CH, .HK, .SG],
+    launchedCountries: [.us, .ca, .au, .nz, .gb, .nl, .ie, .de, .es, .fr, .it, .at, .be, .lu, .se, .dk, .no,
+      .ch, .hk, .sg],
     locale: "en",
     stripePublishableKey: "pk"
   )

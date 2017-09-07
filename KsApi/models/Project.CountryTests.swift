@@ -4,14 +4,14 @@ import XCTest
 final class ProjectCountryTests: XCTestCase {
 
   func testEquatable() {
-    XCTAssertEqual(Project.Country.US, Project.Country.US)
-    XCTAssertNotEqual(Project.Country.US, Project.Country.CA)
-    XCTAssertNotEqual(Project.Country.US, Project.Country.AU)
-    XCTAssertNotEqual(Project.Country.DE, Project.Country.ES)
+    XCTAssertEqual(Project.Country.us, Project.Country.us)
+    XCTAssertNotEqual(Project.Country.us, Project.Country.ca)
+    XCTAssertNotEqual(Project.Country.us, Project.Country.au)
+    XCTAssertNotEqual(Project.Country.de, Project.Country.es)
   }
 
   func testDescription() {
-    XCTAssertNotEqual(Project.Country.US.description, "")
+    XCTAssertNotEqual(Project.Country.us.description, "")
   }
 
   func testJsonDecoding_StandardJSON() {
@@ -22,7 +22,7 @@ final class ProjectCountryTests: XCTestCase {
       "currency_trailing_code": true
       ])
 
-    XCTAssertEqual(.US, decodedCountry.value)
+    XCTAssertEqual(.us, decodedCountry.value)
 
     // swiftlint:disable:next force_unwrapping
     let country = decodedCountry.value!
@@ -37,7 +37,7 @@ final class ProjectCountryTests: XCTestCase {
       "trailing_code": true
       ])
 
-    XCTAssertEqual(.US, decodedCountry.value)
+    XCTAssertEqual(.us, decodedCountry.value)
 
     // swiftlint:disable:next force_unwrapping
     let country = decodedCountry.value!

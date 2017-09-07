@@ -52,7 +52,7 @@ final class ConfigTests: XCTestCase {
     XCTAssertEqual(["US", "GB", "CA"], config.applePayCountries)
     XCTAssertEqual(features, config.features)
     XCTAssertEqual("http://www.itunes.com", config.iTunesLink)
-    XCTAssertEqual([.ES, .FR], config.launchedCountries)
+    XCTAssertEqual([.es, .fr], config.launchedCountries)
     XCTAssertEqual("en", config.locale)
     XCTAssertEqual("pk", config.stripePublishableKey)
 

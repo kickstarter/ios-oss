@@ -170,7 +170,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
   func testPledge_NoReward() {
     let reward = Reward.noReward
-    let project = self.cosmicSurgery |> Project.lens.country .~ .US
+    let project = self.cosmicSurgery |> Project.lens.country .~ .us
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {

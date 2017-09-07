@@ -83,118 +83,118 @@ final class FormatTests: TestCase {
   func testCurrency() {
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "$1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "$1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "£1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "DKK 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "€1,000")
 
-        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: true), "CA$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA, omitCurrencyCode: false), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca, omitCurrencyCode: true), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca, omitCurrencyCode: false), "CA$ 1,000")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "US$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "£1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "DKK 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "€1,000")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "£1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1,000")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "€1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "US$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "£1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "DKK 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "€1,000")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(countryCode: "US") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 $")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "fr")) {
       withEnvironment(countryCode: "US") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1 000 $")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1 000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1 000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1 000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1 000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1 000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1 000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1 000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1 000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1 000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1 000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1 000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1 000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1 000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1 000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1 000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1 000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1 000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1 000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1 000 €")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "de")) {
       withEnvironment(countryCode: "US") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 $")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 $")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
 
       withEnvironment(countryCode: "CA") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
 
       withEnvironment(countryCode: "GB") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "1.000 US$")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "1.000 CA$")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "1.000 £")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "1.000 DKK")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "1.000 €")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "1.000 US$")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "1.000 CA$")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "1.000 £")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "1.000 DKK")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "1.000 €")
       }
     }
 
     withEnvironment(locale: Locale(identifier: "dk")) {
       withEnvironment(countryCode: "DK") {
-        XCTAssertEqual(Format.currency(1_000, country: .US), "US$ 1000")
-        XCTAssertEqual(Format.currency(1_000, country: .CA), "CA$ 1000")
-        XCTAssertEqual(Format.currency(1_000, country: .GB), "£ 1000")
-        XCTAssertEqual(Format.currency(1_000, country: .DK), "DKK 1000")
-        XCTAssertEqual(Format.currency(1_000, country: .DE), "€ 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .us), "US$ 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .ca), "CA$ 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .gb), "£ 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .dk), "DKK 1000")
+        XCTAssertEqual(Format.currency(1_000, country: .de), "€ 1000")
       }
     }
   }

@@ -29,7 +29,7 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
       |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 100
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "search"
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`
-    let country = Project.Country.US
+    let country = Project.Country.us
 
     self.vm.inputs.configureWith(country: country, referrer: referrer)
     self.backersText.assertValues(["50"])

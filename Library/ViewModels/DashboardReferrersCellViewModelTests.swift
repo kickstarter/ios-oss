@@ -33,7 +33,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
   }
 
   func testAccumulatedReferrerDataEmits() {
-    let country = Project.Country.US
+    let country = Project.Country.us
     let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
     let referrers = [
@@ -60,7 +60,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
   }
 
   func testCumulativeDataEmits() {
-    let country = Project.Country.US
+    let country = Project.Country.us
     let cumulative = .template
       |> ProjectStatsEnvelope.CumulativeStats.lens.averagePledge .~ 50
     let project = .template |> Project.lens.country .~ country
@@ -82,7 +82,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let stats9 = .template |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 9
     let stats10 = .template |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 10
 
-    let country = Project.Country.US
+    let country = Project.Country.us
     let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
     let referrers = [stats1, stats2, stats3, stats4, stats5, stats6, stats7, stats8, stats9, stats10]
@@ -108,7 +108,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
   }
 
   func testSortByColumn() {
-    let country = Project.Country.US
+    let country = Project.Country.us
     let cumulative = ProjectStatsEnvelope.CumulativeStats.template
     let project = .template |> Project.lens.country .~ country
 

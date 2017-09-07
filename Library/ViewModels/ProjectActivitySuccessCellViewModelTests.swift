@@ -33,7 +33,7 @@ internal final class ProjectActivitySuccessViewModelTests: TestCase {
   }
 
   func testTitle() {
-    let country = Project.Country.US
+    let country = Project.Country.us
     let backersCount = 12345
     let deadline = Date().timeIntervalSince1970
     let pledged = 5000

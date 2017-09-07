@@ -72,7 +72,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     )
 
     let nonUSProject = project
-      |> Project.lens.country .~ .GB
+      |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 1.2
     self.vm.inputs.configureWith(project: nonUSProject)
 
@@ -174,7 +174,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testConversionLabel_WhenConversionNotNeeded_US_Project_US_User() {
     let project = .template
-      |> Project.lens.country .~ .US
+      |> Project.lens.country .~ .us
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project)
@@ -186,7 +186,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testConversionLabel_WhenConversionNotNeeded_US_Project_NonUS_User() {
     let project = .template
-      |> Project.lens.country .~ .US
+      |> Project.lens.country .~ .us
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "FR") {
       self.vm.inputs.configureWith(project: project)
@@ -198,7 +198,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testConversionLabel_WhenConversionNeeded_NonUS_Project_US_User() {
     let project = .template
-      |> Project.lens.country .~ .GB
+      |> Project.lens.country .~ .gb
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.staticUsdRate .~ 2.0
@@ -261,7 +261,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
-      |> Project.lens.country .~ .US
+      |> Project.lens.country .~ .us
       |> Project.lens.stats.pledged .~ 1_000
       |> Project.lens.stats.goal .~ 2_000
 
@@ -283,7 +283,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testPledgedLabels_WhenConversionNeeded() {
     let project = .template
-      |> Project.lens.country .~ .GB
+      |> Project.lens.country .~ .gb
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.staticUsdRate .~ 2.0
@@ -300,7 +300,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testPledgedLabels_InNonUSCountry() {
     let project = .template
-      |> Project.lens.country .~ .GB
+      |> Project.lens.country .~ .gb
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.staticUsdRate .~ 2.0
