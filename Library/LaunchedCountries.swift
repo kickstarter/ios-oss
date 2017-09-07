@@ -5,7 +5,8 @@ public struct LaunchedCountries {
 
   public init() {
     self.countries = [
-      .AT, .AU, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .LU, .MX, .NL, .NO, .NZ, .SE, .SG, .US
+      .AT, .AU, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .JP, .LU, .MX, .NL, .NO, .NZ, .SE, .SG,
+      .US
     ]
   }
 
