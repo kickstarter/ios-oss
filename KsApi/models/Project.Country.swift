@@ -39,7 +39,8 @@ extension Project {
     // swiftlint:enable comma
 
     public static let all: [Country] = [
-      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .JA, .LU, .MX, .NL, .NO, .NZ, .SE, .SG, .US
+      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .JA, .LU, .MX, .NL, .NO, .NZ, .SE, .SG,
+      .US
     ]
   }
 }
