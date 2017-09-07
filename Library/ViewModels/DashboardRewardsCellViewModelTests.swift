@@ -95,7 +95,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.rewardsRowRewards.assertValues([[stat2, stat1, zeroPledgedStat1]],
                                         "Emits initial reward stats sorted by minimum value")
-    self.rewardsRowCountry.assertValues([.US])
+    self.rewardsRowCountry.assertValues([.us])
     self.rewardsRowTotalPledged.assertValues([1500])
     self.hideSeeAllTiersButton.assertValues([true])
 
@@ -110,7 +110,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 //
 //    self.rewardsRowRewards.assertValues([[stat2, stat1, zeroPledgedStat1],
 //      [zeroPledgedStat2, stat2, zeroPledgedStat1]])
-//    self.rewardsRowCountry.assertValues([.US, .US])
+//    self.rewardsRowCountry.assertValues([.us, .us])
 //    self.rewardsRowTotalPledged.assertValues([1500, 1000])
 //    self.hideSeeAllTiersButton.assertValues([true])
   }
@@ -130,7 +130,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowRewards.assertValues([[stat4, stat5, stat2]],
                                         "Emits 4 initial rewards sorted by minimum value")
 
-    self.rewardsRowCountry.assertValues([.US])
+    self.rewardsRowCountry.assertValues([.us])
     self.rewardsRowTotalPledged.assertValues([5000])
     self.hideSeeAllTiersButton.assertValues([false])
     self.notifyDelegateAddedRewardRows.assertDidNotEmitValue("No additional rewards were added.")
@@ -140,7 +140,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowRewards.assertValues([[stat4, stat5, stat2],
       [stat4, stat5, stat2, stat1, stat3, zeroPledgedStat1, zeroPledgedStat2]
     ], "Emit all rewards sorted by minimum value")
-    self.rewardsRowCountry.assertValues([.US, .US])
+    self.rewardsRowCountry.assertValues([.us, .us])
     self.rewardsRowTotalPledged.assertValues([5000, 5000])
     self.hideSeeAllTiersButton.assertValues([false, true])
     self.notifyDelegateAddedRewardRows.assertValueCount(1, "Additional rewards were added.")

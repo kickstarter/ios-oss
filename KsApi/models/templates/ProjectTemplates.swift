@@ -5,7 +5,7 @@ extension Project {
   internal static let template = Project(
     blurb: "A fun project.",
     category: .template,
-    country: .US,
+    country: .us,
     creator: .template |> User.lens.stats.createdProjectsCount .~ 1,
     memberData: Project.MemberData(
       lastUpdatePublishedAt: nil,
@@ -142,7 +142,7 @@ extension Project {
             |> RewardsItem.lens.rewardId .~ 3,
       ]
     ]
-    |> Project.lens.country .~ .GB
+    |> Project.lens.country .~ .gb
     |> Project.lens.creator .~ (
       .template
         |> User.lens.id .~ "Alma Haser".hash

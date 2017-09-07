@@ -218,7 +218,7 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
-    let project = .template |> Project.lens.country .~ .US
+    let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
@@ -230,7 +230,7 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testConversionLabel_US_User_US_Project_ConfiguredWithBacking() {
-    let project = .template |> Project.lens.country .~ .US
+    let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 30
     let backing = .template
       |> Backing.lens.amount .~ 42
@@ -247,7 +247,7 @@ final class RewardCellViewModelTests: TestCase {
 
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward() {
     let project = .template
-      |> Project.lens.country .~ .CA
+      |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ "MXN"
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
@@ -267,7 +267,7 @@ final class RewardCellViewModelTests: TestCase {
 
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward_WithoutCurrentCurrency() {
     let project = .template
-      |> Project.lens.country .~ .CA
+      |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
@@ -283,7 +283,7 @@ final class RewardCellViewModelTests: TestCase {
 
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking() {
     let project = .template
-      |> Project.lens.country .~ .CA
+      |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ "MXN"
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
@@ -306,7 +306,7 @@ final class RewardCellViewModelTests: TestCase {
 
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking_WithoutCurrentCurrency() {
     let project = .template
-      |> Project.lens.country .~ .CA
+      |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
@@ -325,7 +325,7 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   func testConversionLabel_NonUS_User_US_Project() {
-    let project = .template |> Project.lens.country .~ .US
+    let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
@@ -339,7 +339,7 @@ final class RewardCellViewModelTests: TestCase {
 
   func testConversionLabel_NonUS_User_NonUS_Project() {
     let project = .template
-      |> Project.lens.country .~ .GB
+      |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil

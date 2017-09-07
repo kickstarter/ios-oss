@@ -42,7 +42,7 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
       |> Project.lens.stats.pledged .~ 50
       |> Project.lens.stats.goal .~ 10_000
       |> Project.lens.dates.deadline .~ (Date().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 3.0)
-      |> Project.lens.country .~ .US
+      |> Project.lens.country .~ .us
 
     let stats = [ProjectStatsEnvelope.FundingDateStats.template]
 

@@ -13,34 +13,34 @@ extension Project {
 
     // swiftlint:disable line_length
     // swiftlint:disable comma
-    public static let AU = Country(countryCode: "AU", currencyCode: "AUD", currencySymbol: "$",  maxPledge: 7_000, minPledge: 1, trailingCode: true)
-    public static let AT = Country(countryCode: "AT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 8_000, minPledge: 1, trailingCode: false)
-    public static let BE = Country(countryCode: "BE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let CA = Country(countryCode: "CA", currencyCode: "CAD", currencySymbol: "$",  maxPledge: 8_000, minPledge: 1, trailingCode: true)
-    public static let CH = Country(countryCode: "CH", currencyCode: "CHF", currencySymbol: "Fr", maxPledge: 7_000, minPledge: 1, trailingCode: true)
-    public static let DE = Country(countryCode: "DE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let DK = Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
-    public static let ES = Country(countryCode: "ES", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let FR = Country(countryCode: "FR", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let GB = Country(countryCode: "GB", currencyCode: "GBP", currencySymbol: "£",  maxPledge: 5_000, minPledge: 1, trailingCode: false)
-    public static let HK = Country(countryCode: "HK", currencyCode: "HKD", currencySymbol: "$",  maxPledge: 70_000, minPledge: 10, trailingCode: true)
-    public static let IE = Country(countryCode: "IE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let IT = Country(countryCode: "IT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let JP = Country(countryCode: "JA", currencyCode: "JPY", currencySymbol: "¥",  maxPledge: 1_200_000, minPledge: 100, trailingCode: false)
-    public static let LU = Country(countryCode: "LU", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let MX = Country(countryCode: "MX", currencyCode: "MXN", currencySymbol: "$",  maxPledge: 200_000, minPledge: 10, trailingCode: true)
-    public static let NL = Country(countryCode: "NL", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
-    public static let NO = Country(countryCode: "NO", currencyCode: "NOK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
-    public static let NZ = Country(countryCode: "NZ", currencyCode: "NZD", currencySymbol: "$",  maxPledge: 8_000, minPledge: 1, trailingCode: true)
-    public static let SE = Country(countryCode: "SE", currencyCode: "SEK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
-    public static let SG = Country(countryCode: "SG", currencyCode: "SGD", currencySymbol: "$",  maxPledge: 10_000, minPledge: 2, trailingCode: true)
-    public static let US = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$",  maxPledge: 10_000, minPledge: 1, trailingCode: true)
+    public static let au = Country(countryCode: "AU", currencyCode: "AUD", currencySymbol: "$",  maxPledge: 7_000, minPledge: 1, trailingCode: true)
+    public static let at = Country(countryCode: "AT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 8_000, minPledge: 1, trailingCode: false)
+    public static let be = Country(countryCode: "BE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let ca = Country(countryCode: "CA", currencyCode: "CAD", currencySymbol: "$",  maxPledge: 8_000, minPledge: 1, trailingCode: true)
+    public static let ch = Country(countryCode: "CH", currencyCode: "CHF", currencySymbol: "Fr", maxPledge: 7_000, minPledge: 1, trailingCode: true)
+    public static let de = Country(countryCode: "DE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let dk = Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
+    public static let es = Country(countryCode: "ES", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let fr = Country(countryCode: "FR", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let gb = Country(countryCode: "GB", currencyCode: "GBP", currencySymbol: "£",  maxPledge: 5_000, minPledge: 1, trailingCode: false)
+    public static let hk = Country(countryCode: "HK", currencyCode: "HKD", currencySymbol: "$",  maxPledge: 70_000, minPledge: 10, trailingCode: true)
+    public static let ie = Country(countryCode: "IE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let it = Country(countryCode: "IT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let jp = Country(countryCode: "JA", currencyCode: "JPY", currencySymbol: "¥",  maxPledge: 1_200_000, minPledge: 100, trailingCode: false)
+    public static let lu = Country(countryCode: "LU", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let mx = Country(countryCode: "MX", currencyCode: "MXN", currencySymbol: "$",  maxPledge: 200_000, minPledge: 10, trailingCode: true)
+    public static let nl = Country(countryCode: "NL", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let no = Country(countryCode: "NO", currencyCode: "NOK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
+    public static let nz = Country(countryCode: "NZ", currencyCode: "NZD", currencySymbol: "$",  maxPledge: 8_000, minPledge: 1, trailingCode: true)
+    public static let se = Country(countryCode: "SE", currencyCode: "SEK", currencySymbol: "kr", maxPledge: 50_000, minPledge: 5, trailingCode: true)
+    public static let sg = Country(countryCode: "SG", currencyCode: "SGD", currencySymbol: "$",  maxPledge: 10_000, minPledge: 2, trailingCode: true)
+    public static let us = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$",  maxPledge: 10_000, minPledge: 1, trailingCode: true)
     // swiftlint:enable line_length
     // swiftlint:enable comma
 
     public static let all: [Country] = [
-      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .JA, .LU, .MX, .NL, .NO, .NZ, .SE, .SG,
-      .US
+      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .se, .sg,
+      .us
     ]
   }
 }

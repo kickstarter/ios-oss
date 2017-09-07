@@ -19,7 +19,7 @@ internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
   }
 
   func testTitle() {
-    let country = Project.Country.US
+    let country = Project.Country.us
     let goal = 5000
     let projectName = "Sick Skull Graphic Watch"
     let launchedAt = Date().timeIntervalSince1970

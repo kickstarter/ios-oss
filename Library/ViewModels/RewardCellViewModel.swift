@@ -64,7 +64,7 @@ RewardCellViewModelOutputs {
         let (country, rate) = zip(
           project.stats.currentCurrency.flatMap(Project.Country.init(currencyCode:)),
           project.stats.currentCurrencyRate
-        ) ?? (.US, project.stats.staticUsdRate)
+        ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
@@ -313,7 +313,7 @@ private func needsConversion(project: Project) -> Bool {
 }
 
 private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
-  return userCountry == "US" && projectCountry != .US
+  return userCountry == "US" && projectCountry != .us
 }
 
 private func needsConversion(projectCountry: Project.Country, currentCurrency: String) -> Bool {

@@ -178,7 +178,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     let projectAndNeedsConversion = project.map { project -> (Project, Bool) in
       (
         project,
-        AppEnvironment.current.config?.countryCode == "US" && project.country != .US
+        AppEnvironment.current.config?.countryCode == "US" && project.country != .us
       )
     }
 
@@ -196,7 +196,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.pledgedTitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
       needsConversion
-        ? Format.currency(project.stats.pledgedUsd, country: .US)
+        ? Format.currency(project.stats.pledgedUsd, country: .us)
         : Format.currency(project.stats.pledged, country: project.country)
     }
 
@@ -208,7 +208,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
       }
 
       return Strings.activity_project_state_change_pledged_of_goal(
-        goal: Format.currency(project.stats.goalUsd, country: .US)
+        goal: Format.currency(project.stats.goalUsd, country: .us)
       )
     }
 
@@ -305,10 +305,10 @@ private func statsStackViewAccessibilityLabel(forProject project: Project, needs
 
   let pledged = needsConversion
     ? Format.currency(project.stats.pledged, country: project.country)
-    : Format.currency(project.stats.pledgedUsd, country: .US)
+    : Format.currency(project.stats.pledgedUsd, country: .us)
   let goal = needsConversion
     ? Format.currency(project.stats.goal, country: project.country)
-    : Format.currency(project.stats.goalUsd, country: .US)
+    : Format.currency(project.stats.goalUsd, country: .us)
 
   let backersCount = project.stats.backersCount
   let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
