@@ -126,6 +126,7 @@
 		7DD8EF0D1F0428D60070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
 		8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */; };
 		8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
+		80265C291F60C51C00E14935 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8067C63E1F33C86300B1ADCE /* HockeySDKResources.bundle */; };
 		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		8067C6751F33CAE200B1ADCE /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B694271C87A04C00C49A4F /* HockeySDK.framework */; };
 		8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */; };
@@ -4801,6 +4802,7 @@
 			files = (
 				A7E1C4F31D18C8B3002D6DE3 /* 1Password.xcassets in Resources */,
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
+				80265C291F60C51C00E14935 /* HockeySDKResources.bundle in Resources */,
 				01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */,
 				A73924051D27247E004524C3 /* Main.storyboard in Resources */,
 			);
