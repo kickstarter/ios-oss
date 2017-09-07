@@ -26,6 +26,7 @@ extension Project {
     public static let HK = Country(countryCode: "HK", currencyCode: "HKD", currencySymbol: "$",  maxPledge: 70_000, minPledge: 10, trailingCode: true)
     public static let IE = Country(countryCode: "IE", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
     public static let IT = Country(countryCode: "IT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
+    public static let JP = Country(countryCode: "JA", currencyCode: "JPY", currencySymbol: "¥",  maxPledge: 1_200_000, minPledge: 100, trailingCode: false)
     public static let LU = Country(countryCode: "LU", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
     public static let MX = Country(countryCode: "MX", currencyCode: "MXN", currencySymbol: "$",  maxPledge: 200_000, minPledge: 10, trailingCode: true)
     public static let NL = Country(countryCode: "NL", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 7_000, minPledge: 1, trailingCode: false)
@@ -38,7 +39,7 @@ extension Project {
     // swiftlint:enable comma
 
     public static let all: [Country] = [
-      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .LU, .MX, .NL, .NO, .NZ, .SE, .SG, .US
+      .AU, .AT, .BE, .CA, .CH, .DE, .DK, .ES, .FR, .GB, .HK, .IE, .IT, .JA, .LU, .MX, .NL, .NO, .NZ, .SE, .SG, .US
     ]
   }
 }
