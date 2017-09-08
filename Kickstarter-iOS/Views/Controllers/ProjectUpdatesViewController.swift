@@ -92,7 +92,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidStartProvisionalNavigation()
   }
-  
+
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidFinishNavigation()
   }

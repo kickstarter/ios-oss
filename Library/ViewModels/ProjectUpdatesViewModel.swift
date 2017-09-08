@@ -103,7 +103,7 @@ ProjectUpdatesViewModelOutputs {
       self.webViewDidFinishNavigationProperty.signal.mapConst(true),
       self.webViewDidStartProvisionalNavigationProperty.signal.mapConst(false)
     )
-    
+
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
