@@ -12,8 +12,6 @@ internal final class DiscoveryFiltersLoaderCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.activityIndicator
-      |> UIActivityIndicatorView.lens.animating .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
   }
 }

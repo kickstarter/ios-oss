@@ -40,10 +40,9 @@ internal class DeprecatedWebViewController: UIViewController {
     super.bindStyles()
 
     _ = self.activityIndicator
+      |> baseActivityIndicatorStyle
       |> UIActivityIndicatorView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
-
+      
     _ = self.loadingOverlayView
       |> UIView.lens.translatesAutoresizingMaskIntoConstraints .~ false
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.8)

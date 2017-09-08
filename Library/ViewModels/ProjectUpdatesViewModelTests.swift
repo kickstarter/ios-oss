@@ -14,6 +14,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
   fileprivate let goToUpdateId = TestObserver<Int, NoError>()
   fileprivate let goToUpdateCommentId = TestObserver<Int, NoError>()
+  fileprivate let isActivityIndicatorHidden = TestObserver<Bool, NoError>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   internal override func setUp() {
@@ -21,6 +22,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.goToUpdate.map { _, update in update.id }.observe(self.goToUpdateId.observer)
     self.vm.outputs.goToUpdateComments.map { $0.id }.observe(self.goToUpdateCommentId.observer)
+    self.vm.outputs.isActivityIndicatorHidden.observe(self.isActivityIndicatorHidden.observer)
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }
 
@@ -71,6 +73,12 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateId.assertValues([updateId])
+    
+    self.isActivityIndicatorHidden.assertValues([])
+    self.vm.inputs.webViewDidStartProvisionalNavigation()
+    self.isActivityIndicatorHidden.assertValues([false])
+    self.vm.inputs.webViewDidFinishNavigation()
+    self.isActivityIndicatorHidden.assertValues([false, true])
   }
 
   func testGoToUpdateComments() {

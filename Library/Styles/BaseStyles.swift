@@ -54,6 +54,15 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
       <> TVC.lens.selectionStyle .~ .none
 }
 
+public func baseActivityIndicatorStyle(activityIndicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
+  
+  return activityIndicator
+    |> UIActivityIndicatorView.lens.animating .~ true
+    |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+    |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+    |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+}
+
 /**
  - parameter radius: The corner radius. This parameter is optional, and will use a default value if omitted.
 

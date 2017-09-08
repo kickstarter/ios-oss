@@ -14,6 +14,12 @@ public protocol ProjectUpdatesViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+  
+  /// Call when webview did finish navigation.
+  func webViewDidFinishNavigation()
+  
+  /// Call when webview did start navigation.
+  func webViewDidStartProvisionalNavigation()
 }
 
 public protocol ProjectUpdatesViewModelOutputs {
@@ -26,6 +32,9 @@ public protocol ProjectUpdatesViewModelOutputs {
   /// Emits with the project when we should go to the update comments.
   var goToUpdateComments: Signal<Update, NoError> { get }
 
+  /// Emits when the webview content is loading.
+  var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
+  
   /// Emits a request that should be loaded into the web view.
   var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
@@ -90,6 +99,11 @@ ProjectUpdatesViewModelOutputs {
         .demoteErrors()
     }
 
+    self.isActivityIndicatorHidden = Signal.merge(
+      self.webViewDidFinishNavigationProperty.signal.mapConst(true),
+      self.webViewDidStartProvisionalNavigationProperty.signal.mapConst(false)
+    )
+    
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
@@ -115,11 +129,19 @@ ProjectUpdatesViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
+  fileprivate let webViewDidFinishNavigationProperty = MutableProperty()
+  public func webViewDidFinishNavigation() {
+    self.webViewDidFinishNavigationProperty.value = ()
+  }
+  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty()
+  public func webViewDidStartProvisionalNavigation() {
+    self.webViewDidStartProvisionalNavigationProperty.value = ()
+  }
   public let goToSafariBrowser: Signal<URL, NoError>
-  public var goToUpdate: Signal<(Project, Update), NoError>
-  public var goToUpdateComments: Signal<Update, NoError>
+  public let goToUpdate: Signal<(Project, Update), NoError>
+  public let goToUpdateComments: Signal<Update, NoError>
   public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let isActivityIndicatorHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectUpdatesViewModelInputs { return self }
   public var outputs: ProjectUpdatesViewModelOutputs { return self }

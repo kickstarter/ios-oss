@@ -43,11 +43,9 @@ internal final class ProjectDescriptionViewController: WebViewController {
       <> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
       <> (WebViewController.lens.webView.scrollView..UIScrollView.lens.delaysContentTouches) .~ false
       <> (WebViewController.lens.webView.scrollView..UIScrollView.lens.canCancelContentTouches) .~ true
-
+    
     _ = self.loadingIndicator
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      <> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      <> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
   }
 
   override func bindViewModel() {
