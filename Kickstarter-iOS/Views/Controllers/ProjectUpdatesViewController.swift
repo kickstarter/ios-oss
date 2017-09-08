@@ -33,7 +33,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
     _ = self |> baseControllerStyle()
     _ = self.activityIndicator |> baseActivityIndicatorStyle
-    
+
     self.navigationItem.title = Strings.project_menu_buttons_updates()
   }
 
@@ -55,7 +55,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeValues { [weak self] in _ = self?.webView.load($0) }
-    
+
     self.activityIndicator.rac.hidden = self.viewModel.outputs.isActivityIndicatorHidden
   }
 
@@ -88,7 +88,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
       self.viewModel.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationAction))
     )
   }
-  
+
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidStartProvisionalNavigation()
   }

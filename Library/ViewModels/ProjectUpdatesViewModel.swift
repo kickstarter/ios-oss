@@ -14,10 +14,10 @@ public protocol ProjectUpdatesViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
-  
+
   /// Call when webview did finish navigation.
   func webViewDidFinishNavigation()
-  
+
   /// Call when webview did start navigation.
   func webViewDidStartProvisionalNavigation()
 }
@@ -34,7 +34,7 @@ public protocol ProjectUpdatesViewModelOutputs {
 
   /// Emits when the webview content is loading.
   var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
-  
+
   /// Emits a request that should be loaded into the web view.
   var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }

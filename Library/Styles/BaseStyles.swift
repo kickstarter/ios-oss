@@ -55,7 +55,7 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
 }
 
 public func baseActivityIndicatorStyle(activityIndicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
-  
+
   return activityIndicator
     |> UIActivityIndicatorView.lens.animating .~ true
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
