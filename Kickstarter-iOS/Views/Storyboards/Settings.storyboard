@@ -296,9 +296,6 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="ECd-bg-IL7"/>
                                                                 </constraints>
-                                                                <connections>
-                                                                    <action selector="postLikesTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="jtp-IT-jcU"/>
-                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BqD-b0-u3a">
                                                                 <rect key="frame" x="324" y="0.0" width="44" height="34"/>
@@ -928,6 +925,8 @@
                         <outlet property="cookiePolicyLabel" destination="fsw-gm-Gpv" id="7Cw-fH-brn"/>
                         <outlet property="creatorNotificationsTitleLabel" destination="It8-HK-urg" id="hj1-T8-QNj"/>
                         <outlet property="creatorStackView" destination="1ZC-gw-NRT" id="WyE-tY-Y8U"/>
+                        <outlet property="creatorTips" destination="kaU-yH-KeR" id="yav-HG-e9W"/>
+                        <outlet property="creatorTipsButton" destination="qLl-B8-n0r" id="WCV-pv-Zgd"/>
                         <outlet property="faqButton" destination="Jjr-6S-aZV" id="qGk-Ho-kjs"/>
                         <outlet property="faqLabel" destination="iaG-Jw-zJo" id="qST-55-Syp"/>
                         <outlet property="findFriendsButton" destination="hEp-CW-Yrn" id="Jx3-uc-1Ke"/>
@@ -1014,6 +1013,7 @@
                         <outletCollection property="pushNotificationButtons" destination="V2W-jh-eyw" collectionClass="NSMutableArray" id="8av-fS-4oi"/>
                         <outletCollection property="separatorViews" destination="cPB-Ze-LrW" collectionClass="NSMutableArray" id="yVe-OM-bNU"/>
                         <outletCollection property="separatorViews" destination="i85-oa-tsu" collectionClass="NSMutableArray" id="qjc-E1-meE"/>
+                        <outletCollection property="emailNotificationButtons" destination="qLl-B8-n0r" collectionClass="NSMutableArray" id="nOn-cp-yFI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ICk-2i-mbJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -23,6 +23,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var cookiePolicyLabel: UILabel!
   @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
+  @IBOutlet fileprivate weak var creatorTips: UILabel!
+  @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
   @IBOutlet fileprivate weak var faqButton: UIButton!
   @IBOutlet fileprivate weak var faqLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
@@ -177,6 +179,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.creatorNotificationsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
+
+    _ = self.creatorTips
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in "Creator tips" }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
