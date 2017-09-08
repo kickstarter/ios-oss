@@ -27,8 +27,6 @@ internal final class DashboardViewController: UITableViewController {
 
     self.tableView.backgroundView = self.backgroundView
 
-    self.tableView.insertSubview(self.loadingIndicatorView, aboveSubview: self.backgroundView)
-
     self.tableView.dataSource = self.dataSource
 
     let shareButton = UIBarButtonItem()
@@ -65,16 +63,22 @@ internal final class DashboardViewController: UITableViewController {
     self.viewModel.inputs.viewWillDisappear()
   }
 
-  internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.loadingIndicatorView.center = self.backgroundView.center
-  }
-
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
+    self.viewModel.outputs.loaderIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        guard let _self = self else { return }
+        _self.tableView.tableHeaderView = isAnimating ? _self.loadingIndicatorView : nil
+        if let headerView = _self.tableView.tableHeaderView {
+          headerView.frame = CGRect(x: headerView.frame.origin.x,
+                                    y: headerView.frame.origin.y,
+                                    width: headerView.frame.size.width,
+                                    height: Styles.grid(15))
+        }
+    }
+
     self.viewModel.outputs.fundingData
       .observeForUI()
       .observeValues { [weak self] stats, project in
@@ -173,6 +177,9 @@ internal final class DashboardViewController: UITableViewController {
       .observeValues { [weak self] project in
         self?.goToActivity(project)
     }
+
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
+
   }
 
   internal override func tableView(_ tableView: UITableView,
