@@ -156,7 +156,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.loaderIsAnimating = Signal.merge(
       self.viewDidLoadProperty.signal.map(const(true)),
-      projects.filter{ !$0.isEmpty }.map(const(false))
+      projects.filter { !$0.isEmpty }.map(const(false))
     ).skipRepeats()
 
     /* Interim MutableProperty used to inject nil on viewWillDisappear
