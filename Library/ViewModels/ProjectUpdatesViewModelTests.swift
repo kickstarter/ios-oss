@@ -73,7 +73,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateId.assertValues([updateId])
-    
+
     self.isActivityIndicatorHidden.assertValues([])
     self.vm.inputs.webViewDidStartProvisionalNavigation()
     self.isActivityIndicatorHidden.assertValues([false])
