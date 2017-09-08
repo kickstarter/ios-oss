@@ -66,6 +66,8 @@ internal final class DashboardViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
+
     self.viewModel.outputs.loaderIsAnimating
       .observeForUI()
       .observeValues { [weak self] isAnimating in
@@ -177,9 +179,6 @@ internal final class DashboardViewController: UITableViewController {
       .observeValues { [weak self] project in
         self?.goToActivity(project)
     }
-
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.loaderIsAnimating
-
   }
 
   internal override func tableView(_ tableView: UITableView,
