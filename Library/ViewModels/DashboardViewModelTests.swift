@@ -10,25 +10,33 @@ import XCTest
 
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
+
+  internal let animateOutProjectsDrawer = TestObserver<(), NoError>()
+  internal let dismissProjectsDrawer = TestObserver<(), NoError>()
+  internal let focusScreenReaderOnTitleView = TestObserver<(), NoError>()
   internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
+  internal let goToMessageThread = TestObserver<Project, NoError>()
+  internal let loaderIsAnimating = TestObserver<Bool, NoError>()
+  internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], NoError>()
   internal let project = TestObserver<Project, NoError>()
   internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.CumulativeStats, NoError>()
   internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
   internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
-  internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
-  internal let animateOutProjectsDrawer = TestObserver<(), NoError>()
-  internal let dismissProjectsDrawer = TestObserver<(), NoError>()
-  internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], NoError>()
   internal let updateTitleViewData = TestObserver<DashboardTitleViewData, NoError>()
-  internal let focusScreenReaderOnTitleView = TestObserver<(), NoError>()
-  internal let goToMessageThread = TestObserver<Project, NoError>()
+  internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
 
   let project1 = Project.template
   let project2 = .template |> Project.lens.id .~ 4
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.animateOutProjectsDrawer.observe(self.animateOutProjectsDrawer.observer)
+    self.vm.outputs.dismissProjectsDrawer.observe(self.dismissProjectsDrawer.observer)
+    self.vm.outputs.focusScreenReaderOnTitleView.observe(self.focusScreenReaderOnTitleView.observer)
     self.vm.outputs.fundingData.map { stats, _ in stats }.observe(self.fundingStats.observer)
+    self.vm.outputs.goToMessageThread.map { $0.0 }.observe(self.goToMessageThread.observer)
+    self.vm.outputs.loaderIsAnimating.observe(self.loaderIsAnimating.observer)
+    self.vm.outputs.presentProjectsDrawer.observe(self.presentProjectsDrawer.observer)
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.referrerData
       .map { cumulative, _, _ in cumulative }
@@ -36,12 +44,7 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.referrerData.map { _, _, stats in stats }.observe(self.referrerStats.observer)
     self.vm.outputs.rewardData.map { stats, _ in stats }.observe(self.rewardStats.observer)
     self.vm.outputs.videoStats.observe(self.videoStats.observer)
-    self.vm.outputs.dismissProjectsDrawer.observe(self.dismissProjectsDrawer.observer)
-    self.vm.outputs.presentProjectsDrawer.observe(self.presentProjectsDrawer.observer)
-    self.vm.outputs.animateOutProjectsDrawer.observe(self.animateOutProjectsDrawer.observer)
     self.vm.outputs.updateTitleViewData.observe(self.updateTitleViewData.observer)
-    self.vm.outputs.focusScreenReaderOnTitleView.observe(self.focusScreenReaderOnTitleView.observer)
-    self.vm.outputs.goToMessageThread.map { $0.0 }.observe(self.goToMessageThread.observer)
   }
 
   func testDashboardTracking() {
@@ -259,6 +262,20 @@ internal final class DashboardViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateTitleViewData.assertValues([titleViewData], "Update title data")
+    }
+  }
+
+  func testLoaderIsAnimating() {
+
+    let projects = (0...4).map { .template |> Project.lens.id .~ $0 }
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.loaderIsAnimating.assertValues([true])
+
+      self.scheduler.advance()
+      self.loaderIsAnimating.assertValues([true, false])
     }
   }
 
