@@ -5,7 +5,7 @@ import SafariServices
 
 internal final class ProjectUpdatesViewController: WebViewController {
   fileprivate let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
-
+  fileprivate let activityIndicator = UIActivityIndicatorView()
   internal static func configuredWith(project: Project) -> ProjectUpdatesViewController {
     let vc = ProjectUpdatesViewController()
     vc.viewModel.inputs.configureWith(project: project)
@@ -14,7 +14,12 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    self.view.addSubview(self.activityIndicator)
+    NSLayoutConstraint.activate([
+      self.activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      self.activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+    ])
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -27,6 +32,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
+    _ = self.activityIndicator |> baseActivityIndicatorStyle
 
     self.navigationItem.title = Strings.project_menu_buttons_updates()
   }
@@ -49,6 +55,8 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeValues { [weak self] in _ = self?.webView.load($0) }
+
+    self.activityIndicator.rac.hidden = self.viewModel.outputs.isActivityIndicatorHidden
   }
 
   fileprivate func goToComments(forUpdate update: Update) {
@@ -79,5 +87,13 @@ internal final class ProjectUpdatesViewController: WebViewController {
     decisionHandler(
       self.viewModel.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationAction))
     )
+  }
+
+  func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    self.viewModel.inputs.webViewDidStartProvisionalNavigation()
+  }
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    self.viewModel.inputs.webViewDidFinishNavigation()
   }
 }

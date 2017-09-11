@@ -185,9 +185,7 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
 
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2
