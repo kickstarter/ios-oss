@@ -248,7 +248,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.countryLabelText.assertValues(["", "Australia"])
+        self.countryLabelText.assertValues(["", "Local Australia"])
         self.shippingAmountLabelText.assertValues(["", "+$4"])
     }
   }
@@ -266,7 +266,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.countryLabelText.assertValues(["", "United States"])
+        self.countryLabelText.assertValues(["", "Local United States"])
         self.shippingAmountLabelText.assertValues(["", "+$1"])
     }
   }
