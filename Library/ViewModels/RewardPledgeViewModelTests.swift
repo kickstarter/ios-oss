@@ -22,7 +22,7 @@ private let shippingRules = locations
     .template
       |> ShippingRule.lens.location .~ location
       |> ShippingRule.lens.cost .~ Double(idx + 1)
-}
+} ||> ShippingRule.lens.location..Location.lens.localizedName %~ { "Local " + $0 }
 
 private let sortedShippingRules = shippingRules
   .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
@@ -289,7 +289,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.countryLabelText.assertValues(["", defaultShippingRule.location.displayableName])
+        self.countryLabelText.assertValues(["", defaultShippingRule.location.localizedName])
         self.shippingAmountLabelText.assertValues([
           "", "+" + Format.currency(Int(defaultShippingRule.cost), country: project.country)
           ])
@@ -298,7 +298,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
         self.vm.inputs.change(shippingRule: otherShippingRule)
 
         self.countryLabelText.assertValues([
-          "", defaultShippingRule.location.displayableName, otherShippingRule.location.displayableName
+          "", defaultShippingRule.location.localizedName, otherShippingRule.location.localizedName
           ])
         self.shippingAmountLabelText.assertValues([
           "",
