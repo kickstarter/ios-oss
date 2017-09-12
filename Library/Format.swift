@@ -273,11 +273,11 @@ private struct DateFormatterConfig {
 
   fileprivate func formatter() -> DateFormatter {
     let formatter = DateFormatter()
+    formatter.locale = self.locale
+    formatter.timeZone = self.timeZone
     if let template = self.template {
       formatter.setLocalizedDateFormatFromTemplate(template)
     }
-    formatter.timeZone = self.timeZone
-    formatter.locale = self.locale
     if let dateStyle = self.dateStyle {
       formatter.dateStyle = dateStyle
     }
