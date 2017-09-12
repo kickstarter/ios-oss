@@ -71,6 +71,9 @@ A collection of operators we like to add to ReactiveCocoa.
 * [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
 * [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
 
+Notices for 3rd party libraries in this repository are contained in
+`NOTICE.md`.
+
 ## Contributing
 
 We intend for this project to be an educational resource: we are excited to
