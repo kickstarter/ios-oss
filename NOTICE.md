@@ -1,5 +1,5 @@
 Kickstarter for iOS is Kickstarter’s open source iOS app.
-Copyright (C) 2016-present Kickstarter, PBC
+Copyright (C) 2016-2017 Kickstarter, PBC
 
 # AlamofireImage
 
