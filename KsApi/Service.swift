@@ -120,6 +120,51 @@ public struct Service: ServiceType {
     return request(.activities(categories: categories, count: count))
   }
 
+  public func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
+    where A == A.DecodedType {
+      return SignalProducer<A, GraphError> { observer, disposable in
+
+        let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
+                                           queryString: Query.build(query))
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+          if let error = error {
+            observer.send(error: .requestError(error, response))
+            return
+          }
+
+          guard let data = data else {
+            observer.send(error: .emptyResponse(response))
+            return
+          }
+
+          guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) else {
+            observer.send(error: .invalidJson(responseString: String(data: data, encoding: .utf8)))
+            return
+          }
+
+          let json = JSON(jsonObject)
+          let decoded = A.decode(json)
+
+          switch decoded {
+          case let .success(value):
+            observer.send(value: value)
+            observer.sendCompleted()
+          case let .failure(error):
+            let jsonString = String(data: data, encoding: .utf8)
+            if let gqlError = GraphQLErrorEnvelope.decode(JSON(jsonObject)).value {
+              observer.send(error: .graphQLError(gqlError))
+            } else {
+              observer.send(error: .argoError(jsonString: jsonString, error))
+            }
+          }
+        }
+
+        disposable.add(task.cancel)
+        task.resume()
+      }
+  }
+
   public func fetchActivities(paginationUrl: String)
     -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
       return requestPagination(paginationUrl)
@@ -296,6 +341,10 @@ public struct Service: ServiceType {
 
   public func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
     return request(.followFriend(userId: id))
+  }
+
+  public func graph<T: Swift.Decodable>(query: Query) -> SignalProducer<T, GraphError> {
+    return fetch(query: query)
   }
 
   public func incrementVideoCompletion(forProject project: Project) ->
@@ -524,6 +573,21 @@ public struct Service: ServiceType {
         uploading: properties.file.map { ($1, $0.rawValue) }
         )
         .flatMap(decodeModel)
+  }
+
+  private func request<M: Swift.Decodable>(query: Query) -> SignalProducer<M, GraphError> {
+
+    guard let URL = URL(string: query.description, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
+      fatalError(
+        "URL(string: \(query.description), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
+      )
+    }
+
+    return Service.session.rac_JSONResponse(
+      preparedRequest(forURL: URL, method: properties.method, query: properties.query),
+      uploading: properties.file.map { ($1, $0.rawValue) }
+      )
+      .flatMap(decodeModel)
   }
 
   private func request<M: Argo.Decodable>(_ route: Route)

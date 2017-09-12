@@ -7,6 +7,7 @@ import Foundation
 public protocol ServerConfigType {
   var apiBaseUrl: URL { get }
   var webBaseUrl: URL { get }
+  var graphQLEndpointUrl: URL { get }
   var apiClientAuth: ClientAuthType { get }
   var basicHTTPAuth: BasicHTTPAuthType? { get }
 }
@@ -23,6 +24,7 @@ public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
 public struct ServerConfig: ServerConfigType {
   public let apiBaseUrl: URL
   public let webBaseUrl: URL
+  public let graphQLEndpointUrl: URL
   public let apiClientAuth: ClientAuthType
   public let basicHTTPAuth: BasicHTTPAuthType?
 

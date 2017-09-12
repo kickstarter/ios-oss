@@ -362,7 +362,7 @@ extension ServiceType {
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
-  fileprivate var defaultHeaders: [String:String] {
+  internal var defaultHeaders: [String:String] {
     var headers: [String:String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
