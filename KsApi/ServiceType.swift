@@ -391,7 +391,6 @@ extension ServiceType {
 
       var request = URLRequest(url: url)
       request.httpMethod = Method.POST.rawValue
-      
       return self.preparedRequest(forRequest: request, queryString: queryString)
   }
 

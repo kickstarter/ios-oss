@@ -501,25 +501,28 @@ public struct Service: ServiceType {
 
   private static let session = URLSession(configuration: .default)
 
-  private func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
-  {
+  private func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
+
       return SignalProducer<A, GraphError> { observer, disposable in
 
         let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                            queryString: Query.build(query))
         let task = URLSession.shared.dataTask(with: request) {  data, response, error in
           if let error = error {
-            observer.send(error: GraphError(errors: [["Error" : error.localizedDescription]])) //.requestError(error, response)
+            //.requestError(error, response)
+            observer.send(error: GraphError(errors: [["Error": error.localizedDescription]]))
             return
           }
 
           guard let data = data else {
-            observer.send(error: GraphError(errors: [["Error" : "Empty response"]])) //.emptyResponse(response)
+            //.emptyResponse(response)
+            observer.send(error: GraphError(errors: [["Error": "Empty response"]]))
             return
           }
 
           guard let decodedObject = try? JSONDecoder().decode(A.self, from: data) else {
-            observer.send(error: GraphError(errors: [["Error" : "Invalid JSON \(data)"]])) //.invalidJson(responseString: String(data: data, encoding: .utf8))
+            //.invalidJson(responseString: String(data: data, encoding: .utf8))
+            observer.send(error: GraphError(errors: [["Error": "Invalid JSON \(response)"]]))
             observer.sendCompleted()
             return
           }
