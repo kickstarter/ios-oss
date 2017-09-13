@@ -12,7 +12,7 @@ private extension Bundle {
 
 /**
  A `ServerType` that requests data from an API webservice.
-*/
+ */
 public struct Service: ServiceType {
   public let appId: String
   public let serverConfig: ServerConfigType
@@ -116,53 +116,8 @@ public struct Service: ServiceType {
       .launch,
       .success,
       .update,
-    ]
+      ]
     return request(.activities(categories: categories, count: count))
-  }
-
-  public func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
-    where A == A.DecodedType {
-      return SignalProducer<A, GraphError> { observer, disposable in
-
-        let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
-                                           queryString: Query.build(query))
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-          if let error = error {
-            observer.send(error: .requestError(error, response))
-            return
-          }
-
-          guard let data = data else {
-            observer.send(error: .emptyResponse(response))
-            return
-          }
-
-          guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) else {
-            observer.send(error: .invalidJson(responseString: String(data: data, encoding: .utf8)))
-            return
-          }
-
-          let json = JSON(jsonObject)
-          let decoded = A.decode(json)
-
-          switch decoded {
-          case let .success(value):
-            observer.send(value: value)
-            observer.sendCompleted()
-          case let .failure(error):
-            let jsonString = String(data: data, encoding: .utf8)
-            if let gqlError = GraphQLErrorEnvelope.decode(JSON(jsonObject)).value {
-              observer.send(error: .graphQLError(gqlError))
-            } else {
-              observer.send(error: .argoError(jsonString: jsonString, error))
-            }
-          }
-        }
-
-        disposable.add(task.cancel)
-        task.resume()
-      }
   }
 
   public func fetchActivities(paginationUrl: String)
@@ -206,13 +161,13 @@ public struct Service: ServiceType {
   public func fetchDiscovery(paginationUrl: String)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
 
-    return requestPagination(paginationUrl)
+      return requestPagination(paginationUrl)
   }
 
   public func fetchDiscovery(params: DiscoveryParams)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
 
-    return request(.discover(params))
+      return request(.discover(params))
   }
 
   public func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
@@ -237,7 +192,7 @@ public struct Service: ServiceType {
 
   public func fetchMessageThread(backing: Backing)
     -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
-    return request(.messagesForBacking(backing))
+      return request(.messagesForBacking(backing))
   }
 
   public func fetchMessageThreads(mailbox: Mailbox, project: Project?)
@@ -306,7 +261,7 @@ public struct Service: ServiceType {
 
   public func fetchUserProjectsBacked(paginationUrl url: String)
     -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestPagination(url)
+      return requestPagination(url)
   }
 
   public func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
@@ -343,7 +298,7 @@ public struct Service: ServiceType {
     return request(.followFriend(userId: id))
   }
 
-  public func graph<T: Swift.Decodable>(query: Query) -> SignalProducer<T, GraphError> {
+  public func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     return fetch(query: query)
   }
 
@@ -380,13 +335,13 @@ public struct Service: ServiceType {
   public func login(email: String, password: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
-    return request(.login(email: email, password: password, code: code))
+      return request(.login(email: email, password: password, code: code))
   }
 
   public func login(facebookAccessToken: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
-    return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
+      return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
   }
 
   public func markAsRead(messageThread: MessageThread)
@@ -403,7 +358,7 @@ public struct Service: ServiceType {
 
   public func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope> {
 
-      return request(.postUpdateComment(update, body: body))
+    return request(.postUpdateComment(update, body: body))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
@@ -446,7 +401,7 @@ public struct Service: ServiceType {
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
-    return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
+      return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
   }
 
   public func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
@@ -505,7 +460,7 @@ public struct Service: ServiceType {
   public func updateProjectNotification(_ notification: ProjectNotification)
     -> SignalProducer<ProjectNotification, ErrorEnvelope> {
 
-    return request(.updateProjectNotification(notification: notification))
+      return request(.updateProjectNotification(notification: notification))
   }
 
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -546,6 +501,36 @@ public struct Service: ServiceType {
 
   private static let session = URLSession(configuration: .default)
 
+  private func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
+  {
+      return SignalProducer<A, GraphError> { observer, disposable in
+
+        let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
+                                           queryString: Query.build(query))
+        let task = URLSession.shared.dataTask(with: request) {  data, response, error in
+          if let error = error {
+            observer.send(error: error as! GraphError) //.requestError(error, response)
+            return
+          }
+
+          guard let data = data else {
+            observer.send(error: error as! GraphError) //.emptyResponse(response)
+            return
+          }
+
+          guard let decodedObject = try? JSONDecoder().decode(A.self, from: data) else {
+            observer.send(error: error as! GraphError) //.invalidJson(responseString: String(data: data, encoding: .utf8))
+            observer.sendCompleted()
+            return
+          }
+          observer.send(value: decodedObject)
+          observer.sendCompleted()
+        }
+         disposable.add(task.cancel)
+         task.resume()
+      }
+  }
+
   private func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
 
@@ -573,21 +558,6 @@ public struct Service: ServiceType {
         uploading: properties.file.map { ($1, $0.rawValue) }
         )
         .flatMap(decodeModel)
-  }
-
-  private func request<M: Swift.Decodable>(query: Query) -> SignalProducer<M, GraphError> {
-
-    guard let URL = URL(string: query.description, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
-      fatalError(
-        "URL(string: \(query.description), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
-      )
-    }
-
-    return Service.session.rac_JSONResponse(
-      preparedRequest(forURL: URL, method: properties.method, query: properties.query),
-      uploading: properties.file.map { ($1, $0.rawValue) }
-      )
-      .flatMap(decodeModel)
   }
 
   private func request<M: Argo.Decodable>(_ route: Route)

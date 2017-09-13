@@ -514,6 +514,10 @@ internal struct MockService: ServiceType {
     )
   }
 
+  internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A : Decodable {
+    return .empty
+  }
+
   internal func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
     if let error = unfollowFriendError {
       return SignalProducer(error: error)

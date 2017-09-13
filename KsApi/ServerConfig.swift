@@ -7,9 +7,9 @@ import Foundation
 public protocol ServerConfigType {
   var apiBaseUrl: URL { get }
   var webBaseUrl: URL { get }
-  var graphQLEndpointUrl: URL { get }
   var apiClientAuth: ClientAuthType { get }
   var basicHTTPAuth: BasicHTTPAuthType? { get }
+  var graphQLEndpointUrl: URL { get }
 }
 
 public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
@@ -18,45 +18,55 @@ public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
     lhs.apiBaseUrl == rhs.apiBaseUrl &&
     lhs.webBaseUrl == rhs.webBaseUrl &&
     lhs.apiClientAuth == rhs.apiClientAuth &&
-    lhs.basicHTTPAuth == rhs.basicHTTPAuth
+    lhs.basicHTTPAuth == rhs.basicHTTPAuth &&
+    lhs.graphQLEndpointUrl == rhs.graphQLEndpointUrl
 }
+
+private let gqlPath = "graph"
 
 public struct ServerConfig: ServerConfigType {
   public let apiBaseUrl: URL
   public let webBaseUrl: URL
-  public let graphQLEndpointUrl: URL
   public let apiClientAuth: ClientAuthType
   public let basicHTTPAuth: BasicHTTPAuthType?
+  public let graphQLEndpointUrl: URL
 
   public static let production: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.production)")!,
     webBaseUrl: URL(string: "https://\(Secrets.WebEndpoint.production)")!,
     apiClientAuth: ClientAuth.production,
-    basicHTTPAuth: nil
+    basicHTTPAuth: nil,
+    graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.production)")!
+      .appendingPathComponent(gqlPath)
   )
 
   public static let staging: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.staging)")!,
     webBaseUrl: URL(string: "https://\(Secrets.WebEndpoint.staging)")!,
     apiClientAuth: ClientAuth.development,
-    basicHTTPAuth: BasicHTTPAuth.development
+    basicHTTPAuth: BasicHTTPAuth.development,
+    graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.staging)")!
+      .appendingPathComponent(gqlPath)
   )
 
   public static let local: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "http://api.ksr.dev")!,
     webBaseUrl: URL(string: "http://ksr.dev")!,
     apiClientAuth: ClientAuth.development,
-    basicHTTPAuth: BasicHTTPAuth.development
+    basicHTTPAuth: BasicHTTPAuth.development,
+    graphQLEndpointUrl: URL(string: "http://ksr.dev")!.appendingPathComponent(gqlPath)
   )
 
   public init(apiBaseUrl: URL,
               webBaseUrl: URL,
               apiClientAuth: ClientAuthType,
-              basicHTTPAuth: BasicHTTPAuthType?) {
+              basicHTTPAuth: BasicHTTPAuthType?,
+              graphQLEndpointUrl: URL) {
 
     self.apiBaseUrl = apiBaseUrl
     self.webBaseUrl = webBaseUrl
     self.apiClientAuth = apiClientAuth
     self.basicHTTPAuth = basicHTTPAuth
+    self.graphQLEndpointUrl = graphQLEndpointUrl
   }
 }
