@@ -184,6 +184,10 @@ public struct Service: ServiceType {
     return request(.friendStats)
   }
 
+  public func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
+    return fetch(query: query)
+  }
+
   public func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
 
@@ -296,10 +300,6 @@ public struct Service: ServiceType {
 
   public func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
     return request(.followFriend(userId: id))
-  }
-
-  public func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
-    return fetch(query: query)
   }
 
   public func incrementVideoCompletion(forProject project: Project) ->
@@ -509,17 +509,17 @@ public struct Service: ServiceType {
                                            queryString: Query.build(query))
         let task = URLSession.shared.dataTask(with: request) {  data, response, error in
           if let error = error {
-            observer.send(error: error as! GraphError) //.requestError(error, response)
+            observer.send(error: GraphError(errors: [["Error" : error.localizedDescription]])) //.requestError(error, response)
             return
           }
 
           guard let data = data else {
-            observer.send(error: error as! GraphError) //.emptyResponse(response)
+            observer.send(error: GraphError(errors: [["Error" : "Empty response"]])) //.emptyResponse(response)
             return
           }
 
           guard let decodedObject = try? JSONDecoder().decode(A.self, from: data) else {
-            observer.send(error: error as! GraphError) //.invalidJson(responseString: String(data: data, encoding: .utf8))
+            observer.send(error: GraphError(errors: [["Error" : "Invalid JSON \(data)"]])) //.invalidJson(responseString: String(data: data, encoding: .utf8))
             observer.sendCompleted()
             return
           }
