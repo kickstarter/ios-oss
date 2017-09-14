@@ -10,6 +10,7 @@ public protocol SettingsViewModelInputs {
   func backingsTapped(selected: Bool)
   func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
+  func creatorTipsTapped(selected: Bool)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func friendActivityTapped(selected: Bool)
@@ -40,6 +41,7 @@ public protocol SettingsViewModelOutputs {
   var betaToolsHidden: Signal<Bool, NoError> { get }
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
+  var creatorTipsSelected: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
@@ -115,6 +117,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       self.mobilePostLikesTappedProperty.signal.map { (.notification(.mobilePostLikes), $0) },
       self.mobileUpdatesTappedProperty.signal.map { (.notification(.mobileUpdates), $0) },
       self.postLikesTappedProperty.signal.map { (.notification(.postLikes), $0) },
+      self.creatorTipsProperty.signal.map { (.notification(.creatorTips), $0) },
       self.updatesTappedProperty.signal.map { (.notification(.updates), $0) }
     ])
 
@@ -188,6 +191,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { $0.newsletters.arts}.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
+    self.creatorTipsSelected = self.updateCurrentUser.map { $0.notifications.creatorTips }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
       .map { $0.notifications.comments }.skipNil().skipRepeats()
     self.followerSelected = self.updateCurrentUser
@@ -243,7 +247,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
                .mobileUpdates:
             AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                      on: on)
-          case .backings, .comments, .follower, .friendActivity, .postLikes, .updates:
+          case .backings, .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
           }
@@ -280,6 +284,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   fileprivate let commentsTappedProperty = MutableProperty(false)
   public func commentsTapped(selected: Bool) {
     self.commentsTappedProperty.value = selected
+  }
+  fileprivate let creatorTipsProperty = MutableProperty(false)
+  public func creatorTipsTapped(selected: Bool) {
+    self.creatorTipsProperty.value = selected
   }
   fileprivate let findFriendsTappedProperty = MutableProperty()
   public func findFriendsTapped() {
@@ -375,6 +383,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let betaToolsHidden: Signal<Bool, NoError>
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
+  public let creatorTipsSelected: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
@@ -435,6 +444,7 @@ private enum UserAttribute {
       case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
+      case .creatorTips:          return User.lens.notifications.creatorTips
       case .updates:              return User.lens.notifications.updates
       }
     }
@@ -453,6 +463,7 @@ private enum Notification {
   case mobilePostLikes
   case mobileUpdates
   case postLikes
+  case creatorTips
   case updates
 
   fileprivate var trackingString: String {
@@ -462,6 +473,7 @@ private enum Notification {
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
     case .postLikes, .mobilePostLikes:              return "New likes"
+    case .creatorTips:                              return "Creator tips"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
   }

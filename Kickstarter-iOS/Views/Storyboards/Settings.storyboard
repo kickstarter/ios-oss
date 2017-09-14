@@ -296,6 +296,9 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="ECd-bg-IL7"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="creatorTipsTapped:" destination="wCS-h4-p7K" eventType="touchUpInside" id="lc9-Gf-3ou"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BqD-b0-u3a">
                                                                 <rect key="frame" x="324" y="0.0" width="44" height="34"/>
@@ -1074,7 +1077,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6wQ-wp-ExX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1495" y="147"/>
+            <point key="canvasLocation" x="1730" y="124"/>
         </scene>
     </scenes>
     <resources>
