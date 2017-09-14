@@ -1,5 +1,11 @@
 import Prelude
 
+/// Graph Response
+
+struct GraphResponse<T: Decodable>: Decodable {
+  let data: T?
+}
+
 /// Base Query Types
 
 extension Never: CustomStringConvertible {
@@ -36,9 +42,24 @@ public func join<Q: QueryType>(_ nodes: NonEmptySet<Q>, _ separator: String = " 
   return join(Array(nodes))
 }
 
+public func decodeBase64(_ input: String) -> String?  {
+  return Data(base64Encoded: input)
+    .flatMap { String(data: $0, encoding: .utf8) }
+}
+
 public struct RelayId {
   let id: String
+
+  public static func decompose(id: String) -> (String, Int)? {
+
+    return decodeBase64(id)
+      .flatMap { id -> (String, Int)? in
+        let pair = id.split(separator: "-", maxSplits: 1)
+        return zip(pair.first.map(String.init), pair.last.flatMap { Int($0) } )
+    }
+  }
 }
+
 extension RelayId: ExpressibleByStringLiteral {
   public init(unicodeScalarLiteral value: String) {
     self.init(id: value)
@@ -80,9 +101,17 @@ public enum Nodes<Q: QueryType> {
   case nodes(NonEmptySet<Q>)
 }
 
-public struct GraphError: Error {
+//public struct GraphError: Error {
+//  let errors: [[String: Any]]
+//}
 
-  let errors: [[String: Any]]
+public typealias GraphResponseError = [[String: Any]]
+
+public enum GraphError: Error {
+  case invalidJson(responseString: String?)
+  case requestError(Error, URLResponse?)
+  case emptyResponse(URLResponse?)
+  case decodeError(GraphResponseError)
 }
 
 public enum Query {
@@ -365,4 +394,11 @@ private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Co
 
 private func _args<T>(_ args: Set<QueryArg<T>>) -> String {
   return !args.isEmpty ? "(\(join(args)))" : ""
+}
+
+public enum Payload {
+
+  public struct Nodes<T: Swift.Decodable>: Swift.Decodable {
+    let nodes: [T]
+  }
 }

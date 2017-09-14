@@ -86,10 +86,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchCategories()
+        AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(starting: { loaderIsVisible.value = true })
-          .map { $0.categories }
+          .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
           .materialize()
       }
 
@@ -211,11 +211,11 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
  - returns: An array of expandable rows with one row expanded.
  */
 private func expandableRows(selectedRow: SelectableRow,
-                            categories: [KsApi.Category]) -> [ExpandableRow] {
+                            categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
 
   let expandableRows = categories
     .sorted { lhs, _ in !lhs.isRoot }
-    .groupedBy { (category: KsApi.Category) -> KsApi.Category in
+    .groupedBy { (category: RootCategoriesEnvelope.Category) -> RootCategoriesEnvelope.Category in
       category.parent ?? category
     }
     .map { rootCategory, rootWithChildren in
@@ -297,7 +297,7 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   return filters
 }
 
-private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
+private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEnvelope.Category])
   -> [SelectableRow]? {
 
   let faves: [SelectableRow] = categories.flatMap { category in
@@ -316,10 +316,48 @@ private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
   return faves.isEmpty ? nil : faves
 }
 
-private func cachedCategories() -> [KsApi.Category]? {
-  return AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] as? [KsApi.Category]
+private func cachedCategories() -> [RootCategoriesEnvelope.Category]? {
+  return AppEnvironment.current
+    .cache[KSCache.ksr_discoveryFiltersCategories] as? [RootCategoriesEnvelope.Category]
 }
 
-private func cache(categories: [KsApi.Category]) {
+private func cache(categories: [RootCategoriesEnvelope.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+}
+
+private let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
+  .id +| [
+    .name,
+    .subcategories(
+      [],
+      .totalCount +| [
+        .nodes(
+          .id +| [
+            .name
+          ]
+        )
+      ]
+    )
+  ]
+  ) +| []
+
+
+fileprivate struct RootCategoriesEnvelope: Swift.Decodable {
+  let rootCategories: [Category]
+
+  struct Category: Swift.Decodable {
+    let id: String
+    let name: String
+    let subcategories: SubcategoryConnection
+
+    struct SubcategoryConnection: Swift.Decodable {
+      let totalCount: Int
+      let nodes: Payload.Nodes<Node>
+
+      struct Node: Swift.Decodable {
+        let id: String
+        let name: String
+      }
+    }
+  }
 }

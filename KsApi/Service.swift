@@ -503,35 +503,32 @@ public struct Service: ServiceType {
 
   private func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
 
-      return SignalProducer<A, GraphError> { observer, disposable in
+    return SignalProducer<A, GraphError> { observer, disposable in
 
-        let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
-                                           queryString: Query.build(query))
-        let task = URLSession.shared.dataTask(with: request) {  data, response, error in
-          if let error = error {
-            //.requestError(error, response)
-            observer.send(error: GraphError(errors: [["Error": error.localizedDescription]]))
-            return
-          }
-
-          guard let data = data else {
-            //.emptyResponse(response)
-            observer.send(error: GraphError(errors: [["Error": "Empty response"]]))
-            return
-          }
-
-          guard let decodedObject = try? JSONDecoder().decode(A.self, from: data) else {
-            //.invalidJson(responseString: String(data: data, encoding: .utf8))
-            observer.send(error: GraphError(errors: [["Error": "Invalid JSON \(response)"]]))
-            observer.sendCompleted()
-            return
-          }
-          observer.send(value: decodedObject)
-          observer.sendCompleted()
+      let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
+                                         queryString: Query.build(query))
+      let task = URLSession.shared.dataTask(with: request) {  data, response, error in
+        if let error = error {
+          observer.send(error: .requestError(error, response))
+          return
         }
-         disposable.add(task.cancel)
-         task.resume()
+
+        guard let data = data else {
+          observer.send(error: .emptyResponse(response))
+          return
+        }
+
+        do {
+          let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
+          observer.send(value: decodedObject.data!)
+        } catch {
+          observer.send(error: .invalidJson(responseString: String(data: data, encoding: .utf8)))
+        }
+        observer.sendCompleted()
       }
+      disposable.add(task.cancel)
+      task.resume()
+    }
   }
 
   private func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
