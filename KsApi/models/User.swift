@@ -42,6 +42,7 @@ public struct User {
     public let mobilePostLikes: Bool?
     public let mobileUpdates: Bool?
     public let postLikes: Bool?
+    public let creatorTips: Bool?
     public let updates: Bool?
   }
 
@@ -183,6 +184,7 @@ extension User.Notifications: Argo.Decodable {
       <*> json <|? "notify_mobile_of_post_likes"
       <*> json <|? "notify_mobile_of_updates"
       <*> json <|? "notify_of_post_likes"
+      <*> json <|? "notify_of_creator_edu"
       <*> json <|? "notify_of_updates"
   }
 }
@@ -195,6 +197,7 @@ extension User.Notifications: EncodableType {
     result["notify_of_follower"] = self.follower
     result["notify_of_friend_activity"] = self.friendActivity
     result["notify_of_post_likes"] = self.postLikes
+    result["notify_of_creator_edu"] = self.creatorTips
     result["notify_of_updates"] = self.updates
     result["notify_mobile_of_backings"] = self.mobileBackings
     result["notify_mobile_of_comments"] = self.mobileComments
@@ -219,6 +222,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.mobilePostLikes == rhs.mobilePostLikes &&
     lhs.mobileUpdates == rhs.mobileUpdates &&
     lhs.postLikes == rhs.postLikes &&
+    lhs.creatorTips == rhs.creatorTips &&
     lhs.updates == rhs.updates
 }
 

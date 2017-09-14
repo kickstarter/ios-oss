@@ -1051,6 +1051,40 @@ backers"
     )
   }
   /**
+   "Creator tips"
+
+   - **es**: "Creator tips"
+   - **ja**: "Creator tips"
+   - **de**: "Creator tips"
+   - **fr**: "Astuces pour créateurs"
+   - **en**: "Creator tips"
+  */
+  public static func Creator_tips() -> String {
+    return localizedString(
+      key: "Creator_tips",
+      defaultValue: "Creator tips",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Daily digest"
+
+   - **es**: "Daily digest"
+   - **ja**: "Daily digest"
+   - **de**: "Daily digest"
+   - **fr**: "Résumé quotidien"
+   - **en**: "Daily digest"
+  */
+  public static func Daily_digest() -> String {
+    return localizedString(
+      key: "Daily_digest",
+      defaultValue: "Daily digest",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Delivered"
 
    - **es**: "Entregado"
@@ -1148,6 +1182,23 @@ backers"
     return localizedString(
       key: "Either_the_pledge_or_the_project_was_canceled",
       defaultValue: "Either the pledge or the project was canceled before the deadline.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Email frequency"
+
+   - **es**: "Email frequency"
+   - **ja**: "Email frequency"
+   - **de**: "Email frequency"
+   - **fr**: "Fréquence d'envoi des e-mails"
+   - **en**: "Email frequency"
+  */
+  public static func Email_frequency() -> String {
+    return localizedString(
+      key: "Email_frequency",
+      defaultValue: "Email frequency",
       count: nil,
       substitutions: [:]
     )
@@ -1360,7 +1411,7 @@ backers"
    "Filter by projects we love"
 
    - **es**: "Filtro: Nuestros favoritos"
-   - **ja**: "素敵なプロジェクトに絞る"
+   - **ja**: "Project We Love に絞る"
    - **de**: "Filter: Team-Favoriten"
    - **fr**: "Filtrer : Coups de cœur"
    - **en**: "Filter by projects we love"
@@ -2054,6 +2105,23 @@ backers"
     )
   }
   /**
+   "Individual emails"
+
+   - **es**: "Individual emails"
+   - **ja**: "Individual emails"
+   - **de**: "Individual emails"
+   - **fr**: "E-mails individuels"
+   - **en**: "Individual emails"
+  */
+  public static func Individual_Emails() -> String {
+    return localizedString(
+      key: "Individual_Emails",
+      defaultValue: "Individual emails",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Info"
 
    - **es**: "Información"
@@ -2563,6 +2631,23 @@ with friends."
       defaultValue: "Message %{user_name}…",
       count: nil,
       substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "New pledge activity"
+
+   - **es**: "New pledge activity"
+   - **ja**: "New pledge activity"
+   - **de**: "New pledge activity"
+   - **fr**: "Nouveaux engagements"
+   - **en**: "New pledge activity"
+  */
+  public static func New_pledge_activity() -> String {
+    return localizedString(
+      key: "New_pledge_activity",
+      defaultValue: "New pledge activity",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -3337,7 +3422,7 @@ from friends yet."
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "素敵なプロジェクト"
+   - **ja**: "Projects We Love"
    - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -3346,6 +3431,23 @@ from friends yet."
     return localizedString(
       key: "Projects_We_Love",
       defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Projects you've launched"
+
+   - **es**: "Projects you've launched"
+   - **ja**: "Projects you've launched"
+   - **de**: "Projects you've launched"
+   - **fr**: "Les projets que vous avez lancés"
+   - **en**: "Projects you've launched"
+  */
+  public static func Projects_youve_launched() -> String {
+    return localizedString(
+      key: "Projects_youve_launched",
+      defaultValue: "Projects you've launched",
       count: nil,
       substitutions: [:]
     )
@@ -10165,7 +10267,7 @@ Please try again later."
    "Converted from %{pledged} pledged of %{goal} goal."
 
    - **es**: "Conversión: %{pledged} de la meta de %{goal}."
-   - **ja**: "%{pledged} から変更され、%{goal} 達成。"
+   - **ja**: "%{goal}のゴールに対し%{pledged}達成"
    - **de**: "Umgerechneter Betrag: %{pledged} von %{goal} (Fianzierungsziel)."
    - **fr**: "Conversion de %{pledged} engagés pour un objectif de %{goal}"
    - **en**: "Converted from %{pledged} pledged of %{goal} goal."
@@ -14043,7 +14145,7 @@ Let's change that!"
    - **es**: "Novedades sobre Arte & Cultura"
    - **ja**: "アート＆カルチャー"
    - **de**: "Kunst & Kultur News"
-   - **fr**: "Arts & Culture News"
+   - **fr**: "Actualités art et culture"
    - **en**: "Arts & Culture News"
   */
   public static func profile_settings_newsletter_arts() -> String {
@@ -14094,7 +14196,7 @@ Let's change that!"
    - **es**: "Invenciones"
    - **ja**: "インベント"
    - **de**: "Kreativ & Erfinderisch"
-   - **fr**: "Invent"
+   - **fr**: "Inventions"
    - **en**: "Invent"
   */
   public static func profile_settings_newsletter_invent() -> String {
@@ -14177,7 +14279,7 @@ Let's change that!"
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "素敵なプロジェクト"
+   - **ja**: "Projects We Love"
    - **de**: "Unsere Lieblingsprojekte"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -16191,7 +16293,7 @@ backed"
 
    - **es**: "%{projects_count}
 patrocinados"
-   - **ja**: "%{projects_count} 個のプロジェクトをバック"
+   - **ja**: "%{projects_count} \n個のプロジェクトをバック"
    - **de**: "%{projects_count}
 unterstützt"
    - **fr**: "%{projects_count}
