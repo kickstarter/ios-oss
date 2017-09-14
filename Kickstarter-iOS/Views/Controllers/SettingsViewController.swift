@@ -178,11 +178,11 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.creatorNotificationsTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
+      |> UILabel.lens.text %~ { _ in Strings.Projects_youve_launched() }
 
     _ = self.creatorTips
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Creator tips" }
+      |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
