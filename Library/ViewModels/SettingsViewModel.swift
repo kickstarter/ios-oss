@@ -191,7 +191,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { $0.newsletters.arts}.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
-    self.creatorTipsSelected = self.updateCurrentUser.map { $0.notifications.creatorTips }.skipNil().skipRepeats()
+    self.creatorTipsSelected = self.updateCurrentUser
+      .map { $0.notifications.creatorTips }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
       .map { $0.notifications.comments }.skipNil().skipRepeats()
     self.followerSelected = self.updateCurrentUser

@@ -8,7 +8,8 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $1.updates) }
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips,
+        updates: $1.updates) }
     )
 
     public static let comments = Lens<User.Notifications, Bool?>(
@@ -73,7 +74,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $0, mobileComments: $1.mobileComments,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        creatorTips: $1.creatorTips,updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates) }
     )
 
     public static let mobileComments = Lens<User.Notifications, Bool?>(
