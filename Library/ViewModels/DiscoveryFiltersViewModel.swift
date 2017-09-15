@@ -293,8 +293,8 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
       AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(idTuple.1) {
 
       return SelectableRow(
-        isSelected: false,//category == selectedRow.params.category,
-        params: .defaults //|> DiscoveryParams.lens.category .~ category
+        isSelected: false,
+        params: .defaults
       )
     } else {
       return nil
