@@ -893,7 +893,6 @@
 		D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
-		D65C43CC1F6C6B6A003067CE /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C43CB1F6C6B6A003067CE /* RootCategory.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
@@ -2406,7 +2405,6 @@
 		D0FD4CC41E2642EB00488660 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		D65C43CB1F6C6B6A003067CE /* RootCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategory.swift; sourceTree = "<group>"; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
@@ -3711,7 +3709,6 @@
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
-				D65C43CB1F6C6B6A003067CE /* RootCategory.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -5556,7 +5553,6 @@
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
-				D65C43CC1F6C6B6A003067CE /* RootCategory.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,

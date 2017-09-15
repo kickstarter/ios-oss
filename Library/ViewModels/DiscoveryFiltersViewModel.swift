@@ -216,7 +216,7 @@ private func expandableRows(selectedRow: SelectableRow,
       ExpandableRow(isExpanded: false,
                     params: .defaults,
                     selectableRows: $0.subcategories.nodes
-                      .map { childCategory in
+                      .map { _ in
                         SelectableRow(isSelected: false,
                                       params: .defaults)
       })
@@ -329,7 +329,7 @@ private let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
   ]
   ) +| []
 
-fileprivate struct RootCategoriesEnvelope: Swift.Decodable {
+private struct RootCategoriesEnvelope: Swift.Decodable {
   let rootCategories: [Category]
 
    struct Category: Swift.Decodable {
@@ -348,4 +348,3 @@ fileprivate struct RootCategoriesEnvelope: Swift.Decodable {
     }
   }
 }
-
