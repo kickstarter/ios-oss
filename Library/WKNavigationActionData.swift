@@ -2,10 +2,10 @@
   import WebKit
 
   public struct WKNavigationActionData {
-    public let navigationAction: WKNavigationAction
-    public let navigationType: WKNavigationType
-    public let request: URLRequest
-    public let targetFrame: WKFrameInfoData?
+    public fileprivate(set) var navigationAction: WKNavigationAction
+    public fileprivate(set) var navigationType: WKNavigationType
+    public fileprivate(set) var request: URLRequest
+    public fileprivate(set) var targetFrame: WKFrameInfoData?
 
     public init(navigationAction: WKNavigationAction) {
       self.navigationAction = navigationAction
@@ -26,8 +26,8 @@
   }
 
   public struct WKFrameInfoData {
-    public let frameInfo: WKFrameInfo
-    public let mainFrame: Bool
+    public fileprivate(set) var frameInfo: WKFrameInfo
+    public fileprivate(set) var mainFrame: Bool
 
     public init(frameInfo: WKFrameInfo) {
       self.frameInfo = frameInfo
