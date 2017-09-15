@@ -23,18 +23,6 @@ struct ProjectEnvelope: Decodable {
   }
 }
 
-let value = decodeBase64("Q2F0ZWdvcnktMQ==")
-  .flatMap { id -> (String, Int)? in
-    let pair = id.split(separator: "-", maxSplits: 1)
-    return zip(pair.first.map(String.init), pair.last.flatMap { Int($0) } )
-}
-
-value?.0
-value?.1
-//
-//let split = id?.split(separator: "-").map {
-//  (split![0], Int(split![1])!)
-//}
 
 let client = Service()
 let signal: SignalProducer<ProjectEnvelope, GraphError> =

@@ -86,7 +86,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery )
+        AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(starting: { loaderIsVisible.value = true })
           .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
@@ -212,46 +212,29 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
  */
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
-
-  let expandableRows = categories
-    .sorted { lhs, _ in !lhs.isRoot }
-    .groupedBy { (category: RootCategoriesEnvelope.Category) -> RootCategoriesEnvelope.Category in
-      category.parent ?? category
-    }
-    .map { rootCategory, rootWithChildren in
-      ExpandableRow(
-        isExpanded: false,
-        params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
-        selectableRows: rootWithChildren
-          .sorted()
-          .map { childCategory in
-            SelectableRow(
-              isSelected: childCategory == selectedRow.params.category,
-              params: .defaults |> DiscoveryParams.lens.category .~ childCategory
-            )
-          }
-      )
-    }
-    .sorted { lhs, rhs in
-      guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
-        return lhs.params.category == nil
-      }
-      return lhsCategory < rhsCategory
+  let expandableRows = categories.map {
+      ExpandableRow(isExpanded: false,
+                    params: .defaults,
+                    selectableRows: $0.subcategories.nodes
+                      .map { childCategory in
+                        SelectableRow(isSelected: false,
+                                      params: .defaults)
+      })
   }
 
   return expandableRows.map { expandableRow in
-    return expandableRow
-      |> ExpandableRow.lens.isExpanded .~
-      expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
-      |> ExpandableRow.lens.selectableRows .~
-      expandableRow.selectableRows.sorted { lhs, rhs in
-        guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
-          lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
-          return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+        return expandableRow
+          |> ExpandableRow.lens.isExpanded .~
+          expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
+          |> ExpandableRow.lens.selectableRows .~
+          expandableRow.selectableRows.sorted { lhs, rhs in
+            guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
+              lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+              return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+            }
+            return lhsName < rhsName
         }
-        return lhsName < rhsName
-    }
-  }
+      }
 }
 
 /**
@@ -301,12 +284,17 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
   -> [SelectableRow]? {
 
   let faves: [SelectableRow] = categories.flatMap { category in
-    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(category.id) ||
-      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(category.id) {
+
+    guard let idTuple = decompose(id: category.id) else {
+      return nil
+    }
+
+    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(idTuple.1) ||
+      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(idTuple.1) {
 
       return SelectableRow(
-        isSelected: category == selectedRow.params.category,
-        params: .defaults |> DiscoveryParams.lens.category .~ category
+        isSelected: false,//category == selectedRow.params.category,
+        params: .defaults //|> DiscoveryParams.lens.category .~ category
       )
     } else {
       return nil
@@ -341,18 +329,17 @@ private let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
   ]
   ) +| []
 
-
 fileprivate struct RootCategoriesEnvelope: Swift.Decodable {
   let rootCategories: [Category]
 
-  struct Category: Swift.Decodable {
+   struct Category: Swift.Decodable {
     let id: String
     let name: String
     let subcategories: SubcategoryConnection
 
-    struct SubcategoryConnection: Swift.Decodable {
+     struct SubcategoryConnection: Swift.Decodable {
       let totalCount: Int
-      let nodes: Payload.Nodes<Node>
+      let nodes: [Node]
 
       struct Node: Swift.Decodable {
         let id: String
@@ -361,3 +348,4 @@ fileprivate struct RootCategoriesEnvelope: Swift.Decodable {
     }
   }
 }
+

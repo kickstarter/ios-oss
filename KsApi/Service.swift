@@ -520,9 +520,13 @@ public struct Service: ServiceType {
 
         do {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
-          observer.send(value: decodedObject.data!)
-        } catch {
-          observer.send(error: .invalidJson(responseString: String(data: data, encoding: .utf8)))
+          print(decodedObject)
+          if let value = decodedObject.data {
+            observer.send(value: value)
+          }
+        } catch let error {
+          observer.send(error: .jsonDecodingError(responseString: String(data: data, encoding: .utf8),
+                                                  error: error))
         }
         observer.sendCompleted()
       }

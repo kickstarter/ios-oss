@@ -42,22 +42,22 @@ public func join<Q: QueryType>(_ nodes: NonEmptySet<Q>, _ separator: String = " 
   return join(Array(nodes))
 }
 
-public func decodeBase64(_ input: String) -> String?  {
+public func decodeBase64(_ input: String) -> String? {
   return Data(base64Encoded: input)
     .flatMap { String(data: $0, encoding: .utf8) }
 }
 
-public struct RelayId {
-  let id: String
+public func decompose(id: String) -> (String, Int)? {
 
-  public static func decompose(id: String) -> (String, Int)? {
-
-    return decodeBase64(id)
-      .flatMap { id -> (String, Int)? in
-        let pair = id.split(separator: "-", maxSplits: 1)
-        return zip(pair.first.map(String.init), pair.last.flatMap { Int($0) } )
-    }
+  return decodeBase64(id)
+    .flatMap { id -> (String, Int)? in
+      let pair = id.split(separator: "-", maxSplits: 1)
+      return zip(pair.first.map(String.init), pair.last.flatMap { Int($0) })
   }
+}
+
+public struct RelayId: Swift.Decodable {
+  let id: String
 }
 
 extension RelayId: ExpressibleByStringLiteral {
@@ -112,6 +112,7 @@ public enum GraphError: Error {
   case requestError(Error, URLResponse?)
   case emptyResponse(URLResponse?)
   case decodeError(GraphResponseError)
+  case jsonDecodingError(responseString: String?, error: Error?)
 }
 
 public enum Query {
@@ -203,7 +204,7 @@ extension Query: QueryType {
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
-      return ""
+      return "rootCategories { \(join(fields)) }"
     }
   }
 }
@@ -394,11 +395,4 @@ private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Co
 
 private func _args<T>(_ args: Set<QueryArg<T>>) -> String {
   return !args.isEmpty ? "(\(join(args)))" : ""
-}
-
-public enum Payload {
-
-  public struct Nodes<T: Swift.Decodable>: Swift.Decodable {
-    let nodes: [T]
-  }
 }
