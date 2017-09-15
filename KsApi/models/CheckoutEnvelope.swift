@@ -9,8 +9,8 @@ public struct CheckoutEnvelope {
     case successful
     case verifying
   }
-  public let state: State
-  public let stateReason: String
+  public private(set) var state: State
+  public private(set) var stateReason: String
 }
 
 extension CheckoutEnvelope: Argo.Decodable {

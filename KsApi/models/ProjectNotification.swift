@@ -4,14 +4,14 @@ import Runes
 import Foundation
 
 public struct ProjectNotification {
-  public let email: Bool
-  public let id: Int
-  public let mobile: Bool
-  public let project: Project
+  public private(set) var email: Bool
+  public private(set) var id: Int
+  public private(set) var mobile: Bool
+  public private(set) var project: Project
 
   public struct Project {
-    public let id: Int
-    public let name: String
+    public private(set) var id: Int
+    public private(set) var name: String
   }
 }
 

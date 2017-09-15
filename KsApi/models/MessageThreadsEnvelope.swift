@@ -3,14 +3,14 @@ import Curry
 import Runes
 
 public struct MessageThreadsEnvelope {
-  public let messageThreads: [MessageThread]
-  public let urls: UrlsEnvelope
+  public private(set) var messageThreads: [MessageThread]
+  public private(set) var urls: UrlsEnvelope
 
   public struct UrlsEnvelope {
-    public let api: ApiEnvelope
+    public private(set) var api: ApiEnvelope
 
     public struct ApiEnvelope {
-      public let moreMessageThreads: String
+      public private(set) var moreMessageThreads: String
     }
   }
 }

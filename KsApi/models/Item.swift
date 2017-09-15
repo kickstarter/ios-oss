@@ -3,10 +3,10 @@ import Curry
 import Runes
 
 public struct Item {
-  public let description: String?
-  public let id: Int
-  public let name: String
-  public let projectId: Int
+  public private(set) var description: String?
+  public private(set) var id: Int
+  public private(set) var name: String
+  public private(set) var projectId: Int
 }
 
 extension Item: Argo.Decodable {

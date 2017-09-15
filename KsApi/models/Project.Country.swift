@@ -4,12 +4,12 @@ import Runes
 
 extension Project {
   public struct Country {
-    public let countryCode: String
-    public let currencyCode: String
-    public let currencySymbol: String
-    public let maxPledge: Int?
-    public let minPledge: Int?
-    public let trailingCode: Bool
+    public private(set) var countryCode: String
+    public private(set) var currencyCode: String
+    public private(set) var currencySymbol: String
+    public private(set) var maxPledge: Int?
+    public private(set) var minPledge: Int?
+    public private(set) var trailingCode: Bool
 
     // swiftlint:disable line_length
     // swiftlint:disable comma

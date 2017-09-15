@@ -3,7 +3,7 @@ import Curry
 import Runes
 
 public struct CategoriesEnvelope {
-  public let categories: [Category]
+  public private(set) var categories: [Category]
 }
 
 extension CategoriesEnvelope: Argo.Decodable {

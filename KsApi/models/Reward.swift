@@ -4,18 +4,18 @@ import Runes
 import Prelude
 
 public struct Reward {
-  public let backersCount: Int?
-  public let description: String
-  public let endsAt: TimeInterval?
-  public let estimatedDeliveryOn: TimeInterval?
-  public let id: Int
-  public let limit: Int?
-  public let minimum: Int
-  public let remaining: Int?
-  public let rewardsItems: [RewardsItem]
-  public let shipping: Shipping
-  public let startsAt: TimeInterval?
-  public let title: String?
+  public private(set) var backersCount: Int?
+  public private(set) var description: String
+  public private(set) var endsAt: TimeInterval?
+  public private(set) var estimatedDeliveryOn: TimeInterval?
+  public private(set) var id: Int
+  public private(set) var limit: Int?
+  public private(set) var minimum: Int
+  public private(set) var remaining: Int?
+  public private(set) var rewardsItems: [RewardsItem]
+  public private(set) var shipping: Shipping
+  public private(set) var startsAt: TimeInterval?
+  public private(set) var title: String?
 
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
@@ -23,9 +23,9 @@ public struct Reward {
   }
 
   public struct Shipping {
-    public let enabled: Bool
-    public let preference: Preference?
-    public let summary: String?
+    public private(set) var enabled: Bool
+    public private(set) var preference: Preference?
+    public private(set) var summary: String?
 
     public enum Preference: String {
       case none
