@@ -57,7 +57,6 @@ public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
 
   return indicator
-    |> UIActivityIndicatorView.lens.animating .~ true
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
     |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
     |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900

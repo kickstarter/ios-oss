@@ -316,7 +316,7 @@ RewardPledgeViewModelOutputs {
 
     self.countryLabelText = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(""),
-      selectedShipping.skipNil().map { $0.location.displayableName }
+      selectedShipping.skipNil().map { $0.location.localizedName }
     )
 
     let shippingAmount = Signal.combineLatest(

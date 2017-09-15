@@ -32,7 +32,9 @@ internal final class ProjectUpdatesViewController: WebViewController {
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
-    _ = self.activityIndicator |> baseActivityIndicatorStyle
+    _ = self.activityIndicator
+      |> baseActivityIndicatorStyle
+      |> UIActivityIndicatorView.lens.animating .~ true
 
     self.navigationItem.title = Strings.project_menu_buttons_updates()
   }

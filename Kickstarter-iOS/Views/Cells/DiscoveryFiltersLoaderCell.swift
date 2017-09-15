@@ -13,5 +13,6 @@ internal final class DiscoveryFiltersLoaderCell: UITableViewCell, ValueCell {
 
     _ = self.activityIndicator
       |> baseActivityIndicatorStyle
+      |> UIActivityIndicatorView.lens.animating .~ true
   }
 }
