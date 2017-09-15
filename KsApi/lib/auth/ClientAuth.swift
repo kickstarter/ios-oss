@@ -11,7 +11,7 @@ public func == (lhs: ClientAuthType, rhs: ClientAuthType) -> Bool {
 }
 
 public struct ClientAuth: ClientAuthType {
-  public let clientId: String
+  public fileprivate(set) var clientId: String
 
   public init(clientId: String) {
     self.clientId = clientId

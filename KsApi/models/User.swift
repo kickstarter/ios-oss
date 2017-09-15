@@ -3,56 +3,56 @@ import Curry
 import Runes
 
 public struct User {
-  public let avatar: Avatar
-  public let facebookConnected: Bool?
-  public let id: Int
-  public let isFriend: Bool?
-  public let liveAuthToken: String?
-  public let location: Location?
-  public let name: String
-  public let newsletters: NewsletterSubscriptions
-  public let notifications: Notifications
-  public let social: Bool?
-  public let stats: Stats
+  public private(set) var avatar: Avatar
+  public private(set) var facebookConnected: Bool?
+  public private(set) var id: Int
+  public private(set) var isFriend: Bool?
+  public private(set) var liveAuthToken: String?
+  public private(set) var location: Location?
+  public private(set) var name: String
+  public private(set) var newsletters: NewsletterSubscriptions
+  public private(set) var notifications: Notifications
+  public private(set) var social: Bool?
+  public private(set) var stats: Stats
 
   public struct Avatar {
-    public let large: String?
-    public let medium: String
-    public let small: String
+    public private(set) var large: String?
+    public private(set) var medium: String
+    public private(set) var small: String
   }
 
   public struct NewsletterSubscriptions {
-    public let arts: Bool?
-    public let games: Bool?
-    public let happening: Bool?
-    public let invent: Bool?
-    public let promo: Bool?
-    public let weekly: Bool?
+    public private(set) var arts: Bool?
+    public private(set) var games: Bool?
+    public private(set) var happening: Bool?
+    public private(set) var invent: Bool?
+    public private(set) var promo: Bool?
+    public private(set) var weekly: Bool?
   }
 
   public struct Notifications {
-    public let backings: Bool?
-    public let comments: Bool?
-    public let follower: Bool?
-    public let friendActivity: Bool?
-    public let mobileBackings: Bool?
-    public let mobileComments: Bool?
-    public let mobileFollower: Bool?
-    public let mobileFriendActivity: Bool?
-    public let mobilePostLikes: Bool?
-    public let mobileUpdates: Bool?
-    public let postLikes: Bool?
-    public let creatorTips: Bool?
-    public let updates: Bool?
+    public private(set) var backings: Bool?
+    public private(set) var comments: Bool?
+    public private(set) var follower: Bool?
+    public private(set) var friendActivity: Bool?
+    public private(set) var mobileBackings: Bool?
+    public private(set) var mobileComments: Bool?
+    public private(set) var mobileFollower: Bool?
+    public private(set) var mobileFriendActivity: Bool?
+    public private(set) var mobilePostLikes: Bool?
+    public private(set) var mobileUpdates: Bool?
+    public private(set) var postLikes: Bool?
+    public private(set) var creatorTips: Bool?
+    public private(set) var updates: Bool?
   }
 
   public struct Stats {
-    public let backedProjectsCount: Int?
-    public let createdProjectsCount: Int?
-    public let memberProjectsCount: Int?
-    public let starredProjectsCount: Int?
-    public let unansweredSurveysCount: Int?
-    public let unreadMessagesCount: Int?
+    public private(set) var backedProjectsCount: Int?
+    public private(set) var createdProjectsCount: Int?
+    public private(set) var memberProjectsCount: Int?
+    public private(set) var starredProjectsCount: Int?
+    public private(set) var unansweredSurveysCount: Int?
+    public private(set) var unreadMessagesCount: Int?
   }
 
   public var isCreator: Bool {

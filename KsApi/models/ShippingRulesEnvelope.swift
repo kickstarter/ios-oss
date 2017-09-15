@@ -3,7 +3,7 @@ import Curry
 import Runes
 
 public struct ShippingRulesEnvelope {
-  public let shippingRules: [ShippingRule]
+  public fileprivate(set) var shippingRules: [ShippingRule]
 }
 
 extension ShippingRulesEnvelope: Argo.Decodable {
