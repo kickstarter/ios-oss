@@ -33,8 +33,8 @@ extension BasicHTTPAuthType {
 }
 
 public struct BasicHTTPAuth: BasicHTTPAuthType {
-  public let username: String
-  public let password: String
+  public fileprivate(set) var username: String
+  public fileprivate(set) var password: String
 
   public static let development: BasicHTTPAuthType = BasicHTTPAuth(
     username: Secrets.BasicHTTPAuth.username,

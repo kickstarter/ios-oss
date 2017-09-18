@@ -3,8 +3,8 @@ import Curry
 import Runes
 
 public struct AccessTokenEnvelope {
-  public let accessToken: String
-  public let user: User
+  public private(set) var accessToken: String
+  public private(set) var user: User
 }
 
 extension AccessTokenEnvelope: Argo.Decodable {

@@ -3,16 +3,16 @@ import Curry
 import Runes
 
 public struct SurveyResponse {
-  public let answeredAt: TimeInterval?
-  public let id: Int
-  public let project: Project?
-  public let urls: UrlsEnvelope
+  public private(set) var answeredAt: TimeInterval?
+  public private(set) var id: Int
+  public private(set) var project: Project?
+  public private(set) var urls: UrlsEnvelope
 
   public struct UrlsEnvelope {
-    public let web: WebEnvelope
+    public private(set) var web: WebEnvelope
 
     public struct WebEnvelope {
-      public let survey: String
+      public private(set) var survey: String
     }
   }
 }

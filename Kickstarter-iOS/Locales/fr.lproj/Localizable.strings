@@ -63,12 +63,15 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> était en direct %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} était en direct sur Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
+"Creator_tips" = "Astuces pour créateurs";
+"Daily_digest" = "Résumé quotidien";
 "Delivered" = "Distribué";
 "Discover_more_projects" = "Découvrez plus de projets.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
 "Earth" = "Terre";
 "Either_the_pledge_or_the_project_was_canceled" = "Soit l'engagement soit le projet a été annulé avant la date limite.";
+"Email_frequency" = "Fréquence d'envoi des e-mails";
 "Email_notifications" = "Notifications par e-mail";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Estimated_delivery" = "Livraison prévue :";
@@ -126,6 +129,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Home" = "Accueil";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
+"Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
@@ -160,6 +164,7 @@
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
 "Message_user_name" = "Envoyer un message à %{user_name}";
+"New_pledge_activity" = "Nouveaux engagements";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
 "No_messages" = "Pas de messages";
@@ -206,6 +211,7 @@
 "Project_cancelled" = "Projet annulé";
 "Project_saved" = "Projet enregistré.";
 "Projects_We_Love" = "Nos coups de cœur";
+"Projects_youve_launched" = "Les projets que vous avez lancés";
 "Public_comment" = "Commentaire public";
 "Pursue_daring_ideas" = "Des idées audacieuses.";
 "Push_notifications" = "Notifications push";
@@ -1004,10 +1010,10 @@
 "profile.settings.logout_alert.title" = "Déconnexion";
 "profile.settings.navbar_title" = "Paramètres";
 "profile.settings.navbar_title_notifications" = "Notifications";
-"profile.settings.newsletter.arts" = "Arts & Culture News";
+"profile.settings.newsletter.arts" = "Actualités art et culture";
 "profile.settings.newsletter.games" = "Kickstarter aime les jeux";
 "profile.settings.newsletter.happening" = "Happening";
-"profile.settings.newsletter.invent" = "Invent";
+"profile.settings.newsletter.invent" = "Inventions";
 "profile.settings.newsletter.opt_in.message" = "Nous vous avons envoyé un e-mail de confirmation à l'adresse associée à votre compte ! Veuillez ouvrir votre boîte de réception et confirmer votre abonnement à %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "Dernière étape !";
 "profile.settings.newsletter.promo" = "Nouvelles et évènements Kickstarter";
