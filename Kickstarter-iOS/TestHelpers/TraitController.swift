@@ -4,6 +4,7 @@ internal enum Device {
   case phone4inch
   case phone4_7inch
   case phone5_5inch
+  case phone5_8inch
   case pad
 }
 
@@ -66,6 +67,20 @@ internal func traitControllers(device: Device = .phone4_7inch,
       parent.view.frame = .init(x: 0, y: 0, width: 736, height: 414)
       traits = .init(traitsFrom: [
         .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .compact),
+        .init(userInterfaceIdiom: .phone)
+        ])
+    case (.phone5_8inch, .portrait):
+      parent.view.frame = .init(x: 0, y: 0, width: 375, height: 812)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .compact),
+        .init(verticalSizeClass: .regular),
+        .init(userInterfaceIdiom: .phone)
+        ])
+    case (.phone5_8inch, .landscape):
+      parent.view.frame = .init(x: 0, y: 0, width: 812, height: 375)
+      traits = .init(traitsFrom: [
+        .init(horizontalSizeClass: .compact),
         .init(verticalSizeClass: .compact),
         .init(userInterfaceIdiom: .phone)
         ])
