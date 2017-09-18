@@ -3,19 +3,19 @@ import Curry
 import Runes
 
 public struct Backing {
-  public private(set) var amount: Int
-  public private(set) var backer: User?
-  public private(set) var backerId: Int
-  public private(set) var id: Int
-  public private(set) var locationId: Int?
-  public private(set) var pledgedAt: TimeInterval
-  public private(set) var projectCountry: String
-  public private(set) var projectId: Int
-  public private(set) var reward: Reward?
-  public private(set) var rewardId: Int?
-  public private(set) var sequence: Int
-  public private(set) var shippingAmount: Int?
-  public private(set) var status: Status
+  public let amount: Int
+  public let backer: User?
+  public let backerId: Int
+  public let id: Int
+  public let locationId: Int?
+  public let pledgedAt: TimeInterval
+  public let projectCountry: String
+  public let projectId: Int
+  public let reward: Reward?
+  public let rewardId: Int?
+  public let sequence: Int
+  public let shippingAmount: Int?
+  public let status: Status
 
   public enum Status: String {
     case canceled

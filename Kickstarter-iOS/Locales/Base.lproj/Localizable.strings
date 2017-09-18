@@ -63,15 +63,12 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> was live %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} was streaming live on Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
-"Creator_tips" = "Creator tips";
-"Daily_digest" = "Daily digest";
 "Delivered" = "Delivered";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
 "Earth" = "Earth";
 "Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
-"Email_frequency" = "Email frequency";
 "Email_notifications" = "Email notifications";
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
@@ -129,7 +126,6 @@
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
-"Individual_Emails" = "Individual emails";
 "Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
@@ -164,7 +160,6 @@
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
-"New_pledge_activity" = "New pledge activity";
 "No_Results" = "No Results";
 "No_comments_yet" = "No comments yet.";
 "No_messages" = "No messages";
@@ -211,7 +206,6 @@
 "Project_cancelled" = "Project cancelled";
 "Project_saved" = "Project saved.";
 "Projects_We_Love" = "Projects We Love";
-"Projects_youve_launched" = "Projects you've launched";
 "Public_comment" = "Public comment";
 "Pursue_daring_ideas" = "Pursue\ndaring ideas.";
 "Push_notifications" = "Push notifications";

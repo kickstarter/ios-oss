@@ -3,15 +3,15 @@ import Curry
 import Runes
 
 public struct Config {
-  public private(set) var abExperiments: [String:String]
-  public private(set) var appId: Int
-  public private(set) var applePayCountries: [String]
-  public private(set) var countryCode: String
-  public private(set) var features: [String:Bool]
-  public private(set) var iTunesLink: String
-  public private(set) var launchedCountries: [Project.Country]
-  public private(set) var locale: String
-  public private(set) var stripePublishableKey: String
+  public let abExperiments: [String:String]
+  public let appId: Int
+  public let applePayCountries: [String]
+  public let countryCode: String
+  public let features: [String:Bool]
+  public let iTunesLink: String
+  public let launchedCountries: [Project.Country]
+  public let locale: String
+  public let stripePublishableKey: String
 }
 
 extension Config: Argo.Decodable {

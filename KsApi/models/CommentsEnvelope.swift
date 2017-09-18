@@ -3,14 +3,14 @@ import Curry
 import Runes
 
 public struct CommentsEnvelope {
-  public private(set) var comments: [Comment]
-  public private(set) var urls: UrlsEnvelope
+  public let comments: [Comment]
+  public let urls: UrlsEnvelope
 
   public struct UrlsEnvelope {
-    public private(set) var api: ApiEnvelope
+    public let api: ApiEnvelope
 
     public struct ApiEnvelope {
-      public private(set) var moreComments: String
+      public let moreComments: String
     }
   }
 }

@@ -8,10 +8,10 @@ import Result
 import UserNotifications
 
 public struct HockeyConfigData {
-  public fileprivate(set) var appIdentifier: String
-  public fileprivate(set) var disableUpdates: Bool
-  public fileprivate(set) var userId: String
-  public fileprivate(set) var userName: String
+  public let appIdentifier: String
+  public let disableUpdates: Bool
+  public let userId: String
+  public let userName: String
 }
 
 extension HockeyConfigData: Equatable {}

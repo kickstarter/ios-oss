@@ -3,35 +3,35 @@ import Curry
 import Runes
 
 public struct ProjectStatsEnvelope {
-  public private(set) var cumulativeStats: CumulativeStats
-  public private(set) var fundingDistribution: [FundingDateStats]
-  public private(set) var referralDistribution: [ReferrerStats]
-  public private(set) var rewardDistribution: [RewardStats]
-  public private(set) var videoStats: VideoStats?
+  public let cumulativeStats: CumulativeStats
+  public let fundingDistribution: [FundingDateStats]
+  public let referralDistribution: [ReferrerStats]
+  public let rewardDistribution: [RewardStats]
+  public let videoStats: VideoStats?
 
   public struct CumulativeStats {
-    public private(set) var averagePledge: Int
-    public private(set) var backersCount: Int
-    public private(set) var goal: Int
-    public private(set) var percentRaised: Double
-    public private(set) var pledged: Int
+    public let averagePledge: Int
+    public let backersCount: Int
+    public let goal: Int
+    public let percentRaised: Double
+    public let pledged: Int
   }
 
   public struct FundingDateStats {
-    public private(set) var backersCount: Int
-    public private(set) var cumulativePledged: Int
-    public private(set) var cumulativeBackersCount: Int
-    public private(set) var date: TimeInterval
-    public private(set) var pledged: Int
+    public let backersCount: Int
+    public let cumulativePledged: Int
+    public let cumulativeBackersCount: Int
+    public let date: TimeInterval
+    public let pledged: Int
   }
 
   public struct ReferrerStats {
-    public private(set) var backersCount: Int
-    public private(set) var code: String
-    public private(set) var percentageOfDollars: Double
-    public private(set) var pledged: Double
-    public private(set) var referrerName: String
-    public private(set) var referrerType: ReferrerType
+    public let backersCount: Int
+    public let code: String
+    public let percentageOfDollars: Double
+    public let pledged: Double
+    public let referrerName: String
+    public let referrerType: ReferrerType
 
     public enum ReferrerType {
       case custom
@@ -42,19 +42,19 @@ public struct ProjectStatsEnvelope {
   }
 
   public struct RewardStats {
-    public private(set) var backersCount: Int
-    public private(set) var rewardId: Int
-    public private(set) var minimum: Int?
-    public private(set) var pledged: Int
+    public let backersCount: Int
+    public let rewardId: Int
+    public let minimum: Int?
+    public let pledged: Int
 
     public static let zero = RewardStats(backersCount: 0, rewardId: 0, minimum: 0, pledged: 0)
   }
 
   public struct VideoStats {
-    public private(set) var externalCompletions: Int
-    public private(set) var externalStarts: Int
-    public private(set) var internalCompletions: Int
-    public private(set) var internalStarts: Int
+    public let externalCompletions: Int
+    public let externalStarts: Int
+    public let internalCompletions: Int
+    public let internalStarts: Int
   }
 }
 

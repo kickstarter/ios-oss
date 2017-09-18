@@ -3,9 +3,9 @@ import Curry
 import Runes
 
 public struct ShippingRule {
-  public private(set) var cost: Double
-  public private(set) var id: Int?
-  public private(set) var location: Location
+  public let cost: Double
+  public let id: Int?
+  public let location: Location
 }
 
 extension ShippingRule: Argo.Decodable {

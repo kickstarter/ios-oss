@@ -142,10 +142,6 @@ extension Lens where Whole == User, Part == User.Notifications {
     return User.lens.notifications..User.Notifications.lens.postLikes
   }
 
-  public var creatorTips: Lens<User, Bool?> {
-    return User.lens.notifications..User.Notifications.lens.cratorTips
-  }
-
   public var updates: Lens<User, Bool?> {
     return User.lens.notifications..User.Notifications.lens.updates
   }

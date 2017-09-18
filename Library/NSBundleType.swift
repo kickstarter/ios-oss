@@ -52,7 +52,7 @@ public struct LanguageDoubler: NSBundleType {
   public init() {
   }
 
-  public fileprivate(set) var bundleIdentifier: String? = "com.language.doubler"
+  public let bundleIdentifier: String? = "com.language.doubler"
 
   public static func create(path: String) -> NSBundleType? {
     return DoublerBundle(path: path)
