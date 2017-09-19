@@ -3,9 +3,34 @@ import Curry
 import Runes
 import Prelude
 
+public struct RootCategoriesEnvelope: Swift.Decodable {
+  public let rootCategories: [Category]
+
+   public struct Category: Swift.Decodable {
+    public let id: String
+    public let name: String
+    public let parentId: String
+    public let subcategories: SubcategoryConnection
+
+     public struct SubcategoryConnection: Swift.Decodable {
+      public let totalCount: Int
+      public let nodes: [Node]
+
+      public struct Node: Swift.Decodable {
+        public let id: String
+        public let name: String
+      }
+    }
+  }
+
+  public var isRoot: Bool {
+    return self.parentId == nil && self.parent == nil
+  }
+}
+
 public struct DiscoveryParams {
   public let backed: Bool?
-  public let category: Category?
+  public let category: RootCategoriesEnvelope.Category?
   public let collaborated: Bool?
   public let created: Bool?
   public let hasLiveStreams: Bool?
@@ -99,7 +124,7 @@ extension DiscoveryParams: Argo.Decodable {
 
     let tmp1 = create
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> json <|? "category"
+      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
@@ -147,3 +172,21 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
     .map { .success($0 == 0 ? nil : $0 == 1) }
     .coalesceWith(.failure(.custom("Could not parse string into bool.")))
 }
+
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+  let category = RootCategoriesEnvelope.Category.init(id: "", name: "", subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1, nodes: []))
+  return .success(category)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ extension DiscoveryParams {
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
         staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state) }
     )
-    public static let category = Lens<DiscoveryParams, Category?>(
+    public static let category = Lens<DiscoveryParams, RootCategoriesEnvelope.Category?>(
       view: { $0.category },
       set: { DiscoveryParams(backed: $1.backed, category: $0, collaborated: $1.collaborated,
         created: $1.created, hasLiveStreams: $1.hasLiveStreams, hasVideo: $1.hasVideo,

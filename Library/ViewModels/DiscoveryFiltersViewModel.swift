@@ -76,7 +76,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     }
 
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
-      .map { $0.params.category?.rootId }
+      .map { $0.params.category?.id }
 
     let loaderIsVisible = MutableProperty(false)
 
@@ -103,7 +103,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       categoriesEvent.values()
     ).on(value: { cache(categories:) }())
 
-    self.loadTopRows = Signal.combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
+    self.loadTopRows = Signal.combineLatest(topRows, categoryId)
+      .map { (rows: $0, categoryId: $1) }
 
     let selectedRowWithCategories = Signal.combineLatest(initialSelectedRow, cachedOrLoadedCategories)
 
@@ -116,7 +117,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let selectedRowId = Signal.merge(
         categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
+        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.id }
       )
 
     let initialRows = selectedRowWithCategories
@@ -222,19 +223,19 @@ private func expandableRows(selectedRow: SelectableRow,
       })
   }
 
-  return expandableRows.map { expandableRow in
-        return expandableRow
-          |> ExpandableRow.lens.isExpanded .~
-          expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
-          |> ExpandableRow.lens.selectableRows .~
-          expandableRow.selectableRows.sorted { lhs, rhs in
-            guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
-              lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
-              return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
-            }
-            return lhsName < rhsName
-        }
-      }
+  return expandableRows//.map { expandableRow in
+//        return expandableRow
+//          |> ExpandableRow.lens.isExpanded .~
+//          expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
+//          |> ExpandableRow.lens.selectableRows .~
+//          expandableRow.selectableRows.sorted { lhs, rhs in
+//            guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
+//              lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+//              return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+//            }
+//            return lhsName < rhsName
+//        }
+//      }
 }
 
 /**
@@ -328,23 +329,3 @@ private let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
     )
   ]
   ) +| []
-
-private struct RootCategoriesEnvelope: Swift.Decodable {
-  let rootCategories: [Category]
-
-   struct Category: Swift.Decodable {
-    let id: String
-    let name: String
-    let subcategories: SubcategoryConnection
-
-     struct SubcategoryConnection: Swift.Decodable {
-      let totalCount: Int
-      let nodes: [Node]
-
-      struct Node: Swift.Decodable {
-        let id: String
-        let name: String
-      }
-    }
-  }
-}
