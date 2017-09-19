@@ -11,6 +11,7 @@ public protocol SettingsViewModelInputs {
   func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
+  func emailFrequencyTapped()
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func friendActivityTapped(selected: Bool)
@@ -47,6 +48,7 @@ public protocol SettingsViewModelOutputs {
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToBetaFeedback: Signal<(), NoError> { get }
+  var goToEmailFrequency: Signal<Void, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
@@ -158,6 +160,8 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
     self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
+
+    self.goToEmailFrequency = self.emailFrequencyTappedProperty.signal
 
     self.goToFindFriends = self.findFriendsTappedProperty.signal
 
@@ -290,6 +294,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public func creatorTipsTapped(selected: Bool) {
     self.creatorTipsProperty.value = selected
   }
+  fileprivate let emailFrequencyTappedProperty = MutableProperty()
+  public func emailFrequencyTapped() {
+    self.emailFrequencyTappedProperty.value = ()
+  }
   fileprivate let findFriendsTappedProperty = MutableProperty()
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
@@ -390,6 +398,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToBetaFeedback: Signal<(), NoError>
+  public let goToEmailFrequency: Signal<Void, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>

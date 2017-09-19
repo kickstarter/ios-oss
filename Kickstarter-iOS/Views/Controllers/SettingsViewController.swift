@@ -25,6 +25,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorTips: UILabel!
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
+  @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
+  @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var faqButton: UIButton!
   @IBOutlet fileprivate weak var faqLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
@@ -105,6 +107,8 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(cookiePolicyTapped),
                                       for: .touchUpInside)
 
+    self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
+
     self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
@@ -183,6 +187,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.creatorTips
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
+
+    _ = self.emailFrequencyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Email_frequency() }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
@@ -264,7 +272,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.newPledgesLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_pledges() }
+      |> UILabel.lens.text %~ { _ in Strings.New_pledge_activity() }
 
     _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
@@ -369,6 +377,12 @@ internal final class SettingsViewController: UIViewController {
         self?.goToFindFriends()
     }
 
+    self.viewModel.outputs.goToEmailFrequency
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToEmailFrequency()
+      }
+
     self.viewModel.outputs.goToBetaFeedback
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToBetaFeedback() }
@@ -449,6 +463,10 @@ internal final class SettingsViewController: UIViewController {
 
     controller.mailComposeDelegate = self
     self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func goToEmailFrequency() {
+    //let vc
   }
 
   fileprivate func goToFindFriends() {
@@ -537,6 +555,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func creatorTipsTapped(_ button: UIButton) {
     self.viewModel.inputs.creatorTipsTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func emailFrequencyTapped() {
+    self.viewModel.inputs.emailFrequencyTapped()
   }
 
   @objc fileprivate func faqTapped() {
