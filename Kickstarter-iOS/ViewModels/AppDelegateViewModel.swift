@@ -386,7 +386,7 @@ AppDelegateViewModelOutputs {
           let categoryParam = Param.decode(.string(rawCategoryParam)).value
           else { return .init(value: params) }
 
-        return AppEnvironment.current.apiService.fetchCategory(param: categoryParam)
+        return AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)//(param: categoryParam)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { params |> DiscoveryParams.lens.category .~ $0 }

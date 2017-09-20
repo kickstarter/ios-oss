@@ -76,7 +76,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     }
 
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
-      .map { $0.params.category?.id }
+      .map { $0.params.category?.intID }
 
     let loaderIsVisible = MutableProperty(false)
 
@@ -117,7 +117,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let selectedRowId = Signal.merge(
         categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.id }
+        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.intID }
       )
 
     let initialRows = selectedRowWithCategories
@@ -314,7 +314,7 @@ private func cache(categories: [RootCategoriesEnvelope.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 
-private let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
+public let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
   .id +| [
     .name,
     .subcategories(

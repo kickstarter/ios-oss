@@ -12,7 +12,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
 
   internal func configureWith(value: (row: SelectableRow, categoryId: Int?)) {
     if let category = value.row.params.category, category.isRoot {
-      self.filterTitleLabel.text = RootCategory(categoryId: category.id).allProjectsString()
+      self.filterTitleLabel.text = RootCategory(categoryId: category.intID).allProjectsString()
     } else {
       self.filterTitleLabel.text = value.row.params.category?.name
     }

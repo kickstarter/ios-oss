@@ -1978,22 +1978,22 @@ private func properties(params: DiscoveryParams, prefix: String = "discover_") -
   return result.prefixedKeys("discover_")
 }
 
-private func properties(category: KsApi.Category) -> [String:Any] {
+private func properties(category: KsApi.RootCategoriesEnvelope.Category) -> [String:Any] {
 
   var result: [String:Any] = [:]
 
-  result["category_id"] = category.id
+  result["category_id"] = category.intID
   result["category_name"] = category.name
-  result["category_projects_count"] = category.projectsCount
+  result["category_projects_count"] = category.totalProjectsCount
 
   result["category_is_root"] = category.isRoot
-  result["category_root_id"] = category.rootId
-  result["category_root_name"] = category.root?.name
+  //result["category_root_id"] = category.rootId
+  //result["category_root_name"] = category.root?.name
 
-  let parentProperties = category.parent.map(properties(category:)) ?? [:]
-
+  //let parentProperties = category.parent.map(properties(category:)) ?? [:]
+  
   return result
-    .withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
+    //.withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
 }
 
 private func properties(shareContext: ShareContext,

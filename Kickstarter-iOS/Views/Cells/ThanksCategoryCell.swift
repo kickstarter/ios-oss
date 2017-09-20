@@ -9,7 +9,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var exploreLabel: UILabel!
   @IBOutlet private weak var liveProjectCountLabel: UILabel!
 
-  func configureWith(value category: KsApi.Category) {
+  func configureWith(value category: KsApi.RootCategoriesEnvelope.Category) {
     _ = self.bgView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
@@ -22,7 +22,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
       |> UILabel.lens.textColor .~ self.exploreLabel.textColor
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    if let projectsCount = category.projectsCount {
+    if let projectsCount = category.totalProjectsCount {
       _ = self.liveProjectCountLabel |> UILabel.lens.text %~ { _ in
         Strings.category_promo_project_count_live_projects(project_count: Format.wholeNumber(projectsCount))
       }
