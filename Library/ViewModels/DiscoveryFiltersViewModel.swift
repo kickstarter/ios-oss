@@ -213,29 +213,31 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
  */
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
-  let expandableRows = categories.map {
+  let expandableRows = categories
+    .sorted { lhs, _ in !lhs.isRoot }
+    .map { category in
       ExpandableRow(isExpanded: false,
-                    params: .defaults,
-                    selectableRows: $0.subcategories.nodes
-                      .map { _ in
+                    params: .defaults |> DiscoveryParams.lens.category .~ category,
+                    selectableRows: category.subcategories.nodes
+                      .map { node in
                         SelectableRow(isSelected: false,
                                       params: .defaults)
       })
   }
 
-  return expandableRows//.map { expandableRow in
-//        return expandableRow
-//          |> ExpandableRow.lens.isExpanded .~
-//          expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
-//          |> ExpandableRow.lens.selectableRows .~
-//          expandableRow.selectableRows.sorted { lhs, rhs in
-//            guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
-//              lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
-//              return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
-//            }
-//            return lhsName < rhsName
-//        }
-//      }
+  return expandableRows.map { expandableRow in
+       return expandableRow
+         |> ExpandableRow.lens.isExpanded .~
+         expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
+         |> ExpandableRow.lens.selectableRows .~
+         expandableRow.selectableRows.sorted { lhs, rhs in
+           guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
+             lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+             return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+           }
+           return lhsName < rhsName
+       }
+     }
 }
 
 /**

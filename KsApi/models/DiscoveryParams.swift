@@ -149,9 +149,9 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
 }
 
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
-  let category = RootCategoriesEnvelope.Category.init(id: "",
-                                                      name: "",
-                                                      parentId: "",
+  let category = RootCategoriesEnvelope.Category.init(id: "12",
+                                                      name: "Art",
+                                                      parentId: nil,
                                                       subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1,
                                                                                                                            nodes: []), totalProjectsCount: 0)
   return .success(category)

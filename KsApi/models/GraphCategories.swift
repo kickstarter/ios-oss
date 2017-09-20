@@ -42,3 +42,10 @@ extension RootCategoriesEnvelope.Category: Hashable {
     return self.intID
   }
 }
+
+extension RootCategoriesEnvelope.Category.SubcategoryConnection.Node: Equatable {
+  static public func == (lhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node,
+                         rhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
