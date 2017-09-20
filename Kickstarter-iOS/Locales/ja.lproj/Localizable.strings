@@ -154,8 +154,8 @@
 "Live_streaming_now" = "ライブ配信中";
 "Live_with_creator_name" = "<b>%{creator_name}</b>のライブ配信";
 "Loading" = "読み込み中";
-"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "ログインかサインインしてこのプロジェクトを保存してください。終了４８時間前にリマインドします。";
-"Log_in_or_sign_up_to_subscribe" = "ログインかサインインしてください";
+"Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "ログインかサインアップしてこのプロジェクトを保存してください。終了４８時間前にリマインドします。";
+"Log_in_or_sign_up_to_subscribe" = "ログインかサインアップしてください";
 "Log_in_to_leave_a_comment" = "ログインしてコメントを残す。";
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Manage_your_pledge" = "プレッジを変更";
@@ -194,9 +194,9 @@
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
 "Please_enter_an_amount_of_amount_or_more" = "%{amount} 以上の金額を入力してください。";
 "Please_log_in_or_sign_up_to_back_this_project" = "このプロジェクトにバックするにはログインまたはサインアップをお願いします";
-"Please_log_in_or_sign_up_to_message_this_creator" = "クリエーターにメッセージするにはログインかサインインしてください。";
-"Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "チャットに参加するためにはログインかサインインしてください";
-"Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "ログインかサインインをし、ライブを見よう！";
+"Please_log_in_or_sign_up_to_message_this_creator" = "クリエーターにメッセージするにはログインかサインアップしてください。";
+"Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "チャットに参加するためにはログインかサインアップしてください";
+"Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "ログインかサインアップをし、ライブを見よう！";
 "Pledge" = "プレッジする";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "プレッジでプロジェクトに生命を。";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "プロジェクトを探す、プロジェクトにプレッジする、プロジェクトを保存する、全て一つの場所で。";
