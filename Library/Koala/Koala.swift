@@ -1991,7 +1991,6 @@ private func properties(category: KsApi.RootCategoriesEnvelope.Category) -> [Str
   //result["category_root_name"] = category.root?.name
 
   //let parentProperties = category.parent.map(properties(category:)) ?? [:]
-  
   return result
     //.withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
 }

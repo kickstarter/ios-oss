@@ -218,7 +218,7 @@ private func expandableRows(selectedRow: SelectableRow,
     .map { category in
       ExpandableRow(isExpanded: false,
                     params: .defaults |> DiscoveryParams.lens.category .~ category,
-                    selectableRows: category.subcategories!.nodes
+                    selectableRows: category.subcategories.nodes
                       .map { node in
                         RootCategoriesEnvelope.Category.SubcategoryConnection.Node.buildCategory(id: node.id,
                                          name: node.name,

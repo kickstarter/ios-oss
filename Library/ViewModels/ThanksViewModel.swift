@@ -142,15 +142,15 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let rootCategory = project
       .map { $0.category.rootId }
       .skipNil()
-      .flatMap { (id: Int) -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, NoError> in
-
-        //TODO: Create call to get category by ID
+      .flatMap { _ in
+        // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { (category: KsApi.RootCategoriesEnvelope.Category) -> KsApi.RootCategoriesEnvelope.Category in category }
+          .map { (category: KsApi.RootCategoriesEnvelope.Category)
+            -> KsApi.RootCategoriesEnvelope.Category in category }
           .demoteErrors()
     }
-
+    
     let projects = Signal.combineLatest(project, rootCategory)
       .flatMap(relatedProjects(toProject:inCategory:))
       .filter { projects in !projects.isEmpty }
