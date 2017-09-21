@@ -22,7 +22,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
       |> UILabel.lens.textColor .~ self.exploreLabel.textColor
       |> UILabel.lens.font .~ .ksr_footnote()
 
-    if let projectsCount = category.totalProjectsCount {
+    if let projectsCount = category.totalProjectCount {
       _ = self.liveProjectCountLabel |> UILabel.lens.text %~ { _ in
         Strings.category_promo_project_count_live_projects(project_count: Format.wholeNumber(projectsCount))
       }

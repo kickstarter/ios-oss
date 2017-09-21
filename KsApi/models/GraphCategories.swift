@@ -12,8 +12,8 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     }
     public let name: String
     public let parentId: String?
-    public let subcategories: SubcategoryConnection
-    public let totalProjectsCount: Int?
+    public let subcategories: SubcategoryConnection?
+    public let totalProjectCount: Int?
 
     public struct SubcategoryConnection: Swift.Decodable {
       public let totalCount: Int
@@ -22,6 +22,19 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
       public struct Node: Swift.Decodable {
         public let id: String
         public let name: String
+        public let parentId: String
+        public let totalProjectCount: Int?
+
+        static public func buildCategory(id: String,
+                                name: String,
+                            parentId: String,
+                   totalProjectCount: Int?) -> Category {
+          return Category(id: id,
+                        name: name,
+                    parentId: parentId,
+               subcategories: nil,
+           totalProjectCount: totalProjectCount)
+        }
       }
     }
 

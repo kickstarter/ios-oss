@@ -153,7 +153,7 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
                                                       name: "Art",
                                                       parentId: nil,
                                                       subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1,
-                                                                                                                           nodes: []), totalProjectsCount: 0)
+                                                                                                                           nodes: []), totalProjectCount: 0)
   return .success(category)
 }
 

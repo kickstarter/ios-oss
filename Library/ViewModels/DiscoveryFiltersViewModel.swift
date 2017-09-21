@@ -218,11 +218,18 @@ private func expandableRows(selectedRow: SelectableRow,
     .map { category in
       ExpandableRow(isExpanded: false,
                     params: .defaults |> DiscoveryParams.lens.category .~ category,
-                    selectableRows: category.subcategories.nodes
+                    selectableRows: category.subcategories!.nodes
                       .map { node in
-                        SelectableRow(isSelected: false,
-                                      params: .defaults)
-      })
+                        RootCategoriesEnvelope.Category.SubcategoryConnection.Node.buildCategory(id: node.id,
+                                         name: node.name,
+                                         parentId: node.parentId,
+                                         totalProjectCount: node.totalProjectCount)
+                      }.map { childCategory in
+                        SelectableRow(isSelected: childCategory == selectedRow.params.category,
+                                      params: .defaults |> DiscoveryParams.lens.category .~ childCategory)
+
+      }
+    )
   }
 
   return expandableRows.map { expandableRow in
@@ -324,10 +331,13 @@ public let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
       .totalCount +| [
         .nodes(
           .id +| [
-            .name
+            .name,
+            .parentId,
+            .totalProjectCount
           ]
         )
       ]
-    )
+    ),
+    .totalProjectCount
   ]
   ) +| []

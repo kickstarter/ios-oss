@@ -1984,7 +1984,7 @@ private func properties(category: KsApi.RootCategoriesEnvelope.Category) -> [Str
 
   result["category_id"] = category.intID
   result["category_name"] = category.name
-  result["category_projects_count"] = category.totalProjectsCount
+  result["category_projects_count"] = category.totalProjectCount
 
   result["category_is_root"] = category.isRoot
   //result["category_root_id"] = category.rootId
