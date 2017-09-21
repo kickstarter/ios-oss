@@ -1110,6 +1110,24 @@
             </objects>
             <point key="canvasLocation" x="1730" y="124"/>
         </scene>
+        <!--Creator Digest Settings View Controller-->
+        <scene sceneID="EeA-WU-KtY">
+            <objects>
+                <viewController id="E20-X5-whU" customClass="CreatorDigestSettingsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2MY-4b-R9N"/>
+                        <viewControllerLayoutGuide type="bottom" id="BXD-wf-Lva"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LYx-rk-b0z">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ylZ-Ni-vgD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1733" y="823"/>
+        </scene>
     </scenes>
     <resources>
         <image name="chevron-right" width="9" height="15"/>
