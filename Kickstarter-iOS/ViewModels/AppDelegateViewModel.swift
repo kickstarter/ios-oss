@@ -383,7 +383,7 @@ AppDelegateViewModelOutputs {
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          let _ = Param.decode(.string(rawCategoryParam)).value
+          Param.decode(.string(rawCategoryParam)).value != nil
           else { return .init(value: params) }
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)

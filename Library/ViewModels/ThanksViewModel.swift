@@ -150,7 +150,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
             -> KsApi.RootCategoriesEnvelope.Category in category }
           .demoteErrors()
     }
-    
+
     let projects = Signal.combineLatest(project, rootCategory)
       .flatMap(relatedProjects(toProject:inCategory:))
       .filter { projects in !projects.isEmpty }

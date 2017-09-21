@@ -24,15 +24,15 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
         public let totalProjectCount: Int?
 
         static public func buildCategory(id: String,
-                                       name: String,
-                                   parentId: String,
-                          totalProjectCount: Int?) -> Category {
+                                         name: String,
+                                         parentId: String,
+                                         totalProjectCount: Int?) -> Category {
           return Category(id: id,
-                        name: name,
-                    parentId: parentId,
-               subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0,
-                                                                                    nodes: []),
-           totalProjectCount: totalProjectCount)
+                          name: name,
+                          parentId: parentId,
+                          subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0,
+                                                                                               nodes: []),
+                          totalProjectCount: totalProjectCount)
         }
       }
     }
