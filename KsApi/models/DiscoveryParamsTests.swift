@@ -21,7 +21,7 @@ class DiscoveryParamsTests: XCTestCase {
       |> DiscoveryParams.lens.social .~ true
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.similarTo .~ Project.template
-      |> DiscoveryParams.lens.category .~ Category.art
+      |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
       |> DiscoveryParams.lens.query .~ "wallet"
       |> DiscoveryParams.lens.state .~ .live
       |> DiscoveryParams.lens.sort .~ .popular

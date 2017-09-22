@@ -288,7 +288,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.starred .~ false
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
-      <> DiscoveryParams.lens.category .~ Category.art
+      <> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
 

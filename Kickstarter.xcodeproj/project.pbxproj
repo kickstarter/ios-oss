@@ -894,7 +894,10 @@
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
-		D6B9DF3F1F72E25A0064A4D8 /* GraphCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* GraphCategories.swift */; };
+		D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */; };
+		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
+		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
+		D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
@@ -2407,7 +2410,10 @@
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
-		D6B9DF3E1F72E25A0064A4D8 /* GraphCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategories.swift; sourceTree = "<group>"; };
+		D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
+		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
+		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
+		D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategoriesEnvelope.CategoryTemplates.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
@@ -3583,6 +3589,7 @@
 			children = (
 				D01587531EEB2DE4006E7684 /* Info.plist */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
+				D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */,
 				D01587761EEB2ED6006E7684 /* MockService.swift */,
 				D01588261EEB2ED7006E7684 /* ServerConfig.swift */,
 				D01588271EEB2ED7006E7684 /* Service.swift */,
@@ -3660,7 +3667,7 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
-				D6B9DF3E1F72E25A0064A4D8 /* GraphCategories.swift */,
+				D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
@@ -3733,6 +3740,7 @@
 				D01587A31EEB2ED6006E7684 /* FindFriendsEnvelopeLenses.swift */,
 				D01587A41EEB2ED6006E7684 /* FriendStatsEnvelope.StatsLenses.swift */,
 				D01587A51EEB2ED6006E7684 /* FriendStatsEnvelopeLenses.swift */,
+				D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */,
 				D01587A61EEB2ED6006E7684 /* ItemLenses.swift */,
 				D01587A71EEB2ED7006E7684 /* LocationLenses.swift */,
 				D01587A81EEB2ED7006E7684 /* MessageLenses.swift */,
@@ -3804,6 +3812,7 @@
 				D01588091EEB2ED7006E7684 /* ProjectTemplates.swift */,
 				D015880A1EEB2ED7006E7684 /* RewardsItemTemplates.swift */,
 				D015880B1EEB2ED7006E7684 /* RewardTemplates.swift */,
+				D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */,
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
 				D015880D1EEB2ED7006E7684 /* ShippingRuleTemplates.swift */,
 				D015880E1EEB2ED7006E7684 /* StarEnvelopeTemplates.swift */,
@@ -5169,6 +5178,7 @@
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				A7ED1FBD1E831C5C00BFFA01 /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
+				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
 				A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				A7ED1FB71E831C5C00BFFA01 /* LiveStreamEventDetailsViewModelTests.swift in Sources */,
@@ -5476,7 +5486,7 @@
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D0158A0E1EEB30A2006E7684 /* CheckoutEnvelopeTemplates.swift in Sources */,
-				D6B9DF3F1F72E25A0064A4D8 /* GraphCategories.swift in Sources */,
+				D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */,
 				D01589051EEB2ED7006E7684 /* ProjectActivityEnvelope.swift in Sources */,
 				D015884F1EEB2ED7006E7684 /* Category.swift in Sources */,
 				D015899F1EEB2ED7006E7684 /* ServiceType.swift in Sources */,
@@ -5589,9 +5599,11 @@
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
+				D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */,
 				D0158A0C1EEB30A2006E7684 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
+				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,

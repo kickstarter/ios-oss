@@ -423,7 +423,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
       let counts = self.loadCategoryRows.values
         .joined()
-        .map { $0.params.category?.projectsCount }
+        .map { $0.params.category?.totalProjectCount }
 
       XCTAssertEqual([Category.art.projectsCount, Category.filmAndVideo.projectsCount], counts,
                      "Root counts are preserved in expandable rows.")
