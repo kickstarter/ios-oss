@@ -58,7 +58,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     let availableRewards = project.rewards
       .filter { isMainReward(reward: $0, project: project) }
-      .filter { $0.remaining != 0 }
+      .filter { $0.remaining == nil || $0.remaining != 0 }
       .sorted()
       .map { (project, Either<Reward, Backing>.left($0)) }
 
