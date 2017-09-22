@@ -11,7 +11,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     case calloutReward
     case rewardsTitle
     case availableRewards
-    case allGoneRewards
+    case unavailableRewards
   }
 
   internal func loadMinimal(project: Project) {
@@ -62,7 +62,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       .sorted()
       .map { (project, Either<Reward, Backing>.left($0)) }
 
-    let allGoneRewards = project.rewards
+    let unavailableRewards = project.rewards
       .filter { isMainReward(reward: $0, project: project) }
       .filter { $0.remaining != nil && $0.remaining == 0 }
       .sorted()
@@ -75,9 +75,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       self.set(values: availableRewards,
                cellClass: RewardCell.self,
                inSection: Section.availableRewards.rawValue)
-      self.set(values: allGoneRewards,
+      self.set(values: unavailableRewards,
                cellClass: RewardCell.self,
-               inSection: Section.allGoneRewards.rawValue)
+               inSection: Section.unavailableRewards.rawValue)
     }
   }
 
