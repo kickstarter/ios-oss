@@ -15,7 +15,7 @@ dependencies:
     - gem install fastlane -NVv 2.37.0
 test:
   pre:
-    - xcrun instruments -w 'iPhone 8 (11.0)' || true
+    - xcrun instruments -w 'A38A72F1-4710-49AC-BB24-CBC6B35940B3' || true
     - sleep 15
   override:
     - make lint
