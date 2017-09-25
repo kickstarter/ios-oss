@@ -71,10 +71,10 @@ public protocol ServiceType {
     -> SignalProducer<Backing, ErrorEnvelope>
 
   /// Fetch all categories.
-  func fetchCategories() -> SignalProducer<CategoriesEnvelope, ErrorEnvelope>
+  func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError>
 
   /// Fetch the newest data for a particular category.
-  func fetchCategory(param: Param) -> SignalProducer<Category, ErrorEnvelope>
+  func fetchCategory(param: Param) -> SignalProducer<RootCategoriesEnvelope.Category, GraphError>
 
   /// Fetch a checkout's status.
   func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope>

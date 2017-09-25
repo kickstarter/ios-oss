@@ -224,6 +224,6 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.filter(withParams: subcategoryParams)
 
-    self.updateSortPagerStyle.assertValues([1, 11], "Emits root category id.")
+    self.updateSortPagerStyle.assertValues([1, 30], "Emits root category id.")
   }
 }

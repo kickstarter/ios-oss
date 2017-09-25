@@ -24,7 +24,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let fetchBackingResponse: Backing
 
-  fileprivate let fetchCategoriesResponse: CategoriesEnvelope?
+  fileprivate let fetchCategoriesResponse: RootCategoriesEnvelope?
 
   fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
   fileprivate let fetchCheckoutError: ErrorEnvelope?
@@ -157,7 +157,7 @@ internal struct MockService: ServiceType {
                 fetchActivitiesResponse: [Activity]? = nil,
                 fetchActivitiesError: ErrorEnvelope? = nil,
                 fetchBackingResponse: Backing = .template,
-                fetchCategoriesResponse: CategoriesEnvelope? = nil,
+                fetchCategoriesResponse: RootCategoriesEnvelope? = nil,
                 fetchCheckoutResponse: CheckoutEnvelope? = nil,
                 fetchCheckoutError: ErrorEnvelope? = nil,
                 fetchCommentsResponse: [Comment]? = nil,
@@ -246,7 +246,7 @@ internal struct MockService: ServiceType {
     self.fetchBackingResponse = fetchBackingResponse
 
     self.fetchCategoriesResponse = fetchCategoriesResponse ?? (.template
-      |> CategoriesEnvelope.lens.categories .~ [
+      |> RootCategoriesEnvelope.lens.categories .~ [
         .art,
         .filmAndVideo,
         .illustration,
@@ -871,18 +871,19 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: fetchUserResponse ?? user)
   }
 
-  internal func fetchCategories() -> SignalProducer<CategoriesEnvelope, ErrorEnvelope> {
+  internal func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError> {
 
     return SignalProducer(value: self.fetchCategoriesResponse ?? .template)
   }
 
-  internal func fetchCategory(param: Param) -> SignalProducer<KsApi.Category, ErrorEnvelope> {
+  internal func fetchCategory(param: Param)
+    -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, GraphError> {
     switch param {
     case let .id(id):
-      return SignalProducer(value: .template |> Category.lens.id .~ id)
-    case let .slug(slug):
-      return SignalProducer(value: .template |> Category.lens.slug .~ slug)
-    }
+      return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(id)")
+    default:
+      return .empty
+      }
   }
 
   internal func incrementVideoCompletion(forProject project: Project) ->

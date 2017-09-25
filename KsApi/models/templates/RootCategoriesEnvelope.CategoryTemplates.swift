@@ -5,9 +5,9 @@ extension KsApi.RootCategoriesEnvelope.Category {
     id: "Q2F0ZWdvcnktMQ==",
     name: "Art",
     parentId: nil,
-    subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0,
+    subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 2,
                                                                          nodes: []),
-    totalProjectCount: 0
+    totalProjectCount: 450
   )
 
   internal static let art = template
