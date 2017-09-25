@@ -132,7 +132,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ 1
     let project = Project.template
-                  |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewards .~ [reward]
 
     dataSource.load(project: project, liveStreamEvents: [])
 
