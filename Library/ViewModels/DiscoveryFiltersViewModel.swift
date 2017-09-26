@@ -98,6 +98,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       categoriesEvent.values().mapConst(false)
     )
 
+
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
       categoriesEvent.values()
@@ -295,12 +296,12 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
 
   let faves: [SelectableRow] = categories.flatMap { category in
 
-    guard let idTuple = decompose(id: category.id) else {
+    guard let intId = decompose(id: category.id) else {
       return nil
     }
 
-    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(idTuple.1) ||
-      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(idTuple.1) {
+    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(intId) ||
+      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(intId) {
 
       return SelectableRow(
         isSelected: false,

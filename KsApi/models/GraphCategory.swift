@@ -6,7 +6,7 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
   public struct Category: Swift.Decodable {
     public let id: String
     public var intID: Int {
-        return decompose(id: id)?.1 ?? -1
+        return decompose(id: id) ?? -1
     }
     public let name: String
     public let parentId: String?

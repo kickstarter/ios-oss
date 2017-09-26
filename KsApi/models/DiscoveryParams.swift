@@ -99,7 +99,7 @@ extension DiscoveryParams: Argo.Decodable {
 
     let tmp1 = create
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
+      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category?>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
@@ -148,8 +148,8 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
     .coalesceWith(.failure(.custom("Could not parse string into bool.")))
 }
 
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
-
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category?> {
+  guard json != nil else { return .success(nil) }
   let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
   let category = RootCategoriesEnvelope.Category(id: "0",
                                                name: "Art",

@@ -39,8 +39,10 @@ private let filmExpandableRow = expandableRowTemplate
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .filmAndVideo,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .documentary
 ]
-
-private let categories = [ RootCategoriesEnvelope.Category.art, .illustration, .filmAndVideo, .documentary ]
+//.illustration, .filmAndVideo, .documentary
+private let categories = RootCategoriesEnvelope.template |> RootCategoriesEnvelope.lens.categories .~
+  [ RootCategoriesEnvelope.Category.art, RootCategoriesEnvelope.Category.illustration,
+    RootCategoriesEnvelope.Category.filmAndVideo, RootCategoriesEnvelope.Category.documentary ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
@@ -57,7 +59,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
 
   private let categoriesResponse = RootCategoriesEnvelope.template
-    |> RootCategoriesEnvelope.lens.categories .~ categories
+    |> RootCategoriesEnvelope.lens.categories .~ categories.rootCategories
 
   override func setUp() {
     super.setUp()
@@ -480,7 +482,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testCategoriesFromCache() {
-    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories.rootCategories
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()

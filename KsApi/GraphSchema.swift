@@ -47,12 +47,12 @@ public func decodeBase64(_ input: String) -> String? {
     .flatMap { String(data: $0, encoding: .utf8) }
 }
 
-public func decompose(id: String) -> (String, Int)? {
+public func decompose(id: String) -> Int? {
 
   return decodeBase64(id)
-    .flatMap { id -> (String, Int)? in
+    .flatMap { id -> Int? in
       let pair = id.split(separator: "-", maxSplits: 1)
-      return zip(pair.first.map(String.init), pair.last.flatMap { Int($0) })
+      return pair.last.flatMap { Int($0) }
   }
 }
 
@@ -100,10 +100,6 @@ public enum Edges<Q: QueryType> {
 public enum Nodes<Q: QueryType> {
   case nodes(NonEmptySet<Q>)
 }
-
-//public struct GraphError: Error {
-//  let errors: [[String: Any]]
-//}
 
 public typealias GraphResponseError = [[String: Any]]
 
