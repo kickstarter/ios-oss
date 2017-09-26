@@ -113,6 +113,7 @@ public enum GraphError: Error {
 
 public enum Query {
 
+  case category(id: String, NonEmptySet<Category>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
 
@@ -197,6 +198,8 @@ extension Query {
 extension Query: QueryType {
   public var description: String {
     switch self {
+    case let .category(id, fields):
+      return "category(id: \"\(id)\") { \(join(fields)) }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
