@@ -32,10 +32,8 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+    
     self.viewModel.inputs.viewDidLoad()
-
-    _ = self.cancelButton
-      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
   }
 
   internal override func bindViewModel() {
@@ -66,6 +64,9 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
+    
+    _ = self.cancelButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
     _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
