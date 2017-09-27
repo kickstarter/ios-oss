@@ -40,8 +40,8 @@ private let filmExpandableRow = expandableRowTemplate
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .filmAndVideo,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .documentary
 ]
-//.illustration, .filmAndVideo, .documentary
-private let categories = RootCategoriesEnvelope.template |> RootCategoriesEnvelope.lens.categories .~
+
+private let categories =
   [ RootCategoriesEnvelope.Category.art, RootCategoriesEnvelope.Category.illustration,
     RootCategoriesEnvelope.Category.filmAndVideo, RootCategoriesEnvelope.Category.documentary ]
 
@@ -60,7 +60,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
 
   private let categoriesResponse = RootCategoriesEnvelope.template
-    |> RootCategoriesEnvelope.lens.categories .~ categories.rootCategories
+    |> RootCategoriesEnvelope.lens.categories .~ categories
 
   override func setUp() {
     super.setUp()
@@ -286,7 +286,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testExpandingCategoryFilters() {
-    withEnvironment(apiService: MockService(fetchCategoriesResponse: categoriesResponse)) {
+
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: categoriesResponse)) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
       self.loadCategoryRows.assertValueCount(0)
@@ -446,7 +447,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites() {
-    withEnvironment(apiService: MockService(fetchCategoriesResponse: categoriesResponse)) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: categoriesResponse)) {
       self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
@@ -483,7 +484,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testCategoriesFromCache() {
-    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories.rootCategories
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()

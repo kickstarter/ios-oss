@@ -71,7 +71,7 @@ public protocol ServiceType {
     -> SignalProducer<Backing, ErrorEnvelope>
 
   /// Fetch all categories.
-  func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError>
+  //func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError>
 
   /// Fetch the newest data for a particular category.
   func fetchCategory(param: Param) -> SignalProducer<RootCategoriesEnvelope.Category, GraphError>

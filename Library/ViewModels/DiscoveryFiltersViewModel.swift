@@ -88,10 +88,20 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { loaderIsVisible.value = true })
+          .on(starting: {
+            loaderIsVisible.value = true
+          })
           .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
           .materialize()
       }
+
+    categoriesEvent.errors().observeValues { e in
+      print(e)
+    }
+
+    categoriesEvent.values().observeValues { e in
+      print(e)
+    }
 
     self.loadingIndicatorIsVisible = Signal.merge(
       loaderIsVisible.signal,
@@ -221,15 +231,13 @@ private func expandableRows(selectedRow: SelectableRow,
                     params: .defaults |> DiscoveryParams.lens.category .~ category,
                     selectableRows: category.subcategories.nodes
                       .map { node in
-                        RootCategoriesEnvelope.Category.SubcategoryConnection.Node.buildCategory(id: node.id,
+                        let childCategory = RootCategoriesEnvelope.Category.SubcategoryConnection.Node.buildCategory(id: node.id,
                                          name: node.name,
                                          parentId: node.parentId,
                                          totalProjectCount: node.totalProjectCount)
-                      }.map { childCategory in
-                        SelectableRow(isSelected: childCategory == selectedRow.params.category,
+                        return SelectableRow(isSelected: childCategory == selectedRow.params.category,
                                       params: .defaults |> DiscoveryParams.lens.category .~ childCategory)
-
-      }
+        }
     )
   }
 

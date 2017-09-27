@@ -130,9 +130,9 @@ public struct Service: ServiceType {
       return request(.backing(projectId: project.id, backerId: user.id))
   }
 
-  public func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return .empty//request(.categories)
-  }
+//  public func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError> {
+//    return .empty//request(.categories)
+//  }
 
   public func fetchCategory(param: Param) -> SignalProducer<RootCategoriesEnvelope.Category, GraphError> {
     return .empty//request(.category(param))
