@@ -32,7 +32,7 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -64,7 +64,7 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-    
+
     _ = self.cancelButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
