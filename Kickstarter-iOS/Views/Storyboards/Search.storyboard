@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zb8-de-x1Y">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zb8-de-x1Y">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +18,7 @@
                     <tabBarItem key="tabBarItem" title="" id="mIh-15-JtZ"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="25t-aa-IxE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -254,51 +255,62 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gh5-2a-Hll">
-                                    <rect key="frame" x="8" y="0.0" width="301" height="33"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="317" height="33"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="search-icon" translatesAutoresizingMaskIntoConstraints="NO" id="iEk-Dl-6an">
-                                            <rect key="frame" x="0.0" y="11" width="11" height="11"/>
-                                        </imageView>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bEa-Dn-fhp">
-                                            <rect key="frame" x="11" y="6" width="260" height="21"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="webSearch" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
-                                        </textField>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Nmw-GJ-mcG">
+                                            <rect key="frame" x="0.0" y="6" width="287" height="21"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QmQ-49-wVe">
+                                                    <rect key="frame" x="133.5" y="0.0" width="20" height="21"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="search-icon" translatesAutoresizingMaskIntoConstraints="NO" id="iEk-Dl-6an">
+                                                            <rect key="frame" x="0.0" y="5" width="11" height="11"/>
+                                                        </imageView>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bEa-Dn-fhp">
+                                                            <rect key="frame" x="11" y="0.0" width="9" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="qsG-s1-2RO"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="webSearch" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxx-0l-p9U">
-                                            <rect key="frame" x="271" y="0.0" width="30" height="33"/>
+                                            <rect key="frame" x="287" y="0.0" width="30" height="33"/>
                                             <state key="normal">
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                         </button>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="317" id="xtI-95-XcY"/>
+                                    </constraints>
                                 </stackView>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="gh5-2a-Hll" secondAttribute="bottom" id="1KE-4n-VY1"/>
-                                <constraint firstItem="gh5-2a-Hll" firstAttribute="top" secondItem="NPH-XZ-f4a" secondAttribute="top" id="5bn-Cx-Amg"/>
-                                <constraint firstItem="gh5-2a-Hll" firstAttribute="leading" secondItem="NPH-XZ-f4a" secondAttribute="leadingMargin" id="UIa-dW-0Oy"/>
-                                <constraint firstItem="gh5-2a-Hll" firstAttribute="centerX" secondItem="NPH-XZ-f4a" secondAttribute="centerX" id="iyq-q4-kBp"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="gh5-2a-Hll" secondAttribute="trailing" id="zV7-XI-XRw"/>
+                                <constraint firstAttribute="trailing" secondItem="gh5-2a-Hll" secondAttribute="trailing" id="0eu-xb-Clh"/>
+                                <constraint firstItem="gh5-2a-Hll" firstAttribute="leading" secondItem="NPH-XZ-f4a" secondAttribute="leading" id="OBj-HM-4M3"/>
+                                <constraint firstAttribute="bottom" secondItem="gh5-2a-Hll" secondAttribute="bottom" id="Rxw-Qm-toa"/>
+                                <constraint firstItem="gh5-2a-Hll" firstAttribute="top" secondItem="NPH-XZ-f4a" secondAttribute="top" id="edG-jo-NgH"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="iyq-q4-kBp"/>
-                                </mask>
-                            </variation>
                         </view>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="800"/>
                     <connections>
                         <outlet property="cancelButton" destination="jxx-0l-p9U" id="PaY-ff-uCa"/>
-                        <outlet property="searchBarCenterConstraint" destination="iyq-q4-kBp" id="vmN-ym-Fbd"/>
+                        <outlet property="centeringStackView" destination="Nmw-GJ-mcG" id="Q03-qJ-SGj"/>
+                        <outlet property="innerSearchStackView" destination="QmQ-49-wVe" id="VgH-Mk-qmF"/>
                         <outlet property="searchBarContainerView" destination="NPH-XZ-f4a" id="2yH-JZ-gEn"/>
-                        <outlet property="searchBarLeadingConstraint" destination="UIa-dW-0Oy" id="aRI-a7-xau"/>
-                        <outlet property="searchBarTrailingConstraint" destination="zV7-XI-XRw" id="z2H-r4-FEb"/>
                         <outlet property="searchIconImageView" destination="iEk-Dl-6an" id="eLP-wz-WYr"/>
                         <outlet property="searchStackView" destination="gh5-2a-Hll" id="yd8-zz-bke"/>
+                        <outlet property="searchStackViewWidthConstraint" destination="xtI-95-XcY" id="zcu-fB-8Kb"/>
                         <outlet property="searchTextField" destination="bEa-Dn-fhp" id="QIe-Uf-Xyg"/>
+                        <outlet property="searchTextFieldHeightConstraint" destination="qsG-s1-2RO" id="8Ib-br-ofk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HVB-g6-L0q" userLabel="First Responder" sceneMemberID="firstResponder"/>
