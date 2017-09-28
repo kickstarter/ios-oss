@@ -37,20 +37,20 @@ deployment:
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
       - fastlane alpha_gym --verbose:
-        timeout: 1800
+          timeout: 1800
       - fastlane alpha_hockey --verbose
   ios_beta:
     branch: beta-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
       - fastlane beta_gym --verbose:
-        timeout: 1800
+          timeout: 1800
       - fastlane beta_hockey --verbose
   ios_itc:
     branch: itunes-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
       - fastlane itunes_gym --verbose:
-        timeout: 1800
+          timeout: 1800
       - fastlane itunes_hockey --verbose
       - fastlane itunes_deliver --verbose
