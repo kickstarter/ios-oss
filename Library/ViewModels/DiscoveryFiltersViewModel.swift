@@ -108,7 +108,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       categoriesEvent.values().mapConst(false)
     )
 
-
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
       categoriesEvent.values()
@@ -231,10 +230,13 @@ private func expandableRows(selectedRow: SelectableRow,
                     params: .defaults |> DiscoveryParams.lens.category .~ category,
                     selectableRows: category.subcategories.nodes
                       .map { node in
-                        let childCategory = RootCategoriesEnvelope.Category.SubcategoryConnection.Node.buildCategory(id: node.id,
-                                         name: node.name,
-                                         parentId: node.parentId,
-                                         totalProjectCount: node.totalProjectCount)
+                        let childCategory =
+                          RootCategoriesEnvelope.Category.SubcategoryConnection.Node.category(
+                            id: node.id,
+                            name: node.name,
+                            parentId: node.parentId,
+                            totalProjectCount: node.totalProjectCount
+                        )
                         return SelectableRow(isSelected: childCategory == selectedRow.params.category,
                                       params: .defaults |> DiscoveryParams.lens.category .~ childCategory)
         }

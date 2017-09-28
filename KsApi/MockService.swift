@@ -516,11 +516,12 @@ internal struct MockService: ServiceType {
     )
   }
 
-  func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>  {
+  func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError> {
     return fetchGraph(query: query)
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
+    // swiftlint:disable force_unwrapping
     return SignalProducer(value: self.fetchGraphCategoriesResponse as! A)
   }
 

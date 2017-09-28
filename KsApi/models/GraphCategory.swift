@@ -23,10 +23,10 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
         public let parentId: String
         public let totalProjectCount: Int?
 
-        static public func buildCategory(id: String,
-                                         name: String,
-                                         parentId: String,
-                                         totalProjectCount: Int?) -> Category {
+        static public func category(id: String,
+                                    name: String,
+                                    parentId: String,
+                                    totalProjectCount: Int?) -> Category {
           return Category(id: id,
                           name: name,
                           parentId: parentId,
