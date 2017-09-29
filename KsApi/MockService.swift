@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 #if DEBUG
 import Foundation
 import Prelude
@@ -521,7 +522,6 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
-    // swiftlint:disable force_unwrapping
     return SignalProducer(value: self.fetchGraphCategoriesResponse as! A)
   }
 

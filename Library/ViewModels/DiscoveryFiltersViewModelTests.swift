@@ -22,8 +22,9 @@ private let recommendedRow = selectableRowTemplate
   |> SelectableRow.lens.params.recommended .~ true
   |> SelectableRow.lens.params.backed .~ false
 
-private let artSelectableRow = selectableRowTemplate 
+private let artSelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .art
+
 private let documentarySelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .documentary
 
