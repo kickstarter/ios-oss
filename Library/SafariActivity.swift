@@ -3,12 +3,8 @@ import Foundation
 import UIKit
 
 public let SafariActivityType = UIActivityType("com.kickstarter.kickstarter.safari")
-public final class SafariURL {
+public struct SafariURL {
   public let url: URL
-
-  public init(_ url: URL) {
-    self.url = url
-  }
 }
 
 public final class SafariActivity: UIActivity {
