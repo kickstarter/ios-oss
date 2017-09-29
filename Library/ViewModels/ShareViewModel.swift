@@ -235,7 +235,7 @@ private func excludedActivityTypes(forShareContext shareContext: ShareContext) -
 
 private func activityController(forShareContext shareContext: ShareContext) -> UIActivityViewController? {
   guard let url = shareUrl(forShareContext: shareContext) else { return nil }
-  
+
   let provider = activityItemProvider(forShareContext: shareContext)
   let safariUrl = SafariURL(url)
 
