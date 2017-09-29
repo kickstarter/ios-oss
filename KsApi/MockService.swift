@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 #if DEBUG
 import Foundation
 import Prelude
@@ -522,7 +521,7 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
-    return SignalProducer(value: self.fetchGraphCategoriesResponse as! A)
+    return .empty//SignalProducer(value: self.fetchGraphCategoriesResponse as! A)
   }
 
   internal func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

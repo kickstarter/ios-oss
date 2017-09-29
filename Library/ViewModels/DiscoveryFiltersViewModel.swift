@@ -334,7 +334,6 @@ private func cache(categories: [RootCategoriesEnvelope.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 
-
 public func categoryBy(id: String) -> NonEmptySet<Query> {
   return Query.category(id: id,
                         .id +| [
