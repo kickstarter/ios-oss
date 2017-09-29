@@ -3,14 +3,21 @@ import Foundation
 import UIKit
 
 public let SafariActivityType = UIActivityType("com.kickstarter.kickstarter.safari")
+public final class SafariURL {
+  public let url: URL
+
+  public init(_ url: URL) {
+    self.url = url
+  }
+}
 
 public final class SafariActivity: UIActivity {
   fileprivate var url: URL?
 
-  public convenience init(url: URL) {
+  public convenience init(url: SafariURL) {
     self.init()
 
-    self.url = url
+    self.url = url.url
   }
 
   public override var activityType: UIActivityType? {
@@ -26,7 +33,7 @@ public final class SafariActivity: UIActivity {
   }
 
   public override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-    let urls = activityItems.filter { $0 is URL && ($0 as? URL)?.host != nil }
+    let urls = activityItems.filter { $0 is SafariURL }
     return !urls.isEmpty
   }
 
