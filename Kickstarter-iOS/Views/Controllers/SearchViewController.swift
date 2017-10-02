@@ -101,8 +101,8 @@ internal final class SearchViewController: UITableViewController {
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
 
-    self.searchTextFieldHeightConstraint.constant = Styles.grid(5) + Styles.gridHalf(1)
-    self.searchStackViewWidthConstraint.constant = self.view.frame.size.width - Styles.grid(8)
+    self.searchTextFieldHeightConstraint.constant = Styles.grid(5)
+    self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.8
   }
 
   internal override func bindViewModel() {
