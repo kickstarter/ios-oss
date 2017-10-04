@@ -17,12 +17,12 @@ final class ProjectPamphletViewModelTests: TestCase {
   fileprivate let setNavigationBarHidden = TestObserver<Bool, NoError>()
   fileprivate let setNavigationBarAnimated = TestObserver<Bool, NoError>()
   fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
+  fileprivate let topLayoutConstraintConstant = TestObserver<CGFloat, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm = ProjectPamphletViewModel()
-
     self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(second)
@@ -34,6 +34,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.setNavigationBarHiddenAnimated.map(second)
       .observe(self.setNavigationBarAnimated.observer)
     self.vm.outputs.setNeedsStatusBarAppearanceUpdate.observe(self.setNeedsStatusBarAppearanceUpdate.observer)
+    self.vm.outputs.topLayoutConstraintConstant.observe(self.topLayoutConstraintConstant.observer)
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithProject() {
@@ -244,6 +245,14 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(1, self.cookieStorage.cookies?.count,
                      "A single cookie has been set on the same scheduler.")
     }
+  }
+
+  func testTopLayoutConstraintsChangeAfterRotation() {
+
+    self.topLayoutConstraintConstant.assertValues([])
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.willTransition(to: UITraitCollection(), parent: nil)
+    self.topLayoutConstraintConstant.assertValues([0.0])
   }
 
   func testTracksRefTag_WithBadData() {

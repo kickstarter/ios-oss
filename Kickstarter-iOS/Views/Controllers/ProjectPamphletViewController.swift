@@ -56,6 +56,10 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear(animated: animated)
+    if #available(iOS 11.0, *) {
+      update(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
+             constant: parent?.view.safeAreaInsets.top)
+    }
   }
 
   public override func bindViewModel() {
@@ -77,10 +81,20 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] in
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
     }
+
+    self.navBarTopConstraint.rac.constant = self.viewModel.outputs.topLayoutConstraintConstant
+    self.projectPamphletTopConstraint.rac.constant = self.viewModel.outputs.topLayoutConstraintConstant
   }
 
-  public override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+  public override func willTransition(to newCollection: UITraitCollection,
+                                      with coordinator: UIViewControllerTransitionCoordinator) {
+    self.viewModel.inputs.willTransition(to: newCollection, parent: parent)
+  }
 
+  private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {
+    _ = constraints.map {
+      $0?.constant = constant ?? 0.0
+    }
   }
 }
 
