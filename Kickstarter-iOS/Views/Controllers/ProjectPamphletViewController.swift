@@ -15,6 +15,9 @@ public final class ProjectPamphletViewController: UIViewController {
   fileprivate var navBarController: ProjectNavBarViewController!
   fileprivate var contentController: ProjectPamphletContentViewController!
 
+  @IBOutlet weak var navBarTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var projectPamphletTopConstraint: NSLayoutConstraint!
+
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
 
@@ -74,6 +77,10 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] in
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
     }
+  }
+
+  public override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+
   }
 }
 

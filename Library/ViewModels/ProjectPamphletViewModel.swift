@@ -15,6 +15,9 @@ public protocol ProjectPamphletViewModelInputs {
 
   /// Call when the view will appear, and pass the animated parameter.
   func viewWillAppear(animated: Bool)
+
+  /// Call when the view will transition to a new trait collection.
+  func willTransition(to newCollection: UITraitCollection)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -30,6 +33,9 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits when the `setNeedsStatusBarAppearanceUpdate` method should be called on the view.
   var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+
+  /// Emits a float to update topLayoutConstraints constant.
+  var topLayoutConstraintConstant: Signal<Float, NoError> { get }
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -66,6 +72,8 @@ ProjectPamphletViewModelOutputs {
       self.viewDidLoadProperty.signal.mapConst((true, false)),
       self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
+
+    self.topLayoutConstraintConstant = .empty
 
     let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, refTag in
@@ -114,6 +122,11 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
+  fileprivate let willTransitionToCollectionProperty = MutableProperty<UITraitCollection?>(nil)
+  public func willTransition(to newCollection: UITraitCollection) {
+    self.willTransitionToCollectionProperty.value = newCollection
+  }
+
   public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
     RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
@@ -122,6 +135,7 @@ ProjectPamphletViewModelOutputs {
   }
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
+  public let topLayoutConstraintConstant: Signal<Float, NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
