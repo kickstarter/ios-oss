@@ -179,7 +179,7 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
   let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
-  var properties: [HTTPCookiePropertyKey:Any] = [:]
+  var properties: [HTTPCookiePropertyKey: Any] = [:]
   properties[.name]    = cookieName(project)
   properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
   properties[.domain]  = URL(string: project.urls.web.project)?.host

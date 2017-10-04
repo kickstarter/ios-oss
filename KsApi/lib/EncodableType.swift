@@ -5,7 +5,7 @@ import Foundation
  serializing to a JSON string.
 */
 public protocol EncodableType {
-  func encode() -> [String:Any]
+  func encode() -> [String: Any]
 }
 
 public extension EncodableType {

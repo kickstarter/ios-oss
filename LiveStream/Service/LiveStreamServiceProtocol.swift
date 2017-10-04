@@ -9,7 +9,7 @@ public protocol NewLiveStreamChatMessageProtocol {
 
   init(message: String, name: String, profilePic: String, userId: String)
 
-  func toFirebaseDictionary() -> [String:Any]
+  func toFirebaseDictionary() -> [String: Any]
 }
 
 public protocol LiveStreamServiceProtocol {

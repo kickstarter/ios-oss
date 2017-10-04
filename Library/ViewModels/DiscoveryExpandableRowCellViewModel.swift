@@ -48,7 +48,7 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .map {
         Strings.Filter_name_project_count_live_projects(
           filter_name: ($0.params.category?.name ?? ""),
-          project_count:($0.params.category?.projectsCount ?? 0))
+          project_count: ($0.params.category?.projectsCount ?? 0))
       }
 
     self.projectsCountLabelText = expandableRow

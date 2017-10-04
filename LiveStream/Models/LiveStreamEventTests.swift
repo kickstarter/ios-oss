@@ -12,7 +12,7 @@ public extension Argo.Decodable {
 final class LiveStreamEventTests: XCTestCase {
 
   func testParseJSON() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "success": true,
       "id": 123,
       "stream": [
@@ -120,7 +120,7 @@ final class LiveStreamEventTests: XCTestCase {
   }
 
   func testDecoding_JSONFromListStream() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "id": 123,
       "name": "Blob Live!",
       "description": "Blobby McBlob comin' to you live!",

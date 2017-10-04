@@ -1041,7 +1041,7 @@ private func applePayUrlRequest(project: Project,
                                 reward: Reward,
                                 location: Location) -> URLRequest {
 
-  let payload: [String:Any] = [
+  let payload: [String: Any] = [
     "country_code": project.country.countryCode,
     "currency_code": project.country.currencyCode,
     "merchant_identifier": PKPaymentAuthorizationViewController.merchantIdentifier,

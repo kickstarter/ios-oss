@@ -9,7 +9,7 @@ public protocol FacebookAppDelegateProtocol {
                    annotation: Any!) -> Bool
 
   func application(_ application: UIApplication!,
-                   didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any]!) -> Bool
+                   didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!) -> Bool
 }
 
 extension FBSDKApplicationDelegate: FacebookAppDelegateProtocol {
@@ -27,7 +27,7 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   }
 
   internal func application(_ application: UIApplication!,
-                            didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any]!) -> Bool {
+                            didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!) -> Bool {
     self.didFinishLaunching = true
     return self.didFinishLaunchingReturnValue
   }

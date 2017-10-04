@@ -78,8 +78,8 @@ extension NSDecimalNumber: Argo.Decodable {
 }
 
 extension PKPaymentRequest: EncodableType {
-  public func encode() -> [String : Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["countryCode"] = self.countryCode
     result["currencyCode"] = self.currencyCode
     result["merchantCapabilities"] = self.merchantCapabilities.rawValue.bitComponents()
@@ -92,8 +92,8 @@ extension PKPaymentRequest: EncodableType {
 }
 
 extension PKPaymentSummaryItem: EncodableType {
-  public func encode() -> [String : Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["label"] = self.label
     result["amount"] = self.amount
     result["type"] = self.type.rawValue

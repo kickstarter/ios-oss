@@ -15,7 +15,7 @@ import Prelude
 public func localizedString(key: String,
                             defaultValue: String = "",
                             count: Int? = nil,
-                            substitutions: [String:String] = [:],
+                            substitutions: [String: String] = [:],
                             env: Environment = AppEnvironment.current,
                             bundle: NSBundleType = stringsBundle) -> String {
 

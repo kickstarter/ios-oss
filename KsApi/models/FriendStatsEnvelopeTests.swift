@@ -4,7 +4,7 @@ import XCTest
 
 final class FriendStatsEnvelopeTests: XCTestCase {
   func testJsonDecoding() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "stats": [
         "remote_friends_count": 202,
         "friend_projects_count": 1132

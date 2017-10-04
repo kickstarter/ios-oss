@@ -15,7 +15,7 @@ public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageProtocol {
     self.userId = userId
   }
 
-  public func toFirebaseDictionary() -> [String:Any] {
+  public func toFirebaseDictionary() -> [String: Any] {
     return [
       "message": self.message,
       "name": self.name,
