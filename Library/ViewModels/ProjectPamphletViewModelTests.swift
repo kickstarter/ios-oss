@@ -251,7 +251,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.topLayoutConstraintConstant.assertValues([])
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.willTransition(to: UITraitCollection(), parent: nil)
+    self.vm.inputs.willTransitionToNewCollection(parent: nil)
     self.topLayoutConstraintConstant.assertValues([0.0])
   }
 

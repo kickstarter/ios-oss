@@ -15,8 +15,8 @@ public final class ProjectPamphletViewController: UIViewController {
   fileprivate var navBarController: ProjectNavBarViewController!
   fileprivate var contentController: ProjectPamphletContentViewController!
 
-  @IBOutlet weak var navBarTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var projectPamphletTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak private var projectPamphletTopConstraint: NSLayoutConstraint!
 
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
@@ -88,7 +88,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func willTransition(to newCollection: UITraitCollection,
                                       with coordinator: UIViewControllerTransitionCoordinator) {
-    self.viewModel.inputs.willTransition(to: newCollection, parent: parent)
+    self.viewModel.inputs.willTransitionToNewCollection(parent: parent)
   }
 
   private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {

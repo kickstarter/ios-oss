@@ -8,9 +8,6 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
-//  /// Call after the loads, and pass the parent as parameter.
-//  func parent(viewController: UIViewController)
-
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -20,7 +17,7 @@ public protocol ProjectPamphletViewModelInputs {
   func viewWillAppear(animated: Bool)
 
   /// Call when the view will transition to a new trait collection.
-  func willTransition(to newCollection: UITraitCollection, parent: UIViewController?)
+  func willTransitionToNewCollection(parent: UIViewController?)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -77,7 +74,7 @@ ProjectPamphletViewModelOutputs {
     )
 
     self.topLayoutConstraintConstant = self.willTransitionToCollectionProperty.signal
-      .map { collection, parent in
+      .map { parent in
         guard #available(iOS 11.0, *),
           let parent = parent,
           !parent.view.traitCollection.isRegularRegular else {
@@ -118,11 +115,6 @@ ProjectPamphletViewModelOutputs {
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
-  fileprivate let parentViewControllerProperty = MutableProperty<UIViewController?>(nil)
-  public func parent(viewController: UIViewController) {
-    self.parentViewControllerProperty.value = viewController
-  }
-
   fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -138,9 +130,9 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
-  fileprivate let willTransitionToCollectionProperty = MutableProperty<(UITraitCollection?, UIViewController?)>(nil, nil)
-  public func willTransition(to newCollection: UITraitCollection, parent: UIViewController?) {
-    self.willTransitionToCollectionProperty.value = (newCollection, parent)
+  fileprivate let willTransitionToCollectionProperty = MutableProperty<(UIViewController?)>(nil)
+  public func willTransitionToNewCollection(parent: UIViewController?) {
+    self.willTransitionToCollectionProperty.value = parent
   }
 
   public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
@@ -149,6 +141,7 @@ ProjectPamphletViewModelOutputs {
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
+
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
