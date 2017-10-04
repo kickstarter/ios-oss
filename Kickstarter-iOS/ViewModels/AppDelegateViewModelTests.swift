@@ -765,7 +765,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_NewBacking_ForCreator() {
-    let projectId = (backingForCreatorPushData["activity"] as? [String:AnyObject])
+    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
       .flatMap { $0["project_id"] as? Int }
     let param = Param.id(projectId ?? -1)
 
@@ -779,7 +779,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_NewBacking_ForCreator_WithBadData() {
     var badPushData = backingForCreatorPushData
-    var badActivityData = badPushData["activity"] as? [String:AnyObject]
+    var badActivityData = badPushData["activity"] as? [String: AnyObject]
     badActivityData?["project_id"] = nil
     badPushData["activity"] = badActivityData
 
@@ -905,7 +905,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_CreatorActivity() {
     let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
 
-    let projectId = (backingForCreatorPushData["activity"] as? [String:AnyObject])
+    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
       .flatMap { $0["project_id"] as? Int }
     let param = Param.id(projectId ?? -1)
 
@@ -925,7 +925,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_PostLike() {
 
-    let pushData: [String:Any] = [
+    let pushData: [String: Any] = [
       "aps": [
         "alert": "Blob liked your update: Important message..."
       ],
@@ -946,7 +946,7 @@ final class AppDelegateViewModelTests: TestCase {
     let liveStreamEvent = .template
       |> LiveStreamEvent.lens.id .~ 42
 
-    let pushData: [String:Any] = [
+    let pushData: [String: Any] = [
       "aps": [
         "alert": "A live stream as started!"
       ],

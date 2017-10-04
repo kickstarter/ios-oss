@@ -123,7 +123,7 @@ extension NSUbiquitousKeyValueStore: KeyValueStoreType {
 }
 
 internal class MockKeyValueStore: KeyValueStoreType {
-  var store: [String:Any] = [:]
+  var store: [String: Any] = [:]
 
   func set(_ value: Bool, forKey defaultName: String) {
     self.store[defaultName] = value
@@ -141,8 +141,8 @@ internal class MockKeyValueStore: KeyValueStoreType {
     return self.store[defaultName] as? Bool ?? false
   }
 
-  func dictionary(forKey key: String) -> [String:Any]? {
-    return self.object(forKey: key) as? [String:Any]
+  func dictionary(forKey key: String) -> [String: Any]? {
+    return self.object(forKey: key) as? [String: Any]
   }
 
   func integer(forKey defaultName: String) -> Int {

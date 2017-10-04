@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 public extension String {
-  public typealias Attributes = [String:Any]
+  public typealias Attributes = [String: Any]
 
   /**
    Interprets `self` as an HTML string to produce an attributed string.
@@ -28,7 +28,7 @@ public extension String {
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String:Any] = [
+    let options: [String: Any] = [
       NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
       NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
     ]
@@ -93,7 +93,7 @@ public extension String {
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String:Any] = [
+    let options: [String: Any] = [
       NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
       NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
     ]

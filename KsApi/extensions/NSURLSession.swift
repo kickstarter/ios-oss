@@ -29,7 +29,7 @@ internal extension URLSession {
 
           guard
             (200..<300).contains(response.statusCode),
-            let headers = response.allHeaderFields as? [String:String],
+            let headers = response.allHeaderFields as? [String: String],
             let contentType = headers["Content-Type"], contentType.hasPrefix("application/json")
             else {
 
