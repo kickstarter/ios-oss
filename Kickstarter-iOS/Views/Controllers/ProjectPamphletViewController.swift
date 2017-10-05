@@ -27,11 +27,11 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   public override var prefersStatusBarHidden: Bool {
-    return self.viewModel.outputs.prefersStatusBarHidden
+    return UIApplication.shared.statusBarOrientation.isLandscape
   }
 
-  public override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-    return .fade
+  public override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
 
   public override func viewDidLoad() {
@@ -44,6 +44,8 @@ public final class ProjectPamphletViewController: UIViewController {
     self.contentController = self.childViewControllers
       .flatMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
+
+    self.viewModel.inputs.parent(viewController: parent)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -76,6 +78,7 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.navigationController?.setNavigationBarHidden($0, animated: $1) }
 
+
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
       .observeForUI()
       .observeValues { [weak self] in
@@ -88,7 +91,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func willTransition(to newCollection: UITraitCollection,
                                       with coordinator: UIViewControllerTransitionCoordinator) {
-    self.viewModel.inputs.willTransitionToNewCollection(parent: parent)
+    self.viewModel.inputs.willTransitionToNewCollection(to: newCollection)
   }
 
   private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {

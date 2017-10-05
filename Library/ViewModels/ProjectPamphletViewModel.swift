@@ -8,6 +8,9 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
+  /// Call after view loads and pass the parentViewController as parameter.
+  func parent(viewController: UIViewController?)
+
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -17,7 +20,7 @@ public protocol ProjectPamphletViewModelInputs {
   func viewWillAppear(animated: Bool)
 
   /// Call when the view will transition to a new trait collection.
-  func willTransitionToNewCollection(parent: UIViewController?)
+  func willTransitionToNewCollection(to newCollection: UITraitCollection)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -66,21 +69,30 @@ ProjectPamphletViewModelOutputs {
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
-    self.setNeedsStatusBarAppearanceUpdate = self.viewWillAppearAnimated.signal.ignoreValues()
+    self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
+      self.viewWillAppearAnimated.signal.ignoreValues(),
+      self.willTransitionToCollectionProperty.signal.ignoreValues()
+    )
 
     self.setNavigationBarHiddenAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
       self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
+    var initialTopConstraint: CGFloat = 0.0
+    self.parentViewControllerProperty.signal.observeValues { parent in
+      if #available(iOS 11.0, *) {
+        initialTopConstraint = parent?.view.safeAreaInsets.top ?? 0.0
+      }
+    }
+
     self.topLayoutConstraintConstant = self.willTransitionToCollectionProperty.signal
-      .map { parent in
+      .map { traitCollection in
         guard #available(iOS 11.0, *),
-          let parent = parent,
-          !parent.view.traitCollection.isRegularRegular else {
+          !traitCollection.isRegularRegular else {
           return 0.0
         }
-        return !parent.view.traitCollection.isVerticallyCompact ? 0.0 : parent.view.safeAreaInsets.left
+        return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
     }
 
     let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
@@ -115,6 +127,11 @@ ProjectPamphletViewModelOutputs {
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
+  fileprivate let parentViewControllerProperty = MutableProperty<UIViewController?>(nil)
+  public func parent(viewController: UIViewController?) {
+    self.parentViewControllerProperty.value = viewController
+  }
+
   fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -130,9 +147,10 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
-  fileprivate let willTransitionToCollectionProperty = MutableProperty<(UIViewController?)>(nil)
-  public func willTransitionToNewCollection(parent: UIViewController?) {
-    self.willTransitionToCollectionProperty.value = parent
+  fileprivate let willTransitionToCollectionProperty =
+    MutableProperty<UITraitCollection>(UITraitCollection())
+  public func willTransitionToNewCollection(to newCollection: UITraitCollection) {
+    self.willTransitionToCollectionProperty.value = newCollection
   }
 
   public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
