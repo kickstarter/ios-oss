@@ -51,15 +51,15 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
+    if #available(iOS 11.0, *) {
+      update(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
+             constant: parent?.view.safeAreaInsets.top)
+    }
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear(animated: animated)
-    if #available(iOS 11.0, *) {
-      update(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
-             constant: parent?.view.safeAreaInsets.top)
-    }
   }
 
   public override func bindViewModel() {
