@@ -78,7 +78,6 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.navigationController?.setNavigationBarHidden($0, animated: $1) }
 
-
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
       .observeForUI()
       .observeValues { [weak self] in
