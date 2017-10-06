@@ -146,7 +146,10 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         .map { ($0.category?.isRoot == .some(false) ? 0.6 : 1.0, true) }
     )
 
-    self.primaryLabelText = strings.map { $0.filter }
+    self.primaryLabelText = strings.map { filter in
+      filter.filter
+      
+      }
 
     self.secondaryLabelIsHidden = strings
       .map { $0.subcategory == nil }

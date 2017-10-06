@@ -4,6 +4,7 @@ extension KsApi.RootCategoriesEnvelope.Category {
   internal static let template = RootCategoriesEnvelope.Category(
     id: "Q2F0ZWdvcnktMQ==",
     name: "Art",
+    parentCategory: nil,
     parentId: nil,
     subcategories:
     RootCategoriesEnvelope.Category.SubcategoryConnection(
@@ -11,7 +12,7 @@ extension KsApi.RootCategoriesEnvelope.Category {
            nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
             id: "Q2F0ZWdvcnktMjI=",
             name: "Illustration",
-            parentId: "Q2F0ZWdvcnktMQ==",
+            parentCategory: ParentCategory.init(id: "Q2F0ZWdvcnktMQ==", name: "Art"),
             totalProjectCount: 0)]
     ),
     totalProjectCount: 450
@@ -30,7 +31,7 @@ extension KsApi.RootCategoriesEnvelope.Category {
       nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
         id: "Q2F0ZWdvcnktMzA=",
         name: "Documentary",
-        parentId: "Q2F0ZWdvcnktMTE=",
+        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTE=", name: "Film & Video"),
         totalProjectCount: 0)]
   )
 
@@ -43,7 +44,7 @@ extension KsApi.RootCategoriesEnvelope.Category {
       nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
         id: "Q2F0ZWdvcnktMzQ=",
         name: "Tabletop Games",
-        parentId: "Q2F0ZWdvcnktMTI=",
+        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTI=", name: "Games"),
         totalProjectCount: 0)]
   )
 

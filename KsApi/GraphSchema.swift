@@ -140,6 +140,7 @@ public enum Query {
     case id
     case name
     case parentId
+    case parentCategory
     case projects(Set<QueryArg<ProjectsConnection.Argument>>, NonEmptySet<Connection<Project>>)
     case slug
     indirect case subcategories(Set<QueryArg<Never>>, NonEmptySet<Connection<Category>>)
@@ -294,6 +295,7 @@ extension Query.Category: QueryType {
     switch self {
     case .id: return "id"
     case .name: return "name"
+    case .parentCategory: return "parentCategory { id name }"
     case .parentId: return "parentId"
     case let .projects(args, fields): return "projects" + connection(args, fields)
     case .slug: return "slug"
