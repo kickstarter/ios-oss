@@ -465,7 +465,8 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), NoError>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.project(Project.template |> Project.lens.category .~ Category.games)
+      secondVM.inputs.project(Project.template
+        |> Project.lens.category .~ RootCategoriesEnvelope.Category.games)
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(0, "Rating alert does not show on games project")

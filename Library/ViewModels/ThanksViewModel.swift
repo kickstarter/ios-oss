@@ -107,7 +107,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     let shouldShowGamesAlert = project
       .map { project in
-        project.category.rootId == KsApi.Category.gamesId &&
+        project.category.intID == KsApi.Category.gamesId &&
         !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
         !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
     }
@@ -140,15 +140,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { $0.category.rootId }
-      .skipNil()
-      .flatMap { _ in
-        // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
-        return AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { (category: KsApi.RootCategoriesEnvelope.Category)
-            -> KsApi.RootCategoriesEnvelope.Category in category }
-          .demoteErrors()
+      .map { $0.category }
+      .flatMap { (category: KsApi.RootCategoriesEnvelope.Category) in
+        return AppEnvironment.current.apiService.fetchGraph(query: categoryBy(id: category.id))
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { (category: KsApi.RootCategoriesEnvelope.Category)
+          -> KsApi.RootCategoriesEnvelope.Category in category }
+        .demoteErrors()
     }
 
     let projects = Signal.combineLatest(project, rootCategory)

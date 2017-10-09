@@ -148,7 +148,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.primaryLabelText = strings.map { filter in
       filter.filter
-      
       }
 
     self.secondaryLabelIsHidden = strings
@@ -288,7 +287,7 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
   } else if params.social == true {
     filterText = Strings.Following()
   } else if let category = params.category {
-    filterText = category.isRoot ? string(forCategoryId: category.intID) : category.name
+    filterText = category.isRoot ? string(forCategoryId: category.intID) : category._parent?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
   } else if params.recommended == true {
     filterText = Strings.Recommended_For_You()

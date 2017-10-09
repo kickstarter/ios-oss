@@ -5,7 +5,7 @@ import Prelude
 
 public struct Project {
   public let blurb: String
-  public let category: Category
+  public let category: RootCategoriesEnvelope.Category
   public let country: Country
   public let creator: User
   public let memberData: MemberData
@@ -165,7 +165,7 @@ extension Project: Argo.Decodable {
     let create = curry(Project.init)
     let tmp1 = create
       <^> json <| "blurb"
-      <*> json <| "category"
+      <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1
@@ -283,4 +283,16 @@ private func removeUnknowns(_ xs: [Project.MemberData.Permission]) -> [Project.M
 private func toInt(string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success)
     ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
+}
+
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+
+  let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
+  let category = RootCategoriesEnvelope.Category(id: "0",
+                                                 name: "Art",
+                                                 parentCategory: nil,
+                                                 parentId: nil,
+                                                 subcategories: subcategories,
+                                                 totalProjectCount: 0)
+  return .success(category)
 }

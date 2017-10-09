@@ -1,8 +1,21 @@
 import Foundation
 
 public struct ParentCategory: Swift.Decodable {
-  var id: String
-  var name: String
+  public let id: String
+  public let name: String
+  public var intID: Int {
+    return decompose(id: id) ?? -1
+  }
+  public var categoryType: RootCategoriesEnvelope.Category {
+      return RootCategoriesEnvelope.Category(
+        id: id,
+        name: name,
+        parentCategory: nil,
+        parentId: nil,
+        subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0,
+                                                                             nodes: []),
+        totalProjectCount: nil)
+  }
 }
 
 public struct RootCategoriesEnvelope: Swift.Decodable {
@@ -15,8 +28,11 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
         return decompose(id: id) ?? -1
     }
     public let name: String
-    public let parentCategory: ParentCategory?
     public let parentId: String?
+    internal var parentCategory: ParentCategory?
+    public var _parent: RootCategoriesEnvelope.Category? {
+      return parentCategory?.categoryType
+    }
     public let subcategories: SubcategoryConnection
     public let totalProjectCount: Int?
 
@@ -28,8 +44,8 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
                   totalProjectCount: Int?) {
       self.id = id
       self.name = name
-      self.parentCategory = parentCategory
       self.parentId = parentId
+      self.parentCategory = parentCategory
       self.subcategories = subcategories
       self.totalProjectCount = totalProjectCount
     }
@@ -42,7 +58,10 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
 
         public let id: String
         public let name: String
-        public let parentCategory: ParentCategory
+        internal var parentCategory: ParentCategory
+        public var _parent: RootCategoriesEnvelope.Category? {
+          return parentCategory.categoryType
+        }
         public let totalProjectCount: Int?
         public var category: Category? {
           return Category(id: self.id,
@@ -62,7 +81,6 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
           self.name = name
           self.parentCategory = parentCategory
           self.totalProjectCount = totalProjectCount
-
         }
       }
     }

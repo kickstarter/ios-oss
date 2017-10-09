@@ -23,6 +23,16 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
+    public static let parent = Lens<RootCategoriesEnvelope.Category, ParentCategory?>(
+      view: { $0.parentCategory },
+      set: { RootCategoriesEnvelope.Category(id: $1.id,
+                                             name: $1.name,
+                                             parentCategory: $0,
+                                             parentId: $1.parentId,
+                                             subcategories: $1.subcategories,
+                                             totalProjectCount: $1.totalProjectCount) }
+    )
+
     public static let parentId = Lens<RootCategoriesEnvelope.Category, String?>(
       view: { $0.parentId },
       set: { RootCategoriesEnvelope.Category(id: $1.id,

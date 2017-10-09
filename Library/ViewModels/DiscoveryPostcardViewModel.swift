@@ -21,7 +21,7 @@ private enum PostcardMetadataType {
                                   labelText: Strings.discovery_baseball_card_metadata_backer(),
                                   iconAndTextColor: .ksr_green_700)
     case .featured:
-      guard let rootCategory = project.category.parent?.name else { return nil }
+      guard let rootCategory = project.category._parent?.name else { return nil }
       return PostcardMetadataData(iconImage: image(named: "metadata-featured"),
                                   labelText: Strings.discovery_baseball_card_metadata_featured_project(
                                     category_name: rootCategory),

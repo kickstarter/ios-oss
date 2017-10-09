@@ -1900,7 +1900,7 @@ private func properties(project: Project,
   props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 
   props["category"] = project.category.name
-  props["parent_category"] = project.category.parent?.name
+  props["parent_category"] = project.category._parent?.name
 
   props["location"] = project.location.name
 

@@ -72,7 +72,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Card_Project_TodaySpecial() {
     let featuredProj = anomalisaNoPhoto
-        |> Project.lens.category.parent .~ Category.art
+        |> Project.lens.category .~ RootCategoriesEnvelope.Category.art
         |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
 
     let potdProj = anomalisaNoPhoto

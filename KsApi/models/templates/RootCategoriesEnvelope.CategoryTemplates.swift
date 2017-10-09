@@ -9,11 +9,7 @@ extension KsApi.RootCategoriesEnvelope.Category {
     subcategories:
     RootCategoriesEnvelope.Category.SubcategoryConnection(
       totalCount: 0,
-           nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
-            id: "Q2F0ZWdvcnktMjI=",
-            name: "Illustration",
-            parentCategory: ParentCategory.init(id: "Q2F0ZWdvcnktMQ==", name: "Art"),
-            totalProjectCount: 0)]
+           nodes: []
     ),
     totalProjectCount: 450
   )
