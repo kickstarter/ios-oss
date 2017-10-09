@@ -37,11 +37,11 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     public let totalProjectCount: Int?
 
     public init(id: String,
-                  name: String,
-                  parentCategory: ParentCategory?,
-                  parentId: String?,
-                  subcategories: SubcategoryConnection,
-                  totalProjectCount: Int?) {
+                name: String,
+                parentCategory: ParentCategory?,
+                parentId: String?,
+                subcategories: SubcategoryConnection,
+                totalProjectCount: Int?) {
       self.id = id
       self.name = name
       self.parentId = parentId
