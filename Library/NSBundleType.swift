@@ -11,7 +11,7 @@ public protocol NSBundleType {
   static func create(path: String) -> NSBundleType?
   func path(forResource name: String?, ofType ext: String?) -> String?
   func localizedString(forKey key: String, value: String?, table tableName: String?) -> String
-  var infoDictionary: [String : Any]? { get }
+  var infoDictionary: [String: Any]? { get }
 }
 
 extension NSBundleType {
@@ -52,7 +52,7 @@ public struct LanguageDoubler: NSBundleType {
   public init() {
   }
 
-  public let bundleIdentifier: String? = "com.language.doubler"
+  public fileprivate(set) var bundleIdentifier: String? = "com.language.doubler"
 
   public static func create(path: String) -> NSBundleType? {
     return DoublerBundle(path: path)
@@ -66,7 +66,7 @@ public struct LanguageDoubler: NSBundleType {
     return LanguageDoubler.mainBundle.path(forResource: name, ofType: ext)
   }
 
-  public var infoDictionary: [String : Any]? {
+  public var infoDictionary: [String: Any]? {
     return [:]
   }
 }

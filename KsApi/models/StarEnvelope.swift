@@ -3,8 +3,8 @@ import Curry
 import Runes
 
 public struct StarEnvelope {
-  public let user: User
-  public let project: Project
+  public private(set) var user: User
+  public private(set) var project: Project
 }
 
 extension StarEnvelope: Argo.Decodable {

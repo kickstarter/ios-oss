@@ -16,7 +16,7 @@ public func == (lhs: OauthTokenAuthType?, rhs: OauthTokenAuthType?) -> Bool {
 }
 
 public struct OauthToken: OauthTokenAuthType {
-  public let token: String
+  public fileprivate(set) var token: String
 
   public init(token: String) {
     self.token = token

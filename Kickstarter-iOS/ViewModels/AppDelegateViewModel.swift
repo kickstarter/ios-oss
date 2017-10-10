@@ -8,10 +8,10 @@ import Result
 import UserNotifications
 
 public struct HockeyConfigData {
-  public let appIdentifier: String
-  public let disableUpdates: Bool
-  public let userId: String
-  public let userName: String
+  public fileprivate(set) var appIdentifier: String
+  public fileprivate(set) var disableUpdates: Bool
+  public fileprivate(set) var userId: String
+  public fileprivate(set) var userName: String
 }
 
 extension HockeyConfigData: Equatable {}
@@ -951,7 +951,7 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
     return items
 }
 
-private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String:String] {
+private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String: String] {
 
   let queryItems = urlComponents.queryItems ?? []
   return [String: String?].keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
@@ -1059,8 +1059,8 @@ private func visitorCookies() -> [HTTPCookie] {
 @available(iOS 10.0, *)
 private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatus {
   switch status {
-    case .authorized: return .authorized
-    case .denied: return .denied
-    case .notDetermined: return .notDetermined
+  case .authorized: return .authorized
+  case .denied: return .denied
+  case .notDetermined: return .notDetermined
   }
 }

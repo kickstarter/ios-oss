@@ -2,9 +2,9 @@ import KsApi
 import Prelude
 
 public struct ExpandableRow {
-  public let isExpanded: Bool
-  public let params: DiscoveryParams
-  public let selectableRows: [SelectableRow]
+  public fileprivate(set) var isExpanded: Bool
+  public fileprivate(set) var params: DiscoveryParams
+  public fileprivate(set) var selectableRows: [SelectableRow]
 
     public enum lens {
     public static let isExpanded = Lens<ExpandableRow, Bool>(

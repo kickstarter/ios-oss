@@ -95,8 +95,8 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     /// Returns the parent category if present, or returns self if we know for a fact that self is a
     /// root categeory.
     public var root: RootCategoriesEnvelope.Category? {
-      if let parent = self._parent {
-        return parent
+      if let parent = self.parentCategory {
+        return parent.categoryType
       } else if self.parentId == nil {
         return self
       }

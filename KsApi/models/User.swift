@@ -3,55 +3,56 @@ import Curry
 import Runes
 
 public struct User {
-  public let avatar: Avatar
-  public let facebookConnected: Bool?
-  public let id: Int
-  public let isFriend: Bool?
-  public let liveAuthToken: String?
-  public let location: Location?
-  public let name: String
-  public let newsletters: NewsletterSubscriptions
-  public let notifications: Notifications
-  public let social: Bool?
-  public let stats: Stats
+  public private(set) var avatar: Avatar
+  public private(set) var facebookConnected: Bool?
+  public private(set) var id: Int
+  public private(set) var isFriend: Bool?
+  public private(set) var liveAuthToken: String?
+  public private(set) var location: Location?
+  public private(set) var name: String
+  public private(set) var newsletters: NewsletterSubscriptions
+  public private(set) var notifications: Notifications
+  public private(set) var social: Bool?
+  public private(set) var stats: Stats
 
   public struct Avatar {
-    public let large: String?
-    public let medium: String
-    public let small: String
+    public private(set) var large: String?
+    public private(set) var medium: String
+    public private(set) var small: String
   }
 
   public struct NewsletterSubscriptions {
-    public let arts: Bool?
-    public let games: Bool?
-    public let happening: Bool?
-    public let invent: Bool?
-    public let promo: Bool?
-    public let weekly: Bool?
+    public private(set) var arts: Bool?
+    public private(set) var games: Bool?
+    public private(set) var happening: Bool?
+    public private(set) var invent: Bool?
+    public private(set) var promo: Bool?
+    public private(set) var weekly: Bool?
   }
 
   public struct Notifications {
-    public let backings: Bool?
-    public let comments: Bool?
-    public let follower: Bool?
-    public let friendActivity: Bool?
-    public let mobileBackings: Bool?
-    public let mobileComments: Bool?
-    public let mobileFollower: Bool?
-    public let mobileFriendActivity: Bool?
-    public let mobilePostLikes: Bool?
-    public let mobileUpdates: Bool?
-    public let postLikes: Bool?
-    public let updates: Bool?
+    public private(set) var backings: Bool?
+    public private(set) var comments: Bool?
+    public private(set) var follower: Bool?
+    public private(set) var friendActivity: Bool?
+    public private(set) var mobileBackings: Bool?
+    public private(set) var mobileComments: Bool?
+    public private(set) var mobileFollower: Bool?
+    public private(set) var mobileFriendActivity: Bool?
+    public private(set) var mobilePostLikes: Bool?
+    public private(set) var mobileUpdates: Bool?
+    public private(set) var postLikes: Bool?
+    public private(set) var creatorTips: Bool?
+    public private(set) var updates: Bool?
   }
 
   public struct Stats {
-    public let backedProjectsCount: Int?
-    public let createdProjectsCount: Int?
-    public let memberProjectsCount: Int?
-    public let starredProjectsCount: Int?
-    public let unansweredSurveysCount: Int?
-    public let unreadMessagesCount: Int?
+    public private(set) var backedProjectsCount: Int?
+    public private(set) var createdProjectsCount: Int?
+    public private(set) var memberProjectsCount: Int?
+    public private(set) var starredProjectsCount: Int?
+    public private(set) var unansweredSurveysCount: Int?
+    public private(set) var unreadMessagesCount: Int?
   }
 
   public var isCreator: Bool {
@@ -92,8 +93,8 @@ extension User: Argo.Decodable {
 }
 
 extension User: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["avatar"] = self.avatar.encode()
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
@@ -119,8 +120,8 @@ extension User.Avatar: Argo.Decodable {
 }
 
 extension User.Avatar: EncodableType {
-  public func encode() -> [String:Any] {
-    var ret: [String:Any] = [
+  public func encode() -> [String: Any] {
+    var ret: [String: Any] = [
       "medium": self.medium,
       "small": self.small
     ]
@@ -144,8 +145,8 @@ extension User.NewsletterSubscriptions: Argo.Decodable {
 }
 
 extension User.NewsletterSubscriptions: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["arts_culture_newsletter"] = self.arts
     result["games_newsletter"] = self.games
     result["happening_newsletter"] = self.happening
@@ -183,18 +184,20 @@ extension User.Notifications: Argo.Decodable {
       <*> json <|? "notify_mobile_of_post_likes"
       <*> json <|? "notify_mobile_of_updates"
       <*> json <|? "notify_of_post_likes"
+      <*> json <|? "notify_of_creator_edu"
       <*> json <|? "notify_of_updates"
   }
 }
 
 extension User.Notifications: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["notify_of_backings"] = self.backings
     result["notify_of_comments"] = self.comments
     result["notify_of_follower"] = self.follower
     result["notify_of_friend_activity"] = self.friendActivity
     result["notify_of_post_likes"] = self.postLikes
+    result["notify_of_creator_edu"] = self.creatorTips
     result["notify_of_updates"] = self.updates
     result["notify_mobile_of_backings"] = self.mobileBackings
     result["notify_mobile_of_comments"] = self.mobileComments
@@ -219,6 +222,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.mobilePostLikes == rhs.mobilePostLikes &&
     lhs.mobileUpdates == rhs.mobileUpdates &&
     lhs.postLikes == rhs.postLikes &&
+    lhs.creatorTips == rhs.creatorTips &&
     lhs.updates == rhs.updates
 }
 
@@ -236,8 +240,8 @@ extension User.Stats: Argo.Decodable {
 }
 
 extension User.Stats: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["backed_projects_count"] =  self.backedProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
     result["member_projects_count"] = self.memberProjectsCount

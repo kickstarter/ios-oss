@@ -13,7 +13,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 
 ## Getting Started
 
-1. [Download](https://developer.apple.com/xcode/download/) the Xcode 8.3 release.
+1. [Download](https://developer.apple.com/xcode/download/) the Xcode 9 release.
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.
@@ -70,6 +70,9 @@ A collection of operators we like to add to ReactiveCocoa.
 * [Argo](https://github.com/thoughtbot/Argo)
 * [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
 * [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
+
+Notices for 3rd party libraries in this repository are contained in
+`NOTICE.md`.
 
 ## Contributing
 

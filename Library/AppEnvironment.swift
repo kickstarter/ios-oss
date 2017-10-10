@@ -302,7 +302,7 @@ public struct AppEnvironment {
                                        ubiquitousStore: KeyValueStoreType,
                                        userDefaults: KeyValueStoreType) {
 
-    var data: [String:Any] = [:]
+    var data: [String: Any] = [:]
 
     data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString

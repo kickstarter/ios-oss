@@ -3,14 +3,14 @@ import Curry
 import Runes
 
 public struct ProjectsEnvelope {
-  public let projects: [Project]
-  public let urls: UrlsEnvelope
+  public private(set) var projects: [Project]
+  public private(set) var urls: UrlsEnvelope
 
   public struct UrlsEnvelope {
-    public let api: ApiEnvelope
+    public private(set) var api: ApiEnvelope
 
     public struct ApiEnvelope {
-      public let moreProjects: String
+      public private(set) var moreProjects: String
     }
   }
 }

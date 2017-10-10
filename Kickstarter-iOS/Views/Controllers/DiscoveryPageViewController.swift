@@ -84,9 +84,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
 
     _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
   }
 
     internal override func bindViewModel() {

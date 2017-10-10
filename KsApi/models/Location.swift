@@ -3,11 +3,11 @@ import Curry
 import Runes
 
 public struct Location {
-  public let country: String
-  public let displayableName: String
-  public let id: Int
-  public let localizedName: String
-  public let name: String
+  public private(set) var country: String
+  public private(set) var displayableName: String
+  public private(set) var id: Int
+  public private(set) var localizedName: String
+  public private(set) var name: String
 
   public static let none = Location(country: "", displayableName: "", id: -42, localizedName: "", name: "")
 }
@@ -29,8 +29,8 @@ extension Location: Argo.Decodable {
 }
 
 extension Location: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["country"] = self.country
     result["displayable_name"] = self.displayableName
     result["id"] = self.id

@@ -3,10 +3,10 @@ import ReactiveSwift
 import LiveStream
 
 public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageProtocol {
-  public let message: String
-  public let name: String
-  public let profilePic: String
-  public let userId: String
+  public fileprivate(set) var message: String
+  public fileprivate(set) var name: String
+  public fileprivate(set) var profilePic: String
+  public fileprivate(set) var userId: String
 
   public init(message: String, name: String, profilePic: String, userId: String) {
     self.message = message
@@ -15,7 +15,7 @@ public struct NewLiveStreamChatMessage: NewLiveStreamChatMessageProtocol {
     self.userId = userId
   }
 
-  public func toFirebaseDictionary() -> [String:Any] {
+  public func toFirebaseDictionary() -> [String: Any] {
     return [
       "message": self.message,
       "name": self.name,
@@ -104,9 +104,9 @@ extension LiveStreamType: Equatable {
 }
 
 public struct OpenTokSessionConfig: Equatable {
-  public let sessionId: String
-  public let apiKey: String
-  public let token: String
+  public fileprivate(set) var sessionId: String
+  public fileprivate(set) var apiKey: String
+  public fileprivate(set) var token: String
 
   public init(apiKey: String, sessionId: String, token: String) {
     self.apiKey = apiKey

@@ -15,6 +15,7 @@ internal final class MessageDialogViewController: UIViewController {
 
   @IBOutlet private weak var bodyTextView: UITextView!
   @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var cancelButton: UIBarButtonItem!
   @IBOutlet private weak var loadingView: UIView!
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var postButton: UIBarButtonItem!
@@ -31,6 +32,7 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -62,6 +64,9 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    _ = self.cancelButton
+      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
     _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900

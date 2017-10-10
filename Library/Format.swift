@@ -273,11 +273,11 @@ private struct DateFormatterConfig {
 
   fileprivate func formatter() -> DateFormatter {
     let formatter = DateFormatter()
+    formatter.locale = self.locale
+    formatter.timeZone = self.timeZone
     if let template = self.template {
       formatter.setLocalizedDateFormatFromTemplate(template)
     }
-    formatter.timeZone = self.timeZone
-    formatter.locale = self.locale
     if let dateStyle = self.dateStyle {
       formatter.dateStyle = dateStyle
     }
@@ -287,7 +287,7 @@ private struct DateFormatterConfig {
     return formatter
   }
 
-  fileprivate static var formatters: [DateFormatterConfig:DateFormatter] = [:]
+  fileprivate static var formatters: [DateFormatterConfig: DateFormatter] = [:]
 
   fileprivate static func cachedFormatter(forConfig config: DateFormatterConfig) -> DateFormatter {
     let formatter = self.formatters[config] ?? config.formatter()
@@ -335,7 +335,7 @@ private struct NumberFormatterConfig {
     return formatter
   }
 
-  fileprivate static var formatters: [NumberFormatterConfig:NumberFormatter] = [:]
+  fileprivate static var formatters: [NumberFormatterConfig: NumberFormatter] = [:]
 
   fileprivate static let defaultWholeNumberConfig = NumberFormatterConfig(numberStyle: .decimal,
                                                                           roundingMode: .down,

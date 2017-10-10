@@ -2,9 +2,9 @@ import KsApi
 import Prelude
 
 public struct ProjectActivityData {
-  public let activities: [Activity]
-  public let project: Project
-  public let groupedDates: Bool
+  public fileprivate(set) var activities: [Activity]
+  public fileprivate(set) var project: Project
+  public fileprivate(set) var groupedDates: Bool
 
     public enum lens {
     public static let activities = Lens<ProjectActivityData, [Activity]>(

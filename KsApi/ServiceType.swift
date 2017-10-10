@@ -310,7 +310,7 @@ extension ServiceType {
 
    - returns: A new URL request that is properly configured for the server.
    */
-  public func preparedRequest(forRequest originalRequest: URLRequest, query: [String:Any] = [:])
+  public func preparedRequest(forRequest originalRequest: URLRequest, query: [String: Any] = [:])
     -> URLRequest {
 
       var request = originalRequest
@@ -356,7 +356,7 @@ extension ServiceType {
 
    - returns: A new URL request that is properly configured for the server.
    */
-  public func preparedRequest(forURL url: URL, method: Method = .GET, query: [String:Any] = [:])
+  public func preparedRequest(forURL url: URL, method: Method = .GET, query: [String: Any] = [:])
     -> URLRequest {
 
       var request = URLRequest(url: url)
@@ -403,8 +403,8 @@ extension ServiceType {
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
-  internal var defaultHeaders: [String:String] {
-    var headers: [String:String] = [:]
+  fileprivate var defaultHeaders: [String: String] {
+    var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
     headers["Kickstarter-App-Id"] = self.appId
@@ -431,8 +431,8 @@ extension ServiceType {
     }
   }
 
-  fileprivate var defaultQueryParams: [String:String] {
-    var query: [String:String] = [:]
+  fileprivate var defaultQueryParams: [String: String] {
+    var query: [String: String] = [:]
     query["client_id"] = self.serverConfig.apiClientAuth.clientId
     query["currency"] = self.currency
     query["oauth_token"] = self.oauthToken?.token
@@ -442,7 +442,7 @@ extension ServiceType {
   fileprivate func queryComponents(_ key: String, _ value: Any) -> [(String, String)] {
     var components: [(String, String)] = []
 
-    if let dictionary = value as? [String:Any] {
+    if let dictionary = value as? [String: Any] {
       for (nestedKey, value) in dictionary {
         components += queryComponents("\(key)[\(nestedKey)]", value)
       }

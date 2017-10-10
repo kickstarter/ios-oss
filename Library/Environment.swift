@@ -11,78 +11,78 @@ import FBSDKCoreKit
  */
 public struct Environment {
   /// A type that exposes endpoints for fetching Kickstarter data.
-  public let apiService: ServiceType
+  public fileprivate(set) var apiService: ServiceType
 
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
-  public let apiDelayInterval: DispatchTimeInterval
+  public fileprivate(set) var apiDelayInterval: DispatchTimeInterval
 
   /// A type that exposes how to extract a still image from an AVAsset.
-  public let assetImageGeneratorType: AssetImageGeneratorType.Type
+  public fileprivate(set) var assetImageGeneratorType: AssetImageGeneratorType.Type
 
   /// A type that stores a cached dictionary.
-  public let cache: KSCache
+  public fileprivate(set) var cache: KSCache
 
   /// The user's calendar.
-  public let calendar: Calendar
+  public fileprivate(set) var calendar: Calendar
 
   /// A type that holds configuration values we download from the server.
-  public let config: Config?
+  public fileprivate(set) var config: Config?
 
   /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
-  public let cookieStorage: HTTPCookieStorageProtocol
+  public fileprivate(set) var cookieStorage: HTTPCookieStorageProtocol
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
-  public let countryCode: String
+  public fileprivate(set) var countryCode: String
 
   /// The currently logged in user.
-  public let currentUser: User?
+  public fileprivate(set) var currentUser: User?
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
-  public let dateType: DateProtocol.Type
+  public fileprivate(set) var dateType: DateProtocol.Type
 
   /// The amount of time to debounce signals by. Default value is `0.3`.
-  public let debounceInterval: DispatchTimeInterval
+  public fileprivate(set) var debounceInterval: DispatchTimeInterval
 
   /// The current device running the app.
-  public let device: UIDeviceType
+  public fileprivate(set) var device: UIDeviceType
 
   /// A delegate to handle Facebook initialization and incoming url requests
-  public let facebookAppDelegate: FacebookAppDelegateProtocol
+  public fileprivate(set) var facebookAppDelegate: FacebookAppDelegateProtocol
 
   /// A function that returns whether voice over mode is running.
-  public let isVoiceOverRunning: () -> Bool
+  public fileprivate(set) var isVoiceOverRunning: () -> Bool
 
   /// A type that exposes endpoints for tracking various Kickstarter events.
-  public let koala: Koala
+  public fileprivate(set) var koala: Koala
 
   /// The user’s current language, which determines which localized strings bundle to load.
-  public let language: Language
+  public fileprivate(set) var language: Language
 
   /// The current set of launched countries for Kickstarter.
-  public let launchedCountries: LaunchedCountries
+  public fileprivate(set) var launchedCountries: LaunchedCountries
 
   /// The current service being used for live stream requests.
-  public let liveStreamService: LiveStreamServiceProtocol
+  public fileprivate(set) var liveStreamService: LiveStreamServiceProtocol
 
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `Locale.current`.
-  public let locale: Locale
+  public fileprivate(set) var locale: Locale
 
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
-  public let mainBundle: NSBundleType
+  public fileprivate(set) var mainBundle: NSBundleType
 
   /// A reachability signal producer.
-  public let reachability: SignalProducer<Reachability, NoError>
+  public fileprivate(set) var reachability: SignalProducer<Reachability, NoError>
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
-  public let scheduler: DateScheduler
+  public fileprivate(set) var scheduler: DateScheduler
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
-  public let ubiquitousStore: KeyValueStoreType
+  public fileprivate(set) var ubiquitousStore: KeyValueStoreType
 
   /// A user defaults key-value store. Default value is `NSUserDefaults.standard`.
-  public let userDefaults: KeyValueStoreType
+  public fileprivate(set) var userDefaults: KeyValueStoreType
 
   public init(
     apiService: ServiceType = Service(),

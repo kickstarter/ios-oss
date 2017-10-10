@@ -215,9 +215,5 @@ private func flipLiveStreamEventToLive(liveStreamEvent: LiveStreamEvent) -> Live
 
 private func formattedDateString(date: Date) -> String {
 
-  let format = DateFormatter.dateFormat(fromTemplate: "dMMMhmzzz",
-                                        options: 0,
-                                        locale: AppEnvironment.current.locale) ?? "MMM d, h:mm a zzz"
-
-  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: format)
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "dMMMhmzzz")
 }

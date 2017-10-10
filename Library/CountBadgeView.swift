@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public final class CountBadgeView: UIView {
-  public let label: UILabel = UILabel()
+  public fileprivate(set) var label: UILabel = UILabel()
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)

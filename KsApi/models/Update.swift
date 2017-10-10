@@ -4,25 +4,25 @@ import Curry
 import Runes
 
 public struct Update {
-  public let body: String?
-  public let commentsCount: Int?
-  public let hasLiked: Bool?
-  public let id: Int
-  public let isPublic: Bool
-  public let likesCount: Int?
-  public let projectId: Int
-  public let publishedAt: TimeInterval?
-  public let sequence: Int
-  public let title: String
-  public let urls: UrlsEnvelope
-  public let user: User?
-  public let visible: Bool?
+  public private(set) var body: String?
+  public private(set) var commentsCount: Int?
+  public private(set) var hasLiked: Bool?
+  public private(set) var id: Int
+  public private(set) var isPublic: Bool
+  public private(set) var likesCount: Int?
+  public private(set) var projectId: Int
+  public private(set) var publishedAt: TimeInterval?
+  public private(set) var sequence: Int
+  public private(set) var title: String
+  public private(set) var urls: UrlsEnvelope
+  public private(set) var user: User?
+  public private(set) var visible: Bool?
 
   public struct UrlsEnvelope {
-    public let web: WebEnvelope
+    public private(set) var web: WebEnvelope
 
     public struct WebEnvelope {
-      public let update: String
+      public private(set) var update: String
     }
   }
 }

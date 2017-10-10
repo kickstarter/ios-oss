@@ -63,12 +63,15 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> war vor %{time_ago} live";
 "Creator_name_was_streaming_live_on_Kickstarter" = "Der Stream von %{creator_name} war gerade live auf Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
+"Creator_tips" = "Creator tips";
+"Daily_digest" = "Daily digest";
 "Delivered" = "Verschickt";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
 "Earth" = "Erde";
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
+"Email_frequency" = "Email frequency";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
@@ -126,6 +129,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Home" = "Home";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
+"Individual_Emails" = "Individual emails";
 "Info" = "Info";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
@@ -160,6 +164,7 @@
 "Message_backer" = "Nachricht an Unterstützer senden";
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
+"New_pledge_activity" = "New pledge activity";
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
 "No_messages" = "Keine Nachrichten";
@@ -206,6 +211,7 @@
 "Project_cancelled" = "Projekt abgebrochen";
 "Project_saved" = "Projekt gespeichert.";
 "Projects_We_Love" = "Team-Favoriten";
+"Projects_youve_launched" = "Projects you've launched";
 "Public_comment" = "Öffentlicher Kommentar";
 "Pursue_daring_ideas" = "Zündende Ideen.";
 "Push_notifications" = "Push-Benachrichtigungen";

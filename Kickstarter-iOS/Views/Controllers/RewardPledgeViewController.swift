@@ -282,9 +282,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.loadingIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
 
     _ = self.loadingOverlayView
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
@@ -374,9 +372,7 @@ internal final class RewardPledgeViewController: UIViewController {
       ||> separatorStyle
 
     _ = self.shippingActivityIndicatorView
-      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> baseActivityIndicatorStyle
 
     _ = self.shipsToLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }

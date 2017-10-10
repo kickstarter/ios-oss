@@ -8,7 +8,7 @@ import XCTest
 public final class PKPaymentRequestTests: XCTestCase {
 
   func testDecodingSnakeCase_MinimalData() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "country_code": "US",
       "currency_code": "USD",
       "merchant_identifier": "merchant.test",
@@ -36,7 +36,7 @@ public final class PKPaymentRequestTests: XCTestCase {
   }
 
   func testDecodingSnakeCase_FullData() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "country_code": "US",
       "currency_code": "USD",
       "merchant_capabilities": "Capability3DS",
