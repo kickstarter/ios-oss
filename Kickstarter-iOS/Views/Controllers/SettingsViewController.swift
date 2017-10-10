@@ -466,7 +466,8 @@ internal final class SettingsViewController: UIViewController {
   }
 
   fileprivate func goToEmailFrequency() {
-    let vc = FindFriendsViewController.configuredWith(source: .settings)
+
+    let vc = CreatorDigestSettingsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

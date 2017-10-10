@@ -1113,7 +1113,7 @@
         <!--Creator Digest Settings View Controller-->
         <scene sceneID="EeA-WU-KtY">
             <objects>
-                <viewController id="E20-X5-whU" customClass="CreatorDigestSettingsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreatorDigestSettingsViewController" id="E20-X5-whU" customClass="CreatorDigestSettingsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2MY-4b-R9N"/>
                         <viewControllerLayoutGuide type="bottom" id="BXD-wf-Lva"/>
@@ -1121,7 +1121,52 @@
                     <view key="view" contentMode="scaleToFill" id="LYx-rk-b0z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="W02-Nq-Zec">
+                                <rect key="frame" x="92" y="302.5" width="191.5" height="62"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7w4-Ks-AK1">
+                                        <rect key="frame" x="0.0" y="0.0" width="191.5" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Individual Emails" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEC-8m-Zpt">
+                                                <rect key="frame" x="0.0" y="0.0" width="126.5" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g3m-J5-BmJ">
+                                                <rect key="frame" x="142.5" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="inventNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="vPl-cm-wft"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="FGB-4l-QSC">
+                                        <rect key="frame" x="0.0" y="31" width="158.5" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Digest" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TXJ-iA-peG">
+                                                <rect key="frame" x="0.0" y="0.0" width="91.5" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYt-re-4kM">
+                                                <rect key="frame" x="109.5" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="inventNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="54M-I7-dRR"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="W02-Nq-Zec" firstAttribute="centerY" secondItem="LYx-rk-b0z" secondAttribute="centerY" id="fwk-Cy-kK1"/>
+                            <constraint firstItem="W02-Nq-Zec" firstAttribute="centerX" secondItem="LYx-rk-b0z" secondAttribute="centerX" id="qMv-VF-qSG"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylZ-Ni-vgD" userLabel="First Responder" sceneMemberID="firstResponder"/>
