@@ -56,8 +56,6 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-<<<<<<< Updated upstream
-=======
 			<key>ksr.dev</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -65,7 +63,6 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
->>>>>>> Stashed changes
 			<key>akamaihd.net</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
