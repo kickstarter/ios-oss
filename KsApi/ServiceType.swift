@@ -106,6 +106,13 @@ public protocol ServiceType {
   /// Fetch generic objects using graphQL.
   func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
 
+  /// Fetch Categories objects using graphQL.
+  func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>
+
+  /// Fetch Category objects using graphQL.
+  func fetchGraphCategory(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError>
+
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope>

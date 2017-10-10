@@ -176,6 +176,16 @@ public struct Service: ServiceType {
     return request(.friendStats)
   }
 
+  public func fetchGraphCategories(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
+    return fetchGraph(query: query)
+  }
+
+  public func fetchGraphCategory(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError> {
+      return fetchGraph(query: query)
+  }
+
   public func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     return fetch(query: query)
   }

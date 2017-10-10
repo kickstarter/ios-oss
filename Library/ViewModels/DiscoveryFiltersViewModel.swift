@@ -86,7 +86,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
+        AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(starting: {
             loaderIsVisible.value = true
@@ -221,19 +221,57 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
  - returns: An array of expandable rows with one row expanded.
  */
+
+/*
+ let expandableRows = categories
+ .sorted { lhs, _ in !lhs.isRoot }
+ .groupedBy { $0.parent ?? $0 }
+ .map { rootCategory, rootWithChildren in
+ ExpandableRow(
+ isExpanded: false,
+ params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
+ selectableRows: rootWithChildren
+ .sorted()
+ .map { childCategory in
+ SelectableRow(
+ isSelected: childCategory == selectedRow.params.category,
+ params: .defaults |> DiscoveryParams.lens.category .~ childCategory
+ )
+ }
+ )
+ }
+ .sorted { lhs, rhs in
+ guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
+ return lhs.params.category == nil
+ }
+ return lhsCategory < rhsCategory
+ }
+ */
+
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
-  let expandableRows = categories
+
+    let expandableRows = categories
     .sorted { lhs, _ in !lhs.isRoot }
-    .map { category in
-      ExpandableRow(isExpanded: false,
+    .groupedBy { $0._parent == nil ? $0 : $0._parent! }
+      .map { (arg) -> ExpandableRow in
+        let (category, rootWithChildren) = arg
+        return ExpandableRow(isExpanded: false,
                     params: .defaults |> DiscoveryParams.lens.category .~ category,
-                    selectableRows: category.subcategories.nodes
-                      .map { node in
-                        return SelectableRow(isSelected: node.category == selectedRow.params.category,
-                                      params: .defaults |> DiscoveryParams.lens.category .~ node.category)
+                    selectableRows: rootWithChildren
+                      .sorted()
+                      .map { childCategory in
+                        return SelectableRow(isSelected: childCategory == selectedRow.params.category,
+                                             params: .defaults
+                                              |> DiscoveryParams.lens.category .~ childCategory)
         }
-    )
+      )
+    }
+    .sorted { lhs, rhs in
+      guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
+        return lhs.params.category == nil
+      }
+      return lhsCategory < rhsCategory
   }
 
   return expandableRows.map { expandableRow in

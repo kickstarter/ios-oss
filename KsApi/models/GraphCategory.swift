@@ -27,6 +27,9 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     public var intID: Int {
         return decompose(id: id) ?? -1
     }
+
+    public static let gamesId: String = "Q2F0ZWdvcnktMTI="
+
     public let name: String
     public let parentId: String?
     internal var parentCategory: ParentCategory?
@@ -88,7 +91,56 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     public var isRoot: Bool {
       return self.parentId == nil
     }
+
+    /// Returns the parent category if present, or returns self if we know for a fact that self is a
+    /// root categeory.
+    public var root: RootCategoriesEnvelope.Category? {
+      if let parent = self._parent {
+        return parent
+      } else if self.parentId == nil {
+        return self
+      }
+      return nil
+    }
+
+    /// Returns the id of the root category. This is sometimes present in situations that `root` is not.
+    public var rootId: String? {
+      return self.parentId ?? self.root?.id
+    }
   }
+}
+
+extension ParentCategory: Hashable {
+  public var hashValue: Int {
+    return self.intID
+  }
+}
+
+extension ParentCategory: Equatable {
+  static public func == (lhs: ParentCategory, rhs: ParentCategory) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
+extension RootCategoriesEnvelope.Category: Comparable {}
+public func < (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope.Category) -> Bool {
+  if lhs.id == rhs.id {
+    return false
+  }
+
+  if lhs.isRoot && lhs.id == rhs._parent?.id {
+    return true
+  }
+
+  if !lhs.isRoot && lhs._parent?.id == rhs.id {
+    return false
+  }
+
+  if let lhsRootName = lhs._parent?.name, let rhsRootName = rhs._parent?.name {
+    return lhsRootName < rhsRootName
+  }
+
+  return lhs._parent == nil
 }
 
 extension RootCategoriesEnvelope.Category: Equatable {

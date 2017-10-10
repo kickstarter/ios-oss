@@ -383,13 +383,14 @@ AppDelegateViewModelOutputs {
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          Param.decode(.string(rawCategoryParam)).value != nil
+          let categoryParam = Param.decode(.string(rawCategoryParam)).value
           else { return .init(value: params) }
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
-        return AppEnvironment.current.apiService.fetchGraph(query: rootCategoriesQuery)
+        return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
+          .map { $0.rootCategories.filter { $0.name.lowercased() == categoryParam.slug } }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
-          .map { params |> DiscoveryParams.lens.category .~ $0 }
+          .map { params |> DiscoveryParams.lens.category .~ $0.first }
     }
 
     self.goToLiveStream = deepLink

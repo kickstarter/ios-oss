@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 #if DEBUG
 import Foundation
 import Prelude
@@ -517,11 +518,16 @@ internal struct MockService: ServiceType {
   }
 
   func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return fetchGraph(query: query)
+    return SignalProducer(value: self.fetchGraphCategoriesResponse!)
+  }
+
+  func fetchGraphCategory(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError> {
+    return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(query.head)")
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
-    return .empty//SignalProducer(value: self.fetchGraphCategoriesResponse as! A)
+    return .empty
   }
 
   internal func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -876,11 +882,6 @@ internal struct MockService: ServiceType {
     }
     return SignalProducer(value: fetchUserResponse ?? user)
   }
-
-//  internal func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-//
-//    return SignalProducer(value: self.fetchCategoriesResponse ?? .template)
-//  }
 
   internal func fetchCategory(param: Param)
     -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, GraphError> {

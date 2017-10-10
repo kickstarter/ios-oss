@@ -107,7 +107,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     let shouldShowGamesAlert = project
       .map { project in
-        project.category.intID == KsApi.Category.gamesId &&
+        project.category.rootId == KsApi.RootCategoriesEnvelope.Category.gamesId &&
         !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
         !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
     }
@@ -140,12 +140,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { $0.category }
-      .flatMap { (category: KsApi.RootCategoriesEnvelope.Category) in
-        return AppEnvironment.current.apiService.fetchGraph(query: categoryBy(id: category.id))
+      .map { $0.category.rootId }
+      .skipNil()
+      .flatMap {
+        return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .map { (category: KsApi.RootCategoriesEnvelope.Category)
-          -> KsApi.RootCategoriesEnvelope.Category in category }
+          -> KsApi.RootCategoriesEnvelope.Category in category._parent ?? category }
         .demoteErrors()
     }
 

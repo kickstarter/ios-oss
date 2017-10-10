@@ -17,14 +17,44 @@ extension KsApi.RootCategoriesEnvelope.Category {
   internal static let art = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMQ=="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Art"
+    <> RootCategoriesEnvelope.Category.lens.subcategories
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
+      totalCount: 1,
+      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
+        id: "Q2F0ZWdvcnktMjI=",
+        name: "Illustration",
+        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMQ==",
+                                       name: "Art"),
+        totalProjectCount: nil)]
+  )
 
   internal static let filmAndVideo = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMTE="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Film & Video"
+    <> RootCategoriesEnvelope.Category.lens.subcategories
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
+      totalCount: 1,
+      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
+        id: "Q2F0ZWdvcnktMzA=",
+        name: "Documentary",
+        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTE=",
+                                       name: "Film & Video"),
+      totalProjectCount: nil)]
+  )
 
   internal static let games = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMTI="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Games"
+    <> RootCategoriesEnvelope.Category.lens.subcategories
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
+      totalCount: 1,
+      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
+        id: "Q2F0ZWdvcnktMzQ=",
+        name: "Tabletop Games",
+        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTI=",
+                                       name: "Games"),
+        totalProjectCount: nil)]
+  )
 
   internal static let illustration = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMjI="
