@@ -46,7 +46,7 @@ public struct DiscoveryParams {
   public var queryParams: [String:String] {
     var params: [String:String] = [:]
     params["backed"] = self.backed == true ? "1" : self.backed == false ? "-1" : nil
-    params["category_id"] = self.category?.id.description
+    params["category_id"] = self.category?.intID.description
     params["collaborated"] = self.collaborated?.description
     params["created"] = self.created?.description
     params["has_live_streams"] = self.hasLiveStreams?.description

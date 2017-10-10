@@ -239,7 +239,9 @@ private func expandableRows(selectedRow: SelectableRow,
         }
       )
     }
-
+/*
+https://api.kickstarter.com/v1/discover?category_id=Q2F0ZWdvcnktMjg3&client_id=[REDACTED]&currency=USD&oauth_token=[REDACTED]&sort=magic
+   */
   return expandableRows.map { expandableRow in
        return expandableRow
          |> ExpandableRow.lens.isExpanded .~
