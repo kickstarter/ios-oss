@@ -4,7 +4,7 @@ import XCTest
 
 final class CheckoutEnvelopeTests: XCTestCase {
   func testJsonDecoding() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "state": "failed",
       "state_reason": "Oof!"
     ]

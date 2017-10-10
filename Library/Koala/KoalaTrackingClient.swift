@@ -10,7 +10,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   fileprivate let endpoint: Endpoint
   fileprivate let URLSession: URLSession
   fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
-  fileprivate var buffer: [[String:Any]] = []
+  fileprivate var buffer: [[String: Any]] = []
   fileprivate var timer: Timer?
   fileprivate var taskId = UIBackgroundTaskInvalid
 
@@ -53,7 +53,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.startTimer()
   }
 
-  public func track(event: String, properties: [String:Any]) {
+  public func track(event: String, properties: [String: Any]) {
     #if DEBUG
       NSLog("[Koala Track]: \(event), properties: \(properties)")
     #endif
@@ -105,7 +105,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.queue.async {
       guard
         let file = self.fileName(), FileManager.default.fileExists(atPath: file),
-        let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String:Any]]
+        let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String: Any]]
         else { return }
 
       self.buffer = buffer + self.buffer

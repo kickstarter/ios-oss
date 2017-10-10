@@ -3,7 +3,7 @@ import XCTest
 
 final class NotificationsTests: XCTestCase {
   func testJsonEncoding() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "notify_of_backings": false,
       "notify_of_comments": false,
       "notify_of_follower": false,
@@ -38,7 +38,7 @@ final class NotificationsTests: XCTestCase {
   }
 
   func testJsonEncoding_TrueValues() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "notify_of_backings": true,
       "notify_of_comments": true,
       "notify_of_follower": true,

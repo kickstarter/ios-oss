@@ -27,7 +27,7 @@ public struct LiveStreamChatMessage {
   public fileprivate(set) var userId: String
 
   static internal func decode(_ snapshot: FirebaseDataSnapshotType) -> Decoded<LiveStreamChatMessage> {
-      return (snapshot.value as? [String:Any])
+      return (snapshot.value as? [String: Any])
         .map {
           self.decode(JSON($0.withAllValuesFrom(["id": snapshot.key])))
         }

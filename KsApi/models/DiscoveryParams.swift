@@ -43,8 +43,8 @@ public struct DiscoveryParams {
                                                seed: nil, similarTo: nil, social: nil, sort: nil,
                                                staffPicks: nil, starred: nil, state: nil)
 
-  public var queryParams: [String:String] {
-    var params: [String:String] = [:]
+  public var queryParams: [String: String] {
+    var params: [String: String] = [:]
     params["backed"] = self.backed == true ? "1" : self.backed == false ? "-1" : nil
     params["category_id"] = self.category?.id.description
     params["collaborated"] = self.collaborated?.description

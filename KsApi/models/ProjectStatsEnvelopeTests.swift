@@ -4,7 +4,7 @@ import XCTest
 
 final class ProjectStatsEnvelopeTests: XCTestCase {
   func testJSONDecoding() {
-    let fundingStats: [[String:Any]] = [
+    let fundingStats: [[String: Any]] = [
       [
         "cumulative_backers_count": 7,
         "cumulative_pledged": "30",
@@ -22,7 +22,7 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
       ["date": 555444334],
       ["date": 555444335]
     ]
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "referral_distribution": [
         [
           "code": "my_wonderful_referrer_code",
@@ -116,7 +116,7 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
   }
 
   func testJSONDecoding_MissingData() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "referral_distribution": [],
       "reward_distribution": [],
       "cumulative": [],
