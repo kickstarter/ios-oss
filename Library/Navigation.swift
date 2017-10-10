@@ -230,7 +230,7 @@ extension Navigation {
   }
 }
 
-private let allRoutes: [String:(RouteParams) -> Decoded<Navigation>] = [
+private let allRoutes: [String: (RouteParams) -> Decoded<Navigation>] = [
   "/": emailClick,
   "/mpss/:a/:b/:c/:d/:e/:f/:g": emailLink,
   "/activity": activity,
@@ -268,7 +268,7 @@ private let allRoutes: [String:(RouteParams) -> Decoded<Navigation>] = [
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
 
-private let deepLinkRoutes: [String:(RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
+private let deepLinkRoutes: [String: (RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
   keys: [
     "/",
     "/mpss/:a/:b/:c/:d/:e/:f/:g",
@@ -369,7 +369,7 @@ private func discovery(_ params: RouteParams) -> Decoded<Navigation> {
   guard case let .object(object) = params
     else { return .failure(.custom("Failed to extact discovery params")) }
 
-  var discoveryParams: [String:String] = [:]
+  var discoveryParams: [String: String] = [:]
   for (key, value) in object {
     guard case let .string(stringValue) = value
       else { return .failure(.custom("Failed to extact discovery params")) }
@@ -566,7 +566,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
 
   guard templateComponents.count == urlComponents.count else { return nil }
 
-  var params: [String:String] = [:]
+  var params: [String: String] = [:]
 
   for (templateComponent, urlComponent) in zip(templateComponents, urlComponents) {
     if templateComponent.hasPrefix(":") {
@@ -584,7 +584,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
       params[item.name] = item.value
   }
 
-  var object: [String:RouteParams] = [:]
+  var object: [String: RouteParams] = [:]
   params.forEach { key, value in
     object[key] = .string(value)
   }

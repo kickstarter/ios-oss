@@ -29,8 +29,8 @@ extension Location: Argo.Decodable {
 }
 
 extension Location: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["country"] = self.country
     result["displayable_name"] = self.displayableName
     result["id"] = self.id

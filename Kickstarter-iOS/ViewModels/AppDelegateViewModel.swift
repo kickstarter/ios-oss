@@ -950,7 +950,7 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
     return items
 }
 
-private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String:String] {
+private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String: String] {
 
   let queryItems = urlComponents.queryItems ?? []
   return [String: String?].keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
@@ -1058,8 +1058,8 @@ private func visitorCookies() -> [HTTPCookie] {
 @available(iOS 10.0, *)
 private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatus {
   switch status {
-    case .authorized: return .authorized
-    case .denied: return .denied
-    case .notDetermined: return .notDetermined
+  case .authorized: return .authorized
+  case .denied: return .denied
+  case .notDetermined: return .notDetermined
   }
 }

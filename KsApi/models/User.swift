@@ -92,8 +92,8 @@ extension User: Argo.Decodable {
 }
 
 extension User: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["avatar"] = self.avatar.encode()
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
@@ -119,8 +119,8 @@ extension User.Avatar: Argo.Decodable {
 }
 
 extension User.Avatar: EncodableType {
-  public func encode() -> [String:Any] {
-    var ret: [String:Any] = [
+  public func encode() -> [String: Any] {
+    var ret: [String: Any] = [
       "medium": self.medium,
       "small": self.small
     ]
@@ -144,8 +144,8 @@ extension User.NewsletterSubscriptions: Argo.Decodable {
 }
 
 extension User.NewsletterSubscriptions: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["arts_culture_newsletter"] = self.arts
     result["games_newsletter"] = self.games
     result["happening_newsletter"] = self.happening
@@ -188,8 +188,8 @@ extension User.Notifications: Argo.Decodable {
 }
 
 extension User.Notifications: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["notify_of_backings"] = self.backings
     result["notify_of_comments"] = self.comments
     result["notify_of_follower"] = self.follower
@@ -236,8 +236,8 @@ extension User.Stats: Argo.Decodable {
 }
 
 extension User.Stats: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["backed_projects_count"] =  self.backedProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
     result["member_projects_count"] = self.memberProjectsCount

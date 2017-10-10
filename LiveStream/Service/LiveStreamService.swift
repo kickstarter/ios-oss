@@ -498,7 +498,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
   }
 }
 
-private func formData(withDictionary dictionary: [String:String]) -> String {
+private func formData(withDictionary dictionary: [String: String]) -> String {
   let params = dictionary.flatMap { key, value -> String? in
     guard let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
 

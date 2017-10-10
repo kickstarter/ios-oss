@@ -73,11 +73,11 @@ internal enum Route {
   }
 
   internal var requestProperties:
-    (method: Method, path: String, query: [String:Any], file: (name: UploadParam, url: URL)?) {
+    (method: Method, path: String, query: [String: Any], file: (name: UploadParam, url: URL)?) {
 
     switch self {
     case let .activities(categories, count):
-      var params: [String:Any] = ["categories": categories.map { $0.rawValue }]
+      var params: [String: Any] = ["categories": categories.map { $0.rawValue }]
       params["count"] = count
       return (.GET, "/v1/activities", params, nil)
 
@@ -113,7 +113,7 @@ internal enum Route {
       let pledgeUrl = URL(string: project.urls.web.project)?
         .appendingPathComponent("pledge")
 
-      var params: [String:Any] = [:]
+      var params: [String: Any] = [:]
       params["clicked_reward"] = tappedReward ? "true" : nil
       params["format"] = "json"
       params["backing"] = [
@@ -142,7 +142,7 @@ internal enum Route {
       return (.PUT, "/v1/facebook/access_token", params, nil)
 
     case let .facebookSignup(facebookAccessToken, sendNewsletters):
-      let params: [String:Any] = [
+      let params: [String: Any] = [
         "access_token": facebookAccessToken,
         "intent": "register",
         "send_newsletters": sendNewsletters,
@@ -253,7 +253,7 @@ internal enum Route {
       return (.GET, "/v1/projects/\(projectId)/rewards/\(rewardId)/shipping_rules", [:], nil)
 
     case let .signup(name, email, password, passwordConfirmation, sendNewsletters):
-      let params: [String:Any] = [
+      let params: [String: Any] = [
         "name": name,
         "email": email,
         "newsletter_opt_in": sendNewsletters,
@@ -302,7 +302,7 @@ internal enum Route {
       let pledgeUrl = URL(string: project.urls.web.project)?
         .appendingPathComponent("pledge")
 
-      var params: [String:Any] = [:]
+      var params: [String: Any] = [:]
       params["clicked_reward"] = tappedReward ? "true" : nil
       params["format"] = "json"
       params["backing"] = [
@@ -314,7 +314,7 @@ internal enum Route {
       return (.PUT, pledgeUrl?.absoluteString ?? "", params, nil)
 
     case let .updateUpdateDraft(d, title, body, isPublic):
-      let params: [String:Any] = ["title": title, "body": body, "public": isPublic]
+      let params: [String: Any] = ["title": title, "body": body, "public": isPublic]
       return (.PUT, "/v1/projects/\(d.update.projectId)/updates/draft", params, nil)
 
     case let .updateProjectNotification(notification):

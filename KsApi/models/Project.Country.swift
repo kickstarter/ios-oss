@@ -70,8 +70,8 @@ extension Project.Country: Argo.Decodable {
 }
 
 extension Project.Country: EncodableType {
-  public func encode() -> [String:Any] {
-    var result: [String:Any] = [:]
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
     result["country"] = self.countryCode
     result["currency"] = self.currencyCode
     result["currency_symbol"] = self.currencySymbol
