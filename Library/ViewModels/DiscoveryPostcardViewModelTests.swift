@@ -255,7 +255,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     let featuredProject = .template
-      |> Project.lens.category .~ RootCategoriesEnvelope.Category.art
+      |> Project.lens.category.parent .~ ParentCategory(id: RootCategoriesEnvelope.Category.art.id,
+                                                        name: RootCategoriesEnvelope.Category.art.name)
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let starred = .template
