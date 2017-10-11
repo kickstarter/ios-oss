@@ -20,7 +20,7 @@ public protocol ProjectPamphletViewModelInputs {
   func viewWillAppear(animated: Bool)
 
   /// Call when the view will transition to a new trait collection.
-  func willTransitionToNewCollection(to newCollection: UITraitCollection)
+  func willTransition(toNewCollection collection: UITraitCollection)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -86,7 +86,7 @@ ProjectPamphletViewModelOutputs {
       }
     }
 
-    self.topLayoutConstraintConstant = self.willTransitionToCollectionProperty.signal
+    self.topLayoutConstraintConstant = self.willTransitionToCollectionProperty.signal.skipNil()
       .map { traitCollection in
         guard #available(iOS 11.0, *),
           !traitCollection.isRegularRegular else {
@@ -148,9 +148,9 @@ ProjectPamphletViewModelOutputs {
   }
 
   fileprivate let willTransitionToCollectionProperty =
-    MutableProperty<UITraitCollection>(UITraitCollection())
-  public func willTransitionToNewCollection(to newCollection: UITraitCollection) {
-    self.willTransitionToCollectionProperty.value = newCollection
+    MutableProperty<UITraitCollection?>(nil)
+  public func willTransition(toNewCollection collection: UITraitCollection) {
+    self.willTransitionToCollectionProperty.value = collection
   }
 
   public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],

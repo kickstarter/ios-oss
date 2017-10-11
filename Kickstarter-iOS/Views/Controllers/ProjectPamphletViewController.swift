@@ -90,7 +90,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func willTransition(to newCollection: UITraitCollection,
                                       with coordinator: UIViewControllerTransitionCoordinator) {
-    self.viewModel.inputs.willTransitionToNewCollection(to: newCollection)
+    self.viewModel.inputs.willTransition(toNewCollection: newCollection)
   }
 
   private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {
