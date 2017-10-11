@@ -159,7 +159,6 @@ ProjectPamphletViewModelOutputs {
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-
 private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
                                          traitCollection: UITraitCollection) -> CGFloat {
   if #available(iOS 11.0, *), !traitCollection.isRegularRegular {
