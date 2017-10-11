@@ -12,6 +12,7 @@ extension User.Notifications {
     mobileUpdates: false,
     postLikes: false,
     creatorTips: false,
-    updates: false
+    updates: false,
+    creatorDigest: false
   )
 }
