@@ -8,11 +8,11 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
-  /// Call after view loads and pass the parentViewController as parameter.
-  func parent(viewController: UIViewController?)
-
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call after the view loads and passes the initial TopConstraint constant.
+  func initial(topConstraint: CGFloat)
 
   func viewDidAppear(animated: Bool)
 
@@ -79,21 +79,9 @@ ProjectPamphletViewModelOutputs {
       self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
-    var initialTopConstraint: CGFloat = 0.0
-    self.parentViewControllerProperty.signal.observeValues { parent in
-      if #available(iOS 11.0, *) {
-        initialTopConstraint = parent?.view.safeAreaInsets.top ?? 0.0
-      }
-    }
-
-    self.topLayoutConstraintConstant = self.willTransitionToCollectionProperty.signal.skipNil()
-      .map { traitCollection in
-        guard #available(iOS 11.0, *),
-          !traitCollection.isRegularRegular else {
-          return 0.0
-        }
-        return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
-    }
+    self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
+      .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
+      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, refTag in
@@ -127,14 +115,14 @@ ProjectPamphletViewModelOutputs {
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
-  fileprivate let parentViewControllerProperty = MutableProperty<UIViewController?>(nil)
-  public func parent(viewController: UIViewController?) {
-    self.parentViewControllerProperty.value = viewController
-  }
-
   fileprivate let viewDidLoadProperty = MutableProperty()
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let initialTopConstraintProperty = MutableProperty<CGFloat?>(nil)
+  public func initial(topConstraint: CGFloat) {
+    self.initialTopConstraintProperty.value = topConstraint
   }
 
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
@@ -170,6 +158,15 @@ ProjectPamphletViewModelOutputs {
 
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
+
+
+private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
+                                         traitCollection: UITraitCollection) -> CGFloat {
+  if #available(iOS 11.0, *), !traitCollection.isRegularRegular {
+    return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
+  }
+  return !traitCollection.isVerticallyCompact ? initialTopConstraint : 0.0
+}
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.

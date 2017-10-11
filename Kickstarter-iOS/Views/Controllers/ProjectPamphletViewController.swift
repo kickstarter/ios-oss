@@ -45,7 +45,8 @@ public final class ProjectPamphletViewController: UIViewController {
       .flatMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
 
-    self.viewModel.inputs.parent(viewController: parent)
+    self.viewModel.inputs.initial(topConstraint: initialTopConstraint)
+    //self.viewModel.inputs.parent(viewController: parent)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -53,15 +54,21 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
-    if #available(iOS 11.0, *) {
-      update(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
-             constant: parent?.view.safeAreaInsets.top)
-    }
+    self.setInitial(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
+                    constant: initialTopConstraint)
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.viewModel.inputs.viewDidAppear(animated: animated)
+  }
+
+  private var initialTopConstraint: CGFloat {
+    if #available(iOS 11.0, *) {
+      return parent?.view.safeAreaInsets.top ?? 0.0
+    } else {
+      return UIApplication.shared.statusBarFrame.size.height
+    }
   }
 
   public override func bindViewModel() {
@@ -93,9 +100,10 @@ public final class ProjectPamphletViewController: UIViewController {
     self.viewModel.inputs.willTransition(toNewCollection: newCollection)
   }
 
-  private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {
+  private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
+
     constraints.forEach {
-      $0?.constant = constant ?? 0.0
+      $0?.constant = constant
     }
   }
 }

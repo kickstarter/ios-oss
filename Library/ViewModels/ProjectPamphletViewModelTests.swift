@@ -247,12 +247,13 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testTopLayoutConstraintsChangeAfterRotation() {
+  func testTopLayoutConstraints_AfterRotation() {
 
-    self.topLayoutConstraintConstant.assertValues([])
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.willTransitionToNewCollection(to: UITraitCollection())
-    self.topLayoutConstraintConstant.assertValues([0.0])
+    self.vm.inputs.initial(topConstraint: 30.0)
+    XCTAssertNil(self.topLayoutConstraintConstant.lastValue)
+
+    self.vm.inputs.willTransition(toNewCollection: UITraitCollection(horizontalSizeClass: .compact))
+    XCTAssertEqual(30.0, self.topLayoutConstraintConstant.lastValue)
   }
 
   func testTracksRefTag_WithBadData() {
