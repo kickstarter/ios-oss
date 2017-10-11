@@ -94,7 +94,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func update(constraints: [NSLayoutConstraint?], constant: CGFloat?) {
-    _ = constraints.map {
+    constraints.forEach {
       $0?.constant = constant ?? 0.0
     }
   }
