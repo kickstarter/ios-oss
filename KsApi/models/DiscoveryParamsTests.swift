@@ -29,7 +29,7 @@ class DiscoveryParamsTests: XCTestCase {
       |> DiscoveryParams.lens.perPage .~ 20
       |> DiscoveryParams.lens.seed .~ 123
 
-    let queryParams: [String:String] = [
+    let queryParams: [String: String] = [
       "staff_picks": "true",
       "has_video": "true",
       "backed": "-1",

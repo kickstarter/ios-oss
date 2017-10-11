@@ -4,7 +4,7 @@ import XCTest
 final class NewsletterSubscriptionsTests: XCTestCase {
 
   func testJsonEncoding() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "games_newsletter": false,
       "promo_newsletter": false,
       "happening_newsletter": false,
@@ -22,7 +22,7 @@ final class NewsletterSubscriptionsTests: XCTestCase {
   }
 
   func testJsonEncoding_TrueValues() {
-    let json: [String:Any] = [
+    let json: [String: Any] = [
       "games_newsletter": true,
       "promo_newsletter": true,
       "happening_newsletter": true,

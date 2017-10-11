@@ -9,30 +9,30 @@ private let defaultFont = UIFont.systemFont(ofSize: 12)
 private let defaultColor = UIColor.ksr_text_dark_grey_900
 
 public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
-  var baseAttributes: [String:AnyObject] { get set }
+  var baseAttributes: [String: AnyObject] { get set }
   var baseColor: UIColor { get set }
   var baseFont: UIFont { get set }
-  var boldAttributes: [String:AnyObject] { get set }
+  var boldAttributes: [String: AnyObject] { get set }
   var boldColor: UIColor { get set }
   var boldFont: UIFont { get set }
   var html: String { get set }
-  var italicAttributes: [String:AnyObject] { get set }
+  var italicAttributes: [String: AnyObject] { get set }
   var italicColor: UIColor { get set }
   var italicFont: UIFont { get set }
 }
 
 public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
-  public var baseAttributes: [String:AnyObject] = [NSFontAttributeName: defaultFont] {
+  public var baseAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
-  public var boldAttributes: [String:AnyObject] = [NSFontAttributeName: defaultFont] {
+  public var boldAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
-  public var italicAttributes: [String:AnyObject] = [NSFontAttributeName: defaultFont] {
+  public var italicAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
@@ -116,7 +116,7 @@ public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
 
 extension LensHolder where Object: SimpleHTMLLabelProtocol {
 
-  public var baseAttributes: Lens<Object, [String:AnyObject]> {
+  public var baseAttributes: Lens<Object, [String: AnyObject]> {
     return Lens(
       view: { $0.baseAttributes },
       set: { $1.baseAttributes = $0; return $1 }
@@ -137,7 +137,7 @@ extension LensHolder where Object: SimpleHTMLLabelProtocol {
     )
   }
 
-  public var boldAttributes: Lens<Object, [String:AnyObject]> {
+  public var boldAttributes: Lens<Object, [String: AnyObject]> {
     return Lens(
       view: { $0.boldAttributes },
       set: { $1.boldAttributes = $0; return $1 }
@@ -165,7 +165,7 @@ extension LensHolder where Object: SimpleHTMLLabelProtocol {
     )
   }
 
-  public var italicAttributes: Lens<Object, [String:AnyObject]> {
+  public var italicAttributes: Lens<Object, [String: AnyObject]> {
     return Lens(
       view: { $0.italicAttributes },
       set: { $1.italicAttributes = $0; return $1 }

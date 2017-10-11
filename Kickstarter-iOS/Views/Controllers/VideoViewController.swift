@@ -175,7 +175,7 @@ public final class VideoViewController: UIViewController {
   }
 
   public override func observeValue(forKeyPath keyPath: String?, of object: Any?,
-                                    change: [NSKeyValueChangeKey : Any]?,
+                                    change: [NSKeyValueChangeKey: Any]?,
                                     context: UnsafeMutableRawPointer?) {
 
     guard let player = self.playerController.player else { return }

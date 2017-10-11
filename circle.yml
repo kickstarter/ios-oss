@@ -12,7 +12,6 @@ dependencies:
     - security find-identity -p codesigning
     - instruments -s devices
     - xcodebuild -showsdks
-    - gem install fastlane -NVv 2.37.0
 test:
   pre:
     - xcrun instruments -w 'iPhone 7 (10.3.1)' || true
@@ -37,18 +36,21 @@ deployment:
     branch: alpha-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane alpha_gym --verbose
+      - fastlane alpha_gym --verbose:
+          timeout: 1800
       - fastlane alpha_hockey --verbose
   ios_beta:
     branch: beta-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane beta_gym --verbose
+      - fastlane beta_gym --verbose:
+          timeout: 1800
       - fastlane beta_hockey --verbose
   ios_itc:
     branch: itunes-dist
     commands:
       - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane itunes_gym --verbose
+      - fastlane itunes_gym --verbose:
+          timeout: 1800
       - fastlane itunes_hockey --verbose
       - fastlane itunes_deliver --verbose
