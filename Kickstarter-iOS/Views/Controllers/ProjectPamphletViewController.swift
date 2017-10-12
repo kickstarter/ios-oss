@@ -46,7 +46,6 @@ public final class ProjectPamphletViewController: UIViewController {
     self.contentController.delegate = self
 
     self.viewModel.inputs.initial(topConstraint: initialTopConstraint)
-    //self.viewModel.inputs.parent(viewController: parent)
 
     self.viewModel.inputs.viewDidLoad()
   }
