@@ -60,18 +60,20 @@ extension KsApi.RootCategoriesEnvelope.Category {
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMjI="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Illustration"
     <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.art.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~ RootCategoriesEnvelope.Category.art.parentCategory
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMQ==",
+                                                                     name: "Art")
 
   internal static let documentary = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMzA="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Documentary"
     <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.filmAndVideo.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~
-    RootCategoriesEnvelope.Category.filmAndVideo.parentCategory
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMTE=",
+                                                                     name: "Film & Video")
 
   internal static let tabletopGames = template
     |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMzQ="
     <> RootCategoriesEnvelope.Category.lens.name .~ "Tabletop Games"
     <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.games.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~ RootCategoriesEnvelope.Category.games.parentCategory
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMTI=",
+                                                                     name: "Games")
 }

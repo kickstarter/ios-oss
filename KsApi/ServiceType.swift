@@ -390,7 +390,7 @@ extension ServiceType {
       return request
   }
 
-  public func preparedRequest(forURL url: URL, queryString: String = "")
+  public func preparedRequest(forURL url: URL, queryString: String)
     -> URLRequest {
 
       var request = URLRequest(url: url)

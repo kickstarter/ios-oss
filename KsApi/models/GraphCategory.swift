@@ -161,3 +161,24 @@ extension RootCategoriesEnvelope.Category.SubcategoryConnection.Node: Equatable 
     return lhs.id == rhs.id
   }
 }
+
+extension RootCategoriesEnvelope.Category.SubcategoryConnection.Node: Comparable {}
+public func < (lhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node, rhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node) -> Bool {
+  if lhs.id == rhs.id {
+    return false
+  }
+
+  if lhs._parent == nil && lhs.id == rhs._parent?.id {
+    return true
+  }
+
+  if lhs._parent != nil && lhs._parent?.id == rhs.id {
+    return false
+  }
+
+  if let lhsRootName = lhs._parent?.name, let rhsRootName = rhs._parent?.name {
+    return lhsRootName < rhsRootName
+  }
+
+  return lhs._parent == nil
+}

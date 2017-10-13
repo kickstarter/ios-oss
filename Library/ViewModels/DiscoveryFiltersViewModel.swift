@@ -95,14 +95,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
           .materialize()
       }
 
-    categoriesEvent.errors().observeValues { e in
-      print(e)
-    }
-
-    categoriesEvent.values().observeValues { e in
-      print(e)
-    }
-
     self.loadingIndicatorIsVisible = Signal.merge(
       loaderIsVisible.signal,
       categoriesEvent.values().mapConst(false)
@@ -127,11 +119,15 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let selectedRowId = Signal.merge(
         categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.intID }
+        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category!.intID }
       )
 
     let initialRows = selectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
+
+    initialRows.signal.observeValues { value in
+      print(value);
+    }
 
     let expandingRows = Signal.combineLatest(
       self.tappedExpandableRowProperty.signal.skipNil(),
@@ -226,12 +222,12 @@ private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
 
     let expandableRows = categories
-      .sorted { lhs, _ in !lhs.isRoot }
-      .map { category in
-
-        return ExpandableRow(isExpanded: false,
-                    params: .defaults |> DiscoveryParams.lens.category .~ category,
-                    selectableRows: category.subcategories.nodes
+      .sorted { lhs, _ in lhs.isRoot }
+      .map { rootCategory in
+         ExpandableRow(isExpanded: false,
+                    params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
+                    selectableRows: rootCategory.subcategories.nodes
+                      .sorted()
                       .map { node in
                         return SelectableRow(isSelected: node.category == selectedRow.params.category,
                                              params: .defaults
@@ -239,6 +235,12 @@ private func expandableRows(selectedRow: SelectableRow,
         }
       )
     }
+    .sorted { lhs, rhs in
+      guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
+        return lhs.params.category == nil
+      }
+      return lhsCategory < rhsCategory
+  }
 
   return expandableRows.map { expandableRow in
        return expandableRow
@@ -311,8 +313,8 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
       AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(intId) {
 
       return SelectableRow(
-        isSelected: false,
-        params: .defaults
+        isSelected: category == selectedRow.params.category,
+        params: .defaults |> DiscoveryParams.lens.category .~ category
       )
     } else {
       return nil
