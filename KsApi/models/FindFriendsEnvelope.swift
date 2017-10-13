@@ -3,15 +3,15 @@ import Curry
 import Runes
 
 public struct FindFriendsEnvelope {
-  public private(set) var contactsImported: Bool
-  public private(set) var urls: UrlsEnvelope
-  public private(set) var users: [User]
+  public let contactsImported: Bool
+  public let urls: UrlsEnvelope
+  public let users: [User]
 
   public struct UrlsEnvelope {
-    public private(set) var api: ApiEnvelope
+    public let api: ApiEnvelope
 
     public struct ApiEnvelope {
-      public private(set) var moreUsers: String?
+      public let moreUsers: String?
     }
   }
 }

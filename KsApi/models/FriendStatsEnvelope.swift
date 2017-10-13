@@ -3,11 +3,11 @@ import Curry
 import Runes
 
 public struct FriendStatsEnvelope {
-  public private(set) var stats: Stats
+  public let stats: Stats
 
   public struct Stats {
-    public private(set) var friendProjectsCount: Int
-    public private(set) var remoteFriendsCount: Int
+    public let friendProjectsCount: Int
+    public let remoteFriendsCount: Int
   }
 }
 
