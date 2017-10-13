@@ -14,12 +14,12 @@ private extension Bundle {
  A `ServerType` that requests data from an API webservice.
 */
 public struct Service: ServiceType {
-  public fileprivate(set) var appId: String
-  public fileprivate(set) var serverConfig: ServerConfigType
-  public fileprivate(set) var oauthToken: OauthTokenAuthType?
-  public fileprivate(set) var language: String
-  public fileprivate(set) var currency: String
-  public fileprivate(set) var buildVersion: String
+  public let appId: String
+  public let serverConfig: ServerConfigType
+  public let oauthToken: OauthTokenAuthType?
+  public let language: String
+  public let currency: String
+  public let buildVersion: String
 
   public init(appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
               serverConfig: ServerConfigType = ServerConfig.production,

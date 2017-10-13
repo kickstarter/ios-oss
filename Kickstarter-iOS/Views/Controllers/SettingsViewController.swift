@@ -23,8 +23,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var cookiePolicyLabel: UILabel!
   @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
-  @IBOutlet fileprivate weak var creatorTips: UILabel!
-  @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
   @IBOutlet fileprivate weak var faqButton: UIButton!
   @IBOutlet fileprivate weak var faqLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
@@ -178,11 +176,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.creatorNotificationsTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Projects_youve_launched() }
-
-    _ = self.creatorTips
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
@@ -399,7 +393,6 @@ internal final class SettingsViewController: UIViewController {
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
-      self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
@@ -533,10 +526,6 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func cookiePolicyTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.cookie)
-  }
-
-  @IBAction fileprivate func creatorTipsTapped(_ button: UIButton) {
-    self.viewModel.inputs.creatorTipsTapped(selected: !button.isSelected)
   }
 
   @objc fileprivate func faqTapped() {

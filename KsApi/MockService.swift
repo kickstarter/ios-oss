@@ -5,12 +5,12 @@ import ReactiveSwift
 import Result
 
 internal struct MockService: ServiceType {
-  internal private(set) var appId: String
-  internal private(set) var serverConfig: ServerConfigType
-  internal private(set) var oauthToken: OauthTokenAuthType?
-  internal private(set) var language: String
-  internal private(set) var currency: String
-  internal private(set) var buildVersion: String
+  internal let appId: String
+  internal let serverConfig: ServerConfigType
+  internal let oauthToken: OauthTokenAuthType?
+  internal let language: String
+  internal let currency: String
+  internal let buildVersion: String
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
@@ -237,8 +237,8 @@ internal struct MockService: ServiceType {
 
     self.fetchActivitiesResponse = fetchActivitiesResponse ?? [
       .template,
-      .template |> (\.category) .~ .backing,
-      .template |> (\.category) .~ .success
+      .template |> Activity.lens.category .~ .backing,
+      .template |> Activity.lens.category .~ .success
     ]
 
     self.fetchActivitiesError = fetchActivitiesError
@@ -246,7 +246,7 @@ internal struct MockService: ServiceType {
     self.fetchBackingResponse = fetchBackingResponse
 
     self.fetchCategoriesResponse = fetchCategoriesResponse ?? (.template
-      |> (\.categories) .~ [
+      |> CategoriesEnvelope.lens.categories .~ [
         .art,
         .filmAndVideo,
         .illustration,
@@ -258,8 +258,8 @@ internal struct MockService: ServiceType {
     self.fetchCheckoutError = fetchCheckoutError
 
     self.fetchCommentsResponse = fetchCommentsResponse ?? [
-      .template |> (\.id) .~ 2,
-      .template |> (\.id) .~ 1
+      .template |> Comment.lens.id .~ 2,
+      .template |> Comment.lens.id .~ 1
     ]
 
     self.fetchCommentsError = fetchCommentsError
@@ -288,15 +288,15 @@ internal struct MockService: ServiceType {
     self.fetchMessageThreadResult = fetchMessageThreadResult
 
     self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
-      .template |> (\.id) .~ 1,
-      .template |> (\.id) .~ 2,
-      .template |> (\.id) .~ 3
+      .template |> MessageThread.lens.id .~ 1,
+      .template |> MessageThread.lens.id .~ 2,
+      .template |> MessageThread.lens.id .~ 3
     ]
 
     self.fetchProjectActivitiesResponse = fetchProjectActivitiesResponse ?? [
       .template,
-      .template |> (\Activity.category) .~ .backing,
-      .template |> (\Activity.category) .~ .commentProject
+      .template |> Activity.lens.category .~ .backing,
+      .template |> Activity.lens.category .~ .commentProject
       ]
       .enumerated()
       .map(Activity.lens.id.set)
@@ -307,9 +307,9 @@ internal struct MockService: ServiceType {
     self.fetchProjectError = fetchProjectError
 
     self.fetchProjectNotificationsResponse = fetchProjectNotificationsResponse ?? [
-      .template |> (\.id) .~ 1,
-      .template |> (\.id) .~ 2,
-      .template |> (\.id) .~ 3
+      .template |> ProjectNotification.lens.id .~ 1,
+      .template |> ProjectNotification.lens.id .~ 2,
+      .template |> ProjectNotification.lens.id .~ 3
     ]
 
     self.fetchProjectsResponse = fetchProjectsResponse ?? []
@@ -406,9 +406,9 @@ internal struct MockService: ServiceType {
       }
 
       return SignalProducer(value:
-        User.template
-          |> \.id .~ 1
-          |> \.facebookConnected .~ true
+        .template
+          |> User.lens.id .~ 1
+          |> User.lens.facebookConnected .~ true
       )
   }
 
@@ -508,9 +508,9 @@ internal struct MockService: ServiceType {
     }
 
     return SignalProducer(value:
-      User.template
-        |> \.id .~ id
-        |> \.isFriend .~ true
+      .template
+        |> User.lens.id .~ id
+        |> User.lens.isFriend .~ true
     )
   }
 
@@ -523,11 +523,11 @@ internal struct MockService: ServiceType {
   }
 
   internal func login(_ oauthToken: OauthTokenAuthType) -> MockService {
-    return self |> \.oauthToken .~ oauthToken
+    return self |> MockService.lens.oauthToken .~ oauthToken
   }
 
   internal func logout() -> MockService {
-    return self |> \.oauthToken .~ nil
+    return self |> MockService.lens.oauthToken .~ nil
   }
 
   internal func fetchActivities(count: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
@@ -559,9 +559,9 @@ internal struct MockService: ServiceType {
 
     return SignalProducer(
       value: fetchBackingResponse
-        |> \.backer .~ user
-        |> \.backerId .~ user.id
-        |> \.projectId .~ project.id
+        |> Backing.lens.backer .~ user
+        |> Backing.lens.backerId .~ user.id
+        |> Backing.lens.projectId .~ project.id
     )
   }
 
@@ -573,11 +573,11 @@ internal struct MockService: ServiceType {
       }
 
       let project: (Int) -> Project = {
-        Project.template |> \.id .~ ($0 + paginationUrl.hashValue)
+        .template |> Project.lens.id .~ ($0 + paginationUrl.hashValue)
       }
       let envelope = self.fetchDiscoveryResponse ?? (.template
-        |> \.projects .~ (1...4).map(project)
-        |> \.urls.api.moreProjects .~ (paginationUrl + "+1")
+        |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
+        |> DiscoveryEnvelope.lens.urls.api.moreProjects .~ (paginationUrl + "+1")
       )
 
       return SignalProducer(value: envelope)
@@ -591,10 +591,10 @@ internal struct MockService: ServiceType {
       }
 
       let project: (Int) -> Project = {
-        Project.template |> (\.id) %~ const($0 + params.hashValue)
+        .template |> Project.lens.id %~ const($0 + params.hashValue)
       }
       let envelope = self.fetchDiscoveryResponse ?? (.template
-        |> \.projects .~ (1...4).map(project)
+        |> DiscoveryEnvelope.lens.projects .~ (1...4).map(project)
       )
 
       return SignalProducer(value: envelope)
@@ -608,11 +608,11 @@ internal struct MockService: ServiceType {
 
       return SignalProducer(
         value: MessageThreadEnvelope(
-          participants: [.template, .template |> \.id .~ 2],
+          participants: [.template, .template |> User.lens.id .~ 2],
           messages: [
-            .template |> \.id .~ 1,
-            .template |> \.id .~ 2,
-            .template |> \.id .~ 3
+            .template |> Message.lens.id .~ 1,
+            .template |> Message.lens.id .~ 2,
+            .template |> Message.lens.id .~ 3
           ],
           messageThread: self.fetchMessageThreadResult?.value as? MessageThread ?? .template
         )
@@ -628,11 +628,11 @@ internal struct MockService: ServiceType {
       if let thread = self.fetchMessageThreadResult?.value as? MessageThread {
         return SignalProducer(
           value: MessageThreadEnvelope(
-            participants: [.template, .template |> \.id .~ 2],
+            participants: [.template, .template |> User.lens.id .~ 2],
             messages: [
-              .template |> \.id .~ 1,
-              .template |> \.id .~ 2,
-              .template |> \.id .~ 3
+              .template |> Message.lens.id .~ 1,
+              .template |> Message.lens.id .~ 2,
+              .template |> Message.lens.id .~ 3
             ],
             messageThread: thread
           )
@@ -685,8 +685,8 @@ internal struct MockService: ServiceType {
     }
     return SignalProducer(
       value: .template
-        |> (\.id) %~ { param.id ?? $0 }
-        |> (\.slug) %~ { param.slug ?? $0 }
+        |> Project.lens.id %~ { param.id ?? $0 }
+        |> Project.lens.slug %~ { param.slug ?? $0 }
     )
   }
 
@@ -694,9 +694,9 @@ internal struct MockService: ServiceType {
     if let envelope = self.fetchDiscoveryResponse {
       return SignalProducer(value: envelope)
     }
-    let envelope = DiscoveryEnvelope.template
-      |> \.projects .~ [
-        .template |> \.id .~ params.hashValue
+    let envelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ [
+        .template |> Project.lens.id .~ params.hashValue
     ]
     return SignalProducer(value: envelope)
   }
@@ -846,7 +846,7 @@ internal struct MockService: ServiceType {
     } else if let error = fetchSurveyResponseError {
       return SignalProducer(error: error)
     }
-    return SignalProducer(value: .template |> \.id .~ id)
+    return SignalProducer(value: .template |> SurveyResponse.lens.id .~ id)
   }
 
   internal func fetchUnansweredSurveyResponses() -> SignalProducer<[SurveyResponse], ErrorEnvelope> {
@@ -857,7 +857,7 @@ internal struct MockService: ServiceType {
     if let error = self.fetchUserError {
       return SignalProducer(error: error)
     }
-    return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
+    return SignalProducer(value: self.fetchUserResponse ?? (.template |> User.lens.id .~ userId))
   }
 
   internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -875,9 +875,9 @@ internal struct MockService: ServiceType {
   internal func fetchCategory(param: Param) -> SignalProducer<KsApi.Category, ErrorEnvelope> {
     switch param {
     case let .id(id):
-      return SignalProducer(value: .template |> \.id .~ id)
+      return SignalProducer(value: .template |> Category.lens.id .~ id)
     case let .slug(slug):
-      return SignalProducer(value: .template |> \.slug .~ slug)
+      return SignalProducer(value: .template |> Category.lens.slug .~ slug)
     }
   }
 
@@ -910,8 +910,8 @@ internal struct MockService: ServiceType {
   }
 
   internal func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    let project = project |> \.personalization.isStarred .~ true
-    return .init(value: .template |> \.project .~ project)
+    let project = project |> Project.lens.personalization.isStarred .~ true
+    return .init(value: .template |> StarEnvelope.lens.project .~ project)
   }
 
   internal func login(email: String, password: String, code: String?) ->
@@ -1003,9 +1003,9 @@ internal struct MockService: ServiceType {
     -> SignalProducer<Message, ErrorEnvelope> {
 
       return SignalProducer(
-        value: Message.template
-          |> \.id .~ body.hashValue
-          |> \.body .~ body
+        value: .template
+          |> Message.lens.id .~ body.hashValue
+          |> Message.lens.body .~ body
       )
   }
 
@@ -1022,9 +1022,9 @@ internal struct MockService: ServiceType {
     return SignalProducer(value:
       AccessTokenEnvelope(
         accessToken: "deadbeef",
-        user: User.template
-          |> \.name .~ name
-          |> \.newsletters.weekly .~ sendNewsletters
+        user: .template
+          |> User.lens.name .~ name
+          |> User.lens.newsletters.weekly .~ sendNewsletters
       )
     )
   }
@@ -1073,7 +1073,7 @@ internal struct MockService: ServiceType {
   internal func fetchUpdate(updateId: Int, projectParam: Param)
     -> SignalProducer<Update, ErrorEnvelope> {
 
-      return SignalProducer(value: self.fetchUpdateResponse |> \.id .~ updateId)
+      return SignalProducer(value: self.fetchUpdateResponse |> Update.lens.id .~ updateId)
   }
 
   internal func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope> {
@@ -1090,9 +1090,9 @@ internal struct MockService: ServiceType {
         return SignalProducer(error: error)
       }
       let updatedDraft = draft
-        |> \.update.title .~ title
-        |> \.update.body .~ body
-        |> \.update.isPublic .~ isPublic
+        |> UpdateDraft.lens.update.title .~ title
+        |> UpdateDraft.lens.update.body .~ body
+        |> UpdateDraft.lens.update.isPublic .~ isPublic
 
       return SignalProducer(value: updatedDraft)
   }
@@ -1167,5 +1167,91 @@ internal struct MockService: ServiceType {
         + "\(draft.update.id)/preview"
     )
   }
+}
+
+private extension MockService {
+    enum lens {
+    static let oauthToken = Lens<MockService, OauthTokenAuthType?>(
+      view: { $0.oauthToken },
+      set: {
+        MockService(
+          appId: $1.appId,
+          serverConfig: $1.serverConfig,
+          oauthToken: $0,
+          language: $1.language,
+          buildVersion: $1.buildVersion,
+          changePaymentMethodResult: $1.changePaymentMethodResult,
+          createPledgeResult: $1.createPledgeResult,
+          facebookConnectResponse: $1.facebookConnectResponse,
+          facebookConnectError: $1.facebookConnectError,
+          fetchActivitiesResponse: $1.fetchActivitiesResponse,
+          fetchActivitiesError: $1.fetchActivitiesError,
+          fetchBackingResponse: $1.fetchBackingResponse,
+          fetchCategoriesResponse: $1.fetchCategoriesResponse,
+          fetchCommentsResponse: $1.fetchCommentsResponse,
+          fetchCommentsError: $1.fetchCommentsError,
+          fetchConfigResponse: $1.fetchConfigResponse,
+          fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
+          fetchDiscoveryError: $1.fetchDiscoveryError,
+          fetchFriendsResponse: $1.fetchFriendsResponse,
+          fetchFriendsError: $1.fetchFriendsError,
+          fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
+          fetchFriendStatsError: $1.fetchFriendStatsError,
+          fetchDraftResponse: $1.fetchDraftResponse,
+          fetchDraftError: $1.fetchDraftError,
+          addAttachmentResponse: $1.addAttachmentResponse,
+          addAttachmentError: $1.addAttachmentError,
+          removeAttachmentResponse: $1.removeAttachmentResponse,
+          removeAttachmentError: $1.removeAttachmentError,
+          publishUpdateError: $1.publishUpdateError,
+          fetchMessageThreadResult: $1.fetchMessageThreadResult,
+          fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
+          fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
+          fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
+          fetchProjectResponse: $1.fetchProjectResponse,
+          fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
+          fetchProjectsResponse: $1.fetchProjectsResponse,
+          fetchProjectsError: $1.fetchProjectsError,
+          fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
+          fetchProjectStatsError: $1.fetchProjectStatsError,
+          fetchShippingRulesResult: $1.fetchShippingRulesResult,
+          fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
+          fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
+          fetchUserResponse: $1.fetchUserResponse,
+          fetchUserError: $1.fetchUserError,
+          fetchUserSelfResponse: $1.fetchUserSelfResponse,
+          followFriendError: $1.followFriendError,
+          incrementVideoCompletionError: $1.incrementVideoCompletionError,
+          incrementVideoStartError: $1.incrementVideoStartError,
+          fetchSurveyResponseResponse: $1.fetchSurveyResponseResponse,
+          fetchSurveyResponseError: $1.fetchSurveyResponseError,
+          fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
+          fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
+          fetchUpdateResponse: $1.fetchUpdateResponse,
+          fetchUserSelfError: $1.fetchUserSelfError,
+          postCommentResponse: $1.postCommentResponse,
+          postCommentError: $1.postCommentError,
+          loginResponse: $1.loginResponse,
+          loginError: $1.loginError,
+          resendCodeResponse: $1.resendCodeResponse,
+          resendCodeError: $1.resendCodeError,
+          resetPasswordResponse: $1.resetPasswordResponse,
+          resetPasswordError: $1.resetPasswordError,
+          signupResponse: $1.signupResponse,
+          signupError: $1.signupError,
+          submitApplePayResponse: $1.submitApplePayResponse,
+          toggleStarResponse: $1.toggleStarResponse,
+          toggleStarError: $1.toggleStarError,
+          unfollowFriendError: $1.unfollowFriendError,
+          updateDraftError: $1.updateDraftError,
+          updatePledgeResult: $1.updatePledgeResult,
+          updateProjectNotificationResponse: $1.updateProjectNotificationResponse,
+          updateProjectNotificationError: $1.updateProjectNotificationError,
+          updateUserSelfError: $1.updateUserSelfError
+        )
+      }
+    )
+  }
+  // swiftlint:enable type_name
 }
 #endif

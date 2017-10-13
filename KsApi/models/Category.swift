@@ -3,16 +3,16 @@ import Curry
 import Runes
 
 public struct Category {
-  public private(set) var color: Int?
-  public private(set) var id: Int
-  public private(set) var name: String
+  public let color: Int?
+  public let id: Int
+  public let name: String
   // NB: To get around lack of recursive structs we package the parent category into an internal closure
   // and then expose a property that evaluates the closure.
   internal let _parent: () -> Category?
-  public private(set) var parentId: Int?
-  public private(set) var position: Int
-  public private(set) var projectsCount: Int?
-  public private(set) var slug: String
+  public let parentId: Int?
+  public let position: Int
+  public let projectsCount: Int?
+  public let slug: String
 
   public static let gamesId: Int = 12
 

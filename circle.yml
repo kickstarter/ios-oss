@@ -14,7 +14,7 @@ dependencies:
     - xcodebuild -showsdks
 test:
   pre:
-    - xcrun instruments -w 'iPhone 7 (10.3.1)' || true
+    - xcrun instruments -w 'iPhone 8 (11.0) [54C4213C-4AF3-4337-A2B0-6656CF18783B]' || true
     - sleep 15
   override:
     - make lint

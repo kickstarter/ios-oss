@@ -2,8 +2,8 @@ import KsApi
 import Prelude
 
 public struct SelectableRow {
-  public fileprivate(set) var isSelected: Bool
-  public fileprivate(set) var params: DiscoveryParams
+  public let isSelected: Bool
+  public let params: DiscoveryParams
 
     public enum lens {
     public static let isSelected = Lens<SelectableRow, Bool>(
