@@ -63,12 +63,15 @@
 "Creator_name_was_live_time_ago" = "<b>%{creator_name}</b> transmitió en vivo hace %{time_ago}";
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} estuvo transmitiendo en vivo en Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}";
+"Creator_tips" = "Consejos para el creador";
+"Daily_digest" = "Resumen diario";
 "Delivered" = "Entregado";
 "Discover_more_projects" = "Descubre más proyectos.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
 "Earth" = "Tierra";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
+"Email_frequency" = "Frecuencia de aviso por correo electrónico";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Ending_soon" = "Finaliza pronto";
 "Estimated_delivery" = "Entrega estimada:";
@@ -126,6 +129,7 @@
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
 "Home" = "Inicio";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
+"Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
@@ -160,6 +164,7 @@
 "Message_backer" = "Enviar mensaje a patrocinador";
 "Message_creator" = "Enviar mensaje al creador";
 "Message_user_name" = "Mensaje a %{user_name}…";
+"New_pledge_activity" = "Nueva actividad de contribución";
 "No_Results" = "Sin resultados";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_messages" = "No hay mensajes";
@@ -206,6 +211,7 @@
 "Project_cancelled" = "Proyecto cancelado";
 "Project_saved" = "Proyecto guardado.";
 "Projects_We_Love" = "Nuestros Favoritos";
+"Projects_youve_launched" = "Proyectos que has publicado";
 "Public_comment" = "Comentario público";
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
 "Push_notifications" = "Notificaciones Push";

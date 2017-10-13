@@ -646,7 +646,7 @@ backers"
    "Close live stream"
 
    - **es**: "Cerrar Live Stream"
-   - **ja**: "ライブ動画を閉じる"
+   - **ja**: "ライブ配信を閉じる"
    - **de**: "Live-Stream schließen"
    - **fr**: "Fermer la diffusion en direct"
    - **en**: "Close live stream"
@@ -697,7 +697,7 @@ backers"
    "Closes live stream."
 
    - **es**: "Cierra Live-Stream."
-   - **ja**: "ライブ動画を閉じる"
+   - **ja**: "ライブ配信を閉じる"
    - **de**: "Schließt Live-Stream."
    - **fr**: "Ferme la diffusion en direct."
    - **en**: "Closes live stream."
@@ -867,7 +867,7 @@ backers"
    "Couldn‘t open live stream. Try again later."
 
    - **es**: "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde."
-   - **ja**: "ライブを開けませんでした。後ほどもう一度お試しください。"
+   - **ja**: "ライブ配信を開けませんでした。後ほどお試しください。"
    - **de**: "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal."
    - **fr**: "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard."
    - **en**: "Couldn‘t open live stream. Try again later."
@@ -952,7 +952,7 @@ backers"
    "%{creator_name} is streaming live on Kickstarter"
 
    - **es**: "%{creator_name} está transmitiendo en vivo en Kickstarter"
-   - **ja**: "%{creator_name} はKickstarterでプロジェクト進行中です"
+   - **ja**: "%{creator_name} がKickstarterでライブ配信中"
    - **de**: "%{creator_name} streamt gerade live auf Kickstarter"
    - **fr**: "%{creator_name} est en direct sur Kickstarter"
    - **en**: "%{creator_name} is streaming live on Kickstarter"
@@ -1048,6 +1048,40 @@ backers"
       defaultValue: "%{creator_name} will be streaming live on Kickstarter %{in_duration}",
       count: nil,
       substitutions: ["creator_name": creator_name, "in_duration": in_duration]
+    )
+  }
+  /**
+   "Creator tips"
+
+   - **es**: "Consejos para el creador"
+   - **ja**: "アドバイス"
+   - **de**: "Tpps für Projektgründer"
+   - **fr**: "Astuces pour créateurs"
+   - **en**: "Creator tips"
+  */
+  public static func Creator_tips() -> String {
+    return localizedString(
+      key: "Creator_tips",
+      defaultValue: "Creator tips",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Daily digest"
+
+   - **es**: "Resumen diario"
+   - **ja**: "デイリーダイジェスト"
+   - **de**: "Tägliche Zusammenfassung"
+   - **fr**: "Résumé quotidien"
+   - **en**: "Daily digest"
+  */
+  public static func Daily_digest() -> String {
+    return localizedString(
+      key: "Daily_digest",
+      defaultValue: "Daily digest",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -1148,6 +1182,23 @@ backers"
     return localizedString(
       key: "Either_the_pledge_or_the_project_was_canceled",
       defaultValue: "Either the pledge or the project was canceled before the deadline.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Email frequency"
+
+   - **es**: "Frecuencia de aviso por correo electrónico"
+   - **ja**: "通知頻度"
+   - **de**: "Häufigkeit der E-Mails"
+   - **fr**: "Fréquence d'envoi des e-mails"
+   - **en**: "Email frequency"
+  */
+  public static func Email_frequency() -> String {
+    return localizedString(
+      key: "Email_frequency",
+      defaultValue: "Email frequency",
       count: nil,
       substitutions: [:]
     )
@@ -1258,7 +1309,7 @@ backers"
    "Failed to retrieve live stream event details"
 
    - **es**: "No se pudo cargar la información acerca del evento en vivo"
-   - **ja**: "ライブストリームの詳細を取得できませんでした"
+   - **ja**: "ライブ配信の詳細を取得できませんでした"
    - **de**: "Details zu Live-Stream-Event konnten nicht geladen werden"
    - **fr**: "Impossible de récupérer les détails de la diffusion en direct"
    - **en**: "Failed to retrieve live stream event details"
@@ -1360,7 +1411,7 @@ backers"
    "Filter by projects we love"
 
    - **es**: "Filtro: Nuestros favoritos"
-   - **ja**: "素敵なプロジェクトに絞る"
+   - **ja**: "Project We Love に絞る"
    - **de**: "Filter: Team-Favoriten"
    - **fr**: "Filtrer : Coups de cœur"
    - **en**: "Filter by projects we love"
@@ -1428,7 +1479,7 @@ backers"
    "Filters by projects with upcoming and past live streams."
 
    - **es**: "Ordenar por proyectos con live streams futuros/pasados."
-   - **ja**: "近日公開予定のライブと過去のライブを含むプロジェクトに絞る"
+   - **ja**: "近日公開予定、または過去のライブ配信含むプロジェクトに絞る"
    - **de**: "Filtert nach zukünftigen und vergangenen Live-Streams."
    - **fr**: "Filtrage des projets ayant des diffusions en direct à venir et passées."
    - **en**: "Filters by projects with upcoming and past live streams."
@@ -2054,6 +2105,23 @@ backers"
     )
   }
   /**
+   "Individual emails"
+
+   - **es**: "Notificaciones por correo electrónico individuales"
+   - **ja**: "個人メール"
+   - **de**: "Individuelle E-Mails"
+   - **fr**: "E-mails individuels"
+   - **en**: "Individual emails"
+  */
+  public static func Individual_Emails() -> String {
+    return localizedString(
+      key: "Individual_Emails",
+      defaultValue: "Individual emails",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Info"
 
    - **es**: "Información"
@@ -2416,7 +2484,7 @@ with friends."
    "Log in or sign up to subscribe"
 
    - **es**: "Para activar la suscripción, por favor inicia sesión o regístrate"
-   - **ja**: "ログインかサインインしてください"
+   - **ja**: "ログインまたはサインアップしてください"
    - **de**: "Bitte einloggen oder registrieren"
    - **fr**: "Connectez-vous ou inscrivez-vous pour vous abonner"
    - **en**: "Log in or sign up to subscribe"
@@ -2566,6 +2634,23 @@ with friends."
     )
   }
   /**
+   "New pledge activity"
+
+   - **es**: "Nueva actividad de contribución"
+   - **ja**: "新しいプレッジ"
+   - **de**: "Neue Finanzierungsbeiträge"
+   - **fr**: "Nouveaux engagements"
+   - **en**: "New pledge activity"
+  */
+  public static func New_pledge_activity() -> String {
+    return localizedString(
+      key: "New_pledge_activity",
+      defaultValue: "New pledge activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No Results"
 
    - **es**: "Sin resultados"
@@ -2657,7 +2742,7 @@ from friends yet."
    "No replay is available for this live stream."
 
    - **es**: "Este Live Stream no cuenta con repetición."
-   - **ja**: "このライブを再生することはできません"
+   - **ja**: "このライブ配信を再生することはできません"
    - **de**: "Keine Wiedergabe verügbar für diesen Live-Stream."
    - **fr**: "Pas de rediffusion possible pour cette diffusion en direct."
    - **en**: "No replay is available for this live stream."
@@ -3065,7 +3150,7 @@ from friends yet."
    "Please log in or sign up to message this creator."
 
    - **es**: "Por favor inicia sesión o regístrate para mandarle un mensaje a este creador."
-   - **ja**: "クリエーターにメッセージするにはログインかサインインしてください。"
+   - **ja**: "クリエイターにメッセージするにはログインまたはサインアップしてください。"
    - **de**: "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren."
    - **fr**: "Veuillez vous connecter ou vous inscrire pour écrire à ce créateur."
    - **en**: "Please log in or sign up to message this creator."
@@ -3082,7 +3167,7 @@ from friends yet."
    "Please log in or sign up to participate in this live stream chat."
 
    - **es**: "Por favor inicia sesión o regístrate para participar en este Live Stream."
-   - **ja**: "チャットに参加するためにはログインかサインインしてください"
+   - **ja**: "ライブ配信でチャットに参加するためにはログインかサインアップしてください。"
    - **de**: "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen."
    - **fr**: "Veuillez vous connecter ou vous inscrire pour participer au chat de cette diffusion en direct."
    - **en**: "Please log in or sign up to participate in this live stream chat."
@@ -3099,7 +3184,7 @@ from friends yet."
    "Please log in or sign up to subscribe to this live stream."
 
    - **es**: "Por favor inicia sesión o regístrate para suscribirte a este Live Stream."
-   - **ja**: "ログインかサインインをし、ライブを見よう！"
+   - **ja**: "ログインまたはサインアップして、ライブ配信を見よう！"
    - **de**: "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren."
    - **fr**: "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct."
    - **en**: "Please log in or sign up to subscribe to this live stream."
@@ -3337,7 +3422,7 @@ from friends yet."
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "素敵なプロジェクト"
+   - **ja**: "Projects We Love"
    - **de**: "Team-Favoriten"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -3346,6 +3431,23 @@ from friends yet."
     return localizedString(
       key: "Projects_We_Love",
       defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Projects you've launched"
+
+   - **es**: "Proyectos que has publicado"
+   - **ja**: "ローンチしたプロジェクト"
+   - **de**: "Deine veröffentlichten Projekte"
+   - **fr**: "Les projets que vous avez lancés"
+   - **en**: "Projects you've launched"
+  */
+  public static func Projects_youve_launched() -> String {
+    return localizedString(
+      key: "Projects_youve_launched",
+      defaultValue: "Projects you've launched",
       count: nil,
       substitutions: [:]
     )
@@ -3442,7 +3544,7 @@ daring ideas."
    "Recent live stream"
 
    - **es**: "Live-Stream reciente"
-   - **ja**: "最近のプロジェクト"
+   - **ja**: "最近のライブ配信"
    - **de**: "Kürzlich gesendeter Live-Stream"
    - **fr**: "Diffusion en direct récente"
    - **en**: "Recent live stream"
@@ -3561,7 +3663,7 @@ daring ideas."
    "Replay live stream with<br><b>%{creator_name}</b>"
 
    - **es**: "Repetir live stream de<br><b>%{creator_name}</b>"
-   - **ja**: "<b>%{creator_name}</b>のライブを再生"
+   - **ja**: "<b>%{creator_name}</b>のライブ配信を再生"
    - **de**: "Wiedergabe des Live-Streams von<br><b>%{creator_name}</b>"
    - **fr**: "Revoir la diffusion en direct de <br><b>%{creator_name}</b>"
    - **en**: "Replay live stream with<br><b>%{creator_name}</b>"
@@ -3578,7 +3680,7 @@ daring ideas."
    "Replay past live stream"
 
    - **es**: "Repetir live stream pasado"
-   - **ja**: "過去のライブをリプレイ"
+   - **ja**: "過去のライブ配信をリプレイ"
    - **de**: "Wiedergabe des vorigen Live-Streams"
    - **fr**: "Rediffusion"
    - **en**: "Replay past live stream"
@@ -3595,7 +3697,7 @@ daring ideas."
    "Replay past live streams"
 
    - **es**: "Repetir live streams pasados"
-   - **ja**: "過去のライブをリプレイ"
+   - **ja**: "過去のライブ配信をリプレイ"
    - **de**: "Wiedergabe vergangener Live-Streams"
    - **fr**: "Revoir des diffusions en direct passées"
    - **en**: "Replay past live streams"
@@ -3901,7 +4003,7 @@ daring ideas."
    "Share this live stream."
 
    - **es**: "Compartir este Live-Stream."
-   - **ja**: "有効なストリームをシェア。"
+   - **ja**: "ライブ配信をシェアする"
    - **de**: "Live-Stream teilen."
    - **fr**: "Partager cette diffusion en direct."
    - **en**: "Share this live stream."
@@ -4141,7 +4243,7 @@ catch your eye?"
    "Subscribes to upcoming live streams."
 
    - **es**: "Activa subscripción a futuros Live-Streams."
-   - **ja**: "ストリームを購読しています。"
+   - **ja**: "ライブ配信を購読"
    - **de**: "Zukünftige Live-Streams abonnieren."
    - **fr**: "Abonnement aux diffusions en direct à venir."
    - **en**: "Subscribes to upcoming live streams."
@@ -4277,7 +4379,7 @@ catch your eye?"
    "The live stream failed to connect"
 
    - **es**: "No se pudo conectar la transmisión en directo"
-   - **ja**: "ライブストリームに接続できませんでした"
+   - **ja**: "ライブ配信に接続できませんでした"
    - **de**: "Keine Verbindungn zu Live-Stream"
    - **fr**: "Échec de connexion à la diffusion en direct"
    - **en**: "The live stream failed to connect"
@@ -4294,7 +4396,7 @@ catch your eye?"
    "The live stream was interrupted"
 
    - **es**: "Transmisión en vivo fue interrumpida"
-   - **ja**: "ライブストリームは妨害されました"
+   - **ja**: "ライブ配信が中断されました"
    - **de**: "Live-Stream wurde unterbrochen"
    - **fr**: "Diffusion en direct interrompue"
    - **en**: "The live stream was interrupted"
@@ -4311,7 +4413,7 @@ catch your eye?"
    "The live stream will start soon"
 
    - **es**: "Transmisión en vivo comienza en breve"
-   - **ja**: "ライブストリームが開始されます"
+   - **ja**: "ライブ配信が開始します"
    - **de**: "Live-Stream started in Kürze"
    - **fr**: "La diffusion en direct va bientôt commencer"
    - **en**: "The live stream will start soon"
@@ -4328,7 +4430,7 @@ catch your eye?"
    "The live stream will start %{time}."
 
    - **es**: "Live-Stream comienza en %{time}."
-   - **ja**: "%{time} にライブストリームが開始されます。"
+   - **ja**: "%{time} にライブ配信が開始されます。"
    - **de**: "Dieser Live-Stream started in %{time}."
    - **fr**: "La diffusion en direct commence dans %{time}."
    - **en**: "The live stream will start %{time}."
@@ -4430,7 +4532,7 @@ catch your eye?"
    "To read this project update, you must be a backer. Please log in or sign up to continue."
 
    - **es**: "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar."
-   - **ja**: "アップデートを購読するにはバックしましょう。 ログインかサインアップを！"
+   - **ja**: "このアップデートはバッカー専用です。 続行するにはログインまたはサインアップしてください。"
    - **de**: "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich."
    - **fr**: "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer."
    - **en**: "To read this project update, you must be a backer. Please log in or sign up to continue."
@@ -4566,7 +4668,7 @@ catch your eye?"
    "Unsubscribes from upcoming live streams."
 
    - **es**: "Desactiva subscripción a futuros Live-Streams."
-   - **ja**: "ストリームを購読を停止しています。"
+   - **ja**: "ライブ配信の購読を停止"
    - **de**: "Abo für zukünftige Live-Streams abbestellen."
    - **fr**: "Désabonnement des diffusions en direct à venir."
    - **en**: "Unsubscribes from upcoming live streams."
@@ -4600,7 +4702,7 @@ catch your eye?"
    "Upcoming live stream"
 
    - **es**: "Futuro Live-Stream"
-   - **ja**: "ライブストリームが開始します"
+   - **ja**: "ライブ配信が開始します"
    - **de**: "Nächster Live-Stream"
    - **fr**: "Diffusion en direct à venir"
    - **en**: "Upcoming live stream"
@@ -4617,7 +4719,7 @@ catch your eye?"
    "Upcoming live streams"
 
    - **es**: "Live streams futuros"
-   - **ja**: "ライブストリームが開始します"
+   - **ja**: "ライブ配信が開始します"
    - **de**: "Zukünftige Live-Streams"
    - **fr**: "Diffusions en direct à venir"
    - **en**: "Upcoming live streams"
@@ -4770,7 +4872,7 @@ catch your eye?"
    "We were unable to connect to the live stream chat."
 
    - **es**: "No se pudo conectar al chat de live stream."
-   - **ja**: "ライブへの接続に失敗。"
+   - **ja**: "ライブ配信への接続に失敗。"
    - **de**: "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden."
    - **fr**: "Connexion au chat en direct impossible."
    - **en**: "We were unable to connect to the live stream chat."
@@ -10165,7 +10267,7 @@ Please try again later."
    "Converted from %{pledged} pledged of %{goal} goal."
 
    - **es**: "Conversión: %{pledged} de la meta de %{goal}."
-   - **ja**: "%{pledged} から変更され、%{goal} 達成。"
+   - **ja**: "%{goal}のゴールに対し%{pledged}達成"
    - **de**: "Umgerechneter Betrag: %{pledged} von %{goal} (Fianzierungsziel)."
    - **fr**: "Conversion de %{pledged} engagés pour un objectif de %{goal}"
    - **en**: "Converted from %{pledged} pledged of %{goal} goal."
@@ -14043,7 +14145,7 @@ Let's change that!"
    - **es**: "Novedades sobre Arte & Cultura"
    - **ja**: "アート＆カルチャー"
    - **de**: "Kunst & Kultur News"
-   - **fr**: "Arts & Culture News"
+   - **fr**: "Actualités art et culture"
    - **en**: "Arts & Culture News"
   */
   public static func profile_settings_newsletter_arts() -> String {
@@ -14094,7 +14196,7 @@ Let's change that!"
    - **es**: "Invenciones"
    - **ja**: "インベント"
    - **de**: "Kreativ & Erfinderisch"
-   - **fr**: "Invent"
+   - **fr**: "Inventions"
    - **en**: "Invent"
   */
   public static func profile_settings_newsletter_invent() -> String {
@@ -14177,7 +14279,7 @@ Let's change that!"
    "Projects We Love"
 
    - **es**: "Nuestros Favoritos"
-   - **ja**: "素敵なプロジェクト"
+   - **ja**: "Projects We Love"
    - **de**: "Unsere Lieblingsprojekte"
    - **fr**: "Nos coups de cœur"
    - **en**: "Projects We Love"
@@ -16191,7 +16293,7 @@ backed"
 
    - **es**: "%{projects_count}
 patrocinados"
-   - **ja**: "%{projects_count} 個のプロジェクトをバック"
+   - **ja**: "%{projects_count} \n個のプロジェクトをバック"
    - **de**: "%{projects_count}
 unterstützt"
    - **fr**: "%{projects_count}
