@@ -11,10 +11,16 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  /// Call after the view loads and passes the initial TopConstraint constant.
+  func initial(topConstraint: CGFloat)
+
   func viewDidAppear(animated: Bool)
 
   /// Call when the view will appear, and pass the animated parameter.
   func viewWillAppear(animated: Bool)
+
+  /// Call when the view will transition to a new trait collection.
+  func willTransition(toNewCollection collection: UITraitCollection)
 }
 
 public protocol ProjectPamphletViewModelOutputs {
@@ -30,6 +36,9 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits when the `setNeedsStatusBarAppearanceUpdate` method should be called on the view.
   var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+
+  /// Emits a float to update topLayoutConstraints constant.
+  var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -60,12 +69,19 @@ ProjectPamphletViewModelOutputs {
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
-    self.setNeedsStatusBarAppearanceUpdate = self.viewWillAppearAnimated.signal.ignoreValues()
+    self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
+      self.viewWillAppearAnimated.signal.ignoreValues(),
+      self.willTransitionToCollectionProperty.signal.ignoreValues()
+    )
 
     self.setNavigationBarHiddenAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
       self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
+
+    self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
+      .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
+      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, refTag in
@@ -104,6 +120,11 @@ ProjectPamphletViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  fileprivate let initialTopConstraintProperty = MutableProperty<CGFloat?>(nil)
+  public func initial(topConstraint: CGFloat) {
+    self.initialTopConstraintProperty.value = topConstraint
+  }
+
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimated.value = animated
@@ -114,14 +135,22 @@ ProjectPamphletViewModelOutputs {
     self.viewWillAppearAnimated.value = animated
   }
 
+  fileprivate let willTransitionToCollectionProperty =
+    MutableProperty<UITraitCollection?>(nil)
+  public func willTransition(toNewCollection collection: UITraitCollection) {
+    self.willTransitionToCollectionProperty.value = collection
+  }
+
   public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
     RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
+
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
+  public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
@@ -129,6 +158,14 @@ ProjectPamphletViewModelOutputs {
 
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
+
+private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
+                                         traitCollection: UITraitCollection) -> CGFloat {
+  if #available(iOS 11.0, *), !traitCollection.isRegularRegular {
+    return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
+  }
+  return !traitCollection.isVerticallyCompact ? initialTopConstraint : 0.0
+}
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
