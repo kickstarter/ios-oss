@@ -32,6 +32,9 @@ internal final class RewardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
   @IBOutlet fileprivate weak var selectRewardButton: UIButton!
+  @IBOutlet fileprivate weak var shippingLocationsLabel: UILabel!
+  @IBOutlet fileprivate weak var shippingLocationsStackView: UIStackView!
+  @IBOutlet fileprivate weak var shippingLocationsSummaryLabel: UILabel!
   @IBOutlet fileprivate var separatorViews: [UIView]!
   @IBOutlet fileprivate weak var titleDescriptionStackView: UIStackView!
   @IBOutlet fileprivate weak var viewYourPledgeButton: UIButton!
@@ -147,6 +150,15 @@ internal final class RewardCell: UITableViewCell, ValueCell {
         UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
     }
 
+    _ = self.shippingLocationsLabel
+      |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
+      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+
+    _ = self.shippingLocationsSummaryLabel
+      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
@@ -211,6 +223,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.rewardTitleLabel.rac.textColor = self.viewModel.outputs.titleLabelTextColor
     self.selectRewardButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
     self.selectRewardButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
+    self.shippingLocationsStackView.rac.hidden = self.viewModel.outputs.shippingLocationsStackViewHidden
+    self.shippingLocationsSummaryLabel.rac.text = self.viewModel.outputs.shippingLocationsSummaryLabelText
     self.viewYourPledgeButton.rac.hidden = self.viewModel.outputs.viewPledgeButtonHidden
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
     self.youreABackerLabel.rac.text = self.viewModel.outputs.youreABackerLabelText
