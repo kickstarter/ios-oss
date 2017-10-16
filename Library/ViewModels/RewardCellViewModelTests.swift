@@ -711,7 +711,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.shippingLocationsSummaryLabelText.assertValues([" "])
+    self.shippingLocationsSummaryLabelText.assertValues([""])
     self.shippingLocationsStackViewHidden.assertValues([true])
   }
 
@@ -724,7 +724,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.shippingLocationsSummaryLabelText.assertValues([" " + "Anywhere in the world."])
+    self.shippingLocationsSummaryLabelText.assertValues(["Anywhere in the world."])
     self.shippingLocationsStackViewHidden.assertValues([false])
   }
 

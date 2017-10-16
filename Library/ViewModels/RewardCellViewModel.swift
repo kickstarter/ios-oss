@@ -208,7 +208,7 @@ RewardCellViewModelOutputs {
     }
 
     self.shippingLocationsSummaryLabelText = reward.map {
-      " " + ($0.shipping.summary ?? "")
+      $0.shipping.summary ?? ""
     }
 
     let tappable = Signal.zip(project, reward, youreABacker)

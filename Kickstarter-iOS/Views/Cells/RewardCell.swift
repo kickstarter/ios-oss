@@ -90,8 +90,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = self.footerStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    _ = self.estimatedDeliveryDateStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+    _ = [self.estimatedDeliveryDateStackView, self.shippingLocationsStackView]
+      ||> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -144,12 +144,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_includes() }
 
-    _ = self.youreABackerCheckmarkImageView
-      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
-      |> UIImageView.lens.image %~ { _ in
-        UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
-    }
-
     _ = self.shippingLocationsLabel
       |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
@@ -158,6 +152,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = self.shippingLocationsSummaryLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+
+    _ = self.youreABackerCheckmarkImageView
+      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
+      |> UIImageView.lens.image %~ { _ in
+        UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
+    }
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
