@@ -28,6 +28,8 @@ public protocol RewardCellViewModelOutputs {
   var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
   var pledgeButtonHidden: Signal<Bool, NoError> { get }
   var pledgeButtonTitleText: Signal<String, NoError> { get }
+  var shippingLocationsStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingLocationsSummaryLabelText: Signal<String, NoError> { get }
   var titleLabelHidden: Signal<Bool, NoError> { get }
   var titleLabelText: Signal<String, NoError> { get }
   var titleLabelTextColor: Signal<UIColor, NoError> { get }
@@ -201,6 +203,14 @@ RewardCellViewModelOutputs {
         : Strings.Select_this_reward()
     }
 
+    self.shippingLocationsStackViewHidden = reward.map {
+      $0.shipping.summary == nil
+    }
+
+    self.shippingLocationsSummaryLabelText = reward.map {
+      $0.shipping.summary ?? ""
+    }
+
     let tappable = Signal.zip(project, reward, youreABacker)
       .map { project, reward, youreABacker in
         (project.state == .live && reward.remaining != 0)
@@ -270,6 +280,8 @@ RewardCellViewModelOutputs {
   public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
   public let pledgeButtonHidden: Signal<Bool, NoError>
   public let pledgeButtonTitleText: Signal<String, NoError>
+  public let shippingLocationsStackViewHidden: Signal<Bool, NoError>
+  public let shippingLocationsSummaryLabelText: Signal<String, NoError>
   public let titleLabelHidden: Signal<Bool, NoError>
   public let titleLabelText: Signal<String, NoError>
   public let titleLabelTextColor: Signal<UIColor, NoError>
