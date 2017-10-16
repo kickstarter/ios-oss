@@ -23,11 +23,14 @@ public protocol ProjectNotificationsViewModelType {
 public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelType,
   ProjectNotificationsViewModelInputs, ProjectNotificationsViewModelOutputs {
   public init() {
+
     self.projectNotifications = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchProjectNotifications()
           .demoteErrors()
     }
+
+
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty()

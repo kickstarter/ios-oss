@@ -9,6 +9,7 @@ internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
   @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var backingsButton: UIButton!
@@ -408,7 +409,17 @@ internal final class SettingsViewController: UIViewController {
         self?.goToHelpType(helpType)
     }
 
+    self.viewModel.outputs.emailFrequencyButtonEnabled
+      .observeForUI()
+      .observeValues { [weak self] enabled in
+        self?.emailFrequencyLabel.textColor = enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400
+        self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
+
+      }
+
+
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected

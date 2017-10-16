@@ -825,7 +825,7 @@
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfz-QX-Izu">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfz-QX-Izu">
                                         <rect key="frame" x="200" y="946" width="0.0" height="0.0"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEp-CW-Yrn">
@@ -959,6 +959,7 @@
                         <outlet property="creatorStackView" destination="1ZC-gw-NRT" id="WyE-tY-Y8U"/>
                         <outlet property="creatorTips" destination="kaU-yH-KeR" id="yav-HG-e9W"/>
                         <outlet property="creatorTipsButton" destination="qLl-B8-n0r" id="WCV-pv-Zgd"/>
+                        <outlet property="emailFrequencyArrow" destination="sHL-Gt-Phv" id="hbc-NJ-nTq"/>
                         <outlet property="emailFrequencyButton" destination="Jfz-QX-Izu" id="7jq-ko-iPf"/>
                         <outlet property="emailFrequencyLabel" destination="Ahi-Hx-9ab" id="blc-ri-ih6"/>
                         <outlet property="faqButton" destination="Jjr-6S-aZV" id="qGk-Ho-kjs"/>
@@ -1137,7 +1138,7 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CsX-4i-yj1">
                                                 <rect key="frame" x="306" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="artsAndCultureNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="IxU-yQ-08A"/>
+                                                    <action selector="individualEmailsTapped:" destination="E20-X5-whU" eventType="valueChanged" id="e2E-Ln-0A6"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -1161,7 +1162,7 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kmP-wj-nZa">
                                                 <rect key="frame" x="306" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="artsAndCultureNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="zk2-5H-MeL"/>
+                                                    <action selector="dailyDigestTapped:" destination="E20-X5-whU" eventType="valueChanged" id="LP9-1i-GCo"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -1185,7 +1186,9 @@
                     </view>
                     <connections>
                         <outlet property="dailyDigestLabel" destination="3H7-0r-3Gs" id="F6d-sO-SxX"/>
+                        <outlet property="dailyDigestSwitch" destination="kmP-wj-nZa" id="Hho-To-cta"/>
                         <outlet property="individualEmailsLabel" destination="R9X-Qo-Dk0" id="WaD-Md-CwK"/>
+                        <outlet property="individualEmailsSwitch" destination="CsX-4i-yj1" id="mwW-yo-PWC"/>
                         <outletCollection property="separatorViews" destination="WU2-bd-7hN" collectionClass="NSMutableArray" id="e7v-2R-kwN"/>
                         <outletCollection property="separatorViews" destination="ve6-g0-f6b" collectionClass="NSMutableArray" id="LV4-6D-v9I"/>
                     </connections>

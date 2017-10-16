@@ -43,6 +43,7 @@ public protocol SettingsViewModelOutputs {
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
+  var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
@@ -108,11 +109,11 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
       self.promoNewsletterTappedProperty.signal.map { (.newsletter(.promo), $0) },
       self.weeklyNewsletterTappedProperty.signal.map { (.newsletter(.weekly), $0)},
 
-      self.backingsTappedProperty.signal.map { (.notification(.backings), $0) },
+      //self.backingsTappedProperty.signal.map { (.notification(.backings), $0) },
       self.commentsTappedProperty.signal.map { (.notification(.comments), $0) },
       self.followerTappedProperty.signal.map { (.notification(.follower), $0) },
       self.friendActivityTappedProperty.signal.map { (.notification(.friendActivity), $0) },
-      self.mobileBackingsTappedProperty.signal.map { (.notification(.mobileBackings), $0) },
+      //self.mobileBackingsTappedProperty.signal.map { (.notification(.mobileBackings), $0) },
       self.mobileCommentsTappedProperty.signal.map { (.notification(.mobileComments), $0) },
       self.mobileFollowerTappedProperty.signal.map { (.notification(.mobileFollower), $0) },
       self.mobileFriendActivityTappedProperty.signal.map { (.notification(.mobileFriendActivity), $0) },
@@ -167,6 +168,10 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
 
     self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
 
+    self.backingsSelected = self.backingsTappedProperty.signal
+
+    self.emailFrequencyButtonEnabled = self.backingsSelected
+
     self.showConfirmLogoutPrompt = self.logoutTappedProperty.signal
       .map {
         (message: Strings.profile_settings_logout_alert_message(),
@@ -194,7 +199,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
     self.artsAndCultureNewsletterOn = self.updateCurrentUser
       .map { $0.newsletters.arts}.skipNil().skipRepeats()
 
-    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
+
     self.creatorTipsSelected = self.updateCurrentUser
       .map { $0.notifications.creatorTips }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
@@ -248,11 +253,14 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
           )
         case let .notification(notification):
           switch notification {
-          case .mobileBackings, .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes,
+          case
+         // .mobileBackings,
+          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes,
                .mobileUpdates:
             AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                      on: on)
-          case .backings, .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
+          case //.backings,
+               .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
           }
@@ -393,6 +401,7 @@ public final class SettingsViewModel: SettingsViewModelType, SettingsViewModelIn
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
+  public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
@@ -443,11 +452,11 @@ private enum UserAttribute {
       }
     case let .notification(notification):
       switch notification {
-      case .backings:             return User.lens.notifications.backings
+      //case .backings:             return User.lens.notifications.backings
       case .comments:             return User.lens.notifications.comments
       case .follower:             return User.lens.notifications.follower
       case .friendActivity:       return User.lens.notifications.friendActivity
-      case .mobileBackings:       return User.lens.notifications.mobileBackings
+     // case .mobileBackings:       return User.lens.notifications.mobileBackings
       case .mobileComments:       return User.lens.notifications.mobileComments
       case .mobileFollower:       return User.lens.notifications.mobileFollower
       case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
@@ -462,11 +471,11 @@ private enum UserAttribute {
 }
 
 private enum Notification {
-  case backings
+ // case backings
   case comments
   case follower
   case friendActivity
-  case mobileBackings
+ // case mobileBackings
   case mobileComments
   case mobileFollower
   case mobileFriendActivity
@@ -478,7 +487,7 @@ private enum Notification {
 
   fileprivate var trackingString: String {
     switch self {
-    case .backings, .mobileBackings:                return "New pledges"
+   // case .backings, .mobileBackings:                return "New pledges"
     case .comments, .mobileComments:                return "New comments"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
