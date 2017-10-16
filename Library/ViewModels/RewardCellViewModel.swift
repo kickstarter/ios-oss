@@ -170,7 +170,7 @@ RewardCellViewModelOutputs {
       .map { project, reward in
         reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
       }
-      .mergeWith(self.tappedProperty.signal.mapConst(false))
+     // .mergeWith(self.tappedProperty.signal.mapConst(false))
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,
