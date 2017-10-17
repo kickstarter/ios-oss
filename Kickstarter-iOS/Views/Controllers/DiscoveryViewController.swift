@@ -106,10 +106,10 @@ internal final class DiscoveryViewController: UIViewController {
         )
     }
 
-    self.viewModel.outputs.navigationHeaderHeightLayoutConstant
+    self.viewModel.outputs.navigationHeaderTopInset
       .observeForUI()
-      .observeValues { [weak self] constant in
-        self?.navigationHeaderHeightLayoutConstraint.constant -= constant
+      .observeValues { [weak self] value in
+        self?.navigationHeaderHeightLayoutConstraint.constant -= value
     }
 
     self.viewModel.outputs.selectSortPage
