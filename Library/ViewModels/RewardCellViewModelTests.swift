@@ -473,7 +473,7 @@ final class RewardCellViewModelTests: TestCase {
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
 
-  func testFooterViewHidden() {
+  func testFooterViewHidden_() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
     self.footerStackViewHidden.assertValues([false])

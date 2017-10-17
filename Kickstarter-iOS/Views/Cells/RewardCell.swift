@@ -212,7 +212,8 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
-    self.footerStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
+    self.estimatedDeliveryDateStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryDateStackViewHidden
+    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewHidden
     self.footerLabel.rac.text = self.viewModel.outputs.footerLabelText
     self.itemsContainerStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
     self.manageRewardButton.rac.hidden = self.viewModel.outputs.manageButtonHidden
