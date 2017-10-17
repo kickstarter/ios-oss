@@ -11,7 +11,8 @@ internal final class DiscoveryViewController: UIViewController {
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
-
+  @IBOutlet weak var navigationHeaderHeightLayoutConstraint: NSLayoutConstraint!
+  
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
   }
@@ -51,6 +52,11 @@ internal final class DiscoveryViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
   }
 
+  @available(iOS 11, *)
+  override func viewSafeAreaInsetsDidChange() {
+    self.viewModel.inputs.viewSafeAreaInsetsDidChange()
+  }
+
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -88,14 +94,6 @@ internal final class DiscoveryViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.dataSource.load(filter: $0) }
 
-    self.viewModel.outputs.selectSortPage
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.sortPagerViewController.select(sort: $0) }
-
-    self.viewModel.outputs.updateSortPagerStyle
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.sortPagerViewController.updateStyle(categoryId: $0) }
-
     self.viewModel.outputs.navigateToSort
       .observeForControllerAction()
       .observeValues { [weak self] sort, direction in
@@ -108,11 +106,25 @@ internal final class DiscoveryViewController: UIViewController {
         )
     }
 
+    self.viewModel.outputs.navigationHeaderHeightLayoutConstant
+      .observeForUI()
+      .observeValues { [weak self] constant in
+        self?.navigationHeaderHeightLayoutConstraint.constant -= constant
+    }
+
+    self.viewModel.outputs.selectSortPage
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.sortPagerViewController.select(sort: $0) }
+
     self.viewModel.outputs.sortsAreEnabled
       .observeForUI()
       .observeValues { [weak self] in
         self?.sortPagerViewController.setSortPagerEnabled($0)
     }
+
+    self.viewModel.outputs.updateSortPagerStyle
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.sortPagerViewController.updateStyle(categoryId: $0) }
   }
 
   internal func filter(with params: DiscoveryParams) {
