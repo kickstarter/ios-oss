@@ -4,6 +4,8 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryViewController: UIViewController {
+  @IBOutlet private weak var navigationHeaderHeightLayoutConstraint: NSLayoutConstraint!
+
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource!
 
@@ -11,8 +13,6 @@ internal final class DiscoveryViewController: UIViewController {
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
-  @IBOutlet weak var navigationHeaderHeightLayoutConstraint: NSLayoutConstraint!
-  
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
   }
