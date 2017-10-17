@@ -30,10 +30,6 @@ public final class ProjectPamphletViewController: UIViewController {
     return UIApplication.shared.statusBarOrientation.isLandscape
   }
 
-  public override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-
   public override func viewDidLoad() {
     super.viewDidLoad()
 

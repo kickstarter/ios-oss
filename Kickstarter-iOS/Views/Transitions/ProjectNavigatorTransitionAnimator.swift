@@ -1,7 +1,7 @@
 import UIKit
 
-private let dismissedOverlayColor = UIColor(white: 0, alpha: 0)
-private let presentedOverlayColor = UIColor(white: 0, alpha: 0.7)
+private let dismissedOverlayColor = UIColor(white: 1, alpha: 0)
+private let presentedOverlayColor = UIColor(white: 1, alpha: 1)
 
 internal final class ProjectNavigatorTransitionAnimator: UIPercentDrivenInteractiveTransition,
 UIViewControllerAnimatedTransitioning {
