@@ -18,7 +18,6 @@ public protocol RewardCellViewModelOutputs {
   var descriptionLabelHidden: Signal<Bool, NoError> { get }
   var descriptionLabelText: Signal<String, NoError> { get }
   var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
-  var estimatedDeliveryDateStackViewHidden: Signal<Bool, NoError> { get }
   var footerLabelText: Signal<String, NoError> { get }
   var footerStackViewHidden: Signal<Bool, NoError> { get }
   var items: Signal<[String], NoError> { get }
@@ -169,30 +168,16 @@ RewardCellViewModelOutputs {
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
-   self.footerStackViewHidden = Signal.merge(
-    projectAndReward.map { project, reward in
-    //  reward.estimatedDeliveryOn == nil ||
-        shouldCollapse(reward: reward, forProject: project)
-      },
-      self.tappedProperty.signal.mapConst(false)
-    )
+    let isNoReward = reward
+      .map { $0.isNoReward }
 
-    self.estimatedDeliveryDateStackViewHidden = reward.map {
-      $0.estimatedDeliveryOn == nil
-    }
-
-//    self.footerStackViewHidden = projectAndReward
-//      .map { project, reward in
-//        reward.remaining == 0 || reward.rewardsItems.isEmpty || project.state == .live
-//
-//      }
-//      .mergeWith(rewardItemsIsEmpty.takeWhen(self.tappedProperty.signal))
-//
-//    Signal.merge(
-//      reward.map { $0.remaining == 0 || $0.rewardsItems.isEmpty  },
-//      rewardItemsIsEmpty.takeWhen(self.tappedProperty.signal)
-//      )
-//      .skipRepeats()
+    self.footerStackViewHidden = Signal.merge(
+      projectAndReward
+      .map { project, reward in
+        reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
+        },
+        isNoReward.takeWhen(self.tappedProperty.signal)
+      )
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,
@@ -290,7 +275,6 @@ RewardCellViewModelOutputs {
   public let descriptionLabelHidden: Signal<Bool, NoError>
   public let descriptionLabelText: Signal<String, NoError>
   public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let estimatedDeliveryDateStackViewHidden: Signal<Bool, NoError>
   public let footerLabelText: Signal<String, NoError>
   public let footerStackViewHidden: Signal<Bool, NoError>
   public let items: Signal<[String], NoError>
