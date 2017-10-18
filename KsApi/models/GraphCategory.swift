@@ -28,7 +28,7 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
         return decompose(id: id) ?? -1
     }
 
-    public static let gamesId: String = "Q2F0ZWdvcnktMTI="
+    public static let gamesId: Int = 12
 
     public let name: String
     public let parentId: String?
@@ -104,8 +104,8 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     }
 
     /// Returns the id of the root category. This is sometimes present in situations that `root` is not.
-    public var rootId: String? {
-      return self.parentId ?? self.root?.id
+    public var rootId: Int? {
+      return self._parent?.intID ?? self.root?.intID
     }
   }
 }

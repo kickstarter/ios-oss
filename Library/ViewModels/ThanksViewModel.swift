@@ -140,7 +140,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { $0.category.rootId }
+      .map { $0.category.root?.id }
       .skipNil()
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))

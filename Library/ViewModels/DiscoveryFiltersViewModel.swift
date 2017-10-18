@@ -76,7 +76,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     }
 
     let categoryId = self.initialSelectedRowProperty.signal.skipNil()
-      .map { $0.params.category?.intID }
+      .map { $0.params.category?.rootId }
 
     let loaderIsVisible = MutableProperty(false)
 
@@ -119,7 +119,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     let selectedRowId = Signal.merge(
         categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category!.intID }
+        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
       )
 
     let initialRows = selectedRowWithCategories

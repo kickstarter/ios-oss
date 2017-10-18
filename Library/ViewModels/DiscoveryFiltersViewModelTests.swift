@@ -22,21 +22,19 @@ private let recommendedRow = selectableRowTemplate
   |> SelectableRow.lens.params.recommended .~ true
   |> SelectableRow.lens.params.backed .~ false
 
-private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .art
+private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
 private let documentarySelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .documentary
 
 private let artExpandableRow = expandableRowTemplate
   |> ExpandableRow.lens.params.category .~ .art
   |> ExpandableRow.lens.selectableRows .~ [
-    artSelectableRow,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
 ]
 
 private let filmExpandableRow = expandableRowTemplate
   |> ExpandableRow.lens.params.category .~ .filmAndVideo
   |> ExpandableRow.lens.selectableRows .~ [
-    selectableRowTemplate |> SelectableRow.lens.params.category .~ .filmAndVideo,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .documentary
 ]
 
@@ -357,7 +355,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         artSelectableRow |> SelectableRow.lens.isSelected .~ true,
         selectableRowTemplate
           |> SelectableRow.lens.isSelected .~ false
-          |> SelectableRow.lens.params.category .~ .illustration
     ]
 
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
@@ -447,7 +444,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testFavoriteRows_With_Favorites() {
     withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: categoriesResponse)) {
-      self.ubiquitousStore.favoriteCategoryIds = [1, 30]
+      self.ubiquitousStore.favoriteCategoryIds = [1, 11]
 
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
@@ -464,7 +461,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites_Selected() {
-    self.ubiquitousStore.favoriteCategoryIds = [1, 30]
+    self.ubiquitousStore.favoriteCategoryIds = [22, 30]
 
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
