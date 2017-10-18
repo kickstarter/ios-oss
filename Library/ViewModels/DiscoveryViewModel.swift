@@ -22,9 +22,6 @@ public protocol DiscoveryViewModelInputs {
   /// Call from the controller's viewDidLoad.
   func viewDidLoad()
 
-  /// Call from the controller's viewSafeAreaInsetsDidChange.
-  func viewSafeAreaInsetsDidChange()
-
   /// Call from the controller's viewWillAppear.
   func viewWillAppear(animated: Bool)
 
@@ -53,9 +50,6 @@ public protocol DiscoveryViewModelOutputs {
 
   /// Emits when we should manually navigate to a sort's page.
   var navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError> { get }
-
-  /// Emits a CGFloat that should be used to configure the NavigationHeaderViewController height
-  var navigationHeaderTopInset: Signal<CGFloat, NoError> { get }
 
   /// Emits a sort that should be passed on to the sort pager view controller.
   var selectSortPage: Signal<DiscoveryParams.Sort, NoError> { get }
@@ -123,10 +117,6 @@ DiscoveryViewModelOutputs {
         return (next.sort, lhs < rhs ? .reverse : .forward)
     }
 
-    self.navigationHeaderTopInset = self.navigationHeaderTopInsetProperty.signal.skipNil()
-      .map { $0 }
-      .skipRepeats()
-
     self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()
       .map { $0.category?.root?.id }
       .skipRepeats(==)
@@ -181,11 +171,6 @@ DiscoveryViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let navigationHeaderTopInsetProperty = MutableProperty<CGFloat?>(nil)
-  public func viewSafeAreaInsetsDidChange() {
-    self.navigationHeaderTopInsetProperty.value = 20
-  }
-
   fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
@@ -198,7 +183,6 @@ DiscoveryViewModelOutputs {
   public let liveStreamDiscoveryViewHidden: Signal<Bool, NoError>
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewControllerNavigationDirection), NoError>
-  public let navigationHeaderTopInset: Signal<CGFloat, NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
   public let sortsAreEnabled: Signal<Bool, NoError>
   public let sortViewHidden: Signal<Bool, NoError>

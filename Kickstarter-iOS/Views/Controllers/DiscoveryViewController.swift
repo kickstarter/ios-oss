@@ -4,8 +4,6 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryViewController: UIViewController {
-  @IBOutlet private weak var navigationHeaderHeightLayoutConstraint: NSLayoutConstraint!
-
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource!
 
@@ -50,11 +48,6 @@ internal final class DiscoveryViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear(animated: animated)
 
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
-  }
-
-  @available(iOS 11, *)
-  override func viewSafeAreaInsetsDidChange() {
-    self.viewModel.inputs.viewSafeAreaInsetsDidChange()
   }
 
   override func bindViewModel() {
@@ -104,12 +97,6 @@ internal final class DiscoveryViewController: UIViewController {
         self?.pageViewController.setViewControllers(
           [controller], direction: direction, animated: true, completion: nil
         )
-    }
-
-    self.viewModel.outputs.navigationHeaderTopInset
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.navigationHeaderHeightLayoutConstraint.constant -= value
     }
 
     self.viewModel.outputs.selectSortPage
