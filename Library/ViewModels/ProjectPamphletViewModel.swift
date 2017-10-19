@@ -161,10 +161,10 @@ private let escapedCookieSeparator = "%3F"
 
 private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
                                          traitCollection: UITraitCollection) -> CGFloat {
-  if #available(iOS 11.0, *), !traitCollection.isRegularRegular {
-    return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
+  guard !traitCollection.isRegularRegular else {
+    return 0.0
   }
-  return !traitCollection.isVerticallyCompact ? initialTopConstraint : 0.0
+   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
