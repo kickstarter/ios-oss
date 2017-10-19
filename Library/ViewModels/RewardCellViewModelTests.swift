@@ -473,24 +473,33 @@ final class RewardCellViewModelTests: TestCase {
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
 
-  func testFooterViewHidden() {
+  func testFooterViewHidden_WithRewards() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
     self.footerStackViewHidden.assertValues([false])
+  }
 
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
+  func testFooterViewHidden_SoldOut_WithRewards_OnTap() {
+    let reward = .template
+      |> Reward.lens.remaining .~ 0
 
-    self.footerStackViewHidden.assertValues([false, true])
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
-    let reward = .template |> Reward.lens.remaining .~ 0
-    self.vm.inputs.configureWith(
-      project: .template
-        |> Project.lens.personalization.backing .~ (.template |> Backing.lens.reward .~ reward),
-      rewardOrBacking: .left(reward)
-    )
+    self.footerStackViewHidden.assertValues([true])
 
-    self.footerStackViewHidden.assertValues([false, true, false])
+    self.vm.inputs.tapped()
+
+    self.footerStackViewHidden.assertValues([true, false])
+  }
+
+  func testFooterViewHidden_WithNoRewards_OnTap() {
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.noReward))
+
+    self.footerStackViewHidden.assertValues([true])
+
+    self.vm.inputs.tapped()
+
+    self.footerStackViewHidden.assertValues([true, true])
   }
 
   func testItems() {

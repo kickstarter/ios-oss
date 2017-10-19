@@ -168,11 +168,16 @@ RewardCellViewModelOutputs {
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
-    self.footerStackViewHidden = projectAndReward
+    let isNoReward = reward
+      .map { $0.isNoReward }
+
+    self.footerStackViewHidden = Signal.merge(
+      projectAndReward
       .map { project, reward in
         reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
-      }
-      .mergeWith(self.tappedProperty.signal.mapConst(false))
+        },
+        isNoReward.takeWhen(self.tappedProperty.signal)
+      )
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,

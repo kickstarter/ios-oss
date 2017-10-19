@@ -61,7 +61,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
-    internal override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -202,7 +202,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.boundStyles()
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
