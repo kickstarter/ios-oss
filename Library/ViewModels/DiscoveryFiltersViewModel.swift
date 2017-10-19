@@ -303,24 +303,25 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
 private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEnvelope.Category])
   -> [SelectableRow]? {
 
-  let faves: [SelectableRow] = categories.flatMap { category in
+    let subcategories = categories
+      .flatMap { category in category.subcategories.nodes }
 
-    guard let intId = decompose(id: category.id) else {
-      return nil
+    let faves: [SelectableRow] = subcategories
+      .flatMap { node in
+        guard let intId = node.category?.intID else {
+          return nil
+        }
+
+        if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(intId) ||
+          AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(intId) {
+          return SelectableRow(
+            isSelected: node.category == selectedRow.params.category,
+            params: .defaults |> DiscoveryParams.lens.category .~ node.category
+          )
+        } else {
+          return nil
+        }
     }
-
-    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(intId) ||
-      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(intId) {
-
-      return SelectableRow(
-        isSelected: category == selectedRow.params.category,
-        params: .defaults |> DiscoveryParams.lens.category .~ category
-      )
-    } else {
-      return nil
-    }
-  }
-
   return faves.isEmpty ? nil : faves
 }
 

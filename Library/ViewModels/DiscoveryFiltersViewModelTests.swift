@@ -39,8 +39,8 @@ private let filmExpandableRow = expandableRowTemplate
 ]
 
 private let categories =
-  [ RootCategoriesEnvelope.Category.art, RootCategoriesEnvelope.Category.illustration,
-    RootCategoriesEnvelope.Category.filmAndVideo, RootCategoriesEnvelope.Category.documentary ]
+  [ RootCategoriesEnvelope.Category.art,
+    RootCategoriesEnvelope.Category.filmAndVideo ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
@@ -279,7 +279,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         ]
       ]
     )
-    self.loadTopRowsInitialId.assertValues([1])
+    self.loadTopRowsInitialId.assertValues([22])
   }
 
   func testExpandingCategoryFilters() {
@@ -444,7 +444,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testFavoriteRows_With_Favorites() {
     withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: categoriesResponse)) {
-      self.ubiquitousStore.favoriteCategoryIds = [1, 11]
+      self.ubiquitousStore.favoriteCategoryIds = [22, 30]
 
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
@@ -476,7 +476,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       artSelectableRow |> SelectableRow.lens.isSelected .~ true,
       documentarySelectableRow
     ]])
-    self.loadFavoriteRowsId.assertValues([1])
+    self.loadFavoriteRowsId.assertValues([22])
   }
 
   func testCategoriesFromCache() {
