@@ -163,7 +163,8 @@ extension RootCategoriesEnvelope.Category.SubcategoryConnection.Node: Equatable 
 }
 
 extension RootCategoriesEnvelope.Category.SubcategoryConnection.Node: Comparable {}
-public func < (lhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node, rhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node) -> Bool {
+public func < (lhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node,
+               rhs: RootCategoriesEnvelope.Category.SubcategoryConnection.Node) -> Bool {
   if lhs.id == rhs.id {
     return false
   }

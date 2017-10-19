@@ -25,6 +25,8 @@ class GraphSchemaTests: XCTestCase {
         .totalProjectCount
       ]
       )
-    XCTAssertEqual("rootCategories { id name parentCategory { id name } subcategories { nodes { id name parentId totalProjectCount } totalCount } totalProjectCount }", query.description)
+    XCTAssertEqual("rootCategories { id name parentCategory { id name } " +
+                   "subcategories { nodes { id name parentId totalProjectCount } totalCount } " +
+                   "totalProjectCount }", query.description)
   }
 }

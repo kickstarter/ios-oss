@@ -35,7 +35,6 @@ class DiscoveryParamsTests: XCTestCase {
       "backed": "-1",
       "social": "1",
       "recommended": "true",
-      // swiftlint:disable:next force_unwrapping
       "category_id": RootCategoriesEnvelope.Category.art.intID.description,
       "term": "wallet",
       "state": "live",

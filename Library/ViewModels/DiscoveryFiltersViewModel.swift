@@ -125,10 +125,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let initialRows = selectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
 
-    initialRows.signal.observeValues { value in
-      print(value);
-    }
-
     let expandingRows = Signal.combineLatest(
       self.tappedExpandableRowProperty.signal.skipNil(),
       initialRows
