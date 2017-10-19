@@ -33,6 +33,8 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.edgesForExtendedLayout = [.left, .bottom, .right]
+
     self.navBarController = self.childViewControllers
       .flatMap { $0 as? ProjectNavBarViewController }.first
     self.navBarController.delegate = self

@@ -52,7 +52,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6CV-SZ-InC"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="1400"/>
                     <connections>
@@ -174,7 +173,7 @@
         <scene sceneID="Rey-uy-gd3">
             <objects>
                 <tableViewController storyboardIdentifier="ProjectPamphletContentViewController" id="8BT-Sh-bBd" customClass="ProjectPamphletContentViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="381" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" id="lny-Ga-DTZ">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="381" sectionHeaderHeight="28" sectionFooterHeight="28" id="lny-Ga-DTZ">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="1800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
