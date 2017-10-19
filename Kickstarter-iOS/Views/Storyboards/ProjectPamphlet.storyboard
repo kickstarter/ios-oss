@@ -23,6 +23,8 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tIm-aj-d8Q">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="1400"/>
+                                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                <viewLayoutGuide key="safeArea" id="G2d-Ze-vJe"/>
                                 <connections>
                                     <segue destination="8BT-Sh-bBd" kind="embed" id="C2u-Fy-leY"/>
                                 </connections>
@@ -32,12 +34,13 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="Mpa-HP-9KU"/>
                                 </constraints>
+                                <viewLayoutGuide key="safeArea" id="HMF-Sm-Wkm"/>
                                 <connections>
                                     <segue destination="Tne-VL-OCU" kind="embed" id="Zw0-Ot-rWA"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="6CV-SZ-InC" firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
                             <constraint firstItem="6CV-SZ-InC" firstAttribute="bottom" secondItem="tIm-aj-d8Q" secondAttribute="bottom" id="8FY-Rt-Ar2"/>
