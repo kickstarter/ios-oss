@@ -887,17 +887,10 @@ internal struct MockService: ServiceType {
     -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, GraphError> {
     switch param {
     case let .id(id):
-<<<<<<< HEAD
       return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(id)")
     default:
       return .empty
       }
-=======
-      return SignalProducer(value: .template |> Category.lens.id .~ id)
-    case let .slug(slug):
-      return SignalProducer(value: .template |> Category.lens.slug .~ slug)
-    }
->>>>>>> oss/master
   }
 
   internal func incrementVideoCompletion(forProject project: Project) ->
@@ -1206,11 +1199,7 @@ private extension MockService {
           fetchActivitiesResponse: $1.fetchActivitiesResponse,
           fetchActivitiesError: $1.fetchActivitiesError,
           fetchBackingResponse: $1.fetchBackingResponse,
-<<<<<<< HEAD
           fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
-=======
-          fetchCategoriesResponse: $1.fetchCategoriesResponse,
->>>>>>> oss/master
           fetchCommentsResponse: $1.fetchCommentsResponse,
           fetchCommentsError: $1.fetchCommentsError,
           fetchConfigResponse: $1.fetchConfigResponse,
@@ -1277,8 +1266,4 @@ private extension MockService {
   }
   // swiftlint:enable type_name
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> oss/master
 #endif
