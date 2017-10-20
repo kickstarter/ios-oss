@@ -3,9 +3,9 @@ import Curry
 import Runes
 
 public struct UpdateDraft {
-  public private(set) var update: Update
-  public private(set) var images: [Image]
-  public private(set) var video: Video?
+  public let update: Update
+  public let images: [Image]
+  public let video: Video?
 
   public enum Attachment {
     case image(Image)
@@ -13,15 +13,15 @@ public struct UpdateDraft {
   }
 
   public struct Image {
-    public private(set) var id: Int
-    public private(set) var thumb: String
-    public private(set) var full: String
+    public let id: Int
+    public let thumb: String
+    public let full: String
   }
 
   public struct Video {
-    public private(set) var id: Int
-    public private(set) var status: Status
-    public private(set) var frame: String
+    public let id: Int
+    public let status: Status
+    public let frame: String
 
     public enum Status: String {
       case processing

@@ -4,11 +4,11 @@ import Runes
 import Foundation
 
 public struct Message {
-  public private(set) var body: String
-  public private(set) var createdAt: TimeInterval
-  public private(set) var id: Int
-  public private(set) var recipient: User
-  public private(set) var sender: User
+  public let body: String
+  public let createdAt: TimeInterval
+  public let id: Int
+  public let recipient: User
+  public let sender: User
 }
 
 extension Message: Argo.Decodable {

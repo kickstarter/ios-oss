@@ -2,18 +2,18 @@ import KsApi
 import PassKit
 
 public struct PaymentData {
-  public fileprivate(set) var tokenData: PaymentTokenData
+  public let tokenData: PaymentTokenData
 }
 
 public struct PaymentTokenData {
-  public fileprivate(set) var paymentMethodData: PaymentMethodData
-  public fileprivate(set) var transactionIdentifier: String
+  public let paymentMethodData: PaymentMethodData
+  public let transactionIdentifier: String
 }
 
 public struct PaymentMethodData {
-  public fileprivate(set) var displayName: String?
-  public fileprivate(set) var network: PKPaymentNetwork?
-  public fileprivate(set) var type: PKPaymentMethodType
+  public let displayName: String?
+  public let network: PKPaymentNetwork?
+  public let type: PKPaymentMethodType
 }
 
 extension PaymentData {

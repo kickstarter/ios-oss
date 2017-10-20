@@ -3,9 +3,9 @@ import Curry
 import Runes
 
 public struct MessageThreadEnvelope {
-  public private(set) var participants: [User]
-  public private(set) var messages: [Message]
-  public private(set) var messageThread: MessageThread
+  public let participants: [User]
+  public let messages: [Message]
+  public let messageThread: MessageThread
 }
 
 extension MessageThreadEnvelope: Argo.Decodable {

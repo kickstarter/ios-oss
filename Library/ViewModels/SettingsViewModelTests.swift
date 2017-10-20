@@ -15,7 +15,6 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
-  let creatorTipsSelected = TestObserver<Bool, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
@@ -50,7 +49,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
-    self.vm.outputs.creatorTipsSelected.observe(self.creatorTipsSelected.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
@@ -144,7 +142,6 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.backingsSelected.assertValues([false], "All creator notifications turned off as test default.")
     self.commentsSelected.assertValues([false])
-    self.creatorTipsSelected.assertValues([false])
     self.mobileBackingsSelected.assertValues([false])
     self.mobileCommentsSelected.assertValues([false])
     self.mobilePostLikesSelected.assertValues([false])
@@ -164,7 +161,6 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.backingsTapped(selected: true)
     self.vm.inputs.commentsTapped(selected: true)
-    self.vm.inputs.creatorTipsTapped(selected: true)
     self.vm.inputs.mobileBackingsTapped(selected: true)
     self.vm.inputs.mobileCommentsTapped(selected: true)
     self.vm.inputs.mobilePostLikesTapped(selected: true)
@@ -172,7 +168,6 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.backingsSelected.assertValues([false, true], "All creator notifications toggled on.")
     self.commentsSelected.assertValues([false, true])
-    self.creatorTipsSelected.assertValues([false, true])
     self.mobileBackingsSelected.assertValues([false, true, false, true])
     self.mobileCommentsSelected.assertValues([false, true])
     self.mobilePostLikesSelected.assertValues([false, true])

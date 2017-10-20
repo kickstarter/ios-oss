@@ -3,8 +3,8 @@ import Curry
 import Runes
 
 public struct ChangePaymentMethodEnvelope {
-  public private(set) var newCheckoutUrl: String?
-  public private(set) var status: Int
+  public let newCheckoutUrl: String?
+  public let status: Int
 }
 
 extension ChangePaymentMethodEnvelope: Argo.Decodable {

@@ -3,51 +3,51 @@ import Curry
 import Runes
 
 public struct PushEnvelope {
-  public private(set) var activity: Activity?
-  public private(set) var aps: ApsEnvelope
-  public private(set) var forCreator: Bool?
-  public private(set) var liveStream: LiveStream?
-  public private(set) var message: Message?
-  public private(set) var project: Project?
-  public private(set) var survey: Survey?
-  public private(set) var update: Update?
+  public let activity: Activity?
+  public let aps: ApsEnvelope
+  public let forCreator: Bool?
+  public let liveStream: LiveStream?
+  public let message: Message?
+  public let project: Project?
+  public let survey: Survey?
+  public let update: Update?
 
   public struct Activity {
-    public private(set) var category: KsApi.Activity.Category
-    public private(set) var commentId: Int?
-    public private(set) var id: Int
-    public private(set) var projectId: Int?
-    public private(set) var projectPhoto: String?
-    public private(set) var updateId: Int?
-    public private(set) var userPhoto: String?
+    public let category: KsApi.Activity.Category
+    public let commentId: Int?
+    public let id: Int
+    public let projectId: Int?
+    public let projectPhoto: String?
+    public let updateId: Int?
+    public let userPhoto: String?
   }
 
   public struct ApsEnvelope {
-    public private(set) var alert: String
+    public let alert: String
   }
 
   public struct LiveStream {
-    public private(set) var id: Int
+    public let id: Int
   }
 
   public struct Message {
-    public private(set) var messageThreadId: Int
-    public private(set) var projectId: Int
+    public let messageThreadId: Int
+    public let projectId: Int
   }
 
   public struct Project {
-    public private(set) var id: Int
-    public private(set) var photo: String?
+    public let id: Int
+    public let photo: String?
   }
 
   public struct Survey {
-    public private(set) var id: Int
-    public private(set) var projectId: Int
+    public let id: Int
+    public let projectId: Int
   }
 
   public struct Update {
-    public private(set) var id: Int
-    public private(set) var projectId: Int
+    public let id: Int
+    public let projectId: Int
   }
 }
 

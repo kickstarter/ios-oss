@@ -31,6 +31,8 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let titleLabelText = TestObserver<String, NoError>()
   fileprivate let titleLabelTextColor = TestObserver<UIColor, NoError>()
+  fileprivate let shippingLocationsStackViewHidden = TestObserver<Bool, NoError>()
+  fileprivate let shippingLocationsSummaryLabelText = TestObserver<String, NoError>()
   fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, NoError>() // todo
   fileprivate let viewPledgeButtonHidden = TestObserver<Bool, NoError>() // todo
   fileprivate let youreABackerViewHidden = TestObserver<Bool, NoError>() // todo
@@ -60,6 +62,8 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
     self.vm.outputs.titleLabelTextColor.observe(self.titleLabelTextColor.observer)
+    self.vm.outputs.shippingLocationsStackViewHidden.observe(self.shippingLocationsStackViewHidden.observer)
+    self.vm.outputs.shippingLocationsSummaryLabelText.observe(self.shippingLocationsSummaryLabelText.observer)
     self.vm.outputs.updateTopMarginsForIsBacking.observe(self.updateTopMarginsForIsBacking.observer)
     self.vm.outputs.viewPledgeButtonHidden.observe(self.viewPledgeButtonHidden.observer)
     self.vm.outputs.youreABackerViewHidden.observe(self.youreABackerViewHidden.observer)
@@ -469,24 +473,33 @@ final class RewardCellViewModelTests: TestCase {
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
 
-  func testFooterViewHidden() {
+  func testFooterViewHidden_WithRewards() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
     self.footerStackViewHidden.assertValues([false])
+  }
 
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
+  func testFooterViewHidden_SoldOut_WithRewards_OnTap() {
+    let reward = .template
+      |> Reward.lens.remaining .~ 0
 
-    self.footerStackViewHidden.assertValues([false, true])
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
-    let reward = .template |> Reward.lens.remaining .~ 0
-    self.vm.inputs.configureWith(
-      project: .template
-        |> Project.lens.personalization.backing .~ (.template |> Backing.lens.reward .~ reward),
-      rewardOrBacking: .left(reward)
-    )
+    self.footerStackViewHidden.assertValues([true])
 
-    self.footerStackViewHidden.assertValues([false, true, false])
+    self.vm.inputs.tapped()
+
+    self.footerStackViewHidden.assertValues([true, false])
+  }
+
+  func testFooterViewHidden_WithNoRewards_OnTap() {
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.noReward))
+
+    self.footerStackViewHidden.assertValues([true])
+
+    self.vm.inputs.tapped()
+
+    self.footerStackViewHidden.assertValues([true, true])
   }
 
   func testItems() {
@@ -696,6 +709,32 @@ final class RewardCellViewModelTests: TestCase {
     )
 
     self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
+  }
+
+  func testShippingLocationsSummaryLabelText_WhenRewardDoesNotHaveShippingSummary() {
+    let reward = .template
+      |> Reward.lens.shipping.summary .~ nil
+
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.shippingLocationsSummaryLabelText.assertValues([""])
+    self.shippingLocationsStackViewHidden.assertValues([true])
+  }
+
+  func testShippingLocationsSummaryLabelText_WhenRewardHasShippingSummary() {
+    let reward = .template
+      |> Reward.lens.shipping.summary .~ "Anywhere in the world."
+
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.shippingLocationsSummaryLabelText.assertValues(["Anywhere in the world."])
+    self.shippingLocationsStackViewHidden.assertValues([false])
   }
 
   func testYoureABacker_WhenYoureABacker() {

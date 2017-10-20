@@ -3,15 +3,15 @@ import Curry
 import Runes
 
 public struct DiscoveryEnvelope {
-  public private(set) var projects: [Project]
-  public private(set) var urls: UrlsEnvelope
-  public private(set) var stats: StatsEnvelope
+  public let projects: [Project]
+  public let urls: UrlsEnvelope
+  public let stats: StatsEnvelope
 
   public struct UrlsEnvelope {
-    public private(set) var api: ApiEnvelope
+    public let api: ApiEnvelope
 
     public struct ApiEnvelope {
-      public private(set) var moreProjects: String
+      public let moreProjects: String
 
       public init(more_projects: String) {
         moreProjects = more_projects
@@ -20,7 +20,7 @@ public struct DiscoveryEnvelope {
   }
 
   public struct StatsEnvelope {
-    public private(set) var count: Int
+    public let count: Int
   }
 }
 

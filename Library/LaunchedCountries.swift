@@ -1,7 +1,7 @@
 import struct KsApi.Project
 
 public struct LaunchedCountries {
-  public fileprivate(set) var countries: [Project.Country]
+  public let countries: [Project.Country]
 
   public init() {
     self.countries = [

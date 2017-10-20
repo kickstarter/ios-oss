@@ -3,8 +3,8 @@ import Curry
 import Runes
 
 public struct SubmitApplePayEnvelope {
-  public private(set) var thankYouUrl: String
-  public private(set) var status: Int
+  public let thankYouUrl: String
+  public let status: Int
 }
 
 extension SubmitApplePayEnvelope: Argo.Decodable {
