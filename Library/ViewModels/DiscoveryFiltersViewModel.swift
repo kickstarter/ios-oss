@@ -334,43 +334,28 @@ private func cache(categories: [RootCategoriesEnvelope.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 
+public let rootCategoriesQuery = NonEmptySet(Query.rootCategories(categoryFields))
+
 public func categoryBy(id: String) -> NonEmptySet<Query> {
-  return Query.category(id: id,
-                        .id +| [
-                          .name,
-                          .subcategories(
-                            [],
-                            .totalCount +| [
-                              .nodes(
-                                .id +| [
-                                  .name,
-                                  .parentId,
-                                  .totalProjectCount
-                                ]
-                              )
-                            ]
-                          ),
-                          .totalProjectCount
-    ]
-    ) +| []
+  return NonEmptySet(Query.category(id: id, categoryFields))
 }
 
-public let rootCategoriesQuery: NonEmptySet<Query> = Query.rootCategories(
-  .id +| [
-  .name,
-  .subcategories(
-    [],
-    .totalCount +| [
-      .nodes(
-        .id +| [
-          .name,
-          .parentCategory,
-          .parentId,
-          .totalProjectCount
-        ]
-      )
-    ]
-  ),
-  .totalProjectCount
+private var categoryFields: NonEmptySet<Query.Category> {
+  return  .id +| [
+    .name,
+    .subcategories(
+      [],
+      .totalCount +| [
+        .nodes(
+          .id +| [
+            .name,
+            .parentCategory,
+            .parentId,
+            .totalProjectCount
+          ]
+        )
+      ]
+    ),
+    .totalProjectCount
   ]
-  ) +| []
+}
