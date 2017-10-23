@@ -279,7 +279,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         ]
       ]
     )
-    self.loadTopRowsInitialId.assertValues([22])
+    self.loadTopRowsInitialId.assertValues([1])
   }
 
   func testExpandingCategoryFilters() {
@@ -352,9 +352,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     let artSelectedExpandedRow = artExpandableRow
       |> ExpandableRow.lens.isExpanded .~ true
       |> ExpandableRow.lens.selectableRows .~ [
-        artSelectableRow |> SelectableRow.lens.isSelected .~ true,
-        selectableRowTemplate
-          |> SelectableRow.lens.isSelected .~ false
+        artSelectableRow |> SelectableRow.lens.isSelected .~ true
     ]
 
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
@@ -476,7 +474,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       artSelectableRow |> SelectableRow.lens.isSelected .~ true,
       documentarySelectableRow
     ]])
-    self.loadFavoriteRowsId.assertValues([22])
+    self.loadFavoriteRowsId.assertValues([1])
   }
 
   func testCategoriesFromCache() {

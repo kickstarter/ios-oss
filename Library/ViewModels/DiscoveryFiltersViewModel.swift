@@ -143,6 +143,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       )
       .map { (rows: $1, categoryId: $0.0, selectedRowId: $0.1) }
 
+    self.loadCategoryRows.signal.observeValues { values in
+      print(values)
+    }
+
     self.notifyDelegateOfSelectedRow = self.tappedSelectableRowProperty.signal.skipNil()
 
     self.shouldAnimateSelectableCellProperty <~ Signal.merge(
@@ -217,7 +221,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
 
-    let expandableRows = categories
+  let expandableRows = categories.filter { $0.isRoot }
       .sorted { lhs, _ in lhs.isRoot }
       .map { rootCategory in
          ExpandableRow(isExpanded: false,
