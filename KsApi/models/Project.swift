@@ -308,7 +308,12 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
   }
 }
 
-// This is a helper function that extracts the value from the Argo.JSON object type to create a Category object (that conforms to Swift.Decodable). It's an workaround that fixes the problem of incompatibility between Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our code to use exclusively Swift's native Decodable.
+/*
+ This is a helper function that extracts the value from the Argo.JSON object type to create a Category object
+ (that conforms to Swift.Decodable). It's an work around that fixes the problem of incompatibility between
+ Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our code to
+ use exclusively Swift's native Decodable.
+ */
 private func nameFromJSON(_ json: [String: JSON]) -> String {
   guard let name = json["name"] else { return "" }
 
