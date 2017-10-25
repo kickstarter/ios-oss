@@ -100,7 +100,7 @@ extension DiscoveryParams: Argo.Decodable {
 
     let tmp1 = create
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category?>)
+      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
@@ -149,14 +149,30 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
     .coalesceWith(.failure(.custom("Could not parse string into bool.")))
 }
 
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category?> {
-  guard json != nil else { return .success(nil) }
-  let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
-  let category = RootCategoriesEnvelope.Category(id: "0",
-                                               name: "Art",
-                                     parentCategory: nil,
-                                           parentId: nil,
-                                      subcategories: subcategories,
-                                  totalProjectCount: 0)
-  return .success(category)
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+
+  guard let jsonObj = json else {
+    return .failure(DecodeError.custom("No JSON!"))
+  }
+
+  switch jsonObj {
+  case .object(let dic):
+
+    let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
+    let category = RootCategoriesEnvelope.Category(id: "",
+                                                   name: nameFromJSON(dic),
+                                                   subcategories: subcategories)
+    return .success(category)
+  default:
+    return .failure(DecodeError.custom("JSON should be object type"))
+  }
+}
+
+private func nameFromJSON(_ json: [String: JSON]) -> String {
+  guard let name = json["name"] else { return "" }
+
+  switch name {
+  case .string(let value): return value
+  default: return ""
+  }
 }

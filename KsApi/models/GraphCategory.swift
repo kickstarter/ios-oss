@@ -10,11 +10,9 @@ public struct ParentCategory: Swift.Decodable {
       return RootCategoriesEnvelope.Category(
         id: id,
         name: name,
-        parentCategory: nil,
-        parentId: nil,
         subcategories: RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0,
-                                                                             nodes: []),
-        totalProjectCount: nil)
+                                                                             nodes: [])
+    )
   }
 }
 
@@ -41,10 +39,10 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
 
     public init(id: String,
                 name: String,
-                parentCategory: ParentCategory?,
-                parentId: String?,
+                parentCategory: ParentCategory? = nil,
+                parentId: String? = nil,
                 subcategories: SubcategoryConnection,
-                totalProjectCount: Int?) {
+                totalProjectCount: Int? = nil) {
       self.id = id
       self.name = name
       self.parentId = parentId

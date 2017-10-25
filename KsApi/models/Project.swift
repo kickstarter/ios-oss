@@ -286,6 +286,12 @@ private func toInt(string: String) -> Decoded<Int> {
     ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
 }
 
+/*
+ This is a helper function that extracts the value from the Argo.JSON object type to create a graph Category
+ object (that conforms to Swift.Decodable). It's an work around that fixes the problem of incompatibility
+ between Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our
+ code to use exclusively Swift's native Decodable.
+ */
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
 
   guard let jsonObj = json else {
@@ -298,22 +304,13 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
     let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
     let category = RootCategoriesEnvelope.Category(id: "",
                                                    name: nameFromJSON(dic),
-                                                   parentCategory: nil,
-                                                   parentId: nil,
-                                                   subcategories: subcategories,
-                                                   totalProjectCount: 0)
+                                                   subcategories: subcategories)
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
   }
 }
 
-/*
- This is a helper function that extracts the value from the Argo.JSON object type to create a Category object
- (that conforms to Swift.Decodable). It's an work around that fixes the problem of incompatibility between
- Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our code to
- use exclusively Swift's native Decodable.
- */
 private func nameFromJSON(_ json: [String: JSON]) -> String {
   guard let name = json["name"] else { return "" }
 
