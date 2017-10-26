@@ -75,7 +75,7 @@ class DiscoveryParamsTests: XCTestCase {
   }
 
   func testDecode() {
-    // swiftlint:disable:next force_unwrapping
+    
     XCTAssertNil(DiscoveryParams.decode(JSON([:])).value?.backed, "absent values aren't set")
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "nope"])).value, "invalid values error")
 
@@ -104,7 +104,6 @@ class DiscoveryParamsTests: XCTestCase {
     XCTAssertEqual(42, DiscoveryParams.decode(JSON(["seed": "42"])).value?.seed)
 
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "42"])).value)
-    // swiftlint:disable:next force_unwrapping
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "0"])).value?.backed)
     XCTAssertEqual(true, DiscoveryParams.decode(JSON(["backed": "1"])).value?.backed)
     XCTAssertEqual(false, DiscoveryParams.decode(JSON(["backed": "-1"])).value?.backed)

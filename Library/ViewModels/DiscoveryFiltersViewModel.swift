@@ -309,9 +309,9 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
 
     let faves: [SelectableRow] = subcategories
       .flatMap { subcategory in
-        
-        guard let id = subcategory.intID else { return nil }
-
+        guard let id = subcategory.intID else {
+          return nil
+        }
         if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(id) ||
           AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(id) {
           return SelectableRow(
