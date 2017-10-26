@@ -120,3 +120,13 @@ extension RootCategoriesEnvelope.Category: Hashable {
     return self.intID ?? -1
   }
 }
+
+extension RootCategoriesEnvelope.Category: CustomStringConvertible, CustomDebugStringConvertible {
+  public var description: String {
+    return "GraphCategory(id: \(self.id), name: \(self.name))"
+  }
+
+  public var debugDescription: String {
+    return self.description
+  }
+}
