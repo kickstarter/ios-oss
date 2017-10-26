@@ -156,10 +156,8 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
   }
   switch jsonObj {
   case .object(let dic):
-    let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
     let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
-                                                   name: categoryInfo(dic).1,
-                                                   subcategories: subcategories)
+                                                   name: categoryInfo(dic).1)
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
