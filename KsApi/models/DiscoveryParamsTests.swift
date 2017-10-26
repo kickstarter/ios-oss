@@ -75,7 +75,6 @@ class DiscoveryParamsTests: XCTestCase {
   }
 
   func testDecode() {
-    
     XCTAssertNil(DiscoveryParams.decode(JSON([:])).value?.backed, "absent values aren't set")
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "nope"])).value, "invalid values error")
 
