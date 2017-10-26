@@ -295,27 +295,28 @@ private func toInt(string: String) -> Decoded<Int> {
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
 
   guard let jsonObj = json else {
-    return .failure(DecodeError.custom("No JSON!"))
+    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
   }
 
   switch jsonObj {
   case .object(let dic):
-
-    let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
-    let category = RootCategoriesEnvelope.Category(id: "",
-                                                   name: nameFromJSON(dic),
-                                                   subcategories: subcategories)
+    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
+                                                   name: categoryInfo(dic).1)
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
   }
 }
 
-private func nameFromJSON(_ json: [String: JSON]) -> String {
-  guard let name = json["name"] else { return "" }
+private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
+  guard let name = json["name"], let id = json["id"] else {
+    return("", "")
+  }
 
-  switch name {
-  case .string(let value): return value
-  default: return ""
+  switch (id, name) {
+  case (.string(let id), .string(let name)):
+    return (id, name)
+  default:
+    return("", "")
   }
 }

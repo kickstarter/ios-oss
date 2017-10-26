@@ -47,7 +47,7 @@ public struct DiscoveryParams {
   public var queryParams: [String: String] {
     var params: [String: String] = [:]
     params["backed"] = self.backed == true ? "1" : self.backed == false ? "-1" : nil
-    params["category_id"] = self.category?.intID.description
+    params["category_id"] = self.category?.intID?.description
     params["collaborated"] = self.collaborated?.description
     params["created"] = self.created?.description
     params["has_live_streams"] = self.hasLiveStreams?.description
@@ -152,15 +152,13 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
 
   guard let jsonObj = json else {
-    return .failure(DecodeError.custom("No JSON!"))
+    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
   }
-
   switch jsonObj {
   case .object(let dic):
-
     let subcategories = RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 0, nodes: [])
-    let category = RootCategoriesEnvelope.Category(id: "",
-                                                   name: nameFromJSON(dic),
+    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
+                                                   name: categoryInfo(dic).1,
                                                    subcategories: subcategories)
     return .success(category)
   default:
@@ -168,11 +166,14 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
   }
 }
 
-private func nameFromJSON(_ json: [String: JSON]) -> String {
-  guard let name = json["name"] else { return "" }
-
-  switch name {
-  case .string(let value): return value
-  default: return ""
+private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
+  guard let name = json["name"], let id = json["id"] else {
+    return("", "")
+  }
+  switch (id, name) {
+  case (.string(let id), .string(let name)):
+    return (id, name)
+  default:
+    return("", "")
   }
 }

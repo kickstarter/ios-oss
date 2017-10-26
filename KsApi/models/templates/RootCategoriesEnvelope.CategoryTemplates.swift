@@ -1,79 +1,63 @@
 import Prelude
 
+fileprivate struct ID {
+  static let art = "Q2F0ZWdvcnktMQ=="
+  static let documentary = "Q2F0ZWdvcnktMzA="
+  static let film = "Q2F0ZWdvcnktMTE="
+  static let games = "Q2F0ZWdvcnktMTI="
+  static let illustration = "Q2F0ZWdvcnktMjI="
+  static let tabletop = "Q2F0ZWdvcnktMzQ="
+}
+
+fileprivate struct Name {
+  static let art = "Art"
+  static let documentary = "Documentary"
+  static let film = "Film & Video"
+  static let games = "Games"
+  static let illustration = "Illustration"
+  static let tabletop = "Tabletop Games"
+} 
+
 extension KsApi.RootCategoriesEnvelope.Category {
   internal static let template = RootCategoriesEnvelope.Category(
-    id: "Q2F0ZWdvcnktMQ==",
-    name: "Art",
-    parentCategory: nil,
-    parentId: nil,
-    subcategories:
-    RootCategoriesEnvelope.Category.SubcategoryConnection(
-      totalCount: 0,
-           nodes: []
-    ),
-    totalProjectCount: 450
+    id: ID.art,
+    name: Name.art
   )
 
-  internal static let art = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMQ=="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Art"
+  internal static let art: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.subcategories
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1, nodes: [.illustration])
+
+  internal static let filmAndVideo: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.id .~ ID.film
+    <> RootCategoriesEnvelope.Category.lens.name .~ Name.film
     <> RootCategoriesEnvelope.Category.lens.subcategories
-    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
-      totalCount: 1,
-      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
-        id: "Q2F0ZWdvcnktMjI=",
-        name: "Illustration",
-        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMQ==",
-                                       name: "Art"),
-        totalProjectCount: nil)]
-  )
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1, nodes: [.documentary])
 
-  internal static let filmAndVideo = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMTE="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Film & Video"
+  internal static let games: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.id .~ ID.games
+    <> RootCategoriesEnvelope.Category.lens.name .~ Name.games
     <> RootCategoriesEnvelope.Category.lens.subcategories
-    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
-      totalCount: 1,
-      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
-        id: "Q2F0ZWdvcnktMzA=",
-        name: "Documentary",
-        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTE=",
-                                       name: "Film & Video"),
-      totalProjectCount: nil)]
-  )
+    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
-  internal static let games = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMTI="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Games"
-    <> RootCategoriesEnvelope.Category.lens.subcategories
-    .~ RootCategoriesEnvelope.Category.SubcategoryConnection(
-      totalCount: 1,
-      nodes: [RootCategoriesEnvelope.Category.SubcategoryConnection.Node(
-        id: "Q2F0ZWdvcnktMzQ=",
-        name: "Tabletop Games",
-        parentCategory: ParentCategory(id: "Q2F0ZWdvcnktMTI=",
-                                       name: "Games"),
-        totalProjectCount: nil)]
-  )
+  internal static let illustration: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.id .~ ID.illustration
+    <> RootCategoriesEnvelope.Category.lens.name .~ Name.illustration
+    <> RootCategoriesEnvelope.Category.lens.parentId .~ ID.art
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: ID.art,
+                                                                     name: Name.art)
 
-  internal static let illustration = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMjI="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Illustration"
-    <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.art.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMQ==",
-                                                                     name: "Art")
+  internal static let documentary: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.id .~ ID.documentary
+    <> RootCategoriesEnvelope.Category.lens.name .~ Name.documentary
+    <> RootCategoriesEnvelope.Category.lens.parentId .~ ID.film
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: ID.film,
+                                                                     name: Name.film)
 
-  internal static let documentary = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMzA="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Documentary"
-    <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.filmAndVideo.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMTE=",
-                                                                     name: "Film & Video")
-
-  internal static let tabletopGames = template
-    |> RootCategoriesEnvelope.Category.lens.id .~ "Q2F0ZWdvcnktMzQ="
-    <> RootCategoriesEnvelope.Category.lens.name .~ "Tabletop Games"
-    <> RootCategoriesEnvelope.Category.lens.parentId .~ RootCategoriesEnvelope.Category.games.id
-    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: "Q2F0ZWdvcnktMTI=",
-                                                                     name: "Games")
+  internal static let tabletopGames: RootCategoriesEnvelope.Category = template
+    |> RootCategoriesEnvelope.Category.lens.id .~ ID.tabletop
+    <> RootCategoriesEnvelope.Category.lens.name .~ Name.tabletop
+    <> RootCategoriesEnvelope.Category.lens.parentId .~ ID.games
+    <> RootCategoriesEnvelope.Category.lens.parent .~ ParentCategory(id: ID.games,
+                                                                     name: Name.games)
 }

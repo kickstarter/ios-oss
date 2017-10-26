@@ -226,12 +226,12 @@ private func expandableRows(selectedRow: SelectableRow,
       .map { rootCategory in
          ExpandableRow(isExpanded: false,
                     params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
-                    selectableRows: rootCategory.subcategories.nodes
+                    selectableRows: (rootCategory.subcategories?.nodes ?? [])
                       .sorted()
                       .map { node in
-                        return SelectableRow(isSelected: node.category == selectedRow.params.category,
+                        return SelectableRow(isSelected: node == selectedRow.params.category,
                                              params: .defaults
-                                              |> DiscoveryParams.lens.category .~ node.category)
+                                              |> DiscoveryParams.lens.category .~ node)
         }
       )
     }
@@ -304,19 +304,19 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
   -> [SelectableRow]? {
 
     let subcategories = categories
-      .flatMap { category in category.subcategories.nodes }
+      .flatMap { category in category.subcategories?.nodes }
+      .flatMap { $0 }
 
     let faves: [SelectableRow] = subcategories
-      .flatMap { node in
-        guard let intId = node.category?.intID else {
-          return nil
-        }
+      .flatMap { subcategory in
+        
+        guard let id = subcategory.intID else { return nil }
 
-        if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(intId) ||
-          AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(intId) {
+        if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(id) ||
+          AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(id) {
           return SelectableRow(
-            isSelected: node.category == selectedRow.params.category,
-            params: .defaults |> DiscoveryParams.lens.category .~ node.category
+            isSelected: subcategory == selectedRow.params.category,
+            params: .defaults |> DiscoveryParams.lens.category .~ subcategory
           )
         } else {
           return nil

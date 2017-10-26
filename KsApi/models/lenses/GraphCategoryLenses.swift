@@ -44,7 +44,7 @@ extension RootCategoriesEnvelope.Category {
     )
 
     public static let subcategories = Lens<RootCategoriesEnvelope.Category,
-                                           RootCategoriesEnvelope.Category.SubcategoryConnection>(
+                                           RootCategoriesEnvelope.Category.SubcategoryConnection?>(
       view: { $0.subcategories },
       set: { RootCategoriesEnvelope.Category(id: $1.id,
                                              name: $1.name,
