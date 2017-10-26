@@ -25,7 +25,7 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
 
     public let name: String
     public let parentId: String?
-    internal var parentCategory: ParentCategory?
+    internal let parentCategory: ParentCategory?
     public var _parent: RootCategoriesEnvelope.Category? {
       return parentCategory?.categoryType
     }
