@@ -391,45 +391,6 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
                                                   "The tapped row emits.")
   }
 
-  /**
-   This tests an implementation detail of our API. The API returns counts only for the root categories
-   when they are not embedded as the `parent` of another category. This means if we naively group the
-   categories by the parent, we might accidentally get a mapping of root -> children where root does not
-   have the projects count. We get around this by sorting the categories first.
-
-   We can test this by making the categories load in an order that causes the bug.
-   */
-//  func testGroupingAndCounts() {
-//    let illustrationWithParentHavingNoCount = .illustration
-//      |> RootCategoriesEnvelope.Category.lens.totalProjectCount .~ nil
-//
-//    let particularOrderOfCategories = [
-//      RootCategoriesEnvelope.Category.documentary,
-//      RootCategoriesEnvelope.Category.filmAndVideo,
-//      RootCategoriesEnvelope.Category.art,
-//      illustrationWithParentHavingNoCount // <-- important for the subcategory to go after the root category
-//    ]
-//
-//    let specialCategoriesResponse = .template
-//      |> RootCategoriesEnvelope.lens.categories .~ particularOrderOfCategories
-//
-//    withEnvironment(apiService: MockService(fetchCategoriesResponse: specialCategoriesResponse)) {
-//      self.vm.inputs.configureWith(selectedRow: allProjectsRow)
-//      self.vm.inputs.viewDidLoad()
-//      self.vm.inputs.viewDidAppear()
-//
-//      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
-//
-//      let counts = self.loadCategoryRows.values
-//        .joined()
-//        .map { $0.params.category?.totalProjectCount }
-//
-//      XCTAssertEqual([RootCategoriesEnvelope.Category.art.totalProjectCount,
-//                      RootCategoriesEnvelope.Category.filmAndVideo.totalProjectCount], counts,
-//                     "Root counts are preserved in expandable rows.")
-//    }
-//  }
-
   func testFavoriteRows_Without_Favorites() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()

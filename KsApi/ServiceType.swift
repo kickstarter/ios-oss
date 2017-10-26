@@ -70,9 +70,6 @@ public protocol ServiceType {
   func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope>
 
-  /// Fetch all categories.
-  //func fetchCategories() -> SignalProducer<RootCategoriesEnvelope, GraphError>
-
   /// Fetch a checkout's status.
   func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope>
 

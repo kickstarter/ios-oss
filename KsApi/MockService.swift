@@ -25,8 +25,6 @@ internal struct MockService: ServiceType {
 
   fileprivate let fetchBackingResponse: Backing
 
-  //fileprivate let fetchCategoriesResponse: RootCategoriesEnvelope?
-
   fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
 
   fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
