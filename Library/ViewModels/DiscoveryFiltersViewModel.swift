@@ -53,7 +53,7 @@ public protocol DiscoveryFiltersViewModelType {
 }
 
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
-  DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
+DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
   public init() {
     let initialTopFilters = self.viewDidLoadProperty.signal
@@ -93,7 +93,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
           })
           .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
           .materialize()
-      }
+    }
 
     self.loadingIndicatorIsVisible = Signal.merge(
       loaderIsVisible.signal,
@@ -103,7 +103,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
       categoriesEvent.values()
-    ).on(value: { cache(categories:) }())
+      ).on(value: { cache(categories:) }())
 
     self.loadTopRows = Signal.combineLatest(topRows, categoryId)
       .map { (rows: $0, categoryId: $1) }
@@ -118,9 +118,9 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { (rows: $0, categoryId: $1) }
 
     let selectedRowId = Signal.merge(
-        categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
-      )
+      categoryId,
+      self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
+    )
 
     let initialRows = selectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
@@ -142,10 +142,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       expandedCatRowsAndIdAndSelectedRowId
       )
       .map { (rows: $1, categoryId: $0.0, selectedRowId: $0.1) }
-
-    self.loadCategoryRows.signal.observeValues { values in
-      print(values)
-    }
 
     self.notifyDelegateOfSelectedRow = self.tappedSelectableRowProperty.signal.skipNil()
 
@@ -222,16 +218,16 @@ private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
 
   let expandableRows = categories.filter { $0.isRoot }
-      .sorted { lhs, _ in lhs.isRoot }
-      .map { rootCategory in
-         ExpandableRow(isExpanded: false,
-                    params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
-                    selectableRows: (rootCategory.subcategories?.nodes ?? [])
-                      .sorted()
-                      .map { node in
-                        return SelectableRow(isSelected: node == selectedRow.params.category,
-                                             params: .defaults
-                                              |> DiscoveryParams.lens.category .~ node)
+    .sorted { lhs, _ in lhs.isRoot }
+    .map { rootCategory in
+      return ExpandableRow(isExpanded: false,
+                           params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
+                           selectableRows: ([rootCategory] + (rootCategory.subcategories?.nodes ?? []))
+                            .sorted()
+                            .flatMap { node in
+                              return SelectableRow(isSelected: node == selectedRow.params.category,
+                                                   params: .defaults
+                                                    |> DiscoveryParams.lens.category .~ node)
         }
       )
     }
@@ -243,18 +239,18 @@ private func expandableRows(selectedRow: SelectableRow,
   }
 
   return expandableRows.map { expandableRow in
-       return expandableRow
-         |> ExpandableRow.lens.isExpanded .~
-         expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
-         |> ExpandableRow.lens.selectableRows .~
-         expandableRow.selectableRows.sorted { lhs, rhs in
-           guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
-             lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
-             return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
-           }
-           return lhsName < rhsName
-       }
-     }
+    return expandableRow
+      |> ExpandableRow.lens.isExpanded .~
+      expandableRow.selectableRows.lazy.map { $0.params }.contains(selectedRow.params)
+      |> ExpandableRow.lens.selectableRows .~
+      expandableRow.selectableRows.sorted { lhs, rhs in
+        guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
+          lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
+            return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+        }
+        return lhsName < rhsName
+    }
+  }
 }
 
 /**
@@ -304,8 +300,7 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
   -> [SelectableRow]? {
 
     let subcategories = categories
-      .flatMap { category in category.subcategories?.nodes }
-      .flatMap { $0 }
+      .flatMap { category in ([category] + (category.subcategories?.nodes ?? [])) }
 
     let faves: [SelectableRow] = subcategories
       .flatMap { subcategory in
@@ -322,7 +317,7 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
           return nil
         }
     }
-  return faves.isEmpty ? nil : faves
+    return faves.isEmpty ? nil : faves
 }
 
 private func cachedCategories() -> [RootCategoriesEnvelope.Category]? {
