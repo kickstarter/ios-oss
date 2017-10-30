@@ -100,9 +100,6 @@ public protocol ServiceType {
   /// Fetch friend stats.
   func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope>
 
-  /// Fetch generic objects using graphQL.
-  func fetchGraph<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError>
-
   /// Fetch Categories objects using graphQL.
   func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>
 

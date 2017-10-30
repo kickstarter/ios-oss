@@ -184,7 +184,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map(accessibilityLabelForTitleButton)
 
     let categoryIdOnParamsUpdated = currentParams
-      .map { $0.category?.intID ?? -1 }
+      .map { $0.category?.intID }
       .skipNil()
 
     let categoryIdOnFavoriteTap = categoryIdOnParamsUpdated

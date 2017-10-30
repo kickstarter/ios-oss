@@ -216,7 +216,7 @@ DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
-
+ 
   let expandableRows = categories.filter { $0.isRoot }
     .sorted { lhs, _ in lhs.isRoot }
     .map { rootCategory in
@@ -300,6 +300,7 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
   -> [SelectableRow]? {
 
     let subcategories = categories
+      .filter { $0.isRoot }
       .flatMap { category in ([category] + (category.subcategories?.nodes ?? [])) }
 
     let faves: [SelectableRow] = subcategories

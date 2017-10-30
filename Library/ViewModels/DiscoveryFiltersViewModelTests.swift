@@ -22,19 +22,21 @@ private let recommendedRow = selectableRowTemplate
   |> SelectableRow.lens.params.recommended .~ true
   |> SelectableRow.lens.params.backed .~ false
 
-private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
+private let artSelectableRow = selectableRowTemplate |> SelectableRow.lens.params.category .~ .art
 private let documentarySelectableRow = selectableRowTemplate
   |> SelectableRow.lens.params.category .~ .documentary
 
 private let artExpandableRow = expandableRowTemplate
   |> ExpandableRow.lens.params.category .~ .art
   |> ExpandableRow.lens.selectableRows .~ [
+    artSelectableRow,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
 ]
 
 private let filmExpandableRow = expandableRowTemplate
   |> ExpandableRow.lens.params.category .~ .filmAndVideo
   |> ExpandableRow.lens.selectableRows .~ [
+    selectableRowTemplate |> SelectableRow.lens.params.category .~ .filmAndVideo,
     selectableRowTemplate |> SelectableRow.lens.params.category .~ .documentary
 ]
 
@@ -106,7 +108,11 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal", "Expanded Discovery Filter",
       "Selected Discovery Filter", "Discover Modal Selected Filter"], self.trackingClient.events)
 
-    XCTAssertEqual([nil, nil, Category.filmAndVideo.id, Category.documentary.id, Category.documentary.id],
+    XCTAssertEqual([nil,
+                    nil,
+                    RootCategoriesEnvelope.Category.filmAndVideo.intID,
+                    RootCategoriesEnvelope.Category.documentary.intID,
+                    RootCategoriesEnvelope.Category.documentary.intID],
                    self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
   }
 
@@ -349,10 +355,12 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testConfigureWithSelectedRow() {
-    let artSelectedExpandedRow = artExpandableRow
+    let artSelectedExpandedRow = expandableRowTemplate
+      |> ExpandableRow.lens.params.category .~ .art
       |> ExpandableRow.lens.isExpanded .~ true
       |> ExpandableRow.lens.selectableRows .~ [
-        artSelectableRow |> SelectableRow.lens.isSelected .~ true
+        artSelectableRow |> SelectableRow.lens.isSelected .~ true,
+        selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
     ]
 
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
@@ -403,7 +411,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testFavoriteRows_With_Favorites() {
     withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: categoriesResponse)) {
-      self.ubiquitousStore.favoriteCategoryIds = [22, 30]
+      self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
@@ -420,7 +428,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites_Selected() {
-    self.ubiquitousStore.favoriteCategoryIds = [22, 30]
+    self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
     self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 

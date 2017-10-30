@@ -156,22 +156,22 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvel
   }
   switch jsonObj {
   case .object(let dic):
-    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
-                                                   name: categoryInfo(dic).1)
+    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic)?.0 ?? "",
+                                                   name: categoryInfo(dic)?.1 ?? "")
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
   }
 }
 
-private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
+private func categoryInfo(_ json: [String: JSON]) -> (String, String)? {
   guard let name = json["name"], let id = json["id"] else {
-    return("", "")
+    return nil
   }
   switch (id, name) {
   case (.string(let id), .string(let name)):
     return (id, name)
   default:
-    return("", "")
+    return nil
   }
 }
