@@ -51,6 +51,10 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear(animated: animated)
+  }
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
     self.setInitial(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
                     constant: initialTopConstraint)
   }
