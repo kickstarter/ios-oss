@@ -514,7 +514,8 @@ internal struct MockService: ServiceType {
     )
   }
 
-  internal func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError> {
+  internal func fetchGraphCategories(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
     if let response = self.fetchGraphCategoriesResponse {
       return SignalProducer(value: response)
     }
