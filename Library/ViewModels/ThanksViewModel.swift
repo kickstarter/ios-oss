@@ -146,7 +146,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .map { (category: KsApi.RootCategoriesEnvelope.Category)
-          -> KsApi.RootCategoriesEnvelope.Category in category._parent ?? category }
+          -> KsApi.RootCategoriesEnvelope.Category in category.parent ?? category }
         .demoteErrors()
     }
 

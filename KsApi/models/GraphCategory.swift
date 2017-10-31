@@ -3,12 +3,8 @@ import Foundation
 public struct ParentCategory: Swift.Decodable {
   public let id: String
   public let name: String
-
   public var categoryType: RootCategoriesEnvelope.Category {
-      return RootCategoriesEnvelope.Category(
-        id: id,
-        name: name
-    )
+      return RootCategoriesEnvelope.Category(id: id, name: name)
   }
 }
 
@@ -16,19 +12,14 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
   public let rootCategories: [Category]
 
   public struct Category: Swift.Decodable {
+    public static let gamesId: Int = 12
     public let id: String
     public var intID: Int? {
-        return decompose(id: id)
+      return decompose(id: id)
     }
-
-    public static let gamesId: Int = 12
-
     public let name: String
     public let parentId: String?
-    internal let parentCategory: ParentCategory?
-    public var _parent: RootCategoriesEnvelope.Category? {
-      return parentCategory?.categoryType
-    }
+    internal let _parent: ParentCategory?
     public let subcategories: SubcategoryConnection?
     public let totalProjectCount: Int?
 
@@ -41,9 +32,13 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
       self.id = id
       self.name = name
       self.parentId = parentId
-      self.parentCategory = parentCategory
+      self._parent = parentCategory
       self.subcategories = subcategories
       self.totalProjectCount = totalProjectCount
+    }
+
+    public var parent: RootCategoriesEnvelope.Category? {
+      return _parent?.categoryType
     }
 
     public struct SubcategoryConnection: Swift.Decodable {
@@ -56,9 +51,9 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
     }
 
     /// Returns the parent category if present, or returns self if we know for a fact that self is a
-    /// root categeory.
+    /// root category.
     public var root: RootCategoriesEnvelope.Category? {
-      if let parent = self.parentCategory {
+      if let parent = self._parent {
         return parent.categoryType
       } else if self.parentId == nil {
         return self
@@ -66,13 +61,30 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
       return nil
     }
 
-    /// Returns the id of the root category. This is sometimes present in situations that `root` is not.
+    /// Returns the id of the root category.
     public var rootId: Int? {
       if let parentId = self.parentId {
         return decompose(id: parentId)
       }
       return self.root?.intID
     }
+  }
+}
+
+extension RootCategoriesEnvelope.Category {
+
+  private enum CodingKeys: String, CodingKey {
+    case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
+  }
+
+  private init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try values.decode(String.self, forKey: .id)
+    self.name = try values.decode(String.self, forKey: .name)
+    self.parentId = try? values.decode(String.self, forKey: .parentId)
+    self._parent = try? values.decode(ParentCategory.self, forKey: ._parent)
+    self.subcategories = try? values.decode(SubcategoryConnection.self, forKey: .subcategories)
+    self.totalProjectCount = try? values.decode(Int.self, forKey: .totalProjectCount)
   }
 }
 
@@ -94,19 +106,19 @@ public func < (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope
     return false
   }
 
-  if lhs.isRoot && lhs.id == rhs._parent?.id {
+  if lhs.isRoot && lhs.id == rhs.parent?.id {
     return true
   }
 
-  if !lhs.isRoot && lhs._parent?.id == rhs.id {
+  if !lhs.isRoot && lhs.parent?.id == rhs.id {
     return false
   }
 
-  if let lhsRootName = lhs._parent?.name, let rhsRootName = rhs._parent?.name {
+  if let lhsRootName = lhs.parent?.name, let rhsRootName = rhs.parent?.name {
     return lhsRootName < rhsRootName
   }
 
-  return lhs._parent == nil
+  return lhs.parent == nil
 }
 
 extension RootCategoriesEnvelope.Category: Equatable {

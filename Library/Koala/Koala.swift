@@ -1900,7 +1900,7 @@ private func properties(project: Project,
   props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 
   props["category"] = project.category.name
-  props["parent_category"] = project.category._parent?.name
+  props["parent_category"] = project.category.parent?.name
 
   props["location"] = project.location.name
 
@@ -1990,7 +1990,7 @@ private func properties(category: KsApi.RootCategoriesEnvelope.Category) -> [Str
   result["category_root_id"] = category.rootId
   result["category_root_name"] = category.root?.name
 
-  let parentProperties = category._parent.map(properties(category:)) ?? [:]
+  let parentProperties = category.parent.map(properties(category:)) ?? [:]
   return result
     .withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
 }

@@ -518,7 +518,6 @@ public struct Service: ServiceType {
 
         do {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
-          print(decodedObject)
           if let value = decodedObject.data {
             observer.send(value: value)
           }
