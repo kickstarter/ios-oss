@@ -41,7 +41,7 @@ class CategoryTests: XCTestCase {
         XCTAssertNil(category.parent)
         XCTAssertNil(category.parentId)
     } else {
-      XCTFail()
+      XCTFail("Data should be decoded")
     }
   }
 
@@ -57,7 +57,7 @@ class CategoryTests: XCTestCase {
       XCTAssertEqual(subcategory?._parent?.id, "Q2F0ZWdvcnktMQ==")
       XCTAssertEqual(subcategory?._parent?.name, "Art")
     } else {
-      XCTFail()
+      XCTFail("Data should be decoded")
     }
 }
 
