@@ -417,7 +417,6 @@ internal final class SettingsViewController: UIViewController {
 
       }
 
-
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
@@ -477,7 +476,6 @@ internal final class SettingsViewController: UIViewController {
   }
 
   fileprivate func goToEmailFrequency() {
-
     let vc = CreatorDigestSettingsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }

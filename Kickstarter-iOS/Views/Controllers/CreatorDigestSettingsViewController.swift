@@ -40,12 +40,16 @@ internal final class CreatorDigestSettingsViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in AppEnvironment.updateCurrentUser(user) }
+
     self.dailyDigestSwitch.rac.on = self.viewModel.outputs.dailyDigestSelected
     self.individualEmailsSwitch.rac.on = self.viewModel.outputs.individualEmailSelected
   }
 
-  @IBAction fileprivate func individualEmailsTapped(_ individualEmailSwitch: UISwitch) {
-    self.viewModel.inputs.individualEmailsTapped(on: individualEmailsSwitch.isOn)
+  @IBAction func individualEmailsTapped(_ emailSwitch: UISwitch) {
+    self.viewModel.inputs.individualEmailsTapped(on: emailSwitch.isOn)
   }
 
   @IBAction fileprivate func dailyDigestTapped(_ digestSwitch: UISwitch) {

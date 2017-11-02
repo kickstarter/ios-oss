@@ -38,10 +38,10 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
       self.dailyDigestTappedProperty.signal.map { (.notification(.creatorDigest), $0) },
-      self.individualEmailTappedProperty.signal.map { (.notification(.backings), $0) }
-      ])
-    /// individualEmail, how to handle?
+      self.individualEmailTappedProperty.signal.map { (.notification(.creatorDigest), $0) }
+    ])
 
+    /// individualEmail, how to handle?
     let updatedUser = initialUser
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
@@ -72,8 +72,8 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
     self.dailyDigestSelected = self.updateCurrentUser.map
       { $0.notifications.creatorDigest }.skipNil().skipRepeats()
 
-    self.individualEmailSelected = self.updateCurrentUser.map
-      { $0.notifications.backings }.skipNil().skipRepeats()
+    self.individualEmailSelected = self.dailyDigestSelected
+      .map { !$0 }
 
     // Koala
 
@@ -82,7 +82,7 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
         switch attribute {
         case let .notification(notification):
           switch notification {
-          case .creatorDigest, .backings:
+          case .creatorDigest:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                                           on: on)
         }
@@ -122,7 +122,6 @@ private enum UserAttribute {
     case let .notification(notification):
     switch notification {
     case .creatorDigest:      return User.lens.notifications.creatorDigest
-    case .backings:           return User.lens.notifications.backings
       }
     }
   }
@@ -130,12 +129,10 @@ private enum UserAttribute {
 
 private enum Notification {
   case creatorDigest
-  case backings
 
   fileprivate var trackingString: String {
     switch self {
     case .creatorDigest:  return "Creator digest"
-    case .backings:       return "New pledges"
     }
   }
 }

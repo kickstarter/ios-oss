@@ -1138,7 +1138,7 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CsX-4i-yj1">
                                                 <rect key="frame" x="306" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="individualEmailsTapped:" destination="E20-X5-whU" eventType="valueChanged" id="e2E-Ln-0A6"/>
+                                                    <action selector="individualEmailsTapped:" destination="E20-X5-whU" eventType="valueChanged" id="Mkl-3p-GV2"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -1188,7 +1188,7 @@
                         <outlet property="dailyDigestLabel" destination="3H7-0r-3Gs" id="F6d-sO-SxX"/>
                         <outlet property="dailyDigestSwitch" destination="kmP-wj-nZa" id="Hho-To-cta"/>
                         <outlet property="individualEmailsLabel" destination="R9X-Qo-Dk0" id="WaD-Md-CwK"/>
-                        <outlet property="individualEmailsSwitch" destination="CsX-4i-yj1" id="mwW-yo-PWC"/>
+                        <outlet property="individualEmailsSwitch" destination="CsX-4i-yj1" id="Bpa-Ac-If6"/>
                         <outletCollection property="separatorViews" destination="WU2-bd-7hN" collectionClass="NSMutableArray" id="e7v-2R-kwN"/>
                         <outletCollection property="separatorViews" destination="ve6-g0-f6b" collectionClass="NSMutableArray" id="LV4-6D-v9I"/>
                     </connections>
