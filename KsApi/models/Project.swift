@@ -314,8 +314,8 @@ private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
   }
 
   switch (id, name) {
-  case (.string(let id), .string(let name)):
-    return (id, name)
+  case (.number(let id), .string(let name)):
+    return ("\(id)", name)
   default:
     return("", "")
   }
