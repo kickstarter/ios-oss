@@ -66,8 +66,8 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
-    self.dailyDigestSelected = self.updateCurrentUser.map
-      { $0.notifications.creatorDigest }.skipNil().skipRepeats()
+    self.dailyDigestSelected = self.updateCurrentUser
+      .map { $0.notifications.creatorDigest }.skipNil().skipRepeats()
 
     self.individualEmailSelected = self.dailyDigestSelected
       .map { !$0 }
@@ -123,7 +123,7 @@ private enum UserAttribute {
     switch self {
     case let .notification(notification):
     switch notification {
-    case .creatorDigest:      return User.lens.notifications.creatorDigest
+    case .creatorDigest:  return User.lens.notifications.creatorDigest
       }
     }
   }

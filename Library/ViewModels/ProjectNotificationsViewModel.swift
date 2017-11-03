@@ -29,8 +29,6 @@ public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelT
         AppEnvironment.current.apiService.fetchProjectNotifications()
           .demoteErrors()
     }
-
-
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty()

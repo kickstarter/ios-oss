@@ -32,11 +32,11 @@ internal final class CreatorDigestSettingsViewController: UIViewController {
 
     _ = self.individualEmailsLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text .~ Strings.Individual_Emails()
+      |> UILabel.lens.text %~ { _ in Strings.Individual_Emails() }
 
     _ = self.dailyDigestLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text .~ Strings.Daily_digest()
+      |> UILabel.lens.text %~ { _ in Strings.Daily_digest() }
   }
 
   internal override func bindViewModel() {
