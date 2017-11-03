@@ -28,6 +28,8 @@ public protocol RewardCellViewModelOutputs {
   var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
   var pledgeButtonHidden: Signal<Bool, NoError> { get }
   var pledgeButtonTitleText: Signal<String, NoError> { get }
+  var shippingLocationsStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingLocationsSummaryLabelText: Signal<String, NoError> { get }
   var titleLabelHidden: Signal<Bool, NoError> { get }
   var titleLabelText: Signal<String, NoError> { get }
   var titleLabelTextColor: Signal<UIColor, NoError> { get }
@@ -166,11 +168,16 @@ RewardCellViewModelOutputs {
     let allGoneAndNotABacker = Signal.zip(reward, youreABacker)
       .map { reward, youreABacker in reward.remaining == 0 && !youreABacker }
 
-    self.footerStackViewHidden = projectAndReward
+    let isNoReward = reward
+      .map { $0.isNoReward }
+
+    self.footerStackViewHidden = Signal.merge(
+      projectAndReward
       .map { project, reward in
         reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
-      }
-      .mergeWith(self.tappedProperty.signal.mapConst(false))
+        },
+        isNoReward.takeWhen(self.tappedProperty.signal)
+      )
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,
@@ -199,6 +206,14 @@ RewardCellViewModelOutputs {
       $0.personalization.isBacking == true
         ? Strings.Select_this_reward_instead()
         : Strings.Select_this_reward()
+    }
+
+    self.shippingLocationsStackViewHidden = reward.map {
+      $0.shipping.summary == nil
+    }
+
+    self.shippingLocationsSummaryLabelText = reward.map {
+      $0.shipping.summary ?? ""
     }
 
     let tappable = Signal.zip(project, reward, youreABacker)
@@ -270,6 +285,8 @@ RewardCellViewModelOutputs {
   public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
   public let pledgeButtonHidden: Signal<Bool, NoError>
   public let pledgeButtonTitleText: Signal<String, NoError>
+  public let shippingLocationsStackViewHidden: Signal<Bool, NoError>
+  public let shippingLocationsSummaryLabelText: Signal<String, NoError>
   public let titleLabelHidden: Signal<Bool, NoError>
   public let titleLabelText: Signal<String, NoError>
   public let titleLabelTextColor: Signal<UIColor, NoError>

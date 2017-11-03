@@ -183,7 +183,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.creatorNotificationsTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Projects_youve_launched() }
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
 
     _ = self.creatorTips
       |> settingsSectionLabelStyle

@@ -3,11 +3,11 @@ import Curry
 import Runes
 
 public struct Comment {
-  public private(set) var author: User
-  public private(set) var body: String
-  public private(set) var createdAt: TimeInterval
-  public private(set) var deletedAt: TimeInterval?
-  public private(set) var id: Int
+  public let author: User
+  public let body: String
+  public let createdAt: TimeInterval
+  public let deletedAt: TimeInterval?
+  public let id: Int
 }
 
 extension Comment: Argo.Decodable {

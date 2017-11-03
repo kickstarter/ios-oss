@@ -8,7 +8,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips,
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, updates: $1.updates) }
         updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 

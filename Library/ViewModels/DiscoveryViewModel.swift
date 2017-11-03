@@ -170,6 +170,7 @@ DiscoveryViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated

@@ -3,9 +3,9 @@ import Curry
 import Runes
 
 public struct CreatePledgeEnvelope {
-  public private(set) var checkoutUrl: String?
-  public private(set) var newCheckoutUrl: String?
-  public private(set) var status: Int
+  public let checkoutUrl: String?
+  public let newCheckoutUrl: String?
+  public let status: Int
 }
 
 extension CreatePledgeEnvelope: Argo.Decodable {

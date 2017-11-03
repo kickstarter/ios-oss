@@ -21,10 +21,10 @@ public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
 }
 
 public struct ServerConfig: ServerConfigType {
-  public fileprivate(set) var apiBaseUrl: URL
-  public fileprivate(set) var webBaseUrl: URL
-  public fileprivate(set) var apiClientAuth: ClientAuthType
-  public fileprivate(set) var basicHTTPAuth: BasicHTTPAuthType?
+  public let apiBaseUrl: URL
+  public let webBaseUrl: URL
+  public let apiClientAuth: ClientAuthType
+  public let basicHTTPAuth: BasicHTTPAuthType?
 
   public static let production: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.production)")!,

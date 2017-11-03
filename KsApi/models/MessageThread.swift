@@ -3,13 +3,13 @@ import Curry
 import Runes
 
 public struct MessageThread {
-  public private(set) var backing: Backing?
-  public private(set) var closed: Bool
-  public private(set) var id: Int
-  public private(set) var lastMessage: Message
-  public private(set) var participant: User
-  public private(set) var project: Project
-  public private(set) var unreadMessagesCount: Int
+  public let backing: Backing?
+  public let closed: Bool
+  public let id: Int
+  public let lastMessage: Message
+  public let participant: User
+  public let project: Project
+  public let unreadMessagesCount: Int
 }
 
 extension MessageThread: Argo.Decodable {

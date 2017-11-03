@@ -4,14 +4,14 @@ import Curry
 import Runes
 
 public struct Activity {
-  public private(set) var category: Activity.Category
-  public private(set) var comment: Comment?
-  public private(set) var createdAt: TimeInterval
-  public private(set) var id: Int
-  public private(set) var memberData: MemberData
-  public private(set) var project: Project?
-  public private(set) var update: Update?
-  public private(set) var user: User?
+  public let category: Activity.Category
+  public let comment: Comment?
+  public let createdAt: TimeInterval
+  public let id: Int
+  public let memberData: MemberData
+  public let project: Project?
+  public let update: Update?
+  public let user: User?
 
   public enum Category: String {
     case backing          = "backing"
@@ -34,13 +34,13 @@ public struct Activity {
   }
 
   public struct MemberData {
-    public private(set) var amount: Int?
-    public private(set) var backing: Backing?
-    public private(set) var oldAmount: Int?
-    public private(set) var oldRewardId: Int?
-    public private(set) var newAmount: Int?
-    public private(set) var newRewardId: Int?
-    public private(set) var rewardId: Int?
+    public let amount: Int?
+    public let backing: Backing?
+    public let oldAmount: Int?
+    public let oldRewardId: Int?
+    public let newAmount: Int?
+    public let newRewardId: Int?
+    public let rewardId: Int?
   }
 }
 
