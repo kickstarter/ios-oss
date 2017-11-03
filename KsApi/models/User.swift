@@ -42,9 +42,9 @@ public struct User {
     public let mobilePostLikes: Bool?
     public let mobileUpdates: Bool?
     public let postLikes: Bool?
+    public let creatorTips: Bool?
     public let updates: Bool?
-    public private(set) var updates: Bool?
-    public private(set) var creatorDigest: Bool?
+    public let creatorDigest: Bool?
   }
 
   public struct Stats {

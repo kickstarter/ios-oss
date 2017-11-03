@@ -470,6 +470,7 @@ private enum UserAttribute {
       case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
+      case .creatorTips:          return User.lens.notifications.creatorTips
       case .updates:              return User.lens.notifications.updates
       }
     }
