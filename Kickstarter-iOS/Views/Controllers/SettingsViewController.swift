@@ -335,7 +335,6 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.numberOfLines .~ 0
-
   }
   // swiftlint:enable function_body_length
 
@@ -444,7 +443,6 @@ internal final class SettingsViewController: UIViewController {
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
-
   }
   // swiftlint:enable function_body_length
 
