@@ -1,27 +1,24 @@
 import Foundation
-
 public struct ParentCategory: Swift.Decodable {
   public let id: String
   public let name: String
+
   public var categoryType: RootCategoriesEnvelope.Category {
       return RootCategoriesEnvelope.Category(id: id, name: name)
   }
 }
 
 public struct RootCategoriesEnvelope: Swift.Decodable {
-  public let rootCategories: [Category]
+  public fileprivate(set) var rootCategories: [Category]
 
   public struct Category: Swift.Decodable {
     public static let gamesId: Int = 12
-    public let id: String
-    public var intID: Int? {
-      return decompose(id: id)
-    }
-    public let name: String
-    public let parentId: String?
+    public fileprivate(set) var id: String
+    public fileprivate(set) var name: String
     internal let _parent: ParentCategory?
-    public let subcategories: SubcategoryConnection?
-    public let totalProjectCount: Int?
+    public fileprivate(set) var parentId: String?
+    public fileprivate(set) var subcategories: SubcategoryConnection?
+    public fileprivate(set) var totalProjectCount: Int?
 
     public init(id: String,
                 name: String,
@@ -35,6 +32,10 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
       self._parent = parentCategory
       self.subcategories = subcategories
       self.totalProjectCount = totalProjectCount
+    }
+
+    public var intID: Int? {
+      return decompose(id: id)
     }
 
     public var parent: RootCategoriesEnvelope.Category? {
