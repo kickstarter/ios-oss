@@ -190,7 +190,8 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
 
     _ = self.emailFrequencyLabel
-      |> settingsSectionLabelStyle
+      |> UILabel.lens.font .~ .ksr_body()
+      |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Email_frequency() }
 
     _ = self.emailNotificationButtons
@@ -334,6 +335,7 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_navy_600
       |> UILabel.lens.font .~ .ksr_caption1()
       |> UILabel.lens.numberOfLines .~ 0
+
   }
   // swiftlint:enable function_body_length
 
@@ -380,8 +382,8 @@ internal final class SettingsViewController: UIViewController {
 
     self.viewModel.outputs.goToEmailFrequency
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToEmailFrequency()
+      .observeValues { [weak self] user in
+        self?.goToEmailFrequency(user: user)
       }
 
     self.viewModel.outputs.goToBetaFeedback
@@ -414,11 +416,9 @@ internal final class SettingsViewController: UIViewController {
       .observeValues { [weak self] enabled in
         self?.emailFrequencyLabel.textColor = enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400
         self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
-
       }
 
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
@@ -443,6 +443,8 @@ internal final class SettingsViewController: UIViewController {
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
+
   }
   // swiftlint:enable function_body_length
 
@@ -475,8 +477,8 @@ internal final class SettingsViewController: UIViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func goToEmailFrequency() {
-    let vc = CreatorDigestSettingsViewController.instantiate()
+  fileprivate func goToEmailFrequency(user: User) {
+    let vc = CreatorDigestSettingsViewController.configureWith(user: user)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

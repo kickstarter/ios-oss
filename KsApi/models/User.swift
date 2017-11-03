@@ -201,7 +201,7 @@ extension User.Notifications: EncodableType {
     result["notify_of_post_likes"] = self.postLikes
     result["notify_of_creator_edu"] = self.creatorTips
     result["notify_of_updates"] = self.updates
-    result["notify_of_updates"] = self.creatorDigest
+    result["notify_of_creator_digest"] = self.creatorDigest
     result["notify_mobile_of_backings"] = self.mobileBackings
     result["notify_mobile_of_comments"] = self.mobileComments
     result["notify_mobile_of_follower"] = self.mobileFollower

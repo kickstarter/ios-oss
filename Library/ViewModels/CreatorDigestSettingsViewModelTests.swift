@@ -25,20 +25,22 @@ internal final class CreatorDigestSettingsViewModelTests: TestCase {
 
   func testDailyDigestToggle() {
     let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
+    self.dailyDigestSelected.assertValueCount(0)
+    self.individualEmailSelected.assertValueCount(0)
+
+    self.vm.inputs.configureWith(user: user)
     self.vm.inputs.viewDidLoad()
 
-    self.dailyDigestSelected.assertValues([false])
-    self.individualEmailSelected.assertValues([false])
+    self.dailyDigestSelected.assertValues([false], "Daily digest toggled off.")
+    self.individualEmailSelected.assertValues([true], "Daily digest toggled on.")
 
     self.vm.inputs.dailyDigestTapped(on: true)
-    self.dailyDigestSelected.assertValues([false, true], "Daily digest toggled on.")
-    self.individualEmailSelected.assertValues([false, false], "Daily digest toggled off.")
+    self.dailyDigestSelected.assertValues([false, true], "Daily digest toggled on after tap.")
+    self.individualEmailSelected.assertValues([true, false], "Daily digest toggled off after tap.")
 
     self.vm.inputs.dailyDigestTapped(on: false)
-    self.dailyDigestSelected.assertValues([false, true, false], "Daily digest toggled off.")
-    self.individualEmailSelected.assertValues([false, false, true], "Daily digest toggled on." )
+    self.dailyDigestSelected.assertValues([false, true, false], "Daily digest toggled off after tap.")
+    self.individualEmailSelected.assertValues([true, false, true], "Daily digest toggled on after tap." )
   }
-
 }

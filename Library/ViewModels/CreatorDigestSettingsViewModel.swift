@@ -6,6 +6,7 @@ import ReactiveExtensions
 import Result
 
 public protocol CreatorDigestSettingsViewModelInputs {
+  func configureWith(user: User)
   func viewDidLoad()
   func dailyDigestTapped(on: Bool)
   func individualEmailsTapped(on: Bool)
@@ -27,21 +28,17 @@ public final class CreatorDigestSettingsViewModel: CreatorDigestSettingsViewMode
 CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
 
   public init() {
-    let initialUser = viewDidLoadProperty.signal
-      .flatMap {
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .wrapInOptional()
-          .prefix(value: AppEnvironment.current.currentUser)
-          .demoteErrors()
-    }
-    .skipNil()
+    let initialUser = Signal.combineLatest(
+      self.configureWithUserProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
       self.dailyDigestTappedProperty.signal.map { (.notification(.creatorDigest), $0) },
-      self.individualEmailTappedProperty.signal.map { (.notification(.creatorDigest), $0) }
+      self.individualEmailTappedProperty.signal.map { (.notification(.creatorDigest), !$0) }
     ])
 
-    /// individualEmail, how to handle?
     let updatedUser = initialUser
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
@@ -103,6 +100,11 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
   fileprivate let individualEmailTappedProperty = MutableProperty(false)
   public func individualEmailsTapped(on: Bool) {
     self.individualEmailTappedProperty.value = on
+  }
+
+  fileprivate let configureWithUserProperty = MutableProperty<User?>(nil)
+  public func configureWith(user: User) {
+    self.configureWithUserProperty.value = user
   }
 
   public let dailyDigestSelected: Signal<Bool, NoError>

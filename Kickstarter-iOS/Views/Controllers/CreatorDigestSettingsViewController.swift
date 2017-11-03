@@ -12,8 +12,10 @@ internal final class CreatorDigestSettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var dailyDigestLabel: UILabel!
   @IBOutlet fileprivate weak var dailyDigestSwitch: UISwitch!
 
-  internal static func instantiate() -> CreatorDigestSettingsViewController {
-    return Storyboard.Settings.instantiate(CreatorDigestSettingsViewController.self)
+  internal static func configureWith(user: User) -> CreatorDigestSettingsViewController {
+    let vc = Storyboard.Settings.instantiate(CreatorDigestSettingsViewController.self)
+    vc.viewModel.inputs.configureWith(user: user)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -44,15 +46,21 @@ internal final class CreatorDigestSettingsViewController: UIViewController {
       .observeForUI()
       .observeValues { user in AppEnvironment.updateCurrentUser(user) }
 
+    self.viewModel.outputs.unableToSaveError
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
+    }
+
     self.dailyDigestSwitch.rac.on = self.viewModel.outputs.dailyDigestSelected
     self.individualEmailsSwitch.rac.on = self.viewModel.outputs.individualEmailSelected
   }
 
-  @IBAction func individualEmailsTapped(_ emailSwitch: UISwitch) {
-    self.viewModel.inputs.individualEmailsTapped(on: emailSwitch.isOn)
+  @IBAction func individualEmailsTapped(_ notificationSwitch: UISwitch) {
+    self.viewModel.inputs.individualEmailsTapped(on: notificationSwitch.isOn)
   }
 
-  @IBAction fileprivate func dailyDigestTapped(_ digestSwitch: UISwitch) {
-    self.viewModel.inputs.dailyDigestTapped(on: digestSwitch.isOn)
+  @IBAction fileprivate func dailyDigestTapped(_ notificationSwitch: UISwitch) {
+    self.viewModel.inputs.dailyDigestTapped(on: notificationSwitch.isOn)
   }
 }

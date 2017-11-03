@@ -49,7 +49,7 @@ public protocol SettingsViewModelOutputs {
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToBetaFeedback: Signal<(), NoError> { get }
-  var goToEmailFrequency: Signal<Void, NoError> { get }
+  var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
@@ -162,8 +162,6 @@ SettingsViewModelOutputs {
 
     self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
 
-    self.goToEmailFrequency = self.emailFrequencyTappedProperty.signal
-
     self.goToFindFriends = self.findFriendsTappedProperty.signal
 
     self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
@@ -221,6 +219,11 @@ SettingsViewModelOutputs {
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
 
+    self.emailFrequencyButtonEnabled = self.backingsSelected
+
+    self.goToEmailFrequency = Signal.merge(initialUser, updatedUser, previousUserOnError)
+      .takeWhen(self.emailFrequencyTappedProperty.signal)
+
     self.versionText = viewDidLoadProperty.signal
       .map {
         let versionString = Strings.profile_settings_version_number(
@@ -262,8 +265,6 @@ SettingsViewModelOutputs {
           }
         }
     }
-
-    self.emailFrequencyButtonEnabled = .empty
 
     self.logoutCanceledProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
@@ -413,7 +414,7 @@ SettingsViewModelOutputs {
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToBetaFeedback: Signal<(), NoError>
-  public let goToEmailFrequency: Signal<Void, NoError>
+  public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
