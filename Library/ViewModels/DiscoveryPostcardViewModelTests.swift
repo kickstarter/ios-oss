@@ -21,7 +21,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
   internal let notifyDelegateShowLoginTout = TestObserver<Void, NoError>()
-  internal let notifyDelegateShareButtonTapped = TestObserver<ShareContext, NoError>()
   internal let notifyDelegateShowSaveAlert = TestObserver<Void, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
@@ -56,7 +55,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
-    self.vm.outputs.notifyDelegateShareButtonTapped.observe(self.notifyDelegateShareButtonTapped.observer)
     self.vm.notifyDelegateShowSaveAlert.observe(self.notifyDelegateShowSaveAlert.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
@@ -95,15 +93,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
-  }
-
-  func testTappedShareButton() {
-    let project = Project.template
-    let discoveryContext = ShareContext.discovery(project)
-
-    self.vm.inputs.configureWith(project: project)
-    self.vm.inputs.shareButtonTapped()
-    self.notifyDelegateShareButtonTapped.assertValues([discoveryContext])
   }
 
   func testSaveAlertNotification() {
@@ -274,7 +263,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.dates.potdAt .~ potdAt
       |> Project.lens.dates.featuredAt .~ featuredAt
 
-    let backedColor: UIColor = .ksr_text_green_700
+    let backedColor: UIColor = .ksr_green_700
     let featuredColor: UIColor = .ksr_dark_grey_900
     let potdColor: UIColor = .ksr_dark_grey_900
     let starredColor: UIColor = .ksr_dark_grey_900
@@ -510,7 +499,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let successful = .template |> Project.lens.state .~ .successful
     let suspended = .template |> Project.lens.state .~ .suspended
 
-    let greenColor = UIColor.ksr_text_green_700
+    let greenColor = UIColor.ksr_green_700
     let navyColor = UIColor.ksr_text_dark_grey_900
 
     self.vm.inputs.configureWith(project: live)

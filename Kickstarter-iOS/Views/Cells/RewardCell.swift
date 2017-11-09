@@ -88,7 +88,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.footerStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = [self.estimatedDeliveryDateStackView, self.shippingLocationsStackView]
       ||> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -112,7 +112,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.All_gone() }
 
     _ = self.cardView
-      |> dropShadowStyleMedium()
+      |> darkCardStyle(cornerRadius: 0)
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.minimumLabel
@@ -131,12 +131,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery().uppercased() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.font .~ .ksr_caption1(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.includesTitleLabel
@@ -145,12 +145,12 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.rewards_info_includes() }
 
     _ = self.shippingLocationsLabel
-      |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
+      |> UILabel.lens.text %~ { _ in Strings.Ships_to().uppercased() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.shippingLocationsSummaryLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
+      |> UILabel.lens.font .~ .ksr_caption1(size: 13)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.youreABackerCheckmarkImageView
@@ -184,6 +184,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.selectRewardButton
       |> greenButtonStyle
+      |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.isAccessibilityElement .~ false
 
@@ -228,21 +229,6 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     self.viewYourPledgeButton.rac.hidden = self.viewModel.outputs.viewPledgeButtonHidden
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
     self.youreABackerLabel.rac.text = self.viewModel.outputs.youreABackerLabelText
-
-    self.viewModel.outputs.cardViewDropShadowHidden
-      .observeForUI()
-      .observeValues { [weak self] hidden in
-        let opacity = 0.17
-        self?.cardView.layer.shadowOpacity = Float(hidden ? 0.0 : opacity)
-    }
-
-    self.viewModel.outputs.cardViewBorderIsVisible
-      .observeForUI()
-      .observeValues { [weak self] visible in
-        self?.cardView.layer.borderColor = UIColor.ksr_grey_400.cgColor
-        self?.cardView.layer.borderWidth = visible ? 1.0 : 0.0
-        self?.cardView.layer.cornerRadius = 2.0
-    }
 
     self.viewModel.outputs.notifyDelegateRewardCellWantsExpansion
       .observeForUI()

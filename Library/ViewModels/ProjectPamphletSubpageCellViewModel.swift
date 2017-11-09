@@ -32,7 +32,7 @@ public protocol ProjectPamphletSubpageCellViewModelOutputs {
   var labelTextColor: Signal<UIColor, NoError> { get }
 
   /// Emits when the top gradient view should be hidden
-  var topGradientViewHidden: Signal<Bool, NoError> { get }
+  var topSeparatorViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the separator view should be hidden
   var separatorViewHidden: Signal<Bool, NoError> { get }
@@ -65,7 +65,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
       updatesSubpage.mapConst(.ksr_text_dark_grey_900)
     )
 
-    self.topGradientViewHidden = self.subpageProperty.signal.skipNil()
+    self.topSeparatorViewHidden = self.subpageProperty.signal.skipNil()
       .map { $0.position != .first }
 
     self.separatorViewHidden = self.subpageProperty.signal.skipNil()
@@ -109,7 +109,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
   public let liveNowImageViewHidden: Signal<Bool, NoError>
   public let labelText: Signal<String, NoError>
   public let labelTextColor: Signal<UIColor, NoError>
-  public let topGradientViewHidden: Signal<Bool, NoError>
+  public let topSeparatorViewHidden: Signal<Bool, NoError>
   public let separatorViewHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectPamphletSubpageCellViewModelInputs { return self }

@@ -33,6 +33,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, NoError> { get }
 
+  /// Emits a string to use for the category name label.
+  var categoryNameLabelText: Signal<String, NoError> { get }
+
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, NoError> { get }
 
@@ -56,6 +59,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the background color of the funding progress bar view.
   var fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError> { get }
+
+  /// Emits a string to use for the location name label.
+  var locationNameLabelText: Signal<String, NoError> { get }
 
   /// Emits the project when we should go to the campaign view for the project.
   var notifyDelegateToGoToCampaign: Signal<Project, NoError> { get }
@@ -131,19 +137,18 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.projectStateLabelTextColor = project
       .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_400 }
+      .map { $0.state == .successful ? UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_400 }
 
     self.fundingProgressBarViewBackgroundColor = project
-      .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_green_500 : UIColor.ksr_dark_grey_400 }
+      .map(progressColor(forProject:))
 
     self.projectUnsuccessfulLabelTextColor = project
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_text_dark_grey_900 : UIColor.ksr_text_dark_grey_500 }
+        UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_500 }
 
     self.pledgedTitleLabelTextColor = project
       .map { $0.state == .successful  || $0.state == .live ?
-        UIColor.ksr_text_green_700 : UIColor.ksr_text_dark_grey_500 }
+        UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_500 }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
@@ -167,6 +172,8 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText =  backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
+
+    self.categoryNameLabelText = project.map { $0.category.name }
 
     let deadlineTitleAndSubtitle = project.map {
       return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
@@ -193,6 +200,8 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
           goal: Format.currency(project.stats.goal, country: project.country)
         )
     }
+
+    self.locationNameLabelText = project.map { $0.location.displayableName }
 
     self.pledgedTitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
       needsConversion
@@ -272,6 +281,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
+  public let categoryNameLabelText: Signal<String, NoError>
   public let configureVideoPlayerController: Signal<Project, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
@@ -280,6 +290,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError>
+  public let locationNameLabelText: Signal<String, NoError>
   public let notifyDelegateToGoToCampaign: Signal<Project, NoError>
   public let notifyDelegateToGoToCreator: Signal<Project, NoError>
   public let opacityForViews: Signal<CGFloat, NoError>
@@ -341,3 +352,12 @@ private func fundingStatus(forProject project: Project) -> String {
     return ""
   }
  }
+
+private func progressColor(forProject project: Project) -> UIColor {
+  switch project.state {
+  case .canceled, .failed, .suspended:
+    return .ksr_dark_grey_400
+  default:
+    return .ksr_green_700
+  }
+}

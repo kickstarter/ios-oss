@@ -75,6 +75,13 @@ public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles
     <> V.lens.backgroundColor .~ .white
 }
 
+public func darkCardStyle <V: UIViewProtocol>
+  (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+
+  return cardStyle(cornerRadius: radius)
+    <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
+}
+
 public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 

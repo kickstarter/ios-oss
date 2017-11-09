@@ -13,8 +13,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var borderLineView: UIView!
-  @IBOutlet fileprivate weak var borderLineHeightConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
@@ -103,12 +101,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         self?.updateFavoriteButton(selected: $0, animated: $1)
     }
 
-    self.viewModel.outputs.animateBorderLineViewAndIsExpanded
-      .observeForUI()
-      .observeValues { [weak self] isExpanded in
-        self?.animateBorderLine(isExpanded: isExpanded)
-    }
-
     self.viewModel.outputs.notifyDelegateFilterSelectedParams
       .observeForUI()
       .observeValues { [weak self] in
@@ -151,12 +143,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     _ = self.bgView
       |> UIView.lens.backgroundColor .~ .white
-
-    _ = self.borderLineView
-      |> discoveryBorderLineStyle
-      |> UIView.lens.backgroundColor .~ discoveryPrimaryColor()
-
-    self.borderLineHeightConstraint.constant = 1.0 / UIScreen.main.scale
 
     _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
@@ -285,30 +271,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         completion: { _ in
          self.heartImageView.alpha = 0.0
         }
-      )
-    }
-  }
-
-  fileprivate func animateBorderLine(isExpanded: Bool) {
-    if isExpanded {
-      UIView.animate(
-        withDuration: 0.2,
-        delay: 0.1,
-        options: .curveEaseIn,
-        animations: {
-         self.borderLineView.transform = CGAffineTransform(scaleX: 0.93, y: 1.0)
-        },
-        completion: nil
-      )
-    } else {
-      UIView.animate(
-        withDuration: 0.1,
-        delay: 0.0,
-        options: .curveEaseOut,
-        animations: {
-         self.borderLineView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        },
-        completion: nil
       )
     }
   }

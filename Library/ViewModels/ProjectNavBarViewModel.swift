@@ -7,6 +7,7 @@ public protocol ProjectNavBarViewModelInputs {
   func categoryButtonTapped()
   func closeButtonTapped()
   func configureWith(project: Project, refTag: RefTag?)
+  func projectPageDidScrollToTop(_ didScrollToTop: Bool)
   func projectImageIsVisible(_ visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
@@ -36,6 +37,9 @@ public protocol ProjectNavBarViewModelOutputs {
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
+
+  /// Emits a boolean that determines if the navBar should show dropShadow.
+  var navBarShadowVisible: Signal<Bool, NoError> { get }
 
   /// Emits a project.
   var postNotificationWithProject: Signal<Project, NoError> { get }
@@ -195,7 +199,13 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       )
       .skipRepeats { $0.hidden == $1.hidden }
 
-    self.titleHiddenAndAnimate = Signal.merge(
+    self.navBarShadowVisible = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      self.projectPageDidScrollToTopProperty.signal
+      )
+      .skipRepeats()
+
+      self.titleHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
       self.projectImageIsVisibleProperty.signal.map { ($0, true) }
       )
@@ -235,6 +245,11 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   fileprivate let projectImageIsVisibleProperty = MutableProperty(false)
   public func projectImageIsVisible(_ visible: Bool) {
     self.projectImageIsVisibleProperty.value = visible
+  }
+
+  fileprivate let projectPageDidScrollToTopProperty = MutableProperty(false)
+  public func projectPageDidScrollToTop(_ didScrollToTop: Bool) {
+    self.projectPageDidScrollToTopProperty.value = didScrollToTop
   }
 
   fileprivate let projectVideoDidFinishProperty = MutableProperty()
@@ -277,6 +292,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
   public let dismissViewController: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
+  public let navBarShadowVisible: Signal<Bool, NoError>
   public let postNotificationWithProject: Signal<Project, NoError>
   public let projectName: Signal<String, NoError>
   public let saveButtonEnabled: Signal<Bool, NoError>

@@ -29,11 +29,12 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> NoRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.cardView
-      |> dropShadowStyleMedium()
+      |> darkCardStyle(cornerRadius: 0)
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.pledgeButton
       |> greenButtonStyle
+      |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.userInteractionEnabled .~ false
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Pledge_without_a_reward() }
       |> UIButton.lens.isAccessibilityElement .~ false

@@ -6,6 +6,7 @@ import Prelude_UIKit
 
 public protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
+  func projectPamphletContent(_ controller: ProjectPamphletContentViewController, didScrollToTop: Bool)
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
                               scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
 }
@@ -203,6 +204,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     self.delegate?.projectPamphletContent(
       self,
       imageIsVisible: scrollView.contentOffset.y < scrollView.bounds.width * 9/16
+    )
+
+    self.delegate?.projectPamphletContent(
+      self,
+      didScrollToTop: scrollView.contentOffset.y <= 0
     )
   }
 

@@ -8,7 +8,7 @@ public func discoveryPrimaryColor() -> UIColor {
 }
 
 public func discoverySecondaryColor() -> UIColor {
-  return .ksr_green_700
+  return .ksr_text_dark_grey_500
 }
 
 public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
@@ -22,6 +22,11 @@ public let discoveryNavTitleStackViewStyle =
     stack.traitCollection.horizontalSizeClass == .compact ? .init(top: -6.0) : .init(top: 0.0)
     }
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+
+public let discoverySaveButtonStyle = saveButtonStyle
+  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.image(forState: .normal) .~ UIImage(named: "heart-circle-unfilled-icon")
+  <> UIButton.lens.image(forState: .selected) .~ UIImage(named: "heart-circle-filled-icon")
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
@@ -94,15 +99,15 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0)
-      : UIFont.ksr_subhead(size: 14.0),
+      : UIFont.ksr_subhead(size: 15.0),
     NSForegroundColorAttributeName: discoverySecondaryColor().withAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
     NSFontAttributeName: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0).bolded
-      : UIFont.ksr_subhead(size: 14.0).bolded,
-    NSForegroundColorAttributeName: discoverySecondaryColor()
+      : UIFont.ksr_subhead(size: 15.0),
+    NSForegroundColorAttributeName: UIColor.black
   ])
 
   return
@@ -119,7 +124,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center
@@ -137,14 +142,14 @@ public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in
       label.traitCollection.isRegularRegular
         ? .ksr_body(size: 14)
-        : .ksr_body(size: 12)
+        : .ksr_body(size: 13)
     }
 
 public let postcardStatsTitleStyle =
   UILabel.lens.font %~~ { _, label in
     label.traitCollection.isRegularRegular
       ? .ksr_headline(size: 17)
-      : .ksr_headline(size: 15)
+      : .ksr_headline(size: 13)
   }
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {

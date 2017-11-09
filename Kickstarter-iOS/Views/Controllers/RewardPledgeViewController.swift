@@ -59,10 +59,7 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var shippingDestinationButton: UIButton!
   @IBOutlet fileprivate weak var shippingInputStackView: UIStackView!
   @IBOutlet fileprivate weak var shippingInputTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingLocationsLabel: UILabel!
   @IBOutlet fileprivate weak var shippingMenuStackView: UIStackView!
-  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
-  @IBOutlet fileprivate weak var shipsToLabel: UILabel!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
   @IBOutlet fileprivate weak var topStackView: UIStackView!
   @IBOutlet fileprivate weak var updatePledgeButton: UIButton!
@@ -157,7 +154,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> RewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
 
     _ = self.applePayButton
-      |> roundedStyle(cornerRadius: 4)
+      |> roundedStyle(cornerRadius: 0)
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     _ = self.cancelPledgeButton
@@ -165,7 +162,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
-      |> cardStyle(cornerRadius: 4)
+      |> cardStyle(cornerRadius: 0)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
@@ -173,11 +170,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ .ksr_navy_200
 
     _ = self.cardView
-      |> UIView.lens.layer.shadowOpacity .~ 1
-      |> UIView.lens.layer.shadowRadius .~ 4
       |> UIView.lens.layer.shouldRasterize .~ true
-      |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
-      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_dropShadow.cgColor
       |> UIView.lens.backgroundColor .~ .clear
 
     _ = self.changePaymentMethodButton
@@ -189,7 +182,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.masksToBounds .~ true
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_500
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
 
     _ = self.checkmarkImageView
       |> UIImageView.lens.contentMode .~ .center
@@ -197,6 +190,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
+      |> UIButton.lens.titleColor(forState: .normal) .~ UIColor.ksr_green_700
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
 
     _ = self.updatePledgeButton
@@ -205,7 +199,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
@@ -221,10 +215,10 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.differentPaymentMethodButton
       |> baseButtonStyle
-      |> roundedStyle(cornerRadius: 4)
+      |> roundedStyle(cornerRadius: 0)
       |> UIButton.lens.layer.borderWidth .~ 1
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
+      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.disclaimerButton
@@ -298,7 +292,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.minimumPledgeLabel
       |> UILabel.lens.font .~ .ksr_title2()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
 
     _ = self.orLabel
       |> UILabel.lens.font .~ .ksr_footnote()
@@ -331,13 +325,13 @@ internal final class RewardPledgeViewController: UIViewController {
                                             left: Styles.grid(2),
                                             bottom: Styles.grid(2),
                                             right: Styles.grid(4))
-      |> roundedStyle(cornerRadius: 2)
+      |> roundedStyle(cornerRadius: 0)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
     _ = self.pledgeCurrencyLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
 
     _ = self.pledgeInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -353,7 +347,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.pledgeTextField
       |> UITextField.lens.borderStyle .~ .none
-      |> UITextField.lens.textColor .~ UIColor.ksr_text_green_700
+      |> UITextField.lens.textColor .~ UIColor.ksr_green_700
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UITextField.lens.keyboardType .~ .numberPad
 
@@ -374,11 +368,6 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
 
-    _ = self.shipsToLabel
-      |> UILabel.lens.text %~ { _ in Strings.Ships_to() }
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -392,10 +381,6 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
-    _ = self.shippingLocationsLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
-
     _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.alignment .~ .center
@@ -404,7 +389,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingContainerView
       |> UIView.lens.layoutMargins .~
         .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4))
-      |> roundedStyle(cornerRadius: 2)
+      |> roundedStyle(cornerRadius: 0)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1
 
@@ -412,10 +397,6 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
-
-    _ = self.shippingStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.alignment .~ .firstBaseline
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
@@ -460,9 +441,6 @@ internal final class RewardPledgeViewController: UIViewController {
     self.shippingActivityIndicatorView.rac.animating = self.viewModel.outputs.shippingIsLoading
     self.shippingAmountLabel.rac.text = self.viewModel.outputs.shippingAmountLabelText
     self.shippingInputStackView.rac.hidden = self.viewModel.outputs.shippingInputStackViewHidden
-    self.shippingLocationsLabel.rac.text = self.viewModel.outputs.shippingLocationsLabelText
-    self.shippingStackView.rac.hidden
-      = self.viewModel.outputs.shippingStackViewHidden
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden

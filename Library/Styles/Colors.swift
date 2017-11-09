@@ -98,19 +98,19 @@ extension UIColor {
     return .hex(0x2BDE73)
   }
 
-  /// 0x25CB68
+  /// 0x009E74
   public static var ksr_green_500: UIColor {
-    return .hex(0x25CB68)
+    return .hex(0x009E74)
   }
 
-  /// 0x05AF3C
+  /// 0x037362
   public static var ksr_green_700: UIColor {
-    return .hex(0x05AF3C)
+    return .hex(0x037362)
   }
 
-  /// 0x098530
+  /// 0x034752
   public static var ksr_green_800: UIColor {
-    return .hex(0x098530)
+    return .hex(0x034752)
   }
 
   /// 0xFBFBFA
@@ -183,9 +183,9 @@ extension UIColor {
     return .hex(0x9B9E9E)
   }
 
-  /// 0x656868
+  /// 0x656969
   public static var ksr_text_dark_grey_500: UIColor {
-    return .hex(0x656868)
+    return .hex(0x656969)
   }
 
   /// 0x282828
