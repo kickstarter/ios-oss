@@ -56,13 +56,13 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(subpage: .liveStream(liveStreamEvent: liveStreamEvent, .first))
 
-    self.countLabelTextColor.assertValue(.ksr_text_green_700)
+    self.countLabelTextColor.assertValue(.ksr_green_700)
     self.countLabelText.assertValues(["Watch live"])
     self.countLabelBorderColor.assertValue(.ksr_green_500)
     self.countLabelBackgroundColor.assertValue(.white)
     self.liveNowImageViewHidden.assertValue(false)
     self.labelText.assertValues(["Live streaming now"])
-    self.labelTextColor.assertValue(.ksr_text_green_700)
+    self.labelTextColor.assertValue(.ksr_green_700)
     self.topSeparatorViewHidden.assertValue(false)
     self.separatorViewHidden.assertValue(false)
   }

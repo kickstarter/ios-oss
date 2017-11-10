@@ -61,7 +61,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.labelTextColor = Signal.merge(
       commentsSubpage.mapConst(.ksr_text_dark_grey_900),
-      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_dark_grey_900 },
+      liveStreamDetail.map { $0.liveNow ? .ksr_green_700 : .ksr_text_dark_grey_900 },
       updatesSubpage.mapConst(.ksr_text_dark_grey_900)
     )
 
@@ -78,7 +78,7 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
 
     self.countLabelTextColor = Signal.merge(
       Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_text_dark_grey_900),
-      liveStreamDetail.map { $0.liveNow ? .ksr_text_green_700 : .ksr_text_dark_grey_900 }
+      liveStreamDetail.map { $0.liveNow ? .ksr_green_700 : .ksr_text_dark_grey_900 }
     )
 
     self.countLabelBorderColor = Signal.merge(

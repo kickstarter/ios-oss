@@ -39,7 +39,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyleLarge()
+      |> cardStyle(cornerRadius: 0)
 
     _ = self.statsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(6)

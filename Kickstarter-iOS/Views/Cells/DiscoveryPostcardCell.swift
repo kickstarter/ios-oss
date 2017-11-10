@@ -169,10 +169,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
-
-    _ = self.saveButton
-      |> saveButtonStyle
-      <> UIButton.lens.tintColor .~ .white
   }
 
   internal override func bindViewModel() {
