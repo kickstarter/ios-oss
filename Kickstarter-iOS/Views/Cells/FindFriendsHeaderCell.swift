@@ -44,7 +44,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       |> feedTableViewCellStyle
 
     _ = self.cardView
-      |> dropShadowStyleMedium()
+      |> cardStyle(cornerRadius: 0)
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))

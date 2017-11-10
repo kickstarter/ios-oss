@@ -26,7 +26,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var categoryAndLocationStackView: UIStackView!
   @IBOutlet fileprivate weak var categoryIconImageView: UIImageView!
   @IBOutlet fileprivate weak var categoryNameLabel: UILabel!
-  @IBOutlet fileprivate weak var categoryAndSeparatorStackView: UIStackView!
   @IBOutlet fileprivate weak var contentStackView: UIStackView!
   @IBOutlet fileprivate weak var conversionLabel: UILabel!
   @IBOutlet fileprivate weak var creatorButton: UIButton!
@@ -116,9 +115,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.categoryAndLocationStackView
-      |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: 0, bottom: Styles.grid(1), right: 0)
-
-    _ = self.categoryAndSeparatorStackView
       |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: 0, bottom: Styles.grid(1), right: 0)
 
     _ = self.categoryIconImageView
@@ -253,7 +249,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
-    self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
+    //self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 

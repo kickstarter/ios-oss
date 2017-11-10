@@ -116,7 +116,7 @@ public let shareButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
   <> UIButton.lens.tintColor .~ .black
   <> UIButton.lens.contentEdgeInsets
-    .~ .init(top: Styles.grid(2), left: Styles.gridHalf(5), bottom: Styles.gridHalf(3),
+    .~ .init(top: Styles.grid(2), left: Styles.grid(3), bottom: Styles.grid(2),
              right: Styles.grid(2))
   <> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }

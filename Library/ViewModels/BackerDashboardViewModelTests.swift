@@ -12,7 +12,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
   private let avatarURL = TestObserver<String, NoError>()
   private let backedButtonTitleText = TestObserver<String, NoError>()
-  private let backerLocationText = TestObserver<String, NoError>()
   private let backerNameText = TestObserver<String, NoError>()
   private let configurePagesDataSourceTab = TestObserver<BackerDashboardTab, NoError>()
   private let configurePagesDataSourceSort = TestObserver<DiscoveryParams.Sort, NoError>()
@@ -34,7 +33,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     self.vm.outputs.avatarURL.map { $0?.absoluteString ?? "" }.observe(self.avatarURL.observer)
     self.vm.outputs.backedButtonTitleText.observe(self.backedButtonTitleText.observer)
-    self.vm.outputs.backerLocationText.observe(self.backerLocationText.observer)
     self.vm.outputs.backerNameText.observe(self.backerNameText.observer)
     self.vm.outputs.configurePagesDataSource.map(first).observe(self.configurePagesDataSourceTab.observer)
     self.vm.outputs.configurePagesDataSource.map(second).observe(self.configurePagesDataSourceSort.observer)
@@ -68,7 +66,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
       self.avatarURL.assertValueCount(0)
       self.backedButtonTitleText.assertValueCount(0)
-      self.backerLocationText.assertValueCount(0)
       self.backerNameText.assertValueCount(0)
       self.pinSelectedIndicatorToTab.assertValueCount(0)
       self.pinSelectedIndicatorToTabAnimated.assertValueCount(0)
@@ -86,7 +83,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
       // Signals emit twice as they are prefixed with the current user data.
       self.avatarURL.assertValues(["http://cats.com/furball.jpg", "http://cats.com/furball.jpg"])
       self.backedButtonTitleText.assertValues(["45\nbacked", "45\nbacked"])
-      self.backerLocationText.assertValues(["Siberia", "Siberia"])
       self.backerNameText.assertValues(["Princess Vespa", "Princess Vespa"])
       self.savedButtonTitleText.assertValues(["58\nsaved", "58\nsaved"])
       self.setSelectedButton.assertValues([.backed])

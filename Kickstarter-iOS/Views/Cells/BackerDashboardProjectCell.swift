@@ -12,6 +12,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
   @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
   @IBOutlet fileprivate weak var metadataLabel: UILabel!
+  @IBOutlet fileprivate weak var metadataStackView: UIStackView!
   @IBOutlet fileprivate weak var percentFundedLabel: UILabel!
   @IBOutlet fileprivate weak var projectNameLabel: UILabel!
   @IBOutlet fileprivate weak var projectImageView: UIImageView!
@@ -24,7 +25,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
-    self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
+    self.metadataBackgroundView.rac.backgroundColor = self.viewModel.outputs.metadataBackgroundColor
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataText
     self.metadataIconImageView.rac.hidden = self.viewModel.outputs.metadataIconIsHidden
     self.percentFundedLabel.rac.attributedText = self.viewModel.outputs.percentFundedText
@@ -57,19 +58,20 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyleMedium()
+      |> cardStyle(cornerRadius: 0)
 
     _ = self.mainContentContainerView
-      |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layoutMargins .~ .init(top: Styles.gridHalf(3),
                                             left: Styles.grid(2),
                                             bottom: Styles.grid(1),
                                             right: Styles.grid(2))
 
     _ = self.metadataBackgroundView
-      |> dropShadowStyle()
-      |> UIView.lens.layer.shadowOpacity .~ 0.3
-      |> UIView.lens.layer.cornerRadius .~ 2.0
+      |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
+      |> UIView.lens.layer.borderWidth .~ 1.0
+
+    _ = self.metadataStackView
+      |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(30), leftRight: Styles.grid(20))
 
     _ = self.metadataLabel
       |> UILabel.lens.textColor .~ .white

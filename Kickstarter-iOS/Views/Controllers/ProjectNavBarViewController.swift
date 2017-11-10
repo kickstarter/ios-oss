@@ -73,7 +73,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIView.lens.layer.shadowOpacity .~ 0
       |> UIView.lens.layer.shadowRadius .~ 2
       |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
-      |> UIView.lens.layer.shadowColor .~ UIColor.black.cgColor
+      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_grey_500.cgColor
 
     _ = self.closeButton
       |> UIButton.lens.title(forState: .normal) .~ nil
@@ -130,7 +130,7 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] didScrollToTop in
         UIView.animate(withDuration: 0.0) {
-          self?.backgroundView.layer.shadowOpacity = didScrollToTop ? 0 : 0.17
+          self?.backgroundView.layer.shadowOpacity = didScrollToTop ? 0 : 1
         }
       }
 

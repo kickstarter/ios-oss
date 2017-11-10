@@ -472,10 +472,10 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-o3-RmP">
-                                            <rect key="frame" x="328" y="18" width="52" height="52"/>
+                                            <rect key="frame" x="340" y="28" width="30" height="30"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="52" id="J7F-cy-pKA"/>
-                                                <constraint firstAttribute="height" constant="52" id="h3a-pQ-FHi"/>
+                                                <constraint firstAttribute="width" constant="30" id="J7F-cy-pKA"/>
+                                                <constraint firstAttribute="height" constant="30" id="h3a-pQ-FHi"/>
                                             </constraints>
                                             <state key="normal" title="X">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -489,7 +489,7 @@
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="height" secondItem="eC3-Kj-zPc" secondAttribute="height" multiplier="1:4" id="Ief-cj-080"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnN-BJ-FXy" secondAttribute="bottom" id="P0n-Bg-KYh"/>
-                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" id="V0m-bE-jZ2"/>
+                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" constant="-10" id="V0m-bE-jZ2"/>
                                         <constraint firstItem="eC3-Kj-zPc" firstAttribute="trailing" secondItem="vUL-dU-47D" secondAttribute="trailing" id="b9M-PY-nW0"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="centerY" secondItem="R0g-tb-Pfo" secondAttribute="top" constant="195.75" id="buC-U9-470"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="trailing" secondItem="x7P-p0-T4F" secondAttribute="trailing" id="ePj-Ey-Kun"/>
@@ -502,7 +502,7 @@
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="leading" secondItem="eC3-Kj-zPc" secondAttribute="leading" id="t99-VQ-h31"/>
                                         <constraint firstItem="eC3-Kj-zPc" firstAttribute="bottom" secondItem="vUL-dU-47D" secondAttribute="bottom" id="uvx-MK-lL7"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnN-BJ-FXy" secondAttribute="trailing" id="wwI-U6-fYG"/>
-                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="yev-be-Zsb"/>
+                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" constant="10" id="yev-be-Zsb"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
                                 </tableViewCellContentView>
@@ -547,7 +547,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJw-uw-eMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="680" y="198.80059970014995"/>
+            <point key="canvasLocation" x="680" y="199"/>
         </scene>
     </scenes>
     <resources>
