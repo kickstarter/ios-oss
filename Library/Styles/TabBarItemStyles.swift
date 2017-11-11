@@ -14,7 +14,7 @@ private let baseTabBarItemStyle = UITabBarItem.lens.title .~ nil
     UIScreen.main.traitCollection.isRegularRegular ?
       .init(top: 0.0, left: -paddingY, bottom: 0.0, right: paddingY) :
       .init(top: paddingY, left: 0, bottom: -paddingY, right: 0)
-    }
+  }
   <> UITabBarItem.lens.titlePositionAdjustment .~ UIOffset(horizontal: 0, vertical: 9_999_999)
 
 public func activityTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {

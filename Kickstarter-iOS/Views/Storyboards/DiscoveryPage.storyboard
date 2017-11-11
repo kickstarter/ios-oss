@@ -30,19 +30,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mTa-Hu-hCu">
-                                            <rect key="frame" x="20" y="32" width="360" height="106"/>
+                                            <rect key="frame" x="20" y="32" width="360" height="97"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="kickstarter-logo" translatesAutoresizingMaskIntoConstraints="NO" id="bjX-R6-UNK">
-                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="29"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kickstarter-logo" translatesAutoresizingMaskIntoConstraints="NO" id="bjX-R6-UNK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="17"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xSL-8E-DPW">
-                                                    <rect key="frame" x="0.0" y="41" width="360" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xSL-8E-DPW">
+                                                    <rect key="frame" x="0.0" y="29" width="360" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epB-3O-SOe">
-                                                    <rect key="frame" x="0.0" y="77" width="360" height="29"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epB-3O-SOe">
+                                                    <rect key="frame" x="0.0" y="65" width="360" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -472,10 +472,10 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-o3-RmP">
-                                            <rect key="frame" x="340" y="28" width="30" height="30"/>
+                                            <rect key="frame" x="328" y="18" width="52" height="52"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="30" id="J7F-cy-pKA"/>
-                                                <constraint firstAttribute="height" constant="30" id="h3a-pQ-FHi"/>
+                                                <constraint firstAttribute="width" constant="52" id="J7F-cy-pKA"/>
+                                                <constraint firstAttribute="height" constant="52" id="h3a-pQ-FHi"/>
                                             </constraints>
                                             <state key="normal" title="X">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -489,7 +489,7 @@
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="height" secondItem="eC3-Kj-zPc" secondAttribute="height" multiplier="1:4" id="Ief-cj-080"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="top" secondItem="x7P-p0-T4F" secondAttribute="top" id="JdS-7h-Iwd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnN-BJ-FXy" secondAttribute="bottom" id="P0n-Bg-KYh"/>
-                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" constant="-10" id="V0m-bE-jZ2"/>
+                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="trailing" secondItem="f91-JL-fui" secondAttribute="trailingMargin" id="V0m-bE-jZ2"/>
                                         <constraint firstItem="eC3-Kj-zPc" firstAttribute="trailing" secondItem="vUL-dU-47D" secondAttribute="trailing" id="b9M-PY-nW0"/>
                                         <constraint firstItem="KNM-IW-eI1" firstAttribute="centerY" secondItem="R0g-tb-Pfo" secondAttribute="top" constant="195.75" id="buC-U9-470"/>
                                         <constraint firstItem="R0g-tb-Pfo" firstAttribute="trailing" secondItem="x7P-p0-T4F" secondAttribute="trailing" id="ePj-Ey-Kun"/>
@@ -502,7 +502,7 @@
                                         <constraint firstItem="ylR-Sv-CeG" firstAttribute="leading" secondItem="eC3-Kj-zPc" secondAttribute="leading" id="t99-VQ-h31"/>
                                         <constraint firstItem="eC3-Kj-zPc" firstAttribute="bottom" secondItem="vUL-dU-47D" secondAttribute="bottom" id="uvx-MK-lL7"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnN-BJ-FXy" secondAttribute="trailing" id="wwI-U6-fYG"/>
-                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" constant="10" id="yev-be-Zsb"/>
+                                        <constraint firstItem="5Ss-o3-RmP" firstAttribute="top" secondItem="f91-JL-fui" secondAttribute="topMargin" id="yev-be-Zsb"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
                                 </tableViewCellContentView>
@@ -547,11 +547,11 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJw-uw-eMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="680" y="199"/>
+            <point key="canvasLocation" x="680" y="198.80059970014995"/>
         </scene>
     </scenes>
     <resources>
-        <image name="kickstarter-logo" width="149" height="29"/>
+        <image name="kickstarter-logo" width="164" height="17"/>
         <image name="metadata-featured" width="11" height="12"/>
     </resources>
 </document>

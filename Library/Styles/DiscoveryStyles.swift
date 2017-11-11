@@ -24,9 +24,9 @@ public let discoveryNavTitleStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoverySaveButtonStyle = saveButtonStyle
-  <> UIButton.lens.tintColor .~ .white
   <> UIButton.lens.image(forState: .normal) .~ image(named: "heart-circle-unfilled-icon")
   <> UIButton.lens.image(forState: .selected) .~ image(named: "heart-circle-filled-icon")
+  <> UIButton.lens.tintColor .~ .white
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
