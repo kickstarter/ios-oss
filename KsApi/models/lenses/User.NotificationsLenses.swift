@@ -53,7 +53,7 @@ extension User.Notifications {
         creatorDigest: $1.creatorDigest) }
     )
 
-    public static let cratorTips = Lens<User.Notifications, Bool?>(
+    public static let creatorTips = Lens<User.Notifications, Bool?>(
       view: { $0.creatorTips },
       set: { User.Notifications(backings: $1.backings, comments: $1.comments, follower: $1.follower,
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
