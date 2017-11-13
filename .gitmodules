@@ -22,6 +22,3 @@
 [submodule "Frameworks/Runes"]
 	path = Frameworks/Runes
 	url = https://github.com/thoughtbot/Runes.git
-[submodule "ios-ksapi"]
-	path = ios-ksapi
-	url = https://github.com/kickstarter/ios-ksapi
