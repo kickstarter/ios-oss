@@ -461,6 +461,7 @@ private enum UserAttribute {
       switch notification {
       case .backings:             return User.lens.notifications.backings
       case .comments:             return User.lens.notifications.comments
+      case .creatorTips:          return User.lens.notifications.creatorTips
       case .follower:             return User.lens.notifications.follower
       case .friendActivity:       return User.lens.notifications.friendActivity
       case .mobileBackings:       return User.lens.notifications.mobileBackings
@@ -470,7 +471,6 @@ private enum UserAttribute {
       case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
-      case .creatorTips:          return User.lens.notifications.creatorTips
       case .updates:              return User.lens.notifications.updates
       }
     }
@@ -480,6 +480,7 @@ private enum UserAttribute {
 private enum Notification {
   case backings
   case comments
+  case creatorTips
   case follower
   case friendActivity
   case mobileBackings
@@ -489,17 +490,16 @@ private enum Notification {
   case mobilePostLikes
   case mobileUpdates
   case postLikes
-  case creatorTips
   case updates
 
   fileprivate var trackingString: String {
     switch self {
     case .backings, .mobileBackings:                return "New pledges"
     case .comments, .mobileComments:                return "New comments"
+    case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
     case .postLikes, .mobilePostLikes:              return "New likes"
-    case .creatorTips:                              return "Creator tips"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
   }
