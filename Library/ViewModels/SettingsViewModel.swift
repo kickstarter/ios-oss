@@ -221,7 +221,7 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
-    self.goToEmailFrequency = Signal.merge(initialUser, updatedUser, previousUserOnError)
+    self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
 
     self.versionText = viewDidLoadProperty.signal
