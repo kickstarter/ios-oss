@@ -58,7 +58,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> cardStyle(cornerRadius: 0)
+      |> cardStyle()
 
     _ = self.mainContentContainerView
       |> UIView.lens.layoutMargins .~ .init(top: Styles.gridHalf(3),

@@ -249,7 +249,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
-    //self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
+    self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 

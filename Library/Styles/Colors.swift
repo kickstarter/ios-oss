@@ -193,9 +193,9 @@ extension UIColor {
     return .hex(0x282828)
   }
 
-  /// 0x05AF3C
+  /// 0x037362
   public static var ksr_text_green_700: UIColor {
-    return .hex(0x05AF3C)
+    return .hex(0x037362)
   }
 
   /// 0x098530

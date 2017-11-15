@@ -67,7 +67,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     }
 
     _ = self.containerView
-      |> cardStyle(cornerRadius: 0)
+      |> cardStyle()
 
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400

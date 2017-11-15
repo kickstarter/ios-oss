@@ -68,7 +68,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
 
     _ = self.cardView
-     |> cardStyle(cornerRadius: 0)
+     |> cardStyle()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))

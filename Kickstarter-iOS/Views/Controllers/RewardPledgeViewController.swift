@@ -162,7 +162,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
-      |> cardStyle(cornerRadius: 0)
+      |> cardStyle()
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
       |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
@@ -190,8 +190,9 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
-      |> UIButton.lens.titleColor(forState: .normal) .~ UIColor.ksr_green_700
+      |> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_green_700
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
+      |> UIButton.lens.layer.borderColor .~ UIColor.clear.cgColor
 
     _ = self.updatePledgeButton
       |> greenButtonStyle

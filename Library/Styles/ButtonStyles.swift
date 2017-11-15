@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let baseButtonStyle =
-  roundedStyle(cornerRadius: 2)
+  roundedStyle(cornerRadius: 0)
     <> UIButton.lens.titleLabel.font %~~ { _, button in
       button.traitCollection.verticalSizeClass == .compact
         ? .ksr_callout(size: 12)
@@ -75,7 +75,7 @@ public let greenButtonStyle =
     <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_green_700
     <> UIButton.lens.titleColor(forState: .disabled) .~ .white
     <> UIButton.lens.backgroundColor(forState: .disabled)
-      .~ UIColor.ksr_green_400.withAlphaComponent(0.5)
+      .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
 

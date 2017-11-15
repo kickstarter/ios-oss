@@ -110,7 +110,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_green_700
 
     _ = self.cardView
-      |> cardStyle(cornerRadius: 0)
+      |> cardStyle()
 
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
@@ -128,7 +128,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> postcardMetadataStackViewStyle
 
     _ = self.metadataBackgroundView
-      |> cardStyle(cornerRadius: 0)
+      |> cardStyle()
 
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)

@@ -335,7 +335,7 @@
 "accessibility.dashboard.buttons.post_update_hint" = "Opens editor.";
 "accessibility.discovery.buttons.activity" = "Activity";
 "accessibility.discovery.buttons.close" = "Close";
-"accessibility.discovery.buttons.creator_dashboard" = "Creator dashboard";
+"accessibility.discovery.buttons.creator_dashboard" = "Creator Dashboard";
 "accessibility.discovery.buttons.discovery" = "Discovery";
 "accessibility.discovery.buttons.discovery_hint_opens_projects" = "Opens list of projects.";
 "accessibility.discovery.buttons.log_in" = "Log in";
