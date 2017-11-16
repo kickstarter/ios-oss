@@ -817,6 +817,8 @@
 		D08A817A1DFAACF8000128DB /* LiveStreamEventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */; };
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
+		D0AA77C61FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA77C51FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift */; };
+		D0AA77C71FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA77C51FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
@@ -2375,6 +2377,7 @@
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
+		D0AA77C51FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SeparatorCatch.swift"; sourceTree = "<group>"; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -3187,6 +3190,7 @@
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
+				D0AA77C51FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift */,
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
@@ -5358,6 +5362,7 @@
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
+				D0AA77C71FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */,
 				A724BA661D2C03930041863C /* NSBundle-Framework.swift in Sources */,
 				9D14FF921D133351005F4ABB /* ProjectActivitySuccessCell.swift in Sources */,
 				014A8E191CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */,
@@ -5400,6 +5405,7 @@
 				013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
 				0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
+				D0AA77C61FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
