@@ -11,8 +11,6 @@ public protocol RewardCellViewModelInputs {
 
 public protocol RewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, NoError> { get }
-  var cardViewBorderIsVisible: Signal<Bool, NoError> { get }
-  var cardViewDropShadowHidden: Signal<Bool, NoError> { get }
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
   var descriptionLabelHidden: Signal<Bool, NoError> { get }
@@ -216,21 +214,6 @@ RewardCellViewModelOutputs {
       $0.shipping.summary ?? ""
     }
 
-    let tappable = Signal.zip(project, reward, youreABacker)
-      .map { project, reward, youreABacker in
-        (project.state == .live && reward.remaining != 0)
-        || youreABacker
-    }
-
-    self.cardViewDropShadowHidden = Signal.combineLatest(
-      tappable.map(negate),
-      self.boundStylesProperty.signal
-      )
-      .map(first)
-
-    self.cardViewBorderIsVisible = Signal.zip(project, reward)
-      .map { project, reward in project.state != .live || reward.remaining == 0 }
-
     self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
       .takeWhen(self.tappedProperty.signal)
       .filter(isTrue)
@@ -268,8 +251,6 @@ RewardCellViewModelOutputs {
   }
 
   public let allGoneHidden: Signal<Bool, NoError>
-  public let cardViewBorderIsVisible: Signal<Bool, NoError>
-  public let cardViewDropShadowHidden: Signal<Bool, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
   public let descriptionLabelHidden: Signal<Bool, NoError>
@@ -304,7 +285,7 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
     return .ksr_text_dark_grey_500
   } else if (project.state == .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
-    return .ksr_text_green_700
+    return .ksr_green_700
   } else if (project.state != .live && reward.remaining == 0 &&
     userIsBacking(reward: reward, inProject: project)) {
     return .ksr_text_dark_grey_500
@@ -312,7 +293,7 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
     (project.state != .live && reward.remaining == 0) {
     return .ksr_text_dark_grey_400
   } else if project.state == .live {
-    return .ksr_text_green_700
+    return .ksr_green_700
   } else if project.state != .live {
     return .ksr_text_dark_grey_900
   } else {

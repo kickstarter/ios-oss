@@ -39,7 +39,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.cardView
-      |> dropShadowStyleLarge()
+      |> cardStyle()
 
     _ = self.statsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(6)
@@ -57,9 +57,8 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     }
 
     _ = self.metadataBackgroundView
-      |> dropShadowStyleMedium()
-      |> UIView.lens.layer.shadowOpacity .~ 0.3
-      |> UIView.lens.layer.cornerRadius .~ 2.0
+      |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
+      |> UIView.lens.layer.borderWidth .~ 1.0
 
     _ = self.metadataLabel
       |> UILabel.lens.textColor .~ .white

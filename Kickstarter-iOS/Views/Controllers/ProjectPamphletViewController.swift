@@ -16,7 +16,6 @@ public final class ProjectPamphletViewController: UIViewController {
   fileprivate var contentController: ProjectPamphletContentViewController!
 
   @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak private var projectPamphletTopConstraint: NSLayoutConstraint!
 
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
@@ -32,8 +31,6 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.edgesForExtendedLayout = [.left, .bottom, .right]
 
     self.navBarController = self.childViewControllers
       .flatMap { $0 as? ProjectNavBarViewController }.first
@@ -55,7 +52,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.setInitial(constraints: [navBarTopConstraint, projectPamphletTopConstraint],
+    self.setInitial(constraints: [navBarTopConstraint],
                     constant: initialTopConstraint)
   }
 
@@ -92,8 +89,11 @@ public final class ProjectPamphletViewController: UIViewController {
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
     }
 
-    self.navBarTopConstraint.rac.constant = self.viewModel.outputs.topLayoutConstraintConstant
-    self.projectPamphletTopConstraint.rac.constant = self.viewModel.outputs.topLayoutConstraintConstant
+    self.viewModel.outputs.topLayoutConstraintConstant
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.navBarTopConstraint.constant = value
+    }
   }
 
   public override func willTransition(to newCollection: UITraitCollection,
@@ -110,6 +110,11 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
+  public func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
+                                     didScrollToTop: Bool) {
+    self.navBarController.setDidScrollToTop(didScrollToTop)
+  }
+
   public func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
                                      imageIsVisible: Bool) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)

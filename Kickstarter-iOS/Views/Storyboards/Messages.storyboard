@@ -94,7 +94,7 @@
                                                                 </label>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ZH-YI-NS3" userLabel="Read indicator">
                                                                     <rect key="frame" x="510" y="12.5" width="16" height="16"/>
-                                                                    <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="backgroundColor" red="0.011764705882352941" green="0.45098039215686275" blue="0.38431372549019605" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="3ZH-YI-NS3" secondAttribute="height" multiplier="1:1" id="Rgg-V1-eGK"/>
                                                                         <constraint firstAttribute="width" constant="16" id="gdx-gv-snu"/>

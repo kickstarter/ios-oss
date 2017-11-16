@@ -988,7 +988,7 @@ extension ShortcutItem {
         type: self.typeString,
         localizedTitle: Strings.Recommended(),
         localizedSubtitle: nil,
-        icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-heart"),
+        icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-star"),
         userInfo: nil
       )
     case .search:

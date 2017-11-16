@@ -60,6 +60,8 @@ public let forgotPasswordButtonStyle =
     <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginButtonStyle = greenButtonStyle
+  <> UIButton.lens.backgroundColor(forState: .disabled)
+  .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
   <> UIButton.lens.title(forState: .normal) %~ { _ in
     Strings.login_tout_back_intent_traditional_login_button()
 }

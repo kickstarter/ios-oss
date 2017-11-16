@@ -41,9 +41,6 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
 
-  /// Call when share button is tapped.
-  func shareButtonTapped()
-
   /// Call when save button is tapped.
   func saveButtonTapped()
 
@@ -96,9 +93,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits when we should notify the delegate that the share button was tapped.
-  var notifyDelegateShareButtonTapped: Signal<ShareContext, NoError> { get }
 
   /// Emits when we should notify the delegate that the heart button was tapped.
   var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
@@ -232,7 +226,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     }
 
     self.projectStateTitleLabelColor = configuredProject
-      .map { $0.state == .successful ? .ksr_text_green_700 : .ksr_text_dark_grey_900 }
+      .map { $0.state == .successful ? .ksr_green_700 : .ksr_text_dark_grey_900 }
       .skipRepeats()
 
     self.projectStateTitleLabelText = configuredProject
@@ -255,10 +249,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.fundingProgressBarViewHidden = configuredProject
       .map { $0.state == .failed }
-
-    self.notifyDelegateShareButtonTapped = configuredProject
-      .map(ShareContext.discovery)
-      .takeWhen(self.shareButtonTappedProperty.signal)
 
     let loggedOutUserTappedSaveButton = currentUser
       .takeWhen(self.saveButtonTappedProperty.signal)
@@ -354,11 +344,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectFromNotificationProperty.value = project
   }
 
-  fileprivate let shareButtonTappedProperty = MutableProperty()
-  public func shareButtonTapped() {
-    self.shareButtonTappedProperty.value = ()
-  }
-
   fileprivate let saveButtonTappedProperty = MutableProperty()
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
@@ -388,7 +373,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
-  public let notifyDelegateShareButtonTapped: Signal<ShareContext, NoError>
   public let notifyDelegateShowLoginTout: Signal<Void, NoError>
   public let notifyDelegateShowSaveAlert: Signal<Void, NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>

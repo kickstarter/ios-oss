@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let baseButtonStyle =
-  roundedStyle(cornerRadius: 2)
+  roundedStyle(cornerRadius: 0)
     <> UIButton.lens.titleLabel.font %~~ { _, button in
       button.traitCollection.verticalSizeClass == .compact
         ? .ksr_callout(size: 12)
@@ -75,7 +75,7 @@ public let greenButtonStyle =
     <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_green_700
     <> UIButton.lens.titleColor(forState: .disabled) .~ .white
     <> UIButton.lens.backgroundColor(forState: .disabled)
-      .~ UIColor.ksr_green_400.withAlphaComponent(0.5)
+      .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1.0
 
@@ -103,18 +103,17 @@ public let navyButtonStyle =
 
 public let saveButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .white
-  <> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
+  <> UIButton.lens.tintColor .~ .black
   <> UIButton.lens.image(forState: .normal) .~ image(named: "icon-heart-unfilled")
-  <> UIButton.lens.image(forState: .selected) .~ image(named: "icon-heart-filled")
+  <> UIButton.lens.image(forState: .selected) .~ image(named: "heart")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
 
 public let shareButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.tintColor .~ .black
   <> UIButton.lens.contentEdgeInsets
-    .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2),
-             right: Styles.grid(1))
+    .~ .init(top: Styles.grid(2), left: Styles.grid(3), bottom: Styles.grid(2),
+             right: Styles.grid(2))
   <> UIButton.lens.image(forState: .normal) .~ image(named: "share-icon")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 

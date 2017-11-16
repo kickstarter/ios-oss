@@ -22,6 +22,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate weak var categoryStackView: UIStackView!
+  @IBOutlet fileprivate weak var categoryAndLocationStackView: UIStackView!
+  @IBOutlet fileprivate weak var categoryIconImageView: UIImageView!
+  @IBOutlet fileprivate weak var categoryNameLabel: UILabel!
   @IBOutlet fileprivate weak var contentStackView: UIStackView!
   @IBOutlet fileprivate weak var conversionLabel: UILabel!
   @IBOutlet fileprivate weak var creatorButton: UIButton!
@@ -32,6 +36,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
   @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate weak var locationImageView: UIImageView!
+  @IBOutlet fileprivate weak var locationNameLabel: UILabel!
+  @IBOutlet fileprivate weak var locationStackView: UIStackView!
   @IBOutlet fileprivate weak var pledgeSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var pledgedTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectBlurbLabel: UILabel!
@@ -94,7 +101,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
-      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
       ||> UILabel.lens.numberOfLines .~ 2
 
@@ -103,6 +110,21 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.blurbAndReadMoreStackView
       |> UIStackView.lens.spacing .~ 0
+
+    _ = self.categoryStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
+    _ = self.categoryAndLocationStackView
+      |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: 0, bottom: Styles.grid(1), right: 0)
+
+    _ = self.categoryIconImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFit
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
+      |> UIImageView.lens.image .~ UIImage(named: "category-icon")
+
+    _ = self.categoryNameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ .ksr_body(size: 12)
 
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
@@ -136,13 +158,25 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
+    _ = self.locationImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFit
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
+      |> UIImageView.lens.image .~ UIImage(named: "location-icon")
+
+    _ = self.locationNameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ .ksr_body(size: 12)
+
+    _ = self.locationStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
+
     _ = self.projectBlurbLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_body(size: 18)
           : .ksr_body(size: 15)
       }
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.projectNameAndCreatorStackView
@@ -196,6 +230,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
+    self.categoryNameLabel.rac.text = self.viewModel.outputs.categoryNameLabelText
     self.conversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
@@ -205,7 +240,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
     self.fundingProgressBarView.rac.backgroundColor =
       self.viewModel.outputs.fundingProgressBarViewBackgroundColor
+    self.locationNameLabel.rac.text = self.viewModel.outputs.locationNameLabelText
     self.pledgeSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitleLabelText
+    self.pledgeSubtitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText

@@ -5362,7 +5362,7 @@ Please try again later."
   public static func accessibility_discovery_buttons_creator_dashboard() -> String {
     return localizedString(
       key: "accessibility.discovery.buttons.creator_dashboard",
-      defaultValue: "Creator dashboard",
+      defaultValue: "Creator Dashboard",
       count: nil,
       substitutions: [:]
     )

@@ -67,12 +67,19 @@ public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UI
 
  - returns: A view transformer that rounds corners, sets background color, and sets border color.
  */
-public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = 0) -> ((V) -> V) {
 
   return roundedStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
     <> V.lens.layer.borderWidth .~ 1.0
     <> V.lens.backgroundColor .~ .white
+}
+
+public func darkCardStyle <V: UIViewProtocol>
+  (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+
+  return cardStyle(cornerRadius: radius)
+    <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
 }
 
 public let containerViewBackgroundStyle =

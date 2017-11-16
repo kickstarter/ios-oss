@@ -238,7 +238,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_green_500])
+    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_green_700])
   }
 
   func testPledgedTitleLabelTextColor_SucessfulProject() {
@@ -247,7 +247,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_green_700])
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_green_700])
   }
 
   func testPledgedTitleLabelTextColor_UnsuccessfulProject() {
@@ -338,7 +338,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
     self.vm.inputs.configureWith(project: project)
 
-    self.projectStateLabelTextColor.assertValues([UIColor.ksr_text_green_700])
+    self.projectStateLabelTextColor.assertValues([UIColor.ksr_green_700])
   }
 
   func testProjectStateLabelTextColor_UnsuccessfulProject() {
