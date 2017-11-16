@@ -46,9 +46,6 @@ public protocol DashboardReferrersCellViewModelOutputs {
   /// Emits the pledged via custom text to be displayed.
   var customPledgedText: Signal<String, NoError> { get }
 
-  /// Emits a boolean to determine whether or not custom stats should be hidden.
-  var customStackViewHidden: Signal<Bool, NoError> { get }
-
   /// Emits the external pledge percentage to be displayed in a chart.
   var externalPercentage: Signal<Double, NoError> { get }
 
@@ -121,8 +118,6 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
       self.customPledgedText = Signal.combineLatest(customPledgedAmount, country)
         .map { pledged, country in Format.currency(Int(pledged), country: country) }
-
-      self.customStackViewHidden = customReferrers.map { $0.isEmpty }
 
       self.externalPercentage = externalReferrers
         .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
@@ -231,7 +226,6 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   public let averagePledgeText: Signal<String, NoError>
   public let customPercentText: Signal<String, NoError>
   public let customPledgedText: Signal<String, NoError>
-  public let customStackViewHidden: Signal<Bool, NoError>
   public let externalPercentage: Signal<Double, NoError>
   public let externalPercentText: Signal<String, NoError>
   public let externalPledgedText: Signal<String, NoError>
