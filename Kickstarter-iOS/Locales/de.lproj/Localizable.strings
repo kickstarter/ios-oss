@@ -189,6 +189,7 @@
 "Opens_update" = "Öffnet Update.";
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
+"Other_projects_you_might_like" = "Ähnliche Projekte:";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
@@ -216,6 +217,7 @@
 "Pursue_daring_ideas" = "Zündende Ideen.";
 "Push_notifications" = "Push-Benachrichtigungen";
 "Rate_us_in_the_App_Store" = "Bewerte uns im App Store!";
+"Read_more_about_the_campaign" = "Mehr über diese Kampagne lesen";
 "Read_more_about_the_campaign_arrow" = "Mehr über diese Kampagne lesen  →";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
 "Recommended" = "Empfehlungen";
@@ -255,6 +257,7 @@
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Send" = "Senden";
+"Share" = "Share";
 "Share_an_update_about_your_project" = "Teile einen Update zu deinem Projekt …";
 "Share_this_live_stream" = "Live-Stream teilen.";
 "Share_this_project_on_Facebook" = "Teile dieses Projekt auf Facebook.";
@@ -276,6 +279,7 @@
 "Tap_the_heart_on_each_project_page_to_save_it" = "Klicke einfach auf das Herz auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken.";
 "Tap_the_star_on_a_project_to_get_notified" = "Tippe auf den Stern neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Klicke einfach auf den Stern auf der Projektseite, um ein Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken.";
+"Thank_you_exclamation" = "Vielen Dank!";
 "Thank_you_for_supporting_this_project" = "Vielen Dank für deine Unterstützung dieses Projekts.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "The_live_stream_failed_to_connect" = "Keine Verbindungn zu Live-Stream";
@@ -313,6 +317,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
+"You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
 "You_saved_this_project" = "Du hast dieses Projekt gespeichert.";
 "Your_chat_message_wasnt_sent_successfully" = "Deine Chat-Nachricht konnte leider nicht gesendet werden.";
