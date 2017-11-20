@@ -96,6 +96,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Add photos and video to your project updates.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Add photos and video to your project updates.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos and video to your project updates.</string>
 	<key>UILaunchStoryboardName</key>
