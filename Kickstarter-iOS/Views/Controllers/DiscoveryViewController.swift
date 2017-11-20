@@ -107,6 +107,7 @@ internal final class DiscoveryViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.sortPagerViewController.setSortPagerEnabled($0)
+        self?.pageViewController.isScrollEnabled($0)
     }
 
     self.viewModel.outputs.updateSortPagerStyle

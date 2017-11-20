@@ -1,9 +1,9 @@
-//
-//  UIPageViewController+Extensions.swift
-//  Kickstarter-iOS
-//
-//  Created by Saturnino Texeira on 17/11/2017.
-//  Copyright © 2017 Kickstarter. All rights reserved.
-//
+import UIKit
 
-import Foundation
+extension UIPageViewController {
+
+  public func isScrollEnabled(_ enabled: Bool) {
+    let scrollView = self.view.subviews.filter { $0 is UIScrollView }.first as? UIScrollView
+    scrollView?.isScrollEnabled = enabled
+  }
+}
