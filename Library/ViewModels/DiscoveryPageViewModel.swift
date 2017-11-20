@@ -150,13 +150,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.asyncReloadData = self.projects.take(first: 1).ignoreValues()
 
     self.showEmptyState = paramsChanged
-      .takeWhen(paginatedProjects.filter { $0.isEmpty })
+      .takeWhen(Signal.merge(self.asyncReloadData, paginatedProjects.filter { $0.isEmpty }.ignoreValues()))
       .map(emptyState(forParams:))
       .skipNil()
       .skipRepeats()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),
+      self.asyncReloadData,
+      paginatedProjects.filter { !$0.isEmpty }.ignoreValues(),
       paramsChanged.skip(first: 1).ignoreValues()
     )
 
