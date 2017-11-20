@@ -3062,6 +3062,23 @@ from friends yet."
     )
   }
   /**
+   "Other projects you might like."
+
+   - **es**: "Otros proyectos que te pueden gustar."
+   - **ja**: "おすすめをさらに見る"
+   - **de**: "Ähnliche Projekte:"
+   - **fr**: "Autre projets qui pourraient vous intéresser"
+   - **en**: "Other projects you might like."
+  */
+  public static func Other_projects_you_might_like() -> String {
+    return localizedString(
+      key: "Other_projects_you_might_like",
+      defaultValue: "Other projects you might like.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Past live stream"
 
    - **es**: "Live Stream pasado"
@@ -3519,6 +3536,23 @@ daring ideas."
     return localizedString(
       key: "Rate_us_in_the_App_Store",
       defaultValue: "Rate us in the App Store",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Read more about the campaign"
+
+   - **es**: "Leer más sobre esta campaña"
+   - **ja**: "キャンペーンの詳細をみる"
+   - **de**: "Mehr über diese Kampagne lesen"
+   - **fr**: "En savoir plus sur la campagne"
+   - **en**: "Read more about the campaign"
+  */
+  public static func Read_more_about_the_campaign() -> String {
+    return localizedString(
+      key: "Read_more_about_the_campaign",
+      defaultValue: "Read more about the campaign",
       count: nil,
       substitutions: [:]
     )
@@ -3983,6 +4017,23 @@ daring ideas."
     )
   }
   /**
+   "Share"
+
+   - **es**: "Share"
+   - **ja**: "シェア"
+   - **de**: "Share"
+   - **fr**: "Share"
+   - **en**: "Share"
+  */
+  public static func Share() -> String {
+    return localizedString(
+      key: "Share",
+      defaultValue: "Share",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Share an update about your project…"
 
    - **es**: "Comparte una actualización de tu proyecto …"
@@ -4337,6 +4388,23 @@ catch your eye?"
     return localizedString(
       key: "Tap_the_star_on_each_project_page_to_save_it",
       defaultValue: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Thank you!"
+
+   - **es**: "¡Gracias!"
+   - **ja**: "ありがとうございます！"
+   - **de**: "Vielen Dank!"
+   - **fr**: "Merci !"
+   - **en**: "Thank you!"
+  */
+  public static func Thank_you_exclamation() -> String {
+    return localizedString(
+      key: "Thank_you_exclamation",
+      defaultValue: "Thank you!",
       count: nil,
       substitutions: [:]
     )
@@ -4977,6 +5045,23 @@ Please try again later."
     )
   }
   /**
+   "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
+
+   - **es**: "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!"
+   - **ja**: "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。"
+   - **de**: "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!"
+   - **fr**: "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !"
+   - **en**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
+  */
+  public static func You_have_successfully_backed_project_html(project_name: String) -> String {
+    return localizedString(
+      key: "You_have_successfully_backed_project_html",
+      defaultValue: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!",
+      count: nil,
+      substitutions: ["project_name": project_name]
+    )
+  }
+  /**
    "<b>You pledged</b> on %{pledge_date}"
 
    - **es**: "<b>Contribuiste</b> el %{pledge_date}"
@@ -5362,7 +5447,7 @@ Please try again later."
   public static func accessibility_discovery_buttons_creator_dashboard() -> String {
     return localizedString(
       key: "accessibility.discovery.buttons.creator_dashboard",
-      defaultValue: "Creator Dashboard",
+      defaultValue: "Creator dashboard",
       count: nil,
       substitutions: [:]
     )
@@ -6714,7 +6799,7 @@ Please try again later."
    "Was not successfully funded."
 
    - **es**: "No se financió con éxito."
-   - **ja**: "目標達成ならず。"
+   - **ja**: "ファンディング失敗"
    - **de**: "Wurde nicht erfolgreich finanziert."
    - **fr**: "Non financé."
    - **en**: "Was not successfully funded."
@@ -9893,7 +9978,7 @@ Please try again later."
    "Since your last visit"
 
    - **es**: "Desde tu última visita"
-   - **ja**: "最終アクセスから"
+   - **ja**: "最終アクセス"
    - **de**: "Seit deinem letzten Besuch"
    - **fr**: "Depuis votre dernière visite"
    - **en**: "Since your last visit"
