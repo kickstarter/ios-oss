@@ -189,6 +189,7 @@
 "Opens_update" = "アップデートをみる";
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
+"Other_projects_you_might_like" = "おすすめをさらに見る";
 "Past_live_stream" = "過去のプロジェクト";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
@@ -216,6 +217,7 @@
 "Pursue_daring_ideas" = "大胆な\nアイディアを。";
 "Push_notifications" = "プッシュ通知設定";
 "Rate_us_in_the_App_Store" = "Appストアで評価する";
+"Read_more_about_the_campaign" = "キャンペーンの詳細をみる";
 "Read_more_about_the_campaign_arrow" = "キャンペーンの詳細をみる  →";
 "Recent_live_stream" = "最近のライブ配信";
 "Recommended" = "おすすめ";
@@ -255,6 +257,7 @@
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
 "Send" = "送信";
+"Share" = "シェア";
 "Share_an_update_about_your_project" = "アップデートをシェアしよう";
 "Share_this_live_stream" = "ライブ配信をシェアする";
 "Share_this_project_on_Facebook" = "プロジェクトをフェースブックでシェアしましょう。";
@@ -276,6 +279,7 @@
 "Tap_the_heart_on_each_project_page_to_save_it" = "ハートのアイコンを押して保存しましょう。終了48時間前に通知が届きます。";
 "Tap_the_star_on_a_project_to_get_notified" = "星のマークを押すと、終了48時間前に通知が届きます。";
 "Tap_the_star_on_each_project_page_to_save_it" = "プロジェクトにスターを押して保存しましょう。プロジェクト終了４８時間前にリマインドします。";
+"Thank_you_exclamation" = "ありがとうございます！";
 "Thank_you_for_supporting_this_project" = "サポートいただきありがとうございます。";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "このFacebookのメールアドレスは他のKickstarterユーザーが使用中";
 "The_live_stream_failed_to_connect" = "ライブ配信に接続できませんでした";
@@ -313,6 +317,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
 "You_Launched" = "発表されました！";
 "You_backed_this_project" = "バック済";
+"You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_saved_this_project" = "保存済みです";
 "Your_chat_message_wasnt_sent_successfully" = "メッセージの送信に失敗。";
@@ -415,7 +420,7 @@
 "activity.project_state_change.you_launched_a_project" = "あなたは%{project_name} を発表しました";
 "activity.project_update.update_count" = "アップデート #%{update_count}";
 "activity.project_update.update_count_backer_only" = "#%{update_count} - バッカーのみ";
-"activity.project_was_not_successfully_funded" = "目標達成ならず。";
+"activity.project_was_not_successfully_funded" = "ファンディング失敗";
 "activity.successfully_funded" = "資金調達に成功";
 "activity.user_name_is_now_following_you" = "%{user_name} はあなたをフォロー中！";
 "activity.user_name_launched_project" = "%{user_name} がプロジェクトをローンチ！";
@@ -723,7 +728,7 @@
 "discovery.activity_sample.alert.buttons.follow" = "フォロー";
 "discovery.activity_sample.alert.follow_friend_name" = "%{friend_name} をフォローしますか？";
 "discovery.activity_sample.button.see_all_activity" = "アクティビティをみる";
-"discovery.activity_sample.title.Since_your_last_visit" = "最終アクセスから";
+"discovery.activity_sample.title.Since_your_last_visit" = "最終アクセス";
 "discovery.activity_sample.title.since_youve_been_gone" = "最後のアクセスから";
 "discovery.all_of_scope" = "%{scope} の全て";
 "discovery.backing" = "バック";

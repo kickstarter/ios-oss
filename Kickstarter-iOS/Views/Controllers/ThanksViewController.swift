@@ -81,9 +81,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       |> borderButtonStyle
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
-        Strings.project_checkout_share_buttons_more_share_options()
-    }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
 
     _ = self.doneButton
       |> doneBarButtonItemStyle
