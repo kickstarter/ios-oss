@@ -35,7 +35,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
     self.metadataText.assertValues(
       [Strings.Friend_name_launched_a_project(friend_name: project.creator.name)]
     )
-    self.percentFundedText.assertValues(["0% funded"])
+    self.percentFundedText.assertValues(["0%"])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectName.assertValues([project.name])
   }
@@ -59,7 +59,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
       self.vm.inputs.configureWith(activity: activity)
 
       self.metadataText.assertValues([Strings.You_Launched()])
-      self.percentFundedText.assertValues(["1% funded"])
+      self.percentFundedText.assertValues(["1%"])
       self.projectImageURL.assertValues([project.photo.full])
       self.projectName.assertValues([project.name])
     }
@@ -83,7 +83,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity)
 
     self.metadataText.assertValues([Strings.activity_successfully_funded()])
-    self.percentFundedText.assertValues(["129% funded"])
+    self.percentFundedText.assertValues(["129%"])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectName.assertValues([project.name])
   }
@@ -101,7 +101,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity)
 
     self.metadataText.assertValues([Strings.Unsuccessfully_Funded()])
-    self.percentFundedText.assertValues(["60% funded"])
+    self.percentFundedText.assertValues(["60%"])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectName.assertValues([project.name])
   }
@@ -119,7 +119,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity)
 
     self.metadataText.assertValues([Strings.Project_Cancelled()])
-    self.percentFundedText.assertValues(["1% funded"])
+    self.percentFundedText.assertValues(["1%"])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectName.assertValues([project.name])
   }
@@ -137,7 +137,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity)
 
     self.metadataText.assertValues([Strings.Project_Suspended()])
-    self.percentFundedText.assertValues(["4% funded"])
+    self.percentFundedText.assertValues(["4%"])
     self.projectImageURL.assertValues([project.photo.full])
     self.projectName.assertValues([project.name])
   }

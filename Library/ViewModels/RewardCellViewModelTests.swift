@@ -11,8 +11,6 @@ final class RewardCellViewModelTests: TestCase {
   fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
 
   fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
-  fileprivate let cardViewBorderIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let cardViewDropShadowHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelText = TestObserver<String, NoError>()
   fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
@@ -41,8 +39,6 @@ final class RewardCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.allGoneHidden.observe(self.allGoneHidden.observer)
-    self.vm.outputs.cardViewBorderIsVisible.observe(self.cardViewBorderIsVisible.observer)
-    self.vm.outputs.cardViewDropShadowHidden.observe(self.cardViewDropShadowHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelHidden.observe(self.descriptionLabelHidden.observer)
@@ -98,91 +94,6 @@ final class RewardCellViewModelTests: TestCase {
 
     self.allGoneHidden.assertValues([true, false, true, false],
                                     "All gone indicator visible when none remaining and project over.")
-  }
-
-  func testCardViewBorderIsVisible_LiveProject_NonBacker_NotAllGone() {
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewBorderIsVisible.assertValues([false])
-  }
-
-  func testCardViewBorderIsVisible_SuccessfulProject_NonBacker_NotAllGone() {
-    self.vm.inputs.configureWith(project: .template |> Project.lens.state .~ .successful,
-                                 rewardOrBacking: .left(.template))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewBorderIsVisible.assertValues([true])
-  }
-
-  func testCardViewDropShadowHidden_LiveProject_NonBacker_NotAllGone() {
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([false])
-  }
-
-  func testCardViewDropShadowHidden_SuccessfulProject_NonBacker_NotAllGone() {
-    self.vm.inputs.configureWith(project: .template |> Project.lens.state .~ .successful,
-                                 rewardOrBacking: .left(.template))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([true])
-  }
-
-  func testCardViewDropShadowHidden_LiveProject_Backer_NotAllGone() {
-    let reward = Reward.template
-    let project = .template
-      |> Project.lens.rewards .~ [reward]
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-    )
-
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([false])
-  }
-
-  func testCardViewDropShadowHidden_LiveProject_NonBacker_AllGone() {
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([true])
-  }
-
-  func testCardViewDropShadowHidden_SuccessfulProject_Backer_NotAllGone() {
-    let reward = Reward.template
-    let project = .template
-      |> Project.lens.state .~ .successful
-      |> Project.lens.rewards .~ [reward]
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-    )
-
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([false])
-  }
-
-  func testCardViewDropShadowHidden_LiveProject_Backer_AllGone() {
-    let reward = Reward.template
-      |> Reward.lens.remaining .~ 0
-    let project = .template
-      |> Project.lens.rewards .~ [reward]
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-    )
-
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-    self.vm.inputs.boundStyles()
-
-    self.cardViewDropShadowHidden.assertValues([false])
   }
 
   func testConfiguredWithBacking() {
@@ -605,7 +516,7 @@ final class RewardCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
-    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
   }
 
   func testMinimumLabel_AllGone() {
@@ -828,7 +739,7 @@ final class RewardCellViewModelTests: TestCase {
 
       self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-      self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
+      self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
     }
   }
 
@@ -862,7 +773,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_green_700])
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
   }
 
   func testMinimumLabel_NonLiveProject() {

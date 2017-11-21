@@ -58,15 +58,15 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
         let title = string(forCategoryId: categoryId, friendName: activity.user?.name ?? "")
         return title.simpleHtmlAttributedString(
           base: [
-            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+            NSFontAttributeName: UIFont.ksr_subhead(size: 12),
+            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
           ],
           bold: [
-            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+            NSFontAttributeName: UIFont.ksr_subhead(size: 12),
             NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
           ],
           italic: [
-            NSFontAttributeName: UIFont.ksr_subhead(size: 14),
+            NSFontAttributeName: UIFont.ksr_subhead(size: 12),
             NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
           ])
           ?? .init()
@@ -140,29 +140,13 @@ private func string(forCategoryId id: Int, friendName: String) -> String {
   }
 }
 // swiftlint:enable cyclomatic_complexity
-
 private func percentFundedString(forActivity activity: Activity) -> NSAttributedString {
   guard let project = activity.project else { return NSAttributedString(string: "") }
 
   let percentage = Format.percentage(project.stats.percentFunded)
-  let funded = Strings.percentage_funded(percentage: percentage)
 
-  let mutableString = NSMutableAttributedString(string: funded, attributes: [
-    NSFontAttributeName: UIFont.ksr_caption1(),
-    NSForegroundColorAttributeName: UIColor.ksr_dark_grey_400
-    ])
-
-  if let percentRange = mutableString.string.range(of: percentage) {
-    let percentStartIndex = mutableString.string
-      .distance(from: mutableString.string.startIndex, to: percentRange.lowerBound)
-    mutableString.addAttributes([
-      NSFontAttributeName: UIFont.ksr_headline(size: 12.0),
-      NSForegroundColorAttributeName:
-        (activity.category == .cancellation
-          || activity.category == .failure
-          || activity.category == .suspension) ? UIColor.ksr_text_dark_grey_400 : UIColor.ksr_text_green_700
-      ], range: NSRange(location: percentStartIndex, length: percentage.characters.count))
-  }
-
-  return mutableString
+    return NSAttributedString(string: percentage, attributes: [
+      NSFontAttributeName: UIFont.ksr_caption1(size: 10),
+      NSForegroundColorAttributeName: UIColor.ksr_green_700
+      ])
 }

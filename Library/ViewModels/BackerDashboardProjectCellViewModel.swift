@@ -16,6 +16,9 @@ public protocol BackerDashboardProjectCellViewModelOutputs {
   /// Emits text for the metadata label.
   var metadataText: Signal<String, NoError> { get }
 
+  /// Emits a color for the metadata background view.
+  var metadataBackgroundColor: Signal<UIColor, NoError> { get }
+
   /// Emits attributed text for the percent funded label.
   var percentFundedText: Signal<NSAttributedString, NoError> { get }
 
@@ -51,6 +54,8 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progress = project.map { $0.stats.fundingProgress }
 
+    self.metadataBackgroundColor = project.map(metadataBackgroundColor(for:))
+
     self.metadataText = project.map(metadataString(for:))
 
     self.metadataIconIsHidden = project.map { $0.state != .live }
@@ -67,6 +72,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
     self.projectProperty.value = project
   }
 
+  public let metadataBackgroundColor: Signal<UIColor, NoError>
   public let metadataIconIsHidden: Signal<Bool, NoError>
   public let metadataText: Signal<String, NoError>
   public let percentFundedText: Signal<NSAttributedString, NoError>
@@ -96,13 +102,13 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: percentage, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1().bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_text_green_700
+      NSFontAttributeName: UIFont.ksr_caption1(size: 10),
+      NSForegroundColorAttributeName: UIColor.ksr_green_700
     ])
   default:
     return NSAttributedString(string: percentage, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1().bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+      NSFontAttributeName: UIFont.ksr_caption1(size: 10),
+      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
     ])
   }
 }
@@ -110,9 +116,18 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
 private func progressBarColor(for project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
+    return .ksr_green_700
+  default:
+    return .ksr_grey_400
+  }
+}
+
+private func metadataBackgroundColor(for project: Project) -> UIColor {
+  switch project.state {
+  case .live, .successful:
     return .ksr_green_500
   default:
-    return .ksr_dark_grey_400
+    return .ksr_dark_grey_900
   }
 }
 

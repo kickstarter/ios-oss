@@ -55,7 +55,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     _ = self |> baseControllerStyle()
 
     _ = self.woohooLabel
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
@@ -79,10 +79,9 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
 
     _ = self.shareMoreButton
       |> borderButtonStyle
+      |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
-        Strings.project_checkout_share_buttons_more_share_options()
-    }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
 
     _ = self.doneButton
       |> doneBarButtonItemStyle

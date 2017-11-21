@@ -22,7 +22,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var customPercentIndicatorLabel: UILabel!
   @IBOutlet fileprivate weak var customPledgedAmountSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var customPledgedAmountTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var customStackView: UIStackView!
   @IBOutlet fileprivate weak var externalPercentLabel: UILabel!
   @IBOutlet fileprivate weak var externalPercentIndicatorLabel: UILabel!
   @IBOutlet fileprivate weak var externalPledgedAmountSubtitleLabel: UILabel!
@@ -154,7 +153,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.averagePledgeAmountTitleLabel.rac.text = self.viewModel.outputs.averagePledgeText
     self.customPercentLabel.rac.text = self.viewModel.outputs.customPercentText
     self.customPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.customPledgedText
-    self.customStackView.rac.hidden = self.viewModel.outputs.customStackViewHidden
     self.externalPercentLabel.rac.text = self.viewModel.outputs.externalPercentText
     self.externalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.externalPledgedText
     self.internalPercentLabel.rac.text = self.viewModel.outputs.internalPercentText

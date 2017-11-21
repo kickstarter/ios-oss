@@ -50,9 +50,6 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a string for the backed button title label.
   var backedButtonTitleText: Signal<String, NoError> { get }
 
-  /// Emits a string for the backer location label.
-  var backerLocationText: Signal<String, NoError> { get }
-
   /// Emits a string for the backer name label.
   var backerNameText: Signal<String, NoError> { get }
 
@@ -129,8 +126,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.backedButtonTitleText = user.map { user in
         Strings.projects_count_newline_backed(projects_count: user.stats.backedProjectsCount ?? 0)
     }
-
-    self.backerLocationText = user.map { $0.location?.displayableName ?? "" }
 
     self.backerNameText = user.map { $0.name }
 
@@ -243,7 +238,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
   public let avatarURL: Signal<URL?, NoError>
   public let backedButtonTitleText: Signal<String, NoError>
-  public let backerLocationText: Signal<String, NoError>
   public let backerNameText: Signal<String, NoError>
   public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError>
   public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>

@@ -25,9 +25,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits to animate arrow image down or up.
   var animateArrowToDown: Signal<Bool, NoError> { get }
 
-  /// Emits a Bool to animate the border line when expanded or collapsed.
-  var animateBorderLineViewAndIsExpanded: Signal<Bool, NoError> { get }
-
   /// Emits opacity for arrow and whether to animate the change, used for launch transition.
   var arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
 
@@ -169,12 +166,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.showDiscoveryFilters = rowForFilters
       .takeWhen(paramsAndFiltersAreHidden.filter { !$0.filtersAreHidden })
 
-    self.animateBorderLineViewAndIsExpanded = Signal.merge(
-      self.paramsProperty.signal.skipNil().mapConst(false),
-      self.showDiscoveryFilters.mapConst(true),
-      dismissFiltersSignal.mapConst(false)
-    )
-
     self.titleButtonAccessibilityHint = self.animateArrowToDown
       .map { $0 ? Strings.Opens_filters() : Strings.Closes_filters()
     }
@@ -251,7 +242,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   }
 
   public let animateArrowToDown: Signal<Bool, NoError>
-  public let animateBorderLineViewAndIsExpanded: Signal<Bool, NoError>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>

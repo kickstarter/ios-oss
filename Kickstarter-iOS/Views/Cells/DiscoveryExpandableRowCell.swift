@@ -21,7 +21,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
 
     _ = self.projectsCountLabel
       |> UILabel.lens.isAccessibilityElement .~ false
-      |> UILabel.lens.textColor .~ discoverySecondaryColor()
+      |> UILabel.lens.textColor .~ .ksr_green_500
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_headline(size: 13)

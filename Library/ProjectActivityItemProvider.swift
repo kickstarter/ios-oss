@@ -16,14 +16,23 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
                                               itemForActivityType activityType: UIActivityType) -> Any? {
     if let project = self.project {
       if activityType == .mail || activityType == .message {
-        return project.name
+        return formattedString(for: project)
       } else if activityType == .postToTwitter {
-        return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
+        return Strings.project_checkout_share_twitter_via_kickstarter(
+          project_or_update_title: formattedString(for: project)
+        )
       } else if activityType == .copyToPasteboard || activityType == .postToFacebook {
         return project.urls.web.project
       }
     }
     return self.activityViewControllerPlaceholderItem(activityViewController)
+  }
+
+  private func formattedString(for project: Project) -> String {
+    return """
+            \(project.name)\n
+            \(project.urls.web.project)
+           """
   }
 }
 #endif

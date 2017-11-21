@@ -1,7 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "filename" : "heart-circle-filled-icon.pdf"
     }
   ],
   "info" : {

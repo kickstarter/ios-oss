@@ -8,7 +8,8 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, updates: $1.updates) }
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips,
+        updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let comments = Lens<User.Notifications, Bool?>(
@@ -18,7 +19,8 @@ extension User.Notifications {
         mobileBackings: $1.mobileBackings, mobileComments: $1.mobileComments,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates,
-        postLikes: $1.postLikes, updates: $1.updates) }
+        postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
     )
 
     public static let follower = Lens<User.Notifications, Bool?>(
@@ -28,7 +30,8 @@ extension User.Notifications {
         mobileBackings: $1.mobileBackings, mobileComments: $1.mobileComments,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates,
-        postLikes: $1.postLikes, updates: $1.updates) }
+        postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
     )
 
     public static let friendActivity = Lens<User.Notifications, Bool?>(
@@ -37,7 +40,7 @@ extension User.Notifications {
         friendActivity: $0, mobileBackings: $1.mobileBackings, mobileComments: $1.mobileComments,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let postLikes = Lens<User.Notifications, Bool?>(
@@ -46,7 +49,18 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $1.mobileUpdates, postLikes: $0, updates: $1.updates) }
+        mobileUpdates: $1.mobileUpdates, postLikes: $0, creatorTips: $1.creatorTips, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
+    )
+
+    public static let creatorTips = Lens<User.Notifications, Bool?>(
+      view: { $0.creatorTips },
+      set: { User.Notifications(backings: $1.backings, comments: $1.comments, follower: $1.follower,
+        friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
+        mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
+        mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $0, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
     )
 
     public static let updates = Lens<User.Notifications, Bool?>(
@@ -55,7 +69,18 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, updates: $0) }
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $0,
+        creatorDigest: $1.creatorDigest) }
+    )
+
+    public static let creatorDigest = Lens<User.Notifications, Bool?>(
+      view: { $0.creatorDigest },
+      set: { User.Notifications(backings: $1.backings, comments: $1.comments, follower: $1.follower,
+        friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
+        mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
+        mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
+        mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes, creatorTips: $1.creatorTips,
+        updates: $1.updates, creatorDigest: $0) }
     )
 
     public static let mobileBackings = Lens<User.Notifications, Bool?>(
@@ -64,7 +89,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $0, mobileComments: $1.mobileComments,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let mobileComments = Lens<User.Notifications, Bool?>(
@@ -73,7 +98,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings, mobileComments: $0,
         mobileFollower: $1.mobileFollower, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let mobileFollower = Lens<User.Notifications, Bool?>(
@@ -82,7 +107,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $0, mobileFriendActivity: $1.mobileFriendActivity,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let mobileFriendActivity = Lens<User.Notifications, Bool?>(
@@ -91,7 +116,7 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower, mobileFriendActivity: $0,
         mobilePostLikes: $1.mobilePostLikes, mobileUpdates: $1.mobileUpdates, postLikes: $1.postLikes,
-        updates: $1.updates) }
+        creatorTips: $1.creatorTips, updates: $1.updates, creatorDigest: $1.creatorDigest) }
     )
 
     public static let mobilePostLikes = Lens<User.Notifications, Bool?>(
@@ -100,7 +125,8 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $0, mobileUpdates: $1.mobileUpdates,
-        postLikes: $1.postLikes, updates: $1.updates) }
+        postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
     )
 
     public static let mobileUpdates = Lens<User.Notifications, Bool?>(
@@ -109,7 +135,8 @@ extension User.Notifications {
         friendActivity: $1.friendActivity, mobileBackings: $1.mobileBackings,
         mobileComments: $1.mobileComments, mobileFollower: $1.mobileFollower,
         mobileFriendActivity: $1.mobileFriendActivity, mobilePostLikes: $1.mobilePostLikes,
-        mobileUpdates: $0, postLikes: $1.postLikes, updates: $1.updates) }
+        mobileUpdates: $0, postLikes: $1.postLikes, creatorTips: $1.creatorTips, updates: $1.updates,
+        creatorDigest: $1.creatorDigest) }
     )
   }
 }
