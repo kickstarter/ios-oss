@@ -579,7 +579,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.userSessionStarted()
 
       self.getNotificationAuthorizationStatus.assertValueCount(1)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
@@ -587,21 +587,21 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationWillEnterForeground()
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(2)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
@@ -609,21 +609,21 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(3)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(3)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(3)
+      self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
     }

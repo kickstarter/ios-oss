@@ -259,13 +259,13 @@ AppDelegateViewModelOutputs {
       self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
     }
 
-    self.authorizeForRemoteNotifications = Signal.merge(
-      applicationIsReadyForRegisteringNotifications,
-      self.notificationAuthorizationStatusProperty.signal
-        .skipNil()
-        .filter { $0 == .notDetermined }
-        .ignoreValues()
-    )
+    self.authorizeForRemoteNotifications = applicationIsReadyForRegisteringNotifications
+        .takeWhen(
+          self.notificationAuthorizationStatusProperty.signal
+          .skipNil()
+          .filter { $0 == .notDetermined }
+          .ignoreValues()
+      )
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
