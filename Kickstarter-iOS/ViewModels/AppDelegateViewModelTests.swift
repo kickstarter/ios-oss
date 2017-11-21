@@ -1041,7 +1041,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.scheduler.advance(by: .seconds(5))
 
-    self.setApplicationShortcutItems.assertValues([[.projectOfTheDay, .projectsWeLove, .search]])
+    self.setApplicationShortcutItems.assertValues([[.projectsWeLove, .search]])
 
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
@@ -1049,8 +1049,8 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.setApplicationShortcutItems.assertValues(
       [
-        [.projectOfTheDay, .projectsWeLove, .search],
-        [.projectOfTheDay, .projectsWeLove, .search]
+        [.projectsWeLove, .search],
+        [.projectsWeLove, .search]
       ]
     )
   }
@@ -1069,7 +1069,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
-        [.projectOfTheDay, .recommendedForYou, .projectsWeLove, .search]
+        [.recommendedForYou, .projectsWeLove, .search]
       ])
     }
   }
@@ -1088,7 +1088,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
-        [.creatorDashboard, .projectOfTheDay, .recommendedForYou, .projectsWeLove]
+        [.creatorDashboard,.recommendedForYou, .projectsWeLove, .search]
       ])
     }
   }
@@ -1116,43 +1116,6 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDashboard.assertValueCount(1)
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
-  }
-
-  func testPerformShortcutItem_ProjectOfTheDay() {
-    let potd = .template
-      |> Project.lens.dates.potdAt .~ MockDate().timeIntervalSince1970
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
-                                                   launchOptions: [:])
-
-      self.presentViewController.assertValueCount(0)
-
-      self.vm.inputs.applicationPerformActionForShortcutItem(
-        ShortcutItem.projectOfTheDay.applicationShortcutItem
-      )
-
-      self.presentViewController.assertValueCount(1)
-    }
-  }
-
-  func testLaunchShortcutItem_ProjectOfTheDay() {
-    let potd = .template
-      |> Project.lens.dates.potdAt .~ MockDate().timeIntervalSince1970
-    let env = .template |> DiscoveryEnvelope.lens.projects .~ [potd]
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env)) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [
-          UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectOfTheDay.applicationShortcutItem
-        ]
-      )
-
-      self.presentViewController.assertValueCount(1)
-      XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
-    }
   }
 
   func testPerformShortcutItem_ProjectsWeLove() {
@@ -1254,7 +1217,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
     XCTAssertEqual([nil, nil, "projects_we_love"],
                    self.trackingClient.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([nil, nil, "project_of_the_day,projects_we_love,search"],
+    XCTAssertEqual([nil, nil, "projects_we_love,search"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
 
     withEnvironment(currentUser: .template) {
@@ -1278,8 +1241,8 @@ final class AppDelegateViewModelTests: TestCase {
         self.trackingClient.properties(forKey: "type", as: String.self)
       )
       XCTAssertEqual(
-        [nil, nil, "project_of_the_day,projects_we_love,search",
-          "project_of_the_day,recommended_for_you,projects_we_love,search"],
+        [nil, nil, "projects_we_love,search",
+          "recommended_for_you,projects_we_love,search"],
         self.trackingClient.properties(forKey: "context", as: String.self)
       )
     }
@@ -1300,7 +1263,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
     XCTAssertEqual([nil, nil, "projects_we_love"],
                    self.trackingClient.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([nil, nil, "project_of_the_day,projects_we_love,search"],
+    XCTAssertEqual([nil, nil, "projects_we_love,search"],
                    self.trackingClient.properties(forKey: "context", as: String.self))
   }
 

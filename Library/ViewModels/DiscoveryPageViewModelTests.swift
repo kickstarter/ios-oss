@@ -223,11 +223,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testGoToProject() {
-    let potdAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
     let project = Project.template
-    let potd = project
-      |> Project.lens.id %~ { $0 + 1 }
-      |> Project.lens.dates.potdAt .~ potdAt
     let discoveryEnvelope = .template
       |> DiscoveryEnvelope.lens.projects .~ (
         (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
@@ -254,32 +250,23 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.goToPlaylistRefTag.assertValues([.discoveryWithSort(.magic), .categoryWithSort(.magic)],
                                            "Go to the project with the category sort ref tag.")
 
-      self.vm.inputs.tapped(project: potd)
-
-      self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
-      self.goToPlaylistProject.assertValues([project, project, potd])
-      self.goToPlaylistRefTag.assertValues(
-        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd],
-        "Go to the project with the POTD ref tag."
-      )
-
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
       self.vm.inputs.tapped(project: project)
 
-      self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
-      self.goToPlaylistProject.assertValues([project, project, potd, project])
+      self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
+      self.goToPlaylistProject.assertValues([project, project, project])
       self.goToPlaylistRefTag.assertValues(
-        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic)],
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .recommendedWithSort(.magic)],
         "Go to the project with the recommended sort ref tag."
       )
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
       self.vm.inputs.tapped(project: project)
 
-      self.goToPlaylist.assertValueCount(5, "New playlist for project emits.")
-      self.goToPlaylistProject.assertValues([project, project, potd, project, project])
+      self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
+      self.goToPlaylistProject.assertValues([project, project, project, project])
       self.goToPlaylistRefTag.assertValues(
-        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .recommendedWithSort(.magic),
           .socialWithSort(.magic)], "Go to the project with the social ref tag."
       )
 
@@ -294,9 +281,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(sort: .endingSoon)
       self.vm.inputs.tapped(project: project)
-      self.goToPlaylistProject.assertValues([project, project, potd, project, project, project])
+      self.goToPlaylistProject.assertValues([project, project, project, project, project])
       self.goToPlaylistRefTag.assertValues(
-        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .discoveryPotd, .recommendedWithSort(.magic),
+        [.discoveryWithSort(.magic), .categoryWithSort(.magic), .recommendedWithSort(.magic),
           .socialWithSort(.magic), .socialWithSort(.endingSoon)], "Sort changes on ref tag."
       )
     }

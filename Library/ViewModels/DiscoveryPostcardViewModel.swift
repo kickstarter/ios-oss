@@ -12,7 +12,6 @@ public struct PostcardMetadataData {
 private enum PostcardMetadataType {
   case backing
   case featured
-  case potd
 
   fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
@@ -25,10 +24,6 @@ private enum PostcardMetadataType {
       return PostcardMetadataData(iconImage: image(named: "metadata-featured"),
                                   labelText: Strings.discovery_baseball_card_metadata_featured_project(
                                     category_name: rootCategory),
-                                  iconAndTextColor: .ksr_dark_grey_900)
-    case .potd:
-      return PostcardMetadataData(iconImage: nil,
-                                  labelText: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
                                   iconAndTextColor: .ksr_dark_grey_900)
     }
   }
@@ -81,9 +76,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits metadata icon image
   var metadataIcon: Signal<UIImage?, NoError> { get }
-
-  /// Emits a boolean to determine if metadata icon should be hidden
-  var metadataIconHidden: Signal<Bool, NoError> { get }
 
   /// Emits icon image tint color
   var metadataIconImageViewTintColor: Signal<UIColor, NoError> { get }
@@ -195,11 +187,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.metadataLabelText = metadataData.map { $0.labelText }
     self.metadataTextColor = metadataData.map { $0.iconAndTextColor }
     self.metadataIconImageViewTintColor = metadataData.map { $0.iconAndTextColor }
-
-    self.metadataIconHidden = configuredProject.map { p in
-      let today = AppEnvironment.current.dateType.init().date
-      return p.isPotdToday(today: today)
-    }
 
     self.percentFundedTitleLabelText = configuredProject
       .map { $0.state == .live ? Format.percentage($0.stats.percentFunded) : "" }
@@ -369,7 +356,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
-  public let metadataIconHidden: Signal<Bool, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
@@ -458,8 +444,6 @@ private func postcardMetadata(forProject project: Project) -> PostcardMetadataDa
 
   if project.personalization.isBacking == true {
     return PostcardMetadataType.backing.data(forProject: project)
-  } else if project.isPotdToday(today: today) {
-    return PostcardMetadataType.potd.data(forProject: project)
   } else if project.isFeaturedToday(today: today) {
     return PostcardMetadataType.featured.data(forProject: project)
   } else {

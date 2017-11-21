@@ -110,7 +110,6 @@ public struct Project {
     public let deadline: TimeInterval
     public let featuredAt: TimeInterval?
     public let launchedAt: TimeInterval
-    public let potdAt: TimeInterval?
     public let stateChangedAt: TimeInterval
   }
 
@@ -136,11 +135,6 @@ public struct Project {
   public func isFeaturedToday(today: Date = Date(), calendar: Calendar = .current) -> Bool {
     guard let featuredAt = self.dates.featuredAt else { return false }
     return isDateToday(date: featuredAt, today: today, calendar: calendar)
-  }
-
-  public func isPotdToday(today: Date = Date(), calendar: Calendar = .current) -> Bool {
-    guard let potdAt = self.dates.potdAt else { return false }
-    return isDateToday(date: potdAt, today: today, calendar: calendar)
   }
 
   private func isDateToday(date: TimeInterval, today: Date, calendar: Calendar) -> Bool {
@@ -235,7 +229,6 @@ extension Project.Dates: Argo.Decodable {
       <^> json <| "deadline"
       <*> json <|? "featured_at"
       <*> json <| "launched_at"
-      <*> json <|? "potd_at"
       <*> json <| "state_changed_at"
   }
 }

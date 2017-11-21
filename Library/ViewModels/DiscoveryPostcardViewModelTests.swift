@@ -15,7 +15,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
   internal let metadataIcon = TestObserver<UIImage?, NoError>()
-  internal let metadataIconHidden = TestObserver<Bool, NoError>()
   internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
   internal let metadataTextColor = TestObserver<UIColor, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
@@ -51,7 +50,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
     self.vm.outputs.metadataTextColor.observe(self.metadataTextColor.observer)
     self.vm.outputs.metadataIconImageViewTintColor.observe(self.metadataIconTintColor.observer)
-    self.vm.outputs.metadataIconHidden.observe(self.metadataIconHidden.observer)
     self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
     self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
@@ -238,7 +236,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testMetadata() {
     let featuredAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
-    let potdAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
 
     let backedProject = .template
       |> Project.lens.personalization.isBacking .~ true
@@ -247,141 +244,55 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.category.parent .~ Category.art
       |> Project.lens.dates.featuredAt .~ featuredAt
 
-    let starred = .template
-      |> Project.lens.personalization.isStarred .~ true
-
-    let starredAndPotdProject = .template
-      |> Project.lens.dates.potdAt .~ potdAt
-      |> Project.lens.personalization.isStarred .~ true
-
-    let backedStarredAndPotdProject = .template
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.isStarred .~ true
-      |> Project.lens.dates.potdAt .~ potdAt
-
-    let potdAndFeaturedProject = .template
-      |> Project.lens.dates.potdAt .~ potdAt
-      |> Project.lens.dates.featuredAt .~ featuredAt
-
     let backedColor: UIColor = .ksr_green_700
     let featuredColor: UIColor = .ksr_dark_grey_900
-    let potdColor: UIColor = .ksr_dark_grey_900
-    let starredColor: UIColor = .ksr_dark_grey_900
 
     let backedImage = image(named: "metadata-backing")
     let featuredImage = image(named: "metadata-featured")
-    let starredImage = image(named: "metadata-starred")
 
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: Project.template)
 
       self.metadataLabelText.assertValueCount(0, "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
-      self.metadataIconHidden.assertValues([false])
 
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "dadbeeef", user: User.template))
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeeef", user: User.template))
       self.vm.inputs.configureWith(project: backedProject)
 
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
-      self.metadataIconHidden.assertValues([false, false])
       self.metadataIcon.assertValues([backedImage])
       self.metadataTextColor.assertValues([backedColor])
       self.metadataIconTintColor.assertValues([backedColor])
 
-      self.vm.inputs.configureWith(project: starredAndPotdProject)
-
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day()
         ], "Starred metadata takes precedence.")
 
-      self.metadataViewHidden.assertValues([true, false, false])
-      self.metadataIconHidden.assertValues([false, false, true], "No Icon shown for the potd")
-      self.metadataIcon.assertValues([backedImage, starredImage])
-      self.metadataTextColor.assertValues([backedColor, starredColor])
-      self.metadataIconTintColor.assertValues([backedColor, starredColor])
-
-      self.vm.inputs.configureWith(project: backedStarredAndPotdProject)
-      self.metadataLabelText.assertValues(
-        [
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-          Strings.discovery_baseball_card_metadata_backer()
-        ], "Backed metadata takes precedence.")
-
-      self.metadataViewHidden.assertValues([true, false, false, false])
-      self.metadataIconHidden.assertValues([false, false, true, true], "No Icon shown for the potd")
-      self.metadataIcon.assertValues([backedImage, starredImage, backedImage])
-      self.metadataTextColor.assertValues([backedColor, starredColor, backedColor])
-      self.metadataIconTintColor.assertValues([backedColor, starredColor, backedColor])
+      self.metadataViewHidden.assertValues([true, false])
+      self.metadataIcon.assertValues([backedImage])
+      self.metadataTextColor.assertValues([backedColor])
+      self.metadataIconTintColor.assertValues([backedColor])
 
       self.vm.inputs.configureWith(project: featuredProject)
       self.metadataLabelText.assertValues(
         [
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
           )
         ], "Featured metadata emits.")
 
-      self.metadataViewHidden.assertValues([true, false, false, false, false])
-      self.metadataIconHidden.assertValues([false, false, true, true, false],
-        "Icon shown for the featured project")
-      self.metadataIcon.assertValues([backedImage, starredImage, backedImage, featuredImage])
-      self.metadataTextColor.assertValues([backedColor, starredColor, backedColor, featuredColor])
-      self.metadataIconTintColor.assertValues([backedColor, starredColor, backedColor, featuredColor])
-
-      self.vm.inputs.configureWith(project: potdAndFeaturedProject)
-      self.metadataLabelText.assertValues(
-        [
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_featured_project(
-            category_name: featuredProject.category.name
-          ),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day()
-        ], "Potd metadata takes precedence.")
-
-      self.metadataViewHidden.assertValues([true, false, false, false, false, false])
-      self.metadataIconHidden.assertValues([false, false, true, true, false, true],
-        "No Icon shown for the potd project")
-      self.metadataIcon.assertValues(
-        [backedImage, starredImage, backedImage, featuredImage, nil])
-      self.metadataTextColor.assertValues(
-        [backedColor, starredColor, backedColor, featuredColor, potdColor])
-      self.metadataIconTintColor.assertValues(
-        [backedColor, starredColor, backedColor, featuredColor, potdColor])
-
-      self.vm.inputs.configureWith(project: starred)
-      self.metadataLabelText.assertValues(
-        [
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-          Strings.discovery_baseball_card_metadata_backer(),
-          Strings.discovery_baseball_card_metadata_featured_project(
-            category_name: featuredProject.category.name
-          ),
-          Strings.discovery_baseball_card_metadata_project_of_the_Day()
-        ], "Potd metadata takes precedence.")
-
-      self.metadataViewHidden.assertValues([true, false, false, false, false, false, true])
-      self.metadataIconHidden.assertValues([false, false, true, true, false, true, false])
-      self.metadataIcon.assertValues(
-        [backedImage, starredImage, backedImage, featuredImage, nil])
-      self.metadataTextColor.assertValues(
-        [backedColor, starredColor, backedColor, featuredColor, potdColor])
-      self.metadataIconTintColor.assertValues(
-        [backedColor, starredColor, backedColor, featuredColor, potdColor])
+      self.metadataViewHidden.assertValues([true, false, false])
+      self.metadataIcon.assertValues([backedImage, featuredImage])
+      self.metadataTextColor.assertValues([backedColor, featuredColor])
+      self.metadataIconTintColor.assertValues([backedColor, featuredColor])
 
       AppEnvironment.logout()
 
       // Implement when updating DiscoveryPageVC logout behavior.
-      // self.metadataViewHidden.assertValues([true, false, true])
+       self.metadataViewHidden.assertValues([true, false, false])
     }
   }
 

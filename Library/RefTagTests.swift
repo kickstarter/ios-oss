@@ -12,7 +12,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("dashboard", RefTag.dashboard.stringTag)
     XCTAssertEqual("dashboard_activity", RefTag.dashboardActivity.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
-    XCTAssertEqual("discovery_potd", RefTag.discoveryPotd.stringTag)
     XCTAssertEqual("live_stream_countdown", RefTag.liveStreamCountdown.stringTag)
     XCTAssertEqual("live_stream_discovery", RefTag.liveStreamDiscovery.stringTag)
     XCTAssertEqual("profile_backed", RefTag.profileBacked.stringTag)
@@ -44,7 +43,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.dashboard, RefTag.dashboard)
     XCTAssertEqual(RefTag.dashboardActivity, RefTag.dashboardActivity)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
-    XCTAssertEqual(RefTag.discoveryPotd, RefTag.discoveryPotd)
     XCTAssertEqual(RefTag.liveStreamCountdown, RefTag.liveStreamCountdown)
     XCTAssertEqual(RefTag.liveStreamDiscovery, RefTag.liveStreamDiscovery)
     XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
@@ -116,7 +114,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.discoveryWithSort(.popular),
                    RefTag(code: RefTag.discoveryWithSort(.popular).stringTag))
 
-    XCTAssertEqual(RefTag.discoveryPotd, RefTag(code: RefTag.discoveryPotd.stringTag))
     XCTAssertEqual(RefTag.liveStreamCountdown, RefTag(code: RefTag.liveStreamCountdown.stringTag))
     XCTAssertEqual(RefTag.liveStreamDiscovery, RefTag(code: RefTag.liveStreamDiscovery.stringTag))
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))

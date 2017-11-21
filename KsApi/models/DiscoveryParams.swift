@@ -63,11 +63,6 @@ public struct DiscoveryParams {
     params["state"] = self.state?.rawValue
     params["term"] = self.query
 
-    // Include the POTD only when searching when sorting by magic / not specifying sort
-    if params["sort"] == nil || params["sort"] == DiscoveryParams.Sort.magic.rawValue {
-      params["include_potd"] = self.includePOTD?.description
-    }
-
     return params
   }
 }
