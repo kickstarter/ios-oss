@@ -1088,7 +1088,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
-        [.creatorDashboard,.recommendedForYou, .projectsWeLove, .search]
+        [.creatorDashboard, .recommendedForYou, .projectsWeLove, .search]
       ])
     }
   }
