@@ -4,23 +4,24 @@ import Runes
 import Prelude
 
 public struct Project {
-  public let blurb: String
-  public let category: Category
-  public let country: Country
-  public let creator: User
-  public let memberData: MemberData
-  public let dates: Dates
-  public let id: Int
-  public let location: Location
-  public let name: String
-  public let personalization: Personalization
-  public let photo: Photo
-  public let rewards: [Reward]
-  public let slug: String
-  public let state: State
-  public let stats: Stats
-  public let urls: UrlsEnvelope
-  public let video: Video?
+
+  public private(set) var blurb: String
+  public private(set) var category: RootCategoriesEnvelope.Category
+  public private(set) var country: Country
+  public private(set) var creator: User
+  public private(set) var memberData: MemberData
+  public private(set) var dates: Dates
+  public private(set) var id: Int
+  public private(set) var location: Location
+  public private(set) var name: String
+  public private(set) var personalization: Personalization
+  public private(set) var photo: Photo
+  public private(set) var rewards: [Reward]
+  public private(set) var slug: String
+  public private(set) var state: State
+  public private(set) var stats: Stats
+  public private(set) var urls: UrlsEnvelope
+  public private(set) var video: Video?
 
   public struct UrlsEnvelope {
     public let web: WebEnvelope
@@ -159,7 +160,7 @@ extension Project: Argo.Decodable {
     let create = curry(Project.init)
     let tmp1 = create
       <^> json <| "blurb"
-      <*> json <| "category"
+      <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1
@@ -276,4 +277,39 @@ private func removeUnknowns(_ xs: [Project.MemberData.Permission]) -> [Project.M
 private func toInt(string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success)
     ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
+}
+
+/*
+ This is a helper function that extracts the value from the Argo.JSON object type to create a graph Category
+ object (that conforms to Swift.Decodable). It's an work around that fixes the problem of incompatibility
+ between Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our
+ code to use exclusively Swift's native Decodable.
+ */
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+
+  guard let jsonObj = json else {
+    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
+  }
+
+  switch jsonObj {
+  case .object(let dic):
+    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
+                                                   name: categoryInfo(dic).1)
+    return .success(category)
+  default:
+    return .failure(DecodeError.custom("JSON should be object type"))
+  }
+}
+
+private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
+  guard let name = json["name"], let id = json["id"] else {
+    return("", "")
+  }
+
+  switch (id, name) {
+  case (.number(let id), .string(let name)):
+    return ("\(id)", name)
+  default:
+    return("", "")
+  }
 }

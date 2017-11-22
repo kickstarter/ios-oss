@@ -118,7 +118,7 @@ DiscoveryViewModelOutputs {
     }
 
     self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()
-      .map { $0.category?.root?.id }
+      .map { $0.category?.intID }
       .skipRepeats(==)
 
     self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()

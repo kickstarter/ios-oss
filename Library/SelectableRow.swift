@@ -28,7 +28,7 @@ public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
   public var starred: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params..DiscoveryParams.lens.starred
   }
-  public var category: Lens<SelectableRow, KsApi.Category?> {
+  public var category: Lens<SelectableRow, KsApi.RootCategoriesEnvelope.Category?> {
     return SelectableRow.lens.params..DiscoveryParams.lens.category
   }
   public var hasLiveStreams: Lens<SelectableRow, Bool?> {

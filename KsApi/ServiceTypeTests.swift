@@ -14,7 +14,8 @@ final class ServiceTypeTests: XCTestCase {
       basicHTTPAuth: BasicHTTPAuth(
         username: "username",
         password: "password"
-      )
+      ),
+      graphQLEndpointUrl: URL(string: "http://www.ksr.com")!
     ),
     oauthToken: OauthToken(
       token: "cafebeef"
@@ -34,7 +35,8 @@ final class ServiceTypeTests: XCTestCase {
       basicHTTPAuth: BasicHTTPAuth(
         username: "username",
         password: "password"
-      )
+      ),
+      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
     )
   )
 
@@ -46,7 +48,8 @@ final class ServiceTypeTests: XCTestCase {
       apiClientAuth: ClientAuth(
         clientId: "deadbeef"
       ),
-      basicHTTPAuth: nil
+      basicHTTPAuth: nil,
+      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
     )
   )
 
@@ -191,7 +194,8 @@ final class ServiceTypeTests: XCTestCase {
         basicHTTPAuth: BasicHTTPAuth(
           username: "username",
           password: "password"
-        )
+        ),
+        graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
       )
     )
 

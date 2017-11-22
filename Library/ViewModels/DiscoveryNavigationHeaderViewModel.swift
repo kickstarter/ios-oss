@@ -143,7 +143,9 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         .map { ($0.category?.isRoot == .some(false) ? 0.6 : 1.0, true) }
     )
 
-    self.primaryLabelText = strings.map { $0.filter }
+    self.primaryLabelText = strings.map { filter in
+      filter.filter
+      }
 
     self.secondaryLabelIsHidden = strings
       .map { $0.subcategory == nil }
@@ -173,7 +175,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map(accessibilityLabelForTitleButton)
 
     let categoryIdOnParamsUpdated = currentParams
-      .map { $0.category?.id }
+      .map { $0.category?.intID }
       .skipNil()
 
     let categoryIdOnFavoriteTap = categoryIdOnParamsUpdated
@@ -275,7 +277,7 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
   } else if params.social == true {
     filterText = Strings.Following()
   } else if let category = params.category {
-    filterText = category.isRoot ? string(forCategoryId: category.id) : category.root?.name ?? ""
+    filterText = category.isRoot ? string(forCategoryId: category.intID ?? -1) : category.root?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
   } else if params.recommended == true {
     filterText = Strings.Recommended_For_You()

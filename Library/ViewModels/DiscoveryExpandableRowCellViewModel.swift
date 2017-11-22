@@ -48,14 +48,14 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
       .map {
         Strings.Filter_name_project_count_live_projects(
           filter_name: ($0.params.category?.name ?? ""),
-          project_count: ($0.params.category?.projectsCount ?? 0))
+          project_count: ($0.params.category?.totalProjectCount ?? 0))
       }
 
     self.projectsCountLabelText = expandableRow
-      .map { Format.wholeNumber($0.params.category?.projectsCount ?? 0) }
+      .map { Format.wholeNumber($0.params.category?.totalProjectCount ?? 0) }
 
     self.projectsCountLabelHidden = expandableRow
-      .map { $0.params.category?.projectsCount == .some(0) }
+      .map { $0.params.category?.totalProjectCount == .some(0) }
 
     self.projectsCountLabelAlpha = expandableRowAndCategoryId
       .map { expandableRow, categoryId in categoryId == nil || expandableRow.isExpanded ? 1.0 : 0.4 }

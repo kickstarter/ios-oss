@@ -294,7 +294,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_subcategory_name_in_category_name(
         subcategory_name: subcategoryParams.category?.name ?? "",
-        category_name: subcategoryParams.category?.root?.name ?? "")
+        category_name: subcategoryParams.category?._parent?.name ?? "")
       ])
   }
 

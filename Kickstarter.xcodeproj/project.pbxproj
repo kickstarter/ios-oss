@@ -895,6 +895,14 @@
 		D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FD4CC81E26433C00488660 /* libz.tbd */; };
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
+		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
+		D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */; };
+		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
+		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
+		D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */; };
+		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
+		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
+		D6FB2A3D1FA27D0300B0D282 /* GraphCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */; };
 		D764DAFC1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */; };
@@ -2410,6 +2418,14 @@
 		D0FD4CC41E2642EB00488660 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
+		D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
+		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
+		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
+		D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategoriesEnvelope.CategoryTemplates.swift; sourceTree = "<group>"; };
+		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
+		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
+		D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewController.swift; sourceTree = "<group>"; };
@@ -3591,6 +3607,8 @@
 			isa = PBXGroup;
 			children = (
 				D01587531EEB2DE4006E7684 /* Info.plist */,
+				D67F29351F68333800E399A6 /* GraphSchema.swift */,
+				D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */,
 				D01587761EEB2ED6006E7684 /* MockService.swift */,
 				D01588261EEB2ED7006E7684 /* ServerConfig.swift */,
 				D01588271EEB2ED7006E7684 /* Service.swift */,
@@ -3668,6 +3686,8 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
+				D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */,
+				D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
@@ -3740,6 +3760,8 @@
 				D01587A31EEB2ED6006E7684 /* FindFriendsEnvelopeLenses.swift */,
 				D01587A41EEB2ED6006E7684 /* FriendStatsEnvelope.StatsLenses.swift */,
 				D01587A51EEB2ED6006E7684 /* FriendStatsEnvelopeLenses.swift */,
+				D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */,
+				D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */,
 				D01587A61EEB2ED6006E7684 /* ItemLenses.swift */,
 				D01587A71EEB2ED7006E7684 /* LocationLenses.swift */,
 				D01587A81EEB2ED7006E7684 /* MessageLenses.swift */,
@@ -3811,6 +3833,7 @@
 				D01588091EEB2ED7006E7684 /* ProjectTemplates.swift */,
 				D015880A1EEB2ED7006E7684 /* RewardsItemTemplates.swift */,
 				D015880B1EEB2ED7006E7684 /* RewardTemplates.swift */,
+				D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */,
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
 				D015880D1EEB2ED7006E7684 /* ShippingRuleTemplates.swift */,
 				D015880E1EEB2ED7006E7684 /* StarEnvelopeTemplates.swift */,
@@ -3825,6 +3848,7 @@
 				D01588171EEB2ED7006E7684 /* User.NotificationsTemplates.swift */,
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
+				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -5079,6 +5103,7 @@
 				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
+				D6FB2A3D1FA27D0300B0D282 /* GraphCategoryTests.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
@@ -5178,6 +5203,7 @@
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				A7ED1FBD1E831C5C00BFFA01 /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
+				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
 				A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				A7ED1FB71E831C5C00BFFA01 /* LiveStreamEventDetailsViewModelTests.swift in Sources */,
@@ -5488,6 +5514,7 @@
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D0158A0E1EEB30A2006E7684 /* CheckoutEnvelopeTemplates.swift in Sources */,
+				D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */,
 				D01589051EEB2ED7006E7684 /* ProjectActivityEnvelope.swift in Sources */,
 				D015884F1EEB2ED7006E7684 /* Category.swift in Sources */,
 				D015899F1EEB2ED7006E7684 /* ServiceType.swift in Sources */,
@@ -5531,7 +5558,9 @@
 				D01588931EEB2ED7006E7684 /* DiscoveryParamsLenses.swift in Sources */,
 				D01588AB1EEB2ED7006E7684 /* Project.PhotoLenses.swift in Sources */,
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
+				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,
+				D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */,
 				D01588D11EEB2ED7006E7684 /* SubmitApplePayEnvelopeLenses.swift in Sources */,
 				D01588911EEB2ED7006E7684 /* DiscoveryEnvelopeLenses.swift in Sources */,
 				D01588DF1EEB2ED7006E7684 /* User.StatsLenses.swift in Sources */,
@@ -5599,9 +5628,11 @@
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
+				D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */,
 				D0158A0C1EEB30A2006E7684 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
+				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
@@ -5618,6 +5649,7 @@
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
+				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
 				D0158A4D1EEB3220006E7684 /* MockService.swift in Sources */,
 				D01588651EEB2ED7006E7684 /* CreatePledgeEnvelope.swift in Sources */,
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,

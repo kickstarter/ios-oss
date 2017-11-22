@@ -12,7 +12,7 @@ final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
 
   let backedProjectText = TestObserver<String, NoError>()
-  let goToDiscovery = TestObserver<KsApi.Category, NoError>()
+  let goToDiscovery = TestObserver<KsApi.RootCategoriesEnvelope.Category, NoError>()
   let goToProject = TestObserver<Project, NoError>()
   let goToProjects = TestObserver<[Project], NoError>()
   let goToRefTag = TestObserver<RefTag, NoError>()
@@ -31,7 +31,7 @@ final class ThanksViewModelTests: TestCase {
     super.setUp()
 
     vm.outputs.backedProjectText.map { $0.string }.observe(backedProjectText.observer)
-    vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
+    vm.outputs.goToDiscovery.map { params in params.category ?? RootCategoriesEnvelope.Category.filmAndVideo }
       .observe(goToDiscovery.observer)
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
     vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
@@ -465,7 +465,8 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), NoError>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.project(Project.template |> Project.lens.category .~ Category.games)
+      secondVM.inputs.project(Project.template
+        |> Project.lens.category .~ RootCategoriesEnvelope.Category.games)
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(0, "Rating alert does not show on games project")

@@ -4,24 +4,25 @@ import Runes
 import Prelude
 
 public struct DiscoveryParams {
-  public let backed: Bool?
-  public let category: Category?
-  public let collaborated: Bool?
-  public let created: Bool?
-  public let hasLiveStreams: Bool?
-  public let hasVideo: Bool?
-  public let includePOTD: Bool?
-  public let page: Int?
-  public let perPage: Int?
-  public let query: String?
-  public let recommended: Bool?
-  public let seed: Int?
-  public let similarTo: Project?
-  public let social: Bool?
-  public let sort: Sort?
-  public let staffPicks: Bool?
-  public let starred: Bool?
-  public let state: State?
+
+  public private(set) var backed: Bool?
+  public private(set) var category: RootCategoriesEnvelope.Category?
+  public private(set) var collaborated: Bool?
+  public private(set) var created: Bool?
+  public private(set) var hasLiveStreams: Bool?
+  public private(set) var hasVideo: Bool?
+  public private(set) var includePOTD: Bool?
+  public private(set) var page: Int?
+  public private(set) var perPage: Int?
+  public private(set) var query: String?
+  public private(set) var recommended: Bool?
+  public private(set) var seed: Int?
+  public private(set) var similarTo: Project?
+  public private(set) var social: Bool?
+  public private(set) var sort: Sort?
+  public private(set) var staffPicks: Bool?
+  public private(set) var starred: Bool?
+  public private(set) var state: State?
 
   public enum State: String, Argo.Decodable {
     case all
@@ -46,7 +47,7 @@ public struct DiscoveryParams {
   public var queryParams: [String: String] {
     var params: [String: String] = [:]
     params["backed"] = self.backed == true ? "1" : self.backed == false ? "-1" : nil
-    params["category_id"] = self.category?.id.description
+    params["category_id"] = self.category?.intID?.description
     params["collaborated"] = self.collaborated?.description
     params["created"] = self.created?.description
     params["has_live_streams"] = self.hasLiveStreams?.description
@@ -94,7 +95,7 @@ extension DiscoveryParams: Argo.Decodable {
 
     let tmp1 = create
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> json <|? "category"
+      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
@@ -141,4 +142,31 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
     .filter { $0 <= 1 && $0 >= -1 }
     .map { .success($0 == 0 ? nil : $0 == 1) }
     .coalesceWith(.failure(.custom("Could not parse string into bool.")))
+}
+
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+
+  guard let jsonObj = json else {
+    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
+  }
+  switch jsonObj {
+  case .object(let dic):
+    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic)?.0 ?? "",
+                                                   name: categoryInfo(dic)?.1 ?? "")
+    return .success(category)
+  default:
+    return .failure(DecodeError.custom("JSON should be object type"))
+  }
+}
+
+private func categoryInfo(_ json: [String: JSON]) -> (String, String)? {
+  guard let name = json["name"], let id = json["id"] else {
+    return nil
+  }
+  switch (id, name) {
+  case (.number(let id), .string(let name)):
+    return ("\(id)", name)
+  default:
+    return nil
+  }
 }

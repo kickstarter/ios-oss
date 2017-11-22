@@ -136,7 +136,8 @@ final class AppEnvironmentTests: XCTestCase {
         apiBaseUrl: URL(string: "http://api.ksr.com")!,
         webBaseUrl: URL(string: "http://ksr.com")!,
         apiClientAuth: ClientAuth(clientId: "cafebeef"),
-        basicHTTPAuth: nil
+        basicHTTPAuth: nil,
+        graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
       ),
       oauthToken: OauthToken(token: "deadbeef")
     )

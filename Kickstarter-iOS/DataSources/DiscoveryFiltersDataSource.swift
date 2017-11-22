@@ -94,7 +94,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   internal func indexPath(forCategoryId categoryId: Int?) -> IndexPath? {
     for (idx, value) in self[section: Section.categories.rawValue].enumerated() {
       guard let (row, _) = value as? (ExpandableRow, Int?) else { continue }
-      if row.params.category?.id == categoryId {
+      if row.params.category?.intID == categoryId {
         return IndexPath(item: idx, section: Section.categories.rawValue)
       }
     }

@@ -51,7 +51,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.friendTitle = activity
       .map { activity in
-        guard let categoryId = activity.project?.category.rootId else {
+        guard let categoryId = activity.project?.category.intID else {
           return NSAttributedString(string: "")
         }
 

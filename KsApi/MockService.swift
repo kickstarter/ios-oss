@@ -24,7 +24,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let fetchBackingResponse: Backing
 
-  fileprivate let fetchCategoriesResponse: CategoriesEnvelope?
+  fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
 
   fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
   fileprivate let fetchCheckoutError: ErrorEnvelope?
@@ -157,7 +157,7 @@ internal struct MockService: ServiceType {
                 fetchActivitiesResponse: [Activity]? = nil,
                 fetchActivitiesError: ErrorEnvelope? = nil,
                 fetchBackingResponse: Backing = .template,
-                fetchCategoriesResponse: CategoriesEnvelope? = nil,
+                fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
                 fetchCheckoutResponse: CheckoutEnvelope? = nil,
                 fetchCheckoutError: ErrorEnvelope? = nil,
                 fetchCommentsResponse: [Comment]? = nil,
@@ -245,8 +245,8 @@ internal struct MockService: ServiceType {
 
     self.fetchBackingResponse = fetchBackingResponse
 
-    self.fetchCategoriesResponse = fetchCategoriesResponse ?? (.template
-      |> CategoriesEnvelope.lens.categories .~ [
+    self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
         .art,
         .filmAndVideo,
         .illustration,
@@ -512,6 +512,23 @@ internal struct MockService: ServiceType {
         |> User.lens.id .~ id
         |> User.lens.isFriend .~ true
     )
+  }
+
+  internal func fetchGraphCategories(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
+    if let response = self.fetchGraphCategoriesResponse {
+      return SignalProducer(value: response)
+    }
+    return .empty
+  }
+
+  internal func fetchGraphCategory(query: NonEmptySet<Query>)
+    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError> {
+    return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(query.head)")
+  }
+
+  internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
+    return .empty
   }
 
   internal func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -867,18 +884,14 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: fetchUserResponse ?? user)
   }
 
-  internal func fetchCategories() -> SignalProducer<CategoriesEnvelope, ErrorEnvelope> {
-
-    return SignalProducer(value: self.fetchCategoriesResponse ?? .template)
-  }
-
-  internal func fetchCategory(param: Param) -> SignalProducer<KsApi.Category, ErrorEnvelope> {
+  internal func fetchCategory(param: Param)
+    -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, GraphError> {
     switch param {
     case let .id(id):
-      return SignalProducer(value: .template |> Category.lens.id .~ id)
-    case let .slug(slug):
-      return SignalProducer(value: .template |> Category.lens.slug .~ slug)
-    }
+      return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(id)")
+    default:
+      return .empty
+      }
   }
 
   internal func incrementVideoCompletion(forProject project: Project) ->
@@ -1187,7 +1200,7 @@ private extension MockService {
           fetchActivitiesResponse: $1.fetchActivitiesResponse,
           fetchActivitiesError: $1.fetchActivitiesError,
           fetchBackingResponse: $1.fetchBackingResponse,
-          fetchCategoriesResponse: $1.fetchCategoriesResponse,
+          fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
           fetchCommentsResponse: $1.fetchCommentsResponse,
           fetchCommentsError: $1.fetchCommentsError,
           fetchConfigResponse: $1.fetchConfigResponse,

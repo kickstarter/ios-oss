@@ -53,7 +53,7 @@ public protocol DiscoveryFiltersViewModelType {
 }
 
 public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
-  DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
+DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 
   public init() {
     let initialTopFilters = self.viewDidLoadProperty.signal
@@ -86,12 +86,14 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchCategories()
+        AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(starting: { loaderIsVisible.value = true })
-          .map { $0.categories }
+          .on(starting: {
+            loaderIsVisible.value = true
+          })
+          .map { (envelope: RootCategoriesEnvelope) in envelope.rootCategories }
           .materialize()
-      }
+    }
 
     self.loadingIndicatorIsVisible = Signal.merge(
       loaderIsVisible.signal,
@@ -101,9 +103,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let cachedOrLoadedCategories = Signal.merge(
       cachedCats.skipNil(),
       categoriesEvent.values()
-    ).on(value: { cache(categories:) }())
+      ).on(value: { cache(categories:) }())
 
-    self.loadTopRows = Signal.combineLatest(topRows, categoryId).map { (rows: $0, categoryId: $1) }
+    self.loadTopRows = Signal.combineLatest(topRows, categoryId)
+      .map { (rows: $0, categoryId: $1) }
 
     let selectedRowWithCategories = Signal.combineLatest(initialSelectedRow, cachedOrLoadedCategories)
 
@@ -115,9 +118,9 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .map { (rows: $0, categoryId: $1) }
 
     let selectedRowId = Signal.merge(
-        categoryId,
-        self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
-      )
+      categoryId,
+      self.tappedExpandableRowProperty.signal.skipNil().map { $0.params.category?.rootId }
+    )
 
     let initialRows = selectedRowWithCategories
       .map(expandableRows(selectedRow:categories:))
@@ -210,26 +213,22 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
  - returns: An array of expandable rows with one row expanded.
  */
-private func expandableRows(selectedRow: SelectableRow,
-                            categories: [KsApi.Category]) -> [ExpandableRow] {
 
-  let expandableRows = categories
-    .sorted { lhs, _ in !lhs.isRoot }
-    .groupedBy { (category: KsApi.Category) -> KsApi.Category in
-      category.parent ?? category
-    }
-    .map { rootCategory, rootWithChildren in
-      ExpandableRow(
-        isExpanded: false,
-        params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
-        selectableRows: rootWithChildren
-          .sorted()
-          .map { childCategory in
-            SelectableRow(
-              isSelected: childCategory == selectedRow.params.category,
-              params: .defaults |> DiscoveryParams.lens.category .~ childCategory
-            )
-          }
+private func expandableRows(selectedRow: SelectableRow,
+                            categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
+
+  let expandableRows = categories.filter { $0.isRoot }
+    .sorted { lhs, _ in lhs.isRoot }
+    .map { rootCategory in
+      return ExpandableRow(isExpanded: false,
+                           params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
+                           selectableRows: ([rootCategory] + (rootCategory.subcategories?.nodes ?? []))
+                            .sorted()
+                            .flatMap { node in
+                              return SelectableRow(isSelected: node == selectedRow.params.category,
+                                                   params: .defaults
+                                                    |> DiscoveryParams.lens.category .~ node)
+        }
       )
     }
     .sorted { lhs, rhs in
@@ -247,7 +246,7 @@ private func expandableRows(selectedRow: SelectableRow,
       expandableRow.selectableRows.sorted { lhs, rhs in
         guard let lhsName = lhs.params.category?.name, let rhsName = rhs.params.category?.name,
           lhs.params.category?.isRoot == rhs.params.category?.isRoot else {
-          return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
+            return (lhs.params.category?.isRoot ?? false) && !(rhs.params.category?.isRoot ?? false)
         }
         return lhsName < rhsName
     }
@@ -297,29 +296,62 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   return filters
 }
 
-private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
+private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEnvelope.Category])
   -> [SelectableRow]? {
 
-  let faves: [SelectableRow] = categories.flatMap { category in
-    if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(category.id) ||
-      AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(category.id) {
+    let subcategories = categories
+      .filter { $0.isRoot }
+      .flatMap { category in ([category] + (category.subcategories?.nodes ?? [])) }
 
-      return SelectableRow(
-        isSelected: category == selectedRow.params.category,
-        params: .defaults |> DiscoveryParams.lens.category .~ category
-      )
-    } else {
-      return nil
+    let faves: [SelectableRow] = subcategories
+      .flatMap { subcategory in
+        guard let id = subcategory.intID else {
+          return nil
+        }
+        if AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.contains(id) ||
+          AppEnvironment.current.userDefaults.favoriteCategoryIds.contains(id) {
+          return SelectableRow(
+            isSelected: subcategory == selectedRow.params.category,
+            params: .defaults |> DiscoveryParams.lens.category .~ subcategory
+          )
+        } else {
+          return nil
+        }
     }
-  }
-
-  return faves.isEmpty ? nil : faves
+    return faves.isEmpty ? nil : faves
 }
 
-private func cachedCategories() -> [KsApi.Category]? {
-  return AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] as? [KsApi.Category]
+private func cachedCategories() -> [RootCategoriesEnvelope.Category]? {
+  return AppEnvironment.current
+    .cache[KSCache.ksr_discoveryFiltersCategories] as? [RootCategoriesEnvelope.Category]
 }
 
-private func cache(categories: [KsApi.Category]) {
+private func cache(categories: [RootCategoriesEnvelope.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+}
+
+public let rootCategoriesQuery = NonEmptySet(Query.rootCategories(categoryFields))
+
+public func categoryBy(id: String) -> NonEmptySet<Query> {
+  return NonEmptySet(Query.category(id: id, categoryFields))
+}
+
+private var categoryFields: NonEmptySet<Query.Category> {
+  return  .id +| [
+    .name,
+    .subcategories(
+      [],
+      .totalCount +| [
+        .nodes(
+          .id +| [
+            .name,
+            .parentCategory,
+            .parentId,
+            .totalProjectCount
+          ]
+        )
+      ]
+    ),
+    .totalProjectCount
+  ]
 }

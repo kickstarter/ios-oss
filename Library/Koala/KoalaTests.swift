@@ -121,7 +121,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.stats.fundingProgress, properties["project_percent_raised"] as? Float)
     XCTAssertNotNil(project.video)
     XCTAssertEqual(project.category.name, properties["project_category"] as? String)
-    XCTAssertEqual(project.category.parent?.name, properties["project_parent_category"] as? String)
+    XCTAssertEqual(project.category._parent?.name, properties["project_parent_category"] as? String)
     XCTAssertEqual(project.location.name, properties["project_location"] as? String)
     XCTAssertEqual(project.stats.backersCount, properties["project_backers_count"] as? Int)
 
@@ -288,7 +288,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.starred .~ false
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
-      <> DiscoveryParams.lens.category .~ Category.art
+      <> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
 

@@ -21,7 +21,7 @@ class DiscoveryParamsTests: XCTestCase {
       |> DiscoveryParams.lens.social .~ true
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.similarTo .~ Project.template
-      |> DiscoveryParams.lens.category .~ Category.art
+      |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
       |> DiscoveryParams.lens.query .~ "wallet"
       |> DiscoveryParams.lens.state .~ .live
       |> DiscoveryParams.lens.sort .~ .popular
@@ -35,7 +35,7 @@ class DiscoveryParamsTests: XCTestCase {
       "backed": "-1",
       "social": "1",
       "recommended": "true",
-      "category_id": "1",
+      "category_id": RootCategoriesEnvelope.Category.art.intID?.description ?? "-1",
       "term": "wallet",
       "state": "live",
       "starred": "1",
@@ -75,8 +75,7 @@ class DiscoveryParamsTests: XCTestCase {
   }
 
   func testDecode() {
-    // swiftlint:disable:next force_unwrapping
-    XCTAssertNil(DiscoveryParams.decode(JSON([:])).value!.backed, "absent values aren't set")
+    XCTAssertNil(DiscoveryParams.decode(JSON([:])).value?.backed, "absent values aren't set")
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "nope"])).value, "invalid values error")
 
     // server logic
@@ -104,8 +103,7 @@ class DiscoveryParamsTests: XCTestCase {
     XCTAssertEqual(42, DiscoveryParams.decode(JSON(["seed": "42"])).value?.seed)
 
     XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "42"])).value)
-    // swiftlint:disable:next force_unwrapping
-    XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "0"])).value!.backed)
+    XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "0"])).value?.backed)
     XCTAssertEqual(true, DiscoveryParams.decode(JSON(["backed": "1"])).value?.backed)
     XCTAssertEqual(false, DiscoveryParams.decode(JSON(["backed": "-1"])).value?.backed)
 
