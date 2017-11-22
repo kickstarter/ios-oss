@@ -874,19 +874,6 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
       |> DiscoveryParams.lens.sort .~ .magic
     return SignalProducer(value: .tab(.discovery(params.queryParams)))
 
-  case .projectOfTheDay:
-    let params = .defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-      |> DiscoveryParams.lens.perPage .~ 1
-      |> DiscoveryParams.lens.sort .~ .magic
-    return AppEnvironment.current.apiService.fetchDiscovery(params: params)
-      .demoteErrors()
-      .map { env -> Navigation? in
-        guard let project = env.projects.first, project.isPotdToday(
-          today: AppEnvironment.current.dateType.init().date) else { return nil }
-        return .project(.id(project.id), .root, refTag: RefTag.unrecognized("shortcut"))
-    }
-
   case .projectsWeLove:
     let params = .defaults
       |> DiscoveryParams.lens.staffPicks .~ true
@@ -935,8 +922,6 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
       items.append(.creatorDashboard)
     }
 
-    items.append(.projectOfTheDay)
-
     if hasRecommendations {
       items.append(.recommendedForYou)
     }
@@ -965,14 +950,6 @@ extension ShortcutItem {
         localizedTitle: Strings.accessibility_discovery_buttons_creator_dashboard(),
         localizedSubtitle: nil,
         icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-bars"),
-        userInfo: nil
-      )
-    case .projectOfTheDay:
-      return .init(
-        type: self.typeString,
-        localizedTitle: Strings.discovery_baseball_card_metadata_project_of_the_Day(),
-        localizedSubtitle: nil,
-        icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-potd"),
         userInfo: nil
       )
     case .projectsWeLove:

@@ -186,7 +186,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.metadataLabel.rac.text = self.viewModel.outputs.metadataLabelText
     self.metadataLabel.rac.textColor = self.viewModel.outputs.metadataTextColor
     self.metadataIconImageView.rac.tintColor = self.viewModel.outputs.metadataIconImageViewTintColor
-    self.metadataIconImageView.rac.hidden = self.viewModel.outputs.metadataIconHidden
     self.metadataView.rac.hidden = self.viewModel.outputs.metadataViewHidden
     self.projectNameAndBlurbLabel.rac.attributedText = self.viewModel.outputs.projectNameAndBlurbLabelText
     self.projectStateSubtitleLabel.rac.text = self.viewModel.outputs.projectStateSubtitleLabelText
@@ -202,8 +201,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.metadataIcon
       .observeForUI()
       .observeValues { [weak self] icon in
-          self?.metadataIconImageView.image = icon
-    }
+        self?.metadataIconImageView.image = icon
+     }
 
     self.viewModel.outputs.progressPercentage
       .observeForUI()

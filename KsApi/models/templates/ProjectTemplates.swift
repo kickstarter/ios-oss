@@ -17,7 +17,6 @@ extension Project {
       deadline: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 15.0,
       featuredAt: nil,
       launchedAt: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0,
-      potdAt: nil,
       stateChangedAt: Date(
         timeIntervalSince1970: 1475361315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0
     ),

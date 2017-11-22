@@ -75,12 +75,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         |> Project.lens.category.parent .~ Category.art
         |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
 
-    let potdProj = anomalisaNoPhoto
-      |> Project.lens.dates.potdAt .~ self.dateType.init().timeIntervalSince1970
-
     let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
 
-    combos(Language.allLanguages, devices, [("featured", featuredProj), ("potd", potdProj)])
+    combos(Language.allLanguages, devices, [("featured", featuredProj)])
       .forEach { language, device, labeledProj in
         let discoveryResponse = .template
           |> DiscoveryEnvelope.lens.projects .~ [labeledProj.1]

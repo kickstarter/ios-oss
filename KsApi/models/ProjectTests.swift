@@ -43,25 +43,6 @@ final class ProjectTests: XCTestCase {
     XCTAssertEqual(true, edgeCase.endsIn48Hours(today: Date(timeIntervalSince1970: 1475361315)))
   }
 
-  func testIsPotdToday_OnPotd() {
-    let potdAt = Calendar.current.startOfDay(for:
-      Date(timeIntervalSince1970: 1475361315)).timeIntervalSince1970
-    let potd = Project.template
-      |> Project.lens.dates.potdAt .~ potdAt
-
-//    XCTAssertEqual(true, potd.isPotdToday())
-    XCTAssertEqual(true, potd.isPotdToday(today: Date(timeIntervalSince1970: 1475361315)))
-    XCTAssertEqual(false, potd.isPotdToday(today:
-      Date(timeIntervalSince1970: 1475361315 + (60.0 * 60.0 * 24))))
-    XCTAssertEqual(false, potd.isPotdToday(today:
-      Date(timeIntervalSince1970: 1475361315 + (-60.0 * 60.0 * 24))))
-  }
-
-  func testIsPotdToday_WhenUnspecified() {
-    let potd = Project.template |> Project.lens.dates.potdAt .~ nil
-    XCTAssertEqual(potd.isPotdToday(), false)
-  }
-
   func testEquatable() {
     XCTAssertEqual(Project.template, Project.template)
     XCTAssertNotEqual(Project.template, Project.template |> Project.lens.id %~ { $0 + 1 })

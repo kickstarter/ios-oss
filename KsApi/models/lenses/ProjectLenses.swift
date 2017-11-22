@@ -276,10 +276,6 @@ extension Lens where Whole == Project, Part == Project.Dates {
     return Project.lens.dates..Project.Dates.lens.launchedAt
   }
 
-  public var potdAt: Lens<Project, TimeInterval?> {
-    return Project.lens.dates..Project.Dates.lens.potdAt
-  }
-
   public var stateChangedAt: Lens<Project, TimeInterval> {
     return Project.lens.dates..Project.Dates.lens.stateChangedAt
   }
