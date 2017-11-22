@@ -1143,6 +1143,7 @@
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CsX-4i-yj1">
                                                 <rect key="frame" x="306" y="0.0" width="51" height="31"/>
+                                                <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="individualEmailsTapped:" destination="E20-X5-whU" eventType="valueChanged" id="Mkl-3p-GV2"/>
                                                 </connections>
@@ -1167,6 +1168,7 @@
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kmP-wj-nZa">
                                                 <rect key="frame" x="306" y="0.0" width="51" height="31"/>
+                                                <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="dailyDigestTapped:" destination="E20-X5-whU" eventType="valueChanged" id="LP9-1i-GCo"/>
                                                 </connections>
