@@ -103,7 +103,7 @@ public let navyButtonStyle =
 
 public let saveButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .black
+  <> UIButton.lens.tintColor .~ .ksr_green_800
   <> UIButton.lens.image(forState: .normal) .~ image(named: "icon-heart-unfilled")
   <> UIButton.lens.image(forState: .selected) .~ image(named: "heart")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
