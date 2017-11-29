@@ -527,7 +527,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showEmptyState.assertValues([.starred])
+      self.showEmptyState.assertValues([nil, .starred])
       self.hideEmptyState.assertValueCount(0)
 
       // switch to another empty state
@@ -537,7 +537,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showEmptyState.assertValues([.starred, .recommended])
+      self.showEmptyState.assertValues([nil, .starred, nil, .recommended])
 
       // switch to non-empty state
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnvWithProjects)) {
@@ -547,17 +547,27 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.showEmptyState.assertValues([.starred, .recommended], "Show empty state does not emit.")
+        self.showEmptyState.assertValues(
+          [nil, .starred, nil, .recommended, nil], "Show empty state does not emit.")
 
         // switch back to empty state
         withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
-          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
+          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ false)
 
-          self.hideEmptyState.assertValueCount(3)
+          self.hideEmptyState.assertValueCount(5)
 
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.starred, .recommended, .socialDisabled, .starred])
+          self.showEmptyState.assertValues([nil, .starred, nil, .recommended, nil])
+
+
+          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+
+          self.hideEmptyState.assertValueCount(6)
+
+          self.scheduler.advance()
+
+          self.showEmptyState.assertValues([nil, .starred, nil, .recommended, nil, .socialDisabled])
         }
       }
     }
@@ -583,7 +593,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showEmptyState.assertValues([.socialDisabled], "Emits .socialDisabled for nil social.")
+      self.showEmptyState.assertValues([nil, .socialDisabled], "Emits .socialDisabled for nil social.")
       self.hideEmptyState.assertValueCount(0)
 
       withEnvironment(currentUser: antisocialUser) {
@@ -595,7 +605,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
         self.scheduler.advance()
 
-        self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled],
+        self.showEmptyState.assertValues([nil, .socialDisabled, nil, .recommended, nil, .socialDisabled],
                                          "Emits .socialDisabled for false social.")
         self.hideEmptyState.assertValueCount(2)
 
@@ -606,7 +616,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           self.vm.inputs.viewDidAppear()
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
+          self.showEmptyState.assertValues(
+            [nil, .socialDisabled, nil, .recommended, nil, .socialDisabled, nil, .socialNoPledges],
                                            "Emits .socialNoPledges for true social.")
           self.hideEmptyState.assertValueCount(2)
         }

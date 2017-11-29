@@ -153,6 +153,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { params, projectsAreLoading, projects in
         emptyState(forParams: params, projectsAreLoading: projectsAreLoading, projects: projects)
       }
+      .skipRepeats(==)
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),
@@ -335,6 +336,7 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
+
   if params.starred == .some(true) {
     return .starred
   } else if params.recommended == .some(true) {
