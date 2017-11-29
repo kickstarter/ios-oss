@@ -560,7 +560,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.showEmptyState.assertValues([nil, .starred, nil, .recommended, nil])
 
-
           self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
 
           self.hideEmptyState.assertValueCount(6)
