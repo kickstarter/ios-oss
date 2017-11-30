@@ -140,13 +140,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { $0.category.root?.id }
-      .skipNil()
+      .map { "\"\($0.category.root?.decodedID.toBase64() ?? "")\"" }
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map { (category: KsApi.RootCategoriesEnvelope.Category)
-          -> KsApi.RootCategoriesEnvelope.Category in category.parent ?? category }
+          .map { (node: KsApi.RootCategoriesEnvelope.CategoryById) -> RootCategoriesEnvelope.Category in
+            node.categoryType.parent ?? node.categoryType
+          }
         .demoteErrors()
     }
 

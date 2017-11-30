@@ -182,7 +182,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError> {
+    -> SignalProducer<RootCategoriesEnvelope.CategoryById, GraphError> {
       return fetch(query: query)
   }
 

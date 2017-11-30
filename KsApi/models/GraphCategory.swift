@@ -11,6 +11,14 @@ public struct ParentCategory: Swift.Decodable {
 public struct RootCategoriesEnvelope: Swift.Decodable {
   public fileprivate(set) var rootCategories: [Category]
 
+  public struct CategoryById: Swift.Decodable {
+    public fileprivate(set) var node: Category
+
+    public var categoryType: RootCategoriesEnvelope.Category {
+      return node
+    }
+  }
+
   public struct Category: Swift.Decodable {
     public static let gamesId: Int = 12
     public fileprivate(set) var id: String
@@ -36,6 +44,10 @@ public struct RootCategoriesEnvelope: Swift.Decodable {
 
     public var intID: Int? {
       return decompose(id: id)
+    }
+
+    public var decodedID: String {
+      return "Category-\(id)"
     }
 
     public var parent: RootCategoriesEnvelope.Category? {
