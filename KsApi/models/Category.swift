@@ -8,6 +8,8 @@ public struct ParentCategory: Swift.Decodable {
   }
 }
 
+fileprivate let unrecognizedCategoryId: Int = -1
+
 public struct Category: Swift.Decodable {
   public static let gamesId: Int = 12
   public fileprivate(set) var id: String
@@ -35,6 +37,12 @@ public struct Category: Swift.Decodable {
     return decompose(id: id)
   }
 
+  /*
+   This is a work around that fixes the incompatibility between the types of category id returned by
+   the server (Int) and the type we need to send when requesting category by id
+   through GraphQL (base64 encoded String). This will be removed once we start consuming GraphQL to fetch
+   Discovery projects.
+   */
   public var decodedID: String {
     return "Category-\(id)"
   }
@@ -91,7 +99,7 @@ extension Category {
 
 extension ParentCategory: Hashable {
   public var hashValue: Int {
-    return self.categoryType.intID ?? -1
+    return self.categoryType.intID ?? unrecognizedCategoryId
   }
 }
 
@@ -130,7 +138,7 @@ extension Category: Equatable {
 
 extension Category: Hashable {
   public var hashValue: Int {
-    return self.intID ?? -1
+    return self.intID ?? unrecognizedCategoryId
   }
 }
 
