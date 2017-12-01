@@ -77,7 +77,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var setScrollsToTop: Signal<Bool, NoError> { get }
 
   /// Emits to show the empty state controller.
-  var showEmptyState: Signal<EmptyState?, NoError> { get }
+  var showEmptyState: Signal<EmptyState, NoError> { get }
 
   /// Emits a boolean that determines of the onboarding should be shown.
   var showOnboarding: Signal<Bool, NoError> { get }
@@ -150,10 +150,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.asyncReloadData = self.projects.take(first: 1).ignoreValues()
 
     self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
+      .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
       .map { params, projectsAreLoading, projects in
-        emptyState(forParams: params, projectsAreLoading: projectsAreLoading, projects: projects)
+        emptyState(forParams: params)
       }
-      .skipRepeats(==)
+      .skipNil()
+      .skipRepeats()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),
@@ -295,7 +297,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoading: Signal<Bool, NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
-  public let showEmptyState: Signal<EmptyState?, NoError>
+  public let showEmptyState: Signal<EmptyState, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
@@ -310,13 +312,6 @@ private func saveSeen(activities: [Activity]) {
   activities.forEach { activity in
     AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
   }
-}
-
-private func emptyState(forParams params: DiscoveryParams,
-                        projectsAreLoading: Bool,
-                        projects: [Project]) -> EmptyState? {
-  guard projectsAreLoading == false, projects.isEmpty else { return nil }
-  return emptyState(forParams: params)
 }
 
 private func refTag(fromParams params: DiscoveryParams, project: Project) -> RefTag {

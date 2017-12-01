@@ -240,10 +240,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  fileprivate func showEmptyState(_ emptyState: EmptyState?) {
-    guard let emptyVC = self.emptyStatesController, let state = emptyState else { return }
+  fileprivate func showEmptyState(_ emptyState: EmptyState) {
+    guard let emptyVC = self.emptyStatesController else { return }
 
-    emptyVC.setEmptyState(state)
+    emptyVC.setEmptyState(emptyState)
     emptyVC.view.isHidden = false
     self.view.bringSubview(toFront: emptyVC.view)
     UIView.animate(withDuration: 0.3,
