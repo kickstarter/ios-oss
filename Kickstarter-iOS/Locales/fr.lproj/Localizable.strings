@@ -257,7 +257,7 @@
 "Select_this_reward" = "Sélectionner cette récompense";
 "Select_this_reward_instead" = "Choisir cette récompense";
 "Send" = "Envoyer";
-"Share" = "Share";
+"Share" = "Partager";
 "Share_an_update_about_your_project" = "Parlez de votre projet dans une actu.";
 "Share_this_live_stream" = "Partager cette diffusion en direct.";
 "Share_this_project_on_Facebook" = "Partagez ce projet sur Facebook.";
@@ -289,6 +289,7 @@
 "The_replay_will_start_soon" = "La rediffusion sera bientôt disponible";
 "There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
+"This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "Plus que %{time_left}";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Pour retrouver toutes vos catégories préférées, cliquez sur le menu déroulant Découvrir dans l'application.";
 "To_read_this_project_update_you_must_be_a_backer" = "Seuls les contributeurs ont accès à cette actu de projet. Connectez-vous ou inscrivez-vous pour continuer.";

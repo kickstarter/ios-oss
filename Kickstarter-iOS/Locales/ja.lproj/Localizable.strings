@@ -289,6 +289,7 @@
 "The_replay_will_start_soon" = "リプレイが始まります";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
+"This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "あと%{time_left}";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "上部の「さがす」をタップし、お気に入りカテゴリにアクセス。";
 "To_read_this_project_update_you_must_be_a_backer" = "このアップデートはバッカー専用です。 続行するにはログインまたはサインアップしてください。";

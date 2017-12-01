@@ -189,7 +189,7 @@
 "Opens_update" = "Abre actualización.";
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
-"Other_projects_you_might_like" = "Otros proyectos que te pueden gustar.";
+"Other_projects_you_might_like" = "Other projects you might like.";
 "Past_live_stream" = "Live Stream pasado";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
@@ -217,7 +217,7 @@
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
 "Push_notifications" = "Notificaciones Push";
 "Rate_us_in_the_App_Store" = "¡Califícanos en la App Store!";
-"Read_more_about_the_campaign" = "Leer más sobre esta campaña";
+"Read_more_about_the_campaign" = "Read more about the campaign";
 "Read_more_about_the_campaign_arrow" = "Leer más sobre esta campaña  →";
 "Recent_live_stream" = "Live-Stream reciente";
 "Recommended" = "Recomendados";
@@ -279,7 +279,7 @@
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Tap_the_star_on_a_project_to_get_notified" = "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_star_on_each_project_page_to_save_it" = "Toca la estrella en cada página del proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
-"Thank_you_exclamation" = "¡Gracias!";
+"Thank_you_exclamation" = "Thank you!";
 "Thank_you_for_supporting_this_project" = "Gracias por apoyar este proyecto.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter.";
 "The_live_stream_failed_to_connect" = "No se pudo conectar la transmisión en directo";
@@ -289,6 +289,7 @@
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
+"This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
@@ -317,7 +318,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
-"You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
+"You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
 "You_saved_this_project" = "Uno de tus proyectos guardados.";
 "Your_chat_message_wasnt_sent_successfully" = "Tu mensaje no fue enviado.";

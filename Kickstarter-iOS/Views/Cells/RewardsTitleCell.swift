@@ -14,21 +14,14 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
     case (true?, .live):
       self.rewardsTitleLabel.font = .ksr_caption1(size: 14)
       self.rewardsTitleLabel.text = Strings.Or_select_a_different_reward_below_colon()
-    case (_, .live):
-      self.rewardsTitleLabel.font = .ksr_headline(size: 17)
-      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards_colon(
-        rewards_count: project.rewards.filter { $0 != .noReward }.count
-      )
+
     case (true?, _):
       self.rewardsTitleLabel.font = .ksr_subhead(size: 14)
       self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(
         rewards_count: project.rewards.filter { $0 != .noReward }.count
       )
     default:
-      self.rewardsTitleLabel.font = .ksr_headline(size: 14)
-      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(
-        rewards_count: project.rewards.filter { $0 != .noReward }.count
-      )
+      self.rewardsTitleLabel.text = ""
     }
   }
 

@@ -3064,7 +3064,7 @@ from friends yet."
   /**
    "Other projects you might like."
 
-   - **es**: "Otros proyectos que te pueden gustar."
+   - **es**: "Other projects you might like."
    - **ja**: "おすすめをさらに見る"
    - **de**: "Ähnliche Projekte:"
    - **fr**: "Autre projets qui pourraient vous intéresser"
@@ -3543,7 +3543,7 @@ daring ideas."
   /**
    "Read more about the campaign"
 
-   - **es**: "Leer más sobre esta campaña"
+   - **es**: "Read more about the campaign"
    - **ja**: "キャンペーンの詳細をみる"
    - **de**: "Mehr über diese Kampagne lesen"
    - **fr**: "En savoir plus sur la campagne"
@@ -4021,8 +4021,8 @@ daring ideas."
 
    - **es**: "Share"
    - **ja**: "シェア"
-   - **de**: "Share"
-   - **fr**: "Share"
+   - **de**: "Teilen"
+   - **fr**: "Partager"
    - **en**: "Share"
   */
   public static func Share() -> String {
@@ -4395,7 +4395,7 @@ catch your eye?"
   /**
    "Thank you!"
 
-   - **es**: "¡Gracias!"
+   - **es**: "Thank you!"
    - **ja**: "ありがとうございます！"
    - **de**: "Vielen Dank!"
    - **fr**: "Merci !"
@@ -4560,6 +4560,23 @@ catch your eye?"
       defaultValue: "This Facebook account is already linked to another Kickstarter user.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "This project will only be funded on if at least %{amount} is pledged by %{date}."
+
+   - **es**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **ja**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **de**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **fr**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **en**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+  */
+  public static func This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String) -> String {
+    return localizedString(
+      key: "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date",
+      defaultValue: "This project will only be funded on if at least %{amount} is pledged by %{date}.",
+      count: nil,
+      substitutions: ["amount": amount, "date": date]
     )
   }
   /**
@@ -5047,7 +5064,7 @@ Please try again later."
   /**
    "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
 
-   - **es**: "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!"
+   - **es**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
    - **ja**: "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。"
    - **de**: "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!"
    - **fr**: "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !"

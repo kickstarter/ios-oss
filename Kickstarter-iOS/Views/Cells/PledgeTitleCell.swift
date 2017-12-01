@@ -15,10 +15,12 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
-      self.pledgeTitleLabel.text = Strings.Manage_your_pledge()
+      self.pledgeTitleLabel.text = Strings.Manage_your_pledge() //keep
     case (_, .live):
-      self.pledgeTitleLabel.font = .ksr_headline(size: 17)
-      self.pledgeTitleLabel.text = Strings.Back_this_project_below()
+      self.pledgeTitleLabel.font = .ksr_body(size: 12)
+      self.pledgeTitleLabel.text = Strings.This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String)
+      "This project will only be funded on if at least $250,000 is pledged by Nov, 16, 2017, 5:00 AM."
+      self.pledgeTitleLabel.textColor = .ksr_text_dark_grey_500
     default:
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
       self.pledgeTitleLabel.text = Strings.You_backed_this_project()
