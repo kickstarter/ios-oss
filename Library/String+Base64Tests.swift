@@ -1,4 +1,5 @@
 import XCTest
+@testable import Library
 
 class String_Base64Tests: XCTestCase {
 
