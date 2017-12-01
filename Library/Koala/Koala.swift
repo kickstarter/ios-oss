@@ -1978,7 +1978,7 @@ private func properties(params: DiscoveryParams, prefix: String = "discover_") -
   return result.prefixedKeys("discover_")
 }
 
-private func properties(category: KsApi.RootCategoriesEnvelope.Category) -> [String: Any] {
+private func properties(category: KsApi.Category) -> [String: Any] {
 
   var result: [String: Any] = [:]
 

@@ -2,8 +2,12 @@ import Prelude
 
 /// Graph Response
 
-struct GraphResponse<T: Decodable>: Decodable {
+public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
+}
+
+public struct Node<T: Decodable>: Decodable {
+  let node: T?
 }
 
 /// Base Query Types
@@ -92,17 +96,9 @@ public enum PageInfo: String {
   case startCursor
 }
 
-public enum GraphObjectType: String {
-  case category = "Category"
-}
-
 public enum Edges<Q: QueryType> {
   case cursor
   case node(NonEmptySet<Q>)
-}
-
-public enum Node<Q: QueryType> {
-  case node(id: String, type: GraphObjectType, NonEmptySet<Q>)
 }
 
 public enum Nodes<Q: QueryType> {

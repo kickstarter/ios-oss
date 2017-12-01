@@ -5,9 +5,76 @@ import Prelude
 
 class CategoryTests: XCTestCase {
 
+  private var json: String {
+       return  """
+               {
+                  "rootCategories": [ {
+                     "id":"Q2F0ZWdvcnktMQ==",
+                     "name":"Art",
+                     "subcategories":{
+                        "nodes": [{
+                           "id":"Q2F0ZWdvcnktMjg3",
+                           "name":"Ceramics",
+                           "parentCategory":{
+                              "id":"Q2F0ZWdvcnktMQ==",
+                              "name":"Art"
+                                            }
+                                 }],
+                     "parentId":"Q2F0ZWdvcnktMQ==",
+                     "totalCount":8
+                                      }
+                                   } ]
+
+                       }
+
+               """
+  }
+
+  func testDecode_WithNilValues() {
+
+    if let decodedData = categoriesFromJSON() {
+        XCTAssertNotNil(decodedData.rootCategories)
+
+        let category = decodedData.rootCategories[0]
+        XCTAssertEqual(category.id, "Q2F0ZWdvcnktMQ==")
+        XCTAssertEqual(category.name, "Art")
+        XCTAssertNil(category.parent)
+        XCTAssertNil(category.parentId)
+    } else {
+      XCTFail("Data should be decoded")
+    }
+  }
+
+  func testDecode_Subcategories() {
+
+    if let decodedData = categoriesFromJSON() {
+
+      let category = decodedData.rootCategories.first
+      let subcategory = category?.subcategories?.nodes.first
+      XCTAssertNotNil(subcategory)
+      XCTAssertEqual(subcategory?.id, "Q2F0ZWdvcnktMjg3")
+      XCTAssertEqual(subcategory?.name, "Ceramics")
+      XCTAssertEqual(subcategory?._parent?.id, "Q2F0ZWdvcnktMQ==")
+      XCTAssertEqual(subcategory?._parent?.name, "Art")
+    } else {
+      XCTFail("Data should be decoded")
+    }
+}
+
   func testParent() {
     XCTAssertEqual(Category.illustration.parent, Category.art)
     XCTAssertEqual(Category.art.parent, nil)
+  }
+
+  func testParentCategoryType() {
+    let parent = ParentCategory(id: Category.art.id,
+                                name: Category.art.name)
+    XCTAssertEqual(parent.categoryType, Category.illustration.parent)
+  }
+
+  func testSubcategory() {
+    let subcategory = Category.illustration
+    XCTAssertEqual(Category.art.subcategories?.nodes.first, subcategory)
   }
 
   func testRoot() {
@@ -15,8 +82,10 @@ class CategoryTests: XCTestCase {
     XCTAssertEqual(Category.illustration.isRoot, false)
     XCTAssertEqual(Category.art.root, Category.art)
     XCTAssertEqual(Category.art.isRoot, true)
-    XCTAssertNil((Category.illustration |> Category.lens.parent .~ nil).root,
-                 "A subcategory with no parent category present does not have a root.")
+    XCTAssertNil((Category.illustration
+                  |> Category.lens.parent .~ nil).root,
+      "A subcategory with no parent category present does not have a root."
+    )
   }
 
   func testEquatable() {
@@ -24,98 +93,32 @@ class CategoryTests: XCTestCase {
     XCTAssertNotEqual(Category.art, Category.illustration)
   }
 
-  func testComparable() {
-    let categories = [
-      Category.illustration,
-      Category.documentary,
-      Category.filmAndVideo,
-      Category.art
-      ]
-
-    let sorted = [
-      Category.art,
-      Category.illustration,
-      Category.filmAndVideo,
-      Category.documentary,
-      ]
-
-    XCTAssertEqual(sorted, categories.sorted())
-  }
-
   func testDescription() {
     XCTAssertNotEqual(Category.art.description, "")
     XCTAssertNotEqual(Category.art.debugDescription, "")
   }
 
-  func testJSONParsing_WithPartialData() {
-    let c1 = Category.decodeJSONDictionary([
-      "id": 1
-      ])
-    XCTAssertNotNil(c1.error)
-
-    let c2 = Category.decodeJSONDictionary([
-      "id": 1,
-      "name": "Art"
-      ])
-    XCTAssertNotNil(c2.error)
-
-    let c3 = Category.decodeJSONDictionary([
-      "id": 1,
-      "name": "Art",
-      "slug": "art"
-      ])
-    XCTAssertNotNil(c3.error)
+  func testIntID_invalidInput() {
+    let art = Category.art
+              |> Category.lens.id .~ "1"
+    XCTAssertNil(art.intID, "intID should be resulted from a base64 decoded string")
   }
 
-  func testJSONParsing_WithFullData() {
-
-    let c4 = Category.decodeJSONDictionary([
-      "id": 1,
-      "name": "Art",
-      "slug": "art",
-      "position": 1
-      ])
-    XCTAssertNil(c4.error)
-    XCTAssertEqual(c4.value?.id, 1)
-    XCTAssertEqual(c4.value?.name, "Art")
-    XCTAssertEqual(c4.value?.slug, "art")
-    XCTAssertEqual(c4.value?.position, 1)
-
-    let c5 = Category.decodeJSONDictionary([
-      "id": 22,
-      "name": "Illustration",
-      "slug": "art/illustration",
-      "position": 4,
-      "projects_count": 44,
-      "parent": [
-        "id": 1,
-        "name": "Art",
-        "slug": "art",
-        "position": 1
-      ]
-      ])
-    XCTAssertNil(c5.error)
-    XCTAssertEqual(c5.value?.id, 22)
-    XCTAssertEqual(c5.value?.name, "Illustration")
-    XCTAssertNotEqual(c5.value?.parent, nil)
-    XCTAssertEqual(c5.value?.parent?.name, "Art")
-    XCTAssertEqual(c5.value?.isRoot, false)
-    XCTAssertEqual(c5.value?.root, c5.value?.parent)
-    XCTAssertEqual(1, c5.value?.rootId)
-    XCTAssertEqual(c5.value?.projectsCount, 44)
+  func testIntID_validInput() {
+    let art = Category.art
+      |> Category.lens.id .~ "Q2F0ZWdvcnktMQ=="
+    XCTAssertEqual(art.intID, 1)
   }
 
-  func testJSONParsing_WithPartialParentData() {
-
-    let c6 = Category.decodeJSONDictionary([
-      "id": 22,
-      "name": "Illustration",
-      "slug": "art/illustration",
-      "position": 4
-      ])
-    XCTAssertNil(c6.error)
-    XCTAssertEqual(c6.value?.id, 22)
-    XCTAssertEqual(c6.value?.name, "Illustration")
-    XCTAssertEqual(c6.value?.parent, nil)
+  private func categoriesFromJSON() -> RootCategoriesEnvelope? {
+    if let jsonData = json.data(using: .utf8) {
+      do {
+        let decodedData = try JSONDecoder().decode(RootCategoriesEnvelope.self, from: jsonData)
+        return decodedData
+      } catch {
+        return nil
+      }
+    }
+    return nil
   }
 }

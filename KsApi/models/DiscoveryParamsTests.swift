@@ -21,7 +21,7 @@ class DiscoveryParamsTests: XCTestCase {
       |> DiscoveryParams.lens.social .~ true
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.similarTo .~ Project.template
-      |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
+      |> DiscoveryParams.lens.category .~ Category.art
       |> DiscoveryParams.lens.query .~ "wallet"
       |> DiscoveryParams.lens.state .~ .live
       |> DiscoveryParams.lens.sort .~ .popular
@@ -35,7 +35,7 @@ class DiscoveryParamsTests: XCTestCase {
       "backed": "-1",
       "social": "1",
       "recommended": "true",
-      "category_id": RootCategoriesEnvelope.Category.art.intID?.description ?? "-1",
+      "category_id": Category.art.intID?.description ?? "-1",
       "term": "wallet",
       "state": "live",
       "starred": "1",

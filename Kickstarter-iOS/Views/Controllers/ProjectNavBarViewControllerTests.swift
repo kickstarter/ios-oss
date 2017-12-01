@@ -23,7 +23,7 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
 
     let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
     navBar.configureWith(
-      project: Project.lens.category.set(RootCategoriesEnvelope.Category.art, .template), refTag: nil
+      project: Project.lens.category.set(Category.art, .template), refTag: nil
     )
 
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: navBar)

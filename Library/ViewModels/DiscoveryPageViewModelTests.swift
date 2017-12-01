@@ -125,7 +125,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     // Change the filter params used
     self.vm.inputs.viewDidDisappear(animated: true)
     self.vm.inputs.selectedFilter(
-      .defaults |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art
+      .defaults |> DiscoveryParams.lens.category .~ Category.art
     )
     self.vm.inputs.viewDidAppear()
 
@@ -243,7 +243,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                            "Go to the project with discovery ref tag.")
 
       self.vm.inputs.selectedFilter(.defaults
-                                    |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art)
+                                    |> DiscoveryParams.lens.category .~ Category.art)
       self.vm.inputs.tapped(project: project)
 
       self.goToPlaylist.assertValueCount(2, "New playlist for project emits.")
@@ -321,7 +321,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       // Change the filter.
       self.vm.inputs.selectedFilter(.defaults
-                                    |> DiscoveryParams.lens.category .~ RootCategoriesEnvelope.Category.art)
+                                    |> DiscoveryParams.lens.category .~ Category.art)
       self.vm.inputs.viewDidDisappear(animated: true)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()

@@ -105,7 +105,7 @@ public protocol ServiceType {
 
   /// Fetch Category objects using graphQL.
   func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope.Category, GraphError>
+    -> SignalProducer<Category, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)

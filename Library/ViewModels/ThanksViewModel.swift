@@ -12,7 +12,7 @@ public protocol ThanksViewModelInputs {
   func closeButtonTapped()
 
   /// Call when category cell is tapped
-  func categoryCellTapped(_ category: KsApi.RootCategoriesEnvelope.Category)
+  func categoryCellTapped(_ category: KsApi.Category)
 
   /// Call with a boolean that determines if facebook is available on this device, i.e.
   /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
@@ -76,7 +76,7 @@ public protocol ThanksViewModelOutputs {
   var showRatingAlert: Signal <(), NoError> { get }
 
   /// Emits array of projects and a category when should show recommendations
-  var showRecommendations: Signal <([Project], KsApi.RootCategoriesEnvelope.Category), NoError> { get }
+  var showRecommendations: Signal <([Project], KsApi.Category), NoError> { get }
 
   /// Emits a bool determining whether or not the twitter button is hidden.
   var twitterButtonIsHidden: Signal<Bool, NoError> { get }
@@ -107,7 +107,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     let shouldShowGamesAlert = project
       .map { project in
-        project.category.rootId == KsApi.RootCategoriesEnvelope.Category.gamesId &&
+        project.category.rootId == KsApi.Category.gamesId &&
         !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
         !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
     }
@@ -145,8 +145,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map { (category: KsApi.RootCategoriesEnvelope.Category)
-          -> KsApi.RootCategoriesEnvelope.Category in category.parent ?? category }
+        .map { (category: KsApi.Category)
+          -> KsApi.Category in category.parent ?? category }
         .demoteErrors()
     }
 
@@ -243,8 +243,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     closeButtonTappedProperty.value = ()
   }
 
-  fileprivate let categoryCellTappedProperty = MutableProperty<KsApi.RootCategoriesEnvelope.Category?>(nil)
-  public func categoryCellTapped(_ category: KsApi.RootCategoriesEnvelope.Category) {
+  fileprivate let categoryCellTappedProperty = MutableProperty<KsApi.Category?>(nil)
+  public func categoryCellTapped(_ category: KsApi.Category) {
     categoryCellTappedProperty.value = category
   }
 
@@ -303,14 +303,14 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
-  public let showRecommendations: Signal<([Project], KsApi.RootCategoriesEnvelope.Category), NoError>
+  public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let twitterButtonIsHidden: Signal<Bool, NoError>
 }
 
 private func relatedProjects(toProject project: Project,
-                             inCategory category: KsApi.RootCategoriesEnvelope.Category) ->
+                             inCategory category: KsApi.Category) ->
   SignalProducer<[Project], NoError> {
 
     let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
