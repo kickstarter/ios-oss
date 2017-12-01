@@ -19,7 +19,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
     switch (project.personalization.isBacking, project.state) {
     case (true?, .live):
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
-      self.pledgeTitleLabel.text = Strings.Manage_your_pledge()
+      self.pledgeTitleLabel.text = Strings.Manage_your_pledge() //keep
     case (_, .live):
       self.pledgeTitleLabel.font = .ksr_body(size: 12)
       self.pledgeTitleLabel.text =
