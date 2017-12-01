@@ -34,7 +34,7 @@ public struct Category: Swift.Decodable {
   public var intID: Int? {
     return decompose(id: id)
   }
-  
+
   public var parent: Category? {
     return _parent?.categoryType
   }
