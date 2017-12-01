@@ -632,7 +632,6 @@
 		D01588431EEB2ED7006E7684 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587791EEB2ED6006E7684 /* Activity.swift */; };
 		D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */; };
 		D01588491EEB2ED7006E7684 /* Backing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877C1EEB2ED6006E7684 /* Backing.swift */; };
-		D015884D1EEB2ED7006E7684 /* CategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */; };
 		D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */; };
 		D01588571EEB2ED7006E7684 /* CheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */; };
 		D015885B1EEB2ED7006E7684 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587851EEB2ED6006E7684 /* Comment.swift */; };
@@ -2182,7 +2181,6 @@
 		D015877B1EEB2ED6006E7684 /* ActivityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTests.swift; sourceTree = "<group>"; };
 		D015877C1EEB2ED6006E7684 /* Backing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backing.swift; sourceTree = "<group>"; };
 		D015877D1EEB2ED6006E7684 /* BackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingTests.swift; sourceTree = "<group>"; };
-		D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D01587801EEB2ED6006E7684 /* CategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -3660,10 +3658,7 @@
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
-				D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */,
 				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
-				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
-				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
@@ -3686,7 +3681,7 @@
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
-				D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */,
+				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,

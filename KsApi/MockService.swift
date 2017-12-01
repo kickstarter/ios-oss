@@ -523,14 +523,8 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraphCategory(query: NonEmptySet<Query>)
-<<<<<<< HEAD
-    -> SignalProducer<RootCategoriesEnvelope.CategoryById, GraphError> {
-    return .empty
-      //SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(query.head)")
-=======
     -> SignalProducer<CategoryEnvelope, GraphError> {
-    return SignalProducer(value: .template |> Category.lens.id .~ "\(query.head)")
->>>>>>> category_by_id_query_fix
+      return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {

@@ -204,7 +204,7 @@ extension Query: QueryType {
   public var description: String {
     switch self {
     case let .category(id, fields):
-      return "node(id: \(id)) { ... on Category { \(join(fields)) } }"
+      return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):

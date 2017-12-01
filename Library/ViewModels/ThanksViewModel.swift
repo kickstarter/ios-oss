@@ -140,12 +140,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { "\"\($0.category.root?.decodedID.toBase64() ?? "")\"" }
+      .map { toBase64($0.category.root?.decodedID) }
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map { (category: KsApi.Category)
-          -> KsApi.Category in category.parent ?? category }
+          .map { (categoryEnvelope: KsApi.CategoryEnvelope) -> KsApi.Category
+            in categoryEnvelope.node.parent ?? categoryEnvelope.node }
         .demoteErrors()
     }
 
@@ -306,6 +306,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let updateUserInEnvironment: Signal<User, NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let twitterButtonIsHidden: Signal<Bool, NoError>
+}
+
+/*
+This is a work around that fixes the incompatibility between the types of category id returned by
+ the server (Int) and the type we need to send when requesting category by id
+ through GraphQL (base64 encoded String). This will be removed once we start consuming GraphQL to fetch
+ Discovery projects.
+
+ */
+private func toBase64(_ input: String?) -> String {
+  return String(describing: "\(input ?? "")").toBase64()
 }
 
 private func relatedProjects(toProject project: Project,

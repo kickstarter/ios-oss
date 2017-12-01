@@ -1,3 +1,3 @@
 public struct CategoryEnvelope: Swift.Decodable {
-  public let node: Node<Category>
+  public let node: Category
 }
