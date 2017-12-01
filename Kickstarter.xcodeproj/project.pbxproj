@@ -903,7 +903,6 @@
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
 		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
 		D6FB2A3D1FA27D0300B0D282 /* GraphCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */; };
-		D6B1A90F1FC3587900617A46 /* UIPageViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B1A8D81FC3587900617A46 /* UIPageViewController+Extensions.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */; };
 		D764DAFC1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */; };
@@ -2427,7 +2426,6 @@
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTests.swift; sourceTree = "<group>"; };
-		D6B1A8D81FC3587900617A46 /* UIPageViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Extensions.swift"; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewController.swift; sourceTree = "<group>"; };
@@ -3205,7 +3203,6 @@
 				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
 				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
 				A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */,
-				D6B1A8D81FC3587900617A46 /* UIPageViewController+Extensions.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
@@ -4876,7 +4873,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6B1A90F1FC3587900617A46 /* UIPageViewController+Extensions.swift in Sources */,
 				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
 				D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */,
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,

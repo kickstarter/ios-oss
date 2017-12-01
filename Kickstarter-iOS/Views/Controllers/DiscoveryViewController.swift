@@ -107,7 +107,7 @@ internal final class DiscoveryViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.sortPagerViewController.setSortPagerEnabled($0)
-        self?.pageViewController.isScrollEnabled($0)
+        self?.setPageViewControllerScrollEnabled($0)
     }
 
     self.viewModel.outputs.updateSortPagerStyle
@@ -136,6 +136,10 @@ internal final class DiscoveryViewController: UIViewController {
         completion: nil
       )
     }
+  }
+
+  private func setPageViewControllerScrollEnabled(_ enabled: Bool) {
+    self.pageViewController.dataSource = enabled == false ? nil : self.dataSource
   }
 }
 
