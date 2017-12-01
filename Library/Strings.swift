@@ -3098,7 +3098,7 @@ from friends yet."
   /**
    "Other projects you might like."
 
-   - **es**: "Otros proyectos que te pueden gustar."
+   - **es**: "Other projects you might like."
    - **ja**: "おすすめをさらに見る"
    - **de**: "Ähnliche Projekte:"
    - **fr**: "Autre projets qui pourraient vous intéresser"
@@ -4446,7 +4446,7 @@ catch your eye?"
   /**
    "Thank you!"
 
-   - **es**: "¡Gracias!"
+   - **es**: "Thank you!"
    - **ja**: "ありがとうございます！"
    - **de**: "Vielen Dank!"
    - **fr**: "Merci !"
@@ -4616,10 +4616,17 @@ catch your eye?"
   /**
    "This project will only be funded on if at least %{amount} is pledged by %{date}."
 
+<<<<<<< HEAD
    - **es**: "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}."
    - **ja**: "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。"
    - **de**: "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden."
    - **fr**: "Ce projet ne sera financé que si au moins %{amount} sont engagés d'ici le %{date}."
+=======
+   - **es**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **ja**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **de**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+   - **fr**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+>>>>>>> wip
    - **en**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
   */
   public static func This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String) -> String {
@@ -5115,7 +5122,7 @@ Please try again later."
   /**
    "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
 
-   - **es**: "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!"
+   - **es**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
    - **ja**: "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。"
    - **de**: "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!"
    - **fr**: "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !"
