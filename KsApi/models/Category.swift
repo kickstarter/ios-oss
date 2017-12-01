@@ -8,7 +8,7 @@ public struct ParentCategory: Swift.Decodable {
   }
 }
 
-fileprivate let unrecognizedCategoryId: Int = -1
+private let unrecognizedCategoryId: Int = -1
 
 public struct Category: Swift.Decodable {
   public static let gamesId: Int = 12
