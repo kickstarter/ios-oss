@@ -523,9 +523,14 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraphCategory(query: NonEmptySet<Query>)
+<<<<<<< HEAD
     -> SignalProducer<RootCategoriesEnvelope.CategoryById, GraphError> {
     return .empty
       //SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(query.head)")
+=======
+    -> SignalProducer<CategoryEnvelope, GraphError> {
+    return SignalProducer(value: .template |> Category.lens.id .~ "\(query.head)")
+>>>>>>> category_by_id_query_fix
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
@@ -886,10 +891,10 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchCategory(param: Param)
-    -> SignalProducer<KsApi.RootCategoriesEnvelope.Category, GraphError> {
+    -> SignalProducer<KsApi.Category, GraphError> {
     switch param {
     case let .id(id):
-      return SignalProducer(value: .template |> RootCategoriesEnvelope.Category.lens.id .~ "\(id)")
+      return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
     default:
       return .empty
       }

@@ -6,7 +6,7 @@ import Prelude
 public struct Project {
 
   public private(set) var blurb: String
-  public private(set) var category: RootCategoriesEnvelope.Category
+  public private(set) var category: Category
   public private(set) var country: Country
   public private(set) var creator: User
   public private(set) var memberData: MemberData
@@ -160,7 +160,7 @@ extension Project: Argo.Decodable {
     let create = curry(Project.init)
     let tmp1 = create
       <^> json <| "blurb"
-      <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
+      <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1
@@ -285,15 +285,15 @@ private func toInt(string: String) -> Decoded<Int> {
  between Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our
  code to use exclusively Swift's native Decodable.
  */
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
 
   guard let jsonObj = json else {
-    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
+    return .success(Category(id: "-1", name: "Unknown Category"))
   }
 
   switch jsonObj {
   case .object(let dic):
-    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic).0,
+    let category = Category(id: categoryInfo(dic).0,
                                                    name: categoryInfo(dic).1)
     return .success(category)
   default:

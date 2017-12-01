@@ -1,12 +1,12 @@
 import Prelude
 import Foundation
 
-extension RootCategoriesEnvelope.Category {
+extension Category {
 
   public enum lens {
-    public static let id = Lens<RootCategoriesEnvelope.Category, String>(
+    public static let id = Lens<Category, String>(
       view: { $0.id },
-      set: { RootCategoriesEnvelope.Category(id: $0,
+      set: { Category(id: $0,
                                              name: $1.name,
                                              parentCategory: $1._parent,
                                              parentId: $1.parentId,
@@ -14,9 +14,9 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
-    public static let name = Lens<RootCategoriesEnvelope.Category, String>(
+    public static let name = Lens<Category, String>(
       view: { $0.name },
-      set: { RootCategoriesEnvelope.Category(id: $1.id,
+      set: { Category(id: $1.id,
                                              name: $0,
                                              parentCategory: $1._parent,
                                              parentId: $1.parentId,
@@ -24,9 +24,9 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
-    public static let parent = Lens<RootCategoriesEnvelope.Category, ParentCategory?>(
+    public static let parent = Lens<Category, ParentCategory?>(
       view: { $0._parent },
-      set: { RootCategoriesEnvelope.Category(id: $1.id,
+      set: { Category(id: $1.id,
                                              name: $1.name,
                                              parentCategory: $0,
                                              parentId: $1.parentId,
@@ -34,9 +34,9 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
-    public static let parentId = Lens<RootCategoriesEnvelope.Category, String?>(
+    public static let parentId = Lens<Category, String?>(
       view: { $0.parentId },
-      set: { RootCategoriesEnvelope.Category(id: $1.id,
+      set: { Category(id: $1.id,
                                              name: $1.name,
                                              parentCategory: $1._parent,
                                              parentId: $0,
@@ -44,10 +44,10 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
-    public static let subcategories = Lens<RootCategoriesEnvelope.Category,
-                                           RootCategoriesEnvelope.Category.SubcategoryConnection?>(
+    public static let subcategories = Lens<Category,
+                                           Category.SubcategoryConnection?>(
       view: { $0.subcategories },
-      set: { RootCategoriesEnvelope.Category(id: $1.id,
+      set: { Category(id: $1.id,
                                              name: $1.name,
                                              parentCategory: $1._parent,
                                              parentId: $1.parentId,
@@ -55,9 +55,9 @@ extension RootCategoriesEnvelope.Category {
                                              totalProjectCount: $1.totalProjectCount) }
     )
 
-    public static let totalProjectCount = Lens<RootCategoriesEnvelope.Category, Int?>(
+    public static let totalProjectCount = Lens<Category, Int?>(
       view: { $0.totalProjectCount },
-      set: { RootCategoriesEnvelope.Category(id: $1.id,
+      set: { Category(id: $1.id,
                                              name: $1.name,
                                              parentCategory: $1._parent,
                                              parentId: $1.parentId,

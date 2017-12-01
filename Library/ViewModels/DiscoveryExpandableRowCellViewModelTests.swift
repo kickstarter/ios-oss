@@ -154,7 +154,7 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
   }
 
   func testProjectsCountLabelHidden() {
-    let gamesCategory = .games |> RootCategoriesEnvelope.Category.lens.totalProjectCount .~ 10
+    let gamesCategory = .games |> Category.lens.totalProjectCount .~ 10
     let expandableRow =  ExpandableRow(
       isExpanded: false,
       params: .defaults |> DiscoveryParams.lens.category .~ gamesCategory,
@@ -169,7 +169,7 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
   }
 
   func testProjectsCountLabelHidden_NoProjects() {
-    let gamesCategory = .games |> RootCategoriesEnvelope.Category.lens.totalProjectCount .~ 0
+    let gamesCategory = .games |> Category.lens.totalProjectCount .~ 0
     let expandableRow =  ExpandableRow(
       isExpanded: false,
       params: .defaults |> DiscoveryParams.lens.category .~ gamesCategory,
@@ -184,7 +184,7 @@ final class DiscoveryExpandableRowCellViewModelTests: TestCase {
   }
 
   func testProjectsCountLabelText() {
-    let filmAndVideoCategory = .filmAndVideo |> RootCategoriesEnvelope.Category.lens.totalProjectCount .~ 10
+    let filmAndVideoCategory = .filmAndVideo |> Category.lens.totalProjectCount .~ 10
     let expandableRow =  ExpandableRow(
       isExpanded: false,
       params: .defaults |> DiscoveryParams.lens.category .~ filmAndVideoCategory,

@@ -3,88 +3,76 @@ public struct ParentCategory: Swift.Decodable {
   public let id: String
   public let name: String
 
-  public var categoryType: RootCategoriesEnvelope.Category {
-      return RootCategoriesEnvelope.Category(id: id, name: name)
+  public var categoryType: Category {
+      return Category(id: id, name: name)
   }
 }
 
-public struct RootCategoriesEnvelope: Swift.Decodable {
-  public fileprivate(set) var rootCategories: [Category]
+public struct Category: Swift.Decodable {
+  public static let gamesId: Int = 12
+  public fileprivate(set) var id: String
+  public fileprivate(set) var name: String
+  internal let _parent: ParentCategory?
+  public fileprivate(set) var parentId: String?
+  public fileprivate(set) var subcategories: SubcategoryConnection?
+  public fileprivate(set) var totalProjectCount: Int?
 
-  public struct CategoryById: Swift.Decodable {
-    public fileprivate(set) var node: Category
-
-    public var categoryType: RootCategoriesEnvelope.Category {
-      return node
-    }
+  public init(id: String,
+              name: String,
+              parentCategory: ParentCategory? = nil,
+              parentId: String? = nil,
+              subcategories: SubcategoryConnection? = nil,
+              totalProjectCount: Int? = nil) {
+    self.id = id
+    self.name = name
+    self.parentId = parentId
+    self._parent = parentCategory
+    self.subcategories = subcategories
+    self.totalProjectCount = totalProjectCount
   }
 
-  public struct Category: Swift.Decodable {
-    public static let gamesId: Int = 12
-    public fileprivate(set) var id: String
-    public fileprivate(set) var name: String
-    internal let _parent: ParentCategory?
-    public fileprivate(set) var parentId: String?
-    public fileprivate(set) var subcategories: SubcategoryConnection?
-    public fileprivate(set) var totalProjectCount: Int?
+  public var intID: Int? {
+    return decompose(id: id)
+  }
 
-    public init(id: String,
-                name: String,
-                parentCategory: ParentCategory? = nil,
-                parentId: String? = nil,
-                subcategories: SubcategoryConnection? = nil,
-                totalProjectCount: Int? = nil) {
-      self.id = id
-      self.name = name
-      self.parentId = parentId
-      self._parent = parentCategory
-      self.subcategories = subcategories
-      self.totalProjectCount = totalProjectCount
-    }
+  public var decodedID: String {
+    return "Category-\(id)"
+  }
 
-    public var intID: Int? {
-      return decompose(id: id)
-    }
+  public var parent: Category? {
+    return _parent?.categoryType
+  }
 
-    public var decodedID: String {
-      return "Category-\(id)"
-    }
+  public struct SubcategoryConnection: Swift.Decodable {
+    public let totalCount: Int
+    public let nodes: [Category]
+  }
 
-    public var parent: RootCategoriesEnvelope.Category? {
-      return _parent?.categoryType
-    }
+  public var isRoot: Bool {
+    return self.parentId == nil
+  }
 
-    public struct SubcategoryConnection: Swift.Decodable {
-      public let totalCount: Int
-      public let nodes: [Category]
+  /// Returns the parent category if present, or returns self if we know for a fact that self is a
+  /// root category.
+  public var root: Category? {
+    if let parent = self._parent {
+      return parent.categoryType
+    } else if self.parentId == nil {
+      return self
     }
+    return nil
+  }
 
-    public var isRoot: Bool {
-      return self.parentId == nil
+  /// Returns the id of the root category.
+  public var rootId: Int? {
+    if let parentId = self.parentId {
+      return decompose(id: parentId)
     }
-
-    /// Returns the parent category if present, or returns self if we know for a fact that self is a
-    /// root category.
-    public var root: RootCategoriesEnvelope.Category? {
-      if let parent = self._parent {
-        return parent.categoryType
-      } else if self.parentId == nil {
-        return self
-      }
-      return nil
-    }
-
-    /// Returns the id of the root category.
-    public var rootId: Int? {
-      if let parentId = self.parentId {
-        return decompose(id: parentId)
-      }
-      return self.root?.intID
-    }
+    return self.root?.intID
   }
 }
 
-extension RootCategoriesEnvelope.Category {
+extension Category {
 
   private enum CodingKeys: String, CodingKey {
     case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
@@ -113,8 +101,8 @@ extension ParentCategory: Equatable {
   }
 }
 
-extension RootCategoriesEnvelope.Category: Comparable {}
-public func < (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope.Category) -> Bool {
+extension Category: Comparable {}
+public func < (lhs: Category, rhs: Category) -> Bool {
   if lhs.id == rhs.id {
     return false
   }
@@ -134,19 +122,19 @@ public func < (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope
   return lhs.parent == nil
 }
 
-extension RootCategoriesEnvelope.Category: Equatable {
-  static public func == (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope.Category) -> Bool {
+extension Category: Equatable {
+  static public func == (lhs: Category, rhs: Category) -> Bool {
     return lhs.id == rhs.id
   }
 }
 
-extension RootCategoriesEnvelope.Category: Hashable {
+extension Category: Hashable {
   public var hashValue: Int {
     return self.intID ?? -1
   }
 }
 
-extension RootCategoriesEnvelope.Category: CustomStringConvertible, CustomDebugStringConvertible {
+extension Category: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
     return "GraphCategory(id: \(self.id), name: \(self.name))"
   }
