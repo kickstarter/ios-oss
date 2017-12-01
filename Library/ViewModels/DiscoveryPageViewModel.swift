@@ -151,7 +151,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
       .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
-      .map { params, projectsAreLoading, projects in
+      .map { params, _, _ in
         emptyState(forParams: params)
       }
       .skipNil()
