@@ -1,119 +1,157 @@
-import Argo
-import Curry
-import Runes
-
-public struct Category {
-  public let color: Int?
-  public let id: Int
+import Foundation
+public struct ParentCategory: Swift.Decodable {
+  public let id: String
   public let name: String
-  // NB: To get around lack of recursive structs we package the parent category into an internal closure
-  // and then expose a property that evaluates the closure.
-  internal let _parent: () -> Category?
-  public let parentId: Int?
-  public let position: Int
-  public let projectsCount: Int?
-  public let slug: String
 
-  public static let gamesId: Int = 12
-
-  internal init(color: Int?,
-                id: Int,
-                name: String,
-                parent: Category?,
-                parentId: Int?,
-                position: Int,
-                projectsCount: Int?,
-                slug: String) {
-    self.color = color
-    self.id = id
-    self.name = name
-    self._parent = { parent }
-    self.parentId = parentId
-    self.position = position
-    self.projectsCount = projectsCount
-    self.slug = slug
+  public var categoryType: RootCategoriesEnvelope.Category {
+      return RootCategoriesEnvelope.Category(id: id, name: name)
   }
+}
 
-  public var parent: Category? {
-    return self._parent()
-  }
+public struct RootCategoriesEnvelope: Swift.Decodable {
+  public fileprivate(set) var rootCategories: [Category]
 
-  /// Returns the parent category if present, or returns self if we know for a fact that self is a
-  /// root categeory.
-  public var root: Category? {
-    if let parent = self.parent {
-      return parent
-    } else if self.parentId == nil {
-      return self
+  public struct CategoryById: Swift.Decodable {
+    public fileprivate(set) var node: Category
+
+    public var categoryType: RootCategoriesEnvelope.Category {
+      return node
     }
-    return nil
   }
 
-  /// Returns the id of the root category. This is sometimes present in situations that `root` is not.
-  public var rootId: Int? {
-    return self.parentId ?? self.root?.id
-  }
+  public struct Category: Swift.Decodable {
+    public static let gamesId: Int = 12
+    public fileprivate(set) var id: String
+    public fileprivate(set) var name: String
+    internal let _parent: ParentCategory?
+    public fileprivate(set) var parentId: String?
+    public fileprivate(set) var subcategories: SubcategoryConnection?
+    public fileprivate(set) var totalProjectCount: Int?
 
-  public var isRoot: Bool {
-    return self.parentId == nil && self.parent == nil
+    public init(id: String,
+                name: String,
+                parentCategory: ParentCategory? = nil,
+                parentId: String? = nil,
+                subcategories: SubcategoryConnection? = nil,
+                totalProjectCount: Int? = nil) {
+      self.id = id
+      self.name = name
+      self.parentId = parentId
+      self._parent = parentCategory
+      self.subcategories = subcategories
+      self.totalProjectCount = totalProjectCount
+    }
+
+    public var intID: Int? {
+      return decompose(id: id)
+    }
+
+    public var decodedID: String {
+      return "Category-\(id)"
+    }
+
+    public var parent: RootCategoriesEnvelope.Category? {
+      return _parent?.categoryType
+    }
+
+    public struct SubcategoryConnection: Swift.Decodable {
+      public let totalCount: Int
+      public let nodes: [Category]
+    }
+
+    public var isRoot: Bool {
+      return self.parentId == nil
+    }
+
+    /// Returns the parent category if present, or returns self if we know for a fact that self is a
+    /// root category.
+    public var root: RootCategoriesEnvelope.Category? {
+      if let parent = self._parent {
+        return parent.categoryType
+      } else if self.parentId == nil {
+        return self
+      }
+      return nil
+    }
+
+    /// Returns the id of the root category.
+    public var rootId: Int? {
+      if let parentId = self.parentId {
+        return decompose(id: parentId)
+      }
+      return self.root?.intID
+    }
   }
 }
 
-extension Category: Equatable {}
-public func == (lhs: Category, rhs: Category) -> Bool {
-  return lhs.id == rhs.id
+extension RootCategoriesEnvelope.Category {
+
+  private enum CodingKeys: String, CodingKey {
+    case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
+  }
+
+  private init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try values.decode(String.self, forKey: .id)
+    self.name = try values.decode(String.self, forKey: .name)
+    self.parentId = try? values.decode(String.self, forKey: .parentId)
+    self._parent = try? values.decode(ParentCategory.self, forKey: ._parent)
+    self.subcategories = try? values.decode(SubcategoryConnection.self, forKey: .subcategories)
+    self.totalProjectCount = try? values.decode(Int.self, forKey: .totalProjectCount)
+  }
 }
 
-extension Category: Hashable {
+extension ParentCategory: Hashable {
   public var hashValue: Int {
-    return self.id
+    return self.categoryType.intID ?? -1
   }
 }
 
-extension Category: Comparable {}
-public func < (lhs: Category, rhs: Category) -> Bool {
+extension ParentCategory: Equatable {
+  static public func == (lhs: ParentCategory, rhs: ParentCategory) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
+extension RootCategoriesEnvelope.Category: Comparable {}
+public func < (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope.Category) -> Bool {
   if lhs.id == rhs.id {
     return false
   }
 
-  if lhs.isRoot && lhs.id == rhs.rootId {
+  if lhs.isRoot && lhs.id == rhs.parent?.id {
     return true
   }
 
-  if !lhs.isRoot && lhs.rootId == rhs.id {
+  if !lhs.isRoot && lhs.parent?.id == rhs.id {
     return false
   }
 
-  if let lhsRootName = lhs.root?.name, let rhsRootName = rhs.root?.name {
+  if let lhsRootName = lhs.parent?.name, let rhsRootName = rhs.parent?.name {
     return lhsRootName < rhsRootName
   }
 
-  return lhs.root == nil
+  return lhs.parent == nil
 }
 
-extension Category: CustomStringConvertible, CustomDebugStringConvertible {
+extension RootCategoriesEnvelope.Category: Equatable {
+  static public func == (lhs: RootCategoriesEnvelope.Category, rhs: RootCategoriesEnvelope.Category) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
+extension RootCategoriesEnvelope.Category: Hashable {
+  public var hashValue: Int {
+    return self.intID ?? -1
+  }
+}
+
+extension RootCategoriesEnvelope.Category: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String {
-    return "Category(id: \(self.id), name: \(self.name))"
+    return "GraphCategory(id: \(self.id), name: \(self.name))"
   }
 
   public var debugDescription: String {
     return self.description
-  }
-}
-
-extension Category: Argo.Decodable {
-
-  public static func decode(_ json: JSON) -> Decoded<Category> {
-    let create = curry(Category.init)
-    let tmp = create
-      <^> json <|? "color"
-      <*> json <| "id"
-      <*> json <| "name"
-      <*> json <|? "parent"
-    return tmp
-      <*> json <|? "parent_id"
-      <*> json <| "position"
-      <*> json <|? "projects_count"
-      <*> json <| "slug"
   }
 }
