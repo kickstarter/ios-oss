@@ -24,7 +24,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
   fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
-  fileprivate let showEmptyState = TestObserver<EmptyState?, NoError>()
+  fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
   fileprivate let showOnboarding = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
@@ -558,7 +558,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.starred, .recommended, nil])
+          self.showEmptyState.assertValues([.starred, .recommended])
 
           self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
 
@@ -566,7 +566,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.starred, .recommended, nil, .socialDisabled])
+          self.showEmptyState.assertValues([.starred, .recommended, .socialDisabled])
         }
       }
     }
