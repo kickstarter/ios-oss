@@ -6,10 +6,6 @@ public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
 }
 
-public struct Node<T: Decodable>: Decodable {
-  let node: T?
-}
-
 /// Base Query Types
 
 extension Never: CustomStringConvertible {
