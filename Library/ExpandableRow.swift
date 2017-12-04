@@ -34,7 +34,7 @@ public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {
   public var starred: Lens<ExpandableRow, Bool?> {
     return ExpandableRow.lens.params..DiscoveryParams.lens.starred
   }
-  public var category: Lens<ExpandableRow, KsApi.RootCategoriesEnvelope.Category?> {
+  public var category: Lens<ExpandableRow, KsApi.Category?> {
     return ExpandableRow.lens.params..DiscoveryParams.lens.category
   }
 }

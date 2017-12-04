@@ -1,56 +1,57 @@
 import Prelude
 
+private struct ID {
+  fileprivate static let art = "Q2F0ZWdvcnktMQ=="
+  fileprivate static let documentary = "Q2F0ZWdvcnktMzA="
+  fileprivate static let film = "Q2F0ZWdvcnktMTE="
+  fileprivate static let games = "Q2F0ZWdvcnktMTI="
+  fileprivate static let illustration = "Q2F0ZWdvcnktMjI="
+  fileprivate static let tabletop = "Q2F0ZWdvcnktMzQ="
+}
+
+private struct Name {
+  fileprivate static let art = "Art"
+  fileprivate static let documentary = "Documentary"
+  fileprivate static let film = "Film & Video"
+  fileprivate static let games = "Games"
+  fileprivate static let illustration = "Illustration"
+  fileprivate static let tabletop = "Tabletop Games"
+}
+
 extension KsApi.Category {
-  internal static let template = Category(
-    color: nil,
-    id: 1,
-    name: "Art",
-    parent: nil,
-    parentId: nil,
-    position: 1,
-    projectsCount: 450,
-    slug: "art"
-  )
+  internal static let template = Category(id: ID.art, name: Name.art)
 
-  internal static let art = template
-    |> Category.lens.id .~ 1
-    <> Category.lens.name .~ "Art"
-    <> Category.lens.slug .~ "art"
-    <> Category.lens.position .~ 1
+  internal static let art = Category.template
+    |> \.subcategories
+    .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.illustration])
 
-  internal static let filmAndVideo = template
-    |> Category.lens.id .~ 11
-    <> Category.lens.name .~ "Film & Video"
-    <> Category.lens.slug .~ "film-and-video"
-    <> Category.lens.position .~ 7
+  internal static let filmAndVideo = Category.template
+    |> \.id .~ ID.film
+    |> \.name .~ Name.film
+    |> \.subcategories
+    .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.documentary])
 
-  internal static let games = template
-    |> Category.lens.id .~ 12
-    <> Category.lens.name .~ "Games"
-    <> Category.lens.slug .~ "games"
-    <> Category.lens.position .~ 9
+  internal static let games = Category.template
+    |> \.id .~ ID.games
+    |> \.name .~ Name.games
+    |> \.subcategories
+    .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
-  internal static let illustration = template
-    |> Category.lens.id .~ 22
-    <> Category.lens.name .~ "Illustration"
-    <> Category.lens.slug .~ "art/illustration"
-    <> Category.lens.position .~ 4
-    <> Category.lens.parentId .~ Category.art.id
-    <> Category.lens.parent .~ Category.art
+  internal static let illustration = Category.template
+    |> \.id .~ ID.illustration
+    |> \.name .~ Name.illustration
+    |> \.parentId .~ ID.art
+    |> Category.lens.parent .~ ParentCategory(id: ID.art, name: Name.art)
 
-  internal static let documentary = template
-    |> Category.lens.id .~ 30
-    <> Category.lens.name .~ "Documentary"
-    <> Category.lens.slug .~ "film-and-video/documentary"
-    <> Category.lens.position .~ 4
-    <> Category.lens.parentId .~ Category.filmAndVideo.id
-    <> Category.lens.parent .~ Category.filmAndVideo
+  internal static let documentary = Category.template
+    |> \.id .~ ID.documentary
+    |> \.name .~ Name.documentary
+    |> \.parentId .~ ID.film
+    |> Category.lens.parent .~ ParentCategory(id: ID.film, name: Name.film)
 
-  internal static let tabletopGames = template
-    |> Category.lens.id .~ 34
-    <> Category.lens.name .~ "Tabletop Games"
-    <> Category.lens.slug .~ "games/tabletop-games"
-    <> Category.lens.position .~ 9
-    <> Category.lens.parentId .~ Category.games.id
-    <> Category.lens.parent .~ Category.games
+  internal static let tabletopGames = Category.template
+    |> \.id .~ ID.tabletop
+    |> \.name .~ Name.tabletop
+    |> \.parentId .~ ID.games
+    |> Category.lens.parent .~ ParentCategory(id: ID.games, name: Name.games)
 }

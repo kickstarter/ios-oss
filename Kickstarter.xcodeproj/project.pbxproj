@@ -632,8 +632,6 @@
 		D01588431EEB2ED7006E7684 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587791EEB2ED6006E7684 /* Activity.swift */; };
 		D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */; };
 		D01588491EEB2ED7006E7684 /* Backing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877C1EEB2ED6006E7684 /* Backing.swift */; };
-		D015884D1EEB2ED7006E7684 /* CategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */; };
-		D015884F1EEB2ED7006E7684 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877F1EEB2ED6006E7684 /* Category.swift */; };
 		D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */; };
 		D01588571EEB2ED7006E7684 /* CheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */; };
 		D015885B1EEB2ED7006E7684 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587851EEB2ED6006E7684 /* Comment.swift */; };
@@ -649,8 +647,6 @@
 		D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */; };
 		D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587991EEB2ED6006E7684 /* ActivityLenses.swift */; };
 		D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879A1EEB2ED6006E7684 /* BackingLenses.swift */; };
-		D01588851EEB2ED7006E7684 /* CategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879B1EEB2ED6006E7684 /* CategoriesEnvelopeLenses.swift */; };
-		D01588871EEB2ED7006E7684 /* CategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879C1EEB2ED6006E7684 /* CategoryLenses.swift */; };
 		D01588891EEB2ED7006E7684 /* CheckoutEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879D1EEB2ED6006E7684 /* CheckoutEnvelopeLenses.swift */; };
 		D015888B1EEB2ED7006E7684 /* CommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879E1EEB2ED6006E7684 /* CommentLenses.swift */; };
 		D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */; };
@@ -735,8 +731,6 @@
 		D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587711EEB2ED6006E7684 /* EncodableTests.swift */; };
 		D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */; };
 		D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */; };
-		D0158A0B1EEB30A2006E7684 /* CategoriesEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F11EEB2ED7006E7684 /* CategoriesEnvelopeTemplates.swift */; };
-		D0158A0C1EEB30A2006E7684 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F21EEB2ED7006E7684 /* CategoryTemplates.swift */; };
 		D0158A0D1EEB30A2006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */; };
 		D0158A0E1EEB30A2006E7684 /* CheckoutEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F41EEB2ED7006E7684 /* CheckoutEnvelopeTemplates.swift */; };
 		D0158A0F1EEB30A2006E7684 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */; };
@@ -837,7 +831,6 @@
 		D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
 		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
-		D0D10C041EEB4550005EBAD0 /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587801EEB2ED6006E7684 /* CategoryTests.swift */; };
 		D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */; };
 		D0D10C061EEB4550005EBAD0 /* CheckoutEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587841EEB2ED6006E7684 /* CheckoutEnvelopeTests.swift */; };
 		D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587871EEB2ED6006E7684 /* CommentTests.swift */; };
@@ -896,17 +889,21 @@
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
-		D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */; };
+		D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */; };
+		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
+		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
+		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
-		D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */; };
+		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
 		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
-		D6FB2A3D1FA27D0300B0D282 /* GraphCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */; };
+		D6FB2A3D1FA27D0300B0D282 /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */; };
 		D764DAFC1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */; };
 		D764DB341F71958B00DC32AE /* CreatorDigestSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764DB331F71958B00DC32AE /* CreatorDigestSettingsViewModel.swift */; };
+		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
@@ -2185,8 +2182,6 @@
 		D015877B1EEB2ED6006E7684 /* ActivityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTests.swift; sourceTree = "<group>"; };
 		D015877C1EEB2ED6006E7684 /* Backing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backing.swift; sourceTree = "<group>"; };
 		D015877D1EEB2ED6006E7684 /* BackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingTests.swift; sourceTree = "<group>"; };
-		D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesEnvelope.swift; sourceTree = "<group>"; };
-		D015877F1EEB2ED6006E7684 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D01587801EEB2ED6006E7684 /* CategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2213,8 +2208,6 @@
 		D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.MemberDataLenses.swift; sourceTree = "<group>"; };
 		D01587991EEB2ED6006E7684 /* ActivityLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityLenses.swift; sourceTree = "<group>"; };
 		D015879A1EEB2ED6006E7684 /* BackingLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingLenses.swift; sourceTree = "<group>"; };
-		D015879B1EEB2ED6006E7684 /* CategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
-		D015879C1EEB2ED6006E7684 /* CategoryLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryLenses.swift; sourceTree = "<group>"; };
 		D015879D1EEB2ED6006E7684 /* CheckoutEnvelopeLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D015879E1EEB2ED6006E7684 /* CommentLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentLenses.swift; sourceTree = "<group>"; };
 		D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigLenses.swift; sourceTree = "<group>"; };
@@ -2296,8 +2289,6 @@
 		D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseTests.swift; sourceTree = "<group>"; };
 		D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTemplates.swift; sourceTree = "<group>"; };
 		D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingTemplates.swift; sourceTree = "<group>"; };
-		D01587F11EEB2ED7006E7684 /* CategoriesEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesEnvelopeTemplates.swift; sourceTree = "<group>"; };
-		D01587F21EEB2ED7006E7684 /* CategoryTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
 		D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D01587F41EEB2ED7006E7684 /* CheckoutEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -2419,17 +2410,22 @@
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
-		D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
+		D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
+		D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootCategoriesEnvelope.swift; path = lenses/RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
+		D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEnvelope.swift; sourceTree = "<group>"; };
+		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
+		D6B9DF3E1F72E25A0064A4D8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
-		D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategoriesEnvelope.CategoryTemplates.swift; sourceTree = "<group>"; };
+		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
-		D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTests.swift; sourceTree = "<group>"; };
+		D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
 		D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D764DAFB1F7194EA00DC32AE /* CreatorDigestSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewController.swift; sourceTree = "<group>"; };
 		D764DB331F71958B00DC32AE /* CreatorDigestSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModel.swift; sourceTree = "<group>"; };
+		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
@@ -3185,6 +3181,8 @@
 				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
 				A7ED1F201E830FDC00BFFA01 /* String+SimpleHTMLTests.swift */,
+				D79D61141FD0979D000F958B /* String+Base64.swift */,
+				D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */,
 				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				A7ED1F211E830FDC00BFFA01 /* String+TruncateTests.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
@@ -3663,9 +3661,8 @@
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
-				D015877E1EEB2ED6006E7684 /* CategoriesEnvelope.swift */,
-				D015877F1EEB2ED6006E7684 /* Category.swift */,
 				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
+				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
@@ -3686,8 +3683,8 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
-				D6B9DF3E1F72E25A0064A4D8 /* GraphCategory.swift */,
-				D6FB2A3C1FA27D0300B0D282 /* GraphCategoryTests.swift */,
+				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
+				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
@@ -3718,6 +3715,7 @@
 				D01587E41EEB2ED7006E7684 /* RewardsItem.swift */,
 				D01587E51EEB2ED7006E7684 /* RewardsItemTests.swift */,
 				D01587E61EEB2ED7006E7684 /* RewardTests.swift */,
+				D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
 				D01587E91EEB2ED7006E7684 /* StarEnvelope.swift */,
@@ -3749,8 +3747,6 @@
 				D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */,
 				D01587991EEB2ED6006E7684 /* ActivityLenses.swift */,
 				D015879A1EEB2ED6006E7684 /* BackingLenses.swift */,
-				D015879B1EEB2ED6006E7684 /* CategoriesEnvelopeLenses.swift */,
-				D015879C1EEB2ED6006E7684 /* CategoryLenses.swift */,
 				D015879D1EEB2ED6006E7684 /* CheckoutEnvelopeLenses.swift */,
 				D015879E1EEB2ED6006E7684 /* CommentLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
@@ -3785,6 +3781,7 @@
 				D01587BB1EEB2ED7006E7684 /* Reward.ShippingLenses.swift */,
 				D01587BC1EEB2ED7006E7684 /* RewardItemLenses.swift */,
 				D01587BD1EEB2ED7006E7684 /* RewardLenses.swift */,
+				D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587BE1EEB2ED7006E7684 /* ShippingRuleLenses.swift */,
 				D01587BF1EEB2ED7006E7684 /* ShippingRulesEnvelopeLenses.swift */,
 				D01587C01EEB2ED7006E7684 /* StarEnvelopeLenses.swift */,
@@ -3806,8 +3803,7 @@
 			children = (
 				D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */,
 				D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */,
-				D01587F11EEB2ED7006E7684 /* CategoriesEnvelopeTemplates.swift */,
-				D01587F21EEB2ED7006E7684 /* CategoryTemplates.swift */,
+				D6C9A2551F75921500981E64 /* CategoryTemplates.swift */,
 				D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */,
 				D01587F41EEB2ED7006E7684 /* CheckoutEnvelopeTemplates.swift */,
 				D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */,
@@ -3833,7 +3829,6 @@
 				D01588091EEB2ED7006E7684 /* ProjectTemplates.swift */,
 				D015880A1EEB2ED7006E7684 /* RewardsItemTemplates.swift */,
 				D015880B1EEB2ED7006E7684 /* RewardTemplates.swift */,
-				D6C9A2551F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift */,
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
 				D015880D1EEB2ED7006E7684 /* ShippingRuleTemplates.swift */,
 				D015880E1EEB2ED7006E7684 /* StarEnvelopeTemplates.swift */,
@@ -4922,6 +4917,7 @@
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
+				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				D0CC9D271E5733B500C2BC4A /* LiveStreamChatMessageCellViewModel.swift in Sources */,
@@ -5103,7 +5099,7 @@
 				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
-				D6FB2A3D1FA27D0300B0D282 /* GraphCategoryTests.swift in Sources */,
+				D6FB2A3D1FA27D0300B0D282 /* CategoryTests.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
@@ -5192,6 +5188,7 @@
 				A7ED1FAD1E831C5C00BFFA01 /* CheckoutViewModelTests.swift in Sources */,
 				A7ED1FB51E831C5C00BFFA01 /* LiveStreamCountdownViewModelTests.swift in Sources */,
 				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
+				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
 				A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */,
 				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
@@ -5514,9 +5511,8 @@
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D0158A0E1EEB30A2006E7684 /* CheckoutEnvelopeTemplates.swift in Sources */,
-				D6B9DF3F1F72E25A0064A4D8 /* GraphCategory.swift in Sources */,
+				D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */,
 				D01589051EEB2ED7006E7684 /* ProjectActivityEnvelope.swift in Sources */,
-				D015884F1EEB2ED7006E7684 /* Category.swift in Sources */,
 				D015899F1EEB2ED7006E7684 /* ServiceType.swift in Sources */,
 				D01588391EEB2ED7006E7684 /* Method.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
@@ -5529,10 +5525,9 @@
 				D0158A241EEB30A2006E7684 /* RewardsItemTemplates.swift in Sources */,
 				D0158A291EEB30A2006E7684 /* SubmitApplePayTemplates.swift in Sources */,
 				D0158A171EEB30A2006E7684 /* LocationTemplates.swift in Sources */,
-				D015884D1EEB2ED7006E7684 /* CategoriesEnvelope.swift in Sources */,
+				D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */,
 				D0158A2D1EEB30A2006E7684 /* UpdateTemplates.swift in Sources */,
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
-				D0158A0B1EEB30A2006E7684 /* CategoriesEnvelopeTemplates.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
 				D01588AF1EEB2ED7006E7684 /* Project.VideoLenses.swift in Sources */,
 				D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */,
@@ -5590,9 +5585,7 @@
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
-				D01588851EEB2ED7006E7684 /* CategoriesEnvelopeLenses.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
-				D01588871EEB2ED7006E7684 /* CategoryLenses.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
@@ -5628,8 +5621,7 @@
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
-				D6C9A2561F75921500981E64 /* RootCategoriesEnvelope.CategoryTemplates.swift in Sources */,
-				D0158A0C1EEB30A2006E7684 /* CategoryTemplates.swift in Sources */,
+				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
@@ -5649,6 +5641,7 @@
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
+				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
 				D0158A4D1EEB3220006E7684 /* MockService.swift in Sources */,
 				D01588651EEB2ED7006E7684 /* CreatePledgeEnvelope.swift in Sources */,
@@ -5687,7 +5680,6 @@
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
-				D0D10C041EEB4550005EBAD0 /* CategoryTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,

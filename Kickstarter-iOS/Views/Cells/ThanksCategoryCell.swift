@@ -9,7 +9,7 @@ internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
   @IBOutlet private weak var exploreLabel: UILabel!
   @IBOutlet private weak var liveProjectCountLabel: UILabel!
 
-  func configureWith(value category: KsApi.RootCategoriesEnvelope.Category) {
+  func configureWith(value category: KsApi.Category) {
     _ = self.bgView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 

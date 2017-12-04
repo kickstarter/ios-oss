@@ -9,58 +9,42 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   fileprivate let selectableRowTemplate = SelectableRow(isSelected: false, params: .defaults)
 
   fileprivate static let comics = .template
-    |> Category.lens.id .~ 3
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMw=="
     <> Category.lens.name .~ "Comics"
-    <> Category.lens.slug .~ "comics"
-    <> Category.lens.position .~ 2
 
   fileprivate static let crafts = .template
-    |> Category.lens.id .~ 26
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMjY="
     <> Category.lens.name .~ "Crafts"
-    <> Category.lens.slug .~ "crafts"
-    <> Category.lens.position .~ 3
 
   fileprivate static let dance = .template
-    |> Category.lens.id .~ 6
+    |> Category.lens.id .~ "Q2F0ZWdvcnktNg=="
     <> Category.lens.name .~ "Dance"
-    <> Category.lens.slug .~ "dance"
-    <> Category.lens.position .~ 4
 
   fileprivate static let design = .template
-    |> Category.lens.id .~ 6
+    |> Category.lens.id .~ "Q2F0ZWdvcnktNg=="
     <> Category.lens.name .~ "Design"
-    <> Category.lens.slug .~ "design"
-    <> Category.lens.position .~ 5
 
   fileprivate static let fashion = .template
-    |> Category.lens.id .~ 9
+    |> Category.lens.id .~ "Q2F0ZWdvcnktOQ=="
     <> Category.lens.name .~ "Fashion"
-    <> Category.lens.slug .~ "fashion"
-    <> Category.lens.position .~ 6
 
   fileprivate static let ceramics = .template
-    |> Category.lens.id .~ 19
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMTk="
     <> Category.lens.name .~ "Ceramics"
-    <> Category.lens.slug .~ "art/ceramics"
-    <> Category.lens.position .~ 1
     <> Category.lens.parentId .~ Category.art.id
-    <> Category.lens.parent .~ Category.art
+    <> Category.lens.parent .~ ParentCategory(id: Category.art.id, name: Category.art.name)
 
   fileprivate static let action = .template
-    |> Category.lens.id .~ 27
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMjc="
     <> Category.lens.name .~ "Action"
-    <> Category.lens.slug .~ "film-and-video/action"
-    <> Category.lens.position .~ 1
     <> Category.lens.parentId .~ Category.filmAndVideo.id
-    <> Category.lens.parent .~ Category.filmAndVideo
+    <> Category.lens.parent .~ ParentCategory(id: Category.filmAndVideo.id, name: Category.filmAndVideo.name)
 
   fileprivate static let mobileGames = .template
-    |> Category.lens.id .~ 31
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMzE="
     <> Category.lens.name .~ "Mobile Games"
-    <> Category.lens.slug .~ "games/mobile-games"
-    <> Category.lens.position .~ 6
     <> Category.lens.parentId .~ Category.games.id
-    <> Category.lens.parent .~ Category.games
+    <> Category.lens.parent .~ ParentCategory(id: Category.games.id, name: Category.games.name)
 
   fileprivate let categories = [Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
                             .filmAndVideo, action, .documentary, .games, mobileGames, .tabletopGames]

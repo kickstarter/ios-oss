@@ -6,7 +6,7 @@ import Prelude
 public struct DiscoveryParams {
 
   public private(set) var backed: Bool?
-  public private(set) var category: RootCategoriesEnvelope.Category?
+  public private(set) var category: Category?
   public private(set) var collaborated: Bool?
   public private(set) var created: Bool?
   public private(set) var hasLiveStreams: Bool?
@@ -95,7 +95,7 @@ extension DiscoveryParams: Argo.Decodable {
 
     let tmp1 = create
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<RootCategoriesEnvelope.Category>)
+      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
@@ -144,14 +144,14 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
     .coalesceWith(.failure(.custom("Could not parse string into bool.")))
 }
 
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<RootCategoriesEnvelope.Category> {
+private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
 
   guard let jsonObj = json else {
-    return .success(RootCategoriesEnvelope.Category(id: "-1", name: "Unknown Category"))
+    return .success(Category(id: "-1", name: "Unknown Category"))
   }
   switch jsonObj {
   case .object(let dic):
-    let category = RootCategoriesEnvelope.Category(id: categoryInfo(dic)?.0 ?? "",
+    let category = Category(id: categoryInfo(dic)?.0 ?? "",
                                                    name: categoryInfo(dic)?.1 ?? "")
     return .success(category)
   default:
