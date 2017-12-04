@@ -547,17 +547,26 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.showEmptyState.assertValues([.starred, .recommended], "Show empty state does not emit.")
+        self.showEmptyState.assertValues(
+          [.starred, .recommended], "Show empty state does not emit.")
 
         // switch back to empty state
         withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
-          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.starred .~ true)
+          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ false)
 
-          self.hideEmptyState.assertValueCount(3)
+          self.hideEmptyState.assertValueCount(5)
 
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.starred, .recommended, .socialDisabled, .starred])
+          self.showEmptyState.assertValues([.starred, .recommended])
+
+          self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
+
+          self.hideEmptyState.assertValueCount(6)
+
+          self.scheduler.advance()
+
+          self.showEmptyState.assertValues([.starred, .recommended, .socialDisabled])
         }
       }
     }
@@ -606,7 +615,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           self.vm.inputs.viewDidAppear()
           self.scheduler.advance()
 
-          self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
+          self.showEmptyState.assertValues(
+            [.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
                                            "Emits .socialNoPledges for true social.")
           self.hideEmptyState.assertValueCount(2)
         }

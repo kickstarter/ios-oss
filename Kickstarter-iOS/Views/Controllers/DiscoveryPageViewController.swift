@@ -246,10 +246,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
     emptyVC.setEmptyState(emptyState)
     emptyVC.view.isHidden = false
     self.view.bringSubview(toFront: emptyVC.view)
-    UIView.animate(withDuration: 0.3, animations: {
+    UIView.animate(withDuration: 0.3,
+                   animations: {
       self.emptyStatesController?.view.alpha = 1.0
-    })
-
+    }, completion: nil)
     if let discovery = self.parent?.parent as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
     }
