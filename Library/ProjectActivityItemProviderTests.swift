@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import KsApi
 @testable import Prelude
@@ -19,7 +18,7 @@ class ProjectActivityItemProviderTests: XCTestCase {
 
   func testProviderInitReturnsCorrectPlaceholderItem() {
     let provider: ProjectActivityItemProvider = ProjectActivityItemProvider(project: project)
-    XCTAssertEqual(project.name, provider.placeholderItem as! String)
+    XCTAssertEqual(project.name, provider.placeholderItem as? String)
   }
 
   func testItemForActivityTypeReturnsCorrectValue() {
@@ -27,16 +26,16 @@ class ProjectActivityItemProviderTests: XCTestCase {
     let activityVC = UIActivityViewController.init(activityItems: [], applicationActivities: [])
 
     let mailType =  provider.activityViewController(activityVC, itemForActivityType: .mail)
-    XCTAssertEqual(mailType as! String, formattedString)
+    XCTAssertEqual(mailType as? String, formattedString)
 
     let messageType =  provider.activityViewController(activityVC, itemForActivityType: .message)
-    XCTAssertEqual(messageType as! String, formattedString)
+    XCTAssertEqual(messageType as? String, formattedString)
 
     let facebookType = provider.activityViewController(activityVC, itemForActivityType: .postToFacebook)
-    XCTAssertEqual(facebookType as! String, project.urls.web.project)
+    XCTAssertEqual(facebookType as? String, project.urls.web.project)
 
     let otherTypes =  provider.activityViewController(activityVC, itemForActivityType: UIActivityType(""))
-    XCTAssertEqual(otherTypes as! String, formattedString)
+    XCTAssertEqual(otherTypes as? String, formattedString)
   }
 
   func testItemForTwitterTypeReturnsCorrectValue() {
@@ -46,6 +45,6 @@ class ProjectActivityItemProviderTests: XCTestCase {
       project_or_update_title: formattedString)
 
     let twitterType =  provider.activityViewController(activityVC, itemForActivityType: .postToTwitter)
-    XCTAssertEqual(twitterType as! String, twitterOutput)
+    XCTAssertEqual(twitterType as? String, twitterOutput)
   }
 }
