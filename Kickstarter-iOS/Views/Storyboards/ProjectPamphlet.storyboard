@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,10 +17,6 @@
         <scene sceneID="TEI-dL-Io9">
             <objects>
                 <viewController storyboardIdentifier="ProjectPamphletViewController" id="GbK-FV-Iaj" customClass="ProjectPamphletViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jmU-Y1-d5Y"/>
-                        <viewControllerLayoutGuide type="bottom" id="lha-Rj-9Ro"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Y4L-8W-arN">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="1400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -43,14 +40,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
-                            <constraint firstItem="lha-Rj-9Ro" firstAttribute="top" secondItem="tIm-aj-d8Q" secondAttribute="bottom" id="8FY-Rt-Ar2"/>
-                            <constraint firstItem="tIm-aj-d8Q" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="HU6-02-QPk"/>
+                            <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
+                            <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="bottom" secondItem="tIm-aj-d8Q" secondAttribute="bottom" id="8FY-Rt-Ar2"/>
+                            <constraint firstItem="tIm-aj-d8Q" firstAttribute="leading" secondItem="Bfz-Sg-Kdb" secondAttribute="leading" id="HU6-02-QPk"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="top" secondItem="bdk-Xa-fm9" secondAttribute="top" constant="52" id="Hk5-fJ-068"/>
-                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="eEt-q9-Snv"/>
-                            <constraint firstAttribute="trailing" secondItem="tIm-aj-d8Q" secondAttribute="trailing" id="qTt-pv-zBK"/>
+                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Bfz-Sg-Kdb" secondAttribute="leading" id="eEt-q9-Snv"/>
+                            <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="trailing" secondItem="tIm-aj-d8Q" secondAttribute="trailing" id="qTt-pv-zBK"/>
                             <constraint firstItem="bdk-Xa-fm9" firstAttribute="top" secondItem="Y4L-8W-arN" secondAttribute="top" id="qnD-sd-f2N"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Bfz-Sg-Kdb"/>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="1400"/>
@@ -66,10 +64,6 @@
         <scene sceneID="WPB-yx-dpz">
             <objects>
                 <viewController storyboardIdentifier="ProjectNavBarViewController" id="Tne-VL-OCU" customClass="ProjectNavBarViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="91h-KL-PgA"/>
-                        <viewControllerLayoutGuide type="bottom" id="44z-5d-YGC"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ed4-VA-c6v">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="55"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -136,14 +130,15 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="44z-5d-YGC" firstAttribute="top" secondItem="9W6-oq-vUw" secondAttribute="bottom" id="0um-l2-woZ"/>
-                            <constraint firstItem="9W6-oq-vUw" firstAttribute="top" secondItem="91h-KL-PgA" secondAttribute="bottom" id="6w6-Ed-Vk7"/>
-                            <constraint firstAttribute="trailing" secondItem="jxM-Ay-art" secondAttribute="trailing" id="KQT-o1-UDj"/>
-                            <constraint firstItem="9W6-oq-vUw" firstAttribute="leading" secondItem="ed4-VA-c6v" secondAttribute="leading" id="N1c-Da-BYS"/>
-                            <constraint firstAttribute="trailing" secondItem="9W6-oq-vUw" secondAttribute="trailing" id="OVE-At-q1s"/>
-                            <constraint firstItem="jxM-Ay-art" firstAttribute="leading" secondItem="ed4-VA-c6v" secondAttribute="leading" id="PFE-sj-SVP"/>
+                            <constraint firstItem="826-Wi-ToO" firstAttribute="bottom" secondItem="9W6-oq-vUw" secondAttribute="bottom" id="0um-l2-woZ"/>
+                            <constraint firstItem="9W6-oq-vUw" firstAttribute="top" secondItem="826-Wi-ToO" secondAttribute="top" id="6w6-Ed-Vk7"/>
+                            <constraint firstItem="826-Wi-ToO" firstAttribute="trailing" secondItem="jxM-Ay-art" secondAttribute="trailing" id="KQT-o1-UDj"/>
+                            <constraint firstItem="9W6-oq-vUw" firstAttribute="leading" secondItem="826-Wi-ToO" secondAttribute="leading" id="N1c-Da-BYS"/>
+                            <constraint firstItem="826-Wi-ToO" firstAttribute="trailing" secondItem="9W6-oq-vUw" secondAttribute="trailing" id="OVE-At-q1s"/>
+                            <constraint firstItem="jxM-Ay-art" firstAttribute="leading" secondItem="826-Wi-ToO" secondAttribute="leading" id="PFE-sj-SVP"/>
                             <constraint firstItem="jxM-Ay-art" firstAttribute="top" secondItem="ed4-VA-c6v" secondAttribute="top" constant="3" id="p5j-Im-MUi"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="826-Wi-ToO"/>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="55"/>
