@@ -34,6 +34,9 @@ class ProjectActivityItemProviderTests: XCTestCase {
     let facebookType = provider.activityViewController(activityVC, itemForActivityType: .postToFacebook)
     XCTAssertEqual(facebookType as? String, project.urls.web.project)
 
+    let pasteboardType = provider.activityViewController(activityVC, itemForActivityType: .copyToPasteboard)
+    XCTAssertEqual(pasteboardType as? String, project.urls.web.project)
+
     let otherTypes =  provider.activityViewController(activityVC, itemForActivityType: UIActivityType(""))
     XCTAssertEqual(otherTypes as? String, formattedString)
   }
