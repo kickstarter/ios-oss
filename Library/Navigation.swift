@@ -508,7 +508,7 @@ private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
-  let createProject = curry(Navigation.project)
+                       let createProject = curry(Navigation.project)
   let createUpdate = curry(Navigation.Project.update)
 
   return createProject
