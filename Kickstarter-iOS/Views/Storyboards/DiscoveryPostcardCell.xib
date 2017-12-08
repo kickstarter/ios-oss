@@ -252,14 +252,32 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="backgroundGradientView" destination="g3C-Yu-Ais" id="Ghq-hF-fmb"/>
-                <outlet property="cardView" destination="MCx-XZ-do1" id="RI0-sd-4Wf"/>
-                <outlet property="metadataBackgroundView" destination="6Ha-xu-JTi" id="huY-mF-IFB"/>
-                <outlet property="metadataIconImageView" destination="E9o-YU-45Y" id="JL9-l5-ABq"/>
-                <outlet property="metadataLabel" destination="fzb-XH-e79" id="xYa-U5-J9H"/>
-                <outlet property="metadataStackView" destination="5L7-6D-yfg" id="4kp-XU-wjX"/>
-                <outlet property="metadataView" destination="rwx-so-2g9" id="ttm-a7-HMe"/>
-                <outlet property="saveButton" destination="eIL-Rt-9Tk" id="VuL-1D-4h5"/>
+                <outlet property="backersSubtitleLabel" destination="iWX-Ib-GqJ" id="x5o-N2-zdY"/>
+                <outlet property="backersTitleLabel" destination="bWI-4c-wMc" id="71c-Z5-alO"/>
+                <outlet property="backgroundGradientView" destination="g3C-Yu-Ais" id="EXL-aE-0R3"/>
+                <outlet property="cardView" destination="MCx-XZ-do1" id="ooI-w3-Yld"/>
+                <outlet property="deadlineSubtitleLabel" destination="ROm-1k-k3E" id="ROC-qg-ng0"/>
+                <outlet property="deadlineTitleLabel" destination="Vnf-dW-sgK" id="pxN-fz-B6V"/>
+                <outlet property="fundingProgressBarView" destination="x89-Lb-Kwd" id="OYj-g4-UH6"/>
+                <outlet property="fundingProgressContainerView" destination="OPY-xb-MtF" id="HaW-eq-pvM"/>
+                <outlet property="fundingSubtitleLabel" destination="KAy-uL-thv" id="eMv-Pz-dmM"/>
+                <outlet property="fundingTitleLabel" destination="N20-e5-Zhl" id="lws-td-KUJ"/>
+                <outlet property="metadataBackgroundView" destination="6Ha-xu-JTi" id="vmQ-g3-rIE"/>
+                <outlet property="metadataIconImageView" destination="E9o-YU-45Y" id="FXJ-p4-Hxu"/>
+                <outlet property="metadataLabel" destination="fzb-XH-e79" id="iNw-WU-xHq"/>
+                <outlet property="metadataStackView" destination="5L7-6D-yfg" id="OH3-3S-IIB"/>
+                <outlet property="metadataView" destination="rwx-so-2g9" id="Fgl-hN-x1m"/>
+                <outlet property="projectImageView" destination="nhT-Ll-gUJ" id="eoK-r5-13U"/>
+                <outlet property="projectInfoStackView" destination="P6a-bA-zHj" id="TVI-gy-ik4"/>
+                <outlet property="projectNameAndBlurbLabel" destination="AuD-Ht-Qmn" id="Lhk-Of-wRK"/>
+                <outlet property="projectStateStackView" destination="Azd-aw-56B" id="Jcx-7j-Qei"/>
+                <outlet property="projectStateSubtitleLabel" destination="MAd-Br-SMX" id="KkN-wC-aRW"/>
+                <outlet property="projectStateTitleLabel" destination="p3B-Nb-GBg" id="lIK-b2-bEs"/>
+                <outlet property="projectStatsStackView" destination="qYw-F3-aZl" id="EZl-82-EV0"/>
+                <outlet property="saveButton" destination="eIL-Rt-9Tk" id="SpH-5s-UYu"/>
+                <outlet property="socialAvatarImageView" destination="3kE-Jg-fp9" id="km5-uc-Kl1"/>
+                <outlet property="socialLabel" destination="1Pi-Hj-7EO" id="PGw-DK-Ym8"/>
+                <outlet property="socialStackView" destination="PUL-Kg-8AR" id="ppu-KP-pjx"/>
             </connections>
             <point key="canvasLocation" x="-1458" y="256.5"/>
         </tableViewCell>
