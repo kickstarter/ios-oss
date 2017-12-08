@@ -7,13 +7,13 @@ import Social
 import StoreKit
 import UIKit
 
-internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
+internal final class ThanksViewController: UIViewController, UITableViewDelegate {
 
   @IBOutlet fileprivate weak var facebookButton: UIButton!
   @IBOutlet fileprivate weak var twitterButton: UIButton!
   @IBOutlet fileprivate weak var shareMoreButton: UIButton!
   @IBOutlet fileprivate weak var doneButton: UIBarButtonItem!
-  @IBOutlet fileprivate weak var projectsCollectionView: UICollectionView!
+  @IBOutlet fileprivate weak var projectsTableView: UITableView!
   @IBOutlet fileprivate weak var backedLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var woohooLabel: UILabel!
@@ -32,8 +32,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.projectsCollectionView.dataSource = self.dataSource
-    self.projectsCollectionView.delegate = self
+    self.projectsTableView.dataSource = self.dataSource
+    self.projectsTableView.delegate = self
+
+    self.projectsTableView.register(nib: .DiscoveryPostcardCell)
+    self.projectsTableView.register(nib: .ThanksCategoryCell)
 
     self.viewModel.inputs.facebookIsAvailable(
       SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
@@ -150,7 +153,7 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       .observeForControllerAction()
       .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
-        self?.projectsCollectionView.reloadData()
+        self?.projectsTableView.reloadData()
     }
 
     self.shareViewModel.outputs.showShareSheet

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ThanksCategoryCell" rowHeight="146" id="KGk-i7-Jjw" customClass="ThanksCategoryCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="288" height="146"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="288" height="145.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-BD-tyS">
+                        <rect key="frame" x="0.0" y="0.0" width="288" height="146"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Eyo-fE-vMf">
+                                <rect key="frame" x="0.0" y="52" width="288" height="41"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore Publishing" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2U-5t-0WM">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="500 projects" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enI-4i-qmS">
+                                        <rect key="frame" x="0.0" y="20.5" width="288" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.34901960780000002" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Eyo-fE-vMf" firstAttribute="width" secondItem="A3G-BD-tyS" secondAttribute="width" id="F48-J5-l34"/>
+                            <constraint firstAttribute="width" constant="288" id="HS8-Bh-Yh5"/>
+                            <constraint firstItem="Eyo-fE-vMf" firstAttribute="centerY" secondItem="A3G-BD-tyS" secondAttribute="centerY" id="Ran-eM-EUt"/>
+                            <constraint firstItem="Eyo-fE-vMf" firstAttribute="top" secondItem="A3G-BD-tyS" secondAttribute="top" id="g3o-s7-EGg"/>
+                            <constraint firstItem="Eyo-fE-vMf" firstAttribute="leading" secondItem="A3G-BD-tyS" secondAttribute="leading" id="u27-KU-EBc"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="g3o-s7-EGg"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="A3G-BD-tyS" secondAttribute="trailing" id="3ub-6k-i0X"/>
+                    <constraint firstAttribute="bottom" secondItem="A3G-BD-tyS" secondAttribute="bottom" id="Er8-Ug-fS0"/>
+                    <constraint firstItem="A3G-BD-tyS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="x2X-MF-Os6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="bgView" destination="A3G-BD-tyS" id="jvg-7m-YXo"/>
+                <outlet property="exploreLabel" destination="m2U-5t-0WM" id="U4V-Zd-blY"/>
+                <outlet property="liveProjectCountLabel" destination="enI-4i-qmS" id="Xbm-5m-Z41"/>
+            </connections>
+            <point key="canvasLocation" x="-133" y="-689"/>
+        </tableViewCell>
+    </objects>
+</document>

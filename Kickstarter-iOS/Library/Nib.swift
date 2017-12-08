@@ -6,6 +6,7 @@ public enum Nib: String {
   case DiscoveryPostcardCell
   case LiveStreamNavTitleView
   case RewardCell
+  case ThanksCategoryCell
 }
 
 extension UITableView {

@@ -5,7 +5,7 @@ import Library
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
   internal func loadData(projects: [Project], category: KsApi.Category) {
 
-    self.set(values: projects, cellClass: ThanksProjectCell.self, inSection: 0)
+    self.set(values: projects, cellClass: DiscoveryPostcardCell.self, inSection: 0)
 
     self.appendRow(
       value: category,
@@ -14,9 +14,9 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     )
   }
 
-  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
+  override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ThanksProjectCell, value as Project):
+    case let (cell as DiscoveryPostcardCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as ThanksCategoryCell, value as KsApi.Category):
       cell.configureWith(value: value)

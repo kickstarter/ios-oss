@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal final class ThanksCategoryCell: UICollectionViewCell, ValueCell {
+internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var bgView: UIView!
   @IBOutlet private weak var exploreLabel: UILabel!
