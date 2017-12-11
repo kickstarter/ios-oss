@@ -32,11 +32,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.projectsTableView.dataSource = self.dataSource
-    self.projectsTableView.delegate = self
-
     self.projectsTableView.register(nib: .DiscoveryPostcardCell)
     self.projectsTableView.register(nib: .ThanksCategoryCell)
+    
+    self.projectsTableView.dataSource = self.dataSource
+    self.projectsTableView.delegate = self
 
     self.viewModel.inputs.facebookIsAvailable(
       SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
@@ -257,8 +257,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.present(controller, animated: true, completion: nil)
   }
 
-  internal func collectionView(_ collectionView: UICollectionView,
-                               didSelectItemAt indexPath: IndexPath) {
+  internal func tableView(_ tableView: UITableView,
+                          didSelectRowAt indexPath: IndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
