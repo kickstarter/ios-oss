@@ -57,6 +57,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     _ = self |> baseControllerStyle()
 
+    _ = self.projectsTableView
+      |> UITableView.lens.separatorStyle .~ .none
+      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+      |> UITableView.lens.estimatedRowHeight .~ 200.0
+
     _ = self.woohooLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ UIFont.ksr_title2().bolded

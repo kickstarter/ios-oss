@@ -22,11 +22,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
-                                <rect key="frame" x="0.0" y="28" width="375" height="639"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="550" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
+                                <rect key="frame" x="12" y="0.0" width="351" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="302"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="352" height="302"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wob-EU-fLW">
@@ -118,9 +118,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="1jl-ge-lGm" secondAttribute="bottom" constant="8" id="QyG-Om-wDh"/>
-                            <constraint firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" id="Uhk-Ri-6qe"/>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="Ket-JX-mNi" secondAttribute="leading" id="h8D-4P-CCj"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="1jl-ge-lGm" secondAttribute="bottom" constant="-20" id="QyG-Om-wDh"/>
+                            <constraint firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" constant="12" id="Uhk-Ri-6qe"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="Ket-JX-mNi" secondAttribute="leading" constant="12" id="h8D-4P-CCj"/>
                             <constraint firstItem="FvT-DD-6mq" firstAttribute="top" secondItem="K36-s7-mGm" secondAttribute="bottom" id="pwl-F2-gIu"/>
                         </constraints>
                     </view>
