@@ -34,7 +34,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.projectsTableView.register(nib: .DiscoveryPostcardCell)
     self.projectsTableView.register(nib: .ThanksCategoryCell)
-    
+
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
