@@ -66,6 +66,9 @@ public protocol ThanksViewModelOutputs {
   /// Emits when a user updated notification should be posted
   var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
+  /// Emits when Social Sharing UIStackView should be hidden.
+  var socialSharingStackViewIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits when should show games newsletter alert
   var showGamesNewsletterAlert: Signal <(), NoError> { get }
 
@@ -177,6 +180,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.facebookButtonIsHidden = self.facebookIsAvailableProperty.signal.map(negate)
     self.twitterButtonIsHidden = self.twitterIsAvailableProperty.signal.map(negate)
+
+    self.socialSharingStackViewIsHidden =
+      Signal.merge(self.facebookButtonIsHidden, self.twitterButtonIsHidden)
+        .map { $0 }
 
     project
       .takeWhen(self.rateRemindLaterButtonTappedProperty.signal)
@@ -299,12 +306,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let backedProjectText: Signal<NSAttributedString, NoError>
   public let facebookButtonIsHidden: Signal<Bool, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
+  public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
   public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
+  public let socialSharingStackViewIsHidden: Signal<Bool, NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
-  public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let twitterButtonIsHidden: Signal<Bool, NoError>
 }
 

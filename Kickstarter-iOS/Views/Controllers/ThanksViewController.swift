@@ -9,13 +9,16 @@ import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
 
-  @IBOutlet fileprivate weak var facebookButton: UIButton!
-  @IBOutlet fileprivate weak var twitterButton: UIButton!
+  //@IBOutlet fileprivate weak var facebookButton: UIButton!
+  //@IBOutlet fileprivate weak var twitterButton: UIButton!
+  @IBOutlet fileprivate weak var closeButton: UIButton!
   @IBOutlet fileprivate weak var shareMoreButton: UIButton!
-  @IBOutlet fileprivate weak var doneButton: UIBarButtonItem!
   @IBOutlet fileprivate weak var projectsTableView: UITableView!
   @IBOutlet fileprivate weak var backedLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
+  //@IBOutlet fileprivate weak var socialSharingStackView: UIStackView!
+  @IBOutlet fileprivate weak var thanksStackView: UIStackView!
   @IBOutlet fileprivate weak var woohooLabel: UILabel!
 
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
@@ -38,6 +41,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
+    self.closeButton.addTarget(self,
+                               action: #selector(closeButtonTapped),
+                               for: .touchUpInside)
+
     self.viewModel.inputs.facebookIsAvailable(
       SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
     )
@@ -49,11 +56,16 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationItem.setHidesBackButton(true, animated: animated)
   }
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.closeButton
+      |> UIButton.lens.title(forState: .normal) .~ nil
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
@@ -68,26 +80,34 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_900
+
     _ = self.recommendationsLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
-    _ = self.facebookButton
-      |> facebookThanksButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
-
-    _ = self.twitterButton
-      |> twitterButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
+//    _ = self.facebookButton
+//      |> facebookThanksButtonStyle
+//      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
+//      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
+//
+//    _ = self.twitterButton
+//      |> twitterButtonStyle
+//      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
+//      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
 
     _ = self.shareMoreButton
       |> borderButtonStyle
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
+
+    if let navigationController = self.navigationController {
+      _ = navigationController
+      |> UINavigationController.lens.navigationBarHidden .~ true
+    }
 
 //    _ = self.doneButton
 //      |> doneBarButtonItemStyle
@@ -97,8 +117,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     override func bindViewModel() {
     super.bindViewModel()
 
-    self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
-    self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
+    //self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
+    //self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
+    //self.socialSharingStackView.rac.hidden = self.viewModel.outputs.socialSharingStackViewIsHidden
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissToRootViewController
@@ -276,7 +297,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func doneButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 }
