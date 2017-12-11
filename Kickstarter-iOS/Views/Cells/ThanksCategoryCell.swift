@@ -5,8 +5,8 @@ import UIKit
 
 internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
 
-  @IBOutlet weak var cardView: UIView!
-  @IBOutlet weak var seeAllProjectsLabel: UILabel!
+  @IBOutlet fileprivate weak var cardView: UIView!
+  @IBOutlet fileprivate weak var seeAllProjectsLabel: UILabel!
 
   func configureWith(value category: KsApi.Category) {
     
