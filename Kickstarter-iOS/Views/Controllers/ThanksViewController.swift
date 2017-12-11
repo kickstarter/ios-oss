@@ -107,7 +107,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.project_checkout_share_buttons_more_share_options() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
+          Strings.project_checkout_share_buttons_more_share_options()
+        }
 
     if let navigationController = self.navigationController {
       _ = navigationController
