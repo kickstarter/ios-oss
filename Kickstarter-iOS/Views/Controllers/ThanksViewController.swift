@@ -78,7 +78,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+    _ = self.backedLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_900
@@ -87,6 +88,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
+
+    _ = self.projectsTableView
+      |> UITableView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
 //    _ = self.facebookButton
 //      |> facebookThanksButtonStyle
@@ -100,9 +104,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     _ = self.shareMoreButton
       |> borderButtonStyle
+      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.project_checkout_share_buttons_more_share_options() }
 
     if let navigationController = self.navigationController {
       _ = navigationController

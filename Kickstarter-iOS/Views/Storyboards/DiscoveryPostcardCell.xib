@@ -14,20 +14,20 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoveryPostcardCell" rowHeight="563" id="KGk-i7-Jjw" customClass="DiscoveryPostcardCell" customModule="Kickstarter_Framework">
             <rect key="frame" x="0.0" y="0.0" width="400" height="563"/>
-            <autoresizingMask key="autoresizingMask"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="562.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCx-XZ-do1" userLabel="Card View">
-                        <rect key="frame" x="0.0" y="12" width="400" height="388"/>
+                        <rect key="frame" x="12" y="12" width="400" height="388"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="388" id="bIm-3Y-c7g"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="F2z-2v-QEy" userLabel="Project And Social Stack View">
-                        <rect key="frame" x="0.0" y="12" width="400" height="538.5"/>
+                        <rect key="frame" x="12" y="12" width="400" height="538.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="id4-Zl-Ohh" userLabel="Project Stack View">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="388"/>
@@ -160,18 +160,18 @@
                         </subviews>
                     </stackView>
                     <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeI-Am-gHH" userLabel="Project image overlay">
-                        <rect key="frame" x="0.0" y="12" width="400" height="225"/>
+                        <rect key="frame" x="12" y="12" width="400" height="225"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3C-Yu-Ais" customClass="GradientView" customModule="Library">
-                        <rect key="frame" x="0.0" y="12" width="400" height="51"/>
+                        <rect key="frame" x="12" y="12" width="400" height="51"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="51" id="KJJ-Mm-bu4"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwx-so-2g9">
-                        <rect key="frame" x="16" y="221" width="16" height="21"/>
+                        <rect key="frame" x="28" y="221" width="16" height="21"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ha-xu-JTi">
                                 <rect key="frame" x="0.0" y="0.0" width="16" height="21"/>
@@ -212,10 +212,10 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIL-Rt-9Tk">
-                        <rect key="frame" x="416" y="12" width="52" height="52"/>
+                        <rect key="frame" x="428" y="12" width="52" height="52"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="52" id="6IH-pT-hnj"/>
-                            <constraint firstAttribute="height" constant="52" id="UdX-Sq-LXx"/>
+                            <constraint firstAttribute="height" constant="52" id="lZh-U7-snL"/>
+                            <constraint firstAttribute="width" constant="52" id="zXU-JO-ZI2"/>
                         </constraints>
                         <state key="normal" title="X">
                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -225,28 +225,29 @@
                 <constraints>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="119-8y-rvp"/>
                     <constraint firstItem="g3C-Yu-Ais" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="42w-k8-d4g"/>
-                    <constraint firstItem="rwx-so-2g9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="DTz-e0-nDk"/>
+                    <constraint firstItem="rwx-so-2g9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="DTz-e0-nDk"/>
+                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="I90-F3-jlz"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="KNM-NH-2AQ"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="leading" secondItem="MCx-XZ-do1" secondAttribute="leading" id="Kdr-oR-lOc"/>
-                    <constraint firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="KpX-93-rcb"/>
-                    <constraint firstAttribute="trailing" secondItem="jeI-Am-gHH" secondAttribute="trailing" id="OTt-4f-W5N"/>
+                    <constraint firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" constant="12" id="KpX-93-rcb"/>
+                    <constraint firstAttribute="trailing" secondItem="jeI-Am-gHH" secondAttribute="trailing" constant="12" id="OTt-4f-W5N"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Rhn-RX-smW"/>
-                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Xxk-IU-QxR"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" constant="-24" id="ZLa-nb-vCj"/>
+                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="acN-gf-jt2"/>
                     <constraint firstItem="rwx-so-2g9" firstAttribute="top" secondItem="g3C-Yu-Ais" secondAttribute="bottom" constant="158" id="cnO-XX-sT1"/>
-                    <constraint firstAttribute="trailing" secondItem="g3C-Yu-Ais" secondAttribute="trailing" id="dTz-rq-hTD"/>
+                    <constraint firstAttribute="trailing" secondItem="g3C-Yu-Ais" secondAttribute="trailing" constant="12" id="dTz-rq-hTD"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="bottom" secondItem="MCx-XZ-do1" secondAttribute="bottom" id="gQe-bh-oBO"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="height" secondItem="nhT-Ll-gUJ" secondAttribute="height" id="hGj-Z7-JVW"/>
-                    <constraint firstItem="F2z-2v-QEy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ho1-Xa-qzz"/>
-                    <constraint firstItem="g3C-Yu-Ais" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="kkX-Fa-Unx"/>
+                    <constraint firstItem="F2z-2v-QEy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="ho1-Xa-qzz"/>
+                    <constraint firstItem="g3C-Yu-Ais" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="kkX-Fa-Unx"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="n55-nD-TK4"/>
-                    <constraint firstItem="MCx-XZ-do1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="nKI-ug-N79"/>
-                    <constraint firstAttribute="trailing" secondItem="F2z-2v-QEy" secondAttribute="trailing" id="o0Q-Ge-nM4"/>
-                    <constraint firstItem="jeI-Am-gHH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rck-pq-IqI"/>
-                    <constraint firstAttribute="trailing" secondItem="eIL-Rt-9Tk" secondAttribute="trailing" id="tHI-A8-aoP"/>
+                    <constraint firstItem="MCx-XZ-do1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="nKI-ug-N79"/>
+                    <constraint firstAttribute="trailing" secondItem="F2z-2v-QEy" secondAttribute="trailing" constant="12" id="o0Q-Ge-nM4"/>
+                    <constraint firstItem="jeI-Am-gHH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="rck-pq-IqI"/>
                 </constraints>
                 <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
             </tableViewCellContentView>
+            <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="8"/>
             <connections>
                 <outlet property="backersSubtitleLabel" destination="iWX-Ib-GqJ" id="x5o-N2-zdY"/>
                 <outlet property="backersTitleLabel" destination="bWI-4c-wMc" id="71c-Z5-alO"/>
