@@ -55,8 +55,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
-
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
@@ -73,7 +71,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     _ = self.recommendationsLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.project_checkout_looking_for_more_projects_check_these_out() }
+      |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
     _ = self.facebookButton
       |> facebookThanksButtonStyle
@@ -91,9 +89,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
 
-    _ = self.doneButton
-      |> doneBarButtonItemStyle
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
+//    _ = self.doneButton
+//      |> doneBarButtonItemStyle
+//      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
   }
 
     override func bindViewModel() {
