@@ -18,11 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="550" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
                                 <rect key="frame" x="0.0" y="80" width="375" height="575"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="351"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
@@ -84,7 +84,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZZ-Ud-4qC">
                                                     <rect key="frame" x="0.0" y="78" width="375" height="25"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="25" id="nDL-b7-m4h"/>
+                                                        <constraint firstAttribute="height" constant="25" id="Hgj-YH-yGR"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -98,6 +98,9 @@
                                                     </constraints>
                                                 </view>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="123" id="pfX-cf-CfY"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -141,16 +144,17 @@
                     <connections>
                         <outlet property="backedLabel" destination="0W0-Br-5Lh" id="w6N-Ob-dK4"/>
                         <outlet property="closeButton" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
+                        <outlet property="headerView" destination="LC4-lC-v0V" id="ZtM-C7-ULY"/>
                         <outlet property="projectsTableView" destination="K36-s7-mGm" id="ISM-6m-3DU"/>
                         <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
                         <outlet property="separatorView" destination="pr6-7j-NNg" id="vOp-l5-MEO"/>
                         <outlet property="shareMoreButton" destination="kb6-LU-AvY" id="wrB-4e-eG6"/>
-                        <outlet property="woohooLabel" destination="FWZ-5u-RHC" id="mSb-qb-ueE"/>
+                        <outlet property="thankYouLabel" destination="FWZ-5u-RHC" id="yY4-Ez-dlg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1S-yy-n9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1522.4000000000001" y="425.93703148425789"/>
+            <point key="canvasLocation" x="1348" y="285.60719640179911"/>
         </scene>
     </scenes>
     <resources>

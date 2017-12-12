@@ -211,11 +211,11 @@
                             <constraint firstAttribute="bottom" secondItem="5L7-6D-yfg" secondAttribute="bottom" id="xhf-d7-94X"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIL-Rt-9Tk">
-                        <rect key="frame" x="428" y="12" width="52" height="52"/>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIL-Rt-9Tk">
+                        <rect key="frame" x="334" y="12" width="52" height="52"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="52" id="lZh-U7-snL"/>
-                            <constraint firstAttribute="width" constant="52" id="zXU-JO-ZI2"/>
+                            <constraint firstAttribute="width" constant="52" id="6IH-pT-hnj"/>
+                            <constraint firstAttribute="height" constant="52" id="UdX-Sq-LXx"/>
                         </constraints>
                         <state key="normal" title="X">
                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -226,14 +226,13 @@
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="119-8y-rvp"/>
                     <constraint firstItem="g3C-Yu-Ais" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="42w-k8-d4g"/>
                     <constraint firstItem="rwx-so-2g9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="DTz-e0-nDk"/>
-                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="I90-F3-jlz"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="KNM-NH-2AQ"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="leading" secondItem="MCx-XZ-do1" secondAttribute="leading" id="Kdr-oR-lOc"/>
                     <constraint firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" constant="12" id="KpX-93-rcb"/>
                     <constraint firstAttribute="trailing" secondItem="jeI-Am-gHH" secondAttribute="trailing" constant="12" id="OTt-4f-W5N"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Rhn-RX-smW"/>
+                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Xxk-IU-QxR"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" constant="-24" id="ZLa-nb-vCj"/>
-                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="acN-gf-jt2"/>
                     <constraint firstItem="rwx-so-2g9" firstAttribute="top" secondItem="g3C-Yu-Ais" secondAttribute="bottom" constant="158" id="cnO-XX-sT1"/>
                     <constraint firstAttribute="trailing" secondItem="g3C-Yu-Ais" secondAttribute="trailing" constant="12" id="dTz-rq-hTD"/>
                     <constraint firstItem="id4-Zl-Ohh" firstAttribute="bottom" secondItem="MCx-XZ-do1" secondAttribute="bottom" id="gQe-bh-oBO"/>
@@ -244,6 +243,7 @@
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="nKI-ug-N79"/>
                     <constraint firstAttribute="trailing" secondItem="F2z-2v-QEy" secondAttribute="trailing" constant="12" id="o0Q-Ge-nM4"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="rck-pq-IqI"/>
+                    <constraint firstAttribute="trailing" secondItem="eIL-Rt-9Tk" secondAttribute="trailing" constant="14" id="tHI-A8-aoP"/>
                 </constraints>
                 <edgeInsets key="layoutMargins" top="18" left="18" bottom="18" right="18"/>
             </tableViewCellContentView>
@@ -276,7 +276,7 @@
                 <outlet property="socialLabel" destination="1Pi-Hj-7EO" id="908-7l-lXO"/>
                 <outlet property="socialStackView" destination="PUL-Kg-8AR" id="npn-Vt-G4G"/>
             </connections>
-            <point key="canvasLocation" x="-1458" y="262.5"/>
+            <point key="canvasLocation" x="-1538" y="177"/>
         </tableViewCell>
     </objects>
     <resources>

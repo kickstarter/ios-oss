@@ -9,17 +9,14 @@ import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
 
-  //@IBOutlet fileprivate weak var facebookButton: UIButton!
-  //@IBOutlet fileprivate weak var twitterButton: UIButton!
   @IBOutlet fileprivate weak var closeButton: UIButton!
   @IBOutlet fileprivate weak var shareMoreButton: UIButton!
   @IBOutlet fileprivate weak var projectsTableView: UITableView!
   @IBOutlet fileprivate weak var backedLabel: UILabel!
+  @IBOutlet fileprivate weak var headerView: UIView!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
-  //@IBOutlet fileprivate weak var socialSharingStackView: UIStackView!
-  @IBOutlet fileprivate weak var thanksStackView: UIStackView!
-  @IBOutlet fileprivate weak var woohooLabel: UILabel!
+  @IBOutlet fileprivate weak var thankYouLabel: UILabel!
 
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -70,12 +67,12 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
-      |> UITableView.lens.estimatedRowHeight .~ 200.0
+      |> UITableView.lens.estimatedRowHeight .~ 560
 
-    _ = self.woohooLabel
+    _ = self.thankYouLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
-      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
-      |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
+      |> UILabel.lens.font .~ UIFont.ksr_title1(size: 36)
+      |> UILabel.lens.text %~ { _ in Strings.Thank_you_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
     _ = self.backedLabel
@@ -127,7 +124,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     //self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
     //self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
     //self.socialSharingStackView.rac.hidden = self.viewModel.outputs.socialSharingStackViewIsHidden
-    self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
+      self.backedLabel.text = "You have successfully backed Fidget Cube: A Vinyl Desk Toy. This project is now one step closer to becoming a reality, thanks to you. Spread the word!"//self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissToRootViewController
     .observeForControllerAction()
