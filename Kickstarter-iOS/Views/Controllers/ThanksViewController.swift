@@ -66,7 +66,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
-      |> UITableView.lens.estimatedRowHeight .~ 403
+      |> UITableView.lens.estimatedRowHeight .~ 550
 
     _ = self.thankYouLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
