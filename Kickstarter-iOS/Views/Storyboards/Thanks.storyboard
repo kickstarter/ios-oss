@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
                                 <rect key="frame" x="0.0" y="80" width="375" height="575"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
@@ -132,11 +132,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="WMM-y8-QSH" firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" id="Uhk-Ri-6qe"/>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="I5Z-r3-uNR" secondAttribute="bottom" constant="8" id="e7S-SN-a3o"/>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="h8D-4P-CCj"/>
+                            <constraint firstItem="WMM-y8-QSH" firstAttribute="bottom" secondItem="K36-s7-mGm" secondAttribute="bottom" constant="12" id="0N8-cc-Ig3"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="I5Z-r3-uNR" secondAttribute="bottom" constant="8" id="T7f-bX-4fo"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="VLd-o4-JOx"/>
                             <constraint firstItem="I5Z-r3-uNR" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="nN6-90-28q"/>
-                            <constraint firstItem="WMM-y8-QSH" firstAttribute="bottom" secondItem="K36-s7-mGm" secondAttribute="bottom" constant="12" id="pwl-F2-gIu"/>
+                            <constraint firstItem="WMM-y8-QSH" firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" id="xFn-zh-ST0"/>
                             <constraint firstItem="I5Z-r3-uNR" firstAttribute="top" secondItem="WMM-y8-QSH" secondAttribute="top" id="xn6-Gt-Z1T"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WMM-y8-QSH"/>
@@ -144,7 +144,6 @@
                     <connections>
                         <outlet property="backedLabel" destination="0W0-Br-5Lh" id="w6N-Ob-dK4"/>
                         <outlet property="closeButton" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
-                        <outlet property="headerView" destination="LC4-lC-v0V" id="ZtM-C7-ULY"/>
                         <outlet property="projectsTableView" destination="K36-s7-mGm" id="ISM-6m-3DU"/>
                         <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
                         <outlet property="separatorView" destination="pr6-7j-NNg" id="vOp-l5-MEO"/>

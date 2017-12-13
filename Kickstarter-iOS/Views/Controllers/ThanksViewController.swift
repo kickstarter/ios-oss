@@ -13,7 +13,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   @IBOutlet fileprivate weak var shareMoreButton: UIButton!
   @IBOutlet fileprivate weak var projectsTableView: UITableView!
   @IBOutlet fileprivate weak var backedLabel: UILabel!
-  @IBOutlet fileprivate weak var headerView: UIView!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var thankYouLabel: UILabel!
@@ -67,7 +66,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
-      |> UITableView.lens.estimatedRowHeight .~ 560
+      |> UITableView.lens.estimatedRowHeight .~ 403
 
     _ = self.thankYouLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
@@ -85,9 +84,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
-
-    _ = self.projectsTableView
-      |> UITableView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
 
 //    _ = self.facebookButton
 //      |> facebookThanksButtonStyle
