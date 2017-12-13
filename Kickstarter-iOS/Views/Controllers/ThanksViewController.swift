@@ -85,16 +85,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
-//    _ = self.facebookButton
-//      |> facebookThanksButtonStyle
-//      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
-//      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
-//
-//    _ = self.twitterButton
-//      |> twitterButtonStyle
-//      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
-//      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
-
     _ = self.shareMoreButton
       |> borderButtonStyle
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
@@ -108,19 +98,12 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       _ = navigationController
       |> UINavigationController.lens.navigationBarHidden .~ true
     }
-
-//    _ = self.doneButton
-//      |> doneBarButtonItemStyle
-//      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
   }
 
     override func bindViewModel() {
     super.bindViewModel()
 
-    //self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
-    //self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
-    //self.socialSharingStackView.rac.hidden = self.viewModel.outputs.socialSharingStackViewIsHidden
-      self.backedLabel.text = "You have successfully backed Fidget Cube: A Vinyl Desk Toy. This project is now one step closer to becoming a reality, thanks to you. Spread the word!"//self.viewModel.outputs.backedProjectText
+    self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissToRootViewController
     .observeForControllerAction()

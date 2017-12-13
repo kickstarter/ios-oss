@@ -99,7 +99,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.projectProperty.signal.skipNil()
 
     self.backedProjectText = project.map {
-      let string = Strings.project_checkout_share_you_just_backed_project_share_this_project_html(
+      let string = Strings.You_have_successfully_backed_project_html(
         project_name: $0.name
       )
 
