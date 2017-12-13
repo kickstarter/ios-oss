@@ -3,7 +3,6 @@ import Library
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Social
 import StoreKit
 import UIKit
 
@@ -41,12 +40,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
                                action: #selector(closeButtonTapped),
                                for: .touchUpInside)
 
-    self.viewModel.inputs.facebookIsAvailable(
-      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
-    )
-    self.viewModel.inputs.twitterIsAvailable(
-      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
-    )
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -166,10 +159,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
-
-    self.shareViewModel.outputs.showShareCompose
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareCompose($0) }
   }
 
   fileprivate func goToDiscovery(params: DiscoveryParams) {
@@ -252,13 +241,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
-    controller.completionHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
-    }
-    self.present(controller, animated: true, completion: nil)
-  }
-
   internal func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
@@ -266,14 +248,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
       self.viewModel.inputs.categoryCellTapped(category)
     }
-  }
-
-  @objc fileprivate func facebookButtonTapped() {
-    self.shareViewModel.inputs.facebookButtonTapped()
-  }
-
-  @objc fileprivate func twitterButtonTapped() {
-    self.shareViewModel.inputs.twitterButtonTapped()
   }
 
   @objc fileprivate func shareMoreButtonTapped() {

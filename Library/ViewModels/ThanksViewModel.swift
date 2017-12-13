@@ -14,10 +14,6 @@ public protocol ThanksViewModelInputs {
   /// Call when category cell is tapped
   func categoryCellTapped(_ category: KsApi.Category)
 
-  /// Call with a boolean that determines if facebook is available on this device, i.e.
-  /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
-  func facebookIsAvailable(_ available: Bool)
-
   /// Call to set project
   func project(_ project: Project)
 
@@ -36,10 +32,6 @@ public protocol ThanksViewModelInputs {
   /// Call when "no thanks" button is tapped on rating alert
   func rateNoThanksButtonTapped()
 
-  /// Call with a boolean that determines if twitter is available on this device, i.e.
-  /// SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
-  func twitterIsAvailable(_ available: Bool)
-
   /// Call when the current user has been updated in the environment
   func userUpdated()
 }
@@ -50,9 +42,6 @@ public protocol ThanksViewModelOutputs {
 
   /// Emits when view controller should dismiss
   var dismissToRootViewController: Signal<(), NoError> { get }
-
-  /// Emits a bool determining whether or not the facebook button is hidden.
-  var facebookButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits iTunes link when should go to App Store
   var goToAppStoreRating: Signal<String, NoError> { get }
@@ -66,9 +55,6 @@ public protocol ThanksViewModelOutputs {
   /// Emits when a user updated notification should be posted
   var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
-  /// Emits when Social Sharing UIStackView should be hidden.
-  var socialSharingStackViewIsHidden: Signal<Bool, NoError> { get }
-
   /// Emits when should show games newsletter alert
   var showGamesNewsletterAlert: Signal <(), NoError> { get }
 
@@ -80,9 +66,6 @@ public protocol ThanksViewModelOutputs {
 
   /// Emits array of projects and a category when should show recommendations
   var showRecommendations: Signal <([Project], KsApi.Category), NoError> { get }
-
-  /// Emits a bool determining whether or not the twitter button is hidden.
-  var twitterButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits a User that can be used to replace the current user in the environment
   var updateUserInEnvironment: Signal<User, NoError> { get }
@@ -178,13 +161,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
-    self.facebookButtonIsHidden = self.facebookIsAvailableProperty.signal.map(negate)
-    self.twitterButtonIsHidden = self.twitterIsAvailableProperty.signal.map(negate)
-
-    self.socialSharingStackViewIsHidden =
-      Signal.merge(self.facebookButtonIsHidden, self.twitterButtonIsHidden)
-        .map { $0 }
-
     project
       .takeWhen(self.rateRemindLaterButtonTappedProperty.signal)
       .observeValues { project in
@@ -269,11 +245,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     gamesNewsletterSignupButtonTappedProperty.value = ()
   }
 
-  fileprivate let facebookIsAvailableProperty = MutableProperty(false)
-  public func facebookIsAvailable(_ available: Bool) {
-    self.facebookIsAvailableProperty.value = available
-  }
-
   fileprivate let rateNowButtonTappedProperty = MutableProperty()
   public func rateNowButtonTapped() {
     rateNowButtonTappedProperty.value = ()
@@ -289,11 +260,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     rateNoThanksButtonTappedProperty.value = ()
   }
 
-  fileprivate let twitterIsAvailableProperty = MutableProperty(false)
-  public func twitterIsAvailable(_ available: Bool) {
-    self.twitterIsAvailableProperty.value = available
-  }
-
   fileprivate let userUpdatedProperty = MutableProperty()
   public func userUpdated() {
     userUpdatedProperty.value = ()
@@ -304,16 +270,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>
-  public let facebookButtonIsHidden: Signal<Bool, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
   public let showGamesNewsletterOptInAlert: Signal<String, NoError>
   public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
-  public let socialSharingStackViewIsHidden: Signal<Bool, NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
-  public let twitterButtonIsHidden: Signal<Bool, NoError>
 }
 
 /*
