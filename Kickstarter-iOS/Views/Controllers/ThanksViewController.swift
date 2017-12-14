@@ -84,7 +84,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(forState: .normal) %~ { _ in
-          Strings.project_checkout_share_buttons_more_share_options()
+          Strings.project_accessibility_button_share_label()
         }
 
     if let navigationController = self.navigationController {

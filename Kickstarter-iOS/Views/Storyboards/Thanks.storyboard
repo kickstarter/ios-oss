@@ -18,12 +18,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
                                 <rect key="frame" x="0.0" y="80" width="375" height="575"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="275"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
                                             <rect key="frame" x="12" y="0.0" width="351" height="70"/>
@@ -58,7 +58,7 @@
                                             </constraints>
                                         </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DBG-8g-JC1">
-                                            <rect key="frame" x="0.0" y="172" width="375" height="123"/>
+                                            <rect key="frame" x="0.0" y="172" width="375" height="103"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oH7-8O-oQk">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="37"/>
@@ -90,20 +90,12 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GdM-h2-deq">
-                                                    <rect key="frame" x="0.0" y="103" width="375" height="20"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="BFm-4k-tpX"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="123" id="pfX-cf-CfY"/>
+                                                <constraint firstAttribute="height" constant="103" id="iq7-PU-A7F"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="Uj7-Jz-Wug" firstAttribute="top" secondItem="LC4-lC-v0V" secondAttribute="top" id="9NB-8Q-71D"/>
                                         <constraint firstItem="0W0-Br-5Lh" firstAttribute="leading" secondItem="LC4-lC-v0V" secondAttribute="leading" constant="12" id="AYB-w7-KoT"/>
@@ -117,8 +109,8 @@
                                         <constraint firstAttribute="trailing" secondItem="Uj7-Jz-Wug" secondAttribute="trailing" constant="12" id="pMN-d2-Qhc"/>
                                         <constraint firstItem="DBG-8g-JC1" firstAttribute="leading" secondItem="LC4-lC-v0V" secondAttribute="leading" id="prY-pU-6By"/>
                                         <constraint firstItem="DBG-8g-JC1" firstAttribute="top" secondItem="kb6-LU-AvY" secondAttribute="bottom" id="row-rg-Bli"/>
+                                        <constraint firstAttribute="bottom" secondItem="DBG-8g-JC1" secondAttribute="bottom" id="yy9-Qa-JGl"/>
                                     </constraints>
-                                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                 </view>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5Z-r3-uNR">
