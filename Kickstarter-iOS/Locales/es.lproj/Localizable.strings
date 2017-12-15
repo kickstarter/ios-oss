@@ -217,7 +217,7 @@
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
 "Push_notifications" = "Notificaciones Push";
 "Rate_us_in_the_App_Store" = "¡Califícanos en la App Store!";
-"Read_more_about_the_campaign" = "Leer más sobre esta campaña";
+"Read_more_about_the_campaign" = "Leer más sobre la campaña";
 "Read_more_about_the_campaign_arrow" = "Leer más sobre esta campaña  →";
 "Recent_live_stream" = "Live-Stream reciente";
 "Recommended" = "Recomendados";
@@ -254,10 +254,11 @@
 "Saved_projects" = "Proyectos guardados";
 "Saves_project" = "Guarda este proyecto.";
 "Say_something_kind" = "Di algo amable...";
+"See_all_category_name_projects" = "See all %{category_name} projects";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
 "Send" = "Enviar";
-"Share" = "Share";
+"Share" = "Compartir";
 "Share_an_update_about_your_project" = "Comparte una actualización de tu proyecto …";
 "Share_this_live_stream" = "Compartir este Live-Stream.";
 "Share_this_project_on_Facebook" = "Compartir este proyecto en Facebook.";
@@ -289,6 +290,7 @@
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
+"This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
