@@ -29,7 +29,6 @@ final class ThanksViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     vm.outputs.backedProjectText.map { $0.string }.observe(backedProjectText.observer)
     vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(goToDiscovery.observer)
@@ -45,8 +44,6 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.postUserUpdatedNotification.map { $0.name }
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
-    vm.outputs.facebookButtonIsHidden.observe(facebookButtonIsHidden.observer)
-    vm.outputs.twitterButtonIsHidden.observe(twitterButtonIsHidden.observer)
   }
 
   func testdismissToRootViewController() {
@@ -89,8 +86,10 @@ final class ThanksViewModelTests: TestCase {
     vm.inputs.project(project)
     vm.inputs.viewDidLoad()
 
-    backedProjectText.assertValues(["You just backed The Project. " +
-      "Share this project with friends to help it along!"], "Name of project emits")
+    backedProjectText.assertValues(
+      ["You have successfully backed The Project. " +
+      "This project is now one step closer to a reality, thanks to you. Spread the word!"
+      ], "Name of project emits")
   }
 
   func testRatingAlert_Initial() {
@@ -620,37 +619,5 @@ final class ThanksViewModelTests: TestCase {
 
       showRecommendations.assertValueCount(0, "Recommended projects did not emit")
     }
-  }
-
-  func testFacebookIsNotAvailable() {
-    self.vm.inputs.project(.template)
-    self.vm.inputs.facebookIsAvailable(false)
-    self.vm.inputs.viewDidLoad()
-
-    self.facebookButtonIsHidden.assertValues([true], "Facebook button is hidden")
-  }
-
-  func testFacebookIsAvailable() {
-    self.vm.inputs.project(.template)
-    self.vm.inputs.facebookIsAvailable(true)
-    self.vm.inputs.viewDidLoad()
-
-    self.facebookButtonIsHidden.assertValues([false], "Facebook button is not hidden")
-  }
-
-  func testTwitterIsNotAvailable() {
-    self.vm.inputs.project(.template)
-    self.vm.inputs.twitterIsAvailable(false)
-    self.vm.inputs.viewDidLoad()
-
-    self.twitterButtonIsHidden.assertValues([true], "Twitter button is hidden.")
-  }
-
-  func testTwitterIsAvailable() {
-    self.vm.inputs.project(.template)
-    self.vm.inputs.twitterIsAvailable(true)
-    self.vm.inputs.viewDidLoad()
-
-    self.twitterButtonIsHidden.assertValues([false], "Twitter button is not hidden.")
   }
 }

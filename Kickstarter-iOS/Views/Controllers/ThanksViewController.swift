@@ -3,20 +3,18 @@ import Library
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Social
 import StoreKit
 import UIKit
 
-internal final class ThanksViewController: UIViewController, UICollectionViewDelegate {
+internal final class ThanksViewController: UIViewController, UITableViewDelegate {
 
-  @IBOutlet fileprivate weak var facebookButton: UIButton!
-  @IBOutlet fileprivate weak var twitterButton: UIButton!
+  @IBOutlet fileprivate weak var closeButton: UIButton!
   @IBOutlet fileprivate weak var shareMoreButton: UIButton!
-  @IBOutlet fileprivate weak var doneButton: UIBarButtonItem!
-  @IBOutlet fileprivate weak var projectsCollectionView: UICollectionView!
+  @IBOutlet fileprivate weak var projectsTableView: UITableView!
   @IBOutlet fileprivate weak var backedLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
-  @IBOutlet fileprivate weak var woohooLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var thankYouLabel: UILabel!
 
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -32,67 +30,72 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.projectsCollectionView.dataSource = self.dataSource
-    self.projectsCollectionView.delegate = self
+    self.projectsTableView.register(nib: .DiscoveryPostcardCell)
+    self.projectsTableView.register(nib: .ThanksCategoryCell)
 
-    self.viewModel.inputs.facebookIsAvailable(
-      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
-    )
-    self.viewModel.inputs.twitterIsAvailable(
-      SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
-    )
+    self.projectsTableView.dataSource = self.dataSource
+    self.projectsTableView.delegate = self
+
+    self.closeButton.addTarget(self,
+                               action: #selector(closeButtonTapped),
+                               for: .touchUpInside)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationItem.setHidesBackButton(true, animated: animated)
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
+    _ = self.closeButton
+      |> UIButton.lens.title(forState: .normal) .~ nil
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
-    _ = self.woohooLabel
+    _ = self.projectsTableView
+      |> UITableView.lens.separatorStyle .~ .none
+      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+      |> UITableView.lens.estimatedRowHeight .~ 550
+
+    _ = self.thankYouLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
-      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
-      |> UILabel.lens.text %~ { _ in Strings.project_checkout_share_exclamation() }
+      |> UILabel.lens.font .~ UIFont.ksr_title1(size: 36)
+      |> UILabel.lens.text %~ { _ in Strings.Thank_you_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
-    _ = self.backedLabel |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+    _ = self.backedLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+
+    _ = self.separatorView
+      |> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_900
 
     _ = self.recommendationsLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.project_checkout_looking_for_more_projects_check_these_out() }
-
-    _ = self.facebookButton
-      |> facebookThanksButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(facebookButtonTapped), .touchUpInside)]
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Facebook() }
-
-    _ = self.twitterButton
-      |> twitterButtonStyle
-      |> UIButton.lens.targets .~ [(self, #selector(twitterButtonTapped), .touchUpInside)]
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Share_this_project_on_Twitter() }
+      |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
     _ = self.shareMoreButton
       |> borderButtonStyle
+      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Share() }
+      |> UIButton.lens.title(forState: .normal) %~ { _ in
+          Strings.project_accessibility_button_share_label()
+        }
 
-    _ = self.doneButton
-      |> doneBarButtonItemStyle
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(doneButtonTapped))
+    if let navigationController = self.navigationController {
+      _ = navigationController
+      |> UINavigationController.lens.navigationBarHidden .~ true
+    }
   }
 
     override func bindViewModel() {
     super.bindViewModel()
 
-    self.facebookButton.rac.hidden = self.viewModel.outputs.facebookButtonIsHidden
-    self.twitterButton.rac.hidden = self.viewModel.outputs.twitterButtonIsHidden
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissToRootViewController
@@ -150,16 +153,12 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
       .observeForControllerAction()
       .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
-        self?.projectsCollectionView.reloadData()
+        self?.projectsTableView.reloadData()
     }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
-
-    self.shareViewModel.outputs.showShareCompose
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.showShareCompose($0) }
   }
 
   fileprivate func goToDiscovery(params: DiscoveryParams) {
@@ -242,15 +241,8 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func showShareCompose(_ controller: SLComposeViewController) {
-    controller.completionHandler = { [weak self] in
-      self?.shareViewModel.inputs.shareComposeCompletion(result: $0)
-    }
-    self.present(controller, animated: true, completion: nil)
-  }
-
-  internal func collectionView(_ collectionView: UICollectionView,
-                               didSelectItemAt indexPath: IndexPath) {
+  internal func tableView(_ tableView: UITableView,
+                          didSelectRowAt indexPath: IndexPath) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
@@ -258,19 +250,11 @@ internal final class ThanksViewController: UIViewController, UICollectionViewDel
     }
   }
 
-  @objc fileprivate func facebookButtonTapped() {
-    self.shareViewModel.inputs.facebookButtonTapped()
-  }
-
-  @objc fileprivate func twitterButtonTapped() {
-    self.shareViewModel.inputs.twitterButtonTapped()
-  }
-
   @objc fileprivate func shareMoreButtonTapped() {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func doneButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 }

@@ -3543,7 +3543,7 @@ daring ideas."
   /**
    "Read more about the campaign"
 
-   - **es**: "Leer más sobre esta campaña"
+   - **es**: "Leer más sobre la campaña"
    - **ja**: "キャンペーンの詳細をみる"
    - **de**: "Mehr über diese Kampagne lesen"
    - **fr**: "En savoir plus sur la campagne"
@@ -3966,6 +3966,23 @@ daring ideas."
     )
   }
   /**
+   "See all %{category_name} projects"
+
+   - **es**: "See all %{category_name} projects"
+   - **ja**: "See all %{category_name} projects"
+   - **de**: "See all %{category_name} projects"
+   - **fr**: "See all %{category_name} projects"
+   - **en**: "See all %{category_name} projects"
+  */
+  public static func See_all_category_name_projects(category_name: String) -> String {
+    return localizedString(
+      key: "See_all_category_name_projects",
+      defaultValue: "See all %{category_name} projects",
+      count: nil,
+      substitutions: ["category_name": category_name]
+    )
+  }
+  /**
    "Select this reward"
 
    - **es**: "Seleccionar esta recompensa"
@@ -4019,10 +4036,10 @@ daring ideas."
   /**
    "Share"
 
-   - **es**: "Share"
+   - **es**: "Compartir"
    - **ja**: "シェア"
-   - **de**: "Share"
-   - **fr**: "Share"
+   - **de**: "Teilen"
+   - **fr**: "Partager"
    - **en**: "Share"
   */
   public static func Share() -> String {
@@ -4560,6 +4577,23 @@ catch your eye?"
       defaultValue: "This Facebook account is already linked to another Kickstarter user.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "This project will only be funded on if at least %{amount} is pledged by %{date}."
+
+   - **es**: "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}."
+   - **ja**: "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。"
+   - **de**: "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden."
+   - **fr**: "Ce projet ne sera financé que si au moins %{amount} sont engagés d'ici le %{date}."
+   - **en**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
+  */
+  public static func This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String) -> String {
+    return localizedString(
+      key: "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date",
+      defaultValue: "This project will only be funded on if at least %{amount} is pledged by %{date}.",
+      count: nil,
+      substitutions: ["amount": amount, "date": date]
     )
   }
   /**

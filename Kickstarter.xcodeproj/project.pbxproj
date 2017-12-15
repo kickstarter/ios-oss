@@ -890,6 +890,8 @@
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
+		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
+		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
 		D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */; };
 		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
@@ -2412,6 +2414,8 @@
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
+		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
+		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
 		D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootCategoriesEnvelope.swift; path = lenses/RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEnvelope.swift; sourceTree = "<group>"; };
@@ -2691,6 +2695,7 @@
 				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
+				D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */,
 				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
 				A73923B01D272242004524C3 /* Friends.storyboard */,
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
@@ -2710,6 +2715,7 @@
 				A73923B81D272242004524C3 /* Search.storyboard */,
 				A73923B91D272242004524C3 /* Settings.storyboard */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
+				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
@@ -4803,6 +4809,7 @@
 				D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */,
 				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
 				A7D120D71D15A7B400F364FD /* Assets.xcassets in Resources */,
+				D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
@@ -4815,6 +4822,7 @@
 				A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */,
 				A787E6BE1E28A85A0017B186 /* LiveStream.storyboard in Resources */,
 				A78838741D8A2EFF0081E94D /* ProjectPamphlet.storyboard in Resources */,
+				D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */,
 				01A120D11D2D646300B42F73 /* DashboardProjectsDrawer.storyboard in Resources */,
 				59673C8B1D50EC920035AFD9 /* Video.storyboard in Resources */,
 				A73923BE1D272242004524C3 /* Comments.storyboard in Resources */,
