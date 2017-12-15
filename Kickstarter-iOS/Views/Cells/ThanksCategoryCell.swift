@@ -13,7 +13,7 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
     _ = self.seeAllProjectsLabel
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      |> UILabel.lens.text %~ { _ in Strings.category_promo_explore_category(category_name: category.name) }
+      |> UILabel.lens.text %~ { _ in Strings.See_all_category_name_projects(category_name: category.name) }
       |> UILabel.lens.font .~ .ksr_callout()
 
     _ = self.cardView
