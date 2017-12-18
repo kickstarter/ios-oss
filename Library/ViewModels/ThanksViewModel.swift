@@ -122,6 +122,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.dismissToRootViewController = self.closeButtonTappedProperty.signal
 
+    self.categoryCellTappedProperty.signal.observeValues { v in
+      print(v)
+    }
+
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
