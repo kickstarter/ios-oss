@@ -174,7 +174,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   private func updateHeaderView(height: CGFloat) {
     var headerFrame = self.headerView.frame
     guard height != headerFrame.size.height else { return }
-    
+
     headerFrame.size.height = height
     self.headerView.frame = headerFrame
     self.projectsTableView.tableHeaderView = self.headerView
