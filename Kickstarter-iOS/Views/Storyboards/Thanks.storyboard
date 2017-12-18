@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="80" width="375" height="575"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="275"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="295"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
@@ -52,13 +52,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb6-LU-AvY">
-                                            <rect key="frame" x="12" y="128" width="351" height="44"/>
+                                            <rect key="frame" x="12" y="148" width="351" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="Afh-a9-DP3"/>
                                             </constraints>
                                         </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DBG-8g-JC1">
-                                            <rect key="frame" x="0.0" y="172" width="375" height="103"/>
+                                            <rect key="frame" x="0.0" y="192" width="375" height="103"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oH7-8O-oQk">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="37"/>
@@ -92,7 +92,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="103" id="iq7-PU-A7F"/>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="103" id="iq7-PU-A7F"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -102,7 +102,7 @@
                                         <constraint firstAttribute="trailing" secondItem="kb6-LU-AvY" secondAttribute="trailing" constant="12" id="CiI-u5-9m5"/>
                                         <constraint firstAttribute="trailing" secondItem="DBG-8g-JC1" secondAttribute="trailing" id="FNf-8p-A9J"/>
                                         <constraint firstItem="Uj7-Jz-Wug" firstAttribute="leading" secondItem="LC4-lC-v0V" secondAttribute="leading" constant="12" id="MiL-op-E6G"/>
-                                        <constraint firstItem="kb6-LU-AvY" firstAttribute="top" secondItem="0W0-Br-5Lh" secondAttribute="bottom" constant="29.5" id="aom-Kf-KTs"/>
+                                        <constraint firstItem="kb6-LU-AvY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0W0-Br-5Lh" secondAttribute="bottom" constant="29.5" id="aom-Kf-KTs"/>
                                         <constraint firstAttribute="trailing" secondItem="0W0-Br-5Lh" secondAttribute="trailing" constant="12" id="c1N-J9-94y"/>
                                         <constraint firstItem="0W0-Br-5Lh" firstAttribute="top" secondItem="Uj7-Jz-Wug" secondAttribute="bottom" constant="8" id="k9y-mw-RI3"/>
                                         <constraint firstItem="kb6-LU-AvY" firstAttribute="leading" secondItem="LC4-lC-v0V" secondAttribute="leading" constant="12" id="kJL-tD-9Kq"/>
@@ -136,6 +136,7 @@
                     <connections>
                         <outlet property="backedLabel" destination="0W0-Br-5Lh" id="w6N-Ob-dK4"/>
                         <outlet property="closeButton" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
+                        <outlet property="headerView" destination="LC4-lC-v0V" id="fZQ-u8-dLf"/>
                         <outlet property="projectsTableView" destination="K36-s7-mGm" id="ISM-6m-3DU"/>
                         <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
                         <outlet property="separatorView" destination="pr6-7j-NNg" id="vOp-l5-MEO"/>

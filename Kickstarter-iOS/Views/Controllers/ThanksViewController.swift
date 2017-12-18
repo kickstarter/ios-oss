@@ -15,6 +15,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var thankYouLabel: UILabel!
+  @IBOutlet fileprivate weak var headerView: UIView!
 
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -41,6 +42,15 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
                                for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if let headerView = projectsTableView.tableHeaderView {
+      let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+      self.updateHeaderView(height: height)
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -159,6 +169,15 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
+  }
+
+  private func updateHeaderView(height: CGFloat) {
+    var headerFrame = self.headerView.frame
+    guard height != headerFrame.size.height else { return }
+
+    headerFrame.size.height = height
+    self.headerView.frame = headerFrame
+    self.projectsTableView.tableHeaderView = self.headerView
   }
 
   fileprivate func goToDiscovery(params: DiscoveryParams) {
