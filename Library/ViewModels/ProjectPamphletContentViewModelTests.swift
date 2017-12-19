@@ -395,7 +395,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
-      [project, project], "The new project is loaded into data source"
+      [project, project, project], "The new project is loaded into data source"
     )
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
   }
@@ -425,20 +425,20 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
-      .assertValues([project, project], "Full project emits.")
+      .assertValues([project, project, project], "Full project emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project, project], "Nothing new emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }
