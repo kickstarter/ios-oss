@@ -27,6 +27,6 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.text .~ Strings.Or_select_a_different_reward_below_colon()
+      |> UILabel.lens.text %~ { _ in Strings.Or_select_a_different_reward_below_colon() }
   }
 }

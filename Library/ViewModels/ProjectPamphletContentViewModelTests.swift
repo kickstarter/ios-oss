@@ -432,13 +432,17 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
+      [project, project, project], "Nothing new emits."
+    )
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
+      [project, project, project], "Nothing new emits."
+    )
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 }
