@@ -248,10 +248,10 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     )
 
  self.subtitleFont = project
-    .map { _ in AppEnvironment.current.language == .de ? .ksr_caption1(size: 12) : .ksr_caption1(size: 13) }
+    .map { _ in AppEnvironment.current.language == .de ? .ksr_caption1(size: 11) : .ksr_caption1(size: 13) }
 
 self.titleFont = project
-    .map { _ in AppEnvironment.current.language == .de ? .ksr_headline(size: 12) : .ksr_headline(size: 13) }
+    .map { _ in AppEnvironment.current.language == .de ? .ksr_headline(size: 11) : .ksr_headline(size: 13) }
   }
 
   private let awakeFromNibProperty = MutableProperty()
