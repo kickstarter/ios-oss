@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ThanksCategoryCell" rowHeight="74" id="KGk-i7-Jjw" customClass="ThanksCategoryCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="288" height="74"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="288" height="73.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ykD-AO-atW">
+                        <rect key="frame" x="12" y="12" width="264" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xif-xY-aXW">
+                                <rect key="frame" x="0.0" y="0.0" width="264" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xif-xY-aXW" secondAttribute="trailing" id="RLv-qG-RqC"/>
+                            <constraint firstItem="xif-xY-aXW" firstAttribute="leading" secondItem="ykD-AO-atW" secondAttribute="leading" id="RZe-WH-4xE"/>
+                            <constraint firstAttribute="height" constant="50" id="fc2-Fd-0Bx"/>
+                            <constraint firstAttribute="bottom" secondItem="xif-xY-aXW" secondAttribute="bottom" id="iuZ-VZ-6Qk"/>
+                            <constraint firstItem="xif-xY-aXW" firstAttribute="top" secondItem="ykD-AO-atW" secondAttribute="top" id="r94-JV-JEr"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ykD-AO-atW" secondAttribute="bottom" constant="12" id="VPA-32-GNd"/>
+                    <constraint firstItem="ykD-AO-atW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="X2t-6f-Uyl"/>
+                    <constraint firstAttribute="trailing" secondItem="ykD-AO-atW" secondAttribute="trailing" constant="12" id="cDT-No-pbh"/>
+                    <constraint firstItem="ykD-AO-atW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="fcq-oE-EOu"/>
+                </constraints>
+                <edgeInsets key="layoutMargins" top="12" left="0.0" bottom="12" right="0.0"/>
+            </tableViewCellContentView>
+            <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="cardView" destination="ykD-AO-atW" id="0l8-hY-gPI"/>
+                <outlet property="seeAllProjectsLabel" destination="xif-xY-aXW" id="N0B-cm-EIx"/>
+            </connections>
+            <point key="canvasLocation" x="-133" y="-727"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -41,8 +41,8 @@ private let filmExpandableRow = expandableRowTemplate
 ]
 
 private let categories =
-  [ RootCategoriesEnvelope.Category.art,
-    RootCategoriesEnvelope.Category.filmAndVideo ]
+  [ Category.art,
+    Category.filmAndVideo ]
 
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
@@ -110,9 +110,9 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     XCTAssertEqual([nil,
                     nil,
-                    RootCategoriesEnvelope.Category.filmAndVideo.intID,
-                    RootCategoriesEnvelope.Category.documentary.intID,
-                    RootCategoriesEnvelope.Category.documentary.intID],
+                    Category.filmAndVideo.intID,
+                    Category.documentary.intID,
+                    Category.documentary.intID],
                    self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
   }
 

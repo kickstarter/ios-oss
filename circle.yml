@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "9.1"
+    version: "9.2"
 dependencies:
   cache_directories:
     - "Frameworks/OpenTok"
@@ -14,7 +14,7 @@ dependencies:
     - xcodebuild -showsdks
 test:
   pre:
-    - xcrun instruments -w 'iPhone 8 (11.1) [9F8B48EF-912E-499E-9874-4CCF692178B3]' || true
+    - xcrun instruments -w 'iPhone 8 (11.2) [9F8B48EF-912E-499E-9874-4CCF692178B3]' || true
     - sleep 15
   override:
     - make lint

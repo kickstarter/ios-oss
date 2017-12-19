@@ -215,7 +215,7 @@ DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
  */
 
 private func expandableRows(selectedRow: SelectableRow,
-                            categories: [RootCategoriesEnvelope.Category]) -> [ExpandableRow] {
+                            categories: [KsApi.Category]) -> [ExpandableRow] {
 
   let expandableRows = categories.filter { $0.isRoot }
     .sorted { lhs, _ in lhs.isRoot }
@@ -296,7 +296,7 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   return filters
 }
 
-private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEnvelope.Category])
+private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
   -> [SelectableRow]? {
 
     let subcategories = categories
@@ -321,12 +321,12 @@ private func favorites(selectedRow: SelectableRow, categories: [RootCategoriesEn
     return faves.isEmpty ? nil : faves
 }
 
-private func cachedCategories() -> [RootCategoriesEnvelope.Category]? {
+private func cachedCategories() -> [KsApi.Category]? {
   return AppEnvironment.current
-    .cache[KSCache.ksr_discoveryFiltersCategories] as? [RootCategoriesEnvelope.Category]
+    .cache[KSCache.ksr_discoveryFiltersCategories] as? [KsApi.Category]
 }
 
-private func cache(categories: [RootCategoriesEnvelope.Category]) {
+private func cache(categories: [KsApi.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
 }
 

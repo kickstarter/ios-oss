@@ -23,6 +23,8 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
         )
       } else if activityType == .copyToPasteboard || activityType == .postToFacebook {
         return project.urls.web.project
+      } else {
+        return formattedString(for: project)
       }
     }
     return self.activityViewControllerPlaceholderItem(activityViewController)

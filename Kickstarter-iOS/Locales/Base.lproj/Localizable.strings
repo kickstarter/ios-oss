@@ -254,6 +254,7 @@
 "Saved_projects" = "Saved projects";
 "Saves_project" = "Saves project.";
 "Say_something_kind" = "Say something kind...";
+"See_all_category_name_projects" = "See all %{category_name} projects";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
 "Send" = "Send";

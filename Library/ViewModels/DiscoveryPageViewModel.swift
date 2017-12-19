@@ -149,14 +149,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.asyncReloadData = self.projects.take(first: 1).ignoreValues()
 
-    self.showEmptyState = paramsChanged
-      .takeWhen(paginatedProjects.filter { $0.isEmpty })
-      .map(emptyState(forParams:))
+    self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
+      .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
+      .map { params, _, _ in
+        emptyState(forParams: params)
+      }
       .skipNil()
       .skipRepeats()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),
+      self.asyncReloadData,
+      paginatedProjects.filter { !$0.isEmpty }.ignoreValues(),
       paramsChanged.skip(first: 1).ignoreValues()
     )
 
@@ -327,6 +331,7 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
+
   if params.starred == .some(true) {
     return .starred
   } else if params.recommended == .some(true) {

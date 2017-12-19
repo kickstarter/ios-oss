@@ -2,7 +2,7 @@ import Prelude
 
 /// Graph Response
 
-struct GraphResponse<T: Decodable>: Decodable {
+public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
 }
 
@@ -92,17 +92,9 @@ public enum PageInfo: String {
   case startCursor
 }
 
-public enum GraphObjectType: String {
-  case category = "Category"
-}
-
 public enum Edges<Q: QueryType> {
   case cursor
   case node(NonEmptySet<Q>)
-}
-
-public enum Node<Q: QueryType> {
-  case node(id: String, type: GraphObjectType, NonEmptySet<Q>)
 }
 
 public enum Nodes<Q: QueryType> {
@@ -208,7 +200,7 @@ extension Query: QueryType {
   public var description: String {
     switch self {
     case let .category(id, fields):
-      return "node(id: \(id)) { ... on Category { \(join(fields)) } }"
+      return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
