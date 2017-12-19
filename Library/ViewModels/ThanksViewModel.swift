@@ -288,7 +288,7 @@ This is a work around that fixes the incompatibility between the types of catego
  */
 private func toBase64(_ category: KsApi.Category) -> String {
   let id = category.parentId ?? category.id
-  let decodedId = category.decode(id: id)
+  let decodedId = Category.decode(id: id)
   return decodedId.toBase64()
 }
 
