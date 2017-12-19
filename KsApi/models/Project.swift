@@ -294,22 +294,28 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
   switch jsonObj {
   case .object(let dic):
     let category = Category(id: categoryInfo(dic).0,
-                                                   name: categoryInfo(dic).1)
+                            name: categoryInfo(dic).1,
+                            parentId: categoryInfo(dic).2)
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
   }
 }
 
-private func categoryInfo(_ json: [String: JSON]) -> (String, String) {
-  guard let name = json["name"], let id = json["id"] else {
-    return("", "")
-  }
+private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
 
-  switch (id, name) {
-  case (.number(let id), .string(let name)):
-    return ("\(id)", name)
+  guard let name = json["name"], let id = json["id"] else {
+    return("", "", nil)
+  }
+  
+  let parentId = json["parent_id"]
+
+  switch (id, name, parentId) {
+  case (.number(let id), .string(let name), .number(let parentId)?):
+    return ("\(id)", name, "\(parentId)")
+  case (.number(let id), .string(let name), nil):
+    return ("\(id)", name, nil)
   default:
-    return("", "")
+    return("", "", nil)
   }
 }

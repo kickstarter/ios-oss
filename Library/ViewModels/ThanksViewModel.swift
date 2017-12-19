@@ -126,7 +126,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory = project
-      .map { toBase64($0.category.root?.decodedID) }
+      .map { toBase64($0.category) }
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -286,8 +286,10 @@ This is a work around that fixes the incompatibility between the types of catego
  Discovery projects.
 
  */
-private func toBase64(_ input: String?) -> String {
-  return String(describing: "\(input ?? "")").toBase64()
+private func toBase64(_ category: KsApi.Category) -> String {
+  let id = category.parentId ?? category.id
+  let decodedId = category.decode(id: id)
+  return decodedId.toBase64()
 }
 
 private func relatedProjects(toProject project: Project,
