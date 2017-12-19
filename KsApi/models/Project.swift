@@ -307,7 +307,6 @@ private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
   guard let name = json["name"], let id = json["id"] else {
     return("", "", nil)
   }
-  
   let parentId = json["parent_id"]
 
   switch (id, name, parentId) {
