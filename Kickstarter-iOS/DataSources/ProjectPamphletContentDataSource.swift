@@ -31,7 +31,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     self.setRewardTitleArea(project: project)
   }
 
-  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent]) {
+  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent], visible: Bool) {
     self.clearValues()
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
@@ -57,9 +57,11 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       .map { (project, Either<Reward, Backing>.left($0)) }
 
     if !rewardData.isEmpty {
+      if visible {
       self.set(values: [project],
                cellClass: RewardsTitleCell.self,
                inSection: Section.rewardsTitle.rawValue)
+      }
       self.set(values: availableRewards(for: project),
                cellClass: RewardCell.self,
                inSection: Section.availableRewards.rawValue)
@@ -92,7 +94,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
       self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
     } else if let backing = project.personalization.backing {
-
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
       self.set(values: [(project, .right(backing))],
                cellClass: RewardCell.self,
