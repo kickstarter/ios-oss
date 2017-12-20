@@ -7,7 +7,6 @@ internal final class DashboardViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     let project = cosmicSurgery
       |> Project.lens.dates.launchedAt .~ (self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14)
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14)
