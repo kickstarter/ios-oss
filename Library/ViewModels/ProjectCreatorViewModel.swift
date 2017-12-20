@@ -17,6 +17,9 @@ public protocol ProjectCreatorViewModelInputs {
 }
 
 public protocol ProjectCreatorViewModelOutputs {
+  /// Emits when we should return to project page.
+  var goBackToProject: Signal<(), NoError> { get }
+
   /// Emits when the LoginToutViewController should be presented.
   var goToLoginTout: Signal<LoginIntent, NoError> { get }
 
@@ -66,10 +69,22 @@ ProjectCreatorViewModelOutputs {
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .map { (MessageSubject.project($0), .projectPage) }
 
-    self.goToSafariBrowser = navigationAction
-      .filter { $0.navigationType == .linkActivated }
-      .filter { !isMessageCreator(request: $0.request) }
-      .map { $0.request.url }
+    self.goBackToProject = Signal.combineLatest(project, navigationAction)
+      .filter { $1.navigationType == .linkActivated }
+      .filter { (arg: (Project, WKNavigationActionData)) -> Bool in
+        let (project, navigation) = arg
+        return project.urls.web.project == navigation.request.url?.absoluteString
+      }
+      .ignoreValues()
+
+    self.goToSafariBrowser = Signal.combineLatest(project, navigationAction)
+      .filter { $1.navigationType == .linkActivated }
+      .filter { !isMessageCreator(request: $1.request) }
+      .filter { (arg: (Project, WKNavigationActionData)) -> Bool in
+        let (project, navigation) = arg
+        return project.urls.web.project != navigation.request.url?.absoluteString
+      }
+      .map { $1.request.url }
       .skipNil()
 
     project
@@ -95,7 +110,7 @@ ProjectCreatorViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
+  public let goBackToProject: Signal<(), NoError>
   public let goToLoginTout: Signal<LoginIntent, NoError>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToSafariBrowser: Signal<URL, NoError>
