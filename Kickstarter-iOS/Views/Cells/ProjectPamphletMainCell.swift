@@ -53,7 +53,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
    * Try removing it in subsequent versions, it worked just fine without it before 11.0
    * ¯\_(ツ)_/¯
    */
-  @IBOutlet fileprivate weak var statsStackViewHeightConstraint: NSLayoutConstraint!
+
   @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
   @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
 
@@ -210,8 +210,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
-
-    self.statsStackViewHeightConstraint.constant = Styles.grid(5)
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
