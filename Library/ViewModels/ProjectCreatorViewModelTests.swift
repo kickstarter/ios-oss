@@ -151,15 +151,15 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goBackToProject.assertDidNotEmitValue()
 
-    let projectRequest = URLRequest(
-      url: URL(string: "https://www.kickstarter.com/")!
+    let linkRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/creator/about")!
     )
     _ = self.vm.inputs.decidePolicy(
       forNavigationAction: WKNavigationActionData(
         navigationType: .linkActivated,
-        request: projectRequest,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: projectRequest),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: projectRequest)
+        request: linkRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: linkRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: linkRequest)
       )
     )
     self.goBackToProject.assertDidNotEmitValue()
