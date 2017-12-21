@@ -277,7 +277,7 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
   } else if params.social == true {
     filterText = Strings.Following()
   } else if let category = params.category {
-    filterText = category.isRoot ? string(forCategoryId: category.intID ?? -1) : category.root?.name ?? ""
+    filterText = category.isRoot ? string(forCategoryId: category.id) : category.root?.name ?? ""
     subcategoryText = category.isRoot ? nil : category.name
   } else if params.recommended == true {
     filterText = Strings.Recommended_For_You()
@@ -306,7 +306,7 @@ private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String
   }
 }
 
-private func string(forCategoryId id: Int) -> String {
+private func string(forCategoryId id: String) -> String {
   return RootCategory(categoryId: id).allProjectsString()
 }
 
