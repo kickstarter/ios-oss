@@ -71,18 +71,16 @@ ProjectCreatorViewModelOutputs {
 
     self.goBackToProject = Signal.combineLatest(project, navigationAction)
       .filter { $1.navigationType == .linkActivated }
-      .filter { (arg: (Project, WKNavigationActionData)) -> Bool in
-        let (project, navigation) = arg
-        return project.urls.web.project == navigation.request.url?.absoluteString
+      .filter { project, navigation in
+         project.urls.web.project == navigation.request.url?.absoluteString
       }
       .ignoreValues()
 
     self.goToSafariBrowser = Signal.combineLatest(project, navigationAction)
       .filter { $1.navigationType == .linkActivated }
       .filter { !isMessageCreator(request: $1.request) }
-      .filter { (arg: (Project, WKNavigationActionData)) -> Bool in
-        let (project, navigation) = arg
-        return project.urls.web.project != navigation.request.url?.absoluteString
+      .filter { project, navigation in
+        project.urls.web.project != navigation.request.url?.absoluteString
       }
       .map { $1.request.url }
       .skipNil()
