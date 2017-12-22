@@ -48,6 +48,16 @@ internal final class ProjectCreatorViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in _ = self?.webView.load($0) }
 
+    self.viewModel.outputs.goBackToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        if self?.traitCollection.userInterfaceIdiom == .pad {
+          self?.dismiss(animated: true, completion: nil)
+        } else {
+          self?.navigationController?.popViewController(animated: true)
+        }
+    }
+
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
