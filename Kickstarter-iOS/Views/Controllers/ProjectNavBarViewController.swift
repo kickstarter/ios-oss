@@ -95,16 +95,10 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
-      |> UIButton.lens.contentEdgeInsets
-      .~ .init(top: Styles.grid(2), left: Styles.gridHalf(5), bottom: Styles.grid(2),
-               right: Styles.grid(2))
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     _ = self.saveButton
       |> saveButtonStyle
-      |> UIButton.lens.contentEdgeInsets
-      .~ .init(top: Styles.gridHalf(6), left: Styles.gridHalf(5), bottom: Styles.gridHalf(5),
-               right: Styles.gridHalf(5))
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
