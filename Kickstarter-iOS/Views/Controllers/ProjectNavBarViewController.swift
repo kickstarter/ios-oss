@@ -77,7 +77,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.closeButton
       |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
