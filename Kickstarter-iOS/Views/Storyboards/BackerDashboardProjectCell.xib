@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,30 +21,34 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUp-e7-Oy3" userLabel="Card View">
-                        <rect key="frame" x="8" y="8" width="369" height="85"/>
+                        <rect key="frame" x="16" y="11" width="353" height="85"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A5d-2m-hB0">
-                        <rect key="frame" x="9" y="9" width="148" height="83"/>
+                        <rect key="frame" x="17" y="12" width="148" height="83"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="A5d-2m-hB0" secondAttribute="height" multiplier="16:9" id="A0O-54-fZ0"/>
                             <constraint firstAttribute="height" constant="83" id="ed7-G1-Ljy"/>
                         </constraints>
                     </imageView>
                     <view hidden="YES" alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvH-hc-h3e" userLabel="Overlay View">
-                        <rect key="frame" x="9" y="9" width="148" height="83"/>
+                        <rect key="frame" x="17" y="12" width="148" height="83"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-small-icon" translatesAutoresizingMaskIntoConstraints="NO" id="CIO-Wk-mF2">
-                        <rect key="frame" x="138" y="15" width="13" height="12"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--heart-circle" translatesAutoresizingMaskIntoConstraints="NO" id="CIO-Wk-mF2">
+                        <rect key="frame" x="142" y="18" width="17" height="17"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="b48-IW-XJj"/>
+                            <constraint firstAttribute="width" constant="17" id="fHn-NO-TvJ"/>
+                        </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nQh-kH-b4z">
-                        <rect key="frame" x="15" y="49.5" width="48.5" height="36.5"/>
+                        <rect key="frame" x="23" y="52.5" width="48.5" height="36.5"/>
                         <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="NJn-Jb-beP">
-                        <rect key="frame" x="27" y="57.5" width="24.5" height="20.5"/>
+                        <rect key="frame" x="35" y="60.5" width="24.5" height="20.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="timer-icon" translatesAutoresizingMaskIntoConstraints="NO" id="hSg-Fx-02f">
                                 <rect key="frame" x="0.0" y="3.5" width="14" height="14"/>
@@ -58,26 +62,26 @@
                         </subviews>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ed1-eZ-iLM">
-                        <rect key="frame" x="169" y="8" width="208" height="84"/>
+                        <rect key="frame" x="177" y="11" width="192" height="84"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tke-qu-LdN">
-                                <rect key="frame" x="0.0" y="8" width="200" height="20.5"/>
+                                <rect key="frame" x="0.0" y="8" width="184" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Doz-rw-MF2" userLabel="Progress Stack View">
-                                <rect key="frame" x="0.0" y="55.5" width="200" height="20.5"/>
+                                <rect key="frame" x="0.0" y="55.5" width="184" height="20.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5c3-lB-zec" userLabel="Progress Static View">
-                                        <rect key="frame" x="0.0" y="9" width="171.5" height="3"/>
+                                        <rect key="frame" x="0.0" y="9" width="155.5" height="3"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="3" id="Cv5-nf-EDW"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ez2-Qe-xEX" userLabel="Percent Funded View">
-                                        <rect key="frame" x="195.5" y="0.0" width="4.5" height="20.5"/>
+                                        <rect key="frame" x="179.5" y="0.0" width="4.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -85,7 +89,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cxg-zt-x69" userLabel="Progress Bar View">
-                                <rect key="frame" x="0.0" y="64.5" width="171.5" height="3"/>
+                                <rect key="frame" x="0.0" y="64.5" width="155.5" height="3"/>
                                 <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
@@ -148,7 +152,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="heart-small-icon" width="13" height="12"/>
+        <image name="icon--heart-circle" width="26" height="26"/>
         <image name="timer-icon" width="14" height="14"/>
     </resources>
 </document>
