@@ -13,12 +13,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var dividerLabel: UILabel!
-  @IBOutlet fileprivate weak var favoriteContainerView: UIView!
-  @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var bgView: UIView!
-  @IBOutlet fileprivate weak var heartImageView: UIImageView!
-  @IBOutlet fileprivate weak var heartOutlineImageView: UIImageView!
+  @IBOutlet fileprivate weak var bookmarkImageView: UIImageView!
+  @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
+  @IBOutlet fileprivate weak var dividerLabel: UILabel!
+  @IBOutlet fileprivate weak var favoriteButton: UIButton!
+  @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
   @IBOutlet fileprivate weak var secondaryLabel: UILabel!
   @IBOutlet fileprivate weak var titleButton: UIButton!
@@ -152,10 +152,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.favoriteContainerView
       |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
-    _ = self.heartImageView
+    _ = self.bookmarkImageView
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
-    _ = self.heartOutlineImageView
+    _ = self.bookmarkOutlineImageView
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
     _ = self.primaryLabel
@@ -216,7 +216,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     let duration = animated ? 0.4 : 0.0
 
     if selected {
-      self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+      self.bookmarkImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
       UIView.animate(
         withDuration: duration,
@@ -225,9 +225,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         initialSpringVelocity: 0.8,
         options: .curveEaseOut,
         animations: {
-         self.heartImageView.alpha = 1.0
-         self.heartImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+         self.bookmarkImageView.alpha = 1.0
+         self.bookmarkImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+         self.bookmarkOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
          },
         completion: nil
       )
@@ -239,8 +239,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         initialSpringVelocity: 0.8,
         options: .curveEaseOut,
         animations: {
-        self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-          self.heartOutlineImageView.alpha = 0.0
+        self.bookmarkOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+          self.bookmarkOutlineImageView.alpha = 0.0
         },
         completion: nil
       )
@@ -252,9 +252,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         initialSpringVelocity: 0.8,
         options: .curveEaseOut,
         animations: {
-         self.heartImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-         self.heartOutlineImageView.alpha = 1.0
+         self.bookmarkImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+         self.bookmarkOutlineImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+         self.bookmarkOutlineImageView.alpha = 1.0
         },
         completion: nil
       )
@@ -266,10 +266,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
         initialSpringVelocity: 0.8,
         options: .curveEaseOut,
         animations: {
-         self.heartOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+         self.bookmarkOutlineImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         },
         completion: { _ in
-         self.heartImageView.alpha = 0.0
+         self.bookmarkImageView.alpha = 0.0
         }
       )
     }
