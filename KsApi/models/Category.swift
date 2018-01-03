@@ -43,7 +43,7 @@ public struct Category: Swift.Decodable {
    through GraphQL (base64 encoded String). This will be removed once we start consuming GraphQL to fetch
    Discovery projects.
    */
-  public var decodedID: String {
+  public static func decode(id: String) -> String {
     return "Category-\(id)"
   }
 

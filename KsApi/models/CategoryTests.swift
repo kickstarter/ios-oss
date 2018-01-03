@@ -91,7 +91,7 @@ class CategoryTests: XCTestCase {
   func testDecodedId() {
     let art = Category.art
       |> Category.lens.id .~ "1"
-    XCTAssertEqual(art.decodedID, "Category-1")
+    XCTAssertEqual(Category.decode(id: art.id), "Category-1")
   }
 
   func testEquatable() {

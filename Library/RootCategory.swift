@@ -1,22 +1,22 @@
-public enum RootCategory: Int {
-  case art = 1
-  case comics = 3
-  case crafts = 26
-  case dance = 6
-  case design = 7
-  case fashion = 9
-  case food = 10
-  case film = 11
-  case games = 12
-  case journalism = 13
-  case music = 14
-  case photography = 15
-  case publishing = 18
-  case tech = 16
-  case theater = 17
-  case unrecognized = -1
+public enum RootCategory: String, RawRepresentable {
+  case art = "Q2F0ZWdvcnktMQ=="
+  case comics = "Q2F0ZWdvcnktMw=="
+  case crafts = "Q2F0ZWdvcnktMjY="
+  case dance = "Q2F0ZWdvcnktNg=="
+  case design = "Q2F0ZWdvcnktNw=="
+  case fashion = "Q2F0ZWdvcnktOQ=="
+  case food = "Q2F0ZWdvcnktMTA="
+  case film = "Q2F0ZWdvcnktMTE="
+  case games = "Q2F0ZWdvcnktMTI="
+  case journalism = "Q2F0ZWdvcnktMTM="
+  case music = "Q2F0ZWdvcnktMTQ="
+  case photography = "Q2F0ZWdvcnktMTU="
+  case publishing = "Q2F0ZWdvcnktMTg="
+  case tech = "Q2F0ZWdvcnktMTY="
+  case theater = "Q2F0ZWdvcnktMTc="
+  case unrecognized = "-1"
 
-  public init(categoryId: Int) {
+  public init(categoryId: String) {
     self = RootCategory(rawValue: categoryId) ?? .unrecognized
   }
 }
