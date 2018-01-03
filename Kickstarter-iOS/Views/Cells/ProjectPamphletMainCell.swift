@@ -102,7 +102,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      ||> UILabel.lens.numberOfLines .~ 0
+      ||> UILabel.lens.numberOfLines .~ 2
       ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.blurbAndReadMoreStackView
