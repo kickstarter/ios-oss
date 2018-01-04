@@ -78,6 +78,7 @@ public final class ProjectNavBarViewController: UIViewController {
     _ = self.closeButton
       |> UIButton.lens.title(forState: .normal) .~ nil
       |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
@@ -95,10 +96,12 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
+      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     _ = self.saveButton
       |> saveButtonStyle
+      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
