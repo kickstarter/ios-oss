@@ -558,6 +558,23 @@ backers"
     )
   }
   /**
+   "Bookmarks"
+
+   - **es**: "Bookmarks"
+   - **ja**: "Bookmarks"
+   - **de**: "Bookmarks"
+   - **fr**: "Bookmarks"
+   - **en**: "Bookmarks"
+  */
+  public static func Bookmarks() -> String {
+    return localizedString(
+      key: "Bookmarks",
+      defaultValue: "Bookmarks",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Bring creative projects to life."
 
    - **es**: "Dale vida a proyectos creativos."
@@ -3968,10 +3985,10 @@ daring ideas."
   /**
    "See all %{category_name} projects"
 
-   - **es**: "See all %{category_name} projects"
-   - **ja**: "See all %{category_name} projects"
-   - **de**: "See all %{category_name} projects"
-   - **fr**: "See all %{category_name} projects"
+   - **es**: "Ver todos los proyectos de %{category_name}"
+   - **ja**: "%{category_name} プロジェクトをすべて見る"
+   - **de**: "Alle %{category_name}-Projekte anzeigen"
+   - **fr**: "Tous les projets de la catégorie %{category_name}"
    - **en**: "See all %{category_name} projects"
   */
   public static func See_all_category_name_projects(category_name: String) -> String {
@@ -6901,7 +6918,7 @@ Please try again later."
    "Backer #%{backer_number}"
 
    - **es**: "Patrocinador n° %{backer_number}"
-   - **ja**: "バッカー数 %{backer_number}"
+   - **ja**: "バッカーナンバー %{backer_number}"
    - **de**: "Unterstützer Nr. %{backer_number}"
    - **fr**: "Contributeur no. %{backer_number}"
    - **en**: "Backer #%{backer_number}"

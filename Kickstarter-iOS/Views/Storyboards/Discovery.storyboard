@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -148,12 +148,12 @@
                                                     <rect key="frame" x="15" y="11" width="345" height="22"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZy-2b-lTV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="90" height="22"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="93" height="22"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="2gr-FJ-6h7">
-                                                            <rect key="frame" x="96" y="4" width="14" height="14"/>
+                                                            <rect key="frame" x="99" y="5.5" width="11" height="11"/>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Nas-2T-LXH">
                                                             <rect key="frame" x="116" y="11" width="229" height="0.0"/>
@@ -436,11 +436,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTG-N8-oCA" userLabel="Favorite Container View">
                                 <rect key="frame" x="0.0" y="1" width="44" height="44"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-outline" translatesAutoresizingMaskIntoConstraints="NO" id="Ij6-dc-OpY">
-                                        <rect key="frame" x="8" y="13" width="20" height="18"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--bookmark-outline" translatesAutoresizingMaskIntoConstraints="NO" id="Ij6-dc-OpY">
+                                        <rect key="frame" x="8" y="11" width="22" height="22"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="DzE-4H-e6W">
-                                        <rect key="frame" x="9" y="14" width="18" height="16"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="DzE-4H-e6W">
+                                        <rect key="frame" x="8" y="11" width="22" height="22"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-WC-mdL">
                                         <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -530,11 +530,11 @@
                     <connections>
                         <outlet property="arrowImageView" destination="0Gr-Vv-egm" id="kxl-cB-kRF"/>
                         <outlet property="bgView" destination="H2g-DT-JXM" id="5Ko-kL-825"/>
+                        <outlet property="bookmarkImageView" destination="DzE-4H-e6W" id="zbv-vW-mDf"/>
+                        <outlet property="bookmarkOutlineImageView" destination="Ij6-dc-OpY" id="yPA-fI-vRe"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
-                        <outlet property="favoriteButton" destination="3gE-WC-mdL" id="3U0-oM-QDh"/>
-                        <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="YZD-bV-5Ls"/>
-                        <outlet property="heartImageView" destination="DzE-4H-e6W" id="W47-0B-s1t"/>
-                        <outlet property="heartOutlineImageView" destination="Ij6-dc-OpY" id="9Zd-Lt-Qsp"/>
+                        <outlet property="favoriteButton" destination="3gE-WC-mdL" id="d3h-i4-zh1"/>
+                        <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="naU-cK-WQv"/>
                         <outlet property="outerStackViewTopConstraint" destination="YP3-fh-T5U" id="Cb4-S5-FzH"/>
                         <outlet property="primaryLabel" destination="Xzf-ev-nrc" id="jay-lV-74W"/>
                         <outlet property="secondaryLabel" destination="gOI-JQ-dJe" id="0p8-sw-qr7"/>
@@ -559,8 +559,8 @@
         <image name="arrow-down" width="11" height="6"/>
         <image name="check-circle" width="18" height="19"/>
         <image name="checkmark-selected-filter" width="11" height="8"/>
-        <image name="heart" width="18" height="16"/>
-        <image name="heart-outline" width="20" height="18"/>
-        <image name="live-indicator" width="14" height="14"/>
+        <image name="icon--bookmark" width="22" height="22"/>
+        <image name="icon--bookmark-outline" width="22" height="22"/>
+        <image name="live-indicator" width="11" height="11"/>
     </resources>
 </document>

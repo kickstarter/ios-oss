@@ -247,7 +247,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellGoToLoginTout()
     }
-
   }
 
   internal func configureWith(value: Project) {
