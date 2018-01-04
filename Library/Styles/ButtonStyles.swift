@@ -103,6 +103,7 @@ public let navyButtonStyle =
 
 public let saveButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
+  <> UIButton.lens.tintColor .~ .ksr_dark_grey_900
   <> UIButton.lens.image(forState: .normal) .~ image(named: "icon--heart-outline")
   <> UIButton.lens.image(forState: .selected) .~ image(named: "icon--heart")
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
@@ -110,6 +111,7 @@ public let saveButtonStyle =
 public let shareButtonStyle =
   UIButton.lens.title(forState: .normal) .~ nil
   <> UIButton.lens.image(forState: .normal) .~ image(named: "icon--share")
+  <> UIButton.lens.tintColor .~ .ksr_dark_grey_900
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
 public let textOnlyButtonStyle = baseButtonStyle

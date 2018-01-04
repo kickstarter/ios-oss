@@ -96,12 +96,10 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
-      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     _ = self.saveButton
       |> saveButtonStyle
-      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
@@ -145,9 +143,6 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] opaque, animate in
         UIView.animate(withDuration: animate ? 0.2 : 0) {
-          self?.closeButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .black
-          self?.shareButton.tintColor = .black
-          self?.saveButton.tintColor = .black
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }
