@@ -10,6 +10,7 @@ import XCTest
 final class ProjectCreatorViewModelTests: TestCase {
   fileprivate let vm: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
+  fileprivate let goBackToProject = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<LoginIntent, NoError>()
   fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, NoError>()
   fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, NoError>()
@@ -19,6 +20,7 @@ final class ProjectCreatorViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.goBackToProject.observe(self.goBackToProject.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.goToMessageDialog.map(second).observe(self.goToMessageDialogContext.observer)
     self.vm.outputs.goToMessageDialog.map(first).observe(self.goToMessageDialogSubject.observer)
@@ -119,6 +121,48 @@ final class ProjectCreatorViewModelTests: TestCase {
 
     self.goToMessageDialogContext.assertValues([.projectPage])
     self.goToMessageDialogSubject.assertValues([.project(project)])
+  }
+
+  func testGoBackToProjectDoesNotEmit_whenRequestURL_IsEqualToProjectURL() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.goBackToProject.assertDidNotEmitValue()
+
+    let projectRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/creator/a-fun-project")!
+    )
+    _ = self.vm.inputs.decidePolicy(
+      forNavigationAction: WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: projectRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: projectRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: projectRequest)
+      )
+    )
+    self.goBackToProject.assertDidEmitValue()
+  }
+
+  func testGoBackToProjectDoesNotEmit_whenRequestURL_IsNotEqualToProjectURL() {
+    let project = Project.template
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+
+    self.goBackToProject.assertDidNotEmitValue()
+
+    let linkRequest = URLRequest(
+      url: URL(string: "https://www.kickstarter.com/projects/creator/about")!
+    )
+    _ = self.vm.inputs.decidePolicy(
+      forNavigationAction: WKNavigationActionData(
+        navigationType: .linkActivated,
+        request: linkRequest,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: linkRequest),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: linkRequest)
+      )
+    )
+    self.goBackToProject.assertDidNotEmitValue()
   }
 
   func testGoToSafariBrowser() {

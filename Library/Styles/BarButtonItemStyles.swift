@@ -22,8 +22,8 @@ public let iconBarButtonItemStyle = baseBarButtonItemStyle
   <> UIBarButtonItem.lens.title .~ nil
 
 public let closeBarButtonItemStyle = iconBarButtonItemStyle
-  <> UIBarButtonItem.lens.image .~ image(named: "close-icon")
+  <> UIBarButtonItem.lens.image .~ image(named: "icon--cross")
 
 public let shareBarButtonItemStyle = iconBarButtonItemStyle
-  <> UIBarButtonItem.lens.image .~ image(named: "share-icon")
+  <> UIBarButtonItem.lens.image .~ image(named: "icon--share")
   <> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
