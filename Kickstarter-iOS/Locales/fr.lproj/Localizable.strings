@@ -34,6 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\ncontributeurs";
 "Backers_count_separator_backers.zero" = "%{backers_count}\ncontributeurs";
 "Become_a_backer_to_leave_a_comment" = "Soutenez ce projet pour laisser un commentaire.";
+"Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "Cancel_your_pledge" = "Annuler mon engagement";
 "Change_payment_method" = "Changer de moyen de paiement";
@@ -254,7 +255,7 @@
 "Saved_projects" = "Projets enregistrés";
 "Saves_project" = "Enregistre le projet.";
 "Say_something_kind" = "Un petit mot sympa...";
-"See_all_category_name_projects" = "See all %{category_name} projects";
+"See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
 "Select_this_reward" = "Sélectionner cette récompense";
 "Select_this_reward_instead" = "Choisir cette récompense";
 "Send" = "Envoyer";

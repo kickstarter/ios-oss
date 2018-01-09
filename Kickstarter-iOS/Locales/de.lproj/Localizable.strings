@@ -34,6 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
+"Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
@@ -254,7 +255,7 @@
 "Saved_projects" = "Gespeicherte Projekte";
 "Saves_project" = "Speichert dieses Projekt.";
 "Say_something_kind" = "Sag etwas Nettes ...";
-"See_all_category_name_projects" = "See all %{category_name} projects";
+"See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Send" = "Senden";

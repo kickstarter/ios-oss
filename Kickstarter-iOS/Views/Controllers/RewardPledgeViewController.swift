@@ -410,7 +410,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
-    self.navigationItem.leftBarButtonItem?.image = image(named: "close-icon", tintColor: .ksr_navy_600)
+    self.navigationItem.leftBarButtonItem?.image = image(named: "icon--cross", tintColor: .ksr_navy_600)
     self.navigationItem.leftBarButtonItem?.accessibilityLabel = Strings.general_navigation_buttons_close()
   }
 

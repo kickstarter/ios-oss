@@ -24,8 +24,8 @@ public let discoveryNavTitleStackViewStyle =
     <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
 
 public let discoverySaveButtonStyle = saveButtonStyle
-  <> UIButton.lens.image(forState: .normal) .~ image(named: "heart-circle-unfilled-icon")
-  <> UIButton.lens.image(forState: .selected) .~ image(named: "heart-circle-filled-icon")
+  <> UIButton.lens.image(forState: .normal) .~ image(named: "icon--heart-outline-circle")
+  <> UIButton.lens.image(forState: .selected) .~ image(named: "icon--heart-circle")
   <> UIButton.lens.tintColor .~ .white
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
