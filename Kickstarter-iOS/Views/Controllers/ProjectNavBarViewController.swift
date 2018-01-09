@@ -77,7 +77,8 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.closeButton
       |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "close-icon")
+      |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
@@ -95,16 +96,10 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.shareButton
       |> shareButtonStyle
-      |> UIButton.lens.contentEdgeInsets
-      .~ .init(top: Styles.grid(2), left: Styles.gridHalf(5), bottom: Styles.grid(2),
-               right: Styles.grid(2))
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     _ = self.saveButton
       |> saveButtonStyle
-      |> UIButton.lens.contentEdgeInsets
-      .~ .init(top: Styles.gridHalf(6), left: Styles.gridHalf(5), bottom: Styles.gridHalf(5),
-               right: Styles.gridHalf(5))
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
@@ -148,9 +143,6 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] opaque, animate in
         UIView.animate(withDuration: animate ? 0.2 : 0) {
-          self?.closeButton.tintColor = opaque ? .ksr_text_dark_grey_500 : .black
-          self?.shareButton.tintColor = .black
-          self?.saveButton.tintColor = .black
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
     }

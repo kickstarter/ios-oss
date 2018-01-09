@@ -24,7 +24,7 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func load(favoriteRows rows: [SelectableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.discovery_filters_favorites_title(), categoryId: categoryId)],
+    self.set(values: [(title: Strings.Bookmarks(), categoryId: categoryId)],
              cellClass: DiscoveryFiltersStaticRowCell.self,
              inSection: Section.favoritesHeader.rawValue)
 
