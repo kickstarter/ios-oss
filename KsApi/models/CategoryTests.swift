@@ -63,7 +63,7 @@ class CategoryTests: XCTestCase {
 
   func testParent() {
     XCTAssertEqual(Category.illustration.parent, Category.art)
-    XCTAssertEqual(Category.art.parent, nil)
+    XCTAssertNil(Category.art.parent)
   }
 
   func testParentCategoryType() {
