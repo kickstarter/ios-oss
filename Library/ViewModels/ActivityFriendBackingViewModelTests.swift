@@ -15,7 +15,7 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
-    self.vm.outputs.friendTitle.map{$0.string}.observe(self.friendTitleLabel.observer)
+    self.vm.outputs.friendTitle.map{ $0.string }.observe(self.friendTitleLabel.observer)
   }
 
   func testFrientTitle_ParentCategory() {
@@ -24,7 +24,6 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
       |> \.name .~ "Games"
       |> \.subcategories
       .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
-
 
     self.vm.inputs.configureWith(activity:
       .template
@@ -52,7 +51,6 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
 
     self.friendTitleLabel.assertValues(["Blob backed an Art project."])
   }
-
 
   func testAccessibility() {
     let games = Category.template

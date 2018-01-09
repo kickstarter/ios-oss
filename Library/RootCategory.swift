@@ -27,8 +27,6 @@ public enum RootCategory: Int {
   }
 }
 
-
-
 // swiftlint:disable cyclomatic_complexity
 public extension RootCategory {
   public func allProjectsString() -> String {
