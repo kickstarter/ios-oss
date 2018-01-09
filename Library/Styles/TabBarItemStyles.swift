@@ -29,7 +29,7 @@ public let dashboardTabBarItemStyle = baseTabBarItemStyle
 public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
   return baseTabBarItemStyle
-    <> UITabBarItem.lens.title .~ Strings.tabbar_discover()
+    <> UITabBarItem.lens.title .~ Strings.Explore()
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-home-selected")
     <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_discover()
