@@ -17,14 +17,14 @@ public func activityTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBa
     <> UITabBarItem.lens.title .~ Strings.tabbar_activity()
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-activity")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-activity-selected")
-    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_activity() }
+    <> UITabBarItem.lens.accessibilityLabel .~  Strings.tabbar_activity()
 }
 
 public let dashboardTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.title .~ Strings.tabbar_dashboard()
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-dashboard")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-dashboard-selected")
-  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
+  <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_dashboard()
 
 public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
@@ -32,7 +32,7 @@ public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarIte
     <> UITabBarItem.lens.title .~ Strings.tabbar_discover()
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-home-selected")
-    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_discover() }
+    <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_discover()
 }
 
 public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
@@ -51,4 +51,4 @@ public let searchTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.title .~ Strings.tabbar_search()
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-search")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-search-selected")
-  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_search() }
+  <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_search()
