@@ -14,25 +14,25 @@ private let baseTabBarItemStyle = UITabBarItem.lens.title .~ nil
 public func activityTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
   return baseTabBarItemStyle
-    <> UITabBarItem.lens.title .~ Strings.tabbar_activity()
+    <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_activity() }
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-activity")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-activity-selected")
-    <> UITabBarItem.lens.accessibilityLabel .~  Strings.tabbar_activity()
+    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_activity() }
 }
 
 public let dashboardTabBarItemStyle = baseTabBarItemStyle
-  <> UITabBarItem.lens.title .~ Strings.tabbar_dashboard()
+  <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_dashboard() }
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-dashboard")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-dashboard-selected")
-  <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_dashboard()
+  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
 
 public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
   return baseTabBarItemStyle
-    <> UITabBarItem.lens.title .~ Strings.Explore()
+    <> UITabBarItem.lens.title %~ { _ in Strings.Explore() }
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-home-selected")
-    <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_discover()
+    <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.Explore() }
 }
 
 public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
@@ -41,14 +41,14 @@ public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBa
   let accLabel = isLoggedIn ? Strings.tabbar_profile() : Strings.tabbar_login()
 
   return baseTabBarItemStyle
-    <> UITabBarItem.lens.title .~ Strings.tabbar_profile()
+    <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_profile() }
     <> UITabBarItem.lens.image .~ image(named: imageName)
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-profile-selected")
     <> UITabBarItem.lens.accessibilityLabel .~ accLabel
 }
 
 public let searchTabBarItemStyle = baseTabBarItemStyle
-  <> UITabBarItem.lens.title .~ Strings.tabbar_search()
+  <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_search() }
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-search")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-search-selected")
-  <> UITabBarItem.lens.accessibilityLabel .~ Strings.tabbar_search()
+  <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_search() }
