@@ -415,7 +415,7 @@
 "activity.project_state_change.funded" = "Finanziert";
 "activity.project_state_change.goal" = "Ziel";
 "activity.project_state_change.launched" = "Live";
-"activity.project_state_change.pledged_of_goal" = "von %{goal} beigetragen";
+"activity.project_state_change.pledged_of_goal" = "von %{goal}";
 "activity.project_state_change.project_was_cancelled_by_creator" = "%{project_name} wurde vom Projektgründer abgebrochen.";
 "activity.project_state_change.project_was_not_successfully_funded" = "%{project_name} wurde nicht erfolgreich finanziert.";
 "activity.project_state_change.project_was_successfully_funded" = "%{project_name} wurde erfolgreich finanziert!";

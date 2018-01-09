@@ -560,7 +560,7 @@ backers"
   /**
    "Bookmarks"
 
-   - **es**: "Bookmarks"
+   - **es**: "Marcadores"
    - **ja**: "Bookmarks"
    - **de**: "Bookmarks"
    - **fr**: "Bookmarks"
@@ -6715,7 +6715,7 @@ Please try again later."
 
    - **es**: "de %{goal}"
    - **ja**: "達成額 (%{goal} 中)"
-   - **de**: "von %{goal} beigetragen"
+   - **de**: "von %{goal}"
    - **fr**: "sur %{goal}"
    - **en**: "pledged of %{goal}"
   */
