@@ -212,7 +212,7 @@ final class ThanksViewModelTests: TestCase {
 
       vm.inputs.rateNowButtonTapped()
 
-      XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
+      XCTAssertTrue(AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(
         ["Triggered App Store Rating Dialog", "Accepted App Store Rating Dialog",
          "Checkout Finished Alert App Store Rating Rate Now"],
@@ -232,7 +232,7 @@ final class ThanksViewModelTests: TestCase {
 
       vm.inputs.rateRemindLaterButtonTapped()
 
-      XCTAssertEqual(false, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
+      XCTAssertFalse(AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(
         ["Triggered App Store Rating Dialog", "Delayed App Store Rating Dialog",
          "Checkout Finished Alert App Store Rating Remind Later"],
@@ -251,7 +251,7 @@ final class ThanksViewModelTests: TestCase {
 
       vm.inputs.rateNoThanksButtonTapped()
 
-      XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
+      XCTAssertTrue(AppEnvironment.current.userDefaults.hasSeenAppRating, "Rating pref saved")
       XCTAssertEqual(
         ["Triggered App Store Rating Dialog", "Dismissed App Store Rating Dialog",
          "Checkout Finished Alert App Store Rating No Thanks"],
@@ -262,7 +262,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
-      XCTAssertEqual(false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
+      XCTAssertFalse(AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
                      "Newsletter pref is not set")
 
       vm.inputs.project(.template |> Project.lens.category .~ .games)
@@ -270,8 +270,8 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
       showGamesNewsletterAlert.assertValueCount(1, "Games alert shows on games project")
-      XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
-                     "Newsletter pref saved")
+      XCTAssertTrue(AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
+                    "Newsletter pref saved")
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), NoError>()
