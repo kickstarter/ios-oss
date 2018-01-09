@@ -3098,7 +3098,7 @@ from friends yet."
   /**
    "Other projects you might like."
 
-   - **es**: "Other projects you might like."
+   - **es**: "Otros proyectos que te pueden gustar."
    - **ja**: "おすすめをさらに見る"
    - **de**: "Ähnliche Projekte:"
    - **fr**: "Autre projets qui pourraient vous intéresser"
@@ -4446,7 +4446,7 @@ catch your eye?"
   /**
    "Thank you!"
 
-   - **es**: "Thank you!"
+   - **es**: "¡Gracias!"
    - **ja**: "ありがとうございます！"
    - **de**: "Vielen Dank!"
    - **fr**: "Merci !"
@@ -5122,7 +5122,7 @@ Please try again later."
   /**
    "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
 
-   - **es**: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!"
+   - **es**: "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!"
    - **ja**: "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。"
    - **de**: "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!"
    - **fr**: "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !"
