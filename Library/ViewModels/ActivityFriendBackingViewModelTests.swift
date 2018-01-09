@@ -14,8 +14,8 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.friendTitle.map { $0.string }.observe(self.friendTitleLabel.observer)
     self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
-    self.vm.outputs.friendTitle.map{ $0.string }.observe(self.friendTitleLabel.observer)
   }
 
   func testFrientTitle_ParentCategory() {
