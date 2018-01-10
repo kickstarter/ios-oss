@@ -109,6 +109,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
       ||> UILabel.lens.numberOfLines .~ 1
 
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
+      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
+      ||> UILabel.lens.numberOfLines .~ 2
+
+    _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
+      ||> UILabel.lens.font .~ .ksr_headline(size: 13)
+
     _ = self.blurbAndReadMoreStackView
       |> UIStackView.lens.spacing .~ 0
 
@@ -211,7 +219,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+     // |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     self.statsStackViewHeightConstraint.constant = Styles.grid(5)
 
@@ -255,12 +263,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
-      self.backersSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
-      self.pledgeSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
-      self.deadlineSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
-      self.backersTitleLabel.rac.font = self.viewModel.outputs.titleFont
-      self.pledgedTitleLabel.rac.font = self.viewModel.outputs.titleFont
-      self.deadlineTitleLabel.rac.font = self.viewModel.outputs.titleFont
+//      self.backersSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
+//      self.pledgeSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
+//      self.deadlineSubtitleLabel.rac.font = self.viewModel.outputs.subtitleFont
+//      self.backersTitleLabel.rac.font = self.viewModel.outputs.titleFont
+//      self.pledgedTitleLabel.rac.font = self.viewModel.outputs.titleFont
+//      self.deadlineTitleLabel.rac.font = self.viewModel.outputs.titleFont
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
