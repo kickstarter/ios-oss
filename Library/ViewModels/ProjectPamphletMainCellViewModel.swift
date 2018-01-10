@@ -108,10 +108,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, NoError> { get }
-
-  var subtitleFont: Signal<UIFont, NoError> { get }
-
-  var titleFont: Signal<UIFont, NoError> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -312,9 +308,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let stateLabelHidden: Signal<Bool, NoError>
   public let statsStackViewAccessibilityLabel: Signal<String, NoError>
   public let youreABackerLabelHidden: Signal<Bool, NoError>
-
-  public let subtitleFont: Signal<UIFont, NoError>
-  public let titleFont: Signal<UIFont, NoError>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }
