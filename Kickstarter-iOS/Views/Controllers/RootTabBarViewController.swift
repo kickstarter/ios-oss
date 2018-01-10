@@ -232,7 +232,7 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
 private func strokedRoundImage(fromImage image: UIImage?,
                                size: CGSize,
                                color: UIColor,
-                               lineWidth: CGFloat = 1.0) -> UIImage? {
+                               lineWidth: CGFloat = 2.0) -> UIImage? {
 
   UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
   defer { UIGraphicsEndImageContext() }

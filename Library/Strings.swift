@@ -1289,6 +1289,23 @@ backers"
     )
   }
   /**
+   "Explore"
+
+   - **es**: "Explore"
+   - **ja**: "Explore"
+   - **de**: "Explore"
+   - **fr**: "Explore"
+   - **en**: "Explore"
+  */
+  public static func Explore() -> String {
+    return localizedString(
+      key: "Explore",
+      defaultValue: "Explore",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Explore creative projects"
 
    - **es**: "Explora proyectos creativos"
