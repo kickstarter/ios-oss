@@ -34,7 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.zero" = "%{backers_count}\npatrocinadores";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
-"Bookmarks" = "Bookmarks";
+"Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "Cancel_your_pledge" = "Cancela tu contribución";
 "Change_payment_method" = "Cambiar método de pago";
@@ -77,6 +77,7 @@
 "Ending_soon" = "Finaliza pronto";
 "Estimated_delivery" = "Entrega estimada:";
 "Expands_subcategories" = "Muestra más subcategorías.";
+"Explore" = "Explore";
 "Explore_creative_projects" = "Explora proyectos creativos";
 "Explore_projects" = "Explora proyectos";
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
