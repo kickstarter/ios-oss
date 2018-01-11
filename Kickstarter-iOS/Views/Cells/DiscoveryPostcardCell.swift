@@ -183,6 +183,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorNameLabelText
+    self.creatorNameLabel.rac.hidden = self.viewModel.outputs.creatorNameLabelHidden
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
@@ -257,6 +258,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
+    self.viewModel.inputs.current(configuration: AppEnvironment.current.config)
   }
 
   internal override func layoutSubviews() {

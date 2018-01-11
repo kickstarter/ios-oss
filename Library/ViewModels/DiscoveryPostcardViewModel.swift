@@ -33,6 +33,9 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
+  /// Call with current configuration
+  func current(configuration: Config?)
+
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
 
@@ -58,6 +61,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits the cell value to be read aloud by voiceover.
   var cellAccessibilityValue: Signal<String, NoError> { get }
+
+  /// Emits true/false depending on the value of AppEnvironment.current.config?.abExperiments
+  var creatorNameLabelHidden: Signal<Bool, NoError> { get }
 
   /// Emits the text for the creator name label.
   var creatorNameLabelText: Signal<String, NoError> { get }
@@ -146,6 +152,14 @@ public protocol DiscoveryPostcardViewModelType {
   var outputs: DiscoveryPostcardViewModelOutputs { get }
 }
 
+private func shouldHideCreatorLabel(_ config: Config?) -> Bool {
+  guard let configuration = config else {
+    return true
+  }
+  let creatorExperiment = configuration.abExperiments.filter { $0.key == "koala_alt_frontend_tracking" }
+  return creatorExperiment.first?.value == "experimental"
+}
+
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
 
@@ -169,6 +183,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
+
+    self.creatorNameLabelHidden = self.currentConfigurationProperty.signal
+      .map(shouldHideCreatorLabel(_:))
 
     self.creatorNameLabelText = configuredProject.map {
       Strings.project_creator_by_creator(creator_name: $0.creator.name)
@@ -328,6 +345,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
 
+  fileprivate let currentConfigurationProperty = MutableProperty<Config?>(nil)
+  public func current(configuration: Config?) {
+    self.currentConfigurationProperty.value = configuration
+  }
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
@@ -358,6 +380,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
   public let creatorNameLabelText: Signal<String, NoError>
+  public let creatorNameLabelHidden: Signal<Bool, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
