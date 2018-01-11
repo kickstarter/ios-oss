@@ -11,7 +11,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
   func testIndexPathIsPledgeAnyAmountCell() {
     let project = Project.template
-    dataSource.load(project: project, liveStreamEvents: [], visible: false)
+    dataSource.load(project: project, liveStreamEvents: [])
 
     let section = ProjectPamphletContentDataSource.Section.calloutReward.rawValue
     XCTAssertTrue(dataSource.indexPathIsPledgeAnyAmountCell(.init(row: 0, section: section)))
@@ -24,7 +24,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Project.lens.stats.commentsCount .~ 24
       |> Project.lens.stats.updatesCount .~ 42
 
-    dataSource.load(project: project, liveStreamEvents: [], visible: false)
+    dataSource.load(project: project, liveStreamEvents: [])
 
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
     XCTAssertEqual(.comments(24, .first),
@@ -44,7 +44,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Config.lens.features .~ ["ios_live_streams": false]
 
     withEnvironment(config: config) {
-      dataSource.load(project: project, liveStreamEvents: [.template], visible: false)
+      dataSource.load(project: project, liveStreamEvents: [.template])
 
       XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
       XCTAssertEqual(.comments(24, .first),
@@ -98,7 +98,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Config.lens.features .~ ["ios_live_streams": true]
 
     withEnvironment(config: config) {
-      dataSource.load(project: project, liveStreamEvents: liveStreamEvents, visible: false)
+      dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
 
       XCTAssertEqual(7, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
@@ -134,7 +134,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let project = Project.template
       |> Project.lens.rewards .~ [reward]
 
-    dataSource.load(project: project, liveStreamEvents: [], visible: false)
+    dataSource.load(project: project, liveStreamEvents: [])
 
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
@@ -149,7 +149,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let project = Project.template
       |> Project.lens.rewards .~ [reward]
 
-    dataSource.load(project: project, liveStreamEvents: [], visible: false)
+    dataSource.load(project: project, liveStreamEvents: [])
 
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))

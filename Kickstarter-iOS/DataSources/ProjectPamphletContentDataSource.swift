@@ -31,7 +31,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     self.setRewardTitleArea(project: project)
   }
 
-  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent], visible: Bool) {
+  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent], visible: Bool = false) {
     self.clearValues()
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)

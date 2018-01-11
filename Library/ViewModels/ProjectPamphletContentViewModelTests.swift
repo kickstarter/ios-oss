@@ -23,6 +23,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents =
     TestObserver<[LiveStreamEvent], NoError>()
   fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
+  fileprivate let rewardTitleCellVisible = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -41,6 +42,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.outputs.loadProjectAndLiveStreamsIntoDataSource.map(second).observe(
       self.loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents.observer)
     self.vm.outputs.loadMinimalProjectIntoDataSource.observe(self.loadMinimalProjectIntoDataSource.observer)
+    self.vm.outputs.rewardTitleCellVisible.observe(self.rewardTitleCellVisible.observer)
   }
 
   func testGoToBacking() {
@@ -445,4 +447,29 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     )
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
+
+  func testRewardTitleCellVisible_WhenProjectIsLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardTitleCellVisible.assertValues([true])
+  }
+
+  func testRewardTitleCellVisible_WhenProjectNotLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardTitleCellVisible.assertValues([false])
+  }
+
+
+
 }
