@@ -51,7 +51,7 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
 
     self.friendTitle = activity
       .map { activity in
-        guard let categoryId = activity.project?.category.id else {
+        guard let categoryId = activity.project?.category.parentId ?? activity.project?.category.id else {
           return NSAttributedString(string: "")
         }
 
@@ -119,7 +119,7 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
 
 // swiftlint:disable cyclomatic_complexity
 private func string(forCategoryId id: String, friendName: String) -> String {
-  let root = RootCategory(categoryId: id)
+  let root = RootCategory(categoryId: Int(id) ?? -1)
   switch root {
   case .art:          return Strings.Friend_backed_art_project(friend_name: friendName)
   case .comics:       return Strings.Friend_backed_comics_project(friend_name: friendName)
