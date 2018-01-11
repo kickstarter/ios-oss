@@ -47,7 +47,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -212,7 +212,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
       parent.beginAppearanceTransition(true, animated: true)
 
-      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)", tolerance: 0.0001)
+      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
     }
   }
 
@@ -245,7 +245,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)", tolerance: 0.0001)
+        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
       }
     }
   }
