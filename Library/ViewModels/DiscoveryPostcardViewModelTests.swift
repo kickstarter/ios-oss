@@ -10,6 +10,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let backersTitleLabelText = TestObserver<String, NoError>()
   internal let cellAccessibilityLabel = TestObserver<String, NoError>()
   internal let cellAccessibilityValue = TestObserver<String, NoError>()
+  internal let creatorNameLabelText = TestObserver<String, NoError>()
   internal let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
@@ -42,6 +43,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
     self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
     self.vm.outputs.cellAccessibilityValue.observe(self.cellAccessibilityValue.observer)
+    self.vm.outputs.creatorNameLabelText.observe(self.creatorNameLabelText.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
@@ -80,6 +82,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". "])
+  }
+
+  func testCreatorNameLabel_ShowsCorrectText() {
+    let project = .template
+      |> Project.lens.creator.name .~ "Nino Teixeira"
+    self.vm.inputs.configureWith(project: project)
+    self.creatorNameLabelText.assertValues(["by" + " " + project.creator.name])
   }
 
   func testCellAccessibilityProjectCancelledState() {
