@@ -25,7 +25,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
 
-
   /// Emits a string to use for the backer subtitle label.
   var backersSubtitleLabelText: Signal<String, NoError> { get }
 
