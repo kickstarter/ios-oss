@@ -469,7 +469,4 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.rewardTitleCellVisible.assertValues([false])
   }
-
-
-
 }
