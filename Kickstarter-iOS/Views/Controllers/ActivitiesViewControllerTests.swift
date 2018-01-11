@@ -27,6 +27,12 @@ internal final class ActivitiesViewControllerTests: TestCase {
   }
 
   func testActivities_All() {
+    let games = Category.template
+      |> \.id .~ "12"
+      |> \.name .~ "Games"
+      |> \.subcategories
+      .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
+
     let daysAgoDate = self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 2
 
     let follow = .template
@@ -53,6 +59,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         |> Project.lens.photo.med .~ ""
         |> Project.lens.photo.full .~ ""
         |> Project.lens.stats.fundingProgress .~ 0.88
+        |> Project.lens.category .~ games
       )
       |> Activity.lens.user .~ (.template
         |> User.lens.name .~ "Judith Light"
