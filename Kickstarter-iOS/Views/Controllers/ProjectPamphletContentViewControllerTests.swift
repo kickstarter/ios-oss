@@ -212,7 +212,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
       parent.beginAppearanceTransition(true, animated: true)
 
-      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
+      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)", tolerance: 0.0001)
     }
   }
 
@@ -245,7 +245,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+        FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)", tolerance: 0.0001)
       }
     }
   }
