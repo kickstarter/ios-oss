@@ -156,8 +156,8 @@ private func shouldHideCreatorLabel(_ config: Config?) -> Bool {
   guard let configuration = config else {
     return true
   }
-  let creatorExperiment = configuration.abExperiments.filter { $0.key == "koala_alt_frontend_tracking" }
-  return creatorExperiment.first?.value == "experimental"
+  let creatorExperiment = configuration.abExperiments.filter { $0.key == Experiment.Name.iosTest.rawValue }
+  return creatorExperiment.first?.value == Experiment.Variant.experimental.rawValue
 }
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
