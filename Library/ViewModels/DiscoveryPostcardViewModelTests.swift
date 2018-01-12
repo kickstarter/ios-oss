@@ -10,7 +10,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let backersTitleLabelText = TestObserver<String, NoError>()
   internal let cellAccessibilityLabel = TestObserver<String, NoError>()
   internal let cellAccessibilityValue = TestObserver<String, NoError>()
-  internal let creatorNameLabelHidden = TestObserver<String, NoError>()
+  internal let creatorNameLabelHidden = TestObserver<Bool, NoError>()
   internal let creatorNameLabelText = TestObserver<String, NoError>()
   internal let deadlineSubtitleLabelText = TestObserver<String, NoError>()
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
@@ -86,8 +86,20 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.cellAccessibilityValue.assertValues([project.blurb + ". "])
   }
 
-  func testCreatorNameLabel_HidesWhenUserHasExperimentEnabled() {
+  func testCreatorNameLabelHides_WhenExperimentDisabled() {
+    let config = Config.template
+      |> Config.lens.abExperiments .~
+      [Experiment.Name.iosTest.rawValue: Experiment.Variant.control.rawValue]
+    self.vm.inputs.current(configuration: config)
+    self.creatorNameLabelHidden.assertValues([true])
+  }
 
+  func testCreatorNameLabelShows_WhenExperimentEnabled() {
+    let config = Config.template
+      |> Config.lens.abExperiments .~
+      [Experiment.Name.iosTest.rawValue: Experiment.Variant.experimental.rawValue]
+    self.vm.inputs.current(configuration: config)
+    self.creatorNameLabelHidden.assertValues([false])
   }
 
   func testCreatorNameLabel_ShowsCorrectText() {

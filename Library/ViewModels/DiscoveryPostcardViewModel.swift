@@ -157,7 +157,7 @@ private func shouldHideCreatorLabel(_ config: Config?) -> Bool {
     return true
   }
   let creatorExperiment = configuration.abExperiments.filter { $0.key == Experiment.Name.iosTest.rawValue }
-  return creatorExperiment.first?.value == Experiment.Variant.experimental.rawValue
+  return creatorExperiment.first?.value == Experiment.Variant.control.rawValue
 }
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
