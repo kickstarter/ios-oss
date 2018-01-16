@@ -563,7 +563,7 @@ backers"
    - **es**: "Marcadores"
    - **ja**: "Bookmarks"
    - **de**: "Bookmarks"
-   - **fr**: "Bookmarks"
+   - **fr**: "Signets"
    - **en**: "Bookmarks"
   */
   public static func Bookmarks() -> String {
@@ -1291,10 +1291,10 @@ backers"
   /**
    "Explore"
 
-   - **es**: "Explore"
+   - **es**: "Explora"
    - **ja**: "Explore"
-   - **de**: "Explore"
-   - **fr**: "Explore"
+   - **de**: "Erkunden"
+   - **fr**: "Explorer"
    - **en**: "Explore"
   */
   public static func Explore() -> String {
