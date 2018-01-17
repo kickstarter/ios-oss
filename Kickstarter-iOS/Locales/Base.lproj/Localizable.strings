@@ -34,6 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nbackers";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
+"Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
@@ -76,6 +77,7 @@
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
 "Expands_subcategories" = "Expands subcategories.";
+"Explore" = "Explore";
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";

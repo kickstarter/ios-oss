@@ -34,6 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nバッカー";
 "Backers_count_separator_backers.zero" = "%{backers_count} バッカー";
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
+"Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Cancel_your_pledge" = "プレッジを取り消す";
 "Change_payment_method" = "支払方法の変更";
@@ -76,6 +77,7 @@
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
+"Explore" = "Explore";
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
 "Explore_projects" = "プロジェクトをさがす";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
@@ -254,7 +256,7 @@
 "Saved_projects" = "プロジェクトを保存";
 "Saves_project" = "プロジェクトを保存";
 "Say_something_kind" = "言葉に注意";
-"See_all_category_name_projects" = "See all %{category_name} projects";
+"See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
 "Send" = "送信";
@@ -426,7 +428,7 @@
 "activity.successfully_funded" = "資金調達に成功";
 "activity.user_name_is_now_following_you" = "%{user_name} はあなたをフォロー中！";
 "activity.user_name_launched_project" = "%{user_name} がプロジェクトをローンチ！";
-"backer_modal.backer_number" = "バッカー数 %{backer_number}";
+"backer_modal.backer_number" = "バッカーナンバー %{backer_number}";
 "backer_modal.domestic" = "国内";
 "backer_modal.international" = "全世界";
 "backer_modal.missing_location_name" = "N/A";
