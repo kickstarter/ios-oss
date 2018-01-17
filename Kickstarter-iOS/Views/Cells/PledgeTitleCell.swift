@@ -46,6 +46,6 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.pledgeTitleLabel
-      |> UILabel.lens.numberOfLines .~ 3
+      |> UILabel.lens.numberOfLines .~ 0
   }
 }
