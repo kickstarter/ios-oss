@@ -1964,6 +1964,7 @@ private func properties(params: DiscoveryParams, prefix: String = "discover_") -
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
+  result["ab_experiments"] = params.abExperiments
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["staff_picks"] = params.staffPicks
