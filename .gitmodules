@@ -6,7 +6,7 @@
 	url = https://github.com/AgileBits/onepassword-app-extension.git
 [submodule "Frameworks/ios-snapshot-test-case"]
 	path = Frameworks/ios-snapshot-test-case
-	url = https://github.com/facebook/ios-snapshot-test-case.git
+url=https://github.com/uber/ios-snapshot-test-case
 [submodule "Frameworks/ReactiveExtensions"]
 	path = Frameworks/ReactiveExtensions
 	url = https://github.com/kickstarter/Kickstarter-ReactiveExtensions.git
