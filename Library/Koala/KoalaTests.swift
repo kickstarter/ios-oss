@@ -339,6 +339,7 @@ final class KoalaTests: TestCase {
 
   func testDiscoveryProperties_Everything() {
     let client = MockTrackingClient()
+
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .magic
 
@@ -355,7 +356,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties["discover_staff_picks"])
     XCTAssertNil(properties["discover_starred"])
     XCTAssertNil(properties["discover_term"])
-    XCTAssertEqual(true, properties["discover_everything"] as? Bool)
+    XCTAssertEqual(false, properties["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties["discover_sort"] as? String)
     XCTAssertEqual(1, properties["page"] as? Int)
   }

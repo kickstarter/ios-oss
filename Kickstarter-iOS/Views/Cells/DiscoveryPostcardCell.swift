@@ -21,6 +21,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorNameLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
@@ -101,6 +102,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
 
+    _ = self.creatorNameLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+
     _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
       |> UILabel.lens.textColor .~ .ksr_green_700
@@ -177,6 +182,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
+    self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorNameLabelText
+    self.creatorNameLabel.rac.hidden = self.viewModel.outputs.creatorNameLabelHidden
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText

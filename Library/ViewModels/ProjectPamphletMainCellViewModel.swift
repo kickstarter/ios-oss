@@ -24,8 +24,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 }
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
-  /// Emits a string to use for the stats stack view accessibility value.
-  var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits a string to use for the backer subtitle label.
   var backersSubtitleLabelText: Signal<String, NoError> { get }
@@ -104,6 +102,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a string to use for the stats stack view accessibility value.
+  var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, NoError> { get }
