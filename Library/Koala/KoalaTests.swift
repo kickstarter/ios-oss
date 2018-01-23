@@ -283,10 +283,8 @@ final class KoalaTests: TestCase {
 
   func testDiscoveryProperties() {
     let client = MockTrackingClient()
-    let experiments = "{\"ab_experiments\": \"ios_test_test\"}"
     let params = .defaults
       |> DiscoveryParams.lens.staffPicks .~ true
-      <> DiscoveryParams.lens.abExperiments .~ experiments
       <> DiscoveryParams.lens.starred .~ false
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
@@ -300,7 +298,7 @@ final class KoalaTests: TestCase {
     koala.trackDiscovery(params: params, page: 1)
 
     let properties = client.properties.last!
-    XCTAssertEqual(experiments, properties["discover_ab_experiments"] as? String)
+
     XCTAssertEqual(1, properties["discover_category_id"] as? Int)
     XCTAssertEqual(false, properties["discover_recommended"] as? Bool)
     XCTAssertEqual(false, properties["discover_social"] as? Bool)
@@ -341,6 +339,7 @@ final class KoalaTests: TestCase {
 
   func testDiscoveryProperties_Everything() {
     let client = MockTrackingClient()
+
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .magic
 
@@ -357,7 +356,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties["discover_staff_picks"])
     XCTAssertNil(properties["discover_starred"])
     XCTAssertNil(properties["discover_term"])
-    XCTAssertEqual(true, properties["discover_everything"] as? Bool)
+    XCTAssertEqual(false, properties["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties["discover_sort"] as? String)
     XCTAssertEqual(1, properties["page"] as? Int)
   }

@@ -258,7 +258,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
-    self.viewModel.inputs.current(configuration: AppEnvironment.current.config)
   }
 
   internal override func layoutSubviews() {

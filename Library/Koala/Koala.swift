@@ -1960,11 +1960,18 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   return props
 }
 
+private func dictionaryToArray(_ dictionary: [String: String]?) -> [String]? {
+  let stringsArray = dictionary?.map{ (key, value) in
+    key + "[\(value)]"
+  }
+  return stringsArray
+}
+
 private func properties(params: DiscoveryParams, prefix: String = "discover_") -> [String: Any] {
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
-  result["ab_experiments"] = params.abExperiments
+  result["current_variants"] = dictionaryToArray(AppEnvironment.current.config?.abExperiments)
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["staff_picks"] = params.staffPicks

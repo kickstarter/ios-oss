@@ -33,9 +33,6 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
 
-  /// Call with current configuration
-  func current(configuration: Config?)
-
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
 
@@ -152,12 +149,9 @@ public protocol DiscoveryPostcardViewModelType {
   var outputs: DiscoveryPostcardViewModelOutputs { get }
 }
 
-private func shouldHideCreatorLabel(_ config: Config?) -> Bool {
-  guard let configuration = config else {
-    return true
-  }
-  let creatorExperiment = configuration.abExperiments.filter { $0.key == Experiment.Name.iosTest.rawValue }
-  return creatorExperiment.first?.value != Experiment.Variant.experimental.rawValue
+private func shouldHideCreatorLabel() -> Bool {
+// Since this is a A/A test, for now we will simply return false.
+  return false
 }
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
@@ -184,8 +178,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
-    self.creatorNameLabelHidden = self.currentConfigurationProperty.signal
-      .map(shouldHideCreatorLabel(_:))
+    self.creatorNameLabelHidden = configuredProject.signal.ignoreValues()
+      .map(shouldHideCreatorLabel)
 
     self.creatorNameLabelText = configuredProject.map {
       Strings.project_creator_by_creator(creator_name: $0.creator.name)
@@ -343,11 +337,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.cellAccessibilityValue = Signal.zip(configuredProject, self.projectStateTitleLabelText)
       .map { project, projectState in "\(project.blurb). \(projectState)" }
-  }
-
-  fileprivate let currentConfigurationProperty = MutableProperty<Config?>(nil)
-  public func current(configuration: Config?) {
-    self.currentConfigurationProperty.value = configuration
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)

@@ -5,7 +5,6 @@ import Prelude
 
 public struct DiscoveryParams {
 
-  public private(set) var abExperiments: String?
   public private(set) var backed: Bool?
   public private(set) var category: Category?
   public private(set) var collaborated: Bool?
@@ -39,7 +38,7 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
-  public static let defaults = DiscoveryParams(abExperiments: nil, backed: nil, category: nil,
+  public static let defaults = DiscoveryParams(backed: nil, category: nil,
                                                collaborated: nil, created: nil,
                                                hasLiveStreams: nil, hasVideo: nil, includePOTD: nil,
                                                page: nil, perPage: nil, query: nil, recommended: nil,
@@ -96,8 +95,7 @@ extension DiscoveryParams: Argo.Decodable {
     let create = curry(DiscoveryParams.init)
 
     let tmp1 = create
-      <^> json <|? "ab_experiments"
-      <*> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
+      <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
       <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)

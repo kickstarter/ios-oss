@@ -71,11 +71,7 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
-
-  fileprivate static let defaultParams = .defaults
-    |> DiscoveryParams.lens.includePOTD .~ true
-    |> DiscoveryParams.lens.abExperiments .~
-    DiscoveryViewModel.toString(AppEnvironment.current.config?.abExperiments)
+  fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
@@ -178,16 +174,6 @@ DiscoveryViewModelOutputs {
   fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
-  }
-
-  private static func toString(_ dictionary: [String: String]?) -> String {
-    let encoder = JSONEncoder()
-    if let jsonData = try? encoder.encode(dictionary) {
-      if let jsonString = String(data: jsonData, encoding: .utf8) {
-        return jsonString
-      }
-    }
-    return ""
   }
 
   public let configureNavigationHeader: Signal<DiscoveryParams, NoError>
