@@ -88,7 +88,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testCreatorNameLabelHides_WhenExperimentDisabled() {
     let project = Project.template
-    let _ = Config.template
+    _ = Config.template
       |> Config.lens.abExperiments .~
       [Experiment.Name.iosTest.rawValue: Experiment.Variant.control.rawValue]
     self.vm.inputs.configureWith(project: project)
@@ -97,7 +97,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testCreatorNameLabelShows_WhenExperimentEnabled() {
     let project = Project.template
-    let _ = Config.template
+    _ = Config.template
       |> Config.lens.abExperiments .~
       [Experiment.Name.iosTest.rawValue: Experiment.Variant.experimental.rawValue]
     self.vm.inputs.configureWith(project: project)

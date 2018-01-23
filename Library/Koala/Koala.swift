@@ -1961,7 +1961,7 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
 }
 
 private func dictionaryToArray(_ dictionary: [String: String]?) -> [String]? {
-  let stringsArray = dictionary?.map{ (key, value) in
+  let stringsArray = dictionary?.map { (key, value) in
     key + "[\(value)]"
   }
   return stringsArray
