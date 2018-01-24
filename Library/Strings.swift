@@ -4616,17 +4616,10 @@ catch your eye?"
   /**
    "This project will only be funded on if at least %{amount} is pledged by %{date}."
 
-<<<<<<< HEAD
    - **es**: "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}."
    - **ja**: "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。"
    - **de**: "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden."
    - **fr**: "Ce projet ne sera financé que si au moins %{amount} sont engagés d'ici le %{date}."
-=======
-   - **es**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
-   - **ja**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
-   - **de**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
-   - **fr**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
->>>>>>> wip
    - **en**: "This project will only be funded on if at least %{amount} is pledged by %{date}."
   */
   public static func This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String) -> String {
