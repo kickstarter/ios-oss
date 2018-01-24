@@ -34,7 +34,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nバッカー";
 "Backers_count_separator_backers.zero" = "%{backers_count} バッカー";
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
-"Bookmarks" = "Bookmarks";
+"Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Cancel_your_pledge" = "プレッジを取り消す";
 "Change_payment_method" = "支払方法の変更";
@@ -77,7 +77,7 @@
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
-"Explore" = "Explore";
+"Explore" = "さがす";
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
 "Explore_projects" = "プロジェクトをさがす";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
@@ -201,6 +201,7 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "ライブ配信でチャットに参加するためにはログインかサインアップしてください。";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "ログインまたはサインアップして、ライブ配信を見よう！";
 "Pledge" = "プレッジする";
+"Pledge_activity" = "Pledge activity";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "プレッジでプロジェクトに生命を。";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "プロジェクトを探す、プロジェクトにプレッジする、プロジェクトを保存する、全て一つの場所で。";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "ここにバックした全プロジェクトが表示されます。";
@@ -214,6 +215,7 @@
 "Project_cancelled" = "プロジェクトが取り消されました。";
 "Project_saved" = "プロジェクトを保存しました。";
 "Projects_We_Love" = "Projects We Love";
+"Projects_youve_backed" = "Projects you've backed";
 "Projects_youve_launched" = "ローンチしたプロジェクト";
 "Public_comment" = "公開コメント";
 "Pursue_daring_ideas" = "大胆な\nアイディアを。";
@@ -257,6 +259,7 @@
 "Saves_project" = "プロジェクトを保存";
 "Say_something_kind" = "言葉に注意";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
+"Select_another_project" = "他のプロジェクトを選ぶ";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
 "Send" = "送信";
@@ -486,6 +489,7 @@
 "dashboard.buttons.activity" = "アクティビティ";
 "dashboard.buttons.messages" = "メッセージ";
 "dashboard.buttons.post_update" = "アップデートを投稿";
+"dashboard.buttons.project" = "Project";
 "dashboard.buttons.share" = "シェア";
 "dashboard.creator_project.currently_live" = "現在のライブ";
 "dashboard.creator_project.funded_on_deadline" = "%{deadline} に達成";

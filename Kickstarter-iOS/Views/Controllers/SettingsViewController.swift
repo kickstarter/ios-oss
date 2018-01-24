@@ -274,7 +274,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.newPledgesLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.New_pledge_activity() }
+      |> UILabel.lens.text %~ { _ in Strings.Pledge_activity() }
 
     _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
@@ -298,7 +298,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.projectsYouBackTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_title() }
+      |> UILabel.lens.text %~ { _ in Strings.Projects_youve_backed() }
 
     _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
