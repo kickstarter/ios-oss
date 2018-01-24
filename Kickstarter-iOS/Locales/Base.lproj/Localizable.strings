@@ -201,7 +201,6 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Please log in or sign up to participate in this live stream chat.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Please log in or sign up to subscribe to this live stream.";
 "Pledge" = "Pledge";
-"Pledge_activity" = "Pledge activity";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Pledge any amount to help bring this project to life.";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Pledge to projects and view all your saved and backed projects in one place.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Pledge to your favorites, then view all the projects you’ve backed here.";
@@ -215,7 +214,6 @@
 "Project_cancelled" = "Project cancelled";
 "Project_saved" = "Project saved.";
 "Projects_We_Love" = "Projects We Love";
-"Projects_youve_backed" = "Projects you've backed";
 "Projects_youve_launched" = "Projects you've launched";
 "Public_comment" = "Public comment";
 "Pursue_daring_ideas" = "Pursue\ndaring ideas.";
@@ -259,7 +257,6 @@
 "Saves_project" = "Saves project.";
 "Say_something_kind" = "Say something kind...";
 "See_all_category_name_projects" = "See all %{category_name} projects";
-"Select_another_project" = "Select another project";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
 "Send" = "Send";
@@ -489,7 +486,6 @@
 "dashboard.buttons.activity" = "Activity";
 "dashboard.buttons.messages" = "Messages";
 "dashboard.buttons.post_update" = "Post update";
-"dashboard.buttons.project" = "Project";
 "dashboard.buttons.share" = "Share";
 "dashboard.creator_project.currently_live" = "Currently live";
 "dashboard.creator_project.funded_on_deadline" = "Funded on %{deadline}";

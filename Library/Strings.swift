@@ -561,7 +561,7 @@ backers"
    "Bookmarks"
 
    - **es**: "Marcadores"
-   - **ja**: "ブックマーク"
+   - **ja**: "Bookmarks"
    - **de**: "Bookmarks"
    - **fr**: "Signets"
    - **en**: "Bookmarks"
@@ -1292,7 +1292,7 @@ backers"
    "Explore"
 
    - **es**: "Explora"
-   - **ja**: "さがす"
+   - **ja**: "Explore"
    - **de**: "Erkunden"
    - **fr**: "Explorer"
    - **en**: "Explore"
@@ -3266,23 +3266,6 @@ from friends yet."
     )
   }
   /**
-   "Pledge activity"
-
-   - **es**: "Actividad de contribución"
-   - **ja**: "Pledge activity"
-   - **de**: "Finanzierungsbeiträge"
-   - **fr**: "Mes engagements"
-   - **en**: "Pledge activity"
-  */
-  public static func Pledge_activity() -> String {
-    return localizedString(
-      key: "Pledge_activity",
-      defaultValue: "Pledge activity",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Pledge any amount to help bring this project to life."
 
    - **es**: "Puedes contribuir un monto de libre selección para apoyar este proyecto."
@@ -3499,23 +3482,6 @@ from friends yet."
     return localizedString(
       key: "Projects_We_Love",
       defaultValue: "Projects We Love",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Projects you've backed"
-
-   - **es**: "Proyectos que has patrocinado"
-   - **ja**: "Projects you've backed"
-   - **de**: "Projekte, die du unterstützt hast"
-   - **fr**: "Les projets que j'ai soutenus"
-   - **en**: "Projects you've backed"
-  */
-  public static func Projects_youve_backed() -> String {
-    return localizedString(
-      key: "Projects_youve_backed",
-      defaultValue: "Projects you've backed",
       count: nil,
       substitutions: [:]
     )
@@ -4048,23 +4014,6 @@ daring ideas."
       defaultValue: "See all %{category_name} projects",
       count: nil,
       substitutions: ["category_name": category_name]
-    )
-  }
-  /**
-   "Select another project"
-
-   - **es**: "Selecciona otro proyecto"
-   - **ja**: "他のプロジェクトを選ぶ"
-   - **de**: "Wähle ein anderes Projekt aus"
-   - **fr**: "Sélectionner un autre projet"
-   - **en**: "Select another project"
-  */
-  public static func Select_another_project() -> String {
-    return localizedString(
-      key: "Select_another_project",
-      defaultValue: "Select another project",
-      count: nil,
-      substitutions: [:]
     )
   }
   /**
@@ -7896,23 +7845,6 @@ Please try again later."
     return localizedString(
       key: "dashboard.buttons.post_update",
       defaultValue: "Post update",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Project"
-
-   - **es**: "Proyecto"
-   - **ja**: "Project"
-   - **de**: "Projekt"
-   - **fr**: "Projet"
-   - **en**: "Project"
-  */
-  public static func dashboard_buttons_project() -> String {
-    return localizedString(
-      key: "dashboard.buttons.project",
-      defaultValue: "Project",
       count: nil,
       substitutions: [:]
     )
