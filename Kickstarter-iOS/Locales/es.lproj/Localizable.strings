@@ -201,6 +201,7 @@
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Por favor inicia sesión o regístrate para participar en este Live Stream.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Por favor inicia sesión o regístrate para suscribirte a este Live Stream.";
 "Pledge" = "Contribución:";
+"Pledge_activity" = "Actividad de contribución";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Puedes contribuir un monto de libre selección para apoyar este proyecto.";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Haz contribuciones a proyectos y revisa todos tus proyectos guardados y patrocinados - todo en un mismo lugar.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Patrocina tus favoritos y ve todos tus proyectos en un solo lugar.";
@@ -214,6 +215,7 @@
 "Project_cancelled" = "Proyecto cancelado";
 "Project_saved" = "Proyecto guardado.";
 "Projects_We_Love" = "Nuestros Favoritos";
+"Projects_youve_backed" = "Proyectos que has patrocinado";
 "Projects_youve_launched" = "Proyectos que has publicado";
 "Public_comment" = "Comentario público";
 "Pursue_daring_ideas" = "Un universo de geniales ideas.";
@@ -257,6 +259,7 @@
 "Saves_project" = "Guarda este proyecto.";
 "Say_something_kind" = "Di algo amable...";
 "See_all_category_name_projects" = "Ver todos los proyectos de %{category_name}";
+"Select_another_project" = "Selecciona otro proyecto";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
 "Send" = "Enviar";
@@ -486,6 +489,7 @@
 "dashboard.buttons.activity" = "Actividad";
 "dashboard.buttons.messages" = "Mensajes";
 "dashboard.buttons.post_update" = "Publicar actualización";
+"dashboard.buttons.project" = "Proyecto";
 "dashboard.buttons.share" = "Compartir";
 "dashboard.creator_project.currently_live" = "Actualmente activos";
 "dashboard.creator_project.funded_on_deadline" = "Financiado el %{deadline}";
