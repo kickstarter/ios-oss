@@ -7,30 +7,8 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate weak var rewardsTitleLabel: UILabel!
 
-  func configureWith(value project: Project) {
-    self.rewardsTitleLabel.textColor = discoveryPrimaryColor()
-
-    switch (project.personalization.isBacking, project.state) {
-    case (true?, .live):
-      self.rewardsTitleLabel.font = .ksr_caption1(size: 14)
-      self.rewardsTitleLabel.text = Strings.Or_select_a_different_reward_below_colon()
-    case (_, .live):
-      self.rewardsTitleLabel.font = .ksr_headline(size: 17)
-      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards_colon(
-        rewards_count: project.rewards.filter { $0 != .noReward }.count
-      )
-    case (true?, _):
-      self.rewardsTitleLabel.font = .ksr_subhead(size: 14)
-      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(
-        rewards_count: project.rewards.filter { $0 != .noReward }.count
-      )
-    default:
-      self.rewardsTitleLabel.font = .ksr_headline(size: 14)
-      self.rewardsTitleLabel.text = Strings.Rewards_count_rewards(
-        rewards_count: project.rewards.filter { $0 != .noReward }.count
-      )
-    }
-  }
+  // value required to bind value to data source
+  internal func configureWith(value project: Project) {}
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -46,6 +24,9 @@ internal final class RewardsTitleCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.rewardsTitleLabel
+      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
+      |> UILabel.lens.text %~ { _ in Strings.Or_select_a_different_reward_below_colon() }
   }
 }

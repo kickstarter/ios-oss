@@ -58,8 +58,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.viewModel.outputs.loadProjectAndLiveStreamsIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvents in
-        self?.dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
+      .observeValues { [weak self] project, liveStreamEvents, visible in
+        self?.dataSource.load(project: project, liveStreamEvents: liveStreamEvents, visible: visible )
         self?.tableView.reloadData()
     }
 
