@@ -110,7 +110,7 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
     XCTAssertEqual(25, rewardDistribution[1].pledged)
     XCTAssertEqual(5, rewardDistribution[0].backersCount)
     XCTAssertEqual(10, rewardDistribution[1].backersCount)
-    XCTAssertEqual(nil, rewardDistribution[0].minimum)
+    XCTAssertNil(rewardDistribution[0].minimum)
     XCTAssertEqual(5, rewardDistribution[1].minimum)
     XCTAssertEqual(25, rewardDistribution[2].minimum)
   }

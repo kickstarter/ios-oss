@@ -13,6 +13,6 @@ final class UILabelIBClearTests: XCTestCase {
     label.text = "howdy"
     label.clearIBValue = false
     XCTAssertEqual(label.text, "howdy")
-    XCTAssertEqual(label.clearIBValue, false)
+    XCTAssertFalse(label.clearIBValue)
   }
 }

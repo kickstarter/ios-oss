@@ -4,12 +4,10 @@ import XCTest
 final class LanguageTests: XCTestCase {
 
   func testEquality() {
-
     XCTAssertEqual(Language.en, Language.en)
     XCTAssertEqual(Language.de, Language.de)
     XCTAssertEqual(Language.fr, Language.fr)
     XCTAssertEqual(Language.es, Language.es)
-
     XCTAssertNotEqual(Language.en, Language.es)
   }
 
@@ -18,12 +16,12 @@ final class LanguageTests: XCTestCase {
     XCTAssertEqual(Language.en, Language(languageString: "En"))
     XCTAssertEqual(Language.es, Language(languageString: "Es"))
     XCTAssertEqual(Language.fr, Language(languageString: "Fr"))
-    XCTAssertEqual(nil, Language(languageString: "AB"))
+    XCTAssertNil(Language(languageString: "AB"))
   }
 
   func testLanguageFromLanguageStrings() {
     XCTAssertEqual(Language.en, Language(languageStrings: ["AB", "EN", "FR"]))
     XCTAssertEqual(Language.es, Language(languageStrings: ["AB", "BC", "ES"]))
-    XCTAssertEqual(nil, Language(languageStrings: ["AB", "BC", "CD"]))
+    XCTAssertNil(Language(languageStrings: ["AB", "BC", "CD"]))
   }
 }

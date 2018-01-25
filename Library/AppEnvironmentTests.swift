@@ -82,7 +82,7 @@ final class AppEnvironmentTests: XCTestCase {
     let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
 
     XCTAssertNil(env.apiService.oauthToken?.token)
-    XCTAssertEqual(nil, env.currentUser)
+    XCTAssertNil(env.currentUser)
   }
 
   func testFromStorage_WithFullDataStored() {
@@ -117,7 +117,7 @@ final class AppEnvironmentTests: XCTestCase {
     let differentEnv = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(),
                                                   userDefaults: MockKeyValueStore())
     XCTAssertNil(differentEnv.apiService.oauthToken?.token)
-    XCTAssertEqual(nil, differentEnv.currentUser)
+    XCTAssertNil(differentEnv.currentUser)
   }
 
   func testFromStorage_LegacyUserDefaults() {
@@ -158,8 +158,8 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("en", result["apiService.language"] as? String)
     XCTAssertEqual(User.template.id, (result["currentUser"] as? [String: AnyObject])?["id"] as? Int)
 
-    XCTAssertEqual(nil, ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey),
-                   "No token stored.")
+    XCTAssertNil(ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey),
+                 "No token stored.")
   }
 
   func testPushPopSave() {
@@ -180,7 +180,7 @@ final class AppEnvironmentTests: XCTestCase {
       .dictionary(forKey: AppEnvironment.environmentStorageKey)
       .flatMap { $0["currentUser"] as? [String: AnyObject] }
       .flatMap { $0["id"] as? Int }
-    XCTAssertEqual(nil, currentUserId, "Current user is cleared.")
+    XCTAssertNil(currentUserId, "Current user is cleared.")
 
     AppEnvironment.popEnvironment()
   }

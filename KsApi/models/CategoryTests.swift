@@ -63,7 +63,7 @@ class CategoryTests: XCTestCase {
 
   func testParent() {
     XCTAssertEqual(Category.illustration.parent, Category.art)
-    XCTAssertEqual(Category.art.parent, nil)
+    XCTAssertNil(Category.art.parent)
   }
 
   func testParentCategoryType() {
@@ -79,9 +79,9 @@ class CategoryTests: XCTestCase {
 
   func testRoot() {
     XCTAssertEqual(Category.illustration.root, Category.art)
-    XCTAssertEqual(Category.illustration.isRoot, false)
+    XCTAssertFalse(Category.illustration.isRoot)
     XCTAssertEqual(Category.art.root, Category.art)
-    XCTAssertEqual(Category.art.isRoot, true)
+    XCTAssertTrue(Category.art.isRoot)
     XCTAssertNil((Category.illustration
                   |> Category.lens.parent .~ nil).root,
       "A subcategory with no parent category present does not have a root."

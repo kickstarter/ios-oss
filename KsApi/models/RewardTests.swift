@@ -5,8 +5,8 @@ import Prelude
 final class RewardTests: XCTestCase {
 
   func testIsNoReward() {
-    XCTAssertEqual(Reward.noReward.isNoReward, true)
-    XCTAssertEqual(Reward.template.isNoReward, false)
+    XCTAssertTrue(Reward.noReward.isNoReward)
+    XCTAssertFalse(Reward.template.isNoReward)
   }
 
   func testEquatable() {
