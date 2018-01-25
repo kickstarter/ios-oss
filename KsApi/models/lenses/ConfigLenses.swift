@@ -2,6 +2,14 @@ import Prelude
 
 extension Config {
   public enum lens {
+    public static let abExperiments = Lens<Config, [String: String]>(
+      view: { $0.abExperiments },
+      set: { Config(abExperiments: $0, appId: $1.appId, applePayCountries: $1.applePayCountries,
+                    countryCode: $1.countryCode, features: $1.features, iTunesLink: $1.iTunesLink,
+                    launchedCountries: $1.launchedCountries, locale: $1.locale,
+                    stripePublishableKey: $1.stripePublishableKey) }
+    )
+
     public static let applePayCountries = Lens<Config, [String]>(
       view: { $0.applePayCountries },
       set: { Config(abExperiments: $1.abExperiments, appId: $1.appId, applePayCountries: $0,

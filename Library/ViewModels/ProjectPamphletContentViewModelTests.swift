@@ -23,6 +23,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents =
     TestObserver<[LiveStreamEvent], NoError>()
   fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
+  fileprivate let rewardTitleCellVisible = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -41,6 +42,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.outputs.loadProjectAndLiveStreamsIntoDataSource.map(second).observe(
       self.loadProjectAndLiveStreamsIntoDataSourceLiveStreamEvents.observer)
     self.vm.outputs.loadMinimalProjectIntoDataSource.observe(self.loadMinimalProjectIntoDataSource.observer)
+    self.vm.outputs.rewardTitleCellVisible.observe(self.rewardTitleCellVisible.observer)
   }
 
   func testGoToBacking() {
@@ -395,7 +397,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
-      [project, project], "The new project is loaded into data source"
+      [project, project, project], "The new project is loaded into data source"
     )
     self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
   }
@@ -425,20 +427,46 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
 
     self.loadProjectAndLiveStreamsIntoDataSourceProject
-      .assertValues([project, project], "Full project emits.")
+      .assertValues([project, project, project], "Full project emits.")
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits when the view is done.")
 
     // Swipe the project again
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
+      [project, project, project], "Nothing new emits."
+    )
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
 
     self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.viewDidAppear(animated: true)
 
-    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues([project, project], "Nothing new emits.")
+    self.loadProjectAndLiveStreamsIntoDataSourceProject.assertValues(
+      [project, project, project], "Nothing new emits."
+    )
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
+  }
+
+  func testRewardTitleCellVisible_WhenProjectIsLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardTitleCellVisible.assertValues([true])
+  }
+
+  func testRewardTitleCellVisible_WhenProjectNotLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configureWith(project: project, liveStreamEvents: [])
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardTitleCellVisible.assertValues([false])
   }
 }

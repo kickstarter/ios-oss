@@ -59,6 +59,12 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the cell value to be read aloud by voiceover.
   var cellAccessibilityValue: Signal<String, NoError> { get }
 
+  /// Emits true/false depending on the value of AppEnvironment.current.config?.abExperiments
+  var creatorNameLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits the text for the creator name label.
+  var creatorNameLabelText: Signal<String, NoError> { get }
+
   /// Emits the text for the deadine subtitle label.
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
 
@@ -143,6 +149,11 @@ public protocol DiscoveryPostcardViewModelType {
   var outputs: DiscoveryPostcardViewModelOutputs { get }
 }
 
+private func shouldHideCreatorLabel() -> Bool {
+// Since this is a A/A test, for now we will simply return false.
+  return false
+}
+
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
 
@@ -160,12 +171,19 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let backersTitleAndSubtitleText = configuredProject.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split(separator: "\n").map(String.init)
+      let parts = string.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
+
+    self.creatorNameLabelHidden = configuredProject.signal.ignoreValues()
+      .map(shouldHideCreatorLabel)
+
+    self.creatorNameLabelText = configuredProject.map {
+      Strings.project_creator_by_creator(creator_name: $0.creator.name)
+    }
 
     let deadlineTitleAndSubtitle = configuredProject
       .map {
@@ -350,6 +368,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
+  public let creatorNameLabelText: Signal<String, NoError>
+  public let creatorNameLabelHidden: Signal<Bool, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>

@@ -38,7 +38,8 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
-  public static let defaults = DiscoveryParams(backed: nil, category: nil, collaborated: nil, created: nil,
+  public static let defaults = DiscoveryParams(backed: nil, category: nil,
+                                               collaborated: nil, created: nil,
                                                hasLiveStreams: nil, hasVideo: nil, includePOTD: nil,
                                                page: nil, perPage: nil, query: nil, recommended: nil,
                                                seed: nil, similarTo: nil, social: nil, sort: nil,

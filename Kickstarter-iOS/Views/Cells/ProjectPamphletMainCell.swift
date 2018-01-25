@@ -49,11 +49,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var readMoreButton: UIButton!
   @IBOutlet fileprivate weak var stateLabel: UILabel!
   @IBOutlet fileprivate weak var statsStackView: UIStackView!
-  /* NB: We've introduced a height constraint here since iOS 11.0
-   * Try removing it in subsequent versions, it worked just fine without it before 11.0
-   * ¯\_(ツ)_/¯
-   */
-
   @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
   @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
 

@@ -2,6 +2,18 @@ import Argo
 import Curry
 import Runes
 
+public enum Experiment {
+
+  public enum Name: String {
+    case iosTest = "ios_test_test"
+  }
+
+  public enum Variant: String {
+    case control //default
+    case experimental
+  }
+}
+
 public struct Config {
   public private(set) var abExperiments: [String: String]
   public private(set) var appId: Int
