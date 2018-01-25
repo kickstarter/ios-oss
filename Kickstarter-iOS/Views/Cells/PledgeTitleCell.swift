@@ -12,8 +12,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
     self.pledgeTitleLabel.textColor = discoveryPrimaryColor()
     self.separatorView.backgroundColor = .ksr_grey_200
     let date = Format.date(secondsInUTC: project.dates.deadline,
-                           template: "MMM d, yyyy, h:mm a",
-                           timeZone: .current)
+                           template: "MMM d, yyyy, h:mm a")
     let amount = Format.currency(project.stats.goal, country: project.country)
 
     switch (project.personalization.isBacking, project.state) {

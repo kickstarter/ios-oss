@@ -150,8 +150,8 @@ public protocol DiscoveryPostcardViewModelType {
 }
 
 private func shouldHideCreatorLabel() -> Bool {
-// Since this is a A/A test, for now we will simply return false.
-  return false
+// Since this is a A/A test, for now we will simply return true.
+  return true
 }
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
