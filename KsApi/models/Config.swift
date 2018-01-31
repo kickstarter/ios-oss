@@ -24,6 +24,13 @@ public struct Config {
   public private(set) var launchedCountries: [Project.Country]
   public private(set) var locale: String
   public private(set) var stripePublishableKey: String
+
+  public var abExperimentsArray: [String] {
+    let stringsArray = self.abExperiments.map { (key, value) in
+      key + "[\(value)]"
+    }
+    return stringsArray
+  }
 }
 
 extension Config: Argo.Decodable {

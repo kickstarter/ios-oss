@@ -1797,6 +1797,7 @@ public final class Koala {
     props["manufacturer"] = "Apple"
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
     props["model"] = Koala.deviceModel
     props["distinct_id"] = self.distinctId
     props["device_fingerprint"] = self.distinctId
@@ -1960,18 +1961,10 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   return props
 }
 
-private func dictionaryToArray(_ dictionary: [String: String]?) -> [String]? {
-  let stringsArray = dictionary?.map { (key, value) in
-    key + "[\(value)]"
-  }
-  return stringsArray
-}
-
 private func properties(params: DiscoveryParams, prefix: String = "discover_") -> [String: Any] {
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
-  result["current_variants"] = dictionaryToArray(AppEnvironment.current.config?.abExperiments)
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["staff_picks"] = params.staffPicks
