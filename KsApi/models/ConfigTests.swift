@@ -55,7 +55,7 @@ final class ConfigTests: XCTestCase {
     XCTAssertEqual([.es, .fr], config.launchedCountries)
     XCTAssertEqual("en", config.locale)
     XCTAssertEqual("pk", config.stripePublishableKey)
-
+    XCTAssertEqual(["2001_space_odyssey[control]", "dr_strangelove[experiment]"], config.abExperimentsArray)
     // Confirm that encoding and decoding again results in the same config.
     XCTAssertEqual(config, Config.decodeJSONDictionary(config.encode()).value)
   }
