@@ -356,7 +356,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties["discover_staff_picks"])
     XCTAssertNil(properties["discover_starred"])
     XCTAssertNil(properties["discover_term"])
-    XCTAssertEqual(false, properties["discover_everything"] as? Bool)
+    XCTAssertEqual(true, properties["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties["discover_sort"] as? String)
     XCTAssertEqual(1, properties["page"] as? Int)
   }
