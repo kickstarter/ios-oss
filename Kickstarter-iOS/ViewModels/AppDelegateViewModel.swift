@@ -499,9 +499,14 @@ AppDelegateViewModelOutputs {
         }
     }
 
+    let campaignFaqLink = projectLink
+      .filter { _, subpage, _ in subpage == .faqs }
+      .map { project, _, vcs in vcs + [ProjectDescriptionViewController.configuredWith(project: project)] }
+
     let updatesLink = projectLink
       .filter { _, subpage, _ in subpage == .updates }
       .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
+
 
     let updateLink = projectLink
       .map { project, subpage, vcs -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
@@ -544,7 +549,8 @@ AppDelegateViewModelOutputs {
         surveyResponseLink,
         updatesLink,
         updateRootLink,
-        updateCommentsLink
+        updateCommentsLink,
+        campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
 
