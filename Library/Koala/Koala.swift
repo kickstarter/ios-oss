@@ -1049,8 +1049,9 @@ public final class Koala {
 
   // MARK: Messages
 
-  public func trackMessageThreadsView(mailbox: Mailbox, project: Project?) {
-    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
+  public func trackMessageThreadsView(mailbox: Mailbox, project: Project?, refTag: RefTag) {
+    let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
+      .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     switch mailbox {
     case .inbox:

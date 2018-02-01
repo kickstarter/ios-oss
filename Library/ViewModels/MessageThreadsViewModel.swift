@@ -8,7 +8,7 @@ public protocol MessageThreadsViewModelInputs {
   func mailboxButtonPressed()
 
   /// Call with the project whose message threads we are viewing. If no project is given, then use `nil`.
-  func configureWith(project: Project?)
+  func configureWith(project: Project, refTag: RefTag)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -131,9 +131,9 @@ MessageThreadsViewModelOutputs {
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project?) {
-    self.projectProperty.value = project
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project, refTag: RefTag) {
+    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
   fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
@@ -166,4 +166,9 @@ MessageThreadsViewModelOutputs {
 
   public var inputs: MessageThreadsViewModelInputs { return self }
   public var outputs: MessageThreadsViewModelOutputs { return self }
+}
+
+private struct ConfigData {
+  fileprivate let project: Project
+  fileprivate let refTag: RefTag
 }

@@ -214,6 +214,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
     }
 
+
     query.combinePrevious()
       .map(first)
       .takeWhen(self.cancelButtonPressedProperty.signal)

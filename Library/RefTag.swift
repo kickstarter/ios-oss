@@ -18,6 +18,7 @@ public enum RefTag {
   case liveStreamDiscovery
   case liveStreamReplay
   case messageThread
+  case profile
   case profileBacked
   case profileSaved
   case projectPage
@@ -70,6 +71,7 @@ public enum RefTag {
     case "live_stream_discovery":     self = .liveStreamDiscovery
     case "live_stream_replay":        self = .liveStreamReplay
     case "message_thread":            self = .messageThread
+    case "profile":                   self = .profile
     case "profile_backed":            self = .profileBacked
     case "profile_saved":             self = .profileSaved
     case "project_page":              self = .projectPage
@@ -140,6 +142,8 @@ public enum RefTag {
       return "live_stream_replay"
     case .messageThread:
       return "message_thread"
+    case .profile:
+      return "profile"
     case .profileBacked:
       return "profile_backed"
     case .profileSaved:
@@ -186,7 +190,7 @@ public func == (lhs: RefTag, rhs: RefTag) -> Bool {
     (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
     (.dashboardActivity, .dashboardActivity), (.discovery, .discovery),
     (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
-    (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread),
+    (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread), (.profile, .profile),
     (.profileBacked, .profileBacked), (.profileSaved, .profileSaved), (.projectPage, .projectPage),
     (.push, .push), (.recommended, .recommended), (.search, .search), (.searchFeatured, .searchFeatured),
     (.searchPopular, .searchPopular), (.searchPopularFeatured, .searchPopularFeatured), (.social, .social),
