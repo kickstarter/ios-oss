@@ -7,7 +7,8 @@ public protocol MessageThreadsViewModelInputs {
   /// Call when the mailbox chooser button is pressed.
   func mailboxButtonPressed()
 
-  /// Call with the project whose message threads we are viewing. If no project or refTag is given, then use `nil`.
+  /// Call with the project whose message threads we are viewing. If no project or refTag is given, then use
+  /// `nil`.
   func configureWith(project: Project?, refTag: RefTag?)
 
   /// Call when pull-to-refresh is invoked.
@@ -87,7 +88,7 @@ MessageThreadsViewModelOutputs {
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.messageThreads },
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
-      requestFromParams: { [project = configDataProperty.producer.map{ $0?.project }] mailbox in
+      requestFromParams: { [project = configDataProperty.producer.map { $0?.project }] mailbox in
         project.take(first: 1)
           .promoteErrors(ErrorEnvelope.self)
           .flatMap { project in
