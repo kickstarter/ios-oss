@@ -17,7 +17,7 @@ internal final class MessageThreadsViewController: UITableViewController {
 //    return vc
 //  }
 
-  public static func configuredWith(project: Project, refTag: RefTag) -> MessageThreadsViewController {
+  public static func configuredWith(project: Project?, refTag: RefTag?) -> MessageThreadsViewController {
     let vc = Storyboard.Messages.instantiate(MessageThreadsViewController.self)
     vc.viewModel.inputs.configureWith(project: project, refTag: refTag)
 

@@ -106,7 +106,7 @@ internal final class BackerDashboardViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         guard let _self = self else { return }
-        let vc = MessageThreadsViewController.configuredWith(project: nil)
+        let vc = MessageThreadsViewController.configuredWith(project: nil, refTag: .profile)
         _self.navigationController?.pushViewController(vc, animated: true)
     }
 

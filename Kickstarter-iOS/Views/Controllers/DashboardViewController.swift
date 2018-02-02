@@ -208,7 +208,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToMessages(project: Project) {
-    let vc = MessageThreadsViewController.configuredWith(project: project)
+    let vc = MessageThreadsViewController.configuredWith(project: project, refTag: .dashboard)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -265,7 +265,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToMessageThread(project: Project, messageThread: MessageThread) {
-    let threadsVC = MessageThreadsViewController.configuredWith(project: project)
+    let threadsVC = MessageThreadsViewController.configuredWith(project: project, refTag: .dashboard)
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
     self.navigationController?.setViewControllers([self, threadsVC, messageThreadVC], animated: true)
