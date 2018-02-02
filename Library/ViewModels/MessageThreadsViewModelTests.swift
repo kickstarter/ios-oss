@@ -30,7 +30,7 @@ internal final class MessageThreadsViewModelTests: TestCase {
   }
 
   func testLoadingMessages_NoProject() {
-    self.vm.inputs.configureWith(project: nil)
+    self.vm.inputs.configureWith(project: nil, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.loadingFooterIsHidden.assertValues([false], "Loading footer is visible at beginning.")
@@ -80,7 +80,7 @@ internal final class MessageThreadsViewModelTests: TestCase {
   }
 
   func testLoadingMessages_WithProject() {
-    self.vm.inputs.configureWith(project: Project.template)
+    self.vm.inputs.configureWith(project: Project.template, refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.loadingFooterIsHidden.assertValues([false], "Loading footer is visible at beginning.")
@@ -124,7 +124,7 @@ internal final class MessageThreadsViewModelTests: TestCase {
   }
 
   func testSwitchingMailbox() {
-    self.vm.inputs.configureWith(project: nil)
+    self.vm.inputs.configureWith(project: nil, refTag: nil)
     self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
@@ -183,7 +183,7 @@ internal final class MessageThreadsViewModelTests: TestCase {
 
   func testEmptyState() {
     withEnvironment(apiService: MockService(fetchMessageThreadsResponse: [])) {
-      self.vm.inputs.configureWith(project: nil)
+      self.vm.inputs.configureWith(project: nil, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
       self.emptyStateIsVisible.assertValues([], "No empty state emits immediately.")
