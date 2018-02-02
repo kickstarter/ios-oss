@@ -507,7 +507,6 @@ AppDelegateViewModelOutputs {
       .filter { _, subpage, _ in subpage == .updates }
       .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
 
-
     let updateLink = projectLink
       .map { project, subpage, vcs -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
         guard case let .update(id, updateSubpage) = subpage else { return nil }
