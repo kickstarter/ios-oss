@@ -449,7 +449,6 @@ private func faqs(_ params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref"
 }
 
-
 private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
@@ -549,7 +548,6 @@ private func updates(_ params: RouteParams) -> Decoded<Navigation> {
     <*> .success(Navigation.Project.updates)
     <*> params <|? "ref"
 }
-
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.user)
