@@ -11,9 +11,9 @@ internal final class MessageThreadsViewController: UITableViewController {
   @IBOutlet fileprivate weak var footerView: UIView!
   @IBOutlet fileprivate weak var mailboxLabel: UILabel!
 
-  internal static func configuredWith(project: Project?) -> MessageThreadsViewController {
+  internal static func configuredWith(project: Project?, refTag: RefTag?) -> MessageThreadsViewController {
     let vc = Storyboard.Messages.instantiate(MessageThreadsViewController.self)
-    vc.viewModel.inputs.configureWith(project: project)
+    vc.viewModel.inputs.configureWith(project: project, refTag: refTag)
     return vc
   }
 

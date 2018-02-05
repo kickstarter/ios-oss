@@ -68,7 +68,7 @@ internal final class MessageThreadViewControllerTests: TestCase {
 
     [Device.phone4_7inch, Device.pad].forEach { device in
 
-      let controller = MessageThreadsViewController.configuredWith(project: project)
+      let controller = MessageThreadsViewController.configuredWith(project: project, refTag: nil)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

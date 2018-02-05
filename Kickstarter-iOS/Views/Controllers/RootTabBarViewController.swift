@@ -100,7 +100,7 @@ public final class RootTabBarViewController: UITabBarController {
       let profileVC = profileNav.viewControllers.first
     else { return }
 
-    let threadsVC = MessageThreadsViewController.configuredWith(project: nil)
+    let threadsVC = MessageThreadsViewController.configuredWith(project: nil, refTag: nil)
     let messageThreadVC = MessagesViewController.configuredWith(messageThread: messageThread)
 
     self.presentedViewController?.dismiss(animated: false, completion: nil)

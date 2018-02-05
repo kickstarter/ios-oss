@@ -96,7 +96,7 @@ internal final class ProfileViewController: UICollectionViewController {
   }
 
   @IBAction fileprivate func messagesButtonTapped() {
-    let vc = MessageThreadsViewController.configuredWith(project: nil)
+    let vc = MessageThreadsViewController.configuredWith(project: nil, refTag: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

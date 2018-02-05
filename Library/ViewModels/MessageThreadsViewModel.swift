@@ -7,8 +7,9 @@ public protocol MessageThreadsViewModelInputs {
   /// Call when the mailbox chooser button is pressed.
   func mailboxButtonPressed()
 
-  /// Call with the project whose message threads we are viewing. If no project is given, then use `nil`.
-  func configureWith(project: Project?)
+  /// Call with the project whose message threads we are viewing. If no project or refTag is given, then use
+  /// `nil`.
+  func configureWith(project: Project?, refTag: RefTag?)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -70,6 +71,12 @@ MessageThreadsViewModelOutputs {
       self.viewDidLoadProperty.signal.mapConst(.inbox)
     )
 
+    let configData = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil(),
+      mailbox
+    )
+    .map(first)
+
     let requestFirstPageWith = Signal.merge(
       mailbox,
       mailbox.takeWhen(self.refreshProperty.signal)
@@ -81,7 +88,7 @@ MessageThreadsViewModelOutputs {
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.messageThreads },
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
-      requestFromParams: { [project = projectProperty.producer] mailbox in
+      requestFromParams: { [project = configDataProperty.producer.map { $0?.project }] mailbox in
         project.take(first: 1)
           .promoteErrors(ErrorEnvelope.self)
           .flatMap { project in
@@ -119,11 +126,14 @@ MessageThreadsViewModelOutputs {
 
     self.goToSearch = self.searchButtonPressedProperty.signal
 
-    self.projectProperty.producer
+    configData
       .takePairWhen(mailbox)
-      .observeValues { project, mailbox in
-        AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox, project: project)
-    }
+      .observeValues { configData, mailbox in
+        AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox,
+                                                             project: configData.project,
+                                                             refTag: configData.refTag ?? .unrecognized(""))
+
+      }
   }
   // swiftlint:enable function_body_length
 
@@ -131,9 +141,9 @@ MessageThreadsViewModelOutputs {
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project?) {
-    self.projectProperty.value = project
+  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
+  public func configureWith(project: Project?, refTag: RefTag?) {
+    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
   fileprivate let refreshProperty = MutableProperty()
   public func refresh() {
@@ -166,4 +176,9 @@ MessageThreadsViewModelOutputs {
 
   public var inputs: MessageThreadsViewModelInputs { return self }
   public var outputs: MessageThreadsViewModelOutputs { return self }
+}
+
+private struct ConfigData {
+  fileprivate let project: Project?
+  fileprivate let refTag: RefTag?
 }
