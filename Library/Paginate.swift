@@ -68,10 +68,10 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
               .on(
-                starting: { [weak isLoading] _ in
+                starting: { [weak isLoading] in
                   isLoading?.value = true
                 },
-                terminated: { [weak isLoading] _ in
+                terminated: { [weak isLoading] in
                   isLoading?.value = false
                 },
                 value: { [weak cursor] env in

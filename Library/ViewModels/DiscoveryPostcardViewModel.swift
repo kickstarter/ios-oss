@@ -349,17 +349,17 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectFromNotificationProperty.value = project
   }
 
-  fileprivate let saveButtonTappedProperty = MutableProperty()
+  fileprivate let saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  fileprivate let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }

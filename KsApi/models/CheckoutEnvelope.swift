@@ -15,8 +15,7 @@ public struct CheckoutEnvelope {
 
 extension CheckoutEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<CheckoutEnvelope> {
-    let create = curry(CheckoutEnvelope.init)
-    return create
+    return curry(CheckoutEnvelope.init)
       <^> json <| "state"
       <*> (json <| "state_reason" <|> .success(""))
   }

@@ -5,8 +5,8 @@ private func swizzle(_ v: UIView.Type) {
   [(#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:)))]
     .forEach { original, swizzled in
 
-      let originalMethod = class_getInstanceMethod(v, original)
-      let swizzledMethod = class_getInstanceMethod(v, swizzled)
+      guard let originalMethod = class_getInstanceMethod(v, original),
+        let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
 
       let didAddViewDidLoadMethod = class_addMethod(v,
                                                     original,
@@ -39,10 +39,10 @@ extension UIView {
     self.bindViewModel()
   }
 
-  open func bindStyles() {
+  @objc open func bindStyles() {
   }
 
-  open func bindViewModel() {
+  @objc open func bindViewModel() {
   }
 
   public static var defaultReusableId: String {
@@ -52,7 +52,7 @@ extension UIView {
       .joined(separator: ".")
   }
 
-  internal func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
+  @objc internal func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
     self.bindStyles()
   }

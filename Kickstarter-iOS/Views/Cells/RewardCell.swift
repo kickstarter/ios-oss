@@ -191,13 +191,13 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = self.manageRewardButton
       |> greenBorderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Manage_your_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Manage_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     _ = self.viewYourPledgeButton
       |> borderButtonStyle
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.View_your_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.View_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     self.viewModel.inputs.boundStyles()

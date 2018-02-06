@@ -64,11 +64,11 @@ internal final class RewardShippingPickerViewController: UIViewController {
 
     _ = self.cancelButton
       |> textOnlyButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
     _ = self.doneButton
       |> textOnlyButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Done() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Done() }
 
     self.titleShadowView.startPoint = CGPoint(x: 0, y: 1)
     self.titleShadowView.endPoint = CGPoint(x: 0, y: 0)

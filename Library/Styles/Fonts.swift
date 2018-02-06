@@ -19,18 +19,18 @@ extension UIFont {
     let monospacedDescriptor = self.fontDescriptor
       .addingAttributes(
         [
-          UIFontDescriptorFeatureSettingsAttribute: [
+          UIFontDescriptor.AttributeName.featureSettings: [
             [
-              UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-              UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+              UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
+              UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
             ],
             [
-              UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
-              UIFontFeatureSelectorIdentifierKey: kStylisticAltTwoOnSelector
+              UIFontDescriptor.FeatureKey.featureIdentifier: kStylisticAlternativesType,
+              UIFontDescriptor.FeatureKey.typeIdentifier: kStylisticAltTwoOnSelector
             ],
             [
-              UIFontFeatureTypeIdentifierKey: kStylisticAlternativesType,
-              UIFontFeatureSelectorIdentifierKey: kStylisticAltOneOnSelector
+              UIFontDescriptor.FeatureKey.featureIdentifier: kStylisticAlternativesType,
+              UIFontDescriptor.FeatureKey.typeIdentifier: kStylisticAltOneOnSelector
             ]
           ]
         ]
@@ -94,10 +94,10 @@ extension UIFont {
     let monospacedDescriptor = self.fontDescriptor
       .addingAttributes(
         [
-          UIFontDescriptorFeatureSettingsAttribute: [
+          UIFontDescriptor.AttributeName.featureSettings: [
             [
-              UIFontFeatureTypeIdentifierKey: kNumberSpacingType,
-              UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector
+              UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
+              UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
             ]
           ]
         ]

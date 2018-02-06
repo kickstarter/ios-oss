@@ -67,17 +67,17 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
     configureWithSourceProperty.value = source
   }
 
-  fileprivate let confirmFollowAllFriendsProperty = MutableProperty()
+  fileprivate let confirmFollowAllFriendsProperty = MutableProperty(())
   func confirmFollowAllFriends() {
     confirmFollowAllFriendsProperty.value = ()
   }
 
-  fileprivate let declineFollowAllFriendsProperty = MutableProperty()
+  fileprivate let declineFollowAllFriendsProperty = MutableProperty(())
   func declineFollowAllFriends() {
     declineFollowAllFriendsProperty.value = ()
   }
 
-  fileprivate let followAllButtonTappedProperty = MutableProperty()
+  fileprivate let followAllButtonTappedProperty = MutableProperty(())
   public func followAllButtonTapped() {
     followAllButtonTappedProperty.value = ()
   }

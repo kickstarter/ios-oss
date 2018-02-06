@@ -221,17 +221,17 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .observeValues { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
 
-  fileprivate let cancelButtonPressedProperty = MutableProperty()
+  fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
 
-  fileprivate let clearSearchTextProperty = MutableProperty()
+  fileprivate let clearSearchTextProperty = MutableProperty(())
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
   }
 
-  fileprivate let searchFieldDidBeginEditingProperty = MutableProperty()
+  fileprivate let searchFieldDidBeginEditingProperty = MutableProperty(())
   public func searchFieldDidBeginEditing() {
     self.searchFieldDidBeginEditingProperty.value = ()
   }
@@ -241,7 +241,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.searchTextChangedProperty.value = searchText
   }
 
-  fileprivate let searchTextEditingDidEndProperty = MutableProperty()
+  fileprivate let searchTextEditingDidEndProperty = MutableProperty(())
   public func searchTextEditingDidEnd() {
     self.searchTextEditingDidEndProperty.value = ()
   }
@@ -256,7 +256,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

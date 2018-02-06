@@ -104,7 +104,7 @@ ProjectCreatorViewModelOutputs {
     return self.decidedPolicy.value
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 public extension String {
-  public typealias Attributes = [String: Any]
+  public typealias Attributes = [NSAttributedStringKey: Any]
 
   /**
    Interprets `self` as an HTML string to produce an attributed string.
@@ -20,19 +20,19 @@ public extension String {
                                          bold optionalBold: Attributes? = nil,
                                          italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
 
-    let baseFont = (base[NSFontAttributeName] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
+    let baseFont = (base[NSAttributedStringKey.font] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
 
     // If bold or italic are not specified we can derive them from `font`.
-    let bold = optionalBold ?? [NSFontAttributeName: baseFont.bolded]
-    let italic = optionalItalic ?? [NSFontAttributeName: baseFont.italicized]
+    let bold = optionalBold ?? [NSAttributedStringKey.font: baseFont.bolded]
+    let italic = optionalItalic ?? [NSAttributedStringKey.font: baseFont.italicized]
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String: Any] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
+    let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+      NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
+      NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue
     ]
-    guard let string = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
+      guard let string = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
       else {
         return nil
     }
@@ -40,7 +40,7 @@ public extension String {
     // Sub all bold and italic fonts in the attributed html string
     let stringRange = NSRange(location: 0, length: string.length)
     string.beginEditing()
-    string.enumerateAttribute(NSFontAttributeName, in: stringRange, options: []) { value, range, _ in
+    string.enumerateAttribute(NSAttributedStringKey.font, in: stringRange, options: []) { value, range, _ in
 
       guard let htmlFont = value as? UIFont else { return }
       let newAttributes: Attributes
@@ -76,9 +76,9 @@ public extension String {
                                          italic optionalItalic: UIFont? = nil) -> NSAttributedString? {
 
     return self.simpleHtmlAttributedString(
-      base: [NSFontAttributeName: font],
-      bold: optionalBold.flatMap { [NSFontAttributeName: $0] },
-      italic: optionalItalic.flatMap { [NSFontAttributeName: $0] })
+      base: [NSAttributedStringKey.font: font],
+      bold: optionalBold.flatMap { [NSAttributedStringKey.font: $0] },
+      italic: optionalItalic.flatMap { [NSAttributedStringKey.font: $0] })
   }
 
   /**
@@ -93,9 +93,9 @@ public extension String {
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
-    let options: [String: Any] = [
-      NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
+    let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+      NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
+      NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue
     ]
 
     let string = try? NSAttributedString(data: data, options: options, documentAttributes: nil)

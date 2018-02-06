@@ -145,7 +145,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   public var inputs: FindFriendsFacebookConnectCellViewModelInputs { return self }
   public var outputs: FindFriendsFacebookConnectCellViewModelOutputs { return self }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     closeButtonTappedProperty.value = ()
   }
@@ -155,7 +155,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     configureWithProperty.value = source
   }
 
-  fileprivate let facebookConnectButtonTappedProperty = MutableProperty()
+  fileprivate let facebookConnectButtonTappedProperty = MutableProperty(())
   public func facebookConnectButtonTapped() {
     facebookConnectButtonTappedProperty.value = ()
   }
@@ -170,7 +170,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.facebookLoginSuccessProperty.value = result
   }
 
-  fileprivate let userUpdatedProperty = MutableProperty()
+  fileprivate let userUpdatedProperty = MutableProperty(())
   public func userUpdated() {
     userUpdatedProperty.value = ()
   }

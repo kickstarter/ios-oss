@@ -56,9 +56,7 @@ extension Project.Country {
 
 extension Project.Country: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Country> {
-    let create = curry(Project.Country.init)
-
-    let tmp = create
+    let tmp = curry(Project.Country.init)
       <^> (json <| "country" <|> json <| "name")
       <*> (json <| "currency" <|> json <| "currency_code")
       <*> json <| "currency_symbol"

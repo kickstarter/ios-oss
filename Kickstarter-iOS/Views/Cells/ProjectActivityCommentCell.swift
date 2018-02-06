@@ -111,7 +111,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     _ = self.backingButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
@@ -145,7 +145,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
 
     _ = self.replyButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_reply() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_reply() }
 
     _ = titleLabel
       |> UILabel.lens.numberOfLines .~ 2

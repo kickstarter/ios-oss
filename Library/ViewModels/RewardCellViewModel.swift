@@ -235,7 +235,7 @@ RewardCellViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let boundStylesProperty = MutableProperty()
+  private let boundStylesProperty = MutableProperty(())
   public func boundStyles() {
     self.boundStylesProperty.value = ()
   }
@@ -245,7 +245,7 @@ RewardCellViewModelOutputs {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
   }
 
-  private let tappedProperty = MutableProperty()
+  private let tappedProperty = MutableProperty(())
   public func tapped() {
     self.tappedProperty.value = ()
   }

@@ -176,7 +176,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
 
-  fileprivate var viewWillAppearProperty = MutableProperty()
+  fileprivate var viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
@@ -184,15 +184,15 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func loginIntent(_ intent: LoginIntent) {
     self.loginIntentProperty.value = intent
   }
-  fileprivate let loginButtonPressedProperty = MutableProperty()
+  fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
-  fileprivate let signupButtonPressedProperty = MutableProperty()
+  fileprivate let signupButtonPressedProperty = MutableProperty(())
   public func signupButtonPressed() {
     self.signupButtonPressedProperty.value = ()
   }
-  fileprivate let facebookLoginButtonPressedProperty = MutableProperty()
+  fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
   public func facebookLoginButtonPressed() {
     self.facebookLoginButtonPressedProperty.value = ()
   }
@@ -204,12 +204,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
-  fileprivate let environmentLoggedInProperty = MutableProperty()
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }

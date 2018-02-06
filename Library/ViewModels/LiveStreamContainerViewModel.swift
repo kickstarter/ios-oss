@@ -488,7 +488,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  private let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
@@ -498,7 +498,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  private let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
@@ -508,12 +508,12 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
     self.videoPlaybackStateChangedProperty.value = state
   }
 
-  private let viewDidDisappearProperty = MutableProperty()
+  private let viewDidDisappearProperty = MutableProperty(())
   public func viewDidDisappear() {
     self.viewDidDisappearProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

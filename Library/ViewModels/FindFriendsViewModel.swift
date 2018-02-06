@@ -162,17 +162,17 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public func configureWith(source: FriendsSource) {
     self.configureWithProperty.value = source
   }
-  fileprivate let confirmFollowAllFriendsProperty = MutableProperty()
+  fileprivate let confirmFollowAllFriendsProperty = MutableProperty(())
   public func confirmFollowAllFriends() {
     self.confirmFollowAllFriendsProperty.value = ()
   }
-  fileprivate let declineFollowAllFriendsProperty = MutableProperty()
+  fileprivate let declineFollowAllFriendsProperty = MutableProperty(())
   public func declineFollowAllFriends() {
     self.declineFollowAllFriendsProperty.value = ()
   }
   public func findFriendsFacebookConnectCellDidDismissHeader() {}
 
-  fileprivate let userFacebookConnectedProperty = MutableProperty()
+  fileprivate let userFacebookConnectedProperty = MutableProperty(())
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
     self.userFacebookConnectedProperty.value = ()
   }
@@ -184,11 +184,11 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public func updateFriend(_ updatedFriend: User) {
     self.updateFriendProperty.value = updatedFriend
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let discoverButtonTappedProperty = MutableProperty()
+  fileprivate let discoverButtonTappedProperty = MutableProperty(())
   public func discoverButtonTapped() {
     self.discoverButtonTappedProperty.value = ()
   }

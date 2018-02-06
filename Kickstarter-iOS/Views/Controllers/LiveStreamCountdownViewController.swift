@@ -213,7 +213,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.goToProjectButton
       |> liveStreamGoToProjectStyle
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
 
     _ = self.imageOverlayView
       |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.8)

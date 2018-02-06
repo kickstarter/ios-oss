@@ -69,9 +69,9 @@ internal final class SearchViewController: UITableViewController {
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_callout(size:15)
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
     _ = self.searchBarContainerView
       |> roundedStyle()

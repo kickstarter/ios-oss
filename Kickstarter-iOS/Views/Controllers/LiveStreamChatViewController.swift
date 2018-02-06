@@ -103,7 +103,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Send() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Send() }
   }
 
   internal override func bindViewModel() {

@@ -121,7 +121,7 @@ SortPagerViewModelOutputs {
     )
   }
 
-  fileprivate let didRotateProperty = MutableProperty()
+  fileprivate let didRotateProperty = MutableProperty(())
   public func didRotateFromInterfaceOrientation() {
     self.didRotateProperty.value = ()
   }
@@ -141,15 +141,15 @@ SortPagerViewModelOutputs {
   public func updateStyle(categoryId: Int?) {
     self.updateStyleProperty.value = categoryId
   }
-  fileprivate let willRotateProperty = MutableProperty()
+  fileprivate let willRotateProperty = MutableProperty(())
   public func willRotateToInterfaceOrientation() {
     self.willRotateProperty.value = ()
   }
-  fileprivate let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

@@ -159,11 +159,11 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {
     self.shareContextProperty.value = (shareContext, shareContextView)
   }
-  fileprivate let facebookButtonTappedProperty = MutableProperty()
+  fileprivate let facebookButtonTappedProperty = MutableProperty(())
   public func facebookButtonTapped() {
     self.facebookButtonTappedProperty.value = ()
   }
-  fileprivate let shareButtonTappedProperty = MutableProperty()
+  fileprivate let shareButtonTappedProperty = MutableProperty(())
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
   }
@@ -175,7 +175,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func shareComposeCompletion(result: SLComposeViewControllerResult) {
     self.shareComposeCompletionProperty.value = result
   }
-  fileprivate let twitterButtonTappedProperty = MutableProperty()
+  fileprivate let twitterButtonTappedProperty = MutableProperty(())
   public func twitterButtonTapped() {
     self.twitterButtonTappedProperty.value = ()
   }

@@ -214,8 +214,8 @@ internal final class BackerDashboardViewController: UIViewController {
       ])
 
     _ = button
-      |> UIButton.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
-      |> UIButton.lens.attributedTitle(forState: .selected) %~ { _ in selectedTitleString }
+      |> UIButton.lens.attributedTitle(for: .normal) %~ { _ in normalTitleString }
+      |> UIButton.lens.attributedTitle(for: .selected) %~ { _ in selectedTitleString }
       |> (UIButton.lens.titleLabel..UILabel.lens.lineBreakMode) .~ .byWordWrapping
   }
 

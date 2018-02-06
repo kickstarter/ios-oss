@@ -289,7 +289,7 @@ SettingsViewModelOutputs {
   public func backingsTapped(selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
-  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty()
+  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty(())
   public func betaFeedbackButtonTapped() {
     self.betaFeedbackButtonTappedProperty.value = ()
   }
@@ -309,11 +309,11 @@ SettingsViewModelOutputs {
   public func individualEmailTapped(on: Bool) {
     self.individualEmailTappedProperty.value = on
   }
-  fileprivate let emailFrequencyTappedProperty = MutableProperty()
+  fileprivate let emailFrequencyTappedProperty = MutableProperty(())
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
-  fileprivate let findFriendsTappedProperty = MutableProperty()
+  fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
   }
@@ -337,19 +337,19 @@ SettingsViewModelOutputs {
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
   }
-  fileprivate let logoutCanceledProperty = MutableProperty()
+  fileprivate let logoutCanceledProperty = MutableProperty(())
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()
   }
-  fileprivate let logoutConfirmedProperty = MutableProperty()
+  fileprivate let logoutConfirmedProperty = MutableProperty(())
   public func logoutConfirmed() {
     self.logoutConfirmedProperty.value = ()
   }
-  fileprivate let logoutTappedProperty = MutableProperty()
+  fileprivate let logoutTappedProperty = MutableProperty(())
   public func logoutTapped() {
     self.logoutTappedProperty.value = ()
   }
-  fileprivate let manageProjectNotificationsTappedProperty = MutableProperty()
+  fileprivate let manageProjectNotificationsTappedProperty = MutableProperty(())
   public func manageProjectNotificationsTapped() {
     self.manageProjectNotificationsTappedProperty.value = ()
   }
@@ -385,7 +385,7 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
-  fileprivate let rateUsTappedProperty = MutableProperty()
+  fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
@@ -393,7 +393,7 @@ SettingsViewModelOutputs {
   public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

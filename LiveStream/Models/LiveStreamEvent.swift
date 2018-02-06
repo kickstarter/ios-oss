@@ -111,13 +111,12 @@ public func == (lhs: LiveStreamEvent, rhs: LiveStreamEvent) -> Bool {
 
 extension LiveStreamEvent: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent> {
-    let create = curry(LiveStreamEvent.init)
 
     let hlsUrl: Decoded<String?> = (json <| ["stream", "hls_url"] <|> json <| "hls_url")
       .map(Optional.some)
       <|> .success(nil)
 
-    let tmp1 = create
+    let tmp1 = curry(LiveStreamEvent.init)
       <^> (json <| ["stream", "background_image"] <|> json <| "background_image")
       <*> json <| "creator"
       <*> (json <| ["stream", "description"] <|> json <| "description")
@@ -163,8 +162,7 @@ extension LiveStreamEvent.Creator: Argo.Decodable {
 
 extension LiveStreamEvent.Firebase: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<LiveStreamEvent.Firebase> {
-    let create = curry(LiveStreamEvent.Firebase.init)
-    let tmp = create
+    let tmp = curry(LiveStreamEvent.Firebase.init)
       <^> json <| "firebase_api_key"
       <*> json <|? "avatar"
       <*> json <| "chat_path"

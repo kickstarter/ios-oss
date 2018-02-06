@@ -448,7 +448,7 @@ UpdateDraftViewModelOutputs {
     self.bodyTextChangedProperty.value = body
   }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
@@ -463,7 +463,7 @@ UpdateDraftViewModelOutputs {
     self.imagePickedProperty.value = (url, source)
   }
 
-  fileprivate let imagePickerCanceledProperty = MutableProperty()
+  fileprivate let imagePickerCanceledProperty = MutableProperty(())
   public func imagePickerCanceled() {
     self.imagePickerCanceledProperty.value = ()
   }
@@ -473,7 +473,7 @@ UpdateDraftViewModelOutputs {
     self.isBackersOnlyOnProperty.value = isBackersOnly
   }
 
-  fileprivate let previewButtonTappedProperty = MutableProperty()
+  fileprivate let previewButtonTappedProperty = MutableProperty(())
   public func previewButtonTapped() {
     self.previewButtonTappedProperty.value = ()
   }
@@ -483,7 +483,7 @@ UpdateDraftViewModelOutputs {
     self.removeAttachmentProperty.value = attachment
   }
 
-  fileprivate let removeAttachmentConfirmationCanceledProperty = MutableProperty()
+  fileprivate let removeAttachmentConfirmationCanceledProperty = MutableProperty(())
   public func removeAttachmentConfirmationCanceled() {
     self.removeAttachmentConfirmationCanceledProperty.value = ()
   }
@@ -493,17 +493,17 @@ UpdateDraftViewModelOutputs {
     self.titleTextChangedProperty.value = title
   }
 
-  fileprivate let titleTextFieldDoneEditingProperty = MutableProperty()
+  fileprivate let titleTextFieldDoneEditingProperty = MutableProperty(())
   public func titleTextFieldDoneEditing() {
     self.titleTextFieldDoneEditingProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

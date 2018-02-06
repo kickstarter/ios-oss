@@ -79,7 +79,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     self.showResetSuccess.observeValues { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -89,12 +89,12 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     self.emailProperty.value = email
   }
 
-  fileprivate let resetButtonPressedProperty = MutableProperty()
+  fileprivate let resetButtonPressedProperty = MutableProperty(())
   public func resetButtonPressed() {
     self.resetButtonPressedProperty.value = ()
   }
 
-  fileprivate let confirmResetButtonPressedProperty = MutableProperty()
+  fileprivate let confirmResetButtonPressedProperty = MutableProperty(())
   public func confirmResetButtonPressed() {
     self.confirmResetButtonPressedProperty.value = ()
   }

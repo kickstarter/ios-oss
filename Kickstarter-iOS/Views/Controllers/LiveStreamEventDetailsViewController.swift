@@ -121,7 +121,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .white
+      |> UIButton.lens.titleColor(for: .normal) .~ .white
       |> liveStreamGoToProjectStyle
   }
 

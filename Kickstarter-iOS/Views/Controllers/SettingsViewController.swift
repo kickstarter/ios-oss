@@ -151,14 +151,14 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.title(forState: .normal) .~ "Debug push notifications"
+      |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"
 
     _ = self.betaFeedbackButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .normal) .~ "Submit feedback for beta"
+      |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
 
     _ = self.betaTitleLabel
       |> settingsTitleLabelStyle
@@ -196,9 +196,9 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(forState: .normal)
+      ||> UIButton.lens.image(for: .normal)
         .~ UIImage(named: "email-icon", in: .framework, compatibleWith: nil)
-      ||> UIButton.lens.image(forState: .selected)
+      ||> UIButton.lens.image(for: .selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
@@ -302,9 +302,9 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(forState: .normal)
+      ||> UIButton.lens.image(for: .normal)
         .~ UIImage(named: "mobile-icon", in: .framework, compatibleWith: nil)
-      ||> UIButton.lens.image(forState: .selected)
+      ||> UIButton.lens.image(for: .selected)
         .~ image(named: "mobile-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 

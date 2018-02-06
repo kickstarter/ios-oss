@@ -7,7 +7,7 @@ import UIKit
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  fileprivate var applePayButton = PKPaymentButton(type: .plain, style: .black)
+  fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
   @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cancelPledgeButton: UIButton!
@@ -159,7 +159,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.cancelPledgeButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
       |> cardStyle()
@@ -175,7 +175,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.changePaymentMethodButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Change_payment_method() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Change_payment_method() }
 
     _ = self.checkmarkBadgeView
       |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
@@ -190,13 +190,13 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
-      |> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_green_700
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
+      |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_700
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_to_payment() }
       |> UIButton.lens.layer.borderColor .~ UIColor.clear.cgColor
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Update_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
 
     _ = self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
@@ -219,8 +219,8 @@ internal final class RewardPledgeViewController: UIViewController {
       |> roundedStyle(cornerRadius: 0)
       |> UIButton.lens.layer.borderWidth .~ 1
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Other_payment_methods() }
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
@@ -395,7 +395,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.borderWidth .~ 1
 
     _ = self.shippingDestinationButton
-      |> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.ksr_navy_200
+      |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 

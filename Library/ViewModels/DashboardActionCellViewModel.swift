@@ -121,17 +121,17 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.activityRowHidden = project.map { !$0.memberData.permissions.contains(.viewPledges) }
   }
 
-  fileprivate let activityTappedProperty = MutableProperty()
+  fileprivate let activityTappedProperty = MutableProperty(())
   public func activityTapped() {
     activityTappedProperty.value = ()
   }
 
-  fileprivate let messagesTappedProperty = MutableProperty()
+  fileprivate let messagesTappedProperty = MutableProperty(())
   public func messagesTapped() {
     messagesTappedProperty.value = ()
   }
 
-  fileprivate let postUpdateTappedProperty = MutableProperty()
+  fileprivate let postUpdateTappedProperty = MutableProperty(())
   public func postUpdateTapped() {
     postUpdateTappedProperty.value = ()
   }

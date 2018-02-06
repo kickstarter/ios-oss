@@ -36,7 +36,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> greenButtonStyle
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Pledge_without_a_reward() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge_without_a_reward() }
       |> UIButton.lens.isAccessibilityElement .~ false
       |> UIButton.lens.accessibilityElementsHidden .~ true
 

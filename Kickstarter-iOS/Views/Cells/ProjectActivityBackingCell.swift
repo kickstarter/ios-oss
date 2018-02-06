@@ -143,7 +143,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.backingButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bulletSeparatorView
       |> projectActivityBulletSeparatorViewStyle
@@ -184,7 +184,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.sendMessageButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
   }
 
   @objc fileprivate func backingButtonPressed(_ button: UIButton) {

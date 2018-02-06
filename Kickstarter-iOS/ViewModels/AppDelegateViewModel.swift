@@ -661,17 +661,17 @@ AppDelegateViewModelOutputs {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
 
-  fileprivate let applicationWillEnterForegroundProperty = MutableProperty()
+  fileprivate let applicationWillEnterForegroundProperty = MutableProperty(())
   public func applicationWillEnterForeground() {
     self.applicationWillEnterForegroundProperty.value = ()
   }
 
-  fileprivate let applicationDidEnterBackgroundProperty = MutableProperty()
+  fileprivate let applicationDidEnterBackgroundProperty = MutableProperty(())
   public func applicationDidEnterBackground() {
     self.applicationDidEnterBackgroundProperty.value = ()
   }
 
-  fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty()
+  fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty(())
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
   }
@@ -681,12 +681,12 @@ AppDelegateViewModelOutputs {
     self.performActionForShortcutItemProperty.value = item
   }
 
-  fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty()
+  fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
 
-  fileprivate let configUpdatedInEnvironmentProperty = MutableProperty()
+  fileprivate let configUpdatedInEnvironmentProperty = MutableProperty(())
   public func configUpdatedInEnvironment() {
     self.configUpdatedInEnvironmentProperty.value = ()
   }
@@ -706,7 +706,7 @@ AppDelegateViewModelOutputs {
     self.foundRedirectUrlProperty.value = url
   }
 
-  fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty()
+  fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty(())
   public func crashManagerDidFinishSendingCrashReport() {
     self.crashManagerDidFinishSendingCrashReportProperty.value = ()
   }
@@ -726,17 +726,17 @@ AppDelegateViewModelOutputs {
     return self.facebookOpenURLReturnValue.value
   }
 
-  fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty()
+  fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty(())
   public func openRemoteNotificationTappedOk() {
     self.openRemoteNotificationTappedOkProperty.value = ()
   }
 
-  fileprivate let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }

@@ -170,12 +170,12 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     configureWithSourceProperty.value = source
   }
 
-  fileprivate let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty(())
   public func followButtonTapped() {
     followButtonTappedProperty.value = ()
   }
 
-  fileprivate let unfollowButtonTappedProperty = MutableProperty()
+  fileprivate let unfollowButtonTappedProperty = MutableProperty(())
   public func unfollowButtonTapped() {
     unfollowButtonTappedProperty.value = ()
   }

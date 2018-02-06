@@ -252,7 +252,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let goToProjectButtonTappedProperty = MutableProperty()
+  private let goToProjectButtonTappedProperty = MutableProperty(())
   public func goToProjectButtonTapped() {
     self.goToProjectButtonTappedProperty.value = ()
   }
@@ -262,17 +262,17 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.numberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
-  private let subscribeButtonTappedProperty = MutableProperty()
+  private let subscribeButtonTappedProperty = MutableProperty(())
   public func subscribeButtonTapped() {
     self.subscribeButtonTappedProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  private let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

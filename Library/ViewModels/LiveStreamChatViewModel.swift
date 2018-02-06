@@ -198,8 +198,8 @@ LiveStreamChatViewModelOutputs {
         NSAttributedString(
           string: Strings.Say_something_kind(),
           attributes: [
-            NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.8),
-            NSFontAttributeName: UIFont.ksr_body(size: 14)
+            NSAttributedStringKey.foregroundColor: UIColor.white.withAlphaComponent(0.8),
+            NSAttributedStringKey.font: UIFont.ksr_body(size: 14)
           ]
         )
     }
@@ -262,12 +262,12 @@ LiveStreamChatViewModelOutputs {
     self.deviceOrientationDidChangeProperty.value = orientation
   }
 
-  private let sendButtonTappedProperty = MutableProperty()
+  private let sendButtonTappedProperty = MutableProperty(())
   public func sendButtonTapped() {
     self.sendButtonTappedProperty.value = ()
   }
 
-  private let textFieldShouldBeginEditingProperty = MutableProperty()
+  private let textFieldShouldBeginEditingProperty = MutableProperty(())
   private let textFieldShouldBeginEditingReturnValueProperty = MutableProperty<Bool>(false)
   public func textFieldShouldBeginEditing() -> Bool {
     self.textFieldShouldBeginEditingProperty.value = ()
@@ -279,12 +279,12 @@ LiveStreamChatViewModelOutputs {
     self.textProperty.value = text
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  private let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
