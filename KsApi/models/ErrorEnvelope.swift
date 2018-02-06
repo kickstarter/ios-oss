@@ -113,7 +113,7 @@ extension ErrorEnvelope: Argo.Decodable {
     let create = curry(ErrorEnvelope.init)
 
     // Typically API errors come back in this form...
-    let standardErrorEnvelope = create
+    let standardErrorEnvelope = curry(ErrorEnvelope.init)
       <^> json <|| "error_messages"
       <*> json <|? "ksr_code"
       <*> json <| "http_code"

@@ -53,12 +53,11 @@ public struct PushEnvelope {
 
 extension PushEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope> {
-    let create = curry(PushEnvelope.init)
 
     let update: Decoded<Update> = json <| "update" <|> json <| "post"
     let optionalUpdate: Decoded<Update?> = update.map(Optional.some) <|> .success(nil)
 
-    let tmp = create
+    let tmp = curry(PushEnvelope.init)
       <^> json <|? "activity"
       <*> json <| "aps"
       <*> json <|? "for_creator"
@@ -73,8 +72,7 @@ extension PushEnvelope: Argo.Decodable {
 
 extension PushEnvelope.Activity: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Activity> {
-    let create = curry(PushEnvelope.Activity.init)
-    let tmp = create
+    let tmp = curry(PushEnvelope.Activity.init)
       <^> json <| "category"
       <*> json <|? "comment_id"
       <*> json <| "id"

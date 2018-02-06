@@ -43,15 +43,15 @@ public let updateBackersOnlyButtonStyle =
 
 public let updateAddAttachmentButtonStyle =
   UIButton.lens.backgroundColor .~ .ksr_navy_200
-    <> UIButton.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriorityRequired
+    <> UIButton.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
     <> UIButton.lens.contentEdgeInsets .~ .init(top: 11, left: 9, bottom: 12, right: 9)
-    <> UIButton.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityRequired
-    <> UIButton.lens.image(forState: .normal) %~ { _ in image(named: "update-draft-add-attachment-icon") }
+    <> UIButton.lens.contentHuggingPriority(for: .vertical) .~ .required
+    <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "update-draft-add-attachment-icon") }
     <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1
     <> UIButton.lens.layer.cornerRadius .~ 8
     <> UIButton.lens.tintColor .~ .ksr_navy_600
-    <> UIButton.lens.title(forState: .normal) .~ nil
+    <> UIButton.lens.title(for: .normal) .~ nil
 
 public let updateAddAttachmentExpandedButtonStyle =
   UIButton.lens.tintColor .~ .ksr_text_dark_grey_400

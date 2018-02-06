@@ -86,7 +86,7 @@ extension Category {
     case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
   }
 
-  private init(from decoder: Decoder) throws {
+  public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.id = try values.decode(String.self, forKey: .id)
     self.name = try values.decode(String.self, forKey: .name)
