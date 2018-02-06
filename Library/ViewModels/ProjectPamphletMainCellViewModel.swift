@@ -167,7 +167,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split(separator: "\n").map(String.init)
+      let parts = string.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 

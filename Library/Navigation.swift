@@ -592,7 +592,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   for (templateComponent, urlComponent) in zip(templateComponents, urlComponents) {
     if templateComponent.hasPrefix(":") {
       // matched a token
-      let paramName = String(templateComponent.characters.dropFirst())
+      let paramName = String(templateComponent.dropFirst())
       params[paramName] = urlComponent
     } else if templateComponent != urlComponent {
       return nil

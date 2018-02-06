@@ -11,6 +11,6 @@ public func isValidEmail(_ email: String) -> Bool {
     options: []
   )
 
-  let range = NSRange.init(location: 0, length: email.characters.count)
+  let range = NSRange.init(location: 0, length: email.count)
   return regex?.firstMatch(in: email, options: [], range: range) != nil
 }

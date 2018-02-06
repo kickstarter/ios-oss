@@ -114,7 +114,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.isLoading = isLoading.signal
 
     self.isFormValid = Signal.merge([
-      codeProperty.signal.map { code in code?.characters.count == 6 },
+      codeProperty.signal.map { code in code?.count == 6 },
       viewWillAppearProperty.signal.mapConst(false)
       ])
       .skipRepeats()

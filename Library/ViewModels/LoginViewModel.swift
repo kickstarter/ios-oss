@@ -232,5 +232,5 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 }
 
 private func isValid(email: String, password: String) -> Bool {
-  return isValidEmail(email) && !password.characters.isEmpty
+  return isValidEmail(email) && !password.isEmpty
 }

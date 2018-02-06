@@ -236,10 +236,10 @@ LiveStreamChatViewModelOutputs {
       )
       .map { $0.coalesceWith("") }
 
-    let maxLengthExceeded = text.map { $0.characters.count > maxMessageLength }
+    let maxLengthExceeded = text.map { $0.count > maxMessageLength }
 
     self.chatInputViewMessageLengthCountLabelText = text
-      .map { "\(maxMessageLength - $0.characters.count)" }
+      .map { "\(maxMessageLength - $0.count)" }
 
     self.sendButtonEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),

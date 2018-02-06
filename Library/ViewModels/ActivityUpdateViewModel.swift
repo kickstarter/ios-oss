@@ -128,7 +128,7 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
     mutableString.addAttributes(
       [NSFontAttributeName: UIFont.ksr_headline(size: 13.0),
        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900],
-      range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.characters.count)
+      range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.count)
     )
   }
 
