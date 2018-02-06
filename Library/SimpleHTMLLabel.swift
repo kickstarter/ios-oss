@@ -23,19 +23,20 @@ public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
 
 public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
 
-
-
   public var baseAttributes: [NSAttributedStringKey: AnyObject] = [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
+
   public var boldAttributes: [NSAttributedStringKey: AnyObject] = [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
-  public var italicAttributes: [NSAttributedStringKey: AnyObject] = [NSAttributedStringKey.font: defaultFont] {
+  
+  public var italicAttributes: [NSAttributedStringKey: AnyObject] =
+    [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
