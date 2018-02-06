@@ -34,7 +34,7 @@ public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
       self.setNeedsLayout()
     }
   }
-  
+
   public var italicAttributes: [NSAttributedStringKey: AnyObject] =
     [NSAttributedStringKey.font: defaultFont] {
     didSet {
