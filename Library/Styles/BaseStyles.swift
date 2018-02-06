@@ -147,7 +147,7 @@ private let baseNavigationBarStyle =
     NSForegroundColorAttributeName: UIColor.black,
     NSFontAttributeName: UIFont.ksr_callout()
     ]
-    <> UINavigationBar.lens.translucent .~ false
+    <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
 
 private let clearNavigationBarStyle =
@@ -155,5 +155,5 @@ private let clearNavigationBarStyle =
     NSForegroundColorAttributeName: UIColor.white,
     NSFontAttributeName: UIFont.ksr_callout()
     ]
-    <> UINavigationBar.lens.translucent .~ true
+    <> UINavigationBar.lens.isTranslucent .~ true
     <> UINavigationBar.lens.shadowImage .~ UIImage()
