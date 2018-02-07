@@ -183,7 +183,7 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 
-  internal func dismissKeyboard() {
+  @objc internal func dismissKeyboard() {
     self.view.endEditing(true)
   }
 }

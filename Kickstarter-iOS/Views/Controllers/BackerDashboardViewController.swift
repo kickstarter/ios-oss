@@ -200,17 +200,17 @@ internal final class BackerDashboardViewController: UIViewController {
 
   private func setAttributedTitles(for button: UIButton, with string: String) {
     let normalTitleString = NSAttributedString(string: string, attributes: [
-      NSFontAttributeName: self.traitCollection.isRegularRegular
+      NSAttributedStringKey.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_500
       ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
-      NSFontAttributeName: self.traitCollection.isRegularRegular
+      NSAttributedStringKey.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_900
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
       ])
 
     _ = button
@@ -224,7 +224,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
     for (idx, button) in self.menuButtonsStackView.arrangedSubviews.enumerated() {
       _ = (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == index)
+        ?|> UIButton.lens.isSelected .~ (idx == index)
     }
   }
 

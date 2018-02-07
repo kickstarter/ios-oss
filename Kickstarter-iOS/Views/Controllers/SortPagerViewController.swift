@@ -150,7 +150,7 @@ internal final class SortPagerViewController: UIViewController {
   fileprivate func selectButton(atIndex index: Int) {
     for (idx, button) in self.sortsStackView.arrangedSubviews.enumerated() {
       _ = (button as? UIButton)
-        ?|> UIButton.lens.selected .~ (idx == index)
+        ?|> UIButton.lens.isSelected .~ (idx == index)
     }
   }
 

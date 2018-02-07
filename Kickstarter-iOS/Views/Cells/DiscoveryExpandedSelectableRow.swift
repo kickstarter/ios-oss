@@ -20,7 +20,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
     _ = self.highlightView
       |> UIView.lens.backgroundColor .~ .ksr_green_500
       |> UIView.lens.alpha .~ 0.08
-      |> UIView.lens.isHidden.~ !value.row.isSelected
+      |> UIView.lens.isHidden .~ !value.row.isSelected
 
     _ = self.circleImageView
       |> UIView.lens.tintColor .~ .ksr_green_500

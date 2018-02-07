@@ -254,7 +254,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.attributedText %~ { _ in
         NSAttributedString(
           string: Strings.Learn_more_about_accountability(),
-          attributes: [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+          attributes: [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
         )
     }
 
@@ -372,7 +372,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-      |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
 
     _ = self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -557,7 +557,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
-    let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
+    guard let vc = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }

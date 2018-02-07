@@ -99,7 +99,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     if let navigationController = self.navigationController {
       _ = navigationController
-      |> UINavigationController.lens.navigationBarHidden .~ true
+        |> UINavigationController.lens.isNavigationBarHidden .~ true
     }
   }
 

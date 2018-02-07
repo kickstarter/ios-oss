@@ -115,7 +115,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       ||> UILabel.lens.textAlignment .~ .center
 
     _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
-      ||> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriorityDefaultLow
+      ||> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.defaultLow
       ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.countdownRootStackView
@@ -169,14 +169,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
       : UIFont.ksr_subhead(size: 14)
 
     let introLabelBaseAttributes = [
-      NSFontAttributeName: introLabelBaseFont,
-      NSForegroundColorAttributeName: UIColor.ksr_navy_600,
-      NSParagraphStyleAttributeName: paragraphStyle
+      NSAttributedStringKey.font: introLabelBaseFont,
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_navy_600,
+      NSAttributedStringKey.paragraphStyle: paragraphStyle
     ]
 
     let introLabelBoldAttributes = [
-      NSFontAttributeName: introLabelBaseFont.bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_500
+      NSAttributedStringKey.font: introLabelBaseFont.bolded,
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_500
     ]
     _ = self.introLabel
       |> SimpleHTMLLabel.lens.baseAttributes .~ introLabelBaseAttributes
