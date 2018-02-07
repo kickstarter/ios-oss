@@ -128,7 +128,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
       }
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.conversionLabel

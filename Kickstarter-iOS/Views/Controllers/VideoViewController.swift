@@ -157,7 +157,7 @@ public final class VideoViewController: UIViewController {
 
     self.timeObserver = player.addBoundaryTimeObserver(
       forTimes: [NSValue(time: time)],
-      queue: DispatchQueue.main) { [weak self] _ in
+      queue: DispatchQueue.main) { [weak self] in
         self?.viewModel.inputs.crossedCompletionThreshold()
     }
   }

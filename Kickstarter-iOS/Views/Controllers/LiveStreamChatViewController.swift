@@ -85,10 +85,10 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.chatInputViewMessageLengthCountLabelStackView
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.gridHalf(1))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.chatInputViewStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 

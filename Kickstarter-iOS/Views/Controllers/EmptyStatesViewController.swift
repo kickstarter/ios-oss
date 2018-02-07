@@ -103,7 +103,7 @@ internal final class EmptyStatesViewController: UIViewController {
 
     _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(1),
                                                  left: Styles.grid(4),
                                                  bottom: Styles.grid(7),

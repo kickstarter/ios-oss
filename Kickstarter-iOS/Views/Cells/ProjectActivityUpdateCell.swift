@@ -92,7 +92,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     _ = self.containerStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.contentAndFooterStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)

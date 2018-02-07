@@ -37,7 +37,7 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameStackView
       |> UIStackView.lens.spacing .~ Styles.grid(15)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(6), left: Styles.grid(16), bottom: Styles.grid(18), right: Styles.grid(16))

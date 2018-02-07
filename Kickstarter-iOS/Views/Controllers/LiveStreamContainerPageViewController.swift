@@ -63,7 +63,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.pagerTabStripStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2))
 
     _ = self.infoPagerButton

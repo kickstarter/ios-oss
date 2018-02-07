@@ -212,7 +212,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.differentPaymentMethodButton
       |> baseButtonStyle
@@ -285,7 +285,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.middleStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.minimumAndConversionStackView
@@ -302,7 +302,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
-      |> UIView.lens.userInteractionEnabled .~ true
+      |> UIView.lens.isUserInteractionEnabled .~ true
 
     _ = self.readMoreGradientView.backgroundColor = .clear
     _ = self.readMoreGradientView.startPoint = .zero
@@ -355,7 +355,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4) + Styles.grid(2),
                                                  leftRight: Styles.grid(2) + 1)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
@@ -372,7 +372,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriorityRequired
 
     _ = self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -385,7 +385,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.userInteractionEnabled .~ false
+      |> UIStackView.lens.isUserInteractionEnabled .~ false
 
     _ = self.shippingContainerView
       |> UIView.lens.layoutMargins .~
@@ -403,11 +403,11 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.topStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     self.navigationItem.leftBarButtonItem?.image = image(named: "icon--cross", tintColor: .ksr_navy_600)

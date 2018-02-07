@@ -119,7 +119,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 
   fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
-    let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
+    guard let vc = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }

@@ -92,7 +92,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.shareButton
       |> shareButtonStyle

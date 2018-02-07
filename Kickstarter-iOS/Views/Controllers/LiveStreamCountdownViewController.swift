@@ -92,7 +92,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
       |> UIStackView.lens.spacing .~ Styles.grid(2)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
           ? .init(topBottom: 0, leftRight: Styles.grid(28))
@@ -115,7 +115,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       ||> UILabel.lens.textAlignment .~ .center
 
     _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
-      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
+      ||> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriorityDefaultLow
       ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.countdownRootStackView
@@ -148,7 +148,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       ||> UILabel.lens.font .~ .ksr_title1(size: 24)
 
     _ = self.detailsStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(4),
                                                         bottom: Styles.grid(7), right: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
