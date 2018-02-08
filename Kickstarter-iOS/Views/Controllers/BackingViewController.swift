@@ -16,11 +16,15 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var contentView: UIView!
   @IBOutlet fileprivate weak var dividerView: UIView!
   @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var markAsReceivedStackView: UIStackView!
+  @IBOutlet fileprivate weak var markAsReceivedLabelStackView: UIStackView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeLabel: UILabel!
   @IBOutlet fileprivate weak var pledgeSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
+  @IBOutlet fileprivate weak var rewardDeliveredLabel: UILabel!
+  @IBOutlet fileprivate weak var useThisToKeepTrackLabel: UILabel!
   @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
@@ -78,6 +82,7 @@ internal final class BackingViewController: UIViewController {
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
+    self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
 
     self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
 
@@ -187,8 +192,25 @@ internal final class BackingViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> baseActivityIndicatorStyle
 
+    _ = [self.rewardDeliveredLabel, self.useThisToKeepTrackLabel]
+      ||> UILabel.lens.font .~ .ksr_body(size: 14)
+      ||> UILabel.lens.textColor .~ .ksr_dark_grey_900
+
+    _ = self.rewardDeliveredLabel
+      |> UILabel.lens.text .~ Strings.Reward_delivered()
+
+    _ = self.useThisToKeepTrackLabel
+      |> UILabel.lens.text .~ Strings.Use_this_to_keep_track_of_which_rewards_youve_received()
+
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2
+
+    _ = self.markAsReceivedStackView
+      |> UIStackView.lens.alignment .~ .top
+      |> UIStackView.lens.distribution .~ .fill
+
+    _ = self.markAsReceivedLabelStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)

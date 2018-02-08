@@ -3847,6 +3847,23 @@ daring ideas."
     )
   }
   /**
+   "Reward delivered?"
+
+   - **es**: "Reward delivered?"
+   - **ja**: "Reward delivered?"
+   - **de**: "Reward delivered?"
+   - **fr**: "Reward delivered?"
+   - **en**: "Reward delivered?"
+  */
+  public static func Reward_delivered() -> String {
+    return localizedString(
+      key: "Reward_delivered",
+      defaultValue: "Reward delivered?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "<b>Reward</b> estimated for delivery in %{delivery_date}"
 
    - **es**: "<b>Recompensa</b> estimada para entregarse en %{delivery_date}"
@@ -4949,6 +4966,23 @@ catch your eye?"
     return localizedString(
       key: "Update_pledge",
       defaultValue: "Update pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Use this to keep track of which rewards you've received."
+
+   - **es**: "Use this to keep track of which rewards you've received."
+   - **ja**: "Use this to keep track of which rewards you've received."
+   - **de**: "Use this to keep track of which rewards you've received."
+   - **fr**: "Use this to keep track of which rewards you've received."
+   - **en**: "Use this to keep track of which rewards you've received."
+  */
+  public static func Use_this_to_keep_track_of_which_rewards_youve_received() -> String {
+    return localizedString(
+      key: "Use_this_to_keep_track_of_which_rewards_youve_received",
+      defaultValue: "Use this to keep track of which rewards you've received.",
       count: nil,
       substitutions: [:]
     )
