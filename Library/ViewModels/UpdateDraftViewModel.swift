@@ -214,7 +214,7 @@ UpdateDraftViewModelOutputs {
 
     let removeAttachmentEvent = draft
       .takePairWhen(self.removeAttachmentProperty.signal.skipNil())
-      .switchMap { (draft, attachment) -> SignalProducer<Event<UpdateDraft.Image, ErrorEnvelope>, NoError> in
+      .switchMap { (draft, attachment) -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
@@ -301,13 +301,13 @@ UpdateDraftViewModelOutputs {
       )
       .takeWhen(saveAction)
       .flatMap { (draft, title, body, isBackersOnly) ->
-        SignalProducer<Event<UpdateDraft, ErrorEnvelope>, NoError> in
+        SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, NoError> in
 
         let unchanged = draft.update.title == title
           && draft.update.body == body
           && draft.update.isPublic == !isBackersOnly
 
-        let producer: SignalProducer<Event<UpdateDraft, ErrorEnvelope>, NoError>
+        let producer: SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, NoError>
 
         if unchanged {
           producer = SignalProducer(value: .value(draft))

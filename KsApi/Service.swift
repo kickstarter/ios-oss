@@ -527,7 +527,9 @@ public struct Service: ServiceType {
         }
         observer.sendCompleted()
       }
-      disposable.add(task.cancel)
+      disposable.observeEnded {
+        task.cancel()
+      }
       task.resume()
     }
   }

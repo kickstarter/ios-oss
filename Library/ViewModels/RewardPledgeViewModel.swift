@@ -237,7 +237,8 @@ RewardPledgeViewModelOutputs {
       .skipRepeats(==)
 
     let shippingRulesEvent = projectAndReward
-      .switchMap { (project, reward) -> SignalProducer<Event<[ShippingRule], ErrorEnvelope>, NoError> in
+      .switchMap { (project, reward)
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
         guard reward != Reward.noReward else {
           return SignalProducer(value: .value([]))
         }

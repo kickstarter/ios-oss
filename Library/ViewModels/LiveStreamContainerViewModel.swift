@@ -189,7 +189,7 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
     let numberOfPeopleWatchingTimeOutSignal = startNumberOfPeopleWatchingProducer
       .flatMap { _ in
-        timer(interval: .seconds(10), on: AppEnvironment.current.scheduler)
+        SignalProducer.timer(interval: .seconds(10), on: AppEnvironment.current.scheduler)
       }
       .take(until: numberOfPeopleWatchingEvent.values().ignoreValues())
 

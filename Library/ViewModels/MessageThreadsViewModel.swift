@@ -90,7 +90,7 @@ MessageThreadsViewModelOutputs {
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
       requestFromParams: { [project = configDataProperty.producer.map { $0?.project }] mailbox in
         project.take(first: 1)
-          .promoteErrors(ErrorEnvelope.self)
+          .promoteError(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
         }
