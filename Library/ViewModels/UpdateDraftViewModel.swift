@@ -214,7 +214,8 @@ UpdateDraftViewModelOutputs {
 
     let removeAttachmentEvent = draft
       .takePairWhen(self.removeAttachmentProperty.signal.skipNil())
-      .switchMap { (draft, attachment) -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
+      .switchMap { (draft, attachment)
+        -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
