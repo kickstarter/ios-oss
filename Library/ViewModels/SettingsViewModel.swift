@@ -101,28 +101,65 @@ SettingsViewModelOutputs {
       self.weeklyNewsletterTappedProperty.signal.map { (.weekly, $0) }
     )
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
-      self.artsAndCultureNewsletterTappedProperty.signal.map { (.newsletter(.arts), $0) },
-      self.gamesNewsletterTappedProperty.signal.map { (.newsletter(.games), $0) },
-      self.happeningNewsletterTappedProperty.signal.map { (.newsletter(.happening), $0) },
-      self.inventNewsletterTappedProperty.signal.map { (.newsletter(.invent), $0) },
-      self.promoNewsletterTappedProperty.signal.map { (.newsletter(.promo), $0) },
-      self.weeklyNewsletterTappedProperty.signal.map { (.newsletter(.weekly), $0)},
-
-      self.backingsTappedProperty.signal.map { (.notification(.backings), $0) },
-      self.commentsTappedProperty.signal.map { (.notification(.comments), $0) },
-      self.followerTappedProperty.signal.map { (.notification(.follower), $0) },
-      self.friendActivityTappedProperty.signal.map { (.notification(.friendActivity), $0) },
-      self.mobileBackingsTappedProperty.signal.map { (.notification(.mobileBackings), $0) },
-      self.mobileCommentsTappedProperty.signal.map { (.notification(.mobileComments), $0) },
-      self.mobileFollowerTappedProperty.signal.map { (.notification(.mobileFollower), $0) },
-      self.mobileFriendActivityTappedProperty.signal.map { (.notification(.mobileFriendActivity), $0) },
-      self.mobilePostLikesTappedProperty.signal.map { (.notification(.mobilePostLikes), $0) },
-      self.mobileUpdatesTappedProperty.signal.map { (.notification(.mobileUpdates), $0) },
-      self.postLikesTappedProperty.signal.map { (.notification(.postLikes), $0) },
-      self.creatorTipsProperty.signal.map { (.notification(.creatorTips), $0) },
-      self.updatesTappedProperty.signal.map { (.notification(.updates), $0) }
-    ])
+    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
+      self.artsAndCultureNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.arts), $0)
+      },
+      self.gamesNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.games), $0)
+      },
+      self.happeningNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.happening), $0)
+      },
+      self.inventNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.invent), $0)
+      },
+      self.promoNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.promo), $0)
+      },
+      self.weeklyNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.weekly), $0)
+      },
+      self.backingsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.backings), $0)
+      },
+      self.commentsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.comments), $0)
+      },
+      self.followerTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.follower), $0)
+      },
+      self.friendActivityTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.friendActivity), $0)
+      },
+      self.mobileBackingsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileBackings), $0)
+      },
+      self.mobileCommentsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileComments), $0)
+      },
+      self.mobileFollowerTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFollower), $0)
+      },
+      self.mobileFriendActivityTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      },
+      self.mobilePostLikesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobilePostLikes), $0)
+      },
+      self.mobileUpdatesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileUpdates), $0)
+      },
+      self.postLikesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.creatorTipsProperty.signal.map {
+        (UserAttribute.notification(Notification.creatorTips), $0)
+      },
+      self.updatesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.updates), $0)
+      }
+    )
 
     let updatedUser = initialUser
       .switchMap { user in
