@@ -110,7 +110,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-    let requestFirstPageWith = query
+      let requestFirstPageWith: Signal<DiscoveryParams, NoError> = query
       .filter { !$0.isEmpty }
       .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
 
@@ -125,12 +125,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter(isTrue)
       .ignoreValues()
 
-    let requestFromParamsWithDebounce = { params in
-      SignalProducer<(), ErrorEnvelope>(value: ())
-        .switchMap {
-          AppEnvironment.current.apiService.fetchDiscovery(params: params)
-            .ksr_debounce(
-              AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler)
+    let requestFromParamsWithDebounce: (DiscoveryParams)
+      -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> = { params in
+    SignalProducer<(), ErrorEnvelope>(value: ())
+      .switchMap {
+        AppEnvironment.current.apiService.fetchDiscovery(params: params)
+          .ksr_debounce(
+            AppEnvironment.current.debounceInterval, on: AppEnvironment.current.scheduler)
       }
     }
 
