@@ -16,6 +16,8 @@ public protocol BackingViewModelInputs {
 
   /// Call when the "View messages" button is pressed.
   func viewMessagesTapped()
+
+  func rewardReceivedTapped(on: Bool)
 }
 
 public protocol BackingViewModelOutputs {
@@ -72,6 +74,9 @@ public protocol BackingViewModelOutputs {
 
   /// Emits text for total pledge amount label.
   var totalPledgeAmount: Signal<String, NoError> { get }
+
+  /// Emits the value for reward received.
+  var rewardReceivedState: Signal<Bool, NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -214,6 +219,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
+    self.rewardReceivedState = backing.map { $0.markedReceived == 0 ? false : true }
+
+    self.rewardReceivedState.signal.observeValues{ print("\($0)") }
+
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
 
@@ -240,6 +249,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.viewMessagesTappedProperty.value = ()
   }
 
+  fileprivate let rewardReceivedTappedProperty = MutableProperty(false)
+  public func rewardReceivedTapped(on: Bool) {
+    self.rewardReceivedTappedProperty.value = on
+  }
+
   public let backerAvatarURL: Signal<URL?, NoError>
   public let backerName: Signal<String, NoError>
   public let backerSequence: Signal<String, NoError>
@@ -258,6 +272,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let shippingAmount: Signal<String, NoError>
   public let statusDescription: Signal<NSAttributedString, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
+
+  public let rewardReceivedState: Signal<Bool, NoError>
 
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }

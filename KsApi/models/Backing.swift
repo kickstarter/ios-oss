@@ -6,6 +6,7 @@ public struct Backing {
   public let amount: Int
   public let backer: User?
   public let backerId: Int
+  public let completed: Int?
   public let id: Int
   public let locationId: Int?
   public let pledgedAt: TimeInterval
@@ -25,6 +26,11 @@ public struct Backing {
     case pledged
     case preauth
   }
+
+  public var markedReceived: Int {
+    print("NUM: \(self.completed ?? 0)")
+    return (self.completed ?? 0 )
+  }
 }
 
 extension Backing: Equatable {
@@ -40,6 +46,7 @@ extension Backing: Argo.Decodable {
       <^> json <| "amount"
       <*> json <|? "backer"
       <*> json <| "backer_id"
+      <*> json <|? "completed_at"
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "location_id"
@@ -52,6 +59,14 @@ extension Backing: Argo.Decodable {
       <*> json <| "sequence"
       <*> json <|? "shipping_amount"
       <*> json <| "status"
+  }
+}
+
+extension Backing: EncodableType {
+  public func encode() -> [String: Any] {
+    var result: [String: Any] = [:]
+    result["completed_at"] = self.completed
+    return result
   }
 }
 

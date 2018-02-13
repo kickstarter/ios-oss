@@ -34,6 +34,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var totalPledgedAmountLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
+  @IBOutlet fileprivate weak var rewardReceivedSwitch: UISwitch!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
@@ -83,6 +84,8 @@ internal final class BackingViewController: UIViewController {
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
     self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
+
+    self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardReceivedState
 
     self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
 
@@ -252,6 +255,10 @@ internal final class BackingViewController: UIViewController {
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
+  }
+
+  @IBAction fileprivate func rewardReceivedTapped(_ receivedSwitch: UISwitch) {
+    self.viewModel.inputs.rewardReceivedTapped(on: receivedSwitch.isOn)
   }
 
   @objc fileprivate func closeButtonTapped() {

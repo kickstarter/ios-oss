@@ -289,6 +289,9 @@
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q3x-hd-jbW">
                                                         <rect key="frame" x="179.5" y="0.0" width="181.5" height="31"/>
                                                         <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <connections>
+                                                            <action selector="rewardReceivedTapped:" destination="NhY-5L-Rsa" eventType="valueChanged" id="UHJ-Vd-F4p"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -360,6 +363,7 @@
                         <outlet property="pledgeSectionTitleLabel" destination="53f-su-ibl" id="buP-ag-tYm"/>
                         <outlet property="rewardContainerView" destination="5iw-4a-3XE" id="wL0-T5-8Fc"/>
                         <outlet property="rewardDeliveredLabel" destination="1xe-8G-OZj" id="H9E-3m-wlo"/>
+                        <outlet property="rewardReceivedSwitch" destination="Q3x-hd-jbW" id="TQq-eP-DLt"/>
                         <outlet property="rewardSectionTitleLabel" destination="TN7-kO-VJJ" id="LAJ-2o-l2f"/>
                         <outlet property="rewardTitleWithAmountLabel" destination="VxD-FX-ImT" id="BDS-jv-W61"/>
                         <outlet property="shippingLabel" destination="LOo-wm-Oqf" id="rv7-HN-8Yv"/>
