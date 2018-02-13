@@ -82,7 +82,9 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       friend.stats.createdProjectsCount ?? 0
     }
 
-    self.hideProjectsCreated = projectsCreatedCount.map { (count: Int) -> Bool in count == 0 }
+    self.hideProjectsCreated = projectsCreatedCount.map {
+      (count: Int) -> Bool in count == 0
+    }
 
     self.projectsCreatedText = projectsCreatedCount
       .filter { $0 > 0 }
@@ -124,10 +126,10 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     }
 
     let updatedFriendToFollowed: Signal<User, NoError> = followFriendEvent.values()
-      .on(value: { (friend: User) -> () in cache(friend: friend, isFriend: true) })
+      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: true) })
 
     let updatedFriendToUnfollowed: Signal<User, NoError> = unfollowFriendEvent.values()
-      .on(value: { (friend: User) -> () in cache(friend: friend, isFriend: false) })
+      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: false) })
 
       let isFollowed: Signal<Bool, NoError> = Signal.merge(
         friend, updatedFriendToFollowed, updatedFriendToUnfollowed
