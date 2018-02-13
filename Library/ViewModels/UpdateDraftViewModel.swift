@@ -135,19 +135,22 @@ UpdateDraftViewModelOutputs {
     public init() {
     // MARK: Loading
 
-    let project = self.projectProperty.signal.skipNil()
-    let draftEvent = Signal.combineLatest(self.viewDidLoadProperty.signal, project)
+    let project: Signal<Project, NoError> = self.projectProperty.signal.skipNil()
+
+    let draftEvent =
+      Signal.combineLatest(self.viewDidLoadProperty.signal, project)
       .map(second)
       .flatMap {
         AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
-    let draft = draftEvent.values()
+
+    let draft: Signal<UpdateDraft, NoError> = draftEvent.values()
 
     self.showLoadFailure = draftEvent.errors().ignoreValues()
 
-    self.isLoading = .merge(
+    self.isLoading = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       draft.mapConst(false)
     )
@@ -162,15 +165,17 @@ UpdateDraftViewModelOutputs {
     self.title = draft.map { $0.update.title }
     self.body = draft.map { $0.update.body ?? "" }
 
-    let wasBackersOnly = draft.map { $0.update.isPublic }.map(negate)
+    let wasBackersOnly: Signal<Bool, NoError> = draft.map { (draft: UpdateDraft) -> Bool in
+      draft.update.isPublic }.map(negate
+    )
     self.isBackersOnly = Signal.merge(wasBackersOnly, self.isBackersOnlyOnProperty.signal)
 
-    let currentTitle = Signal.merge(self.title, self.titleTextChangedProperty.signal)
-    let currentBody = Signal.merge(self.body, self.bodyTextChangedProperty.signal)
+    let currentTitle: Signal<String, NoError> = Signal.merge(self.title, self.titleTextChangedProperty.signal)
+    let currentBody: Signal<String, NoError> = Signal.merge(self.body, self.bodyTextChangedProperty.signal)
 
-    let titleChanged = hasChanged(self.title, currentTitle)
-    let bodyChanged = hasChanged(self.body, currentBody)
-    let isBackersOnlyChanged = hasChanged(wasBackersOnly, self.isBackersOnly)
+    let titleChanged: Signal<Bool, NoError> = hasChanged(self.title, currentTitle)
+    let bodyChanged: Signal<Bool, NoError> = hasChanged(self.body, currentBody)
+    let isBackersOnlyChanged: Signal<Bool, NoError> = hasChanged(wasBackersOnly, self.isBackersOnly)
 
     // MARK: Attachments
 
@@ -187,17 +192,21 @@ UpdateDraftViewModelOutputs {
 
     let addAttachmentEvent = draft
       .takePairWhen(self.imagePickedProperty.signal.skipNil().map(first))
-      .switchMap { draft, url in
-        AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
+      .switchMap { (arg: (UpdateDraft, URL))
+        -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
+
+        let (draft, url) = arg
+        return AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
+
     self.showAddAttachmentFailure = addAttachmentEvent.errors().ignoreValues()
 
     self.attachmentAdded = addAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-    let addedAttachments = Signal
+    let addedAttachments: Signal<[UpdateDraft.Attachment], NoError> = Signal
       .merge(
         self.attachments,
         self.attachments
@@ -212,7 +221,7 @@ UpdateDraftViewModelOutputs {
       .map { attachments, id in attachments.filter { $0.id == id }.first }
       .skipNil()
 
-    let removeAttachmentEvent = draft
+    let removeAttachmentEvent: Signal<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> = draft
       .takePairWhen(self.removeAttachmentProperty.signal.skipNil())
       .switchMap { (draft, attachment)
         -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
@@ -221,12 +230,13 @@ UpdateDraftViewModelOutputs {
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
+
     self.showRemoveAttachmentFailure = removeAttachmentEvent.errors().ignoreValues()
 
     self.attachmentRemoved = removeAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-    let removedAttachments = addedAttachments
+      let removedAttachments: Signal<[UpdateDraft.Attachment], NoError> = addedAttachments
       .switchMap { [attachmentRemoved] attachments in
         attachmentRemoved
           .scan(attachments) { currentAttachments, toRemove in
@@ -234,7 +244,7 @@ UpdateDraftViewModelOutputs {
         }
     }
 
-    let currentAttachments = Signal
+    let currentAttachments: Signal<[UpdateDraft.Attachment], NoError> = Signal
       .merge(
         self.attachments,
         addedAttachments,
@@ -250,7 +260,7 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Validation
 
-    let hasContent = Signal.combineLatest(currentTitle, currentBody, self.attachments)
+    let hasContent: Signal<Bool, NoError> = Signal.combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
         !title.trimmed().isEmpty && (!body.trimmed().isEmpty || !attachments.isEmpty)
     }
@@ -264,10 +274,10 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Focus
 
-    let draftHasTitle = draft
+    let draftHasTitle: Signal<Bool, NoError> = draft
       .map { !$0.update.title.isEmpty }
 
-    let draftHasBody = draft
+    let draftHasBody: Signal<Bool, NoError> = draft
       .map { !($0.update.body ?? "").isEmpty }
 
     self.titleTextFieldBecomeFirstResponder = draftHasTitle
@@ -289,7 +299,7 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Saving
 
-    let saveAction = Signal.merge(
+    let saveAction: Signal<SaveAction, NoError> = Signal.merge(
       self.closeButtonTappedProperty.signal.mapConst(SaveAction.dismiss),
       self.previewButtonTappedProperty.signal.mapConst(SaveAction.preview)
     )

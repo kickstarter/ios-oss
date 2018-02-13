@@ -61,13 +61,13 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     public init() {
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
 
-    let isLoading = MutableProperty(false)
+    let isLoading: MutableProperty<Bool> = MutableProperty(false)
 
     self.isLoading = isLoading.signal
 
     self.attemptFacebookLogin = self.facebookConnectButtonTappedProperty.signal
 
-    let tokenString = self.facebookLoginSuccessProperty.signal.skipNil()
+    let tokenString: Signal<String, NoError> = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token.tokenString ?? "" }
 
     let facebookConnect = tokenString

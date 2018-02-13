@@ -85,21 +85,23 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     public init() {
 
-    let intent = self.loginIntentProperty.signal.skipNil()
+    let intent: Signal<LoginIntent, NoError> = self.loginIntentProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
-    self.logInContextText = intent.map { intent in statusString(intent) }
+    self.logInContextText = intent.map { (intent: LoginIntent) -> String in statusString(intent) }
 
-    self.headlineLabelHidden = intent.map { $0 != .generic && $0 != .discoveryOnboarding }
+    self.headlineLabelHidden = intent.map { (intent: LoginIntent) -> Bool in
+      intent != LoginIntent.generic && intent != LoginIntent.discoveryOnboarding
+    }
 
-    let isLoading = MutableProperty(false)
+    let isLoading: MutableProperty<Bool> = MutableProperty(false)
 
     self.isLoading = isLoading.signal
     self.startLogin = self.loginButtonPressedProperty.signal
     self.startSignup = self.signupButtonPressedProperty.signal
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
 
-    let tokenString = self.facebookLoginSuccessProperty.signal.skipNil()
+    let tokenString: Signal<String, NoError> = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token.tokenString ?? "" }
 
     let facebookLogin = tokenString

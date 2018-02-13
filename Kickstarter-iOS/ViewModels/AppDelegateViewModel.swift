@@ -184,7 +184,7 @@ AppDelegateViewModelOutputs {
 
   // swiftlint:disable cyclomatic_complexity
   public init() {
-    let currentUserEvent = Signal
+    let currentUserEvent: Signal<Signal<User?, ErrorEnvelope>.Event, NoError> = Signal
       .merge(
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -192,7 +192,7 @@ AppDelegateViewModelOutputs {
         self.userSessionStartedProperty.signal
       )
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
-      .switchMap { _ -> SignalProducer<Event<User?, ErrorEnvelope>, NoError> in
+      .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, NoError> in
         AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
           ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
           : SignalProducer(value: .value(nil))

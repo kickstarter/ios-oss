@@ -59,7 +59,7 @@ public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewMode
 SortPagerViewModelOutputs {
 
     public init() {
-    let sorts = self.sortsProperty.signal.skipNil()
+    let sorts: Signal<[DiscoveryParams.Sort], NoError> = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
     self.createSortButtons = sorts.take(first: 1)
@@ -70,13 +70,16 @@ SortPagerViewModelOutputs {
       )
       .map { sorts, id, animated in (categoryId: id, sorts: sorts, animated: animated) }
 
-    let selectedPage = Signal.combineLatest(
+    let selectedPage: Signal<(Int, Int), NoError> = Signal.combineLatest(
       sorts,
       self.selectSortProperty.signal.skipNil()
-      )
-      .map { sorts, sort in (sorts.index(of: sort) ?? 0, sorts.count) }
+    )
+      .map { (arg) -> (Int, Int) in
+        let (sorts, sort) = arg
+        return (sorts.index(of: sort) ?? 0, sorts.count)
+    }
 
-    let pageIndex = sorts.mapConst(0)
+    let pageIndex: Signal<Int, NoError> = sorts.mapConst(0)
 
     self.setSelectedButton = Signal.merge(
       pageIndex.take(first: 1),
