@@ -83,7 +83,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     }
 
     self.hideProjectsCreated = projectsCreatedCount.map {
-      (count: Int) -> Bool in count == 0
+      (count: Int) -> Bool in count == 0 ? true : false
     }
 
     self.projectsCreatedText = projectsCreatedCount
