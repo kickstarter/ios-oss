@@ -117,6 +117,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let reward = backing.map { $0.reward }.skipNil()
     let basicBacker = projectAndBackerAndBackerIsCurrentUser.map(second)
     let emptyStringOnLoad = self.viewDidLoadProperty.signal.mapConst("")
+    let projectAndBacking = Signal.combineLatest(project, backing)
 
     self.backerSequence = Signal.merge(
       self.viewDidLoadProperty.signal
@@ -219,7 +220,26 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
-    self.rewardReceivedState = backing.map { $0.markedReceived == 0 ? false : true }
+   // let marked: Signal<Int, NoError> = self.rewardReceivedTappedProperty.signal.map { $0 == true ? 1 : 0 }
+
+
+      let receivedEvent = projectAndBacking
+      .takePairWhen(self.rewardReceivedTappedProperty.signal)
+      .switchMap { project in
+        AppEnvironment.current.apiService.backingUpdate(forProject: project.0.0, forUser: project.0.1.backer!, received: project.1)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+      receivedEvent.signal.observeValues { v in
+        print("\(v)")
+      }
+
+    let marked = receivedEvent.values()
+
+    self.rewardReceivedState = backing.map {
+      $0.markedReceived == 0 ? false : true
+    }
 
     self.rewardReceivedState.signal.observeValues{ print("\($0)") }
 

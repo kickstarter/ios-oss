@@ -183,6 +183,10 @@ public protocol ServiceType {
   /// Fetch the logged-in user's data.
   func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope>
 
+  /// Mark reward received.
+  func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
+    -> SignalProducer<Backing, ErrorEnvelope>
+
   /// Follow all friends of current user.
   func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 

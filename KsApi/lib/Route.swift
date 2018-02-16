@@ -8,6 +8,7 @@ internal enum Route {
   case addImage(fileUrl: URL, toDraft: UpdateDraft)
   case addVideo(fileUrl: URL, toDraft: UpdateDraft)
   case backing(projectId: Int, backerId: Int)
+  case backingUpdate(projectId: Int, backerId: Int, received: Bool)
   case categories
   case category(Param)
   case changePaymentMethod(project: Project)
@@ -89,6 +90,9 @@ internal enum Route {
 
     case let .backing(projectId, backerId):
       return (.GET, "/v1/projects/\(projectId)/backers/\(backerId)", [:], nil)
+
+    case let .backingUpdate(projectId, backerId, received):
+      return (.PUT, "/v1/projects/\(projectId)/backers/\(backerId)", ["completed": received ? "1" : "0"], nil)
 
     case .categories:
       return (.GET, "/v1/categories", [:], nil)

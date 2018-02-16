@@ -28,8 +28,7 @@ public struct Backing {
   }
 
   public var markedReceived: Int {
-    print("NUM: \(self.completed ?? 0)")
-    return (self.completed ?? 0 )
+    return self.completed ?? 0
   }
 }
 
