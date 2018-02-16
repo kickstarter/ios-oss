@@ -150,8 +150,10 @@ public protocol DiscoveryPostcardViewModelType {
 }
 
 private func shouldHideCreatorLabel() -> Bool {
-// Since this is a A/A test, for now we will simply return true.
-  return true
+  let creatorExperiment = AppEnvironment.current.config?.abExperiments.filter {
+    $0.key == Experiment.Name.creatorsNameDiscovery.rawValue
+  }
+  return creatorExperiment?.first?.value != Experiment.Variant.experimental.rawValue
 }
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,

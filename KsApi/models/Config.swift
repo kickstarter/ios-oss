@@ -5,7 +5,7 @@ import Runes
 public enum Experiment {
 
   public enum Name: String {
-    case iosTest = "ios_test_test"
+    case creatorsNameDiscovery = "show_created_by_discovery"
   }
 
   public enum Variant: String {

@@ -88,20 +88,26 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testCreatorNameLabelHides_WhenExperimentDisabled() {
     let project = Project.template
-    _ = Config.template
+    let config = Config.template
       |> Config.lens.abExperiments .~
-      [Experiment.Name.iosTest.rawValue: Experiment.Variant.control.rawValue]
-    self.vm.inputs.configureWith(project: project)
-    self.creatorNameLabelHidden.assertValues([true])
+      [Experiment.Name.creatorsNameDiscovery.rawValue: Experiment.Variant.control.rawValue]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(project: project)
+      self.creatorNameLabelHidden.assertValues([true])
+    }
   }
 
   func testCreatorNameLabelShows_WhenExperimentEnabled() {
     let project = Project.template
-    _ = Config.template
+    let config = Config.template
       |> Config.lens.abExperiments .~
-      [Experiment.Name.iosTest.rawValue: Experiment.Variant.experimental.rawValue]
-    self.vm.inputs.configureWith(project: project)
-    self.creatorNameLabelHidden.assertValues([true])
+      [Experiment.Name.creatorsNameDiscovery.rawValue: Experiment.Variant.experimental.rawValue]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(project: project)
+      self.creatorNameLabelHidden.assertValues([false])
+    }
   }
 
   func testCreatorNameLabel_ShowsCorrectText() {
