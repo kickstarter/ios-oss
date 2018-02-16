@@ -158,6 +158,8 @@ extension Project: CustomDebugStringConvertible {
 
 extension Project: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project> {
+
+    print(json)
     let create = curry(Project.init)
     let tmp1 = create
       <^> json <| "blurb"

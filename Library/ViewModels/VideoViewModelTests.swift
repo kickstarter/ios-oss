@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 import AVFoundation
 import Library
 import Prelude
@@ -57,8 +58,10 @@ internal final class VideoViewModelTests: TestCase {
     self.addCompletionObserver.assertValues([completedThreshold], "Observer added to completion threshold.")
   }
 
-  func testConfigureVideoWithURL() {
-    let video = .template |> Project.Video.lens.high .~ "https://sickskatevid.mp4"
+  func testConfigureVideoWithURL_setsHighURL_WhenHlsIsNil() {
+    let video = .template
+      |> Project.Video.lens.hls .~ nil
+      |> Project.Video.lens.high .~ "https://sickskatevid.mp4"
     let project = .template |> Project.lens.video .~ video
 
     self.vm.inputs.configureWith(project: project)
@@ -67,6 +70,20 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.playButtonTapped()
 
     self.configurePlayerWithURL.assertValues([video.high], "Video url emitted.")
+  }
+
+  func testConfigureVideoWithURL_setsHlsURL_WhenHlsIsNotNil() {
+    let video = .template
+      |> Project.Video.lens.hls .~ "https://sickskatevid.m3u8"
+      |> Project.Video.lens.high .~ "https://sickskatevid.mp4"
+    let project = .template |> Project.lens.video .~ video
+
+    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.playButtonTapped()
+
+    self.configurePlayerWithURL.assertValues([video.hls!], "Video url emitted.")
   }
 
   func testIncrementVideoStats() {
