@@ -134,7 +134,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.configurePlayerWithURL = project
       .filter { $0.video != nil }
       .takeWhen(self.playButtonTappedProperty.signal)
-      .map { URL(string: $0.video?.high ?? "") }
+      .map { URL(string: $0.video?.hls ?? $0.video?.high ?? "") }
       .skipNil()
       .skipRepeats()
 
