@@ -35,6 +35,7 @@ public struct Project {
   public struct Video {
     public let id: Int
     public let high: String
+    public let hls: String?
   }
 
   public enum State: String, Argo.Decodable {
