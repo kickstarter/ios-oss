@@ -66,7 +66,9 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
           .switchMap { paramsOrCursor in
 
             paramsOrCursor.ifLeft(requestFromParams, ifRight: requestFromCursor)
+              .subdueError()
               .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+              .liftSubduedError()
               .on(
                 starting: { [weak isLoading] in
                   isLoading?.value = true
