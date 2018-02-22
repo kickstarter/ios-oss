@@ -17,6 +17,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var bookmarkImageView: UIImageView!
   @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
+  @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
@@ -149,6 +150,14 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
+    _ = self.exploreLabel
+      |> UILabel.lens.font %~~ { _, label in
+          label.traitCollection.isRegularRegular
+            ? .ksr_body(size: 16)
+            : .ksr_body(size: 15)
+      }
+      |> UILabel.lens.text %~ { _ in Strings.Explore() }
+
     _ = self.favoriteContainerView
       |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
 
@@ -161,6 +170,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
+      |> UILabel.lens.backgroundColor .~ .ksr_grey_500
+      |> UILabel.lens.clipsToBounds .~ true
+      |> UILabel.lens.layer.cornerRadius .~ 4
+      |> UILabel.lens.layoutMargins .~ UIEdgeInsets(top: 0, left: Styles.grid(2),
+                                                    bottom: 0, right: Styles.grid(2))
 
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
