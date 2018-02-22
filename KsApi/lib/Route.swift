@@ -92,7 +92,7 @@ internal enum Route {
       return (.GET, "/v1/projects/\(projectId)/backers/\(backerId)", [:], nil)
 
     case let .backingUpdate(projectId, backerId, received):
-      return (.PUT, "/v1/projects/\(projectId)/backers/\(backerId)", ["completed": received ? "1" : "0"], nil)
+      return (.PUT, "/v1/projects/\(projectId)/backers/\(backerId)", ["completed": received], nil)
 
     case .categories:
       return (.GET, "/v1/categories", [:], nil)

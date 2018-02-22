@@ -589,14 +589,12 @@ internal struct MockService: ServiceType {
   func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
     -> SignalProducer<Backing, ErrorEnvelope> {
 
-      let markedReceived = received == true ? 1 : 0
-
       return SignalProducer(
         value: fetchBackingResponse
           |> Backing.lens.backer .~ user
           |> Backing.lens.backerId .~ user.id
           |> Backing.lens.projectId .~ project.id
-          |> Backing.lens.completed .~ markedReceived
+          |> Backing.lens.completed .~ received
       )
   }
 

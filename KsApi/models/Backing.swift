@@ -6,7 +6,7 @@ public struct Backing {
   public let amount: Int
   public let backer: User?
   public let backerId: Int
-  public let completed: Int?
+  public let completed: Bool?
   public let id: Int
   public let locationId: Int?
   public let pledgedAt: TimeInterval
@@ -27,9 +27,9 @@ public struct Backing {
     case preauth
   }
 
-  public var markedReceived: Int {
-    return self.completed ?? 0
-  }
+//  public var markedReceived: Int {
+//    return self.completed ?? 0
+//  }
 }
 
 extension Backing: Equatable {

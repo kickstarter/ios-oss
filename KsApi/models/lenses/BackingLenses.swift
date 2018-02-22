@@ -26,7 +26,7 @@ extension Backing {
         shippingAmount: $1.shippingAmount, status: $1.status) }
     )
 
-    public static let completed = Lens<Backing, Int?>(
+    public static let completed = Lens<Backing, Bool?>(
       view: { $0.completed },
       set: { Backing(amount: $1.amount, backer: $1.backer, backerId: $1.backerId, completed: $0, id: $1.id,
         locationId: $1.locationId, pledgedAt: $1.pledgedAt, projectCountry: $1.projectCountry,
