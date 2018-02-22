@@ -8,14 +8,14 @@ public let baseBarButtonItemStyle =
 public let plainBarButtonItemStyle = baseBarButtonItemStyle
   <> UIBarButtonItem.lens.style .~ .plain
   <> UIBarButtonItem.lens.titleTextAttributes(for: .normal) .~ [
-    NSAttributedStringKey.font.rawValue: UIFont.ksr_subhead(size: 15)
+    NSAttributedStringKey.font: UIFont.ksr_subhead(size: 15)
 ]
 
 public let doneBarButtonItemStyle = baseBarButtonItemStyle
   <> UIBarButtonItem.lens.style .~ .done
   <> UIBarButtonItem.lens.title %~ { _ in Strings.Done() }
   <> UIBarButtonItem.lens.titleTextAttributes(for: .normal) .~ [
-    NSAttributedStringKey.font.rawValue: UIFont.ksr_headline(size: 15)
+    NSAttributedStringKey.font: UIFont.ksr_headline(size: 15)
 ]
 
 public let iconBarButtonItemStyle = baseBarButtonItemStyle
