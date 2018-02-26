@@ -27,9 +27,9 @@ public struct Backing {
     case preauth
   }
 
-//  public var markedReceived: Int {
-//    return self.completed ?? 0
-//  }
+  public var markedReceived: Bool {
+    return self.completed ?? false
+  }
 }
 
 extension Backing: Equatable {

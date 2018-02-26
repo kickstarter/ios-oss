@@ -132,6 +132,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUserEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
+    self.rewardReceivedState = backing.map { $0.markedReceived }
+
     self.backerName = basicBacker.map { $0.name }
 
     self.backerAvatarURL = basicBacker.map { URL(string: $0.avatar.small) }
@@ -231,8 +233,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       receivedEvent.signal.observeValues { v in
         print("\(v)")
       }
-
-    self.rewardReceivedState = receivedEvent.values().map { $0.completed! }
 
     self.rewardReceivedState.signal.observeValues{ print("\($0)") }
 
