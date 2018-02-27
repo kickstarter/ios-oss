@@ -165,9 +165,8 @@ UpdateDraftViewModelOutputs {
     self.title = draft.map { $0.update.title }
     self.body = draft.map { $0.update.body ?? "" }
 
-    let wasBackersOnly: Signal<Bool, NoError> = draft.map { (draft: UpdateDraft) -> Bool in
-      draft.update.isPublic }.map(negate
-    )
+    let wasBackersOnly: Signal<Bool, NoError> = draft.map { $0.update.isPublic }.map(negate)
+
     self.isBackersOnly = Signal.merge(wasBackersOnly, self.isBackersOnlyOnProperty.signal)
 
     let currentTitle: Signal<String, NoError> = Signal.merge(self.title, self.titleTextChangedProperty.signal)
@@ -192,10 +191,7 @@ UpdateDraftViewModelOutputs {
 
     let addAttachmentEvent = draft
       .takePairWhen(self.imagePickedProperty.signal.skipNil().map(first))
-      .switchMap { (arg: (UpdateDraft, URL))
-        -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
-
-        let (draft, url) = arg
+      .switchMap { draft, url in
         return AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
