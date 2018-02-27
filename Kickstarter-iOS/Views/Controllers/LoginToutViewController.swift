@@ -18,8 +18,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
 
-  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
   fileprivate let helpViewModel = HelpViewModel()
+  private var sessionStartedObserver: Any?
+  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
   fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
     let manager = FBSDKLoginManager()
@@ -41,8 +42,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.fbLoginManager.logOut()
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
@@ -50,6 +51,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   override func viewWillAppear(_ animated: Bool) {

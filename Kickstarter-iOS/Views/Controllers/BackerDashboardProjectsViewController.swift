@@ -5,6 +5,7 @@ import UIKit
 
 internal final class BackerDashboardProjectsViewController: UITableViewController {
 
+  private var userUpdatedObserver: Any?
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
 
@@ -29,13 +30,17 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(2)))
 
-    NotificationCenter
+    self.userUpdatedObserver = NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
