@@ -74,7 +74,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     _  = self.detailsStackView
       |> UIStackView.lens.axis .~ .vertical
       |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
@@ -85,7 +85,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
       |> UIStackView.lens.axis .~ .horizontal
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.distribution .~ .fill
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
       |> UIStackView.lens.layoutMargins .~ .init(top: 0,
                                                  left: Styles.grid(4),
@@ -119,7 +119,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
       |> lightSubscribeButtonStyle
 
     _ = [self.detailsStackView, self.subscribeStackView]
-      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      ||> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       ||> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
@@ -127,7 +127,7 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     }
 
     _ = self.goToProjectButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .white
+      |> UIButton.lens.titleColor(for: .normal) .~ .white
       |> liveStreamGoToProjectStyle
   }
 

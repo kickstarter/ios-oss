@@ -32,7 +32,7 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
 
     _ = self.viewProjectButton
       |> dashboardViewProjectButtonStyle
-      |> UIButton.lens.userInteractionEnabled .~ false
+      |> UIButton.lens.isUserInteractionEnabled .~ false
       |> UIButton.lens.accessibilityElementsHidden .~ true
   }
 

@@ -107,7 +107,7 @@ public struct Environment {
     mainBundle: NSBundleType = Bundle.main,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
-    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default(),
+    ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard) {
 
     self.apiService = apiService

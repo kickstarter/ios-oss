@@ -35,7 +35,7 @@ extension Rac where Object: UIImageView {
           guard let url = url else { return }
           object?.ksr_setImageWithURL(url)
         },
-        getter: { _ in nil })
+        getter: { nil })
 
       prop <~ newValue.observeForUI()
     }

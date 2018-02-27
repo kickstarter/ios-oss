@@ -46,15 +46,19 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
 RewardCellViewModelOutputs {
 
   public init() {
-    let projectAndRewardOrBacking = self.projectAndRewardOrBackingProperty.signal.skipNil()
-    let project = projectAndRewardOrBacking.map(first)
-    let reward = projectAndRewardOrBacking
+    let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), NoError> =
+      self.projectAndRewardOrBackingProperty.signal.skipNil()
+
+    let project: Signal<Project, NoError> = projectAndRewardOrBacking.map(first)
+
+    let reward: Signal<Reward, NoError> = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
         rewardOrBacking.left
           ?? rewardOrBacking.right?.reward
           ?? backingReward(fromProject: project)
           ?? Reward.noReward
     }
+
     let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map(needsConversion(project:) >>> negate)
@@ -235,7 +239,7 @@ RewardCellViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let boundStylesProperty = MutableProperty()
+  private let boundStylesProperty = MutableProperty(())
   public func boundStyles() {
     self.boundStylesProperty.value = ()
   }
@@ -245,7 +249,7 @@ RewardCellViewModelOutputs {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
   }
 
-  private let tappedProperty = MutableProperty()
+  private let tappedProperty = MutableProperty(())
   public func tapped() {
     self.tappedProperty.value = ()
   }

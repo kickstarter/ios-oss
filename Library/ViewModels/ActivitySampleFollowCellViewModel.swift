@@ -48,7 +48,7 @@ public final class ActivitySampleFollowCellViewModel: ActivitySampleFollowCellVi
     self.activityProperty.value = activity
   }
 
-  fileprivate let seeAllActivityTappedProperty = MutableProperty()
+  fileprivate let seeAllActivityTappedProperty = MutableProperty(())
   public func seeAllActivityTapped() {
     self.seeAllActivityTappedProperty.value = ()
   }

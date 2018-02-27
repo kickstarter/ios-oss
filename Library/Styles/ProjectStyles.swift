@@ -14,16 +14,16 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
   let baseNameAttributedString = NSMutableAttributedString(
     string: "\(projectName) ",
     attributes: [
-      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+      NSAttributedStringKey.font: UIFont.ksr_title3(size: 18.0),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
     ]
   )
 
   let blurbAttributedString = NSAttributedString(
     string: project.blurb,
     attributes: [
-      NSFontAttributeName: UIFont.ksr_title3(size: 18.0),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+      NSAttributedStringKey.font: UIFont.ksr_title3(size: 18.0),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_400
     ]
   )
 

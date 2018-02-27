@@ -67,7 +67,7 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
     self.expandableRowAndCategoryIdProperty.value = (row, categoryId)
   }
 
-  fileprivate let willDisplayProperty = MutableProperty()
+  fileprivate let willDisplayProperty = MutableProperty(())
   public func willDisplay() {
     self.willDisplayProperty.value = ()
   }

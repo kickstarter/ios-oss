@@ -520,12 +520,9 @@ private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
-  let createProject = curry(Navigation.project)
-  let createUpdate = curry(Navigation.Project.update)
-
-  return createProject
+  return curry(Navigation.project)
     <^> params <| "project_param"
-    <*> (createUpdate
+    <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.root))
     <*> params <|? "ref"
@@ -541,9 +538,7 @@ private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func updates(_ params: RouteParams) -> Decoded<Navigation> {
-  let createProject = curry(Navigation.project)
-
-  return createProject
+  return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
     <*> params <|? "ref"
@@ -592,7 +587,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   for (templateComponent, urlComponent) in zip(templateComponents, urlComponents) {
     if templateComponent.hasPrefix(":") {
       // matched a token
-      let paramName = String(templateComponent.characters.dropFirst())
+      let paramName = String(templateComponent.dropFirst())
       params[paramName] = urlComponent
     } else if templateComponent != urlComponent {
       return nil

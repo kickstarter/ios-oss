@@ -151,7 +151,7 @@ public final class LiveVideoViewController: UIViewController {
     let player = AVPlayer(url: url)
     let controller = AVPlayerViewController()
     controller.player = player
-    controller.videoGravity = AVLayerVideoGravityResizeAspectFill
+    controller.videoGravity = AVLayerVideoGravity.resizeAspectFill.rawValue
 
     player.currentItem?.addObserver(self, forKeyPath: statusKeyPath, options: .new, context: nil)
 

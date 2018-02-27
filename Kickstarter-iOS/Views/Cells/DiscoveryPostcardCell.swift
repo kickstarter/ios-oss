@@ -183,7 +183,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
 
   internal override func bindViewModel() {

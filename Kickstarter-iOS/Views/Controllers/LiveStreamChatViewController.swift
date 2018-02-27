@@ -92,10 +92,10 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.chatInputViewMessageLengthCountLabelStackView
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.gridHalf(1))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.chatInputViewStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
@@ -110,7 +110,7 @@ internal final class LiveStreamChatViewController: UIViewController {
 
     _ = self.sendButton
       |> UIButton.lens.tintColor .~ .white
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Send() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Send() }
   }
 
   internal override func bindViewModel() {

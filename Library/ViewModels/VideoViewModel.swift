@@ -207,7 +207,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .observeValues { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
   }
 
-  fileprivate let crossedCompletionThresholdProperty = MutableProperty()
+  fileprivate let crossedCompletionThresholdProperty = MutableProperty(())
   public func crossedCompletionThreshold() {
     self.crossedCompletionThresholdProperty.value = ()
   }
@@ -215,7 +215,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public func durationChanged(toNew duration: CMTime) {
     self.durationProperty.value = duration
   }
-  fileprivate let playButtonTappedProperty = MutableProperty()
+  fileprivate let playButtonTappedProperty = MutableProperty(())
   public func playButtonTapped() {
     self.playButtonTappedProperty.value = ()
   }
@@ -227,7 +227,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }
-  fileprivate let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
@@ -235,11 +235,11 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public func viewDidDisappear(animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

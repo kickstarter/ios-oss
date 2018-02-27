@@ -83,8 +83,8 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIView.lens.layer.shadowColor .~ UIColor.ksr_grey_500.cgColor
 
     _ = self.closeButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.title(for: .normal) .~ nil
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
@@ -99,7 +99,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.shareButton
       |> shareButtonStyle

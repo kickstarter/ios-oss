@@ -52,8 +52,7 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
 
 extension Activity: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity> {
-    let create = curry(Activity.init)
-    let tmp = create
+    let tmp = curry(Activity.init)
       <^> json <|  "category"
       <*> json <|? "comment"
       <*> json <|  "created_at"
@@ -79,8 +78,7 @@ extension Activity.Category: Argo.Decodable {
 
 extension Activity.MemberData: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
-    let create = curry(Activity.MemberData.init)
-    let tmp = create
+    let tmp = curry(Activity.MemberData.init)
       <^> json <|? "amount"
       <*> json <|? "backing"
       <*> json <|? "old_amount"

@@ -97,7 +97,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           ? .init(topBottom: Styles.grid(10), leftRight: 0)
           : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
       }
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
     }
 
     override func bindViewModel() {

@@ -84,19 +84,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           .map(JSON.init)
           .map(LiveStreamEvent.decode)
           .flatMap { $0.value }
-          .map(Event<LiveStreamEvent, LiveApiError>.value)
+          .map(Signal<LiveStreamEvent, LiveApiError>.Event.value)
           .coalesceWith(.failed(.genericFailure))
 
-        observer.action(event)
+        observer.send(event)
         observer.sendCompleted()
       }
 
       task.resume()
 
-      disposable.add({
+      disposable.observeEnded {
         task.cancel()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
@@ -123,19 +123,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           .map(JSON.init)
           .map([LiveStreamEvent].decode)
           .flatMap { $0.value }
-          .map(Event<[LiveStreamEvent], LiveApiError>.value)
+          .map(Signal<[LiveStreamEvent], LiveApiError>.Event.value)
           .coalesceWith(.failed(.genericFailure))
 
-        observer.action(event)
+        observer.send(event)
         observer.sendCompleted()
       }
 
       task.resume()
 
-      disposable.add({
+      disposable.observeEnded {
         task.cancel()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
@@ -167,19 +167,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
             .map(JSON.init)
             .map(LiveStreamEventsEnvelope.decode)
             .flatMap { $0.value }
-            .map(Event<LiveStreamEventsEnvelope, LiveApiError>.value)
+            .map(Signal<LiveStreamEventsEnvelope, LiveApiError>.Event.value)
             .coalesceWith(.failed(.genericFailure))
 
-          observer.action(envelope)
+          observer.send(envelope)
           observer.sendCompleted()
         }
 
         task.resume()
 
-        disposable.add({
+        disposable.observeEnded {
           task.cancel()
           observer.sendInterrupted()
-        })
+        }
       }
   }
 
@@ -214,19 +214,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
             .map(JSON.init)
             .map(LiveStreamSubscribeEnvelope.decode)
             .flatMap { $0.value }
-            .map(Event<LiveStreamSubscribeEnvelope, LiveApiError>.value)
+            .map(Signal<LiveStreamSubscribeEnvelope, LiveApiError>.Event.value)
             .coalesceWith(.failed(.genericFailure))
 
-          observer.action(envelope)
+          observer.send(envelope)
           observer.sendCompleted()
         }
 
         task.resume()
 
-        disposable.add({
+        disposable.observeEnded {
           task.cancel()
           observer.sendInterrupted()
-        })
+        }
       }
   }
 
@@ -237,7 +237,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
-          observer.action(.failed(.failedToInitializeFirebase))
+          observer.send(.failed(.failedToInitializeFirebase))
           return
         }
 
@@ -249,17 +249,17 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
           let chatMessages = (snapshot.children.allObjects as? [FIRDataSnapshot] ?? [])
             .map([LiveStreamChatMessage].decode)
             .flatMap { $0.value }
-            .map(Event<[LiveStreamChatMessage], LiveApiError>.value)
+            .map(Signal<[LiveStreamChatMessage], LiveApiError>.Event.value)
             .coalesceWith(.failed(.chatMessageDecodingFailed))
 
-          observer.action(chatMessages)
+          observer.send(chatMessages)
           observer.sendCompleted()
         })
 
-        disposable.add({
+        disposable.observeEnded {
           query.removeAllObservers()
           observer.sendInterrupted()
-        })
+        }
         }
         .start(on: self.backgroundScheduler)
   }
@@ -269,7 +269,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
       return SignalProducer { (observer, disposable) in
         guard let ref = firebaseDbRef else {
-          observer.action(.failed(.failedToInitializeFirebase))
+          observer.send(.failed(.failedToInitializeFirebase))
           return
         }
 
@@ -285,24 +285,24 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
             .flatMap { $0 }
             .map(LiveStreamChatMessage.decode)
             .flatMap { $0.value }
-            .map(Event<LiveStreamChatMessage, LiveApiError>.value)
+            .map(Signal<LiveStreamChatMessage, LiveApiError>.Event.value)
 
           guard let chatMessage = tryChatMessage else { return }
 
-          observer.action(chatMessage)
+          observer.send(chatMessage)
         })
 
-        disposable.add({
+        disposable.observeEnded {
           query.removeAllObservers()
           observer.sendInterrupted()
-        })
+        }
       }
   }
 
   public func greenRoomOffStatus(withPath path: String) -> SignalProducer<Bool, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -311,23 +311,23 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       query.observe(.value, with: { snapshot in
         let value = snapshot.value
           .flatMap { $0 as? Bool }
-          .map(Event<Bool, LiveApiError>.value)
+          .map(Signal<Bool, LiveApiError>.Event.value)
           .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
-        observer.action(value)
+        observer.send(value)
       })
 
-      disposable.add({
+      disposable.observeEnded {
         query.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func hlsUrl(withPath path: String) -> SignalProducer<String, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -336,23 +336,23 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       query.observe(.value, with: { snapshot in
         let value = snapshot.value
           .flatMap { $0 as? String }
-          .map(Event<String, LiveApiError>.value)
+          .map(Signal<String, LiveApiError>.Event.value)
           .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
-        observer.action(value)
+        observer.send(value)
       })
 
-      disposable.add({
+      disposable.observeEnded {
         query.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func numberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -362,23 +362,23 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         let value = snapshot.value
           .flatMap { $0 as? NSDictionary }
           .map { $0.allKeys.count }
-          .map(Event<Int, LiveApiError>.value)
+          .map(Signal<Int, LiveApiError>.Event.value)
           .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
-        observer.action(value)
+        observer.send(value)
       })
 
-      disposable.add({
+      disposable.observeEnded {
         query.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func incrementNumberOfPeopleWatching(withPath path: String) -> SignalProducer<(), LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -386,19 +386,19 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       presenceRef.setValue(true)
       presenceRef.onDisconnectRemoveValue()
 
-      observer.action(Event<(), LiveApiError>.value(()))
+      observer.send(Signal<(), LiveApiError>.Event.value(()))
 
-      disposable.add({
+      disposable.observeEnded {
         presenceRef.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func scaleNumberOfPeopleWatching(withPath path: String) -> SignalProducer<Int, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -407,62 +407,62 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
       query.observe(.value, with: { snapshot in
         let value = snapshot.value
           .flatMap { $0 as? Int }
-          .map(Event<Int, LiveApiError>.value)
+          .map(Signal<Int, LiveApiError>.Event.value)
           .coalesceWith(.failed(.snapshotDecodingFailed(path: path)))
 
-        observer.action(value)
+        observer.send(value)
       })
 
-      disposable.add({
+      disposable.observeEnded {
         query.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func signInToFirebaseAnonymously() -> SignalProducer<String, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let auth = firebaseAuth else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
       auth.signInAnonymously { user, _ in
         let value = user
           .map { $0.uid }
-          .map(Event<String, LiveApiError>.value)
+          .map(Signal<String, LiveApiError>.Event.value)
           .coalesceWith(.failed(.firebaseAnonymousAuthFailed))
 
-        observer.action(value)
+        observer.send(value)
         observer.sendCompleted()
       }
 
-      disposable.add({
+      disposable.observeEnded {
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
   public func signInToFirebase(withCustomToken customToken: String) -> SignalProducer<String, LiveApiError> {
     return SignalProducer { (observer, disposable) in
       guard let auth = firebaseAuth else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
       auth.signIn(withCustomToken: customToken) { user, _ in
         let value = user
           .map { $0.uid }
-          .map(Event<String, LiveApiError>.value)
+          .map(Signal<String, LiveApiError>.Event.value)
           .coalesceWith(.failed(.firebaseCustomTokenAuthFailed))
 
-        observer.action(value)
+        observer.send(value)
         observer.sendCompleted()
       }
 
-      disposable.add({
+      disposable.observeEnded {
         observer.sendInterrupted()
-      })
+      }
     }
   }
 
@@ -472,7 +472,7 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
 
     return SignalProducer { (observer, disposable) in
       guard let ref = firebaseDbRef else {
-        observer.action(.failed(.failedToInitializeFirebase))
+        observer.send(.failed(.failedToInitializeFirebase))
         return
       }
 
@@ -490,10 +490,10 @@ public struct LiveStreamService: LiveStreamServiceProtocol {
         observer.sendCompleted()
       }
 
-      disposable.add({
+      disposable.observeEnded {
         chatRef.removeAllObservers()
         observer.sendInterrupted()
-      })
+      }
     }
   }
 }

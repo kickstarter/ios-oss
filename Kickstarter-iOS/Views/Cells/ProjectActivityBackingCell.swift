@@ -116,12 +116,12 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
         titleLabel.attributedText = title.simpleHtmlAttributedString(
           base: [
-            NSFontAttributeName: UIFont.ksr_title3(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+            NSAttributedStringKey.font: UIFont.ksr_title3(size: 14),
+            NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_400
           ],
           bold: [
-            NSFontAttributeName: UIFont.ksr_title3(size: 14),
-            NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+            NSAttributedStringKey.font: UIFont.ksr_title3(size: 14),
+            NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
           ],
           italic: nil
           )
@@ -143,7 +143,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.backingButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bulletSeparatorView
       |> projectActivityBulletSeparatorViewStyle
@@ -173,7 +173,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.pledgeDetailsStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.previousPledgeAmountLabel
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
@@ -184,7 +184,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     _ = self.sendMessageButton
       |> projectActivityFooterButton
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
   }
 
   @objc fileprivate func backingButtonPressed(_ button: UIButton) {

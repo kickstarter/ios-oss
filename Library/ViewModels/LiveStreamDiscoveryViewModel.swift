@@ -90,7 +90,7 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     }
   }
 
-  private let appWillEnterForegroundProperty = MutableProperty()
+  private let appWillEnterForegroundProperty = MutableProperty(())
   public func appWillEnterForeground() {
     self.appWillEnterForegroundProperty.value = ()
   }
@@ -105,12 +105,12 @@ LiveStreamDiscoveryViewModelInputs, LiveStreamDiscoveryViewModelOutputs {
     self.tappedLiveStreamEventProperty.value = liveStreamEvent
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty()
+  private let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

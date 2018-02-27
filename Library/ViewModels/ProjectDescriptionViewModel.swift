@@ -134,7 +134,7 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.policyForNavigationActionProperty.value = navigationAction
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -149,12 +149,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.webViewDidFailProvisionalNavigationProperty.value = error
   }
 
-  fileprivate let webViewDidFinishNavigationProperty = MutableProperty()
+  fileprivate let webViewDidFinishNavigationProperty = MutableProperty(())
   public func webViewDidFinishNavigation() {
     self.webViewDidFinishNavigationProperty.value = ()
   }
 
-  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty()
+  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty(())
   public func webViewDidStartProvisionalNavigation() {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }

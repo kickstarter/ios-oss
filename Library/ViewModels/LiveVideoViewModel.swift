@@ -158,7 +158,7 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     self.liveStreamTypeProperty.value = liveStreamType
   }
 
-  private let didEnterBackgroundProperty = MutableProperty()
+  private let didEnterBackgroundProperty = MutableProperty(())
   public func didEnterBackground() {
     self.didEnterBackgroundProperty.value = ()
   }
@@ -168,7 +168,7 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     self.hlsPlayerStateChangedProperty.value = state
   }
 
-  private let sessionDidConnectProperty = MutableProperty()
+  private let sessionDidConnectProperty = MutableProperty(())
   public func sessionDidConnect() {
     self.sessionDidConnectProperty.value = ()
   }
@@ -198,22 +198,22 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     self.subscriberVideoEnabledProperty.value = reason
   }
 
-  private let viewDidDisappearProperty = MutableProperty()
+  private let viewDidDisappearProperty = MutableProperty(())
   public func viewDidDisappear() {
     self.viewDidDisappearProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewWillAppearProperty = MutableProperty()
+  private let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
 
-  private let willEnterForegroundProperty = MutableProperty()
+  private let willEnterForegroundProperty = MutableProperty(())
   public func willEnterForeground() {
     self.willEnterForegroundProperty.value = ()
   }

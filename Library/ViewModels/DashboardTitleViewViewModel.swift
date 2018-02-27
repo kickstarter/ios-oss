@@ -91,7 +91,7 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
     self.currentProjectIndexProperty.value = data.currentProjectIndex
     self.updateDrawerStateHideArrowProperty.value = (data.drawerState, data.isArrowHidden)
   }
-  fileprivate let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty(())
   public func titleButtonTapped() {
     titleButtonTappedProperty.value = ()
   }

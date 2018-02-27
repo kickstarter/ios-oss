@@ -164,7 +164,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
     self.pageTransitionCompletedFromIndexProperty.value = (completed, index)
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
