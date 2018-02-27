@@ -106,7 +106,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8)
       |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(1))
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
+      |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.general_social_buttons_connect_with_facebook()
     }
   }

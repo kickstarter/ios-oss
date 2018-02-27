@@ -176,7 +176,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
-  private let backedProjectsButtonTappedProperty = MutableProperty()
+  private let backedProjectsButtonTappedProperty = MutableProperty(())
   public func backedProjectsButtonTapped() {
     self.backedProjectsButtonTappedProperty.value = ()
   }
@@ -191,7 +191,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     return self.currentSelectedTabProperty.value
   }
 
-  private let currentUserUpdatedInEnvironmentProperty = MutableProperty()
+  private let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
@@ -201,7 +201,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     return self.initialTopConstantProperty.value
   }
 
-  private let messagesButtonTappedProperty = MutableProperty()
+  private let messagesButtonTappedProperty = MutableProperty(())
   public func messagesButtonTapped() {
     self.messagesButtonTappedProperty.value = ()
   }
@@ -211,17 +211,17 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.pageTransitionCompletedProperty.value = completed
   }
 
-  private let savedProjectsButtonTappedProperty = MutableProperty()
+  private let savedProjectsButtonTappedProperty = MutableProperty(())
   public func savedProjectsButtonTapped() {
     self.savedProjectsButtonTappedProperty.value = ()
   }
 
-  private let settingsButtonTappedProperty = MutableProperty()
+  private let settingsButtonTappedProperty = MutableProperty(())
   public func settingsButtonTapped() {
     self.settingsButtonTappedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

@@ -79,7 +79,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.minimumStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -99,7 +99,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = [self.minimumStackView, self.titleDescriptionStackView,
          self.itemsContainerStackView, self.footerStackView]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
-      ||> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      ||> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
@@ -185,19 +185,19 @@ internal final class RewardCell: UITableViewCell, ValueCell {
     _ = self.selectRewardButton
       |> greenButtonStyle
       |> UIButton.lens.layer.cornerRadius .~ 0
-      |> UIButton.lens.userInteractionEnabled .~ false
+      |> UIButton.lens.isUserInteractionEnabled .~ false
       |> UIButton.lens.isAccessibilityElement .~ false
 
     _ = self.manageRewardButton
       |> greenBorderButtonStyle
-      |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Manage_your_pledge() }
+      |> UIButton.lens.isUserInteractionEnabled .~ false
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Manage_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     _ = self.viewYourPledgeButton
       |> borderButtonStyle
-      |> UIButton.lens.userInteractionEnabled .~ false
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.View_your_pledge() }
+      |> UIButton.lens.isUserInteractionEnabled .~ false
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.View_your_pledge() }
       |> UIButton.lens.isAccessibilityElement .~ false
 
     self.viewModel.inputs.boundStyles()

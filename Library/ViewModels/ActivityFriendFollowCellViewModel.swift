@@ -36,12 +36,12 @@ ActivityFriendFollowCellViewModelOutputs {
     self.title = friend.map {
       let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
       return string.simpleHtmlAttributedString(base: [
-        NSFontAttributeName: UIFont.ksr_subhead(size: 14.0),
-        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+        NSAttributedStringKey.font: UIFont.ksr_subhead(size: 14.0),
+        NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
         ],
         bold: [
-          NSFontAttributeName: UIFont.ksr_headline(size: 14.0),
-          NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+          NSAttributedStringKey.font: UIFont.ksr_headline(size: 14.0),
+          NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
         ]) ?? NSAttributedString(string: "")
     }
 
@@ -67,7 +67,7 @@ ActivityFriendFollowCellViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
-  fileprivate let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty(())
   public func followButtonTapped() {
     self.followButtonTappedProperty.value = ()
   }

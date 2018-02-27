@@ -73,7 +73,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(4))
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
+      |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
     }
   }

@@ -172,17 +172,17 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     self.configDataProperty.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let chatButtonTappedProperty = MutableProperty()
+  private let chatButtonTappedProperty = MutableProperty(())
   public func chatButtonTapped() {
     self.chatButtonTappedProperty.value = ()
   }
 
-  private let didLoadViewControllersIntoPagesDataSourceProperty = MutableProperty()
+  private let didLoadViewControllersIntoPagesDataSourceProperty = MutableProperty(())
   public func didLoadViewControllersIntoPagesDataSource() {
     self.didLoadViewControllersIntoPagesDataSourceProperty.value = ()
   }
 
-  private let infoButtonTappedProperty = MutableProperty()
+  private let infoButtonTappedProperty = MutableProperty(())
   public func infoButtonTapped() {
     self.infoButtonTappedProperty.value = ()
   }
@@ -192,7 +192,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     self.pageTransitionCompletedProperty.value = completed
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

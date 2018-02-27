@@ -189,7 +189,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     }
   }
 
-  fileprivate let backersButtonTappedProperty = MutableProperty()
+  fileprivate let backersButtonTappedProperty = MutableProperty(())
   public func backersButtonTapped() {
     self.backersButtonTappedProperty.value = ()
   }
@@ -203,22 +203,22 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     self.cumulativeProjectStatsProperty.value = (cumulative, project, referrers)
   }
 
-  fileprivate let percentButtonTappedProperty = MutableProperty()
+  fileprivate let percentButtonTappedProperty = MutableProperty(())
   public func percentButtonTapped() {
     self.percentButtonTappedProperty.value = ()
   }
 
-  fileprivate let pledgedButtonTappedProperty = MutableProperty()
+  fileprivate let pledgedButtonTappedProperty = MutableProperty(())
   public func pledgedButtonTapped() {
     self.pledgedButtonTappedProperty.value = ()
   }
 
-  fileprivate let showMoreReferrersTappedProperty = MutableProperty()
+  fileprivate let showMoreReferrersTappedProperty = MutableProperty(())
   public func showMoreReferrersTapped() {
     self.showMoreReferrersTappedProperty.value = ()
   }
 
-  fileprivate let sourceButtonTappedProperty = MutableProperty()
+  fileprivate let sourceButtonTappedProperty = MutableProperty(())
   public func sourceButtonTapped() {
     self.sourceButtonTappedProperty.value = ()
   }

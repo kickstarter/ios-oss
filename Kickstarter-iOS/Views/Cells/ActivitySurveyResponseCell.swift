@@ -51,13 +51,13 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
 
     _ = self.respondNowButton
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.backgroundColor(forState: .normal) .~ .clear
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
-      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_500
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
+      |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
+      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_500
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
       |> UIButton.lens.tintColor .~ .ksr_green_700
       |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
-      |> UIButton.lens.image(forState: .normal) %~ { _ in Library.image(named: "respond-icon") }
+      |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "respond-icon") }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
                                                   right: 0)
 

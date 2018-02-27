@@ -35,8 +35,7 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
 
 extension Backing: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
-    let create = curry(Backing.init)
-    let tmp1 = create
+    let tmp1 = curry(Backing.init)
       <^> json <| "amount"
       <*> json <|? "backer"
       <*> json <| "backer_id"

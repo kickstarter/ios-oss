@@ -190,7 +190,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func didSelectIndex(_ index: Int) {
     self.didSelectIndexProperty.value = index
   }
-  fileprivate let switchToActivitiesProperty = MutableProperty()
+  fileprivate let switchToActivitiesProperty = MutableProperty(())
   internal func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
   }
@@ -202,28 +202,28 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func switchToDiscovery(params: DiscoveryParams?) {
     self.switchToDiscoveryProperty.value = params
   }
-  fileprivate let switchToLoginProperty = MutableProperty()
+  fileprivate let switchToLoginProperty = MutableProperty(())
   internal func switchToLogin() {
     self.switchToLoginProperty.value = ()
   }
-  fileprivate let switchToProfileProperty = MutableProperty()
+  fileprivate let switchToProfileProperty = MutableProperty(())
   internal func switchToProfile() {
     self.switchToProfileProperty.value = ()
   }
-  fileprivate let switchToSearchProperty = MutableProperty()
+  fileprivate let switchToSearchProperty = MutableProperty(())
   internal func switchToSearch() {
     self.switchToSearchProperty.value = ()
   }
-  fileprivate let userSessionStartedProperty = MutableProperty<()>()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   internal func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  fileprivate let userSessionEndedProperty = MutableProperty<()>()
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   internal func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty<()>()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

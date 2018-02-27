@@ -140,7 +140,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
     self.streamPlayerView.playerLayer?.player = url.map(AVPlayer.init(url:))
     self.streamPlayerView.playerLayer?.player?.play()
     self.streamPlayerView.playerLayer?.player?.isMuted = true
-    self.streamPlayerView.playerLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+    self.streamPlayerView.playerLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
     self.streamPlayerView.backgroundColor = .black
 
     UIView.animate(withDuration: 0.3) {

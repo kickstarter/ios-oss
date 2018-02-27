@@ -110,10 +110,9 @@ extension ErrorEnvelope: Error {}
 
 extension ErrorEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
-    let create = curry(ErrorEnvelope.init)
 
     // Typically API errors come back in this form...
-    let standardErrorEnvelope = create
+    let standardErrorEnvelope = curry(ErrorEnvelope.init)
       <^> json <|| "error_messages"
       <*> json <|? "ksr_code"
       <*> json <| "http_code"
@@ -122,7 +121,7 @@ extension ErrorEnvelope: Argo.Decodable {
 
     // ...but sometimes we make requests to the www server and JSON errors come back in a different envelope
     let nonStandardErrorEnvelope = {
-      create
+      curry(ErrorEnvelope.init)
         <^> concatSuccesses([
           json <|| ["data", "errors", "amount"],
           json <|| ["data", "errors", "backer_reward"],

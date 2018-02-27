@@ -73,7 +73,7 @@ ActivityUpdateViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
-  fileprivate let tappedProjectImageProperty = MutableProperty()
+  fileprivate let tappedProjectImageProperty = MutableProperty(())
   public func tappedProjectImage() {
     self.tappedProjectImageProperty.value = ()
   }
@@ -104,12 +104,12 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
 
   let attributedString = fullString.simpleHtmlAttributedString(
       base: [
-        NSFontAttributeName: UIFont.ksr_footnote(),
-        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+        NSAttributedStringKey.font: UIFont.ksr_footnote(),
+        NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
       ],
       bold: [
-        NSFontAttributeName: UIFont.ksr_headline(size: 13.0),
-        NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+        NSAttributedStringKey.font: UIFont.ksr_headline(size: 13.0),
+        NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
       ]
     )
     ?? .init(string: "")
@@ -126,9 +126,9 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
       .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
-      [NSFontAttributeName: UIFont.ksr_headline(size: 13.0),
-       NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900],
-      range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.characters.count)
+      [NSAttributedStringKey.font: UIFont.ksr_headline(size: 13.0),
+       NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900],
+      range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.count)
     )
   }
 

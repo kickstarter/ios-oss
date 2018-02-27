@@ -81,7 +81,7 @@ LiveStreamDiscoveryLiveNowCellViewModelInputs, LiveStreamDiscoveryLiveNowCellVie
     self.configData.value = liveStreamEvent
   }
 
-  private let didEndDisplayProperty = MutableProperty()
+  private let didEndDisplayProperty = MutableProperty(())
   public func didEndDisplay() {
     self.didEndDisplayProperty.value = ()
   }

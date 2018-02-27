@@ -36,8 +36,7 @@ public func == (lhs: Update, rhs: Update) -> Bool {
 extension Update: Argo.Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<Update> {
-    let create = curry(Update.init)
-    let tmp1 = create
+    let tmp1 = curry(Update.init)
       <^> json <|?  "body"
       <*> json <|? "comments_count"
       <*> json <|? "has_liked"

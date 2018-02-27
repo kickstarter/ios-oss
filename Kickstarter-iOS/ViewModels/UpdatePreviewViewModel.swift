@@ -138,17 +138,17 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
       return self.policyDecisionProperty.value
   }
 
-  fileprivate let publishButtonTappedProperty = MutableProperty()
+  fileprivate let publishButtonTappedProperty = MutableProperty(())
   internal func publishButtonTapped() {
     self.publishButtonTappedProperty.value = ()
   }
 
-  fileprivate let publishCancelButtonTappedProperty = MutableProperty()
+  fileprivate let publishCancelButtonTappedProperty = MutableProperty(())
   internal func publishCancelButtonTapped() {
     self.publishCancelButtonTappedProperty.value = ()
   }
 
-  fileprivate let publishConfirmationButtonTappedProperty = MutableProperty()
+  fileprivate let publishConfirmationButtonTappedProperty = MutableProperty(())
   internal func publishConfirmationButtonTapped() {
     self.publishConfirmationButtonTappedProperty.value = ()
   }
@@ -158,7 +158,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
     self.draftProperty.value = draft
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

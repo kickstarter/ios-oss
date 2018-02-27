@@ -68,4 +68,4 @@ private func substitute(_ string: String, with substitutions: [String: String]) 
 }
 
 private class Pin {}
-private let stringsBundle = Bundle(for: Pin.self)
+public let stringsBundle = Bundle(for: Pin.self)

@@ -115,7 +115,7 @@ ProjectPamphletViewModelOutputs {
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

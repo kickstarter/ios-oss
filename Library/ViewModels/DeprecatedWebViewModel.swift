@@ -47,7 +47,7 @@ DeprecatedWebViewModelOutputs {
       .skipRepeats(==)
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -57,12 +57,12 @@ DeprecatedWebViewModelOutputs {
     self.webViewDidFailErrorProperty.value = error
   }
 
-  fileprivate let webViewDidFinishLoadProperty = MutableProperty()
+  fileprivate let webViewDidFinishLoadProperty = MutableProperty(())
   public func webViewDidFinishLoad() {
     self.webViewDidFinishLoadProperty.value = ()
   }
 
-  fileprivate let webViewDidStartLoadProperty = MutableProperty()
+  fileprivate let webViewDidStartLoadProperty = MutableProperty(())
   public func webViewDidStartLoad() {
     self.webViewDidStartLoadProperty.value = ()
   }

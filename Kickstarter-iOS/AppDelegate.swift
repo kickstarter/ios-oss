@@ -35,7 +35,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
-        ubiquitousStore: NSUbiquitousKeyValueStore.default(),
+        ubiquitousStore: NSUbiquitousKeyValueStore.default,
         userDefaults: UserDefaults.standard
       )
     )

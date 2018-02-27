@@ -9,7 +9,7 @@ public extension UILabel {
     let size: CGSize = string.boundingRect(
       with: CGSize(width: self.frame.size.width, height: CGFloat.greatestFiniteMagnitude),
       options: [.usesLineFragmentOrigin],
-      attributes: [NSFontAttributeName: self.font],
+      attributes: [NSAttributedStringKey.font: self.font],
       context: nil
       ).size
 

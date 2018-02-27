@@ -224,7 +224,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
   }
-  fileprivate let favoriteButtonTappedProperty = MutableProperty()
+  fileprivate let favoriteButtonTappedProperty = MutableProperty(())
   public func favoriteButtonTapped() {
     self.favoriteButtonTappedProperty.value = ()
   }
@@ -232,11 +232,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public func filtersSelected(row: SelectableRow) {
     self.filtersSelectedRowProperty.value = row
   }
-  fileprivate let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty(())
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

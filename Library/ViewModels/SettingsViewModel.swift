@@ -101,28 +101,65 @@ SettingsViewModelOutputs {
       self.weeklyNewsletterTappedProperty.signal.map { (.weekly, $0) }
     )
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = .merge([
-      self.artsAndCultureNewsletterTappedProperty.signal.map { (.newsletter(.arts), $0) },
-      self.gamesNewsletterTappedProperty.signal.map { (.newsletter(.games), $0) },
-      self.happeningNewsletterTappedProperty.signal.map { (.newsletter(.happening), $0) },
-      self.inventNewsletterTappedProperty.signal.map { (.newsletter(.invent), $0) },
-      self.promoNewsletterTappedProperty.signal.map { (.newsletter(.promo), $0) },
-      self.weeklyNewsletterTappedProperty.signal.map { (.newsletter(.weekly), $0)},
-
-      self.backingsTappedProperty.signal.map { (.notification(.backings), $0) },
-      self.commentsTappedProperty.signal.map { (.notification(.comments), $0) },
-      self.followerTappedProperty.signal.map { (.notification(.follower), $0) },
-      self.friendActivityTappedProperty.signal.map { (.notification(.friendActivity), $0) },
-      self.mobileBackingsTappedProperty.signal.map { (.notification(.mobileBackings), $0) },
-      self.mobileCommentsTappedProperty.signal.map { (.notification(.mobileComments), $0) },
-      self.mobileFollowerTappedProperty.signal.map { (.notification(.mobileFollower), $0) },
-      self.mobileFriendActivityTappedProperty.signal.map { (.notification(.mobileFriendActivity), $0) },
-      self.mobilePostLikesTappedProperty.signal.map { (.notification(.mobilePostLikes), $0) },
-      self.mobileUpdatesTappedProperty.signal.map { (.notification(.mobileUpdates), $0) },
-      self.postLikesTappedProperty.signal.map { (.notification(.postLikes), $0) },
-      self.creatorTipsProperty.signal.map { (.notification(.creatorTips), $0) },
-      self.updatesTappedProperty.signal.map { (.notification(.updates), $0) }
-    ])
+    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
+      self.artsAndCultureNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.arts), $0)
+      },
+      self.gamesNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.games), $0)
+      },
+      self.happeningNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.happening), $0)
+      },
+      self.inventNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.invent), $0)
+      },
+      self.promoNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.promo), $0)
+      },
+      self.weeklyNewsletterTappedProperty.signal.map {
+        (UserAttribute.newsletter(Newsletter.weekly), $0)
+      },
+      self.backingsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.backings), $0)
+      },
+      self.commentsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.comments), $0)
+      },
+      self.followerTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.follower), $0)
+      },
+      self.friendActivityTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.friendActivity), $0)
+      },
+      self.mobileBackingsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileBackings), $0)
+      },
+      self.mobileCommentsTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileComments), $0)
+      },
+      self.mobileFollowerTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFollower), $0)
+      },
+      self.mobileFriendActivityTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      },
+      self.mobilePostLikesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobilePostLikes), $0)
+      },
+      self.mobileUpdatesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileUpdates), $0)
+      },
+      self.postLikesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.creatorTipsProperty.signal.map {
+        (UserAttribute.notification(Notification.creatorTips), $0)
+      },
+      self.updatesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.updates), $0)
+      }
+    )
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -289,7 +326,7 @@ SettingsViewModelOutputs {
   public func backingsTapped(selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
-  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty()
+  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty(())
   public func betaFeedbackButtonTapped() {
     self.betaFeedbackButtonTappedProperty.value = ()
   }
@@ -309,11 +346,11 @@ SettingsViewModelOutputs {
   public func individualEmailTapped(on: Bool) {
     self.individualEmailTappedProperty.value = on
   }
-  fileprivate let emailFrequencyTappedProperty = MutableProperty()
+  fileprivate let emailFrequencyTappedProperty = MutableProperty(())
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
-  fileprivate let findFriendsTappedProperty = MutableProperty()
+  fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
   }
@@ -337,19 +374,19 @@ SettingsViewModelOutputs {
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
   }
-  fileprivate let logoutCanceledProperty = MutableProperty()
+  fileprivate let logoutCanceledProperty = MutableProperty(())
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()
   }
-  fileprivate let logoutConfirmedProperty = MutableProperty()
+  fileprivate let logoutConfirmedProperty = MutableProperty(())
   public func logoutConfirmed() {
     self.logoutConfirmedProperty.value = ()
   }
-  fileprivate let logoutTappedProperty = MutableProperty()
+  fileprivate let logoutTappedProperty = MutableProperty(())
   public func logoutTapped() {
     self.logoutTappedProperty.value = ()
   }
-  fileprivate let manageProjectNotificationsTappedProperty = MutableProperty()
+  fileprivate let manageProjectNotificationsTappedProperty = MutableProperty(())
   public func manageProjectNotificationsTapped() {
     self.manageProjectNotificationsTappedProperty.value = ()
   }
@@ -385,7 +422,7 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
-  fileprivate let rateUsTappedProperty = MutableProperty()
+  fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
@@ -393,7 +430,7 @@ SettingsViewModelOutputs {
   public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

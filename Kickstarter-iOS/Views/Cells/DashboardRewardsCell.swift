@@ -57,19 +57,19 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
 
     _ = self.topRewardsButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_top_rewards() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_rewards_top_rewards() }
 
     _ = self.backersButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_backers() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_rewards_backers() }
 
     _ = self.pledgedButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_rewards_pledged() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_rewards_pledged() }
 
     _ = self.seeAllTiersButton
       |> dashboardGreenTextBorderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
+      |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.dashboard_graphs_rewards_view_more_reward_stats()
     }
   }

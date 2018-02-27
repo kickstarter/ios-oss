@@ -29,7 +29,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
 
     let envelope = initialURLProperty.signal.skipNil()
       .map { $0.absoluteString }
-      .promoteErrors(CheckoutRetryError.self)
+      .promoteError(CheckoutRetryError.self)
       .switchMap { url in
         SignalProducer<(), CheckoutRetryError>(value: ())
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)

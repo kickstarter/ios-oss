@@ -118,7 +118,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.configDataProperty.value = (project, liveStreamEvents)
   }
 
-  fileprivate let tappedCommentsProperty = MutableProperty()
+  fileprivate let tappedCommentsProperty = MutableProperty(())
   public func tappedComments() {
     self.tappedCommentsProperty.value = ()
   }
@@ -128,7 +128,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedLiveStreamProperty.value = liveStreamEvent
   }
 
-  fileprivate let tappedPledgeAnyAmountProperty = MutableProperty()
+  fileprivate let tappedPledgeAnyAmountProperty = MutableProperty(())
   public func tappedPledgeAnyAmount() {
     self.tappedPledgeAnyAmountProperty.value = ()
   }
@@ -138,7 +138,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.tappedRewardOrBackingProperty.value = rewardOrBacking
   }
 
-  fileprivate let tappedUpdatesProperty = MutableProperty()
+  fileprivate let tappedUpdatesProperty = MutableProperty(())
   public func tappedUpdates() {
     self.tappedUpdatesProperty.value = ()
   }
@@ -148,7 +148,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.viewDidAppearAnimatedProperty.value = animated
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

@@ -11,8 +11,8 @@ private func swizzle(_ vc: UIViewController.Type) {
     (#selector(vc.traitCollectionDidChange(_:)), #selector(vc.ksr_traitCollectionDidChange(_:))),
     ].forEach { original, swizzled in
 
-      let originalMethod = class_getInstanceMethod(vc, original)
-      let swizzledMethod = class_getInstanceMethod(vc, swizzled)
+      guard let originalMethod = class_getInstanceMethod(vc, original),
+        let swizzledMethod = class_getInstanceMethod(vc, swizzled) else { return }
 
       let didAddViewDidLoadMethod = class_addMethod(vc,
                                                     original,
@@ -40,12 +40,12 @@ extension UIViewController {
     swizzle(self)
   }
 
-  internal func ksr_viewDidLoad() {
+  @objc internal func ksr_viewDidLoad() {
     self.ksr_viewDidLoad()
     self.bindViewModel()
   }
 
-  internal func ksr_viewWillAppear(_ animated: Bool) {
+  @objc internal func ksr_viewWillAppear(_ animated: Bool) {
     self.ksr_viewWillAppear(animated)
 
     if !self.hasViewAppeared {
@@ -57,16 +57,16 @@ extension UIViewController {
   /**
    The entry point to bind all view model outputs. Called just before `viewDidLoad`.
    */
-  open func bindViewModel() {
+  @objc open func bindViewModel() {
   }
 
   /**
    The entry point to bind all styles to UI elements. Called just after `viewDidLoad`.
    */
-  open func bindStyles() {
+  @objc open func bindStyles() {
   }
 
-  public func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+  @objc public func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
     self.bindStyles()
   }
