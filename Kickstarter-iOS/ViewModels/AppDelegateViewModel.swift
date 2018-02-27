@@ -184,7 +184,7 @@ AppDelegateViewModelOutputs {
 
   // swiftlint:disable cyclomatic_complexity
   public init() {
-    let currentUserEvent: Signal<Signal<User?, ErrorEnvelope>.Event, NoError> = Signal
+    let currentUserEvent = Signal
       .merge(
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues(),
