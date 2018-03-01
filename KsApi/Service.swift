@@ -293,7 +293,7 @@ public struct Service: ServiceType {
   }
 
   public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) -> SignalProducer<Backing, ErrorEnvelope>  {
-    return request(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
+    return request(.backingUpdate(projectId: project.id, backerId: user.id, received: true))
   }
 
   public func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
