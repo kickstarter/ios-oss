@@ -122,10 +122,14 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let emptyStringOnLoad = self.viewDidLoadProperty.signal.mapConst("")
     let projectAndBacking = Signal.combineLatest(project, testBacking)
 
+
+
     let receivedEvent = projectAndBacking
       .takePairWhen(self.rewardReceivedTappedProperty.signal)
       .switchMap { project in
-        AppEnvironment.current.apiService.backingUpdate(forProject: project.0.0, forUser: project.0.1.backer!, received: true)
+        AppEnvironment.current.apiService.backingUpdate(
+          forProject: project.0.0, forUser: project.0.1.backer,
+                                                        received: true)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }

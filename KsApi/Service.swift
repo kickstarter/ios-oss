@@ -292,7 +292,8 @@ public struct Service: ServiceType {
     return request(.unansweredSurveyResponses)
   }
 
-  public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) -> SignalProducer<Backing, ErrorEnvelope>  {
+  public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) ->
+    SignalProducer<Backing, ErrorEnvelope> {
     return request(.backingUpdate(projectId: project.id, backerId: user.id, received: true))
   }
 
