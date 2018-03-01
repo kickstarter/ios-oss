@@ -170,7 +170,7 @@ private func string(forSort sort: DiscoveryParams.Sort) -> String {
   case .endingSoon:
     return Strings.Ending_soon()
   case .magic:
-    return Strings.Home()
+    return Strings.discovery_sort_types_magic()
   case .mostFunded:
     return Strings.discovery_sort_types_most_funded()
   case .newest:
