@@ -42,7 +42,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   }
 
   override func viewDidLoad() {
-    super.viewDidLoad() 
+    super.viewDidLoad()
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
@@ -181,7 +181,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           ? UIFont.ksr_body(size: 18)
           : UIFont.ksr_body(size: 17)
     }
-      
+
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
