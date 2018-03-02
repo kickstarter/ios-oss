@@ -23,8 +23,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
   @IBOutlet fileprivate weak var secondaryLabel: UILabel!
   @IBOutlet fileprivate weak var titleButton: UIButton!
-  @IBOutlet fileprivate weak var titleStackView: UIStackView!
+  @IBOutlet fileprivate weak var containerStackView: UIStackView!
   @IBOutlet fileprivate weak var outerStackViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var titleStackView: UIStackView! {
+    didSet {
+      titleStackView.pinBackground()
+    }
+  }
 
   internal weak var delegate: DiscoveryNavigationHeaderViewDelegate?
 
@@ -37,7 +42,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   }
 
   override func viewDidLoad() {
-    super.viewDidLoad()
+    super.viewDidLoad() 
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
@@ -50,6 +55,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.exploreLabel.rac.hidden = self.viewModel.outputs.exploreLabelIsHidden
     self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
     self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
     self.primaryLabel.rac.text = self.viewModel.outputs.primaryLabelText
@@ -153,8 +159,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.exploreLabel
       |> UILabel.lens.font %~~ { _, label in
           label.traitCollection.isRegularRegular
-            ? .ksr_body(size: 16)
-            : .ksr_body(size: 15)
+            ? .ksr_body(size: 18)
+            : .ksr_body(size: 17)
       }
       |> UILabel.lens.text %~ { _ in Strings.Explore() }
 
@@ -170,12 +176,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
-      |> UILabel.lens.backgroundColor .~ .ksr_grey_500
-      |> UILabel.lens.clipsToBounds .~ true
-      |> UILabel.lens.layer.cornerRadius .~ 4
-      |> UILabel.lens.layoutMargins .~ UIEdgeInsets(top: 0, left: Styles.grid(2),
-                                                    bottom: 0, right: Styles.grid(2))
-
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_body(size: 18)
+          : UIFont.ksr_body(size: 17)
+    }
+      
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
@@ -185,7 +191,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
-    _ = self.titleStackView
+    _ = self.containerStackView
       |> discoveryNavTitleStackViewStyle
 
     if self.view.traitCollection.isRegularRegular {

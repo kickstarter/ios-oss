@@ -34,6 +34,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
 
+  /// Emits when the Explore label should be shown/hidden after filter is selected.
+  var exploreLabelIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits a11y label for favorite button.
   var favoriteButtonAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -110,6 +113,8 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.dividerIsHidden = strings
       .map { $0.subcategory == nil }
       .skipRepeats()
+
+    self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map { $0?.params.category != nil }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -245,6 +250,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
+  public let exploreLabelIsHidden: Signal<Bool, NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
