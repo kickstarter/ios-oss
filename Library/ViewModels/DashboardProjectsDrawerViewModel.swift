@@ -71,15 +71,15 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public var notifyDelegateToCloseDrawer: Signal<(), NoError>
   public let notifyDelegateProjectCellTapped: Signal<Project, NoError>
 
-  fileprivate let animateInCompletedProperty = MutableProperty()
+  fileprivate let animateInCompletedProperty = MutableProperty(())
   public func animateInCompleted() {
     self.animateInCompletedProperty.value = ()
   }
-  fileprivate let animateOutCompletedProperty = MutableProperty()
+  fileprivate let animateOutCompletedProperty = MutableProperty(())
   public func animateOutCompleted() {
     self.animateOutCompletedProperty.value = ()
   }
-  fileprivate let backgroundTappedProperty = MutableProperty()
+  fileprivate let backgroundTappedProperty = MutableProperty(())
   public func backgroundTapped() {
     self.backgroundTappedProperty.value = ()
   }
@@ -91,7 +91,7 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public func projectCellTapped(_ project: Project) {
     self.projectCellTappedProperty.value = project
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

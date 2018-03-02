@@ -320,11 +320,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
 
-  fileprivate let showHideProjectsDrawerProperty = MutableProperty()
+  fileprivate let showHideProjectsDrawerProperty = MutableProperty(())
   public func showHideProjectsDrawer() {
     self.showHideProjectsDrawerProperty.value = ()
   }
-  fileprivate let projectContextCellTappedProperty = MutableProperty()
+  fileprivate let projectContextCellTappedProperty = MutableProperty(())
   public func projectContextCellTapped() {
     self.projectContextCellTappedProperty.value = ()
   }
@@ -340,11 +340,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func messageThreadNavigated(projectId: Param, messageThread: MessageThread) {
     self.messageThreadNavigatedProperty.value = (projectId, messageThread)
   }
-  fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty()
+  fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty(())
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -352,11 +352,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearAnimatedProperty.value = animated
   }
-  fileprivate let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }
-  fileprivate let messagesCellTappedProperty = MutableProperty()
+  fileprivate let messagesCellTappedProperty = MutableProperty(())
   public func messagesCellTapped() {
     self.messagesCellTappedProperty.value = ()
   }

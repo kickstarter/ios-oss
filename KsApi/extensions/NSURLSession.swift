@@ -89,7 +89,7 @@ internal extension URLSession {
 
     return URLSession.sanitationRules.reduce(urlString) { accum, templateAndRule in
       let (template, rule) = templateAndRule
-      let range = NSRange(location: 0, length: accum.characters.count)
+      let range = NSRange(location: 0, length: accum.count)
       return rule.stringByReplacingMatches(in: accum,
                                            options: .withTransparentBounds,
                                            range: range,
@@ -136,7 +136,9 @@ extension URLSession {
           observer.send(value: (data, response))
           observer.sendCompleted()
         }
-        disposable += task.cancel
+        disposable.observeEnded {
+          task.cancel()
+        }
         task.resume()
       }
   }

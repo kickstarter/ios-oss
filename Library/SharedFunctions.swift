@@ -133,7 +133,7 @@ public func countdownProducer(to date: Date)
     // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
     let everySecond = SignalProducer<(), NoError>(value: ())
       .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1000)), on: AppEnvironment.current.scheduler)
-      .flatMap { timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
+      .flatMap { SignalProducer.timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
 
     return SignalProducer.merge(
       SignalProducer<Date, NoError>(value: now),

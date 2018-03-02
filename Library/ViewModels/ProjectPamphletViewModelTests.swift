@@ -157,7 +157,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual("ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
                    "A referral cookie is set for the project.")
     XCTAssertEqual("category?",
-                   (self.cookieStorage.cookies?.last?.value.characters.prefix(9)).map(String.init),
+                   (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
                    "A referral cookie is set for the category ref tag.")
 
     // Start up another view model with the same project
@@ -281,7 +281,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual("ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
                    "A referral cookie is set for the project.")
     XCTAssertEqual("category?",
-                   (self.cookieStorage.cookies?.last?.value.characters.prefix(9)).map(String.init),
+                   (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
                    "A referral cookie is set for the category ref tag.")
 
     // Start up another view model with the same project

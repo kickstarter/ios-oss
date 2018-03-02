@@ -103,7 +103,7 @@ internal final class EmptyStatesViewController: UIViewController {
 
     _ = self.headlineStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(1),
                                                  left: Styles.grid(4),
                                                  bottom: Styles.grid(7),
@@ -112,9 +112,9 @@ internal final class EmptyStatesViewController: UIViewController {
     _ = self.mainButton
       |> baseButtonStyle
       |> UIButton.lens.layer.borderWidth .~ 1.0
-      |> UIButton.lens.backgroundColor(forState: .normal) .~ UIColor.ksr_green_500.withAlphaComponent(0.1)
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
-      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_green_700
+      |> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_green_500.withAlphaComponent(0.1)
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
+      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_green_700
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.withAlphaComponent(0.2).cgColor
 
     _ = self.backgroundStripView

@@ -204,10 +204,10 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
   }
 
-  private let refreshProperty = MutableProperty()
+  private let refreshProperty = MutableProperty(())
   public func refresh() { self.refreshProperty.value = () }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   private let willDisplayRowProperty = MutableProperty<(row: Int, totalRows: Int)?>(nil)

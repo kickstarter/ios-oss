@@ -3,16 +3,16 @@ import Prelude_UIKit
 import UIKit
 
 public let createNewAccountButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.facebook_confirmation_button() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
 public let disclaimerButtonStyle =
-  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_400
+  UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
     <> UIButton.lens.titleLabel.font %~~ { _, label in
       label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
     }
     <> UIButton.lens.titleLabel.textAlignment .~ .center
     <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
-    <> UIButton.lens.title(forState: .normal) %~ { _ in
+    <> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
     }
     <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
@@ -26,7 +26,7 @@ public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.keyboardType .~ .emailAddress
 
 public let fbLoginButtonStyle = facebookButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in
+  <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
 }
 
@@ -55,14 +55,14 @@ public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
 
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_900
-    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
+    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_900
+    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginButtonStyle = greenButtonStyle
-  <> UIButton.lens.backgroundColor(forState: .disabled)
+  <> UIButton.lens.backgroundColor(for: .disabled)
   .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
-  <> UIButton.lens.title(forState: .normal) %~ { _ in
+  <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_back_intent_traditional_login_button()
 }
 
@@ -72,13 +72,13 @@ public let loginControllerStyle = baseControllerStyle()
 }
 
 public let loginWithEmailButtonStyle = borderButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
 public let onePasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_callout()
-    <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_onePasswordBlue
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_dark_grey_400
-    <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.login_buttons_one_password() }
+    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_onePasswordBlue
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_400
+    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
@@ -89,13 +89,13 @@ public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.secureTextEntry .~ true
 
 public let resetPasswordButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
 
 public let resetPasswordControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.forgot_password_title() }
 
 public let loginRootStackViewStyle =
-  UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+  UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
     <> UIStackView.lens.layoutMargins %~~ { _, stack in
       stack.traitCollection.isRegularRegular
         ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
@@ -103,7 +103,7 @@ public let loginRootStackViewStyle =
 }
 
 public let signupButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in
+  <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_default_intent_traditional_signup_button()
 }
 
@@ -111,7 +111,7 @@ public let signupControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
 
 public let signupWithEmailButtonStyle = borderButtonStyle
-  <> UIButton.lens.title(forState: .normal) %~ { _ in Strings.signup_button_email() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center

@@ -102,13 +102,13 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: percentage, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1(size: 10),
-      NSForegroundColorAttributeName: UIColor.ksr_green_700
+      NSAttributedStringKey.font: UIFont.ksr_caption1(size: 10),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_green_700
     ])
   default:
     return NSAttributedString(string: percentage, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1(size: 10),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500
+      NSAttributedStringKey.font: UIFont.ksr_caption1(size: 10),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_500
     ])
   }
 }
@@ -135,13 +135,13 @@ private func titleString(for project: Project) -> NSAttributedString {
   switch project.state {
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1(size: 13),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_900
+      NSAttributedStringKey.font: UIFont.ksr_caption1(size: 13),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
     ])
   default:
     return NSAttributedString(string: project.name, attributes: [
-      NSFontAttributeName: UIFont.ksr_caption1(size: 13),
-      NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_400
+      NSAttributedStringKey.font: UIFont.ksr_caption1(size: 13),
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_400
     ])
   }
 }

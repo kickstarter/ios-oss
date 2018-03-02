@@ -125,15 +125,15 @@ ProjectUpdatesViewModelOutputs {
       self.navigationAction.value = action
       return self.decidedPolicy.value
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let webViewDidFinishNavigationProperty = MutableProperty()
+  fileprivate let webViewDidFinishNavigationProperty = MutableProperty(())
   public func webViewDidFinishNavigation() {
     self.webViewDidFinishNavigationProperty.value = ()
   }
-  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty()
+  fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty(())
   public func webViewDidStartProvisionalNavigation() {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }

@@ -168,7 +168,7 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     }
   }
 
-  private let closeButtonTappedProperty = MutableProperty()
+  private let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
@@ -181,12 +181,12 @@ LiveStreamCountdownViewModelInputs, LiveStreamCountdownViewModelOutputs {
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let goToProjectButtonTappedProperty = MutableProperty()
+  private let goToProjectButtonTappedProperty = MutableProperty(())
   public func goToProjectButtonTapped() {
     self.goToProjectButtonTappedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

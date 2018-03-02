@@ -53,7 +53,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
       |> UIView.lens.accessibilityElementsHidden .~ true
 
     _ = self.graphStatsStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
 
     _ = self.internalLabel
@@ -80,7 +80,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
 
     _ = self.totalPlaysStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
     _ = self.videoPlaysTitleLabel |> dashboardVideoPlaysTitleLabelStyle

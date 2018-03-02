@@ -1935,7 +1935,7 @@ private func properties(comment: Comment, prefix: String = "comment_") -> [Strin
 
   var properties: [String: Any] = [:]
 
-  properties["body_length"] = comment.body.characters.count
+  properties["body_length"] = comment.body.count
 
   return properties.prefixedKeys(prefix)
 }

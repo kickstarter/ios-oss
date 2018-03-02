@@ -161,7 +161,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       return self.policyDecisionProperty.value
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   internal func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

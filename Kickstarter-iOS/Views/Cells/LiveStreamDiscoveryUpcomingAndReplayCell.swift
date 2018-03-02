@@ -44,9 +44,9 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
     _ = self.creatorLabel
       |> SimpleHTMLLabel.lens.boldFont .~ UIFont.ksr_title3(size: 14).bolded
       |> SimpleHTMLLabel.lens.baseAttributes .~ [
-        NSParagraphStyleAttributeName: paragraphStyle,
-        NSForegroundColorAttributeName: UIColor.white,
-        NSFontAttributeName: UIFont.ksr_title3(size: 14)
+        NSAttributedStringKey.paragraphStyle: paragraphStyle,
+        NSAttributedStringKey.foregroundColor: UIColor.white,
+        NSAttributedStringKey.font: UIFont.ksr_title3(size: 14)
       ]
       |> SimpleHTMLLabel.lens.numberOfLines .~ 0
 
@@ -69,13 +69,13 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.replayButton
-      |> UIButton.lens.enabled .~ false
+      |> UIButton.lens.isEnabled .~ false
       |> UIButton.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Replay() }
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Replay() }
       |> UIButton.lens.titleLabel.font .~ .ksr_title3(size: 16)
       |> UIButton.lens.adjustsImageWhenDisabled .~ false
-      |> UIButton.lens.image(forState: .normal) .~
+      |> UIButton.lens.image(for: .normal) .~
         Library.image(named: "replay-icon", tintColor: .ksr_text_dark_grey_900)
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.gridHalf(3),
                                                   left: Styles.grid(4),

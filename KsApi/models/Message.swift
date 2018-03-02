@@ -13,8 +13,7 @@ public struct Message {
 
 extension Message: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Message> {
-    let create = curry(Message.init)
-    return create
+    return curry(Message.init)
       <^> json <| "body"
       <*> json <| "created_at"
       <*> json <| "id"

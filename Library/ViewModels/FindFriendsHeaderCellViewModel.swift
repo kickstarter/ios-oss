@@ -43,7 +43,7 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
   public var inputs: FindFriendsHeaderCellViewModelInputs { return self }
   public var outputs: FindFriendsHeaderCellViewModelOutputs { return self }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
@@ -51,7 +51,7 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
   public func configureWith(source: FriendsSource) {
     self.configureWithProperty.value = source
   }
-  fileprivate let findFriendsButtonTappedProperty = MutableProperty()
+  fileprivate let findFriendsButtonTappedProperty = MutableProperty(())
   public func findFriendsButtonTapped() {
     self.findFriendsButtonTappedProperty.value = ()
   }

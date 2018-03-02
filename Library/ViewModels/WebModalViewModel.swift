@@ -47,7 +47,7 @@ public final class WebModalViewModel: WebModalViewModelType {
     }
   }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
   fileprivate let requestProperty = MutableProperty<URLRequest?>(nil)
@@ -62,7 +62,7 @@ public final class WebModalViewModel: WebModalViewModelType {
       return self.policyDecisionProperty.value
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, NoError>
