@@ -20,6 +20,8 @@ internal final class LiveStreamChatViewController: UIViewController {
   @IBOutlet private weak var textField: UITextField!
 
   fileprivate let dataSource = LiveStreamChatDataSource()
+  private var deviceOrientationChangedObserver: Any?
+  private var sessionStartedObserver: Any?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   internal let viewModel: LiveStreamChatViewModelType = LiveStreamChatViewModel()
 
@@ -41,12 +43,12 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.tableView.keyboardDismissMode = .onDrag
     self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter.default
+    self.deviceOrientationChangedObserver = NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
@@ -57,6 +59,11 @@ internal final class LiveStreamChatViewController: UIViewController {
     self.textField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.deviceOrientationChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func bindStyles() {

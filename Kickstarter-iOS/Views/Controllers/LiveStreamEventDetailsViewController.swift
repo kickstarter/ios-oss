@@ -20,6 +20,8 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
   @IBOutlet private weak var subscribeLabel: UILabel!
   @IBOutlet private weak var subscribeStackView: UIStackView!
 
+  private var sessionStartedObserver: Any?
+
   fileprivate let viewModel: LiveStreamEventDetailsViewModelType
     = LiveStreamEventDetailsViewModel()
 
@@ -40,12 +42,16 @@ internal final class LiveStreamEventDetailsViewController: UIViewController {
     self.subscribeButton.addTarget(self, action: #selector(subscribeButtonTapped), for: .touchUpInside)
     self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewDidLayoutSubviews() {
