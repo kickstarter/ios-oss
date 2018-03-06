@@ -14,6 +14,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
   fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelText = TestObserver<String, NoError>()
@@ -48,6 +49,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
+    self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
@@ -296,6 +298,25 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
         subcategory_name: subcategoryParams.category?.name ?? "",
         category_name: subcategoryParams.category?._parent?.name ?? "")
       ])
+  }
+
+  func testExploreLabelIsHidden_ifSelectedRow_HasCategory() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
+
+    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
+
+    self.exploreLabelIsHidden.assertValues([true])
+  }
+
+  func testExploreLabelIsNotHidden_ifSelectedRow_DoesNotHaveCategory() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(params: initialParams)
+
+    let params = categoryParams |> DiscoveryParams.lens.category .~ nil
+    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ params)
+
+    self.exploreLabelIsHidden.assertValues([false])
   }
 
   func testNotifyFilterSelectedParams() {
