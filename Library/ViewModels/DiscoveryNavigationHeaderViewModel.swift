@@ -114,7 +114,9 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { $0.subcategory == nil }
       .skipRepeats()
 
-    self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map { $0?.params.category != nil }
+      self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
+        return shouldHideLabel($0?.params)
+      }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -268,6 +270,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
   public var inputs: DiscoveryNavigationHeaderViewModelInputs { return self }
   public var outputs: DiscoveryNavigationHeaderViewModelOutputs { return self }
+}
+
+private func shouldHideLabel(_ params: DiscoveryParams?) -> Bool {
+  guard let params = params else { return true }
+
+  return stringsForTitle(params: params).0 != Strings.All_Projects()
 }
 
 private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcategory: String?) {
