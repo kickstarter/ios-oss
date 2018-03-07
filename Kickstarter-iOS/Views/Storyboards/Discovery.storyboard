@@ -434,7 +434,7 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTG-N8-oCA" userLabel="Favorite Container View">
-                                <rect key="frame" x="0.0" y="1" width="44" height="44"/>
+                                <rect key="frame" x="0.0" y="8.5" width="44" height="44"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--bookmark-outline" translatesAutoresizingMaskIntoConstraints="NO" id="Ij6-dc-OpY">
                                         <rect key="frame" x="8" y="11" width="22" height="22"/>
@@ -442,8 +442,8 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="DzE-4H-e6W">
                                         <rect key="frame" x="8" y="11" width="22" height="22"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-WC-mdL">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-WC-mdL">
+                                        <rect key="frame" x="0.0" y="8" width="44" height="44"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </button>
                                 </subviews>
@@ -468,7 +468,7 @@
                                 </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AvP-Jg-11Z" userLabel="Outer Stack View">
-                                <rect key="frame" x="104" y="0.0" width="300" height="45"/>
+                                <rect key="frame" x="50" y="8" width="300" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ow-Q0-eFO">
                                         <rect key="frame" x="0.0" y="0.0" width="238.5" height="45"/>
@@ -528,14 +528,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CTG-N8-oCA" secondAttribute="trailing" id="1w0-jI-Xbx"/>
-                            <constraint firstItem="9CN-EK-zBj" firstAttribute="top" secondItem="AvP-Jg-11Z" secondAttribute="top" id="8xm-2D-pr7"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="AvP-Jg-11Z" secondAttribute="bottom" id="B0H-UJ-qJS"/>
-                            <constraint firstItem="9CN-EK-zBj" firstAttribute="bottom" secondItem="AvP-Jg-11Z" secondAttribute="bottom" id="DFn-av-A3D"/>
+                            <constraint firstItem="9CN-EK-zBj" firstAttribute="top" secondItem="AvP-Jg-11Z" secondAttribute="top" constant="-8" id="8xm-2D-pr7"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="AvP-Jg-11Z" secondAttribute="bottom" constant="-8" id="B0H-UJ-qJS"/>
+                            <constraint firstItem="9CN-EK-zBj" firstAttribute="bottom" secondItem="AvP-Jg-11Z" secondAttribute="bottom" constant="-8" id="DFn-av-A3D"/>
                             <constraint firstItem="iZ3-Qf-C5g" firstAttribute="trailing" secondItem="H2g-DT-JXM" secondAttribute="trailing" id="K0b-az-zyn"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="AvP-Jg-11Z" secondAttribute="trailing" constant="30" id="KnM-2i-YX8"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="leading" secondItem="AvP-Jg-11Z" secondAttribute="leading" id="MMI-dy-ql8"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="top" secondItem="189-Qu-20l" secondAttribute="top" id="Xq0-ie-rTE"/>
-                            <constraint firstItem="AvP-Jg-11Z" firstAttribute="top" secondItem="iZ3-Qf-C5g" secondAttribute="top" id="YP3-fh-T5U"/>
+                            <constraint firstItem="AvP-Jg-11Z" firstAttribute="top" secondItem="iZ3-Qf-C5g" secondAttribute="top" constant="8" id="YP3-fh-T5U"/>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="centerX" secondItem="iZ3-Qf-C5g" secondAttribute="centerX" id="dF0-3N-f3X"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="leading" secondItem="iZ3-Qf-C5g" secondAttribute="leading" id="np9-Pa-vI9"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="trailing" secondItem="AvP-Jg-11Z" secondAttribute="trailing" id="ogl-6o-HhW"/>
