@@ -18,7 +18,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.  
 
-```* To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = true.```
+&#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
 
 ## Some fun things to explore
 
