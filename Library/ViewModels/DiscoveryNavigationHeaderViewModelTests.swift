@@ -300,21 +300,22 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       ])
   }
 
-  func testExploreLabelIsHidden_ifSelectedRow_HasCategory() {
+  func testExploreLabelIsHidden_ifSelectedFilterIsNotDefault() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(params: initialParams)
 
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
+    self.vm.inputs.filtersSelected(
+      row: selectableRow |> SelectableRow.lens.params .~ categoryParams
+    )
 
     self.exploreLabelIsHidden.assertValues([true])
   }
 
-  func testExploreLabelIsNotHidden_ifSelectedRow_DoesNotHaveCategory() {
+  func testExploreLabelIsNotHidden_ifSelectedFilterIsDefault() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configureWith(params: initialParams)
 
-    let params = categoryParams |> DiscoveryParams.lens.category .~ nil
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ params)
+    self.vm.inputs.filtersSelected(row: selectableRow)
 
     self.exploreLabelIsHidden.assertValues([false])
   }
