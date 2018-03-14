@@ -75,9 +75,14 @@ private func shouldDefaultToRec() -> DiscoveryParams {
   }
 
   if recExperiment?.first?.value == Experiment.Variant.experimental.rawValue {
-    return DiscoveryParams.defaults |> DiscoveryParams.lens.includePOTD .~ true
+    return DiscoveryParams.defaults
+//      |> DiscoveryParams.lens.backed .~ false
+//      |> DiscoveryParams.lens.starred .~ true
+      |> DiscoveryParams.lens.recommended .~ true
   } else {
-    return DiscoveryParams.defaults |> DiscoveryParams.lens.recommended .~ true
+    return DiscoveryParams.defaults
+//      |> DiscoveryParams.lens.social .~ true
+      |> DiscoveryParams.lens.includePOTD .~ true
   }
 }
 

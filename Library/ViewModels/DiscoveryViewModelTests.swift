@@ -18,7 +18,9 @@ internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
-  let initialParams = .defaults |> DiscoveryParams.lens.recommended .~ true
+  let recsInitialParams = .defaults |> DiscoveryParams.lens.recommended .~ true
+  let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
   let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
   let starredParams = .defaults |> DiscoveryParams.lens.starred .~ true
@@ -80,6 +82,32 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.loadFilterIntoDataSource.assertValues([initialParams, starredParams],
                                                "New params load into data source after selecting.")
+  }
+
+  func testDefaultedToRecs_WhenExperimentDisabled() {
+    let config = Config.template
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.control.rawValue]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([initialParams])
+    }
+  }
+
+  func testDefaultedToRecs_WhenExperimentEnabled() {
+    let config = Config.template
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.experimental.rawValue]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+    }
   }
 
   func testConfigureNavigationHeader() {

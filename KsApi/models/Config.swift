@@ -6,7 +6,7 @@ public enum Experiment {
 
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"
-    case defaultToRecs = "ios_test_test"
+    case defaultToRecs = "default_rec_projects"
   }
 
   public enum Variant: String {
