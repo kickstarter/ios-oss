@@ -102,7 +102,8 @@ DiscoveryViewModelOutputs {
       print("CURRENT PARAMS: \(v)")
     }
 
-    self.configureNavigationHeader = self.viewWillAppearProperty.signal.take(first: 1).mapConst(initialParam())
+    self.configureNavigationHeader = self.viewWillAppearProperty.signal
+      .take(first: 1).mapConst(initialParam())
 
     self.configureNavigationHeader.signal.observeValues {
       v in print("CONFIGURE W/ \(v)")

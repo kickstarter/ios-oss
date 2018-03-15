@@ -10,7 +10,6 @@ import XCTest
 internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
-
   fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
   fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
   fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
@@ -30,7 +29,6 @@ internal final class DiscoveryViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-
     self.vm.outputs.loadFilterIntoDataSource.observe(self.loadFilterIntoDataSource.observer)
     self.vm.outputs.configurePagerDataSource.observe(self.configureDataSource.observer)
     self.vm.outputs.navigateToSort.map { $0.0 }.observe(self.navigateToSort.observer)
