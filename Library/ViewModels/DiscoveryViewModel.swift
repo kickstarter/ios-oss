@@ -94,20 +94,12 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = Signal.merge(
+      self.viewWillAppearProperty.signal.take(first: 1).map { _ in initialParam() },
       self.filterWithParamsProperty.signal.skipNil()
       )
-      .skipRepeats()
+    .skipRepeats()
 
-    currentParams.signal.observeValues { v in
-      print("CURRENT PARAMS: \(v)")
-    }
-
-    self.configureNavigationHeader = self.viewWillAppearProperty.signal
-      .take(first: 1).mapConst(initialParam())
-
-    self.configureNavigationHeader.signal.observeValues {
-      v in print("CONFIGURE W/ \(v)")
-    }
+    self.configureNavigationHeader = currentParams
 
     self.loadFilterIntoDataSource = currentParams
       .filter { $0.hasLiveStreams != .some(true) }

@@ -88,7 +88,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   func testDefaultedToRecs_WhenExperimentDisabled() {
     let config = Config.template
       |> Config.lens.abExperiments
-      .~ ["default_rec_projects": "control"]
+      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.control.rawValue]
 
     withEnvironment(config: config) {
       self.vm.inputs.viewDidLoad()
@@ -99,10 +99,11 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testDefaultedToRecs_WhenExperimentEnabled() {
-    let config = .template
-      |> Config.lens.abExperiments .~ ["default_rec_projects": "experimental"]
+    let conf = Config.template
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.experimental.rawValue]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: conf) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
