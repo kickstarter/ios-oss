@@ -10,6 +10,7 @@ import XCTest
 internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
+
   fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
   fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
   fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
@@ -18,7 +19,9 @@ internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
-  let recsInitialParams = .defaults |> DiscoveryParams.lens.recommended .~ true
+  let recsInitialParams = .defaults
+    |> DiscoveryParams.lens.recommended .~ true
+    |> DiscoveryParams.lens.backed .~ false
   let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
@@ -87,7 +90,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   func testDefaultedToRecs_WhenExperimentDisabled() {
     let config = Config.template
       |> Config.lens.abExperiments
-      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.control.rawValue]
+      .~ ["default_rec_projects": "control"]
 
     withEnvironment(config: config) {
       self.vm.inputs.viewDidLoad()
@@ -98,9 +101,8 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testDefaultedToRecs_WhenExperimentEnabled() {
-    let config = Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.experimental.rawValue]
+    let config = .template
+      |> Config.lens.abExperiments .~ ["default_rec_projects": "experimental"]
 
     withEnvironment(config: config) {
       self.vm.inputs.viewDidLoad()

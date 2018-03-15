@@ -69,19 +69,17 @@ public protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
-private func shouldDefaultToRec() -> DiscoveryParams {
+private func initialParam() -> DiscoveryParams {
   let recExperiment = AppEnvironment.current.config?.abExperiments.filter {
     $0.key == Experiment.Name.defaultToRecs.rawValue
   }
 
   if recExperiment?.first?.value == Experiment.Variant.experimental.rawValue {
     return DiscoveryParams.defaults
-//      |> DiscoveryParams.lens.backed .~ false
-//      |> DiscoveryParams.lens.starred .~ true
+      |> DiscoveryParams.lens.backed .~ false
       |> DiscoveryParams.lens.recommended .~ true
   } else {
     return DiscoveryParams.defaults
-//      |> DiscoveryParams.lens.social .~ true
       |> DiscoveryParams.lens.includePOTD .~ true
   }
 }
@@ -96,12 +94,19 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).mapConst(shouldDefaultToRec()),
       self.filterWithParamsProperty.signal.skipNil()
       )
       .skipRepeats()
 
-    self.configureNavigationHeader = currentParams
+    currentParams.signal.observeValues { v in
+      print("CURRENT PARAMS: \(v)")
+    }
+
+    self.configureNavigationHeader = self.viewWillAppearProperty.signal.take(first: 1).mapConst(initialParam())
+
+    self.configureNavigationHeader.signal.observeValues {
+      v in print("CONFIGURE W/ \(v)")
+    }
 
     self.loadFilterIntoDataSource = currentParams
       .filter { $0.hasLiveStreams != .some(true) }
