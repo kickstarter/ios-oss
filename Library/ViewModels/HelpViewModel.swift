@@ -126,7 +126,7 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
   public func canSendEmail(_ canSend: Bool) {
     self.canSendEmailProperty.value = canSend
   }
-  fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty()
+  fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty(())
   public func cancelHelpSheetButtonTapped() {
     self.cancelHelpSheetButtonTappedProperty.value = ()
   }
@@ -134,7 +134,7 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
   public func configureWith(helpContext: HelpContext) {
     self.helpContextProperty.value = helpContext
   }
-  fileprivate let showHelpSheetButtonTappedProperty = MutableProperty()
+  fileprivate let showHelpSheetButtonTappedProperty = MutableProperty(())
   public func showHelpSheetButtonTapped() {
     self.showHelpSheetButtonTappedProperty.value = ()
   }

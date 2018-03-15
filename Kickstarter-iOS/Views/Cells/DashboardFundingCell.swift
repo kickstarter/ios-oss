@@ -58,7 +58,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_green_700
 
     _ = self.rootStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, stack in
         stack.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))

@@ -30,7 +30,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     _ = self.bodyTextView
-      |> UITextView.lens.scrollEnabled .~ false
+      |> UITextView.lens.isScrollEnabled .~ false
       |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
       |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
 

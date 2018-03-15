@@ -38,6 +38,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
   private let eventDetailsViewModel: LiveStreamEventDetailsViewModelType = LiveStreamEventDetailsViewModel()
   private let viewModel: LiveStreamCountdownViewModelType = LiveStreamCountdownViewModel()
+  private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
 
   public static func configuredWith(project: Project,
@@ -68,13 +69,17 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     self.goToProjectButton.addTarget(self, action: #selector(goToProjectButtonTapped), for: [.touchUpInside])
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.eventDetailsViewModel.inputs.userSessionStarted()
     }
 
     self.viewModel.inputs.viewDidLoad()
     self.eventDetailsViewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   public override func bindStyles() {
@@ -92,7 +97,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIStackView.lens.alignment .~ .firstBaseline
       |> UIStackView.lens.distribution .~ .equalCentering
       |> UIStackView.lens.spacing .~ Styles.grid(2)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins %~~ { _, s in
         s.traitCollection.isRegularRegular
           ? .init(topBottom: 0, leftRight: Styles.grid(28))
@@ -115,7 +120,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       ||> UILabel.lens.textAlignment .~ .center
 
     _ = [self.minutesSubtitleLabel, self.secondsSubtitleLabel]
-      ||> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityDefaultLow
+      ||> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.defaultLow
       ||> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.countdownRootStackView
@@ -148,7 +153,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       ||> UILabel.lens.font .~ .ksr_title1(size: 24)
 
     _ = self.detailsStackView
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(4), left: Styles.grid(4),
                                                         bottom: Styles.grid(7), right: Styles.grid(4))
       |> UIStackView.lens.spacing .~ Styles.grid(3)
@@ -169,14 +174,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
       : UIFont.ksr_subhead(size: 14)
 
     let introLabelBaseAttributes = [
-      NSFontAttributeName: introLabelBaseFont,
-      NSForegroundColorAttributeName: UIColor.ksr_navy_600,
-      NSParagraphStyleAttributeName: paragraphStyle
+      NSAttributedStringKey.font: introLabelBaseFont,
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_navy_600,
+      NSAttributedStringKey.paragraphStyle: paragraphStyle
     ]
 
     let introLabelBoldAttributes = [
-      NSFontAttributeName: introLabelBaseFont.bolded,
-      NSForegroundColorAttributeName: UIColor.ksr_dark_grey_500
+      NSAttributedStringKey.font: introLabelBaseFont.bolded,
+      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_500
     ]
     _ = self.introLabel
       |> SimpleHTMLLabel.lens.baseAttributes .~ introLabelBaseAttributes
@@ -213,7 +218,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
 
     _ = self.goToProjectButton
       |> liveStreamGoToProjectStyle
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
 
     _ = self.imageOverlayView
       |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.8)

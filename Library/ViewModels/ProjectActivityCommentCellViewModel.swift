@@ -103,12 +103,12 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     }
   }
 
-  fileprivate let backingButtonPressedProperty = MutableProperty()
+  fileprivate let backingButtonPressedProperty = MutableProperty(())
   public func backingButtonPressed() {
     self.backingButtonPressedProperty.value = ()
   }
 
-  fileprivate let replyButtonPressedProperty = MutableProperty()
+  fileprivate let replyButtonPressedProperty = MutableProperty(())
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }

@@ -262,15 +262,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func transitionedToProject(at row: Int, outOf totalRows: Int) {
     self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
-  fileprivate let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
-  fileprivate let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
@@ -278,7 +278,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func viewDidDisappear(animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

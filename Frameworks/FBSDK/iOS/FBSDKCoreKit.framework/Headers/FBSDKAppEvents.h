@@ -97,6 +97,14 @@ FBSDK_EXTERN NSString *const FBSDKAppEventNameViewedContent;
  of methods on `FBSDKAppEvents`.  Common event names are provided in the `FBAppEventName*` constants.
  */
 
+ /**
+  * Parameter key used to specify data for the one or more pieces of content being logged about.
+  * Data should be a JSON encoded string.
+  * Example:
+  * "[{\"id\": \"1234\", \"quantity\": 2, \"item_price\": 5.99}, {\"id\": \"5678\", \"quantity\": 1, \"item_price\": 9.99}]"
+  */
+FBSDK_EXTERN NSString *const FBSDKAppEventParameterNameContent;
+
 /** Parameter key used to specify an ID for the specific piece of content being logged about.  Could be an EAN, article identifier, etc., depending on the nature of the app. */
 FBSDK_EXTERN NSString *const FBSDKAppEventParameterNameContentID;
 

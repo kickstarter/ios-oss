@@ -69,9 +69,9 @@ internal final class SearchViewController: UITableViewController {
       ||> baseActivityIndicatorStyle
 
     _ = self.cancelButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_callout(size:15)
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.discovery_search_cancel() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
     _ = self.searchBarContainerView
       |> roundedStyle()
@@ -84,7 +84,7 @@ internal final class SearchViewController: UITableViewController {
     _ = self.searchStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.innerSearchStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -95,7 +95,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.attributedPlaceholder = NSAttributedString(
       string: Strings.tabbar_search(),
-      attributes: [NSForegroundColorAttributeName: UIColor.ksr_text_dark_grey_500]
+      attributes: [NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_500]
     )
 
     _ = self.tableView

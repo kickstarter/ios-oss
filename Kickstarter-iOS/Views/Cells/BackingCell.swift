@@ -47,7 +47,7 @@ internal final class BackingCell: UITableViewCell, ValueCell {
 
     _ = self.backingInfoButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backing_info_info_button() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.backing_info_info_button() }
       |> UIButton.lens.contentEdgeInsets %~~ { _, button in
         button.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))

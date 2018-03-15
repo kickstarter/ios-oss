@@ -13,13 +13,13 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
   }
 
   public override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: UIActivityType) -> Any? {
+                                              itemForActivityType activityType: UIActivityType?) -> Any? {
 
-    guard let update = self.update else {
+    guard let update = self.update, let type = activityType else {
       return self.activityViewControllerPlaceholderItem(activityViewController)
     }
 
-    switch activityType {
+    switch type {
     case UIActivityType.mail:
       return Strings.social_update_sequence_and_title(
         update_number: String(update.sequence),

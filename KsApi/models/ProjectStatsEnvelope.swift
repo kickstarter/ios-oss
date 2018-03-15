@@ -71,8 +71,7 @@ extension ProjectStatsEnvelope: Argo.Decodable {
 
 extension ProjectStatsEnvelope.CumulativeStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.CumulativeStats> {
-    let create = curry(ProjectStatsEnvelope.CumulativeStats.init)
-    return create
+    return curry(ProjectStatsEnvelope.CumulativeStats.init)
       <^> json <| "average_pledge"
       <*> json <| "backers_count"
       <*> (json <| "goal" >>- stringToIntOrZero)
@@ -89,8 +88,7 @@ public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnve
 
 extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.FundingDateStats> {
-    let create = curry(ProjectStatsEnvelope.FundingDateStats.init)
-    return create
+    return curry(ProjectStatsEnvelope.FundingDateStats.init)
       <^> (json <| "backers_count" <|> .success(0))
       <*> ((json <| "cumulative_pledged" >>- stringToIntOrZero) <|> (json <| "cumulative_pledged"))
       <*> json <| "cumulative_backers_count"
@@ -107,8 +105,7 @@ public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnv
 
 extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats> {
-    let create = curry(ProjectStatsEnvelope.ReferrerStats.init)
-    let tmp = create
+    let tmp = curry(ProjectStatsEnvelope.ReferrerStats.init)
       <^> json <| "backers_count"
       <*> json <| "code"
       <*> (json <| "percentage_of_dollars" >>- stringToDouble)
@@ -160,8 +157,7 @@ public func == (lhs: ProjectStatsEnvelope.RewardStats, rhs: ProjectStatsEnvelope
 
 extension ProjectStatsEnvelope.VideoStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.VideoStats> {
-    let create = curry(ProjectStatsEnvelope.VideoStats.init)
-    return create
+    return curry(ProjectStatsEnvelope.VideoStats.init)
       <^> json <| "external_completions"
       <*> json <| "external_starts"
       <*> json <| "internal_completions"

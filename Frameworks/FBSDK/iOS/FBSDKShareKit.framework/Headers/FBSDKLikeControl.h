@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger, FBSDKLikeControlStyle)
 FBSDK_EXTERN NSString *NSStringFromFBSDKLikeControlStyle(FBSDKLikeControlStyle style);
 
 /**
-
+  Warning: This class is deprecated.
   UI control to like an object in the Facebook graph.
 
 
@@ -91,6 +91,7 @@ FBSDK_EXTERN NSString *NSStringFromFBSDKLikeControlStyle(FBSDKLikeControlStyle s
  fast-app-switch that allows the user to like the object.  Upon return to the calling app, the view will update
  with the new state and send actions for the UIControlEventValueChanged event.
  */
+__attribute__ ((deprecated))
 @interface FBSDKLikeControl : UIControl <FBSDKLiking>
 
 /**

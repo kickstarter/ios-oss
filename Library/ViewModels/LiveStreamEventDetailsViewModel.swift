@@ -101,7 +101,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     let initialEvent = configData.map { _, event, _, _ in event }
 
     let updatedEventFetch = initialEvent
-      .switchMap { event -> SignalProducer<Event<LiveStreamEvent, LiveApiError>, NoError> in
+      .switchMap { event -> SignalProducer<Signal<LiveStreamEvent, LiveApiError>.Event, NoError> in
         AppEnvironment.current.liveStreamService
           .fetchEvent(
             eventId: event.id,
@@ -130,7 +130,8 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
 
     let isSubscribedEvent = event
       .takeWhen(subscribeIntent)
-      .switchMap { event -> SignalProducer<Event<LiveStreamSubscribeEnvelope, LiveApiError>, NoError> in
+      .switchMap { event
+        -> SignalProducer<Signal<LiveStreamSubscribeEnvelope, LiveApiError>.Event, NoError> in
         guard let userId = AppEnvironment.current.currentUser?.id else { return .empty }
 
         return AppEnvironment.current.liveStreamService.subscribeTo(
@@ -252,7 +253,7 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.configData.value = (project, liveStreamEvent, refTag, presentedFromProject)
   }
 
-  private let goToProjectButtonTappedProperty = MutableProperty()
+  private let goToProjectButtonTappedProperty = MutableProperty(())
   public func goToProjectButtonTapped() {
     self.goToProjectButtonTappedProperty.value = ()
   }
@@ -262,17 +263,17 @@ public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewMo
     self.numberOfPeopleWatchingProperty.value = numberOfPeople
   }
 
-  private let subscribeButtonTappedProperty = MutableProperty()
+  private let subscribeButtonTappedProperty = MutableProperty(())
   public func subscribeButtonTapped() {
     self.subscribeButtonTappedProperty.value = ()
   }
 
-  private let userSessionStartedProperty = MutableProperty()
+  private let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

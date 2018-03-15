@@ -92,9 +92,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
 
 extension DiscoveryParams: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
-    let create = curry(DiscoveryParams.init)
-
-    let tmp1 = create
+    let tmp1 = curry(DiscoveryParams.init)
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
       <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)

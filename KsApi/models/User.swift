@@ -74,8 +74,7 @@ extension User: CustomDebugStringConvertible {
 
 extension User: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
-    let create = curry(User.init)
-    let tmp1 = pure(create)
+    let tmp1 = pure(curry(User.init))
       <*> json <| "avatar"
       <*> json <|? "facebook_connected"
       <*> json <| "id"
@@ -170,8 +169,7 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
 
 extension User.Notifications: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
-    let create = curry(User.Notifications.init)
-    let tmp1 = create
+    let tmp1 = curry(User.Notifications.init)
       <^> json <|? "notify_of_backings"
       <*> json <|? "notify_of_comments"
       <*> json <|? "notify_of_follower"
@@ -232,8 +230,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
 
 extension User.Stats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Stats> {
-    let create = curry(User.Stats.init)
-    return create
+    return curry(User.Stats.init)
       <^> json <|? "backed_projects_count"
       <*> json <|? "created_projects_count"
       <*> json <|? "member_projects_count"

@@ -61,8 +61,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     super.bindStyles()
 
     _ = self.closeButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.title(for: .normal) .~ nil
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
@@ -93,13 +93,13 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(forState: .normal) %~ { _ in
+      |> UIButton.lens.title(for: .normal) %~ { _ in
           Strings.project_accessibility_button_share_label()
         }
 
     if let navigationController = self.navigationController {
       _ = navigationController
-      |> UINavigationController.lens.navigationBarHidden .~ true
+        |> UINavigationController.lens.isNavigationBarHidden .~ true
     }
   }
 

@@ -21,21 +21,21 @@ public let discoveryNavTitleStackViewStyle =
   UIStackView.lens.layoutMargins %~~ { _, stack in
     stack.traitCollection.horizontalSizeClass == .compact ? .init(top: -6.0) : .init(top: 0.0)
     }
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let discoverySaveButtonStyle = saveButtonStyle
-  <> UIButton.lens.image(forState: .normal) .~ image(named: "icon--heart-outline-circle")
-  <> UIButton.lens.image(forState: .selected) .~ image(named: "icon--heart-circle")
+  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline-circle")
+  <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart-circle")
   <> UIButton.lens.tintColor .~ .white
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
-  <> UIButton.lens.backgroundColor(forState: .normal) .~ .white
-  <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_dark_grey_400
-  <> UIButton.lens.backgroundColor(forState: .highlighted) .~ .ksr_navy_200
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_navy_200
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.title(forState: .normal) %~ { _ in
+  <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()
 }
 
@@ -74,8 +74,8 @@ public let discoveryOnboardingTitleStyle =
 
 public let discoveryOnboardingLogoStyle =
   UIImageView.lens.contentMode .~ .scaleAspectFit
-    <> UIImageView.lens.contentHuggingPriorityForAxis(.vertical) .~ UILayoutPriorityRequired
-    <> UIImageView.lens.contentCompressionResistancePriorityForAxis(.vertical) .~ UILayoutPriorityRequired
+    <> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
+    <> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
 public let discoveryOnboardingStackViewStyle =
   UIStackView.lens.spacing .~ 16.0
@@ -97,29 +97,29 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
   let sortString = string(forSort: sort)
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
-    NSFontAttributeName: isRegularRegular
+    NSAttributedStringKey.font: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0)
       : UIFont.ksr_subhead(size: 15.0),
-    NSForegroundColorAttributeName: discoverySecondaryColor().withAlphaComponent(0.6)
+    NSAttributedStringKey.foregroundColor: discoverySecondaryColor().withAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
-    NSFontAttributeName: isRegularRegular
+    NSAttributedStringKey.font: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0).bolded
       : UIFont.ksr_subhead(size: 15.0),
-    NSForegroundColorAttributeName: UIColor.black
+    NSAttributedStringKey.foregroundColor: UIColor.black
   ])
 
   return
-    B.lens.titleColor(forState: .highlighted) .~ discoverySecondaryColor()
+    B.lens.titleColor(for: .highlighted) .~ discoverySecondaryColor()
       <> B.lens.accessibilityLabel %~ { _ in
         Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
       }
       <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
       <> B.lens.contentEdgeInsets .~ sortButtonEdgeInsets(isLeftMost: isLeftMost,
                                                           isRightMost: isRightMost)
-      <> B.lens.attributedTitle(forState: .normal) %~ { _ in normalTitleString }
-      <> B.lens.attributedTitle(forState: .selected) %~ { _ in selectedTitleString }
+      <> B.lens.attributedTitle(for: .normal) %~ { _ in normalTitleString }
+      <> B.lens.attributedTitle(for: .selected) %~ { _ in selectedTitleString }
 }
 
 public let postcardMetadataLabelStyle =
@@ -130,13 +130,13 @@ public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let postcardSocialStackViewStyle =
   UIStackView.lens.alignment .~ .center
     <> UIStackView.lens.spacing .~ Styles.grid(1)
     <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in

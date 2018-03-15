@@ -76,7 +76,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.viewWillAppearProperty.value = ()
   }
 
-  fileprivate let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

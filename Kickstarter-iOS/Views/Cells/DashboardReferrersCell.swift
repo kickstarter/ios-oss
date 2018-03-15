@@ -79,7 +79,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     _ = self.backersColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_referrers_backers() }
 
     _ = self.customPercentLabel
       |> dashboardReferrersPledgePercentLabelStyle
@@ -122,7 +122,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     _ = self.pledgedColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_referrers_pledged() }
 
     _ = self.referrersTitleLabel
       |> dashboardReferrersTitleLabelStyle
@@ -135,7 +135,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     _ = self.sourceColumnTitleButton
       |> dashboardColumnTitleButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_referrers_source() }
 
     _ = self.chartCardView
       |> dashboardChartCardViewStyle

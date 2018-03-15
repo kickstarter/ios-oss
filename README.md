@@ -16,7 +16,9 @@ and read more about our journey to open source [here](https://kickstarter.engine
 1. [Download](https://developer.apple.com/xcode/download/) the Xcode 9 release.
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
-1. Run `make test-all` to build and run tests on all platforms.
+1. Run `make test-all` to build and run tests on all platforms.  
+
+&#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
 
 ## Some fun things to explore
 
@@ -101,7 +103,7 @@ We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)
 ## License
 
 ```
-Copyright 2017 Kickstarter, PBC.
+Copyright 2018 Kickstarter, PBC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

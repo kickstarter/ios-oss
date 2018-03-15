@@ -31,7 +31,7 @@ public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelT
     }
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

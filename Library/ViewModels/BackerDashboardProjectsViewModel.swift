@@ -153,7 +153,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
   }
 
-  private let currentUserUpdatedProperty = MutableProperty()
+  private let currentUserUpdatedProperty = MutableProperty(())
   public func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
@@ -163,7 +163,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.projectTappedProperty.value = project
   }
 
-  private let refreshProperty = MutableProperty()
+  private let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
@@ -183,7 +183,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

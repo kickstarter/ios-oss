@@ -59,8 +59,8 @@ public final class VideoViewController: UIViewController {
     super.bindStyles()
 
     _ = self.playButton
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "play-arrow-icon")
-      <> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
+      |> UIButton.lens.image(for: .normal) .~ image(named: "play-arrow-icon")
+      <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
       <> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_play_video() }
 
     _ = self.projectImageView
@@ -157,7 +157,7 @@ public final class VideoViewController: UIViewController {
 
     self.timeObserver = player.addBoundaryTimeObserver(
       forTimes: [NSValue(time: time)],
-      queue: DispatchQueue.main) { [weak self] _ in
+      queue: DispatchQueue.main) { [weak self] in
         self?.viewModel.inputs.crossedCompletionThreshold()
     }
   }

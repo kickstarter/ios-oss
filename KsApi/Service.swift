@@ -4,7 +4,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-private extension Bundle {
+public extension Bundle {
   var _buildVersion: String {
     return (self.infoDictionary?["CFBundleVersion"] as? String) ?? "1"
   }
@@ -527,7 +527,9 @@ public struct Service: ServiceType {
         }
         observer.sendCompleted()
       }
-      disposable.add(task.cancel)
+      disposable.observeEnded {
+        task.cancel()
+      }
       task.resume()
     }
   }

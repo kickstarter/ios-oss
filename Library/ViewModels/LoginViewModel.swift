@@ -181,7 +181,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
-  fileprivate let onePasswordButtonTappedProperty = MutableProperty()
+  fileprivate let onePasswordButtonTappedProperty = MutableProperty(())
   public func onePasswordButtonTapped() {
     self.onePasswordButtonTappedProperty.value = ()
   }
@@ -211,7 +211,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -232,5 +232,5 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 }
 
 private func isValid(email: String, password: String) -> Bool {
-  return isValidEmail(email) && !password.characters.isEmpty
+  return isValidEmail(email) && !password.isEmpty
 }

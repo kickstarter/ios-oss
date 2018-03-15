@@ -11,8 +11,7 @@ public struct Item {
 
 extension Item: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Item> {
-    let create = curry(Item.init)
-    return create
+    return curry(Item.init)
       <^> json <|? "description"
       <*> json <| "id"
       <*> json <| "name"

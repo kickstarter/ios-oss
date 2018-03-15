@@ -889,6 +889,7 @@
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
+		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -2413,6 +2414,7 @@
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
+		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -3213,6 +3215,7 @@
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
+				D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */,
 				D0AA77C51FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift */,
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
@@ -4231,12 +4234,12 @@
 					D015874F1EEB2DE4006E7684 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 48YBP49Y5N;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 					D01587571EEB2DE4006E7684 = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -5404,6 +5407,7 @@
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				59B6B70B1CCEBC1000953319 /* ProfileProjectCell.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
+				D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
 				A72C39F51D00F27E0075227E /* SettingsViewController.swift in Sources */,
@@ -5900,7 +5904,7 @@
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -6582,7 +6586,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -6631,7 +6635,7 @@
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -6662,7 +6666,8 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6694,7 +6699,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6726,7 +6732,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6751,7 +6758,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -6775,7 +6783,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -6799,7 +6808,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Hockey Beta";
 		};
@@ -6853,7 +6863,7 @@
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -7045,7 +7055,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7072,7 +7083,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Hockey Alpha";
 		};

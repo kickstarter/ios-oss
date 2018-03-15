@@ -177,11 +177,11 @@ DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
   public func tapped(selectableRow: SelectableRow) {
     self.tappedSelectableRowProperty.value = selectableRow
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let viewDidAppearProperty = MutableProperty()
+  fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }

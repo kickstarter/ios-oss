@@ -65,30 +65,37 @@ public protocol FindFriendsFriendFollowCellViewModelType {
 public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollowCellViewModelType,
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
     public init() {
-    let friend = self.configureWithFriendProperty.signal.skipNil()
+    let friend: Signal<User, NoError> = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
-    self.imageURL = friend.map { URL(string: $0.avatar.medium) }
+    self.imageURL = friend.map { (friend: User) -> URL? in URL(string: friend.avatar.medium) }
 
-    self.location = friend.map { $0.location?.displayableName ?? "" }
+    self.location = friend.map { (friend: User) -> String in friend.location?.displayableName ?? "" }
 
-    self.name = friend.map { $0.name }
+    self.name = friend.map { (friend: User) -> String in friend.name }
 
     self.projectsBackedText = friend
-      .map { $0.stats.backedProjectsCount ?? 0 }
+      .map { (friend: User) -> Int in friend.stats.backedProjectsCount ?? 0 }
       .map(Strings.social_following_friend_projects_count_backed(backed_count:))
 
-    let projectsCreatedCount = friend.map { $0.stats.createdProjectsCount ?? 0 }
-    self.hideProjectsCreated = projectsCreatedCount.map { $0 == 0 }
+    let projectsCreatedCount: Signal<Int, NoError> = friend.map { (friend: User) -> Int in
+      friend.stats.createdProjectsCount ?? 0
+    }
+
+    // swiftlint:disable empty_count
+    self.hideProjectsCreated = projectsCreatedCount.map {
+      (count: Int) -> Bool in count == 0
+    }
+    // swiftlint:enable empty_count
 
     self.projectsCreatedText = projectsCreatedCount
       .filter { $0 > 0 }
       .map(Strings.social_following_friend_projects_count_created(created_count:))
 
-    let isLoadingFollowRequest = MutableProperty(false)
-    let isLoadingUnfollowRequest = MutableProperty(false)
+    let isLoadingFollowRequest: MutableProperty<Bool> = MutableProperty(false)
+    let isLoadingUnfollowRequest: MutableProperty<Bool> = MutableProperty(false)
 
-    let followFriendEvent = friend
+      let followFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, NoError> = friend
       .takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
@@ -104,7 +111,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           .materialize()
     }
 
-    let unfollowFriendEvent = friend
+    let unfollowFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, NoError> = friend
       .takeWhen(self.unfollowButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.unfollowFriend(userId: user.id)
@@ -120,13 +127,15 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           .materialize()
     }
 
-    let updatedFriendToFollowed = followFriendEvent.values()
-      .on(value: { cache(friend: $0, isFriend: true) })
+    let updatedFriendToFollowed: Signal<User, NoError> = followFriendEvent.values()
+      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: true) })
 
-    let updatedFriendToUnfollowed = unfollowFriendEvent.values()
-      .on(value: { cache(friend: $0, isFriend: false) })
+    let updatedFriendToUnfollowed: Signal<User, NoError> = unfollowFriendEvent.values()
+      .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: false) })
 
-    let isFollowed = Signal.merge(friend, updatedFriendToFollowed, updatedFriendToUnfollowed)
+      let isFollowed: Signal<Bool, NoError> = Signal.merge(
+        friend, updatedFriendToFollowed, updatedFriendToUnfollowed
+      )
       .map { $0.isFriend ?? false }
 
     self.hideFollowButton = isFollowed.skipRepeats()
@@ -170,12 +179,12 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     configureWithSourceProperty.value = source
   }
 
-  fileprivate let followButtonTappedProperty = MutableProperty()
+  fileprivate let followButtonTappedProperty = MutableProperty(())
   public func followButtonTapped() {
     followButtonTappedProperty.value = ()
   }
 
-  fileprivate let unfollowButtonTappedProperty = MutableProperty()
+  fileprivate let unfollowButtonTappedProperty = MutableProperty(())
   public func unfollowButtonTapped() {
     unfollowButtonTappedProperty.value = ()
   }

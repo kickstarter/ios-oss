@@ -90,7 +90,7 @@ MessageThreadsViewModelOutputs {
       cursorFromEnvelope: { $0.urls.api.moreMessageThreads },
       requestFromParams: { [project = configDataProperty.producer.map { $0?.project }] mailbox in
         project.take(first: 1)
-          .promoteErrors(ErrorEnvelope.self)
+          .promoteError(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
         }
@@ -137,7 +137,7 @@ MessageThreadsViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  fileprivate let mailboxButtonPressedProperty = MutableProperty()
+  fileprivate let mailboxButtonPressedProperty = MutableProperty(())
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
@@ -145,11 +145,11 @@ MessageThreadsViewModelOutputs {
   public func configureWith(project: Project?, refTag: RefTag?) {
     self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
-  fileprivate let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
-  fileprivate let searchButtonPressedProperty = MutableProperty()
+  fileprivate let searchButtonPressedProperty = MutableProperty(())
   public func searchButtonPressed() {
     self.searchButtonPressedProperty.value = ()
   }
@@ -157,7 +157,7 @@ MessageThreadsViewModelOutputs {
   public func switchTo(mailbox: Mailbox) {
     self.switchToMailbox.value = mailbox
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

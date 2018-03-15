@@ -111,12 +111,12 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     projectTappedProperty.value = project
   }
 
-  fileprivate let refreshProperty = MutableProperty()
+  fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
 
-  fileprivate let settingsButtonTappedProperty = MutableProperty()
+  fileprivate let settingsButtonTappedProperty = MutableProperty(())
   public func settingsButtonTapped() {
     self.settingsButtonTappedProperty.value = ()
   }
