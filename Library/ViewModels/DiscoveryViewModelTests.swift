@@ -103,7 +103,9 @@ internal final class DiscoveryViewModelTests: TestCase {
       |> Config.lens.abExperiments
       .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.experimental.rawValue]
 
-    withEnvironment(config: conf) {
+    let user = User.template
+
+    withEnvironment(config: conf, currentUser: user) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 

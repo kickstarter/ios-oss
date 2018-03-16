@@ -74,7 +74,7 @@ private func initialParam() -> DiscoveryParams {
     $0.key == Experiment.Name.defaultToRecs.rawValue
   }
 
-  if recExperiment?.first?.value == Experiment.Variant.experimental.rawValue {
+  if AppEnvironment.current.currentUser != nil && recExperiment?.first?.value == Experiment.Variant.experimental.rawValue {
     return DiscoveryParams.defaults
       |> DiscoveryParams.lens.backed .~ false
       |> DiscoveryParams.lens.recommended .~ true
