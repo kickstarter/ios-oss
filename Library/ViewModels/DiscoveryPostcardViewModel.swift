@@ -59,12 +59,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the cell value to be read aloud by voiceover.
   var cellAccessibilityValue: Signal<String, NoError> { get }
 
-  /// Emits true/false depending on the value of AppEnvironment.current.config?.abExperiments
-  var creatorNameLabelHidden: Signal<Bool, NoError> { get }
-
-  /// Emits the text for the creator name label.
-  var creatorNameLabelText: Signal<String, NoError> { get }
-
   /// Emits the text for the deadine subtitle label.
   var deadlineSubtitleLabelText: Signal<String, NoError> { get }
 
@@ -149,13 +143,6 @@ public protocol DiscoveryPostcardViewModelType {
   var outputs: DiscoveryPostcardViewModelOutputs { get }
 }
 
-private func shouldHideCreatorLabel() -> Bool {
-  let creatorExperiment = AppEnvironment.current.config?.abExperiments.filter {
-    $0.key == Experiment.Name.creatorsNameDiscovery.rawValue
-  }
-  return creatorExperiment?.first?.value != Experiment.Variant.experimental.rawValue
-}
-
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
 
@@ -179,13 +166,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
-
-    self.creatorNameLabelHidden = configuredProject.signal.ignoreValues()
-      .map(shouldHideCreatorLabel)
-
-    self.creatorNameLabelText = configuredProject.map {
-      Strings.project_creator_by_creator(creator_name: $0.creator.name)
-    }
 
     let deadlineTitleAndSubtitle = configuredProject
       .map {
@@ -370,8 +350,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
   public let cellAccessibilityValue: Signal<String, NoError>
-  public let creatorNameLabelText: Signal<String, NoError>
-  public let creatorNameLabelHidden: Signal<Bool, NoError>
   public let deadlineSubtitleLabelText: Signal<String, NoError>
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
