@@ -69,9 +69,24 @@ public protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
+private func initialParam() -> DiscoveryParams {
+  let recExperiment = AppEnvironment.current.config?.abExperiments.filter {
+    $0.key == Experiment.Name.defaultToRecs.rawValue
+  }
+
+  if AppEnvironment.current.currentUser != nil && recExperiment?.first?.value ==
+    Experiment.Variant.experimental.rawValue {
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.backed .~ false
+      |> DiscoveryParams.lens.recommended .~ true
+  } else {
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+  }
+}
+
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
-  fileprivate static let defaultParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
 
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
@@ -80,10 +95,10 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).mapConst(DiscoveryViewModel.defaultParams),
+      self.viewWillAppearProperty.signal.take(first: 1).map { _ in initialParam() },
       self.filterWithParamsProperty.signal.skipNil()
       )
-      .skipRepeats()
+    .skipRepeats()
 
     self.configureNavigationHeader = currentParams
 
