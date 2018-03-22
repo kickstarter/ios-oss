@@ -200,10 +200,10 @@ internal final class BackingViewController: UIViewController {
       ||> UILabel.lens.textColor .~ .ksr_dark_grey_900
 
     _ = self.rewardDeliveredLabel
-      |> UILabel.lens.text .~ Strings.Reward_delivered()
+      |> UILabel.lens.text %~ { _ in Strings.Reward_delivered() }
 
     _ = self.useThisToKeepTrackLabel
-      |> UILabel.lens.text .~ Strings.Use_this_to_keep_track_of_which_rewards_youve_received()
+      |> UILabel.lens.text %~ { _ in Strings.Use_this_to_keep_track_of_which_rewards_youve_received() }
 
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2

@@ -7,6 +7,7 @@ public struct Backing {
   public let backer: User?
   public let backerId: Int
   public let completed: Bool?
+  public let backerCompleted: Bool?
   public let id: Int
   public let locationId: Int?
   public let pledgedAt: TimeInterval
@@ -46,6 +47,7 @@ extension Backing: Argo.Decodable {
       <*> json <|? "backer"
       <*> json <| "backer_id"
       <*> json <|? "completed_at"
+      <*> json <|? "backer_completed_at"
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "location_id"
@@ -65,6 +67,7 @@ extension Backing: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
     result["completed_at"] = self.completed
+    result["backer_completed_at"] = self.backerCompleted
     return result
   }
 }

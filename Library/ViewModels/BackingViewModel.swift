@@ -115,30 +115,25 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let project = projectAndBackingAndBackerIsCurrentUser.map(first)
     let backing = projectAndBackingAndBackerIsCurrentUser.map(second)
 
-    let testBacking = backing.map(cached(backing:))
-
     let reward = backing.map { $0.reward }.skipNil()
     let basicBacker = projectAndBackerAndBackerIsCurrentUser.map(second)
     let emptyStringOnLoad = self.viewDidLoadProperty.signal.mapConst("")
-    let projectAndBacking = Signal.combineLatest(project, testBacking)
-
-
+    let projectAndBacking = Signal.combineLatest(project, backing)
 
     let receivedEvent = projectAndBacking
       .takePairWhen(self.rewardReceivedTappedProperty.signal)
       .switchMap { project in
         AppEnvironment.current.apiService.backingUpdate(
           forProject: project.0.0, forUser: project.0.1.backer!,
-                                                        received: true)
+                                                        received: project.1)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
-    let markedReceived = receivedEvent.values()
-      .on(value: { cache(backing: $0, shouldToggle: true) })
+    let markedReceived = receivedEvent.values().map { $0 }
 
-    self.rewardReceivedState = Signal.merge(testBacking, markedReceived)
-      .map { $0.completed ?? false }
+    self.rewardReceivedState = Signal.merge(backing, markedReceived)
+      .map { $0.backerCompleted ?? false }
       .skipRepeats()
 
     self.backerSequence = Signal.merge(
@@ -153,7 +148,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       self.viewDidLoadProperty.signal.mapConst(true),
       projectAndBackingAndBackerIsCurrentUserEvent.filter { $0.isTerminating }.mapConst(false)
     )
-
 
     self.backerName = basicBacker.map { $0.name }
 
@@ -243,12 +237,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
-    receivedEvent.signal.observeValues { v in
-        print("\(v)")
-      }
-
-    self.rewardReceivedState.signal.observeValues{ print("\($0)") }
-
     self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
 
@@ -305,24 +293,24 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public var outputs: BackingViewModelOutputs { return self }
 }
 
-private func cached(backing: Backing) -> Backing {
-  if let backingCache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool] {
-    let markedReceived = backingCache[backing.id] ?? backing.completed
-    return backing |> Backing.lens.completed .~ markedReceived
-  } else {
-    return backing
-  }
-}
-
-private func cache(backing: Backing, shouldToggle: Bool) {
-  AppEnvironment.current.cache[KSCache.ksr_markedReceived] =
-    AppEnvironment.current.cache[KSCache.ksr_markedReceived] ?? [Int: Bool]()
-
-  var cache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool]
-  cache?[backing.id] = shouldToggle
-
-  AppEnvironment.current.cache[KSCache.ksr_markedReceived] = cache
-}
+//private func cached(backing: Backing) -> Backing {
+//  if let backingCache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool] {
+//    let markedReceived = backingCache[backing.id] ?? backing.completed
+//    return backing |> Backing.lens.completed .~ markedReceived
+//  } else {
+//    return backing
+//  }
+//}
+//
+//private func cache(backing: Backing, shouldToggle: Bool) {
+//  AppEnvironment.current.cache[KSCache.ksr_markedReceived] =
+//    AppEnvironment.current.cache[KSCache.ksr_markedReceived] ?? [Int: Bool]()
+//
+//  var cache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool]
+//  cache?[backing.id] = shouldToggle
+//
+//  AppEnvironment.current.cache[KSCache.ksr_markedReceived] = cache
+//}
 
 private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {
