@@ -73,10 +73,10 @@ internal final class UpdateViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] url in self?.goToSafariBrowser(url: url) }
   }
-
+  
   internal func webView(_ webView: WKWebView,
-                        decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
     decisionHandler(
       self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))

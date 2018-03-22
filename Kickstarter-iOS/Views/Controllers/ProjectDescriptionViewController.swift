@@ -87,8 +87,8 @@ internal final class ProjectDescriptionViewController: WebViewController {
   }
 
   internal func webView(_ webView: WKWebView,
-                        decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
     self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
     decisionHandler(self.viewModel.outputs.decidedPolicyForNavigationAction)
