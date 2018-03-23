@@ -10,6 +10,7 @@ import XCTest
 internal final class DashboardReferrersCellViewModelTests: TestCase {
   internal let vm = DashboardReferrersCellViewModel()
   internal let averagePledgeText = TestObserver<String, NoError>()
+  internal let chartIsHidden = TestObserver<Bool, NoError>()
   internal let externalPercentText = TestObserver<String, NoError>()
   internal let externalPledgedText = TestObserver<String, NoError>()
   internal let internalPercentText = TestObserver<String, NoError>()
@@ -22,6 +23,8 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.averagePledgeText.observe(self.averagePledgeText.observer)
+
+        self.vm.outputs.chartIsHidden.observe(self.chartIsHidden.observer)
     self.vm.outputs.externalPercentText.observe(self.externalPercentText.observer)
     self.vm.outputs.externalPledgedText.observe(self.externalPledgedText.observer)
     self.vm.outputs.internalPercentText.observe(self.internalPercentText.observer)
@@ -57,6 +60,26 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.externalPledgedText.assertValues(["$300"])
     self.internalPercentText.assertValues(["70%"])
     self.internalPledgedText.assertValues(["$701"])
+  }
+
+  func testChartIsHiddenWhen_FeatureFlagEnabled() {
+    let config = Config.template
+      |> Config.lens.features .~ [Features.creatorChartHidden.rawValue: true]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.awakeFromNib()
+      self.chartIsHidden.assertValue(true)
+    }
+  }
+
+  func testChartIsNotHiddenWhen_FeatureFlagDisabled() {
+    let config = Config.template
+    |> Config.lens.features .~ [:]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.awakeFromNib()
+      self.chartIsHidden.assertValue(false)
+    }
   }
 
   func testCumulativeDataEmits() {
