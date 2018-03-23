@@ -46,8 +46,8 @@ internal final class WebModalViewController: WebViewController {
   }
 
   internal func webView(_ webView: WKWebView,
-                        decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
     decisionHandler(
       self.viewModel.inputs.decidePolicyFor(
         navigationAction: WKNavigationActionData(navigationAction: navigationAction)
