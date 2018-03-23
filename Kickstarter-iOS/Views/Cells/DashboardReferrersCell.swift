@@ -17,6 +17,8 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var averagePledgeAmountTitleLabel: UILabel!
   @IBOutlet fileprivate weak var averageStackView: UIStackView!
   @IBOutlet fileprivate weak var backersColumnTitleButton: UIButton!
+  @IBOutlet fileprivate weak var chartHeightConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var chartTopConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cumulativeStackView: UIStackView!
   @IBOutlet fileprivate weak var customPercentLabel: UILabel!
   @IBOutlet fileprivate weak var customPercentIndicatorLabel: UILabel!
@@ -145,6 +147,9 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     _ = self.averageStackView
       |> dashboardReferrersCumulativeStackViewStyle
+
+      self.chartHeightConstraint.constant = 0
+      self.chartTopConstraint.constant -= 20
 
     self.separatorViews.forEach { _ = $0 |> separatorStyle }
   }
