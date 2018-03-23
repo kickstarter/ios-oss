@@ -15,6 +15,10 @@ public func == (lhs: ReferrersRowData, rhs: ReferrersRowData) -> Bool {
 }
 
 public protocol DashboardReferrersCellViewModelInputs {
+
+  /// Call when cell is loaded.
+  func awakeFromNib()
+
   /// Call when the Backers button is tapped.
   func backersButtonTapped()
 
@@ -39,6 +43,9 @@ public protocol DashboardReferrersCellViewModelInputs {
 public protocol DashboardReferrersCellViewModelOutputs {
   /// Emits the average pledge text to be displayed.
   var averagePledgeText: Signal<String, NoError> { get }
+
+  /// Emits when should hide chart.
+  var chartIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits the custom percent text to be displayed.
   var customPercentText: Signal<String, NoError> { get }
@@ -96,7 +103,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
       self.chartIsHidden = self.awakeFromNibProperty.signal
         .map { _ in
-          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] == nil
+          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] != nil
       }
 
       let customReferrers = referrers
@@ -194,6 +201,11 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     }
   }
 
+  fileprivate let awakeFromNibProperty = MutableProperty(())
+  public func awakeFromNib() {
+    self.awakeFromNibProperty.value = ()
+  }
+
   fileprivate let backersButtonTappedProperty = MutableProperty(())
   public func backersButtonTapped() {
     self.backersButtonTappedProperty.value = ()
@@ -229,6 +241,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   }
 
   public let averagePledgeText: Signal<String, NoError>
+  public let chartIsHidden: Signal<Bool, NoError>
   public let customPercentText: Signal<String, NoError>
   public let customPledgedText: Signal<String, NoError>
   public let externalPercentage: Signal<Double, NoError>

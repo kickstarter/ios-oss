@@ -42,6 +42,8 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
+    self.viewModel.inputs.awakeFromNib()
+
     self.backersColumnTitleButton.addTarget(
       self,
       action: #selector(backersButtonTapped),
@@ -158,6 +160,12 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.internalPercentLabel.rac.text = self.viewModel.outputs.internalPercentText
     self.internalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.internalPledgedText
 
+    self.viewModel.outputs.chartIsHidden
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.hideChart($0)
+    }
+
     self.viewModel.outputs.notifyDelegateAddedReferrerRows
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -202,6 +210,13 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
         self.referrersStackView.addArrangedSubview(divider)
       }
+    }
+  }
+
+  private func hideChart(_ hidden: Bool) {
+    if hidden == true {
+      self.chartHeightConstraint.constant = 0
+      self.chartTopConstraint.constant -= 20
     }
   }
 

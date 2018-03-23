@@ -51,8 +51,8 @@ public struct ServerConfig: ServerConfigType {
   )
 
   public static let local: ServerConfigType = ServerConfig(
-    apiBaseUrl: URL(string: "http://api.ksr.dev")!,
-    webBaseUrl: URL(string: "http://ksr.dev")!,
+    apiBaseUrl: URL(string: "http://api.ksr.test")!,
+    webBaseUrl: URL(string: "http://ksr.test")!,
     apiClientAuth: ClientAuth.development,
     basicHTTPAuth: BasicHTTPAuth.development,
     graphQLEndpointUrl: URL(string: "http://ksr.dev")!.appendingPathComponent(gqlPath)
