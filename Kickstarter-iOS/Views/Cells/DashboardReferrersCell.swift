@@ -219,6 +219,8 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     if hidden == true {
       self.chartHeightConstraint.constant = 0
       self.chartTopConstraint.constant -= 20
+    } else {
+      self.chartHeightConstraint.isActive = false
     }
   }
 
