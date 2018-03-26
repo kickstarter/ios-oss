@@ -59,6 +59,26 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.internalPledgedText.assertValues(["$701"])
   }
 
+  func testChartIsHiddenWhen_FeatureFlagDisabled() {
+    let config = Config.template
+      |> Config.lens.features .~ [:]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.awakeFromNib()
+      self.chartIsHidden.assertValue(true)
+    }
+  }
+
+  func testChartIsNotHiddenWhen_FeatureFlagEnabled() {
+    let config = Config.template
+    |> Config.lens.features .~ [Features.creatorChartHidden.rawValue: true]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.awakeFromNib()
+      self.chartIsHidden.assertValue(false)
+    }
+  }
+
   func testCumulativeDataEmits() {
     let country = Project.Country.us
     let cumulative = .template

@@ -94,6 +94,11 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
           Format.currency(cumulative.averagePledge, country: project.country)
       }
 
+      self.chartIsHidden = self.awakeFromNibProperty.signal
+        .map { _ in
+          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] == nil
+      }
+
       let customReferrers = referrers
         .map { referrers in referrers.filter { $0.referrerType == .custom } }
 
