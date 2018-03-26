@@ -103,7 +103,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
       self.chartIsHidden = self.awakeFromNibProperty.signal
         .map { _ in
-          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] != nil
+          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] == nil
       }
 
       let customReferrers = referrers
