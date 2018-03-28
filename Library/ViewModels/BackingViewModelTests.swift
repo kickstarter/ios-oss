@@ -343,7 +343,6 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
-
   func testGoToMessages() {
     let project = Project.template
     let backing = Backing.template
